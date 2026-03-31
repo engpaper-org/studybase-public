@@ -31,9 +31,9 @@
         }
 
         const navHTML = `
-        <header class="sticky top-0 z-50">
-            <div class="px-3 md:px-5 pt-3">
-                <nav id="sb-nav-shell" class="relative max-w-7xl mx-auto rounded-[1.6rem] border border-slate-200/80 bg-white/85 backdrop-blur-2xl shadow-[0_8px_40px_rgba(15,23,42,0.08)] supports-[backdrop-filter]:bg-white/80 transition-all font-sans">
+        <header class="relative z-50">
+            <div class="px-3 md:px-5 pt-2">
+                <nav id="sb-nav-shell" class="relative max-w-7xl mx-auto rounded-[1.45rem] border border-slate-200/90 bg-white shadow-[0_6px_26px_rgba(15,23,42,0.06)] transition-all font-sans">
                     <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80 pointer-events-none"></div>
 
                     <div class="px-4 sm:px-6 lg:px-7">
@@ -51,7 +51,7 @@
                             </a>
 
                             <div class="hidden md:flex items-center gap-3">
-                                <div class="flex items-center rounded-full border border-slate-200/80 bg-white/90 shadow-sm px-2 py-1.5">
+                                <div class="flex items-center rounded-full border border-slate-200/80 bg-white shadow-sm px-2 py-1.5">
                                     
                                     <button
                                         type="button"
@@ -245,7 +245,7 @@
                         <span>Help Center</span>
                         <i class="fa-solid fa-circle-question text-xs opacity-60"></i>
                     </a>
-                    <a href="/legaL/contributions.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+                    <a href="/legal/contributions.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors">
                         <span>Contributions</span>
                         <i class="fa-solid fa-hand-holding-heart text-xs opacity-60"></i>
                     </a>
@@ -274,7 +274,6 @@
             });
         }
 
-        // Proper desktop dropdown system
         const triggers = [...document.querySelectorAll("[data-dropdown-trigger]")];
         const menus = [...document.querySelectorAll("[data-dropdown-menu]")];
         let activeId = null;
@@ -403,9 +402,13 @@
             menu.addEventListener("mouseleave", scheduleClose);
         });
 
-        window.addEventListener("scroll", () => {
-            if (activeId) positionMenu(activeId);
-        }, { passive: true });
+        window.addEventListener(
+            "scroll",
+            () => {
+                if (activeId) positionMenu(activeId);
+            },
+            { passive: true }
+        );
 
         window.addEventListener("resize", () => {
             if (activeId) positionMenu(activeId);
@@ -419,7 +422,6 @@
             }
         });
 
-        // --- Login Overlay Logic ---
         function closeLoginOverlay() {
             const overlay = document.getElementById("gh-login-overlay");
             if (overlay) {
