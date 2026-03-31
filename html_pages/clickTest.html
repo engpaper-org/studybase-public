@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPS Tester</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="/assets/js/iframeCheck.js" defer></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+:root { --blue:#3b82f6; }
+
+/* Disable text selection */
+* {
+  user-select:none;
+  -webkit-user-select:none;
+  -webkit-tap-highlight-color:transparent;
+}
+
+body {
+  font-family:'Inter',sans-serif;
+  background:
+    radial-gradient(circle at top,#dbeafe,transparent 60%),
+    linear-gradient(135deg,#f8fafc,#e5edff);
+}
+
+/* Glass */
+.glass {
+  background:rgba(255,255,255,.75);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.4);
+}
+
+/* Click pulse */
+@keyframes press {
+  0%{transform:scale(1)}
+  50%{transform:scale(.94)}
+  100%{transform:scale(1)}
+}
+.press{animation:press .08s ease}
+
+/* Glow */
+@keyframes glow {
+  0%{box-shadow:0 0 30px rgba(59,130,246,.25)}
+  50%{box-shadow:0 0 70px rgba(59,130,246,.45)}
+  100%{box-shadow:0 0 30px rgba(59,130,246,.25)}
+}
+.glow{animation:glow 2.2s ease-in-out infinite}
+
+/* Floating +1 */
+@keyframes floatUp {
+  from{opacity:.6;transform:translateY(0)}
+  to{opacity:0;transform:translateY(-40px)}
+}
+.click-float{
+  position:absolute;
+  font-weight:900;
+  color:rgba(59,130,246,.45);
+  animation:floatUp .6s ease-out forwards;
+  pointer-events:none;
+}
+
+/* Disabled time buttons */
+.time-disabled {
+  opacity: .45;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Modal */
+@keyframes pop {
+  from{transform:scale(.85);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+.pop{animation:pop .25s ease-out}
+</style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center text-gray-900">
+
+<div class="w-full max-w-6xl px-4">
+
+<header class="glass rounded-2xl p-5 mb-6 flex justify-between shadow-xl">
+  <h1 class="text-3xl font-black text-blue-600">⚡ CPS Tester</h1>
+  <div class="flex gap-6 font-bold text-lg">
+    <div>⏱ <span id="time">0.00</span>s</div>
+    <div>🖱 <span id="clicks">0</span></div>
+    <div>⚡ <span id="cps">0.00</span></div>
+  </div>
+</header>
+
+<div class="glass rounded-[3rem] p-8 flex flex-col items-center text-center shadow-2xl">
+
+<div id="status" class="text-xl font-semibold text-blue-600 mb-6">
+  Select a duration, then click
+</div>
+
+<!-- CLICK ZONE -->
+<div id="target"
+ class="glow relative w-full h-[55vh] max-h-[520px]
+ rounded-[3rem]
+ bg-gradient-to-br from-white via-blue-50 to-white
+ border-[6px] border-dashed border-blue-400
+ shadow-[0_30px_90px_rgba(59,130,246,.35)]
+ flex items-center justify-center cursor-pointer overflow-hidden">
+
+  <!-- BIG BACKGROUND CLICKS -->
+  <div id="bgClicks"
+    class="absolute inset-0 flex items-center justify-center
+    text-[18rem] font-black text-blue-500/10 pointer-events-none">
+    0
+  </div>
+
+  <div class="relative z-10 text-center">
+    <div class="text-[7rem] mb-4">🖱️</div>
+    <div class="text-5xl font-black text-blue-600">CLICK</div>
+    <div class="opacity-60 mt-2">(mouse or space)</div>
+  </div>
+</div>
+
+<!-- TIME SELECT -->
+<div id="timeButtons" class="mt-8 grid grid-cols-4 gap-4 w-full max-w-xl">
+  <button data-time="3" class="timeBtn bg-blue-600 text-white py-4 rounded-2xl font-bold text-xl">3s</button>
+  <button data-time="5" class="timeBtn bg-gray-200 py-4 rounded-2xl font-bold text-xl">5s</button>
+  <button data-time="10" class="timeBtn bg-gray-200 py-4 rounded-2xl font-bold text-xl">10s</button>
+  <button data-time="15" class="timeBtn bg-gray-200 py-4 rounded-2xl font-bold text-xl">15s</button>
+</div>
+
+</div>
+</div>
+
+<!-- RESULTS -->
+<div id="modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+  <div class="glass pop relative rounded-3xl p-8 text-center shadow-2xl max-w-md w-full">
+
+    <button id="close"
+      class="absolute top-4 right-4 text-2xl font-black opacity-50 hover:opacity-100">
+      ×
+    </button>
+
+    <div id="animalEmoji" class="text-7xl mb-2"></div>
+    <h2 id="animalName" class="text-3xl font-black text-blue-600"></h2>
+    <p id="animalDesc" class="mt-2 opacity-80"></p>
+
+    <p class="mt-4 text-xl">Clicks: <span id="finalClicks" class="font-bold"></span></p>
+    <p class="text-4xl font-black mt-1">CPS: <span id="finalCps"></span></p>
+  </div>
+</div>
+
+<script>
+let duration = 3;
+let clicks = 0;
+let start = 0;
+let running = false;
+let showingResults = false;
+let timer;
+
+/* spacebar lock */
+let spaceHeld = false;
+
+const $ = id => document.getElementById(id);
+
+const animals = [
+ {max:3,emoji:"🐢",name:"Turtle",desc:"Slow, steady, controlled."},
+ {max:5,emoji:"🐶",name:"Dog",desc:"Energetic and consistent."},
+ {max:7,emoji:"🐱",name:"Cat",desc:"Quick reflexes, smooth control."},
+ {max:10,emoji:"🐆",name:"Cheetah",desc:"Blazing fast instincts."},
+ {max:99,emoji:"🦅",name:"Falcon",desc:"Elite speed. Apex clicker."}
+];
+
+function lockTimeButtons(lock) {
+  document.querySelectorAll(".timeBtn").forEach(btn => {
+    btn.classList.toggle("time-disabled", lock);
+  });
+}
+
+function update() {
+  const elapsed = (Date.now() - start) / 1000;
+  const remaining = Math.max(0, duration - elapsed);
+
+  $("time").textContent = remaining.toFixed(2);
+  $("clicks").textContent = clicks;
+  $("bgClicks").textContent = clicks;
+  $("cps").textContent = elapsed ? (clicks / elapsed).toFixed(2) : "0.00";
+
+  if (remaining <= 0) finish();
+}
+
+function finish() {
+  clearInterval(timer);
+  running = false;
+  showingResults = true;
+  lockTimeButtons(true);
+
+  const cps = clicks / duration;
+  $("finalClicks").textContent = clicks;
+  $("finalCps").textContent = cps.toFixed(2);
+
+  const a = animals.find(x => cps < x.max);
+  $("animalEmoji").textContent = a.emoji;
+  $("animalName").textContent = a.name;
+  $("animalDesc").textContent = a.desc;
+
+  $("modal").classList.remove("hidden");
+}
+
+function clickAction(e) {
+  if (showingResults) return;
+
+  if (!running) {
+    running = true;
+    clicks = 0;
+    start = Date.now();
+    $("status").textContent = "GO!";
+    lockTimeButtons(true);
+    timer = setInterval(update, 30);
+  }
+
+  clicks++;
+
+  $("target").classList.remove("press");
+  void $("target").offsetWidth;
+  $("target").classList.add("press");
+
+  if (e) {
+    const f = document.createElement("div");
+    f.className = "click-float";
+    f.textContent = "+1";
+    f.style.left = e.offsetX + "px";
+    f.style.top = e.offsetY + "px";
+    $("target").appendChild(f);
+    setTimeout(() => f.remove(), 600);
+  }
+}
+
+$("target").addEventListener("mousedown", e => clickAction(e));
+
+document.addEventListener("keydown", e => {
+  if (e.code === "Space") {
+    if (spaceHeld || showingResults) return;
+    spaceHeld = true;
+    e.preventDefault();
+    clickAction();
+  }
+});
+
+document.addEventListener("keyup", e => {
+  if (e.code === "Space") {
+    spaceHeld = false;
+  }
+});
+
+document.querySelectorAll(".timeBtn").forEach(btn => {
+  btn.onclick = () => {
+    if (running) return;
+    duration = +btn.dataset.time;
+    document.querySelectorAll(".timeBtn")
+      .forEach(x => x.classList.remove("bg-blue-600","text-white"));
+    btn.classList.add("bg-blue-600","text-white");
+    $("status").textContent = `Ready for ${duration}s test`;
+  };
+});
+
+$("close").onclick = () => location.reload();
+</script>
+
+</body>
+</html>

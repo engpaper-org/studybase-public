@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase | A-Level Portal 2026</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="/assets/js/sessionManager.js" defer></script>
+    <script src="/assets/js/errorCheck.js" defer></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+    <script src="/assets/js/cookieConsent.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/adminUi.js" defer></script>
+    <script src="/assets/js/services.js"></script>
+    <script src="/assets/js/loginAnimationCheck.js" defer></script>
+
+    <script>const PAGE_ID = "alevel_landing";</script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+        .icon-container {
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.25s ease, border-color 0.25s ease;
+        }
+        .spin-active {
+            transform: rotate(360deg) scale(1.15);
+            color: #8b5cf6;
+        }
+
+        .bg-grid-slate-100 {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23e9eef5'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 55%, #4f46e5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .surface-glass {
+            background: rgba(255,255,255,0.72);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .soft-card {
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(226,232,240,0.8);
+            box-shadow: 0 10px 35px rgba(15,23,42,0.05);
+        }
+
+        .section-shell {
+            position: relative;
+        }
+
+        .section-shell::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at top left, rgba(99,102,241,0.05), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(168,85,247,0.05), transparent 28%);
+        }
+
+        .lift-card {
+            transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease, background-color 0.28s ease;
+        }
+
+        .lift-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 22px 50px rgba(15,23,42,0.10);
+        }
+
+        .section-title-kicker {
+            letter-spacing: 0.18em;
+        }
+
+        .fade-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(148,163,184,0.45), transparent);
+        }
+
+        .dark-grid {
+            background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 28px 28px;
+        }
+
+        .testimonial-card {
+            background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(248,250,252,1) 100%);
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#f4f7f9] text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900 overflow-x-hidden">
+
+    <nav id="navbar-placeholder" class="sticky top-0 z-50 h-16 w-full"></nav>
+
+    <header class="relative pt-20 pb-28 overflow-hidden border-b border-slate-200">
+        <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-20"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.4),transparent_48%)] -z-10"></div>
+
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl -z-10 pointer-events-none">
+            <div class="absolute top-0 left-10 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+            <div class="absolute top-0 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" style="animation-delay: 2s;"></div>
+            <div class="absolute -bottom-8 left-1/2 w-72 h-72 bg-fuchsia-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" style="animation-delay: 4s;"></div>
+        </div>
+
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-24 left-[10%] icon-container text-slate-400 w-12 h-12 pointer-events-auto" data-radius="150">
+                <i class="fa-solid fa-layer-group text-4xl shadow-sm rounded-full bg-white/85 p-3 border border-slate-200 transition-colors"></i>
+            </div>
+            <div class="absolute top-1/4 left-[3%] icon-container text-slate-400 w-10 h-10 pointer-events-auto hidden md:block" data-radius="120">
+                <i class="fa-solid fa-calendar-check text-3xl shadow-sm rounded-full bg-white/85 p-3 border border-slate-200 transition-colors"></i>
+            </div>
+            <div class="absolute bottom-40 left-[15%] icon-container text-slate-400 w-12 h-12 pointer-events-auto" data-radius="150">
+                <i class="fa-solid fa-bolt text-4xl shadow-sm rounded-full bg-white/85 p-3 border border-slate-200 transition-colors"></i>
+            </div>
+            <div class="absolute top-20 right-[15%] icon-container text-slate-400 w-12 h-12 pointer-events-auto" data-radius="150">
+                <i class="fa-solid fa-brain text-4xl shadow-sm rounded-full bg-white/85 p-3 border border-slate-200 transition-colors"></i>
+            </div>
+            <div class="absolute bottom-24 right-[10%] icon-container text-slate-400 w-14 h-14 pointer-events-auto" data-radius="150">
+                <i class="fa-solid fa-chart-line text-4xl shadow-sm rounded-full bg-white/85 p-3 border border-slate-200 transition-colors"></i>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10 flex flex-col items-center text-center">
+            <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full surface-glass border border-slate-200 mb-8 text-slate-600 text-xs font-bold uppercase tracking-widest mx-auto shadow-md hover:scale-105 transition-transform cursor-default">
+                <span class="relative flex h-2.5 w-2.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-purple-500"></span>
+                </span>
+                <span class="text-slate-400">Targeting Summer 2026 Exams</span>
+            </div>
+
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-100/80 border border-indigo-200 text-indigo-700 rounded-lg text-xs font-bold uppercase tracking-widest mb-6">
+                Level 3 / Years 12-13
+            </div>
+
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.03] mb-6 text-slate-900">
+                Bridge the gap to <br>
+                <span class="text-gradient">University.</span>
+            </h1>
+
+            <p class="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed font-body">
+                The UK's ultimate free A-Level platform. Deep-dive analytics, smart revision planning, and active recall tailored to guarantee your university offer.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 mb-14">
+                <a href="/toolkit/index.html" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-2xl shadow-lg hover:shadow-xl hover:shadow-indigo-500/30 transition-all duration-200 transform hover:-translate-y-1">
+                    Start studying for free
+                </a>
+                <a href="#toolkit" class="surface-glass hover:bg-white text-slate-700 border border-slate-200 font-bold py-4 px-10 rounded-2xl shadow-sm transition-all duration-200 flex items-center justify-center">
+                    Explore the tools <i class="fas fa-arrow-down ml-2 text-sm text-slate-400"></i>
+                </a>
+            </div>
+
+            <div class="relative z-10 bg-white/90 backdrop-blur-md rounded-[2rem] shadow-[0_24px_70px_-20px_rgba(15,23,42,0.20)] w-full max-w-5xl border border-white/70 overflow-hidden mx-auto hidden md:block text-left">
+                <div class="bg-slate-50/90 border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+                    <div class="flex space-x-2">
+                        <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                    </div>
+                    <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">StudyBase Pro Hub</div>
+                    <div class="w-10"></div>
+                </div>
+
+                <div class="p-8 bg-white flex flex-row gap-8">
+                    <div class="flex flex-col w-1/4 space-y-4 border-r border-slate-100 pr-6">
+                        <div class="flex items-center space-x-3 text-indigo-700 font-semibold bg-indigo-50 p-3 rounded-xl border border-indigo-100">
+                            <i class="fa-solid fa-chart-pie"></i>
+                            <span>Overview</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-slate-400 font-medium p-3">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <span>Flashcard Decks</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-slate-400 font-medium p-3">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span>Study Planner</span>
+                        </div>
+                        <div class="flex items-center space-x-3 text-slate-400 font-medium p-3">
+                            <i class="fa-solid fa-chart-simple"></i>
+                            <span>Analytics</span>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 space-y-6">
+                        <div class="flex justify-between items-end mb-4">
+                            <div>
+                                <h2 class="text-2xl font-bold text-slate-800">Your UCAS Progress 🎓</h2>
+                                <p class="text-slate-500 text-sm mt-1">Based on recent active recall performance across all your decks.</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full font-bold text-sm"><i class="fa-solid fa-fire mr-1"></i> 14 Day Streak</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
+                                <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-2">Concepts Mastered</p>
+                                <span class="text-3xl font-black text-indigo-600">1,204</span>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
+                                <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-2">Est. UCAS Points</p>
+                                <span class="text-3xl font-black text-slate-800">152</span>
+                            </div>
+                            <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-2xl">
+                                <p class="text-indigo-600 text-xs font-bold uppercase tracking-wider mb-2">Study Efficiency</p>
+                                <span class="text-3xl font-black text-slate-800">92%</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 border border-slate-200 rounded-2xl p-5 bg-white shadow-sm flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl">
+                                    <i class="fa-solid fa-brain"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800">Spaced Repetition Due</h4>
+                                    <p class="text-slate-500 text-sm">You have 42 cards pending review today to maintain memory retention.</p>
+                                </div>
+                            </div>
+                            <button class="bg-slate-900 text-white px-5 py-2 rounded-xl font-bold text-sm hover:bg-indigo-600 transition-colors">
+                                Start Session
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-[#f4f7f9]"></div>
+    </header>
+
+    <section class="relative -mt-10 z-20 pb-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="soft-card rounded-[2rem] px-6 py-6 md:px-10 md:py-7">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center md:text-left">
+                    <div class="md:pl-2">
+                        <div class="text-3xl font-black text-slate-900 mb-1">100%</div>
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Free Forever</div>
+                    </div>
+                    <div class="md:border-l md:border-slate-200 md:pl-8">
+                        <div class="text-3xl font-black text-slate-900 mb-1">Smart</div>
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Algorithms</div>
+                    </div>
+                    <div class="md:border-l md:border-slate-200 md:pl-8">
+                        <div class="text-3xl font-black text-slate-900 mb-1">2026</div>
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Spec Ready</div>
+                    </div>
+                    <div class="md:border-l md:border-slate-200 md:pl-8">
+                        <div class="text-3xl font-black text-slate-900 mb-1">A*</div>
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Exemplars</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="toolkit" class="py-20 bg-[#f4f7f9] relative section-shell">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <span class="text-indigo-600 font-bold section-title-kicker text-xs uppercase mb-3 block">Features</span>
+                <h2 class="text-3xl md:text-5xl font-black tracking-tight text-slate-900 mb-4">Your Ultimate Revision Toolkit</h2>
+                <p class="text-slate-500 font-body max-w-2xl mx-auto">Everything you need to plan, execute, and track your revision without feeling overwhelmed.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="lift-card group border border-slate-200 rounded-[2rem] p-8 bg-white/70 backdrop-blur-sm text-left">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-calendar-day"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-3">Smart Revision Planner</h3>
+                    <p class="text-slate-500 font-body leading-relaxed mb-6">Input your exam dates and let our system automatically generate a balanced daily study schedule, ensuring you cover every topic before exam day.</p>
+                    <a href="/toolkit/timetable.html" class="text-blue-600 font-bold flex items-center">Explore Planner <i class="fas fa-arrow-right ml-2 text-sm group-hover:translate-x-1 transition-transform"></i></a>
+                </div>
+
+                <div class="lift-card group border border-slate-200 rounded-[2rem] p-8 bg-white/70 backdrop-blur-sm text-left">
+                    <div class="w-14 h-14 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-3">Full Revision Toolkit</h3>
+                    <p class="text-slate-500 font-body leading-relaxed mb-6">Access all of our digital tools, proven to help you revise and achieve maximum grades.</p>
+                    <a href="/toolkit/index.html" class="text-purple-600 font-bold flex items-center">View All Tools <i class="fas fa-arrow-right ml-2 text-sm group-hover:translate-x-1 transition-transform"></i></a>
+                </div>
+
+                <div class="lift-card group border border-slate-800/80 rounded-[2rem] p-8 bg-slate-900 text-white text-left relative overflow-hidden">
+                    <div class="absolute inset-0 dark-grid opacity-25"></div>
+                    <div class="absolute top-0 right-0 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-white/10 text-white rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner border border-white/20 group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">The Focus Room</h3>
+                        <p class="text-slate-300 font-body leading-relaxed mb-6">Enter a distraction-free environment with customizable Pomodoro timers, ambient lofi beats, and task tracking for those long study blocks.</p>
+                        <a href="/toolkit/focusRoom.html" class="text-white font-bold flex items-center underline decoration-slate-500 underline-offset-4 hover:decoration-white transition-colors">Enter Room <i class="fas fa-arrow-right ml-2 text-sm group-hover:translate-x-1 transition-transform"></i></a>
+                    </div>
+                </div>
+
+                <div class="lift-card group border border-emerald-800/70 rounded-[2rem] p-8 bg-emerald-900 text-white text-left relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-20 bg-emerald-500 rounded-full blur-[80px] opacity-30"></div>
+                    <div class="absolute bottom-0 left-0 w-36 h-36 bg-white/5 rounded-full blur-2xl"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-white/10 text-white rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner border border-white/20 group-hover:scale-110 transition-transform">
+                            🌿
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">Wellbeing Hub</h3>
+                        <p class="text-emerald-100/80 font-body leading-relaxed mb-6">Burnout prevention, sleep guides, and UCAS stress management. Because your mental health is just as important as your grades.</p>
+                        <a href="/toolkit/breathing.html" class="text-white font-bold flex items-center underline decoration-emerald-500 underline-offset-4 hover:decoration-white transition-colors">View Guides <i class="fas fa-arrow-right ml-2 text-sm group-hover:translate-x-1 transition-transform"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-white border-y border-slate-200 relative overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute top-0 left-[8%] w-52 h-52 bg-indigo-100/60 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 right-[6%] w-56 h-56 bg-purple-100/60 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="text-indigo-600 font-bold section-title-kicker text-xs uppercase mb-3 block">Student voice</span>
+                <h2 class="text-3xl font-black text-slate-900 mb-4">Trusted by Year 13s</h2>
+                <p class="text-slate-500 font-body">Join thousands of students securing their university offers with our open-source tools.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="testimonial-card lift-card p-8 rounded-[1.75rem] shadow-sm border border-slate-100">
+                    <div class="flex text-yellow-400 text-xs mb-4">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-6 font-body leading-relaxed">"The Smart Revision Planner literally saved my life. I finally knew exactly what I needed to study each day without stressing."</p>
+                    <div class="mt-auto pt-4">
+                        <div class="fade-divider mb-4"></div>
+                        <div class="font-bold text-slate-900 text-sm">Aisha K.</div>
+                        <div class="text-slate-400 text-xs">Year 13</div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card lift-card p-8 rounded-[1.75rem] shadow-sm border border-slate-100">
+                    <div class="flex text-yellow-400 text-xs mb-4">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-6 font-body leading-relaxed">"A-Levels are tough, but the active recall flashcards mapped exactly to my syllabus. It's so much better than just reading notes."</p>
+                    <div class="mt-auto pt-4">
+                        <div class="fade-divider mb-4"></div>
+                        <div class="font-bold text-slate-900 text-sm">Tom H.</div>
+                        <div class="text-slate-400 text-xs">Year 12</div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card lift-card p-8 rounded-[1.75rem] shadow-sm border border-slate-100">
+                    <div class="flex text-yellow-400 text-xs mb-4">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-6 font-body leading-relaxed">"The Focus Room helps me push through 3-hour study blocks without picking up my phone. So incredibly useful."</p>
+                    <div class="mt-auto pt-4">
+                        <div class="fade-divider mb-4"></div>
+                        <div class="font-bold text-slate-900 text-sm">Jessica T.</div>
+                        <div class="text-slate-400 text-xs">Year 13</div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card lift-card p-8 rounded-[1.75rem] shadow-sm border border-slate-100">
+                    <div class="flex text-yellow-400 text-xs mb-4">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-6 font-body leading-relaxed">"Seeing actual A* exemplar structures changed how I formulate my exam answers entirely. Can't believe it's free."</p>
+                    <div class="mt-auto pt-4">
+                        <div class="fade-divider mb-4"></div>
+                        <div class="font-bold text-slate-900 text-sm">David R.</div>
+                        <div class="text-slate-400 text-xs">Year 13</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-[#f4f7f9] relative section-shell">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
+                <div class="max-w-2xl">
+                    <span class="text-indigo-600 font-bold section-title-kicker text-xs uppercase mb-3 block">UCAS & Exams</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4">A-Level Insights</h2>
+                    <p class="text-slate-500 font-body">Expert advice on exam technique, personal statements, and university preparation.</p>
+                </div>
+                <a href="/blogs/index.html" class="group flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 text-slate-700 font-bold rounded-2xl hover:border-indigo-300 hover:text-indigo-600 transition-all shadow-sm">
+                    View All Articles
+                    <i class="fas fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <a href="/blogs/blog.html?id=1" class="lift-card group flex flex-col bg-white rounded-[2rem] border border-slate-200 overflow-hidden h-full">
+                    <div class="h-48 overflow-hidden relative bg-slate-200">
+                        <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors z-10"></div>
+                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Student studying">
+                        <span class="absolute top-4 left-4 px-3 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-bold uppercase tracking-widest z-20 shadow-sm">UCAS</span>
+                    </div>
+                    <div class="p-8 flex-1 flex flex-col bg-white">
+                        <div class="mb-4">
+                            <span class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2 block">Guide</span>
+                            <h3 class="text-xl font-bold text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors">How to write a standout Personal Statement</h3>
+                        </div>
+                        <p class="text-slate-500 text-sm line-clamp-2 mb-6 flex-1 font-body leading-relaxed">Universities look for specific triggers in your personal statement. Here is how to structure yours to guarantee offers...</p>
+                        <div class="flex items-center text-sm font-bold text-indigo-600">
+                            Read Article <span class="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/blogs/blog.html?id=2" class="lift-card group flex flex-col bg-white rounded-[2rem] border border-slate-200 overflow-hidden h-full">
+                    <div class="h-48 overflow-hidden relative bg-slate-200">
+                        <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors z-10"></div>
+                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Writing notes">
+                        <span class="absolute top-4 left-4 px-3 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-bold uppercase tracking-widest z-20 shadow-sm">Revision</span>
+                    </div>
+                    <div class="p-8 flex-1 flex flex-col bg-white">
+                        <div class="mb-4">
+                            <span class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2 block">Strategy</span>
+                            <h3 class="text-xl font-bold text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors">Stop Highlighting: The Science of Active Recall</h3>
+                        </div>
+                        <p class="text-slate-500 text-sm line-clamp-2 mb-6 flex-1 font-body leading-relaxed">Reading your notes feels productive, but it's an illusion of competence. Learn how spaced repetition actually works...</p>
+                        <div class="flex items-center text-sm font-bold text-indigo-600">
+                            Read Article <span class="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/blogs/blog.html?id=3" class="lift-card group flex flex-col bg-white rounded-[2rem] border border-slate-200 overflow-hidden h-full">
+                    <div class="h-48 overflow-hidden relative bg-slate-200">
+                        <div class="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors z-10"></div>
+                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Classroom">
+                        <span class="absolute top-4 left-4 px-3 py-1 bg-purple-100 text-purple-700 rounded-lg text-xs font-bold uppercase tracking-widest z-20 shadow-sm">Mental Health</span>
+                    </div>
+                    <div class="p-8 flex-1 flex flex-col bg-white">
+                        <div class="mb-4">
+                            <span class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2 block">Wellbeing</span>
+                            <h3 class="text-xl font-bold text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors">Beating Year 13 Burnout Before Exam Season</h3>
+                        </div>
+                        <p class="text-slate-500 text-sm line-clamp-2 mb-6 flex-1 font-body leading-relaxed">Mock exams, coursework, and university applications. Year 13 is exhausting. Here is how to pace yourself...</p>
+                        <div class="flex items-center text-sm font-bold text-indigo-600">
+                            Read Article <span class="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="relative py-24 overflow-hidden bg-slate-900 text-white">
+        <div class="absolute inset-0 dark-grid opacity-25"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(99,102,241,0.18),transparent_35%)]"></div>
+        <div class="absolute top-0 right-0 p-32 bg-indigo-500/20 rounded-full blur-3xl -mr-20 -mt-20"></div>
+        <div class="absolute bottom-0 left-0 p-32 bg-purple-500/20 rounded-full blur-3xl -ml-20 -mb-20"></div>
+
+        <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/70 text-xs font-bold uppercase tracking-widest mb-6">
+                Final step
+            </div>
+            <h2 class="text-4xl md:text-5xl font-black mb-6 tracking-tight">Ready to secure your firm choice?</h2>
+            <p class="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-body">Stop reading notes passively. Join thousands of students using active tools to guarantee their university spots.</p>
+
+            <div class="flex justify-center">
+                <a href="/toolkit/index.html" class="px-10 py-4 bg-indigo-600 text-white font-bold rounded-2xl shadow-xl shadow-indigo-900/40 hover:bg-indigo-500 hover:scale-105 transition-all">
+                    Launch Toolkit
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            const icons = document.querySelectorAll('.icon-container');
+
+            icons.forEach(icon => {
+                const rect = icon.getBoundingClientRect();
+                const iconCenterX = rect.left + rect.width / 2;
+                const iconCenterY = rect.top + rect.height / 2;
+
+                const distance = Math.hypot(e.clientX - iconCenterX, e.clientY - iconCenterY);
+                const triggerRadius = parseInt(icon.getAttribute('data-radius')) || 150;
+
+                if (distance < triggerRadius) {
+                    icon.classList.add('spin-active');
+                } else {
+                    icon.classList.remove('spin-active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

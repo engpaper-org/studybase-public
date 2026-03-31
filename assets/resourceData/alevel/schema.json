@@ -1,0 +1,33 @@
+[
+  {
+    "folderId": "001",
+    "name": "Past Papers",
+    "iconurl": "/assets/app-icons/folder-papers.jpg",
+    "folder": "000"
+  },
+  {
+    "folderId": "002",
+    "name": "Specifications",
+    "iconurl": "/assets/app-icons/folder-spec.jpg",
+    "folder": "000"
+  },
+  {
+    "folderId": "003",
+    "name": "Revision Videos",
+    "iconurl": "/assets/app-icons/folder-videos.jpg",
+    "folder": "000"
+  },
+
+  {
+    "folderId": "010",
+    "name": "Maths (Past Papers)",
+    "iconurl": "/assets/app-icons/folder-maths.jpg",
+    "folder": "001"
+  },
+  {
+    "folderId": "011",
+    "name": "Physics (Past Papers)",
+    "iconurl": "/assets/app-icons/folder-physics.jpg",
+    "folder": "001"
+  }
+]

@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Study Base | Alevel Revision Resources</title>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
+    <script src="/autoSafe/js/update.js" defer></script>
+
+    <!-- Run hashtag protocol BEFORE anything else -->
+    <script src="/assets/js/hashtagProto.js"></script>
+    
+    <script src="/myaccount/js/settingsSafetyWarning.js"></script>
+
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/assets/js/loginAnimationCheck.js" defer></script>
+    <script src="/myaccount/js/timeRecords.js" defer></script>
+    <script src="/myaccount/js/timeWarn.js" defer></script>
+    <script src="/assets/js/playHistory.js" defer></script>
+    <script src="/assets/js/checkVerification.js" defer></script>
+    <script src="/assets/js/envCheck.js"></script>
+    <script src="/assets/js/analytics.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/assets/js/adminUi.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="/assets/js/deviceCheck.js" defer></script>
+    <script src="/assets/js/timeCheck.js" defer></script>
+
+    <!--Cookie consent banner and google analytics-->
+    <script src="/assets/js/checkCookieConsent.js"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+    <script src="/assets/js/cookieConsent.js"></script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: #f1f5f9;
+        }
+
+        #materialFrame {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+        }
+
+        .glass-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            color: #475569;
+            font-size: 18px;
+        }
+
+        .glass-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            color: #2563eb;
+            background: white;
+        }
+
+        .glass-btn.danger:hover { color: #ef4444; }
+
+        .loader { border-radius: 9999px; border-top-color: rgb(37 99 235); }
+
+        @keyframes update-pop {
+            0% { opacity: 0; transform: translateY(12px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .update-modal-card {
+            animation: update-pop 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+            transform-origin: center;
+        }
+
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+        .animate-fade-in { animation: fade-in 0.2s ease-out forwards; }
+
+        #loadingAdFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+
+        .board-btn-disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: #f8fafc;
+            border-color: #e2e8f0;
+        }
+
+        .board-btn-ready {
+            background: white;
+            border-color: #e2e8f0;
+        }
+
+        .board-btn-ready:hover {
+            border-color: #93c5fd;
+            background: #f8fbff;
+        }
+
+        .board-btn-selected {
+            border-color: #2563eb !important;
+            background: #eff6ff !important;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.10);
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100">
+
+<div id="turnstileScreen" class="fixed inset-0 bg-white z-[200] flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white rounded-[2rem] shadow-2xl border border-slate-200 p-8 text-center">
+        <div class="w-14 h-14 mx-auto rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
+            <i class="fas fa-shield-halved text-xl"></i>
+        </div>
+
+        <h2 class="text-2xl font-extrabold text-slate-900">Security check</h2>
+        <p class="text-slate-600 mt-2 mb-5">
+            Please complete the quick verification to continue.
+        </p>
+
+        <div id="turnstileWidget" class="flex justify-center"></div>
+
+        <p id="turnstileError" class="hidden mt-4 text-sm text-red-600 font-medium">
+            Verification failed. Please try again.
+        </p>
+    </div>
+</div>
+
+<!-- STEP 1: "Preparing" screen while we run hashtag protocol + fetch material URL -->
+<div id="bootScreen" class="w-full h-screen flex flex-col items-center justify-center">
+    <div class="loader border-8 border-slate-300 border-t-blue-600 rounded-full w-20 h-20 animate-spin"></div>
+    <p id="bootText" class="mt-4 text-slate-600 text-lg font-medium">Preparing…</p>
+</div>
+
+<!-- STEP 2: Subject + board picker -->
+<div id="subjectPicker" class="hidden fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-[80] flex items-center justify-center p-4">
+    <div class="w-full max-w-5xl bg-white rounded-[2rem] shadow-2xl overflow-hidden">
+        <div class="p-7 border-b border-slate-100">
+            <p class="text-xs font-semibold tracking-[0.22em] text-blue-600 uppercase mb-2 flex items-center gap-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                Choose subject and board
+            </p>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
+                What are you working on today?
+            </h1>
+            <p class="text-slate-600 mt-2">
+                Pick a subject first, then choose the exam board.
+            </p>
+        </div>
+
+        <div class="p-7">
+            <div id="subjectGrid"></div>
+
+            <div class="mt-6 flex items-center justify-between gap-3">
+                <button onclick="goBack()"
+                    class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition-colors">
+                    Return
+                </button>
+                <p class="text-xs text-slate-500">
+                    Tip: If this doesn’t load, check you’re signed in.
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-7 py-4">
+            <div class="flex items-start gap-3">
+                <i class="fas fa-shield-halved text-lg mt-0.5"></i>
+                <p class="text-xs sm:text-sm font-medium leading-relaxed">
+                    <span class="font-semibold">New security update:</span>
+                    For security, refreshing or accessing this page from search history will reset your session. Navigate using the Back or Return button on the page.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- STEP 2.5: Type picker -->
+<div id="typePicker" class="hidden fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-[85] flex items-center justify-center p-4">
+    <div class="w-full max-w-3xl bg-white rounded-[2rem] shadow-2xl overflow-hidden update-modal-card">
+        <div class="p-7 border-b border-slate-100">
+            <p class="text-xs font-semibold tracking-[0.22em] text-blue-600 uppercase mb-2 flex items-center gap-2">
+                <span class="inline-block w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                Choose a destination
+            </p>
+            <h2 id="typePickerTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
+                Where should links go?
+            </h2>
+            <p class="text-slate-600 mt-2">
+                Pick what to open if this was clicked from search history.
+            </p>
+        </div>
+
+        <div class="p-7">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button onclick="selectType('past_paper')"
+                    class="group rounded-2xl border border-slate-100 bg-white hover:bg-slate-50 shadow-sm hover:shadow-md transition-all p-4 text-left">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div>
+                            <p class="font-extrabold text-slate-900 leading-tight">Past paper</p>
+                            <p class="text-xs text-slate-500">
+                                Save a PDF viewer URL for the chosen subject and board
+                            </p>
+                        </div>
+                    </div>
+                </button>
+
+                <button disabled
+                    class="group rounded-2xl border border-slate-200 bg-slate-100 shadow-sm p-4 text-left cursor-not-allowed opacity-70">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-slate-200 text-slate-500 flex items-center justify-center">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div>
+                            <p class="font-extrabold text-slate-500 leading-tight flex items-center gap-2">
+                                Subject overview
+                                <i class="fas fa-lock text-xs"></i>
+                            </p>
+                            <p class="text-xs text-slate-400">Locked for now</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button onclick="selectType('specification')"
+                    class="group rounded-2xl border border-slate-100 bg-white hover:bg-slate-50 shadow-sm hover:shadow-md transition-all p-4 text-left">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div>
+                            <p class="font-extrabold text-slate-900 leading-tight">Specification</p>
+                            <p class="text-xs text-slate-500">
+                                Save a PDF viewer URL for the chosen subject and board
+                            </p>
+                        </div>
+                    </div>
+                </button>
+
+                <button onclick="showCustomUrl()"
+                    class="group rounded-2xl border border-slate-100 bg-white hover:bg-slate-50 shadow-sm hover:shadow-md transition-all p-4 text-left">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <div>
+                            <p class="font-extrabold text-slate-900 leading-tight">Custom URL</p>
+                            <p class="text-xs text-slate-500">Redirect to a custom url you enter</p>
+                        </div>
+                    </div>
+                </button>
+            </div>
+
+            <div id="customUrlWrap" class="hidden mt-5 p-4 rounded-2xl border border-slate-200 bg-slate-50">
+                <label class="block text-sm font-semibold text-slate-700 mb-2">
+                    Enter custom URL
+                </label>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input id="customUrlInput" type="url" inputmode="url" placeholder="https://example.com/..."
+                        class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" />
+                    <button onclick="submitCustomUrl()"
+                        class="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold transition-colors">
+                        Continue
+                    </button>
+                </div>
+                <p class="text-xs text-slate-500 mt-2">
+                    Make sure the url starts with <b>https://</b> or it will not redirect.
+                </p>
+            </div>
+
+            <div class="mt-6 flex items-center justify-between gap-3">
+                <button onclick="backToSubjects()"
+                    class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition-colors">
+                    Back
+                </button>
+                <p class="text-xs text-slate-500">
+                    We save subject + board + type.
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-7 py-4">
+            <div class="flex items-start gap-3">
+                <i class="fas fa-shield-halved text-lg mt-0.5"></i>
+                <p class="text-xs sm:text-sm font-medium leading-relaxed">
+                    Your choice is saved locally as <span class="font-semibold">subject</span>, <span class="font-semibold">board</span> and <span class="font-semibold">type</span>.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- STEP 3: display.html shown while the final iframe is loading -->
+<div id="loadingScreen" class="hidden fixed inset-0 bg-white z-[70]">
+    <iframe
+        id="loadingAdFrame"
+        src=""
+        title="Loading Screen"
+        loading="eager"
+        referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+</div>
+
+<div id="overlayButtons" class="hidden fixed top-6 left-6 flex flex-col gap-3 z-40">
+    <button onclick="goBack()" class="glass-btn group relative" aria-label="Back">
+        <i class="fas fa-arrow-left"></i>
+        <span class="absolute left-full ml-3 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Back</span>
+    </button>
+
+    <button onclick="openReportModal()" class="glass-btn group relative" aria-label="Report Issue">
+        <i class="fas fa-flag"></i>
+        <span class="absolute left-full ml-3 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Report Issue</span>
+    </button>
+
+    <button onclick="logoutUser()" class="glass-btn danger group relative" aria-label="Logout">
+        <i class="fas fa-right-from-bracket"></i>
+        <span class="absolute left-full ml-3 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Logout</span>
+    </button>
+</div>
+
+<iframe id="materialFrame" src="" class="hidden w-full h-full" allow="pointer-lock; fullscreen; autoplay" allowfullscreen></iframe>
+
+<div id="protoOverlay" class="hidden fixed inset-0 bg-black z-[100000]">
+    <iframe id="protoFrame" class="w-full h-full border-none" src=""></iframe>
+</div>
+
+<div id="reportModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-fade-in">
+    <div class="bg-white w-full max-w-2xl h-[90vh] rounded-[2rem] shadow-2xl relative overflow-hidden flex flex-col update-modal-card">
+        <div class="flex items-center justify-between p-6 border-b border-slate-100 bg-white z-10">
+            <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
+                <i class="fas fa-triangle-exclamation text-amber-500"></i> Report Issue
+            </h3>
+            <button onclick="closeReportModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <iframe id="reportFrame" class="flex-grow w-full border-none bg-slate-50" src=""></iframe>
+    </div>
+</div>
+
+<div id="networkModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+    <div class="bg-white p-8 rounded-2xl max-w-md w-full text-center shadow-2xl">
+        <h2 class="text-2xl font-bold text-red-600 mb-2">No Internet Connection</h2>
+        <p class="text-slate-600 mb-4">Please reconnect to continue.</p>
+        <p id="retryTimer" class="text-slate-500 mb-6 text-sm">
+            Trying again in <b>10</b> seconds…
+        </p>
+    </div>
+</div>
+
+<script>
+const WORKER = "https://api.studybase.site";
+
+//const TURNSTILE_SITE_KEY = "0x4AAAAAACxsClLBNoaHGiZm";
+const TURNSTILE_SITE_KEY = "1x00000000000000000000AA";
+
+let turnstileToken = null;
+let turnstileWidgetId = null;
+
+let stateInterval = null;
+let reconnectInterval = null;
+let inReconnectMode = false;
+
+let materialFinalUrl = null;
+let pendingSubject = null;
+let pendingBoard = null;
+
+const SUBJECT_LINKS = {
+    "Maths": {
+        icon: "fa-square-root-variable",
+        boards: [
+            {
+                name: "AQA",
+                pastPaper: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2018/june/AQA-73571-QP-JUN18.PDF",
+                spec: "https://filestore.aqa.org.uk/resources/mathematics/specifications/AQA-7357-SP-2017.PDF"
+            },
+            {
+                name: "Edexcel",
+                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Mathematics/2017/exam-materials/9ma0-01-que-20180609.pdf",
+                spec: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Mathematics/2017/specification-and-sample-assesment/a-level-l3-mathematics-specification-issue4.pdf"
+            },
+            {
+                name: "OCR",
+                pastPaper: "https://www.ocr.org.uk/Images/414686-question-paper-pure-mathematics-and-mechanics.pdf",
+                spec: "https://www.ocr.org.uk/images/308723-specification-accredited-a-level-gce-mathematics-a-h240.pdf"
+            }
+        ]
+    },
+    "Biology": {
+        icon: "fa-dna",
+        boards: [
+            {
+                name: "AQA",
+                pastPaper: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2018/june/AQA-74021-QP-JUN18.PDF",
+                spec: "https://filestore.aqa.org.uk/resources/biology/specifications/AQA-7401-7402-SP-2015.PDF"
+            },
+            {
+                name: "Edexcel",
+                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Biology/2015/exam-materials/9bn0-01-que-20180613.pdf",
+                spec: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Biology/2015/specification-and-sample-assessment-materials/A%20Level%20Biology%20A%20Specification.pdf"
+            },
+            {
+                name: "OCR",
+                pastPaper: "https://www.ocr.org.uk/Images/493783-question-paper-biological-processes.pdf",
+                spec: "https://www.ocr.org.uk/Images/171736-specification-accredited-a-level-gce-biology-a-h420.pdf"
+            }
+        ]
+    },
+    "Chemistry": {
+        icon: "fa-flask",
+        boards: [
+            {
+                name: "AQA",
+                pastPaper: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2018/june/AQA-74041-QP-JUN18.PDF",
+                spec: "https://filestore.aqa.org.uk/resources/chemistry/specifications/AQA-7404-7405-SP-2015.PDF"
+            },
+            {
+                name: "Edexcel",
+                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Chemistry/2015/exam-materials/9ch0-01-que-20180620.pdf",
+                spec: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Chemistry/2015/specification-and-sample-assessment-materials/A%20level%20Chemistry%20Specification.pdf"
+            },
+            {
+                name: "OCR",
+                pastPaper: "https://www.ocr.org.uk/Images/493796-question-paper-periodic-table-elements-and-physical-chemistry.pdf",
+                spec: "https://www.ocr.org.uk/Images/171720-specification-accredited-a-level-gce-chemistry-a-h432.pdf"
+            }
+        ]
+    },
+    "Physics": {
+        icon: "fa-atom",
+        boards: [
+            {
+                name: "AQA",
+                pastPaper: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2018/june/AQA-74081-QP-JUN18.PDF",
+                spec: "https://filestore.aqa.org.uk/resources/physics/specifications/AQA-7407-7408-SP-2015.PDF"
+            },
+            {
+                name: "Edexcel",
+                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Physics/2015/exam-materials/9ph0-01-que-20180605.pdf",
+                spec: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Physics/2015/specification-and-sample-assessments/A%20Level%20Physics%20Specification.pdf"
+            },
+            {
+                name: "OCR",
+                pastPaper: "https://www.ocr.org.uk/Images/493850-question-paper-modelling-physics.pdf",
+                spec: "https://www.ocr.org.uk/Images/171726-specification-accredited-a-level-gce-physics-a-h556.pdf"
+            }
+        ]
+    },
+    "Geography": {
+        icon: "fa-globe-europe",
+        boards: [
+            {
+                name: "AQA",
+                pastPaper: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2018/june/AQA-70371-QP-JUN18.PDF",
+                spec: "https://filestore.aqa.org.uk/resources/geography/specifications/AQA-7037-SP-2016.PDF"
+            },
+            {
+                name: "Edexcel",
+                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Geography/2016/exam-materials/9ge0-01-que-20180605.pdf",
+                spec: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Geography/2016/specification-and-sample-assessments/A%20Level%20Geography%20Specification.pdf"
+            },
+            {
+                name: "OCR",
+                pastPaper: "https://www.ocr.org.uk/Images/537514-question-paper-landscapes-and-place.pdf",
+                spec: "https://www.ocr.org.uk/Images/171754-specification-accredited-a-level-gce-geography-h481.pdf"
+            }
+        ]
+    },
+    "History": {
+        icon: "fa-landmark",
+        boards: [
+            {
+                name: "AQA",
+                pastPaper: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2018/june/AQA-70421A-QP-JUN18.PDF",
+                spec: "https://filestore.aqa.org.uk/resources/history/specifications/AQA-7042-SP-2015.PDF"
+            },
+            {
+                name: "Edexcel",
+                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/History/2015/exam-materials/9hi0-1a-que-20180605.pdf",
+                spec: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/History/2015/specification-and-sample-assessments/A%20Level%20History%20Specification.pdf"
+            },
+            {
+                name: "OCR",
+                pastPaper: "https://www.ocr.org.uk/Images/315357-question-paper-y101-01-england-1485-1558-the-early-tudors.pdf",
+                spec: "https://www.ocr.org.uk/Images/171773-specification-accredited-a-level-gce-history-a-h505.pdf"
+            }
+        ]
+    },
+    "Computer Science": {
+        icon: "fa-code",
+        boards: [
+            {
+                name: "AQA",
+                pastPaper: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2018/june/AQA-75161-QP-JUN18.PDF",
+                spec: "https://filestore.aqa.org.uk/resources/computing/specifications/AQA-7516-7517-SP-2015.PDF"
+            },
+            {
+                name: "Edexcel",
+                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Computer%20Science/2015/exam-materials/9co0-01-que-20180515.pdf",
+                spec: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Computer%20Science/2015/specification-and-sample-assessments/A%20Level%20Computer%20Science%20Specification.pdf"
+            },
+            {
+                name: "OCR",
+                pastPaper: "https://www.ocr.org.uk/Images/225975-question-paper-computer-systems.pdf",
+                spec: "https://www.ocr.org.uk/Images/170844-specification-accredited-a-level-gce-computer-science-h446.pdf"
+            }
+        ]
+    },
+
+    "English": {
+        icon: "fa-book-open",
+        boards: [
+            {
+                name: "AQA",
+                pastPaper: "",
+                spec: ""
+            },
+            {
+                name: "Edexcel",
+                pastPaper: "",
+                spec: ""
+            },
+            {
+                name: "OCR",
+                pastPaper: "",
+                spec: ""
+            }
+        ]
+    },
+    "Further Maths": {
+        icon: "fa-infinity",
+        boards: [
+            { name: "AQA", pastPaper: "", spec: "" },
+            { name: "Edexcel", pastPaper: "", spec: "" },
+            { name: "OCR", pastPaper: "", spec: "" }
+        ]
+    },
+    "Psychology": {
+        icon: "fa-brain",
+        boards: [
+            { name: "AQA", pastPaper: "", spec: "" },
+            { name: "Edexcel", pastPaper: "", spec: "" },
+            { name: "OCR", pastPaper: "", spec: "" }
+        ]
+    },
+    "Economics": {
+        icon: "fa-chart-line",
+        boards: [
+            { name: "AQA", pastPaper: "", spec: "" },
+            { name: "Edexcel", pastPaper: "", spec: "" },
+            { name: "OCR", pastPaper: "", spec: "" }
+        ]
+    },
+    "Business": {
+        icon: "fa-briefcase",
+        boards: [
+            { name: "AQA", pastPaper: "", spec: "" },
+            { name: "Edexcel", pastPaper: "", spec: "" },
+            { name: "OCR", pastPaper: "", spec: "" }
+        ]
+    }
+};
+
+const SUBJECTS = Object.entries(SUBJECT_LINKS).map(([title, value]) => ({
+    title,
+    icon: value.icon || "fa-book-open"
+}));
+
+function goBack() {
+    window.location.href = "/resource_database/index.html#primary-access";
+}
+
+function logoutUser() {
+    localStorage.removeItem("gh_username");
+    localStorage.removeItem("gh_password");
+    localStorage.removeItem("gh_device");
+    window.location.href = "/resource_database/index.html";
+}
+
+function openReportModal() {
+    const modal = document.getElementById('reportModal');
+    const iframe = document.getElementById('reportFrame');
+    const currentUrl = encodeURIComponent(window.location.href);
+    iframe.src = `/report.html?pageUrl=${currentUrl}`;
+    modal.classList.remove('hidden');
+}
+
+function closeReportModal() {
+    const modal = document.getElementById('reportModal');
+    const iframe = document.getElementById('reportFrame');
+    modal.classList.add('hidden');
+    setTimeout(() => { iframe.src = ""; }, 300);
+}
+window.closeReportModal = closeReportModal;
+
+function runTurnstileCheck() {
+    return new Promise((resolve, reject) => {
+        const errorEl = document.getElementById("turnstileError");
+        const screenEl = document.getElementById("turnstileScreen");
+        const widgetEl = document.getElementById("turnstileWidget");
+
+        function renderWidget() {
+            try {
+                widgetEl.innerHTML = "";
+
+                turnstileWidgetId = turnstile.render("#turnstileWidget", {
+                    sitekey: TURNSTILE_SITE_KEY,
+                    theme: "light",
+                    callback: function(token) {
+                        turnstileToken = token;
+                        screenEl.classList.add("hidden");
+                        resolve(token);
+                    },
+                    "error-callback": function() {
+                        errorEl.textContent = "Verification failed. Please try again.";
+                        errorEl.classList.remove("hidden");
+                        reject(new Error("Turnstile error"));
+                    },
+                    "expired-callback": function() {
+                        turnstileToken = null;
+                        errorEl.textContent = "Verification expired. Please refresh and try again.";
+                        errorEl.classList.remove("hidden");
+                    }
+                });
+            } catch (err) {
+                reject(err);
+            }
+        }
+
+        if (window.turnstile) {
+            renderWidget();
+            return;
+        }
+
+        const wait = setInterval(() => {
+            if (window.turnstile) {
+                clearInterval(wait);
+                renderWidget();
+            }
+        }, 100);
+
+        setTimeout(() => {
+            clearInterval(wait);
+            if (!window.turnstile) {
+                reject(new Error("Turnstile failed to load"));
+            }
+        }, 10000);
+    });
+}
+
+async function boot() {
+    try {
+        if (typeof window.hashtagProto === "function") {
+            await window.hashtagProto();
+        } else if (window.hashtagProtoReady && typeof window.hashtagProtoReady.then === "function") {
+            await window.hashtagProtoReady;
+        }
+    } catch (e) {}
+
+    try {
+        await runTurnstileCheck();
+    } catch (e) {
+        return goBack();
+    }
+
+    const result = await fetchMaterialUrl();
+    if (result === "redirected") return;
+    if (!result) return goBack();
+
+    document.getElementById("bootScreen").classList.add("hidden");
+    renderSubjectPicker();
+    document.getElementById("subjectPicker").classList.remove("hidden");
+}
+
+async function fetchMaterialUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get("material-ID");
+    if (!encoded) return false;
+
+    const username = localStorage.getItem("gh_username");
+    const password = localStorage.getItem("gh_password");
+    const deviceCode = localStorage.getItem("gh_device");
+    if (!username || !password || !deviceCode) return false;
+
+    if (!turnstileToken) return false;
+
+    document.getElementById("bootText").textContent = "Checking access…";
+
+    try {
+        const res = await fetch(WORKER + "/resource/get", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username,
+                password,
+                deviceCode,
+                material: encoded,
+                turnstileToken
+            })
+        });
+
+        const raw = (await res.text()).trim();
+        let finalValue = raw;
+
+        if (raw.startsWith("{") || raw.startsWith("[")) {
+            try {
+                const json = JSON.parse(raw);
+
+                if (json && json.ok === false) {
+                    return false;
+                }
+
+                if (typeof json.url === "string") {
+                    finalValue = json.url.trim();
+                }
+            } catch (_) {
+                return false;
+            }
+        }
+
+        const errorMatch = finalValue.match(/\/error-([^/?#\s]+)/i);
+        if (errorMatch) {
+            const errorCode = errorMatch[1];
+            window.location.replace(`/resource_database/index.html?error=${encodeURIComponent(errorCode)}#primary-access`);
+            return "redirected";
+        }
+
+        if (/^error-([^/?#\s]+)$/i.test(finalValue)) {
+            const errorCode = finalValue.replace(/^error-/i, "");
+            window.location.replace(`/resource_database/index.html?error=${encodeURIComponent(errorCode)}#primary-access`);
+            return "redirected";
+        }
+
+        if (
+            finalValue.startsWith("http://") ||
+            finalValue.startsWith("https://") ||
+            finalValue.startsWith("/")
+        ) {
+            materialFinalUrl = finalValue;
+            return true;
+        }
+
+        return false;
+    } catch (e) {
+        return false;
+    }
+}
+
+function renderSubjectPicker() {
+    const grid = document.getElementById("subjectGrid");
+    grid.innerHTML = `
+        <div class="col-span-full grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Subject</label>
+                <select id="subjectSelect" onchange="handleSubjectChange()"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-semibold text-slate-800">
+                    <option value="">Select a subject...</option>
+                    ${SUBJECTS.map(s => `<option value="${s.title}">${s.title}</option>`).join("")}
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-2">Exam board</label>
+                <div class="grid grid-cols-1 gap-3">
+                    <button id="boardBtn0" onclick="chooseBoard(0)"
+                        class="board-btn-disabled rounded-2xl border shadow-sm p-4 text-left transition-all">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-2xl bg-slate-200 text-slate-500 flex items-center justify-center">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div>
+                                <p class="font-extrabold text-slate-500 leading-tight">Locked</p>
+                                <p class="text-xs text-slate-400">Choose a subject first</p>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button id="boardBtn1" onclick="chooseBoard(1)"
+                        class="board-btn-disabled rounded-2xl border shadow-sm p-4 text-left transition-all">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-2xl bg-slate-200 text-slate-500 flex items-center justify-center">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div>
+                                <p class="font-extrabold text-slate-500 leading-tight">Locked</p>
+                                <p class="text-xs text-slate-400">Choose a subject first</p>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button id="boardBtn2" onclick="chooseBoard(2)"
+                        class="board-btn-disabled rounded-2xl border shadow-sm p-4 text-left transition-all">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-2xl bg-slate-200 text-slate-500 flex items-center justify-center">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <div>
+                                <p class="font-extrabold text-slate-500 leading-tight">Locked</p>
+                                <p class="text-xs text-slate-400">Choose a subject first</p>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function handleSubjectChange() {
+    const subject = document.getElementById("subjectSelect").value;
+    pendingSubject = subject || null;
+    pendingBoard = null;
+
+    for (let i = 0; i < 3; i++) {
+        const btn = document.getElementById(`boardBtn${i}`);
+        const board = subject && SUBJECT_LINKS[subject] ? SUBJECT_LINKS[subject].boards[i] : null;
+
+        if (!board) {
+            btn.className = "board-btn-disabled rounded-2xl border shadow-sm p-4 text-left transition-all";
+            btn.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-slate-200 text-slate-500 flex items-center justify-center">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div>
+                        <p class="font-extrabold text-slate-500 leading-tight">Locked</p>
+                        <p class="text-xs text-slate-400">Choose a subject first</p>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        btn.className = "board-btn-ready rounded-2xl border shadow-sm p-4 text-left transition-all";
+        btn.innerHTML = `
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <p class="font-extrabold text-slate-900 leading-tight">${board.name}</p>
+                    <p class="text-xs text-slate-500">Select this board</p>
+                </div>
+            </div>
+        `;
+    }
+}
+
+function chooseBoard(index) {
+    if (!pendingSubject || !SUBJECT_LINKS[pendingSubject]) return;
+
+    const board = SUBJECT_LINKS[pendingSubject].boards[index];
+    if (!board) return;
+
+    pendingBoard = board;
+
+    for (let i = 0; i < 3; i++) {
+        document.getElementById(`boardBtn${i}`).classList.remove("board-btn-selected");
+    }
+    document.getElementById(`boardBtn${index}`).classList.add("board-btn-selected");
+
+    document.title = `${pendingSubject} ${board.name} Alevel Resources`;
+    document.getElementById("subjectPicker").classList.add("hidden");
+
+    document.getElementById("customUrlWrap").classList.add("hidden");
+    document.getElementById("customUrlInput").value = "";
+    document.getElementById("typePickerTitle").textContent = `Where should ${pendingSubject} (${board.name}) links go?`;
+    document.getElementById("typePicker").classList.remove("hidden");
+}
+
+function backToSubjects() {
+    document.getElementById("typePicker").classList.add("hidden");
+    document.getElementById("customUrlWrap").classList.add("hidden");
+    document.getElementById("customUrlInput").value = "";
+    document.getElementById("subjectPicker").classList.remove("hidden");
+}
+
+function selectType(typeValue) {
+    if (!pendingSubject || !pendingBoard) return;
+
+    localStorage.setItem("subject", pendingSubject);
+    localStorage.setItem("board", pendingBoard.name);
+
+    if (typeValue === "past_paper") {
+        if (!pendingBoard.pastPaper) return;
+        localStorage.setItem("type", `/resource_database/pdf_viewer.html?url=${encodeURIComponent(pendingBoard.pastPaper)}`);
+    } else if (typeValue === "specification") {
+        if (!pendingBoard.spec) return;
+        localStorage.setItem("type", `/resource_database/pdf_viewer.html?url=${encodeURIComponent(pendingBoard.spec)}`);
+    } else {
+        localStorage.setItem("type", typeValue);
+    }
+
+    document.getElementById("typePicker").classList.add("hidden");
+    proceedToLoad(pendingSubject);
+}
+
+function showCustomUrl() {
+    document.getElementById("customUrlWrap").classList.remove("hidden");
+    setTimeout(() => {
+        const el = document.getElementById("customUrlInput");
+        try { el.focus(); } catch(e) {}
+    }, 0);
+}
+
+function submitCustomUrl() {
+    if (!pendingSubject || !pendingBoard) return;
+
+    const url = (document.getElementById("customUrlInput").value || "").trim();
+    if (!url) return;
+
+    localStorage.setItem("subject", pendingSubject);
+    localStorage.setItem("board", pendingBoard.name);
+    localStorage.setItem("type", url);
+
+    document.getElementById("typePicker").classList.add("hidden");
+    proceedToLoad(pendingSubject);
+}
+
+/* UPDATED:
+   display.html is now shown as the loading screen
+   while the real material iframe loads in the background.
+*/
+function proceedToLoad(subjectTitle) {
+    const loading = document.getElementById("loadingScreen");
+    const loadingAdFrame = document.getElementById("loadingAdFrame");
+    const frame = document.getElementById("materialFrame");
+    const overlayButtons = document.getElementById("overlayButtons");
+
+    overlayButtons.classList.add("hidden");
+    frame.classList.add("hidden");
+
+    try { frame.src = "about:blank"; } catch (e) {}
+    try { loadingAdFrame.src = "/aS/display.html"; } catch (e) {}
+
+    loading.classList.remove("hidden");
+
+    const onLoad = () => {
+        frame.removeEventListener("load", onLoad);
+        loading.classList.add("hidden");
+        loadingAdFrame.src = "about:blank";
+        frame.classList.remove("hidden");
+        overlayButtons.classList.remove("hidden");
+        startStatePolling();
+    };
+
+    frame.addEventListener("load", onLoad, { once: true });
+    frame.src = materialFinalUrl;
+}
+
+function startStatePolling() {
+    clearInterval(stateInterval);
+    if (inReconnectMode) return;
+
+    stateInterval = setInterval(checkStateOnce, 90000);
+    checkStateOnce().catch(() => {});
+}
+
+async function checkStateOnce() {
+    try {
+        const res = await fetch(WORKER + "/state");
+        const data = await res.json();
+        const reason = (data && data.reason) ? String(data.reason) : "";
+
+        if (reason === "protoOne" || reason === "protoTwo" || reason === "protoThree") {
+            showProto(reason);
+        }
+    } catch (err) {
+        beginReconnectMode();
+    }
+}
+
+function showProto(reason) {
+    clearInterval(stateInterval);
+
+    const frame = document.getElementById("materialFrame");
+    const loadingAdFrame = document.getElementById("loadingAdFrame");
+
+    try { frame.src = "about:blank"; } catch(e) {}
+    try { loadingAdFrame.src = "about:blank"; } catch(e) {}
+
+    frame.classList.add("hidden");
+    document.getElementById("overlayButtons").classList.add("hidden");
+    document.getElementById("loadingScreen").classList.add("hidden");
+    document.getElementById("subjectPicker").classList.add("hidden");
+    document.getElementById("typePicker").classList.add("hidden");
+
+    const overlay = document.getElementById("protoOverlay");
+    const protoFrame = document.getElementById("protoFrame");
+    protoFrame.src = "/html_pages/e/" + reason + ".html";
+    overlay.classList.remove("hidden");
+}
+
+function beginReconnectMode() {
+    if (inReconnectMode) return;
+
+    inReconnectMode = true;
+    clearInterval(stateInterval);
+
+    const modal = document.getElementById("networkModal");
+    modal.classList.remove("hidden");
+
+    let countdown = 10;
+    const timerEl = document.getElementById("retryTimer");
+    timerEl.innerHTML = `Trying again in <b>${countdown}</b> seconds…`;
+
+    reconnectInterval = setInterval(async () => {
+        countdown--;
+        timerEl.innerHTML = `Trying again in <b>${countdown}</b> seconds…`;
+
+        if (countdown <= 0) {
+            countdown = 10;
+            try {
+                const res = await fetch(WORKER + "/state");
+                const data = await res.json();
+
+                const reason = (data && data.reason) ? String(data.reason) : "";
+                if (reason === "protoOne" || reason === "protoTwo" || reason === "protoThree") {
+                    clearInterval(reconnectInterval);
+                    inReconnectMode = false;
+                    document.getElementById("networkModal").classList.add("hidden");
+                    showProto(reason);
+                    return;
+                }
+
+                clearInterval(reconnectInterval);
+                inReconnectMode = false;
+                document.getElementById("networkModal").classList.add("hidden");
+                startStatePolling();
+            } catch (err) {}
+        }
+    }, 1000);
+}
+
+boot();
+</script>
+
+</body>
+</html>

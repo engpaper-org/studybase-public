@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Checklist | StudyBase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .bg-grid-slate { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23f1f5f9'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e"); }
+        
+        /* Custom Checkbox Styling */
+        input[type="checkbox"]:checked + span {
+            text-decoration: line-through;
+            color: #94a3b8; /* text-slate-400 */
+        }
+    </style>
+</head>
+<body class="bg-[#f4f7f9] text-slate-800 min-h-screen relative flex items-center justify-center">
+    <div class="absolute inset-0 bg-grid-slate pointer-events-none -z-10"></div>
+
+    <div class="max-w-xl w-full mx-auto px-6 py-12">
+        
+        <div class="bg-white p-8 md:p-12 rounded-[2rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] border border-slate-200">
+            <a href="/toolkit/index.html" class="text-amber-500 font-bold text-sm flex items-center mb-6 hover:text-amber-600 transition-colors">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Back to Toolkit
+            </a>
+            
+            <h1 class="text-3xl font-black text-slate-900 mb-2">Exam Day Checklist</h1>
+            <p class="text-slate-500 text-sm mb-8 font-medium">Don't lose marks over missing equipment. Pack your bag the night before.</p>
+
+            <div class="space-y-3" id="checklist-container">
+                <label class="flex items-center p-4 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors">
+                    <input type="checkbox" class="w-5 h-5 rounded text-amber-500 focus:ring-amber-500 border-slate-300 mr-4">
+                    <span class="font-bold text-slate-700 transition-all">Clear Plastic Pencil Case</span>
+                </label>
+                
+                <label class="flex items-center p-4 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors">
+                    <input type="checkbox" class="w-5 h-5 rounded text-amber-500 focus:ring-amber-500 border-slate-300 mr-4">
+                    <span class="font-bold text-slate-700 transition-all">2x Black Ballpoint Pens (No Gel)</span>
+                </label>
+
+                <label class="flex items-center p-4 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors">
+                    <input type="checkbox" class="w-5 h-5 rounded text-amber-500 focus:ring-amber-500 border-slate-300 mr-4">
+                    <span class="font-bold text-slate-700 transition-all">Approved Calculator (Casio/Texas)</span>
+                </label>
+
+                <label class="flex items-center p-4 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors">
+                    <input type="checkbox" class="w-5 h-5 rounded text-amber-500 focus:ring-amber-500 border-slate-300 mr-4">
+                    <span class="font-bold text-slate-700 transition-all">Clear Water Bottle (Label removed)</span>
+                </label>
+
+                <label class="flex items-center p-4 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors">
+                    <input type="checkbox" class="w-5 h-5 rounded text-amber-500 focus:ring-amber-500 border-slate-300 mr-4">
+                    <span class="font-bold text-slate-700 transition-all">Student ID / Candidate Number</span>
+                </label>
+            </div>
+
+            <div class="mt-6 flex gap-2 pt-6 border-t border-slate-100">
+                <input type="text" id="custom-item" placeholder="Add custom item (e.g. Set square)..." class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2 outline-none focus:border-amber-400 text-sm font-medium">
+                <button onclick="addItem()" class="bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold px-4 rounded-lg transition-colors">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function addItem() {
+            const input = document.getElementById('custom-item');
+            const text = input.value.trim();
+            if(!text) return;
+
+            const container = document.getElementById('checklist-container');
+            const label = document.createElement('label');
+            label.className = "flex items-center p-4 bg-slate-50 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors animate-[fadeIn_0.3s_ease-out]";
+            
+            label.innerHTML = `
+                <input type="checkbox" class="w-5 h-5 rounded text-amber-500 focus:ring-amber-500 border-slate-300 mr-4">
+                <span class="font-bold text-slate-700 transition-all flex-1">${text}</span>
+                <button onclick="this.parentElement.remove()" class="text-slate-300 hover:text-red-500 ml-2"><i class="fa-solid fa-trash text-sm"></i></button>
+            `;
+            
+            container.appendChild(label);
+            input.value = '';
+        }
+
+        // Allow Enter key to submit
+        document.getElementById('custom-item').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') addItem();
+        });
+    </script>
+</body>
+</html>

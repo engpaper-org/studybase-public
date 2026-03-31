@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feynman Explainer | StudyBase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .bg-grid-slate { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23f1f5f9'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e"); }
+        .jargon-highlight { background-color: #ffedd5; color: #ea580c; font-weight: bold; padding: 0 4px; border-radius: 4px; border: 1px dashed #fdba74; cursor: help; }
+    </style>
+</head>
+<body class="bg-[#f4f7f9] text-slate-800 min-h-screen relative">
+    <div class="absolute inset-0 bg-grid-slate pointer-events-none -z-10"></div>
+
+    <div class="max-w-5xl mx-auto px-6 py-12 flex flex-col md:flex-row gap-8">
+        
+        <div class="w-full md:w-1/2 bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200">
+            <a href="/toolkit/index.html" class="text-orange-500 font-bold text-sm flex items-center mb-6 hover:text-orange-600">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Back to Toolkit
+            </a>
+            <h2 class="text-2xl font-black mb-2">The Feynman Technique</h2>
+            <p class="text-slate-500 text-sm mb-8">Explain the concept as if you were teaching a 10-year-old. Our system will flag complex jargon.</p>
+
+            <input type="text" id="concept-name" placeholder="Concept (e.g. Action Potentials)" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 mb-4 font-bold text-slate-800 outline-none focus:border-orange-400">
+            
+            <textarea id="explanation-input" placeholder="Explain it simply here..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 outline-none focus:border-orange-400 resize-none h-64 text-slate-700 leading-relaxed"></textarea>
+            
+            <button onclick="analyzeText()" class="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl shadow-md transition-all">
+                Analyze Explanation
+            </button>
+        </div>
+
+        <div class="w-full md:w-1/2 flex flex-col">
+            <div id="output-panel" class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-200 flex-1 hidden flex-col">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+                    <h3 class="font-bold text-slate-800">Analysis Results</h3>
+                    <span class="bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full"><span id="jargon-count">0</span> Jargon Words</span>
+                </div>
+                
+                <div id="analyzed-text" class="text-slate-700 leading-relaxed flex-1 overflow-y-auto">
+                    </div>
+
+                <div class="mt-6 bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm text-slate-500">
+                    <i class="fa-solid fa-lightbulb text-orange-400 mr-2"></i>
+                    <strong>Tip:</strong> If a word is highlighted, ask yourself: <em>Can I explain what this specific word means using simpler terms?</em> If not, you have a knowledge gap.
+                </div>
+            </div>
+
+            <div id="empty-state" class="flex-1 flex flex-col items-center justify-center text-slate-400 p-8 text-center bg-white rounded-[2rem] border border-slate-200 border-dashed">
+                <i class="fa-solid fa-person-chalkboard text-5xl mb-4 text-slate-200"></i>
+                <p class="font-medium">Write your explanation and click analyze to check for complexity.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function analyzeText() {
+            const input = document.getElementById('explanation-input').value.trim();
+            if(!input) return;
+
+            document.getElementById('empty-state').classList.add('hidden');
+            document.getElementById('output-panel').classList.remove('hidden');
+            document.getElementById('output-panel').classList.add('flex');
+
+            // Simple Jargon logic: Words longer than 9 characters are flagged
+            const words = input.split(/(\s+)/); // split keeping whitespace
+            let jargonCount = 0;
+            
+            const analyzedHtml = words.map(word => {
+                // Strip punctuation for length check
+                const cleanWord = word.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g,"");
+                if(cleanWord.length > 9 && isNaN(cleanWord)) {
+                    jargonCount++;
+                    return `<span class="jargon-highlight" title="Can you simplify this?">${word}</span>`;
+                }
+                return word;
+            }).join('');
+
+            document.getElementById('analyzed-text').innerHTML = analyzedHtml;
+            document.getElementById('jargon-count').innerText = jargonCount;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase | Audio Player</title>
+    <script src="/assets/js/iframeCheck.js" defer></script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .song-row:hover .song-number { display: none; }
+        .song-row:hover .song-play-icon { display: block; }
+        .song-play-icon { display: none; }
+
+        .loader {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900 overflow-hidden h-screen flex flex-col">
+
+    <div id="loading-overlay" class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-white/90 backdrop-blur-md transition-opacity duration-500">
+        <div class="loader mb-4"></div>
+        <h2 class="text-xl font-bold text-slate-800">Loading your tunes...</h2>
+        <p class="text-sm text-slate-500 font-body mt-2">Fetching playlists securely</p>
+    </div>
+
+    <div id="warning-modal" class="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 hidden">
+        <div class="bg-white p-8 rounded-[2rem] shadow-2xl max-w-md mx-4 transform transition-transform duration-300 scale-100 text-center border border-slate-100">
+            <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-inner">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2 class="text-2xl font-black text-slate-900 mb-2">Content Warning</h2>
+            <p class="text-slate-500 text-sm font-body mb-6 leading-relaxed">
+                Some tracks in these community playlists may contain explicit language or mature themes. Discretion is advised while studying.
+            </p>
+            <button onclick="dismissWarning()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors shadow-lg shadow-blue-500/30">
+                I Understand
+            </button>
+        </div>
+    </div>
+
+    <div id="player-error-modal" class="fixed inset-0 z-[120] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 hidden">
+        <div class="bg-white p-8 rounded-[2rem] shadow-2xl max-w-md mx-4 transform transition-transform duration-300 scale-100 text-center border border-slate-100">
+            <div class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 shadow-inner">
+                <i class="fas fa-plug"></i>
+            </div>
+            <h2 class="text-2xl font-black text-slate-900 mb-2">Player Not Ready</h2>
+            <p class="text-slate-500 text-sm font-body mb-6 leading-relaxed">
+                The background audio engine couldn't connect to YouTube. This is usually caused by a network glitch or a strict ad-blocker.
+            </p>
+            <div class="flex gap-3">
+                <button onclick="closeErrorModal()" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-colors">
+                    Cancel
+                </button>
+                <button onclick="forceLoadPlayer()" class="flex-1 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2 group">
+                    <i class="fas fa-sync-alt group-hover:rotate-180 transition-transform duration-500"></i> Force Retry
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="request-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300 hidden">
+        <div class="w-[90%] h-[90%] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-slate-200">
+            <div class="bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between z-10">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center"><i class="fas fa-paper-plane"></i></div>
+                    <div>
+                        <h2 class="font-bold text-slate-900">Request a Song</h2>
+                        <p class="text-xs text-slate-500 font-body">Submit tracks to be added</p>
+                    </div>
+                </div>
+                <button onclick="closeRequestModal()" class="w-10 h-10 bg-slate-50 hover:bg-red-50 text-slate-400 hover:text-red-500 rounded-full flex items-center justify-center transition-colors">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+            <div class="flex-1 bg-slate-50 relative w-full h-full">
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSe-PLACEHOLDER/viewform?embedded=true" class="absolute inset-0 w-full h-full" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-1 flex overflow-hidden">
+        
+        <main class="flex-1 overflow-y-auto bg-slate-50 relative no-scrollbar" id="main-content">
+            <div class="bg-gradient-to-b from-blue-100 to-slate-50 p-8 pt-12 md:pt-20 pb-8 flex items-end gap-6 border-b border-slate-100 relative transition-colors duration-300">
+                <button onclick="openRequestModal()" class="md:hidden absolute top-6 right-6 flex items-center gap-2 px-3 py-1.5 bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-700 hover:text-indigo-600 rounded-full text-xs font-bold shadow-sm">
+                    <i class="fas fa-paper-plane text-indigo-500"></i> Request
+                </button>
+
+                <div id="view-icon" class="w-32 h-32 md:w-48 md:h-48 bg-white rounded-2xl shadow-lg border border-slate-100 flex items-center justify-center text-5xl text-blue-500 flex-shrink-0 transition-all duration-300">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <div class="flex-1">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 block">Playlist</span>
+                    <h1 id="current-view-title" class="text-4xl md:text-6xl font-black text-slate-900 tracking-tight mb-4 transition-all">All Songs</h1>
+                    <p class="text-sm font-body text-slate-600">
+                        <span class="font-bold text-slate-800">StudyBase</span> • <span id="song-count">0 tracks</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="p-8 pb-32">
+                <div class="flex items-center gap-6 mb-8">
+                    <button onclick="playViewPlay()" class="w-14 h-14 bg-blue-600 hover:bg-blue-700 hover:scale-105 text-white rounded-full flex items-center justify-center shadow-xl shadow-blue-500/30 transition-all text-xl">
+                        <i class="fas fa-play ml-1"></i>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-[auto_1fr_auto_1fr] md:grid-cols-[auto_1fr_auto_1fr] gap-4 px-4 py-2 border-b border-slate-200 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+                    <div class="w-8 text-center">#</div>
+                    <div>Title</div>
+                    <div class="w-8 text-center"><i class="far fa-heart"></i></div>
+                    <div class="hidden md:block">Playlist</div>
+                </div>
+
+                <div id="songs-list" class="space-y-1 transition-opacity duration-200"></div>
+            </div>
+        </main>
+
+        <aside class="w-64 bg-white border-l border-slate-200 flex flex-col hidden md:flex z-10">
+            <div class="p-6 pb-2">
+                <h1 class="text-2xl font-black tracking-tight text-slate-900 mb-8">
+                    StudyBase<span class="text-gradient">Audio</span>
+                </h1>
+                
+                <div class="relative mb-6">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-slate-400 text-sm"></i>
+                    </div>
+                    <input type="text" id="search-input" placeholder="Search songs..." class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 transition-all font-body text-slate-700">
+                </div>
+
+                <nav class="space-y-1 mb-6" id="main-nav">
+                    <button id="nav-home" onclick="clearFilter()" class="w-full flex items-center gap-3 px-3 py-2.5 bg-blue-50 text-blue-600 rounded-lg transition-colors text-sm font-bold group">
+                        <i class="fas fa-home w-5 text-center"></i> Home / All
+                    </button>
+                    <button id="nav-favs" onclick="filterByFavorites()" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors text-sm font-bold group">
+                        <i class="fas fa-heart w-5 text-center text-red-400 group-hover:text-red-500"></i> Liked Songs
+                    </button>
+                    <button onclick="openRequestModal()" class="w-full flex items-center gap-3 px-3 py-2.5 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors text-sm font-bold group">
+                        <i class="fas fa-paper-plane w-5 text-center text-slate-400"></i> Request Songs
+                    </button>
+                </nav>
+
+                <div class="h-px bg-slate-100 w-full mb-4"></div>
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-2 mb-2">Playlists</h2>
+            </div>
+
+            <div class="flex-1 overflow-y-auto no-scrollbar px-4 pb-6" id="sidebar-playlists"></div>
+        </aside>
+
+    </div>
+
+    <footer class="fixed bottom-0 left-0 w-full h-24 glass-panel z-50 transform translate-y-full transition-transform duration-500" id="player-bar">
+        <div class="max-w-screen-2xl mx-auto h-full px-4 md:px-6 flex items-center justify-between gap-4">
+            
+            <div class="flex items-center gap-4 flex-1 overflow-hidden min-w-0">
+                <div class="w-14 h-14 bg-slate-100 rounded-lg flex items-center justify-center text-blue-500 flex-shrink-0 relative overflow-hidden border border-slate-200">
+                    <i class="fas fa-music z-10 text-xl"></i>
+                    <div id="eq-animation" class="absolute inset-0 bg-blue-100 opacity-0 transition-opacity"></div>
+                </div>
+                <div class="truncate">
+                    <h3 id="now-playing-title" class="text-sm font-bold text-slate-900 truncate mb-0.5">No song selected</h3>
+                    <p id="now-playing-playlist" class="text-xs text-slate-500 font-body truncate">Ready to play</p>
+                </div>
+                <button id="player-fav-btn" onclick="togglePlayerFavorite()" class="ml-2 w-8 h-8 flex items-center justify-center text-slate-300 hover:text-red-400 transition-colors hidden md:flex hover:scale-110">
+                    <i class="far fa-heart text-lg"></i>
+                </button>
+            </div>
+
+            <div class="flex flex-col items-center justify-center flex-1 max-w-md gap-2">
+                <div class="flex items-center gap-4 md:gap-6">
+                    <button onclick="toggleShuffle()" id="shuffle-btn" class="text-slate-400 hover:text-slate-700 transition-colors">
+                        <i class="fas fa-random text-sm"></i>
+                    </button>
+                    <button onclick="playPrevious()" class="text-slate-400 hover:text-slate-700 transition-colors">
+                        <i class="fas fa-step-backward text-lg"></i>
+                    </button>
+                    <button onclick="togglePlayPause()" id="play-pause-btn" class="w-10 h-10 bg-white hover:bg-slate-50 text-slate-900 border border-slate-200 rounded-full flex items-center justify-center shadow-sm transition-transform hover:scale-105">
+                        <i class="fas fa-play ml-0.5 text-sm"></i>
+                    </button>
+                    <button onclick="playNext()" class="text-slate-400 hover:text-slate-700 transition-colors">
+                        <i class="fas fa-step-forward text-lg"></i>
+                    </button>
+                    <button class="text-slate-400 hover:text-slate-700 transition-colors">
+                        <i class="fas fa-redo-alt text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="hidden md:flex items-center gap-3 flex-1 justify-end min-w-0">
+                <i class="fas fa-volume-up text-slate-400 text-xs"></i>
+                <input type="range" id="volume-slider" min="0" max="100" value="100" class="w-24 h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+            </div>
+        </div>
+        
+        <div id="youtube-player-wrapper" class="fixed -top-40 -left-40 w-20 h-20 opacity-0 pointer-events-none">
+            <div id="youtube-player-container"></div>
+        </div>
+    </footer>
+
+    <script>
+        let allPlaylists = [];
+        let allSongs = [];
+        let filteredSongs = [];
+        let currentPlaylistFilter = 'home';
+        let searchTimeout;
+        
+        let favorites = JSON.parse(localStorage.getItem('studyAudioFavs')) || [];
+        
+        let player;
+        let isPlaying = false;
+        let currentSongIndex = -1;
+        
+        let isShuffle = false;
+        let shuffleQueue = [];
+        let playHistory = [];
+        
+        let isPlayerReady = false;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!localStorage.getItem('audio_warning_accepted')) {
+                document.getElementById('warning-modal').classList.remove('hidden');
+            }
+            
+            loadMasterData();
+            loadYouTubeAPI(); // Inject API securely after DOM loads
+            
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                const term = e.target.value.toLowerCase();
+                
+                if (term) {
+                    currentPlaylistFilter = 'search'; 
+                    updateHeaderUI("Search Results", "fa-search", "text-blue-500");
+                    updateActiveNav();
+                    showInnerLoader();
+                    
+                    searchTimeout = setTimeout(() => {
+                        filteredSongs = allSongs.filter(s => s.name.toLowerCase().includes(term));
+                        shuffleQueue = [];
+                        renderSongs(filteredSongs);
+                    }, 300);
+                } else {
+                    clearFilter();
+                }
+            });
+
+            document.getElementById('volume-slider').addEventListener('input', (e) => {
+                if (player && player.setVolume) player.setVolume(e.target.value);
+            });
+        });
+
+        // --- Core Loaders ---
+        function loadYouTubeAPI() {
+            const tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            tag.id = "dynamic-yt-script";
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        }
+
+        async function loadMasterData() {
+            try {
+                const response = await fetch('/assets/radio/master.json'); 
+                if (!response.ok) throw new Error("Failed to fetch master.json");
+                
+                allPlaylists = await response.json();
+                
+                for (let pl of allPlaylists) {
+                    try {
+                        const childRes = await fetch(pl.file);
+                        if (!childRes.ok) continue;
+                        
+                        const songs = await childRes.json();
+                        const processedSongs = songs.map((s, idx) => ({
+                            ...s,
+                            playlistId: pl.id,
+                            playlistName: pl.name,
+                            playlistIcon: pl.icon || 'fa-music',
+                            videoId: extractYouTubeID(s.url),
+                            uniqueId: `${pl.id}-${idx}`
+                        }));
+                        allSongs = allSongs.concat(processedSongs);
+                    } catch (e) {
+                        console.error(`Error loading ${pl.name}:`, e);
+                    }
+                }
+
+                filteredSongs = [...allSongs];
+                renderPlaylists();
+                renderSongs(filteredSongs);
+
+                const overlay = document.getElementById('loading-overlay');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => overlay.remove(), 500);
+
+            } catch (error) {
+                console.error("Data Loading Error:", error);
+                document.getElementById('loading-overlay').innerHTML = `<p class="text-red-500 font-bold">Failed to load music data. Ensure you are running on a local server.</p>`;
+            }
+        }
+
+        // --- Modals ---
+        function dismissWarning() {
+            localStorage.setItem('audio_warning_accepted', 'true');
+            const modal = document.getElementById('warning-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        function openRequestModal() { document.getElementById('request-modal').classList.remove('hidden'); }
+        function closeRequestModal() { document.getElementById('request-modal').classList.add('hidden'); }
+        function closeErrorModal() { document.getElementById('player-error-modal').classList.add('hidden'); }
+
+        function forceLoadPlayer() {
+            closeErrorModal();
+            showInnerLoader();
+            
+            // Re-inject the script completely to force the browser to retry
+            const oldScript = document.getElementById('dynamic-yt-script');
+            if (oldScript) oldScript.remove();
+            
+            isPlayerReady = false;
+            loadYouTubeAPI();
+            
+            setTimeout(() => {
+                renderSongs(filteredSongs);
+            }, 1000);
+        }
+
+        // --- UI Updates ---
+        function updateHeaderUI(title, iconClass, iconColor) {
+            document.getElementById('current-view-title').innerText = title;
+            const iconEl = document.getElementById('view-icon');
+            iconEl.innerHTML = `<i class="fas ${iconClass}"></i>`;
+            iconEl.className = `w-32 h-32 md:w-48 md:h-48 bg-white rounded-2xl shadow-lg border border-slate-100 flex items-center justify-center text-5xl flex-shrink-0 transition-all duration-300 ${iconColor}`;
+        }
+
+        function updateActiveNav() {
+            const navHome = document.getElementById('nav-home');
+            const navFavs = document.getElementById('nav-favs');
+            
+            navHome.className = `w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-bold group ${currentPlaylistFilter === 'home' ? 'bg-blue-50 text-blue-600' : 'text-slate-600 hover:bg-slate-50'}`;
+            navFavs.className = `w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-bold group ${currentPlaylistFilter === 'favs' ? 'bg-red-50 text-red-600' : 'text-slate-600 hover:bg-slate-50'}`;
+
+            document.querySelectorAll('.playlist-btn').forEach(btn => {
+                if (btn.dataset.id === currentPlaylistFilter) {
+                    btn.classList.add('bg-slate-100', 'text-slate-900');
+                    btn.classList.remove('text-slate-600');
+                } else {
+                    btn.classList.remove('bg-slate-100', 'text-slate-900');
+                    btn.classList.add('text-slate-600');
+                }
+            });
+        }
+
+        function showInnerLoader() {
+            const list = document.getElementById('songs-list');
+            list.style.opacity = '0'; 
+            setTimeout(() => {
+                list.innerHTML = `
+                    <div class="py-16 flex flex-col items-center justify-center text-slate-400">
+                        <i class="fas fa-circle-notch fa-spin text-4xl mb-4 text-blue-500"></i>
+                        <p class="text-sm font-medium font-body">Switching playlist...</p>
+                    </div>
+                `;
+                list.style.opacity = '1';
+            }, 200);
+        }
+
+        function renderPlaylists() {
+            const sidebarList = document.getElementById('sidebar-playlists');
+            sidebarList.innerHTML = '';
+            
+            allPlaylists.forEach(pl => {
+                sidebarList.innerHTML += `
+                    <button data-id="${pl.id}" onclick="filterByPlaylist('${pl.id}', '${pl.name.replace("'", "\\'")}', '${pl.icon}', '${pl.color}')" 
+                        class="playlist-btn w-full flex items-center gap-3 px-3 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors text-sm font-medium group mb-1">
+                        <div class="w-8 h-8 ${pl.bg || 'bg-slate-200'} ${pl.color || 'text-slate-600'} rounded-md flex items-center justify-center text-xs group-hover:scale-105 transition-transform flex-shrink-0">
+                            <i class="fas ${pl.icon || 'fa-music'}"></i>
+                        </div>
+                        <span class="truncate">${pl.name}</span>
+                    </button>
+                `;
+            });
+            updateActiveNav();
+        }
+
+        function renderSongs(songsToRender) {
+            const list = document.getElementById('songs-list');
+            document.getElementById('song-count').innerText = `${songsToRender.length} tracks`;
+            
+            let htmlStr = '';
+
+            if (songsToRender.length === 0) {
+                htmlStr = `<p class="text-slate-400 font-body py-8 text-sm text-center">No songs found.</p>`;
+            } else {
+                songsToRender.forEach((song, index) => {
+                    const isFav = favorites.some(f => f.uniqueId === song.uniqueId);
+                    const heartClass = isFav ? 'fas fa-heart text-red-500' : 'far fa-heart text-slate-300 hover:text-red-400';
+
+                    htmlStr += `
+                        <div onclick="startPlayback(${index})" class="song-row grid grid-cols-[auto_1fr_auto_1fr] md:grid-cols-[auto_1fr_auto_1fr] gap-4 items-center px-4 py-3 rounded-xl hover:bg-white hover:shadow-sm hover:border hover:border-slate-100 border border-transparent transition-all cursor-pointer group">
+                            
+                            <div class="w-8 text-center text-slate-400 text-sm font-body">
+                                <span class="song-number">${index + 1}</span>
+                                <i class="fas fa-play song-play-icon text-blue-600 text-xs mx-auto"></i>
+                            </div>
+                            
+                            <div class="min-w-0 pr-4">
+                                <h4 class="text-sm font-bold text-slate-900 truncate group-hover:text-blue-600 transition-colors">${song.name}</h4>
+                                <p class="text-xs text-slate-400 font-body truncate md:hidden mt-0.5">${song.playlistName}</p>
+                            </div>
+
+                            <div class="w-8 text-center" onclick="toggleFavoriteFromList('${song.uniqueId}', event)">
+                                <i class="${heartClass} text-sm transition-colors cursor-pointer hover:scale-110"></i>
+                            </div>
+
+                            <div class="hidden md:block min-w-0">
+                                <p class="text-sm text-slate-500 font-body truncate group-hover:text-slate-700">${song.playlistName}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            list.style.opacity = '0';
+            setTimeout(() => {
+                list.innerHTML = htmlStr;
+                list.style.opacity = '1';
+            }, 150); 
+        }
+
+        function filterByPlaylist(id, name, icon, colorClass) {
+            if(currentPlaylistFilter === id) return; 
+            currentPlaylistFilter = id;
+            updateHeaderUI(name, icon, colorClass);
+            updateActiveNav();
+            document.getElementById('search-input').value = ''; 
+            showInnerLoader();
+            
+            setTimeout(() => {
+                filteredSongs = allSongs.filter(s => s.playlistId === id);
+                shuffleQueue = [];
+                renderSongs(filteredSongs);
+            }, 250);
+        }
+
+        function clearFilter() {
+            if(currentPlaylistFilter === 'home') return;
+            currentPlaylistFilter = 'home';
+            updateHeaderUI("All Songs", "fa-layer-group", "text-blue-500");
+            updateActiveNav();
+            document.getElementById('search-input').value = '';
+            showInnerLoader();
+
+            setTimeout(() => {
+                filteredSongs = [...allSongs];
+                shuffleQueue = [];
+                renderSongs(filteredSongs);
+            }, 250);
+        }
+
+        function filterByFavorites() {
+            if(currentPlaylistFilter === 'favs') return;
+            currentPlaylistFilter = 'favs';
+            updateHeaderUI("Liked Songs", "fa-heart", "text-red-500");
+            updateActiveNav();
+            document.getElementById('search-input').value = ''; 
+            showInnerLoader();
+
+            setTimeout(() => {
+                filteredSongs = allSongs.filter(s => favorites.some(f => f.uniqueId === s.uniqueId));
+                shuffleQueue = [];
+                renderSongs(filteredSongs);
+            }, 250);
+        }
+
+        function playViewPlay() {
+            if (filteredSongs.length > 0) startPlayback(0);
+        }
+
+        function executeFavoriteToggle(uniqueId) {
+            const songObj = allSongs.find(s => s.uniqueId === uniqueId);
+            if(!songObj) return;
+
+            const existingIndex = favorites.findIndex(f => f.uniqueId === uniqueId);
+            
+            if (existingIndex >= 0) favorites.splice(existingIndex, 1);
+            else favorites.push({ uniqueId: songObj.uniqueId });
+            
+            localStorage.setItem('studyAudioFavs', JSON.stringify(favorites));
+            updatePlayerFavoriteIcon();
+
+            if (currentPlaylistFilter === 'favs') {
+                setTimeout(() => {
+                    filteredSongs = allSongs.filter(s => favorites.some(f => f.uniqueId === s.uniqueId));
+                    renderSongs(filteredSongs);
+                }, 100);
+            } else {
+                renderSongs(filteredSongs);
+            }
+        }
+
+        function toggleFavoriteFromList(uniqueId, event) {
+            event.stopPropagation();
+            executeFavoriteToggle(uniqueId);
+        }
+
+        function togglePlayerFavorite() {
+            if (currentSongIndex === -1 || !filteredSongs[currentSongIndex]) return;
+            executeFavoriteToggle(filteredSongs[currentSongIndex].uniqueId);
+        }
+
+        function updatePlayerFavoriteIcon() {
+            if (currentSongIndex === -1 || !filteredSongs[currentSongIndex]) return;
+            const currentUniqueId = filteredSongs[currentSongIndex].uniqueId;
+            const isFav = favorites.some(f => f.uniqueId === currentUniqueId);
+            const btn = document.getElementById('player-fav-btn');
+            
+            if (isFav) {
+                btn.innerHTML = '<i class="fas fa-heart text-lg text-red-500"></i>';
+                btn.classList.add('text-red-500');
+                btn.classList.remove('text-slate-300');
+            } else {
+                btn.innerHTML = '<i class="far fa-heart text-lg"></i>';
+                btn.classList.remove('text-red-500');
+                btn.classList.add('text-slate-300');
+            }
+        }
+
+        function toggleShuffle() {
+            isShuffle = !isShuffle;
+            const btn = document.getElementById('shuffle-btn');
+            
+            if (isShuffle) {
+                btn.classList.add('text-blue-600');
+                btn.classList.remove('text-slate-400');
+                shuffleQueue = [];
+            } else {
+                btn.classList.remove('text-blue-600');
+                btn.classList.add('text-slate-400');
+                shuffleQueue = [];
+            }
+        }
+
+        // --- YouTube API ---
+        // Needs to be a global function so the external script can find it
+        window.onYouTubeIframeAPIReady = function() {
+            player = new YT.Player('youtube-player-container', {
+                height: '0', 
+                width: '0',
+                playerVars: {
+                    'playsinline': 1,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'rel': 0
+                },
+                events: {
+                    'onReady': () => {
+                        console.log("Player Ready");
+                        isPlayerReady = true;
+                    },
+                    'onStateChange': onPlayerStateChange,
+                    'onError': onPlayerError
+                }
+            });
+        }
+
+        function onPlayerStateChange(event) {
+            const playBtn = document.getElementById('play-pause-btn');
+            const eqAnim = document.getElementById('eq-animation');
+
+            if (event.data == YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                playBtn.innerHTML = '<i class="fas fa-pause text-sm"></i>';
+                eqAnim.classList.remove('opacity-0');
+                eqAnim.classList.add('animate-pulse');
+            } else if (event.data == YT.PlayerState.PAUSED || event.data == YT.PlayerState.ENDED) {
+                isPlaying = false;
+                playBtn.innerHTML = '<i class="fas fa-play ml-0.5 text-sm"></i>';
+                eqAnim.classList.add('opacity-0');
+                eqAnim.classList.remove('animate-pulse');
+                
+                if (event.data == YT.PlayerState.ENDED) playNext();
+            }
+        }
+
+        function onPlayerError(event) {
+            console.error("YouTube Player Error Code:", event.data);
+            playNext(); 
+        }
+
+        function startPlayback(filteredIndex) {
+            if (!isPlayerReady || !player || typeof player.loadVideoById !== 'function') {
+                console.warn("API not ready triggering modal");
+                document.getElementById('player-error-modal').classList.remove('hidden');
+                return;
+            }
+            
+            document.getElementById('player-bar').classList.remove('translate-y-full');
+            
+            if (currentSongIndex !== -1 && currentSongIndex !== filteredIndex) {
+                playHistory.push(currentSongIndex);
+            }
+            
+            currentSongIndex = filteredIndex;
+            const song = filteredSongs[currentSongIndex];
+            
+            document.getElementById('now-playing-title').innerText = song.name;
+            document.getElementById('now-playing-playlist').innerText = song.playlistName;
+            
+            updatePlayerFavoriteIcon();
+            player.loadVideoById(song.videoId);
+        }
+
+        function togglePlayPause() {
+            if (!isPlayerReady || !player) return;
+            if (currentSongIndex === -1 && filteredSongs.length > 0) {
+                playNext(); 
+                return;
+            }
+            if (isPlaying) player.pauseVideo();
+            else player.playVideo();
+        }
+
+        function playNext() {
+            if (filteredSongs.length === 0) return;
+            let nextIndex;
+            
+            if (isShuffle) {
+                if (shuffleQueue.length === 0) {
+                    for (let i = 0; i < filteredSongs.length; i++) shuffleQueue.push(i);
+                    for (let i = shuffleQueue.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [shuffleQueue[i], shuffleQueue[j]] = [shuffleQueue[j], shuffleQueue[i]];
+                    }
+                }
+                nextIndex = shuffleQueue.shift();
+            } else {
+                nextIndex = currentSongIndex + 1;
+                if (nextIndex >= filteredSongs.length) nextIndex = 0;
+            }
+            
+            startPlayback(nextIndex);
+        }
+
+        function playPrevious() {
+            if (filteredSongs.length === 0) return;
+            
+            if (playHistory.length > 0) {
+                currentSongIndex = playHistory.pop();
+                startPlayback(currentSongIndex);
+            } else {
+                let prevIndex = currentSongIndex - 1;
+                if (prevIndex < 0) prevIndex = filteredSongs.length - 1; 
+                startPlayback(prevIndex);
+            }
+        }
+
+        function extractYouTubeID(url) {
+            if(!url) return null;
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+    </script>
+</body>
+</html>

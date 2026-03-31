@@ -1,0 +1,47 @@
+{
+  "pageId": "alevel_biology",
+  "badgeText": "A-Level Subject Hub",
+  "badgeClass": "bg-green-50 border-green-100 text-green-700",
+  "highlightClass": "bg-gradient-to-r from-green-700 to-emerald-700",
+  "title": "Biology.",
+  "highlight": "Advanced.",
+  "description": "Develop a deep understanding of biological systems from molecular processes to ecosystems, with strong emphasis on application, data analysis and required practical skills.",
+  "heroImage": "https://images.unsplash.com/photo-1530026405186-ed1f139313f8",
+  "sections": [
+    {
+      "title": "Biological Molecules",
+      "text": "Carbohydrates, lipids, proteins, enzymes, nucleic acids, ATP and water. Focus on structure-function relationships and biochemical testing."
+    },
+    {
+      "title": "Cells and Ultrastructure",
+      "text": "Prokaryotic vs eukaryotic cells, organelles, microscopy, cell division, transport mechanisms and membrane structure."
+    },
+    {
+      "title": "Exchange and Transport",
+      "text": "Gas exchange systems, mass transport in plants and animals, haemoglobin and circulation."
+    },
+    {
+      "title": "Genetics and Gene Expression",
+      "text": "DNA replication, transcription, translation, mutations, epigenetics and genetic engineering."
+    },
+    {
+      "title": "Energy Transfers",
+      "text": "Photosynthesis and respiration pathways including the light-dependent reaction, Calvin cycle and oxidative phosphorylation."
+    },
+    {
+      "title": "Homeostasis and Control",
+      "text": "Nervous coordination, hormonal control, feedback mechanisms and immune response."
+    },
+    {
+      "title": "Evolution and Ecosystems",
+      "text": "Natural selection, speciation, biodiversity, population genetics and conservation biology."
+    },
+    {
+      "title": "Practical Endorsement",
+      "text": "Independent investigation, statistical testing, graph interpretation and scientific evaluation."
+    }
+  ],
+  "usefulLinks": [
+    { "title": "AQA A-Level Biology Specification", "url": "https://www.aqa.org.uk/subjects/science/as-and-a-level/biology-7401-7402" }
+  ]
+}

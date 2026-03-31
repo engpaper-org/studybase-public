@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anxiety Reliever | StudyBase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        /* Smooth Breathing Animations */
+        .breath-circle {
+            transition: transform 4s ease-in-out, background-color 4s ease-in-out;
+        }
+        .inhale { transform: scale(1.5); background-color: rgba(6, 182, 212, 0.4); } /* Cyan 500 */
+        .exhale { transform: scale(1); background-color: rgba(6, 182, 212, 0.1); }
+    </style>
+</head>
+<body class="bg-slate-900 text-white min-h-screen flex flex-col items-center justify-center relative overflow-hidden selection:bg-cyan-500">
+
+    <div class="absolute top-0 w-full p-8 z-20">
+        <a href="/toolkit/index.html" class="text-cyan-400 font-bold text-sm flex items-center hover:text-cyan-300 transition-colors">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Back to Toolkit
+        </a>
+    </div>
+
+    <div class="relative flex flex-col items-center justify-center w-full max-w-md mx-auto z-10">
+        
+        <h2 class="text-3xl font-black mb-2">Box Breathing</h2>
+        <p class="text-slate-400 text-sm mb-20 text-center px-6">Follow the circle. Breathe in for 4s, hold for 4s, exhale for 4s, hold for 4s.</p>
+
+        <div class="relative w-64 h-64 flex items-center justify-center mb-16">
+            <div id="circle" class="breath-circle absolute w-48 h-48 rounded-full bg-cyan-500/10 border-2 border-cyan-400/30"></div>
+            
+            <div class="z-10 bg-slate-900 w-32 h-32 rounded-full flex flex-col items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.2)]">
+                <span id="instruction" class="text-cyan-400 font-bold text-xl uppercase tracking-widest">Ready</span>
+                <span id="countdown" class="text-white text-3xl font-black mt-1">4</span>
+            </div>
+        </div>
+
+        <button id="start-btn" onclick="startBreathing()" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 px-10 rounded-full shadow-lg hover:shadow-cyan-500/30 transition-all">
+            Begin Session
+        </button>
+
+    </div>
+
+    <script>
+        let isBreathing = false;
+        let interval;
+        let counterInterval;
+        
+        const circle = document.getElementById('circle');
+        const instruction = document.getElementById('instruction');
+        const countdown = document.getElementById('countdown');
+        const startBtn = document.getElementById('start-btn');
+
+        const phases = [
+            { text: "Inhale", class: "inhale" },
+            { text: "Hold", class: "inhale" }, // Stays expanded
+            { text: "Exhale", class: "exhale" },
+            { text: "Hold", class: "exhale" }  // Stays contracted
+        ];
+
+        function startBreathing() {
+            if (isBreathing) {
+                // Stop Logic
+                clearInterval(interval);
+                clearInterval(counterInterval);
+                isBreathing = false;
+                startBtn.innerText = "Begin Session";
+                startBtn.classList.replace('bg-slate-700', 'bg-cyan-600');
+                instruction.innerText = "Ready";
+                countdown.innerText = "4";
+                circle.className = "breath-circle absolute w-48 h-48 rounded-full bg-cyan-500/10 border-2 border-cyan-400/30";
+                return;
+            }
+
+            // Start Logic
+            isBreathing = true;
+            startBtn.innerText = "End Session";
+            startBtn.classList.replace('bg-cyan-600', 'bg-slate-700');
+            
+            let phaseIndex = 0;
+            
+            function nextPhase() {
+                const phase = phases[phaseIndex];
+                instruction.innerText = phase.text;
+                
+                // Only update CSS classes if it's an active inhale/exhale (so holds stay smooth)
+                if (phase.text === "Inhale") {
+                    circle.classList.add('inhale');
+                    circle.classList.remove('exhale');
+                } else if (phase.text === "Exhale") {
+                    circle.classList.add('exhale');
+                    circle.classList.remove('inhale');
+                }
+
+                // Handle the 4-second countdown
+                let secs = 4;
+                countdown.innerText = secs;
+                clearInterval(counterInterval);
+                counterInterval = setInterval(() => {
+                    secs--;
+                    if(secs > 0) countdown.innerText = secs;
+                }, 1000);
+
+                phaseIndex = (phaseIndex + 1) % 4;
+            }
+
+            // Run immediately, then every 4 seconds
+            nextPhase();
+            interval = setInterval(nextPhase, 4000);
+        }
+    </script>
+</body>
+</html>

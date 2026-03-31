@@ -1,0 +1,103 @@
+{
+  "version": "v1.0",
+  "date": "2026.2.16",
+  "clauses": [
+    { 
+      "id": "1", 
+      "title": "Definitions & Scope", 
+      "content": "<strong>\"The Service\"</strong> refers to the Study Base repository, inclusive of all subdomains, static files, dynamic Interactive Resources, and visual simulations provided at StudyBase.site.<br><br><strong>\"The Provider\"</strong> refers to the administrator(s) and legal owner(s) of StudyBase.site.<br><br><strong>\"DCAM\"</strong> (Dynamic Cognitive Assessment Module) refers to the logic-based tools provided for revision and stress testing.<br><br>This Master Service Agreement (MSA) governs your use of the Service. By bypassing the Security Gateway and accessing the Service, you form a legally binding contract under the laws of England and Wales." 
+    },
+    { 
+      "id": "2", 
+      "title": "Data Architecture & Processing", 
+      "badge": "CRITICAL", 
+      "content": "We utilize a hybrid data model involving plain-text webhooks, local browser storage, and cryptographic hashing. By using the Service, you explicitly consent to the generation of a Unique Client Identifier (UCI) and the transmission of specific metadata to our servers. The Provider acts as the Data Controller. You acknowledge that certain security functions cannot be opted out of, as they are essential for the Service's structural integrity and defence against automated attacks." 
+    },
+    { 
+      "id": "3", 
+      "title": "Institutional Use & AUP Violations", 
+      "badge": "MANDATORY", 
+      "isWarning": true, 
+      "content": "<strong>ABSOLUTE USER RESPONSIBILITY:</strong> THE PROVIDER EXPLICITLY DISCLAIMS ANY LIABILITY FOR UNAUTHORIZED USE OF THIS SERVICE WITHIN SCHOOLS, COLLEGES, WORKPLACES, OR OTHER RESTRICTED NETWORKS.<br><br>If you choose to access this Service in violation of your institution's Acceptable Use Policy (AUP) or firewall restrictions, you do so entirely at your own risk. Accessing Interactive Resources, DCAMs, or Simulations during scheduled lessons, lectures, or work hours without explicit permission from a supervising authority is strictly prohibited by these terms." 
+    },
+    { 
+      "id": "4", 
+      "title": "Educational Intent & Misinterpretation", 
+      "content": "Interactive Resources are supplemental tools aimed at cognitive reflex and logic training. Any recreational enjoyment derived from them is purely incidental. The Provider does not classify these resources as 'entertainment software' or 'games'.<br><br><strong>Third-Party Misinterpretation:</strong> The Provider holds no responsibility if an authority figure (e.g., a teacher, network administrator, or parent) misinterprets the educational nature of the content and imposes sanctions upon the User." 
+    },
+    { 
+      "id": "5", 
+      "title": "Academic Disclaimer", 
+      "content": "<strong>NO GUARANTEE OF RESULTS:</strong> The Service is provided as a supplementary revision aid only. The Provider makes absolutely no representations, warranties, or guarantees regarding academic performance, exam results, or specific grades. The User accepts that reliance on the Service for official exam preparation is done solely at their own discretion. The Provider shall not be held liable for academic failure, loss of university placement, or any consequential academic damages." 
+    },
+    { 
+      "id": "6", 
+      "title": "Session Context & Telemetry", 
+      "content": "To tailor your experience and maintain security, the Service performs real-time context checks. When you visit any page, a Page ID Code and your UCI are sent to the server. This telemetry is used strictly to serve relevant announcements, unlock specific polls based on your location within the site architecture, and ensure load balancing across our infrastructure." 
+    },
+    { 
+      "id": "7", 
+      "title": "Intellectual Property Rights", 
+      "content": "The Provider retains all rights, title, and interest in and to the Service, including all source code, databases, functionality, software, website designs, audio, video, text, photographs, and graphics. You are granted a limited, non-exclusive, non-transferable, and revocable licence to access and use the Service for personal, non-commercial educational purposes. Mirroring, scraping, reverse-engineering, or redistributing content without explicit written permission is strictly prohibited." 
+    },
+    { 
+      "id": "8", 
+      "title": "Resource Logging & Webhooks", 
+      "badge": "AUTOMATED", 
+      "content": "When you request a specific file or interactive resource, an automated security check is performed. Your browser automatically transmits a data packet containing your IP Address, an Email Hash (Identity indicator), and your UCI. This combination verifies 'state' (ensuring you have permission to access that specific file) and prevents unauthorized link sharing or direct-linking (hotlinking) via webhooks." 
+    },
+    { 
+      "id": "9", 
+      "title": "Service Continuity & Force Majeure", 
+      "content": "We reserve the right to suspend, alter, or terminate the Service, or change domain names at any time without prior notice. The Provider is not liable for downtime caused by third-party cloud providers, DDoS attacks, DNS routing failures, or school network filtering updates (e.g., Smoothwall, Securly). The Provider shall not be liable for any failure to perform its obligations where such failure results from any cause beyond its reasonable control (Force Majeure)." 
+    },
+    { 
+      "id": "10", 
+      "title": "Limitation of Liability & Indemnification", 
+      "isMonospace": true, 
+      "content": "THE SERVICE IS PROVIDED ON AN 'AS IS' AND 'AS AVAILABLE' BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE PROVIDER, ITS AFFILIATES, AND ADMINISTRATORS DISCLAIM ALL LIABILITY FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES ARISING FROM THE USE OR INABILITY TO USE THE SERVICE. YOU AGREE TO INDEMNIFY AND HOLD HARMLESS THE PROVIDER FROM ANY CLAIM, DEMAND, OR DAMAGE, INCLUDING REASONABLE LEGAL FEES, ASSERTED BY ANY THIRD PARTY DUE TO OR ARISING OUT OF YOUR USE OF THE SERVICE." 
+    },
+    { 
+      "id": "11", 
+      "title": "Health, Safety & Accessibility", 
+      "content": "Certain Interactive Resources may contain rapid motion, high-contrast imagery, or flashing elements. Users with photosensitivity, epilepsy, or related medical conditions should not use these tools. Use of the Service is entirely at your own medical risk. The Provider accepts no liability for any adverse physical or psychological reactions triggered by the Service." 
+    },
+    { 
+      "id": "12", 
+      "title": "Third-Party Platforms & Vendors", 
+      "badge": "EXTERNAL", 
+      "content": "The Service relies on external vendors for analytics, hosting, and data collection (e.g., Google Forms, Google Analytics). When submitting data or interacting with these modules, you are subject to the respective vendor's Terms of Service and Privacy Policies. The Provider cannot control, and accepts no liability for, how these external entities process, store, or transmit your data." 
+    },
+    {
+  "id": "13",
+  "title": "User-Submitted Birthdays & Public Display",
+  "badge": "OPTIONAL DATA",
+  "content": "The Service may offer Users the option to voluntarily submit their name and date of birth for the purpose of displaying birthday acknowledgements within the platform (e.g., \"Today's Birthday\"). Submission of this information is entirely optional and constitutes explicit consent for the display of the submitted name on relevant areas of the Service.<br><br><strong>Public Visibility:</strong> If submitted, the User acknowledges that their name may be publicly visible to other authenticated Users of the Service on the relevant date. The Provider does not guarantee restricted visibility beyond the implemented authentication system.<br><br><strong>Unauthorized Access Risk:</strong> While authentication mechanisms are in place, the Provider makes no absolute guarantee that unauthorized individuals will never gain access to authenticated areas. If an unauthorized party views birthday data due to compromised credentials, shared logins, institutional bypass, or misuse of access privileges, the Provider shall not be held liable.<br><br><strong>Accuracy & Removal:</strong> Users are solely responsible for the accuracy of submitted birthday information. Requests for correction or removal may be submitted to the Provider, and reasonable efforts will be made to comply in accordance with applicable UK data protection laws."
+},
+{
+  "id": "14",
+  "title": "Custom Domain Redirects & External Jurisdiction",
+  "badge": "REDIRECT NOTICE",
+  "content": "The Service may provide functionality allowing Users to enter a custom URL or domain for redirection purposes. By entering a domain, you acknowledge and consent that you will be automatically redirected to that external website.<br><br>Upon redirection, the User leaves the Service environment and becomes subject solely to the Terms of Service, Privacy Policy, and jurisdictional rules of the external domain entered. The Provider exercises no control over, and accepts no liability for, the content, security practices, data processing methods, or legal compliance of any external website accessed through this feature.<br><br>The Provider does not verify the legality, safety, or suitability of user-entered domains. You assume full responsibility for any risks associated with visiting such external resources."
+},
+    { 
+      "id": "15", 
+      "title": "Administrative & Disciplinary Consequences", 
+      "badge": "FINAL WARNING", 
+      "isWarning": true,
+      "content": "<strong>NO DEFENCE ASSISTANCE:</strong> In the event that you are subject to disciplinary action by your educational institution or employer—including but not limited to detention, suspension, isolation, expulsion, or revocation of IT privileges—as a result of accessing this Service, the Provider will not intervene.<br><br>The Provider will not supply server logs, write testimony, or communicate with school administrators to defend your usage. You agree that if you are 'caught' using the Service in a manner deemed inappropriate by your institution, the fault lies solely with your decision to access the Service at that time."
+    },
+    { 
+      "id": "16", 
+      "title": "Legal Logging & Audit Sync", 
+      "badge": "COMPLIANCE", 
+      "isLogging": true, 
+      "content": "To satisfy the General Data Protection Regulation (GDPR), the ePrivacy Directive, and UK Data Protection laws, we maintain a live-sync audit log via Google Apps Script. <br><br>When you interact with the Privacy Verification Gateway, an automated synchronization event records your <strong>Unique ID, the specific action taken (e.g., Consent Granted), the precise Timestamp, and the Page URL</strong>. By granting consent and entering the site, you acknowledge that this plain-text compliance record exists and is securely held by the Provider to prove legal authorization for telemetry and analytics." 
+    },
+    {
+      "id": "17",
+      "title": "Governing Law & Jurisdiction",
+      "content": "These Terms shall be governed by and defined following the laws of England and Wales. The Provider and the User irrevocably agree that the courts of England and Wales shall have exclusive jurisdiction to resolve any dispute which may arise in connection with these terms."
+    }
+  ]
+}

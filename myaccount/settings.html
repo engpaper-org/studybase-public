@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <script src="/assets/js/iframeCheck.js"></script>
+  <script src="/autoSafe/js/mainInput.js" defer></script>
+
+  <script>
+    (function () {
+      const qs = new URLSearchParams(location.search);
+      const isFromLogin = (qs.get("from") || "").toLowerCase() === "login";
+
+      window.__SB_FROM_LOGIN__ = isFromLogin;
+
+      if (!isFromLogin) {
+        const s1 = document.createElement("script");
+        s1.src = "/myaccount/js/sideBar.js";
+        document.head.appendChild(s1);
+
+        const s2 = document.createElement("script");
+        s2.src = "/myaccount/js/checkLoggedIn.js";
+        document.head.appendChild(s2);
+      }
+    })();
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyBase • Settings</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+    :root { color-scheme: light; }
+
+    html, body {
+      min-height: 100%;
+    }
+
+    .bg-grid-slate-100 {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23f1f5f9'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    .switch {
+      width: 52px;
+      height: 32px;
+      border-radius: 999px;
+      background: rgb(226 232 240);
+      position: relative;
+      transition: background .2s ease;
+      display: inline-flex;
+      align-items: center;
+      padding: 4px;
+      border: 1px solid rgb(226 232 240);
+      flex-shrink: 0;
+    }
+
+    .switch[data-on="true"] {
+      background: rgb(37 99 235);
+      border-color: rgb(37 99 235);
+    }
+
+    .switch > span {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: white;
+      transition: transform .2s ease;
+      box-shadow: 0 10px 20px rgba(2,6,23,.12);
+      transform: translateX(0px);
+    }
+
+    .switch[data-on="true"] > span {
+      transform: translateX(20px);
+    }
+
+    .wizard-overlay {
+      background: rgba(248, 250, 252, 0.86);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .wizard-step {
+      display: none;
+    }
+
+    .wizard-step.active {
+      display: block;
+    }
+
+    .code-input {
+      letter-spacing: .25em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    body.from-login-mode {
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    body.from-login-mode header,
+    body.from-login-mode main {
+      pointer-events: none;
+      user-select: none;
+    }
+
+    body.from-login-mode #wizardOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    body.from-login-mode #wizardOverlay:not(.hidden) {
+      display: flex;
+    }
+
+    body.from-login-mode #wizardOverlay .wizard-shell {
+      width: 100%;
+      max-width: 760px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    body.from-login-mode #wizardOverlay .wizard-card {
+      width: 100%;
+      max-width: 760px;
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+    }
+  </style>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="min-h-screen bg-slate-50 text-slate-900 font-sans">
+  <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0.5))] -z-10"></div>
+
+  <header class="max-w-4xl mx-auto px-6 pt-10">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-slate-600 text-xs font-bold uppercase tracking-widest shadow-sm">
+          <i class="fa-solid fa-sliders"></i>
+          Settings
+        </div>
+        <h1 id="pageTitle" class="mt-4 text-3xl md:text-4xl font-black tracking-tight">Your Settings</h1>
+        <p id="pageDesc" class="mt-2 text-slate-500 font-body">Control how StudyBase behaves on this device.</p>
+      </div>
+
+      <button id="closeBtn"
+        class="hidden shrink-0 px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold hover:shadow-md transition-all">
+        <i class="fa-solid fa-xmark mr-2"></i>Close
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6 pb-14 pt-8">
+    <section class="glass-panel rounded-[2rem] shadow-xl shadow-slate-200/60 overflow-hidden relative">
+
+      <div class="px-8 py-6 border-b border-slate-200 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg border border-blue-100">
+            <i class="fa-solid fa-user-gear"></i>
+          </div>
+          <div>
+            <p class="font-extrabold leading-tight">Device preferences</p>
+            <p id="modeLabel" class="text-xs text-slate-500 font-body">Editing mode</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button id="resetBtn"
+            class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition-all">
+            <i class="fa-solid fa-rotate-left mr-2"></i>Reset
+          </button>
+
+          <button id="saveBtn"
+            class="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-black hover:opacity-90 transition-all">
+            <i class="fa-solid fa-floppy-disk mr-2"></i>Save
+          </button>
+        </div>
+      </div>
+
+      <div class="p-8 space-y-10">
+        <section>
+          <div class="flex items-center justify-between gap-4 mb-4">
+            <div>
+              <h2 class="text-lg font-black">Your info</h2>
+              <p class="text-sm text-slate-500 font-body">Used for personalisation across the site.</p>
+            </div>
+          </div>
+
+          <label class="block">
+            <span class="text-xs font-bold uppercase tracking-widest text-slate-500">First Name</span>
+            <div class="mt-2 flex items-center gap-3">
+              <div class="w-11 h-11 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center border border-slate-200">
+                <i class="fa-solid fa-id-badge"></i>
+              </div>
+              <input id="firstName"
+                class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 font-body outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-300"
+                placeholder="e.g. Mason" autocomplete="given-name" />
+            </div>
+            <p id="firstNameHint" class="hidden mt-2 text-sm font-body text-red-600">
+              Please enter your first name to continue.
+            </p>
+          </label>
+        </section>
+
+        <section>
+          <div class="mb-4">
+            <h2 class="text-lg font-black">From history behaviour</h2>
+            <p class="text-sm text-slate-500 font-body">
+              Choose what happens on refresh or when opened from history.
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 flex items-start justify-between gap-6">
+              <div class="min-w-0">
+                <p class="font-extrabold">Redirect</p>
+                <p class="text-sm text-slate-500 font-body mt-1">
+                  Enabling this means that when you go onto a page from your search history, or if the page is refreshed,
+                  it will take you to the type of page you selected when entering a resource.
+                </p>
+              </div>
+
+              <button type="button" id="toggleRedirect"
+                class="switch"
+                aria-label="Toggle redirect"
+                data-on="true">
+                <span></span>
+              </button>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 flex items-start justify-between gap-6">
+              <div class="min-w-0">
+                <p class="font-extrabold">Redirect Logout</p>
+                <p class="text-sm text-slate-500 font-body mt-1">
+                  Enabling this means that when you go onto a page from your search history, or if the page is refreshed,
+                  it will log you out of your account and you will have to login again.
+                </p>
+              </div>
+
+              <button type="button" id="toggleRedirectLogout"
+                class="switch"
+                aria-label="Toggle redirect logout"
+                data-on="true">
+                <span></span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div class="mb-4">
+            <h2 class="text-lg font-black">General</h2>
+            <p class="text-sm text-slate-500 font-body">UI toggles for this device.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 flex items-center justify-between gap-4">
+              <div class="min-w-0">
+                <p class="font-extrabold">Show birthdays</p>
+                <p class="text-sm text-slate-500 font-body mt-1">Controls birthday popups / banners.</p>
+              </div>
+              <button type="button" id="toggleBirthdays" class="switch" aria-label="Toggle birthdays" data-on="true">
+                <span></span>
+              </button>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 flex items-center justify-between gap-4">
+              <div class="min-w-0">
+                <p class="font-extrabold">Show announcements</p>
+                <p class="text-sm text-slate-500 font-body mt-1">Controls update banners & notices.</p>
+              </div>
+              <button type="button" id="toggleAnnouncements" class="switch" aria-label="Toggle announcements" data-on="true">
+                <span></span>
+              </button>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 flex items-center justify-between gap-4">
+              <div class="min-w-0">
+                <p class="font-extrabold">Save recently viewed</p>
+                <p class="text-sm text-slate-500 font-body mt-1">Shows a “Continue viewing" row.</p>
+              </div>
+              <button type="button" id="toggleRecent" class="switch" aria-label="Toggle recently viewed" data-on="true">
+                <span></span>
+              </button>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 flex items-center justify-between gap-4">
+              <div class="min-w-0">
+                <p class="font-extrabold">Save search history</p>
+                <p class="text-sm text-slate-500 font-body mt-1">Stores your site search terms locally.</p>
+              </div>
+              <button type="button" id="toggleSearchHistory" class="switch" aria-label="Toggle search history" data-on="true">
+                <span></span>
+              </button>
+            </div>
+
+            <div class="md:col-span-2 rounded-2xl border border-slate-200 bg-white p-5 space-y-4">
+              <div class="flex items-start justify-between gap-4">
+                <div class="min-w-0">
+                  <p class="font-extrabold">Quick Login</p>
+                  <p class="text-sm text-slate-500 font-body mt-1">
+                    When enabled, this device can skip full device verification next time. In future, you would only need your username, password, and the 6 digit code you set here.
+                  </p>
+                </div>
+                <button type="button" id="toggleQuickLogin" class="switch" aria-label="Toggle quick login" data-on="false">
+                  <span></span>
+                </button>
+              </div>
+
+              <div id="quickLoginFields" class="grid grid-cols-1 md:grid-cols-2 gap-4 hidden">
+                <label class="block">
+                  <span class="text-xs font-bold uppercase tracking-widest text-slate-500">6 digit code</span>
+                  <input id="quickLoginCode"
+                    inputmode="numeric"
+                    maxlength="6"
+                    placeholder="123456"
+                    class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 font-body code-input outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-300" />
+                </label>
+
+                <label class="block">
+                  <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Confirm code</span>
+                  <input id="quickLoginCodeConfirm"
+                    inputmode="numeric"
+                    maxlength="6"
+                    placeholder="123456"
+                    class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 font-body code-input outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-300" />
+                </label>
+              </div>
+
+              <p id="quickLoginHint" class="hidden text-sm text-red-600 font-body">
+                Enter a matching 6 digit code to use Quick Login.
+              </p>
+
+              <p id="quickLoginSavedHint" class="hidden text-xs text-slate-500 font-body">
+                Your actual code is not stored directly — only a secure hash is saved locally on this device.
+              </p>
+            </div>
+
+            <div class="md:col-span-2 rounded-2xl border border-slate-200 bg-white p-5 flex items-center justify-between gap-4">
+              <div class="min-w-0">
+                <p class="font-extrabold">Show content warning screens</p>
+                <p class="text-sm text-slate-500 font-body mt-1">
+                  Shows a warning screen before content that may be intense or disruptive.
+                </p>
+              </div>
+              <button type="button" id="toggleContentWarnings" class="switch" aria-label="Toggle content warnings" data-on="true">
+                <span></span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="rounded-2xl border border-slate-200 bg-slate-50 p-5">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-slate-700">
+              <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="font-extrabold">Where this is saved</p>
+              <p class="text-sm text-slate-600 font-body mt-1">
+                These preferences are stored in <span class="font-bold">localStorage</span>, so they apply on this browser/device.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <!-- Setup overlay -->
+  <div id="wizardOverlay" class="hidden wizard-overlay">
+    <div class="wizard-shell">
+      <div class="wizard-card w-full rounded-[2rem] border border-slate-200 bg-white/95 shadow-2xl shadow-slate-300/30 p-6 md:p-8">
+        <div class="flex items-center justify-between gap-4 mb-6">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.22em] text-blue-600">StudyBase setup</p>
+            <h2 id="wizardTitleTop" class="mt-2 text-2xl md:text-3xl font-black tracking-tight">Welcome</h2>
+          </div>
+          <div id="wizardProgressWrap" class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-blue-600" data-dot="0"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-slate-200" data-dot="1"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-slate-200" data-dot="2"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-slate-200" data-dot="3"></span>
+          </div>
+        </div>
+
+        <div id="wizardStep0" class="wizard-step">
+          <div class="rounded-3xl bg-slate-50 border border-slate-200 p-6">
+            <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl border border-blue-100">
+              <i class="fa-solid fa-hand-sparkles"></i>
+            </div>
+            <h3 class="mt-5 text-2xl font-black">Welcome to StudyBase</h3>
+            <p class="mt-2 text-slate-500 font-body">
+              Let’s quickly set up this device so things feel more personal straight away.
+            </p>
+
+            <label class="block mt-6">
+              <span class="text-xs font-bold uppercase tracking-widest text-slate-500">What is your name?</span>
+              <input id="wizardFirstName"
+                class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 font-body outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-300"
+                placeholder="Enter your first name" />
+              <p id="wizardFirstNameHint" class="hidden mt-2 text-sm text-red-600 font-body">
+                Please enter your first name to continue.
+              </p>
+            </label>
+          </div>
+
+          <div class="mt-6 flex items-center justify-end">
+            <button id="wizardNext0"
+              class="px-5 py-3 rounded-2xl bg-slate-900 text-white font-black hover:opacity-90 transition-all">
+              Continue <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="wizardStep1" class="wizard-step">
+          <div class="rounded-3xl bg-slate-50 border border-slate-200 p-6 space-y-4">
+            <div>
+              <h3 class="text-2xl font-black">History preferences</h3>
+              <p class="mt-2 text-slate-500 font-body">
+                Choose whether StudyBase should save viewed content and search terms on this device.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 flex items-center justify-between gap-4">
+              <div class="min-w-0">
+                <p class="font-extrabold">Save recently viewed</p>
+                <p class="text-sm text-slate-500 font-body mt-1">
+                  Lets you quickly continue from things you opened before.
+                </p>
+              </div>
+              <button type="button" id="wizardToggleRecent" class="switch" aria-label="Toggle recently viewed in setup" data-on="true">
+                <span></span>
+              </button>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 flex items-center justify-between gap-4">
+              <div class="min-w-0">
+                <p class="font-extrabold">Save search history</p>
+                <p class="text-sm text-slate-500 font-body mt-1">
+                  Keeps your search terms saved locally on this device.
+                </p>
+              </div>
+              <button type="button" id="wizardToggleSearchHistory" class="switch" aria-label="Toggle search history in setup" data-on="true">
+                <span></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-6 flex items-center justify-between">
+            <button id="wizardBack1"
+              class="px-5 py-3 rounded-2xl bg-white border border-slate-200 text-slate-700 font-black hover:bg-slate-50 transition-all">
+              <i class="fa-solid fa-arrow-left mr-2"></i>Back
+            </button>
+
+            <button id="wizardNext1"
+              class="px-5 py-3 rounded-2xl bg-slate-900 text-white font-black hover:opacity-90 transition-all">
+              Continue <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="wizardStep2" class="wizard-step">
+          <div class="rounded-3xl bg-slate-50 border border-slate-200 p-6 space-y-5">
+            <div>
+              <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl border border-blue-100">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+              <h3 class="mt-5 text-2xl font-black">Quick Login</h3>
+              <p class="mt-2 text-slate-500 font-body">
+                Quick Login is enabled by default on this device. This means that in future, you would only need your username, password, and the 6 digit code you set now — instead of doing full device verification again.
+              </p>
+              <p class="mt-3 text-slate-500 font-body">
+                We ask for a code so this device still has an extra layer of protection. Your code itself is not stored directly — only a secure hash is saved locally.
+              </p>
+            </div>
+
+            <div class="rounded-2xl border border-slate-200 bg-white p-5 flex items-center justify-between gap-4">
+              <div class="min-w-0">
+                <p class="font-extrabold">Enable Quick Login</p>
+                <p class="text-sm text-slate-500 font-body mt-1">
+                  Recommended for easier sign in on this device.
+                </p>
+              </div>
+              <button type="button" id="wizardToggleQuickLogin" class="switch" aria-label="Toggle quick login in setup" data-on="true">
+                <span></span>
+              </button>
+            </div>
+
+            <div id="wizardQuickLoginFields" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <label class="block">
+                <span class="text-xs font-bold uppercase tracking-widest text-slate-500">6 digit code</span>
+                <input id="wizardQuickLoginCode"
+                  inputmode="numeric"
+                  maxlength="6"
+                  placeholder="123456"
+                  class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 font-body code-input outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-300" />
+              </label>
+
+              <label class="block">
+                <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Confirm code</span>
+                <input id="wizardQuickLoginCodeConfirm"
+                  inputmode="numeric"
+                  maxlength="6"
+                  placeholder="123456"
+                  class="mt-2 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 font-body code-input outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-300" />
+              </label>
+            </div>
+
+            <p id="wizardQuickLoginHint" class="hidden text-sm text-red-600 font-body">
+              Enter a matching 6 digit code to continue.
+            </p>
+          </div>
+
+          <div class="mt-6 flex items-center justify-between">
+            <button id="wizardBack2"
+              class="px-5 py-3 rounded-2xl bg-white border border-slate-200 text-slate-700 font-black hover:bg-slate-50 transition-all">
+              <i class="fa-solid fa-arrow-left mr-2"></i>Back
+            </button>
+
+            <button id="wizardNext2"
+              class="px-5 py-3 rounded-2xl bg-slate-900 text-white font-black hover:opacity-90 transition-all">
+              Continue <i class="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="wizardStep3" class="wizard-step">
+          <div class="rounded-3xl bg-slate-50 border border-slate-200 p-6 text-center">
+            <div class="mx-auto w-16 h-16 rounded-3xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl border border-emerald-100">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="mt-5 text-2xl font-black">Account setup!</h3>
+            <p class="mt-2 text-slate-500 font-body">
+              Your StudyBase device settings have been saved and you’re ready to continue.
+            </p>
+          </div>
+
+          <div class="mt-6 flex items-center justify-center">
+            <button id="wizardFinish"
+              class="px-6 py-3 rounded-2xl bg-slate-900 text-white font-black hover:opacity-90 transition-all">
+              Close
+            </button>
+          </div>
+        </div>
+
+        <div id="wizardStepAlready" class="wizard-step">
+          <div class="rounded-3xl bg-slate-50 border border-slate-200 p-6 text-center">
+            <div class="mx-auto w-16 h-16 rounded-3xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl border border-blue-100">
+              <i class="fa-solid fa-user-check"></i>
+            </div>
+            <h3 class="mt-5 text-2xl font-black">Account already setup!</h3>
+            <p class="mt-2 text-slate-500 font-body">
+              This device already has a saved name, so you can carry on straight away.
+            </p>
+          </div>
+
+          <div class="mt-6 flex items-center justify-center">
+            <button id="wizardContinueExisting"
+              class="px-6 py-3 rounded-2xl bg-slate-900 text-white font-black hover:opacity-90 transition-all">
+              Continue
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 hidden z-50">
+    <div class="px-5 py-3 rounded-2xl bg-slate-900 text-white font-bold shadow-2xl shadow-slate-900/20">
+      Saved
+    </div>
+  </div>
+
+  <script>
+    const K = {
+      firstName: "sb_firstName",
+      redirect: "sb_redirectFromHistory",
+      birthdays: "sb_showBirthdays",
+      announcements: "sb_showAnnouncements",
+      recent: "sb_saveRecentlyPlayed",
+      searchHistory: "sb_saveSearchHistory",
+      contentWarnings: "sb_showContentWarnings",
+      redirectLogout: "sb_logoutAfterRedirect",
+      quickLogin: "sb_quickLogin",
+      quickLoginCodeHash: "sb_quickLoginCodeHash"
+    };
+
+    const qs = new URLSearchParams(location.search);
+    const isFromLogin = (qs.get("from") || "").toLowerCase() === "login";
+
+    if (isFromLogin) {
+      document.body.classList.add("from-login-mode");
+    }
+
+    const els = {
+      pageTitle: document.getElementById("pageTitle"),
+      pageDesc: document.getElementById("pageDesc"),
+      modeLabel: document.getElementById("modeLabel"),
+      closeBtn: document.getElementById("closeBtn"),
+      resetBtn: document.getElementById("resetBtn"),
+      saveBtn: document.getElementById("saveBtn"),
+      firstName: document.getElementById("firstName"),
+      firstNameHint: document.getElementById("firstNameHint"),
+
+      tRedirect: document.getElementById("toggleRedirect"),
+      tRedirectLogout: document.getElementById("toggleRedirectLogout"),
+      tBirthdays: document.getElementById("toggleBirthdays"),
+      tAnnouncements: document.getElementById("toggleAnnouncements"),
+      tRecent: document.getElementById("toggleRecent"),
+      tSearchHistory: document.getElementById("toggleSearchHistory"),
+      tQuickLogin: document.getElementById("toggleQuickLogin"),
+      tContentWarnings: document.getElementById("toggleContentWarnings"),
+
+      quickLoginFields: document.getElementById("quickLoginFields"),
+      quickLoginCode: document.getElementById("quickLoginCode"),
+      quickLoginCodeConfirm: document.getElementById("quickLoginCodeConfirm"),
+      quickLoginHint: document.getElementById("quickLoginHint"),
+      quickLoginSavedHint: document.getElementById("quickLoginSavedHint"),
+
+      toast: document.getElementById("toast"),
+
+      wizardOverlay: document.getElementById("wizardOverlay"),
+      wizardTitleTop: document.getElementById("wizardTitleTop"),
+      wizardProgressWrap: document.getElementById("wizardProgressWrap"),
+      wizardSteps: [
+        document.getElementById("wizardStep0"),
+        document.getElementById("wizardStep1"),
+        document.getElementById("wizardStep2"),
+        document.getElementById("wizardStep3")
+      ],
+      wizardStepAlready: document.getElementById("wizardStepAlready"),
+      wizardFirstName: document.getElementById("wizardFirstName"),
+      wizardFirstNameHint: document.getElementById("wizardFirstNameHint"),
+      wizardToggleRecent: document.getElementById("wizardToggleRecent"),
+      wizardToggleSearchHistory: document.getElementById("wizardToggleSearchHistory"),
+      wizardToggleQuickLogin: document.getElementById("wizardToggleQuickLogin"),
+      wizardQuickLoginFields: document.getElementById("wizardQuickLoginFields"),
+      wizardQuickLoginCode: document.getElementById("wizardQuickLoginCode"),
+      wizardQuickLoginCodeConfirm: document.getElementById("wizardQuickLoginCodeConfirm"),
+      wizardQuickLoginHint: document.getElementById("wizardQuickLoginHint"),
+
+      wizardNext0: document.getElementById("wizardNext0"),
+      wizardBack1: document.getElementById("wizardBack1"),
+      wizardNext1: document.getElementById("wizardNext1"),
+      wizardBack2: document.getElementById("wizardBack2"),
+      wizardNext2: document.getElementById("wizardNext2"),
+      wizardFinish: document.getElementById("wizardFinish"),
+      wizardContinueExisting: document.getElementById("wizardContinueExisting")
+    };
+
+    let suppressAutoSave = false;
+    let storedQuickLoginHash = "";
+
+    function parseBool(v, fallback) {
+      if (v === null || v === undefined) return fallback;
+      if (v === true || v === false) return v;
+      const s = String(v).toLowerCase().trim();
+      if (s === "true") return true;
+      if (s === "false") return false;
+      return fallback;
+    }
+
+    function digitsOnly(value) {
+      return String(value || "").replace(/\D/g, "").slice(0, 6);
+    }
+
+    async function sha256(text) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+      const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+
+    function getStored() {
+      return {
+        firstName: (localStorage.getItem(K.firstName) || "").trim(),
+        redirect: parseBool(localStorage.getItem(K.redirect), true),
+        redirectLogout: parseBool(localStorage.getItem(K.redirectLogout), true),
+        birthdays: parseBool(localStorage.getItem(K.birthdays), true),
+        announcements: parseBool(localStorage.getItem(K.announcements), true),
+        recent: parseBool(localStorage.getItem(K.recent), true),
+        searchHistory: parseBool(localStorage.getItem(K.searchHistory), true),
+        quickLogin: parseBool(localStorage.getItem(K.quickLogin), false),
+        quickLoginCodeHash: localStorage.getItem(K.quickLoginCodeHash) || "",
+        contentWarnings: parseBool(localStorage.getItem(K.contentWarnings), true)
+      };
+    }
+
+    function setSwitch(el, on) {
+      if (!el) return;
+      el.dataset.on = on ? "true" : "false";
+      el.setAttribute("aria-checked", on ? "true" : "false");
+      el.setAttribute("role", "switch");
+    }
+
+    function readSwitch(el) {
+      return el && el.dataset.on === "true";
+    }
+
+    function showToast(text) {
+      const box = els.toast.querySelector("div");
+      box.textContent = text;
+      els.toast.classList.remove("hidden");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => els.toast.classList.add("hidden"), 1200);
+    }
+
+    function closeIframe() {
+      window.parent.postMessage("animation_complete", "*");
+    }
+
+    function applyModeUI() {
+      if (isFromLogin) {
+        els.pageTitle.textContent = "Quick setup";
+        els.pageDesc.textContent = "Set your preferences once — you can change them any time.";
+        els.modeLabel.textContent = "Setup mode (from login)";
+        els.closeBtn.classList.add("hidden");
+        els.resetBtn.classList.add("hidden");
+        els.saveBtn.classList.add("hidden");
+      } else {
+        els.pageTitle.textContent = "Your Settings";
+        els.pageDesc.textContent = "Control how StudyBase behaves on this device.";
+        els.modeLabel.textContent = "Editing mode";
+        els.closeBtn.classList.add("hidden");
+        els.resetBtn.classList.remove("hidden");
+        els.saveBtn.classList.remove("hidden");
+      }
+    }
+
+    function updateQuickLoginUI() {
+      const on = readSwitch(els.tQuickLogin);
+      els.quickLoginFields.classList.toggle("hidden", !on);
+      els.quickLoginSavedHint.classList.toggle("hidden", !on);
+      if (!on) els.quickLoginHint.classList.add("hidden");
+    }
+
+    function updateWizardQuickLoginUI() {
+      const on = readSwitch(els.wizardToggleQuickLogin);
+      els.wizardQuickLoginFields.classList.toggle("hidden", !on);
+      if (!on) els.wizardQuickLoginHint.classList.add("hidden");
+    }
+
+    function loadIntoUI() {
+      const state = getStored();
+      storedQuickLoginHash = state.quickLoginCodeHash || "";
+
+      suppressAutoSave = true;
+
+      els.firstName.value = state.firstName;
+      setSwitch(els.tRedirect, state.redirect);
+      setSwitch(els.tRedirectLogout, state.redirectLogout);
+      setSwitch(els.tBirthdays, state.birthdays);
+      setSwitch(els.tAnnouncements, state.announcements);
+      setSwitch(els.tRecent, state.recent);
+      setSwitch(els.tSearchHistory, state.searchHistory);
+      setSwitch(els.tQuickLogin, state.quickLogin);
+      setSwitch(els.tContentWarnings, state.contentWarnings);
+
+      els.quickLoginCode.value = "";
+      els.quickLoginCodeConfirm.value = "";
+
+      if (els.wizardFirstName) els.wizardFirstName.value = state.firstName;
+      if (els.wizardToggleRecent) setSwitch(els.wizardToggleRecent, state.recent);
+      if (els.wizardToggleSearchHistory) setSwitch(els.wizardToggleSearchHistory, state.searchHistory);
+      if (els.wizardToggleQuickLogin) setSwitch(els.wizardToggleQuickLogin, state.quickLogin);
+
+      if (els.wizardQuickLoginCode) els.wizardQuickLoginCode.value = "";
+      if (els.wizardQuickLoginCodeConfirm) els.wizardQuickLoginCodeConfirm.value = "";
+
+      updateQuickLoginUI();
+      updateWizardQuickLoginUI();
+
+      suppressAutoSave = false;
+    }
+
+    async function buildQuickLoginPayloadFromMain() {
+      const enabled = readSwitch(els.tQuickLogin);
+
+      if (!enabled) {
+        return {
+          quickLogin: false,
+          quickLoginCodeHash: ""
+        };
+      }
+
+      const code = digitsOnly(els.quickLoginCode.value);
+      const confirm = digitsOnly(els.quickLoginCodeConfirm.value);
+
+      if (!storedQuickLoginHash && (!/^\d{6}$/.test(code) || code !== confirm)) {
+        els.quickLoginHint.textContent = "Enter a matching 6 digit code to use Quick Login.";
+        els.quickLoginHint.classList.remove("hidden");
+        return null;
+      }
+
+      if (!code && !confirm && storedQuickLoginHash) {
+        els.quickLoginHint.classList.add("hidden");
+        return {
+          quickLogin: true,
+          quickLoginCodeHash: storedQuickLoginHash
+        };
+      }
+
+      if (!/^\d{6}$/.test(code) || code !== confirm) {
+        els.quickLoginHint.textContent = "Enter a matching 6 digit code to use Quick Login.";
+        els.quickLoginHint.classList.remove("hidden");
+        return null;
+      }
+
+      els.quickLoginHint.classList.add("hidden");
+
+      return {
+        quickLogin: true,
+        quickLoginCodeHash: await sha256(code)
+      };
+    }
+
+    async function buildQuickLoginPayloadFromWizard() {
+      const enabled = readSwitch(els.wizardToggleQuickLogin);
+
+      if (!enabled) {
+        return {
+          quickLogin: false,
+          quickLoginCodeHash: ""
+        };
+      }
+
+      const code = digitsOnly(els.wizardQuickLoginCode.value);
+      const confirm = digitsOnly(els.wizardQuickLoginCodeConfirm.value);
+
+      if (!/^\d{6}$/.test(code) || code !== confirm) {
+        els.wizardQuickLoginHint.textContent = "Enter a matching 6 digit code to continue.";
+        els.wizardQuickLoginHint.classList.remove("hidden");
+        return null;
+      }
+
+      els.wizardQuickLoginHint.classList.add("hidden");
+
+      return {
+        quickLogin: true,
+        quickLoginCodeHash: await sha256(code)
+      };
+    }
+
+    function getUIStateBase() {
+      return {
+        firstName: (els.firstName.value || "").trim(),
+        redirect: readSwitch(els.tRedirect),
+        redirectLogout: readSwitch(els.tRedirectLogout),
+        birthdays: readSwitch(els.tBirthdays),
+        announcements: readSwitch(els.tAnnouncements),
+        recent: readSwitch(els.tRecent),
+        searchHistory: readSwitch(els.tSearchHistory),
+        contentWarnings: readSwitch(els.tContentWarnings)
+      };
+    }
+
+    function saveState(state) {
+      localStorage.setItem(K.firstName, state.firstName);
+      localStorage.setItem(K.redirect, String(state.redirect));
+      localStorage.setItem(K.redirectLogout, String(state.redirectLogout));
+      localStorage.setItem(K.birthdays, String(state.birthdays));
+      localStorage.setItem(K.announcements, String(state.announcements));
+      localStorage.setItem(K.recent, String(state.recent));
+      localStorage.setItem(K.searchHistory, String(state.searchHistory));
+      localStorage.setItem(K.quickLogin, String(state.quickLogin));
+
+      if (state.quickLoginCodeHash) {
+        localStorage.setItem(K.quickLoginCodeHash, state.quickLoginCodeHash);
+      } else {
+        localStorage.removeItem(K.quickLoginCodeHash);
+      }
+
+      localStorage.setItem(K.contentWarnings, String(state.contentWarnings));
+      storedQuickLoginHash = state.quickLoginCodeHash || "";
+    }
+
+    async function saveFromUI(showSavedToast = true) {
+      const base = getUIStateBase();
+      const quickLoginPayload = await buildQuickLoginPayloadFromMain();
+      if (!quickLoginPayload) return false;
+
+      saveState({
+        ...base,
+        ...quickLoginPayload
+      });
+
+      els.quickLoginCode.value = "";
+      els.quickLoginCodeConfirm.value = "";
+
+      if (showSavedToast) showToast("Saved");
+      return true;
+    }
+
+    async function autoSaveFromUI() {
+      if (isFromLogin || suppressAutoSave) return;
+      await saveFromUI(true);
+    }
+
+    function resetToDefaults() {
+      localStorage.removeItem(K.firstName);
+      localStorage.removeItem(K.redirect);
+      localStorage.removeItem(K.redirectLogout);
+      localStorage.removeItem(K.birthdays);
+      localStorage.removeItem(K.announcements);
+      localStorage.removeItem(K.recent);
+      localStorage.removeItem(K.searchHistory);
+      localStorage.removeItem(K.quickLogin);
+      localStorage.removeItem(K.quickLoginCodeHash);
+      localStorage.removeItem(K.contentWarnings);
+
+      loadIntoUI();
+      showToast("Reset");
+    }
+
+    function wireSwitch(el, onToggle) {
+      if (!el) return;
+
+      el.addEventListener("click", () => {
+        setSwitch(el, !readSwitch(el));
+        if (typeof onToggle === "function") onToggle();
+      });
+
+      el.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          setSwitch(el, !readSwitch(el));
+          if (typeof onToggle === "function") onToggle();
+        }
+      });
+    }
+
+    function syncWizardToMain() {
+      const wizardName = (els.wizardFirstName.value || "").trim();
+      els.firstName.value = wizardName;
+      setSwitch(els.tRecent, readSwitch(els.wizardToggleRecent));
+      setSwitch(els.tSearchHistory, readSwitch(els.wizardToggleSearchHistory));
+      setSwitch(els.tQuickLogin, readSwitch(els.wizardToggleQuickLogin));
+      updateQuickLoginUI();
+    }
+
+    function updateWizardDots(index) {
+      const dots = els.wizardProgressWrap.querySelectorAll("[data-dot]");
+      dots.forEach((dot, i) => {
+        dot.classList.toggle("bg-blue-600", i === index);
+        dot.classList.toggle("bg-slate-200", i !== index);
+      });
+    }
+
+    function showWizardStep(step) {
+      els.wizardStepAlready.classList.remove("active");
+      els.wizardSteps.forEach(s => s.classList.remove("active"));
+
+      if (step === "already") {
+        els.wizardTitleTop.textContent = "Setup";
+        els.wizardProgressWrap.classList.add("hidden");
+        els.wizardStepAlready.classList.add("active");
+        return;
+      }
+
+      els.wizardProgressWrap.classList.remove("hidden");
+      els.wizardSteps[step].classList.add("active");
+
+      if (step === 0) els.wizardTitleTop.textContent = "Welcome";
+      if (step === 1) els.wizardTitleTop.textContent = "History preferences";
+      if (step === 2) els.wizardTitleTop.textContent = "Quick Login";
+      if (step === 3) els.wizardTitleTop.textContent = "Complete";
+
+      updateWizardDots(step);
+    }
+
+    function openWizard() {
+      const stored = getStored();
+
+      els.wizardOverlay.classList.remove("hidden");
+
+      const hasName = !!stored.firstName;
+      const hasQuickLoginDecision = localStorage.getItem(K.quickLogin) !== null;
+      const currentQuickLoginEnabled = parseBool(localStorage.getItem(K.quickLogin), false);
+      const hasQuickLoginCodeIfEnabled = !currentQuickLoginEnabled || !!(localStorage.getItem(K.quickLoginCodeHash) || "").trim();
+
+      if (hasName && hasQuickLoginDecision && hasQuickLoginCodeIfEnabled) {
+        showWizardStep("already");
+        return;
+      }
+
+      if (els.wizardFirstName) {
+        els.wizardFirstName.value = stored.firstName || "";
+      }
+
+      setSwitch(els.wizardToggleRecent, stored.recent);
+      setSwitch(els.wizardToggleSearchHistory, stored.searchHistory);
+
+      if (localStorage.getItem(K.quickLogin) === null) {
+        setSwitch(els.wizardToggleQuickLogin, true);
+      } else {
+        setSwitch(els.wizardToggleQuickLogin, stored.quickLogin);
+      }
+
+      if (els.wizardQuickLoginCode) els.wizardQuickLoginCode.value = "";
+      if (els.wizardQuickLoginCodeConfirm) els.wizardQuickLoginCodeConfirm.value = "";
+
+      updateWizardQuickLoginUI();
+
+      if (!hasName) {
+        showWizardStep(0);
+        return;
+      }
+
+      showWizardStep(2);
+    }
+
+    function validateWizardName() {
+      const ok = (els.wizardFirstName.value || "").trim().length > 0;
+      els.wizardFirstNameHint.classList.toggle("hidden", ok);
+      if (!ok) els.wizardFirstName.focus();
+      return ok;
+    }
+
+    function sanitizeCodeInput(el) {
+      if (!el) return;
+      el.value = digitsOnly(el.value);
+    }
+
+    async function finishWizardAndClose() {
+      syncWizardToMain();
+
+      const base = getUIStateBase();
+      const quickLoginPayload = await buildQuickLoginPayloadFromWizard();
+      if (!quickLoginPayload) return;
+
+      const firstName = (els.firstName.value || "").trim();
+      if (!firstName) {
+        showWizardStep(0);
+        els.wizardFirstNameHint.classList.remove("hidden");
+        return;
+      }
+
+      saveState({
+        ...base,
+        firstName,
+        ...quickLoginPayload
+      });
+
+      const hasQuickLoginDecision = localStorage.getItem(K.quickLogin) !== null;
+      const quickLoginEnabled = parseBool(localStorage.getItem(K.quickLogin), false);
+      const hasQuickLoginCode = !!(localStorage.getItem(K.quickLoginCodeHash) || "").trim();
+
+      if (!hasQuickLoginDecision) return;
+      if (quickLoginEnabled && !hasQuickLoginCode) return;
+
+      showToast("Saved");
+      setTimeout(closeIframe, 350);
+    }
+
+    applyModeUI();
+    loadIntoUI();
+
+    wireSwitch(els.tRedirect, autoSaveFromUI);
+    wireSwitch(els.tRedirectLogout, autoSaveFromUI);
+    wireSwitch(els.tBirthdays, autoSaveFromUI);
+    wireSwitch(els.tAnnouncements, autoSaveFromUI);
+    wireSwitch(els.tRecent, autoSaveFromUI);
+    wireSwitch(els.tSearchHistory, autoSaveFromUI);
+    wireSwitch(els.tQuickLogin, () => {
+      updateQuickLoginUI();
+      autoSaveFromUI();
+    });
+    wireSwitch(els.tContentWarnings, autoSaveFromUI);
+
+    wireSwitch(els.wizardToggleRecent);
+    wireSwitch(els.wizardToggleSearchHistory);
+    wireSwitch(els.wizardToggleQuickLogin, updateWizardQuickLoginUI);
+
+    els.firstName.addEventListener("input", () => {
+      els.firstNameHint.classList.add("hidden");
+      autoSaveFromUI();
+    });
+
+    els.quickLoginCode.addEventListener("input", () => {
+      sanitizeCodeInput(els.quickLoginCode);
+      els.quickLoginHint.classList.add("hidden");
+    });
+
+    els.quickLoginCodeConfirm.addEventListener("input", () => {
+      sanitizeCodeInput(els.quickLoginCodeConfirm);
+      els.quickLoginHint.classList.add("hidden");
+    });
+
+    if (els.wizardFirstName) {
+      els.wizardFirstName.addEventListener("input", () => {
+        els.wizardFirstNameHint.classList.add("hidden");
+      });
+    }
+
+    els.wizardQuickLoginCode.addEventListener("input", () => {
+      sanitizeCodeInput(els.wizardQuickLoginCode);
+      els.wizardQuickLoginHint.classList.add("hidden");
+    });
+
+    els.wizardQuickLoginCodeConfirm.addEventListener("input", () => {
+      sanitizeCodeInput(els.wizardQuickLoginCodeConfirm);
+      els.wizardQuickLoginHint.classList.add("hidden");
+    });
+
+    els.saveBtn.addEventListener("click", async () => {
+      await saveFromUI(true);
+    });
+
+    els.resetBtn.addEventListener("click", resetToDefaults);
+
+    els.wizardNext0.addEventListener("click", () => {
+      if (!validateWizardName()) return;
+      showWizardStep(1);
+    });
+
+    els.wizardBack1.addEventListener("click", () => {
+      showWizardStep(0);
+    });
+
+    els.wizardNext1.addEventListener("click", () => {
+      showWizardStep(2);
+    });
+
+    els.wizardBack2.addEventListener("click", () => {
+      const hasName = !!(els.wizardFirstName.value || "").trim() || !!(localStorage.getItem(K.firstName) || "").trim();
+      showWizardStep(hasName ? 1 : 0);
+    });
+
+    els.wizardNext2.addEventListener("click", async () => {
+      const quickLoginPayload = await buildQuickLoginPayloadFromWizard();
+      if (!quickLoginPayload) return;
+      showWizardStep(3);
+    });
+
+    els.wizardFinish.addEventListener("click", finishWizardAndClose);
+
+    els.wizardContinueExisting.addEventListener("click", () => {
+      const hasQuickLoginDecision = localStorage.getItem(K.quickLogin) !== null;
+      const quickLoginEnabled = parseBool(localStorage.getItem(K.quickLogin), false);
+      const hasQuickLoginCode = !!(localStorage.getItem(K.quickLoginCodeHash) || "").trim();
+
+      if (!hasQuickLoginDecision || (quickLoginEnabled && !hasQuickLoginCode)) {
+        if (els.wizardFirstName && !els.wizardFirstName.value) {
+          els.wizardFirstName.value = localStorage.getItem(K.firstName) || "";
+        }
+        showWizardStep(2);
+        return;
+      }
+
+      closeIframe();
+    });
+
+    if (isFromLogin) {
+      openWizard();
+    }
+  </script>
+</body>
+</html>

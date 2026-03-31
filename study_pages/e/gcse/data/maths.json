@@ -1,0 +1,21 @@
+{
+  "pageId": "gcse_maths",
+  "badgeText": "GCSE Subject Hub",
+  "badgeClass": "bg-blue-50 border-blue-100 text-blue-700",
+  "highlightClass": "bg-gradient-to-r from-blue-600 to-indigo-600",
+  "title": "Mathematics.",
+  "highlight": "Calculated.",
+  "description": "Master Higher and Foundation tiers with strong problem-solving and reasoning skills across all six GCSE strands.",
+  "heroImage": "https://images.unsplash.com/photo-1518133835878-5a93cc3f89e5",
+  "sections": [
+    { "title": "Number", "text": "Fractions, decimals, percentages, indices, surds, standard form and bounds." },
+    { "title": "Algebra", "text": "Expanding and factorising, solving equations, quadratics, simultaneous equations and graphs." },
+    { "title": "Ratio and Proportion", "text": "Direct and inverse proportion, compound measures and percentage change." },
+    { "title": "Geometry", "text": "Angles, circle theorems, trigonometry, similarity and vectors." },
+    { "title": "Statistics", "text": "Data representation, histograms, cumulative frequency and box plots." },
+    { "title": "Probability", "text": "Tree diagrams, Venn diagrams and conditional probability." }
+  ],
+  "usefulLinks": [
+    { "title": "AQA Maths Specification", "url": "https://www.aqa.org.uk/subjects/mathematics/gcse/mathematics-8300" }
+  ]
+}

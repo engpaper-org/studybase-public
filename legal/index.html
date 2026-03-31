@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase | Master Service Agreement</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/sessionManager.js" defer></script>
+
+    <!--Cookie consent banner and google analytics-->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        // 1. Determine current state
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        // 2. Set default based on that state
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+
+    <script src="/assets/js/cookieConsent.js"></script>
+    <!-- End of consent and analytics -->
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+        :root {
+            --sb-blue: #2563eb;
+            --sb-slate: #0f172a;
+            --sb-border: #e2e8f0;
+            --sb-muted: #64748b;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 150px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(59,130,246,0.10), transparent 28%),
+                radial-gradient(circle at top right, rgba(168,85,247,0.08), transparent 22%),
+                linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 100%);
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .glass {
+            background: rgba(255,255,255,0.78);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .legal-p {
+            margin-bottom: 1.15rem;
+            line-height: 1.85;
+            color: #475569;
+            font-size: 0.965rem;
+            text-align: justify;
+        }
+
+        .clause-card {
+            background: rgba(255,255,255,0.92);
+            border: 1px solid #e2e8f0;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .clause-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+            border-color: #cbd5e1;
+        }
+
+        .clause-header {
+            font-weight: 800;
+            color: #0f172a;
+            font-size: 1.22rem;
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .toc-link {
+            border-left: 3px solid transparent;
+            transition: all 0.18s ease;
+            color: #64748b;
+            border-radius: 0 0.75rem 0.75rem 0;
+        }
+
+        .toc-link:hover {
+            color: #0f172a;
+            background: rgba(241,245,249,0.9);
+        }
+
+        .toc-link.active {
+            color: #2563eb;
+            background-color: #eff6ff;
+            border-left: 3px solid #2563eb;
+            font-weight: 700;
+        }
+
+        .tech-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            border: 1px solid transparent;
+            line-height: 1;
+        }
+
+        .badge-red { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+        .badge-blue { background: #eff6ff; color: #2563eb; border-color: #dbeafe; }
+        .badge-amber { background: #fffbeb; color: #d97706; border-color: #fde68a; }
+        .badge-purple { background: #faf5ff; color: #9333ea; border-color: #e9d5ff; }
+        .badge-green { background: #f0fdf4; color: #16a34a; border-color: #bbf7d0; }
+        .badge-slate { background: #f8fafc; color: #334155; border-color: #cbd5e1; }
+
+        .section-warning {
+            border-color: #fecaca !important;
+            box-shadow: 0 8px 30px rgba(220, 38, 38, 0.05);
+        }
+
+        .section-info {
+            border-left: 5px solid #2563eb;
+            background: linear-gradient(to bottom right, rgba(239,246,255,0.55), rgba(255,255,255,0.96));
+        }
+
+        .section-mono {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 1.25rem;
+            border-radius: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            line-height: 1.8;
+            white-space: normal;
+            text-align: left;
+        }
+
+        .hero-panel {
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.82), rgba(255,255,255,0.62)),
+                radial-gradient(circle at top right, rgba(37,99,235,0.12), transparent 26%);
+            border: 1px solid rgba(226,232,240,0.95);
+            box-shadow: 0 10px 40px rgba(15,23,42,0.06);
+        }
+
+        .loading-shimmer {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 37%, #f1f5f9 63%);
+            background-size: 400% 100%;
+            animation: shimmer 1.4s ease infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        .modal-shell {
+            box-shadow: 0 30px 100px rgba(0,0,0,0.25);
+        }
+
+        .contact-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.22s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 1024px) {
+            .clause-card {
+                padding: 1.4rem;
+            }
+
+            .clause-header {
+                font-size: 1.08rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="text-slate-800 antialiased">
+    <div class="fixed inset-x-0 top-0 h-72 pointer-events-none bg-gradient-to-b from-blue-100/50 via-transparent to-transparent z-0"></div>
+
+    <header class="relative z-20 pt-32 pb-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="hero-panel glass rounded-[2rem] p-8 md:p-10">
+                <div class="flex flex-col xl:flex-row justify-between gap-8 xl:items-end">
+                    <div class="max-w-3xl">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-200 bg-blue-50 text-blue-700 text-xs font-bold mb-5">
+                            <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                            LEGAL CENTRE
+                        </div>
+
+                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-none mb-5">
+                            Master Service Agreement
+                        </h1>
+
+                        <p class="text-slate-600 text-sm md:text-base leading-relaxed max-w-2xl">
+                            This page contains the current legal terms governing use of StudyBase, including service terms,
+                            privacy disclosures, storage technology notices, moderation rules, and platform responsibility terms.
+                        </p>
+
+                        <div class="mt-6 flex flex-wrap items-center gap-3">
+                            <div class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700">
+                                <span class="mono text-slate-500">ACTIVE VERSION</span>
+                                <span id="rev-display" class="mono text-slate-900">REV: LOADING...</span>
+                            </div>
+
+                            <div class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/80 border border-slate-200 text-xs font-semibold text-slate-700">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                LIVE DOCUMENT RENDER
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full xl:w-auto flex flex-col sm:flex-row gap-3">
+                        <div class="rounded-2xl bg-white/80 border border-slate-200 shadow-sm px-4 py-3">
+                            <label for="version-selector" class="block text-[11px] uppercase tracking-wide font-bold text-slate-500 mb-2">
+                                Agreement Version
+                            </label>
+                            <select id="version-selector" onchange="loadVersion(this.value)"
+                                class="bg-slate-50 border border-slate-200 text-sm font-semibold rounded-xl px-3 py-2.5 min-w-[280px] text-slate-800 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
+                                <option value="msav4">v2.0 (Current - 14 Mar 2026)</option>
+                                <option value="msav3">v1.2 (Archived - 3 Mar 2026)</option>
+                                <option value="msav2">v1.1 (Archived - 1 Mar 2026)</option>
+                                <option value="msav1">v1.0 (Archived - Feb 2026)</option>
+                                <option value="msav0">v0.0 (Archived - Feb 2026)</option>
+                            </select>
+                        </div>
+
+                        <button onclick="openContactModal()"
+                            class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-slate-900 text-white font-semibold text-sm hover:bg-slate-800 transition-all shadow-sm border border-slate-900">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                            </svg>
+                            Contact Us
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10 max-w-7xl mx-auto px-6 pb-16 grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <aside class="hidden lg:block lg:col-span-3">
+            <div class="sticky top-36">
+                <div class="glass rounded-[1.5rem] border border-slate-200 p-5 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-sm font-black text-slate-900 tracking-tight">Contents</h2>
+                        <span class="mono text-[10px] text-slate-400">NAV</span>
+                    </div>
+                    <nav id="dynamic-toc" class="space-y-1 border-l border-slate-200 ml-1 pr-1 max-h-[70vh] overflow-auto"></nav>
+                </div>
+            </div>
+        </aside>
+
+        <section class="col-span-1 lg:col-span-9">
+            <div id="legal-content" class="min-h-[50vh]"></div>
+        </section>
+    </main>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal"
+         class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[999] p-3 md:p-6">
+        <div class="modal-shell fade-in relative w-[98vw] md:w-[96vw] h-[92vh] bg-white rounded-[1.75rem] shadow-2xl border border-slate-200 overflow-hidden">
+
+            <div class="h-16 border-b border-slate-200 bg-white/90 backdrop-blur-md flex items-center justify-between px-4 md:px-6">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M8 10h8M8 14h5m-9 7h16a2 2 0 002-2V7a2 2 0 00-2-2h-3.172a2 2 0 01-1.414-.586l-.828-.828A2 2 0 0013.172 3h-2.344a2 2 0 00-1.414.586l-.828.828A2 2 0 017.828 5H4a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <h3 class="text-base md:text-lg font-black text-slate-900 truncate">StudyBase Contact Portal</h3>
+                        <p class="text-xs md:text-sm text-slate-500 truncate">Official Google Form to contact our team</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSftQIYIEKhIga3Qe7U900Qcy7HxIolvqhKe7uzTPe0-k2IZ_Q/viewform?embedded=true"
+                       target="_blank" rel="noopener"
+                       class="hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-sm font-semibold hover:bg-slate-100 transition">
+                        Open in new tab
+                    </a>
+
+                    <button onclick="closeContactModal()"
+                        class="inline-flex items-center gap-2 rounded-xl bg-slate-900 text-white px-4 py-2 text-sm font-semibold hover:bg-slate-800 transition">
+                        ✕ Close
+                    </button>
+                </div>
+            </div>
+
+            <div class="relative h-[calc(92vh-4rem)] bg-slate-100">
+                <div id="contact-loading" class="absolute inset-0 flex items-center justify-center bg-white z-10">
+                    <div class="text-center px-6">
+                        <div class="w-12 h-12 mx-auto rounded-2xl border-4 border-slate-200 border-t-slate-900 animate-spin mb-4"></div>
+                        <h4 class="text-lg font-black text-slate-900">Loading contact form…</h4>
+                        <p class="text-sm text-slate-500 mt-2">If it does not appear, use “Open in new tab”.</p>
+                    </div>
+                </div>
+
+                <iframe
+                    id="contact-iframe"
+                    class="contact-iframe"
+                    src="https://docs.google.com/forms/d/e/1FAIpQLSftQIYIEKhIga3Qe7U900Qcy7HxIolvqhKe7uzTPe0-k2IZ_Q/viewform?usp=header"
+                    title="StudyBase Contact Form"
+                    loading="lazy"
+                    referrerpolicy="strict-origin-when-cross-origin">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const newest = "msav4";
+
+        function escapeHtml(text) {
+            return String(text ?? "")
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+        function getBadgeClass(badge) {
+            const redBadges = ["MANDATORY", "FINAL WARNING", "HIGH RISK", "ABUSE"];
+            const amberBadges = ["COMPLIANCE", "DISCLAIMER", "WARNING", "CONSENT"];
+            const purpleBadges = ["PRIVACY", "CHILDREN", "GOOGLE", "DMCA"];
+            const greenBadges = ["EDUCATION", "LIVE", "ACTIVE"];
+            const slateBadges = ["SYSTEM", "GENERAL", "FOUNDATION", "FINAL", "LEGAL"];
+
+            if (redBadges.includes(badge)) return "badge-red";
+            if (amberBadges.includes(badge)) return "badge-amber";
+            if (purpleBadges.includes(badge)) return "badge-purple";
+            if (greenBadges.includes(badge)) return "badge-green";
+            if (slateBadges.includes(badge)) return "badge-slate";
+            return "badge-blue";
+        }
+
+        function renderLoadingState() {
+            const toc = document.getElementById('dynamic-toc');
+            const content = document.getElementById('legal-content');
+
+            toc.innerHTML = `
+                <div class="space-y-2">
+                    <div class="loading-shimmer h-8 rounded-xl"></div>
+                    <div class="loading-shimmer h-8 rounded-xl"></div>
+                    <div class="loading-shimmer h-8 rounded-xl"></div>
+                    <div class="loading-shimmer h-8 rounded-xl"></div>
+                    <div class="loading-shimmer h-8 rounded-xl"></div>
+                </div>
+            `;
+
+            content.innerHTML = `
+                <div class="space-y-6">
+                    <div class="clause-card">
+                        <div class="loading-shimmer h-8 rounded-xl mb-5"></div>
+                        <div class="loading-shimmer h-4 rounded mb-3"></div>
+                        <div class="loading-shimmer h-4 rounded mb-3"></div>
+                        <div class="loading-shimmer h-4 rounded mb-3"></div>
+                        <div class="loading-shimmer h-4 rounded w-3/4"></div>
+                    </div>
+                    <div class="clause-card">
+                        <div class="loading-shimmer h-8 rounded-xl mb-5"></div>
+                        <div class="loading-shimmer h-4 rounded mb-3"></div>
+                        <div class="loading-shimmer h-4 rounded mb-3"></div>
+                        <div class="loading-shimmer h-4 rounded w-5/6"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function loadVersion(v) {
+            renderLoadingState();
+
+            try {
+                const res = await fetch(`/assets/agreements/${v}.json`, { cache: "no-store" });
+                if (!res.ok) throw new Error(`Failed to load version: ${res.status}`);
+
+                const data = await res.json();
+
+                document.getElementById('rev-display').innerText = `REV: ${data.date} (${data.version})`;
+
+                let tocHtml = '';
+                let contentHtml = '';
+
+                data.clauses.forEach(c => {
+                    tocHtml += `
+                        <a href="#clause-${escapeHtml(c.id)}"
+                           class="toc-link block py-2.5 pl-4 pr-3 text-xs font-medium leading-relaxed">
+                           ${escapeHtml(c.title)}
+                        </a>
+                    `;
+
+                    const cardClasses = [
+                        "clause-card",
+                        c.isWarning ? "section-warning" : "",
+                        c.isLogging ? "section-info" : ""
+                    ].join(" ").trim();
+
+                    const bodyClass = c.isMonospace ? "section-mono" : "legal-p";
+                    const badgeHtml = c.badge
+                        ? `<span class="tech-badge ${getBadgeClass(c.badge)}">${escapeHtml(c.badge)}</span>`
+                        : "";
+
+                    contentHtml += `
+                        <section id="clause-${escapeHtml(c.id)}" class="${cardClasses}">
+                            <h2 class="clause-header">
+                                <span class="mono text-slate-300">${String(c.id).padStart(2, '0')}</span>
+                                <span>${escapeHtml(c.title)}</span>
+                                ${badgeHtml}
+                            </h2>
+                            <div class="${bodyClass}">${c.content ?? ""}</div>
+                        </section>
+                    `;
+                });
+
+                document.getElementById('dynamic-toc').innerHTML = tocHtml;
+                document.getElementById('legal-content').innerHTML = contentHtml;
+
+                initScrollSpy();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            } catch (err) {
+                document.getElementById('dynamic-toc').innerHTML = `
+                    <div class="rounded-2xl border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm font-medium">
+                        Failed to load contents.
+                    </div>
+                `;
+
+                document.getElementById('legal-content').innerHTML = `
+                    <div class="clause-card section-warning">
+                        <h2 class="clause-header">
+                            <span class="mono text-red-200">ERR</span>
+                            Agreement Load Error
+                            <span class="tech-badge badge-red">ERROR</span>
+                        </h2>
+                        <div class="legal-p">
+                            The agreement version could not be loaded at this time.
+                            Please try again later or choose another archived version.
+                            <br><br>
+                            <span class="mono text-xs text-slate-500">${escapeHtml(err.message)}</span>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function initScrollSpy() {
+            const links = document.querySelectorAll('.toc-link');
+            const sections = document.querySelectorAll('section[id^="clause-"]');
+
+            if (!links.length || !sections.length) return;
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const currentId = entry.target.id;
+                        links.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href') === `#${currentId}`);
+                        });
+                    }
+                });
+            }, {
+                rootMargin: "-30% 0px -55% 0px",
+                threshold: 0.01
+            });
+
+            sections.forEach(section => observer.observe(section));
+        }
+
+        function openContactModal() {
+            const modal = document.getElementById('contact-modal');
+            const iframe = document.getElementById('contact-iframe');
+            const loading = document.getElementById('contact-loading');
+
+            loading.classList.remove('hidden');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.classList.add('overflow-hidden');
+
+            // Reload iframe each open in case the user wants a fresh form
+            iframe.src = "https://docs.google.com/forms/d/e/1FAIpQLSftQIYIEKhIga3Qe7U900Qcy7HxIolvqhKe7uzTPe0-k2IZ_Q/viewform?embedded=true";
+        }
+
+        function closeContactModal() {
+            const modal = document.getElementById('contact-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        document.getElementById('contact-iframe').addEventListener('load', function() {
+            document.getElementById('contact-loading').classList.add('hidden');
+        });
+
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('contact-modal');
+            if (e.target === modal) closeContactModal();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeContactModal();
+        });
+
+        loadVersion(newest);
+    </script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Ban Information | StudyBase</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    
+    <script src="/assets/js/sessionManager.js" defer></script>
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/loginAnimationCheck.js" defer></script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>const PAGE_ID = "support_account_ban";</script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+    </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .bg-grid-slate-100 {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23f1f5f9'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #dc2626 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .glass-card {
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans selection:bg-red-100 selection:text-red-900 flex flex-col min-h-screen">
+
+    <nav id="navbar-placeholder" class="sticky top-0 z-50"></nav>
+
+    <header class="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden border-b border-slate-200">
+        <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.65))] -z-20"></div>
+        
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl -z-10 pointer-events-none">
+            <div class="absolute top-0 left-10 w-72 h-72 bg-red-400 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob"></div>
+            <div class="absolute top-0 right-10 w-72 h-72 bg-purple-400 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob"></div>
+        </div>
+
+        <div class="max-w-4xl mx-auto px-6 relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-50 border border-red-100 mb-6 text-red-600 text-xs font-bold uppercase tracking-widest shadow-sm">
+                <i class="fas fa-ban"></i> Account Ban Information
+            </div>
+            
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight leading-[1.05] mb-6 text-slate-900">
+                What to do if your account<br>
+                <span class="text-gradient">has been banned</span>
+            </h1>
+            
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed font-body">
+                This page explains what a ban means, why it may have happened, what access is affected, and how you can request a review if you believe the action was made in error.
+            </p>
+        </div>
+    </header>
+
+    <main class="flex-grow py-12 bg-slate-50">
+        <div class="max-w-4xl mx-auto px-6">
+
+            <div class="glass-card p-8 md:p-10 rounded-[2rem] shadow-sm border border-red-100 mb-8">
+                <div class="flex items-start gap-4">
+                    <div class="w-14 h-14 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-2xl flex-shrink-0">
+                        <i class="fas fa-circle-exclamation"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-900 mb-3">What this means</h2>
+                        <p class="text-slate-600 font-body leading-relaxed mb-4">
+                            A ban means access to your account or device has been blocked by our security and moderation systems. This is a stronger action than a warning or temporary restriction and is usually applied when activity appears to seriously break our rules or put the platform, its content, or other users at risk.
+                        </p>
+                        <p class="text-slate-600 font-body leading-relaxed">
+                            Depending on the type of ban, you may be unable to sign in, verify devices, use premium features, access protected materials, or interact with parts of the platform that require an active account.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
+                    <h2 class="text-2xl font-black text-slate-900 mb-5">Common reasons for a ban</h2>
+                    <div class="space-y-4">
+                        <div class="flex gap-3 items-start">
+                            <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900">Automated scraping or bulk downloading</h3>
+                                <p class="text-sm text-slate-500 font-body mt-1">Using bots, scripts, or automated tools to collect protected resources, predicted papers, or premium materials.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 items-start">
+                            <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-share-nodes"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900">Sharing restricted content</h3>
+                                <p class="text-sm text-slate-500 font-body mt-1">Re-uploading, redistributing, or posting protected StudyBase content on other websites, drives, chats, or social platforms.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 items-start">
+                            <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900">Bypassing security systems</h3>
+                                <p class="text-sm text-slate-500 font-body mt-1">Attempting to avoid device checks, abuse account linking, share access, or interfere with login and verification systems.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 items-start">
+                            <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900">Abusive or harmful behaviour</h3>
+                                <p class="text-sm text-slate-500 font-body mt-1">Harassment, threats, spam, impersonation, or other conduct that harms users or disrupts the platform.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 items-start">
+                            <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-triangle-exclamation"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900">Repeated policy breaches</h3>
+                                <p class="text-sm text-slate-500 font-body mt-1">Multiple warnings, repeated misuse, or continued activity after a previous restriction may lead to a full ban.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
+                    <h2 class="text-2xl font-black text-slate-900 mb-5">What may be affected</h2>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between rounded-2xl bg-slate-50 border border-slate-100 px-4 py-4">
+                            <span class="font-semibold text-slate-700">Login access</span>
+                            <span class="text-red-600 font-bold">Blocked</span>
+                        </div>
+                        <div class="flex items-center justify-between rounded-2xl bg-slate-50 border border-slate-100 px-4 py-4">
+                            <span class="font-semibold text-slate-700">Device verification</span>
+                            <span class="text-red-600 font-bold">Blocked</span>
+                        </div>
+                        <div class="flex items-center justify-between rounded-2xl bg-slate-50 border border-slate-100 px-4 py-4">
+                            <span class="font-semibold text-slate-700">Protected resources</span>
+                            <span class="text-red-600 font-bold">Restricted</span>
+                        </div>
+                        <div class="flex items-center justify-between rounded-2xl bg-slate-50 border border-slate-100 px-4 py-4">
+                            <span class="font-semibold text-slate-700">Comments / community features</span>
+                            <span class="text-red-600 font-bold">Restricted</span>
+                        </div>
+                        <div class="flex items-center justify-between rounded-2xl bg-slate-50 border border-slate-100 px-4 py-4">
+                            <span class="font-semibold text-slate-700">Support appeal access</span>
+                            <span class="text-green-600 font-bold">Available</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-5 rounded-2xl bg-amber-50 border border-amber-100">
+                        <div class="flex gap-3">
+                            <div class="text-amber-600 text-lg mt-0.5">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <p class="text-sm text-amber-800 font-body leading-relaxed">
+                                Some bans are temporary, while others are permanent. The exact outcome depends on the seriousness of the incident, any previous flags, and the result of any appeal review.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 md:p-12 rounded-[2rem] shadow-sm border border-slate-100 mb-8">
+                <h2 class="text-2xl font-black text-slate-900 mb-6">What to do next</h2>
+
+                <div class="space-y-6">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-11 h-11 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-black">1</div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-1">Read the reason shown on the login popup</h3>
+                            <p class="text-slate-500 text-sm font-body leading-relaxed">
+                                When available, your ban notice will include a short reason, such as suspicious automation, misuse of protected materials, or a manual moderation decision.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-11 h-11 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-black">2</div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-1">Review the platform rules</h3>
+                            <p class="text-slate-500 text-sm font-body leading-relaxed">
+                                Make sure you understand which behaviour may have triggered the ban, especially around account sharing, scraping, bypass attempts, or content redistribution.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-11 h-11 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-black">3</div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-1">Submit an appeal if you believe this was a mistake</h3>
+                            <p class="text-slate-500 text-sm font-body leading-relaxed">
+                                Use the appeal form to explain what happened clearly and honestly. Include any useful context, such as shared devices, school networks, browser issues, or anything else that may help a moderator review the case properly.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-11 h-11 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-black">4</div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-1">Wait for the review decision</h3>
+                            <p class="text-slate-500 text-sm font-body leading-relaxed">
+                                Once submitted, appeals are reviewed in order. Repeated submissions or abuse of the appeal process may delay review.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                    <a href="/support/ban/appeal.html" class="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold shadow-lg shadow-blue-600/20 transition-all">
+                        <i class="fas fa-paper-plane"></i> Submit an appeal
+                    </a>
+                    <a href="/legal.html" class="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-bold transition-all">
+                        <i class="fas fa-book"></i> Read rules and policies
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 text-white p-8 md:p-10 rounded-[2rem] shadow-sm mb-12 overflow-hidden relative">
+                <div class="absolute top-0 right-0 w-56 h-56 bg-red-500/10 rounded-full blur-3xl"></div>
+                <div class="relative z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-red-200 text-xs font-bold uppercase tracking-widest mb-4">
+                        <i class="fas fa-scale-balanced"></i> Review process
+                    </div>
+                    <h2 class="text-2xl font-black mb-4">How appeals are reviewed</h2>
+                    <p class="text-slate-300 font-body leading-relaxed mb-6 max-w-2xl">
+                        Appeals are reviewed using the information stored by our security systems and moderation tools. This may include login attempts, device verification records, unusual usage patterns, and other account safety signals. A successful appeal may result in access being restored, while serious or repeated cases may remain banned.
+                    </p>
+                    <div class="grid sm:grid-cols-3 gap-4">
+                        <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                            <div class="text-red-300 text-lg mb-2"><i class="fas fa-magnifying-glass"></i></div>
+                            <h3 class="font-bold mb-1">Case reviewed</h3>
+                            <p class="text-sm text-slate-400 font-body">Moderation and system logs are checked.</p>
+                        </div>
+                        <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                            <div class="text-red-300 text-lg mb-2"><i class="fas fa-envelope-open-text"></i></div>
+                            <h3 class="font-bold mb-1">Decision sent</h3>
+                            <p class="text-sm text-slate-400 font-body">You may receive an outcome after review.</p>
+                        </div>
+                        <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+                            <div class="text-red-300 text-lg mb-2"><i class="fas fa-shield-halved"></i></div>
+                            <h3 class="font-bold mb-1">Final action</h3>
+                            <p class="text-sm text-slate-400 font-body">Access is restored, limited, or kept blocked.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-12">
+                <h2 class="text-2xl font-black text-slate-900 mb-6 ml-2">Frequently asked questions</h2>
+                
+                <div class="space-y-4">
+                    <details class="group bg-white p-6 rounded-2xl border border-slate-100 shadow-sm open:border-red-200 transition-all cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold text-slate-900 list-none">
+                            Is a ban always permanent?
+                            <span class="text-red-500 transform group-open:rotate-180 transition-transform"><i class="fas fa-chevron-down text-sm"></i></span>
+                        </summary>
+                        <p class="text-slate-500 mt-4 text-sm font-body leading-relaxed">
+                            No. Some bans are temporary and expire after review or after a set period. Others may be permanent, especially where there is serious misuse, repeat offences, or confirmed attempts to bypass platform security.
+                        </p>
+                    </details>
+
+                    <details class="group bg-white p-6 rounded-2xl border border-slate-100 shadow-sm open:border-red-200 transition-all cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold text-slate-900 list-none">
+                            Can I make a new account instead?
+                            <span class="text-red-500 transform group-open:rotate-180 transition-transform"><i class="fas fa-chevron-down text-sm"></i></span>
+                        </summary>
+                        <p class="text-slate-500 mt-4 text-sm font-body leading-relaxed">
+                            No. Creating new accounts or using new devices to avoid a ban may lead to further enforcement and may reduce the chance of a successful appeal.
+                        </p>
+                    </details>
+
+                    <details class="group bg-white p-6 rounded-2xl border border-slate-100 shadow-sm open:border-red-200 transition-all cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold text-slate-900 list-none">
+                            How long does an appeal take?
+                            <span class="text-red-500 transform group-open:rotate-180 transition-transform"><i class="fas fa-chevron-down text-sm"></i></span>
+                        </summary>
+                        <p class="text-slate-500 mt-4 text-sm font-body leading-relaxed">
+                            Most appeals are reviewed within a few days, but this may take longer during busy periods or where extra checks are needed.
+                        </p>
+                    </details>
+
+                    <details class="group bg-white p-6 rounded-2xl border border-slate-100 shadow-sm open:border-red-200 transition-all cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold text-slate-900 list-none">
+                            What should I include in my appeal?
+                            <span class="text-red-500 transform group-open:rotate-180 transition-transform"><i class="fas fa-chevron-down text-sm"></i></span>
+                        </summary>
+                        <p class="text-slate-500 mt-4 text-sm font-body leading-relaxed">
+                            Include a clear explanation of what happened, whether the activity was intentional, whether the device is shared, and any details that might explain unusual behaviour. Honest, specific appeals are more useful than very short or vague ones.
+                        </p>
+                    </details>
+
+                    <details class="group bg-white p-6 rounded-2xl border border-slate-100 shadow-sm open:border-red-200 transition-all cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold text-slate-900 list-none">
+                            Can I still access any part of StudyBase?
+                            <span class="text-red-500 transform group-open:rotate-180 transition-transform"><i class="fas fa-chevron-down text-sm"></i></span>
+                        </summary>
+                        <p class="text-slate-500 mt-4 text-sm font-body leading-relaxed">
+                            That depends on the type of ban. Some users may still be able to view limited public pages, while protected areas, account features, and verification systems remain blocked.
+                        </p>
+                    </details>
+                </div>
+            </div>
+
+            <div class="mt-16 pt-10 border-t border-slate-200 text-center">
+                <h3 class="text-lg font-bold text-slate-900 mb-4">Was this page helpful?</h3>
+                <div class="flex justify-center gap-4">
+                    <button type="button" class="px-6 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-600 font-bold hover:border-green-400 hover:text-green-600 hover:bg-green-50 transition-all shadow-sm">
+                        <i class="fas fa-thumbs-up mr-2"></i> Yes
+                    </button>
+                    <button type="button" class="px-6 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-600 font-bold hover:border-red-400 hover:text-red-600 hover:bg-red-50 transition-all shadow-sm">
+                        <i class="fas fa-thumbs-down mr-2"></i> No
+                    </button>
+                </div>
+                <p class="text-slate-400 text-xs mt-4 font-body">Your feedback helps us improve our support center.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="footer-placeholder" class="mt-auto"></div>
+
+</body>
+</html>

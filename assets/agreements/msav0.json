@@ -1,0 +1,18 @@
+{
+  "version": "v0.0",
+  "date": "2026.2.0",
+  "clauses": [
+    { "id": "1", "title": "Definitions", "content": "<strong>\"The Service\"</strong> refers to the StudyBase repository, inclusive of static files, dynamic Interactive Resources, and visual simulations.<br><br><strong>\"DCAM\"</strong> (Dynamic Cognitive Assessment Module) refers to the logic-based tools provided for revision and stress testing." },
+    { "id": "2", "title": "Data Architecture", "badge": "CRITICAL", "content": "We use a hybrid data model involving plain-text webhooks and cryptographic hashing. By using the Service, you explicitly consent to the email transmission and UCI generation." },
+    { "id": "3", "title": "Institutional Use", "badge": "MANDATORY", "isWarning": true, "content": "THE PROVIDER EXPLICITLY DISCLAIMS ANY LIABILITY FOR UNAUTHORIZED USE WITHIN SCHOOLS or WORKPLACES. Accessing Interactive Resources during scheduled lessons is strictly prohibited." },
+    { "id": "4", "title": "Educational Intent", "content": "Interactive Resources are supplemental tools aimed at cognitive reflex and logic training. Any recreational enjoyment is purely incidental." },
+    { "id": "5", "title": "Session Context", "content": "When you visit any page, a Page ID Code and your UCI are sent to the server to serve relevant announcements." },
+    { "id": "6", "title": "Intellectual Property", "content": "You are granted a limited, personal licence to use the Service. Mirroring or scraping is prohibited." },
+    { "id": "7", "title": "Resource Logging", "badge": "AUTOMATED", "content": "Browsers transmit IP addresses, email hashes, and UCIs to verify 'state' and prevent link sharing via webhooks." },
+    { "id": "8", "title": "Continuity", "content": "We reserve the right to suspend the Service or change domains at any time without notice." },
+    { "id": "9", "title": "Limitation of Liability", "isMonospace": true, "content": "THE SERVICE IS PROVIDED 'AS IS'. THE PROVIDER DISCLAIMS ALL LIABILITY FOR DATA LOSS, ACADEMIC FAILURE, OR CONSEQUENTIAL DAMAGES." },
+    { "id": "10", "title": "Health & Safety", "content": "Interactive resources may contain flashing images. Users with photosensitivity should use at their own risk." },
+    { "id": "11", "title": "Third-Party Platforms", "badge": "EXTERNAL", "content": "Data collection is frequently conducted via Google Forms. You are subject to Google's Terms of Service." },
+    { "id": "12", "title": "Disciplinary Consequences", "badge": "FINAL WARNING", "content": "The Provider will not provide logs or testimony to defend your usage if you are subject to school disciplinary action." }
+  ]
+}

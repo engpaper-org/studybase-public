@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Center | GCSE & A-Level Support</title>
+<script src="/assets/js/sessionManager.js" defer></script>
+    <!--Cookie consent banner and google analytics-->
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+
+        // 1. Determine current state
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        // 2. Set default based on that state
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+
+    <script src="/assets/js/cookieConsent.js"></script>
+    <!-- End of consent and analytics -->
+
+
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/loginAnimationCheck.js" defer></script>
+    <script>const PAGE_ID = "faq";</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .faq-ans { 
+            display: grid; 
+            grid-template-rows: 0fr; 
+            transition: grid-template-rows 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease;
+            opacity: 0;
+        }
+        .faq-ans.open { 
+            grid-template-rows: 1fr; 
+            opacity: 1; 
+            padding-bottom: 1.5rem; 
+        }
+        .faq-inner { overflow: hidden; }
+        
+        .rotate-icon { transform: rotate(45deg); }
+        .group:hover .faq-icon { color: #2563eb; }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-900 antialiased">
+
+    <header class="bg-white border-b border-slate-100 pt-32 pb-20 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <span class="px-3 py-1 bg-slate-100 rounded-full text-slate-500 text-xs font-bold uppercase tracking-widest mb-4 inline-block">Support Center</span>
+            <h1 class="text-5xl md:text-6xl font-black tracking-tight text-slate-900 mb-6">
+                How can we <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">help?</span>
+            </h1>
+            <p class="text-lg text-slate-500 mb-10 max-w-xl mx-auto">
+                Search our knowledge base for advice on GCSEs, A-Levels, technical issues, or revision strategies.
+            </p>
+            
+            <div class="relative max-w-xl mx-auto group">
+                <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+                <div class="relative">
+                    <input type="text" id="faqSearch" onkeyup="filterFAQs()" 
+                           placeholder="Type to search (e.g. 'UCAS', 'Science', 'Login')..." 
+                           class="w-full px-6 py-4 rounded-2xl border border-slate-200 focus:outline-none focus:ring-0 focus:border-slate-300 bg-white/90 backdrop-blur-xl shadow-xl text-lg font-medium transition-all placeholder:text-slate-400">
+                    <span class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 text-xl">
+                        <i class="fas fa-search">🔍</i>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
+            <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-3xl"></div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-20">
+        
+        <div class="faq-section mb-16">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-8 flex items-center gap-4">
+                <span class="w-12 h-[1px] bg-slate-200"></span> Platform & Account
+            </h2>
+            <div class="space-y-4">
+                
+                <div class="faq-item bg-white rounded-2xl border border-slate-200 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group" onclick="toggleFaq(this)">
+                    <div class="p-6 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 text-lg">Is this site for GCSE or A-Level?</h3>
+                        <div class="faq-icon text-2xl text-slate-300 transition-transform duration-300 font-light">+</div>
+                    </div>
+                    <div class="faq-ans px-6 text-slate-600 leading-relaxed">
+                        <div class="faq-inner">
+                            Both! We have split the platform into two distinct portals. You can toggle between the <strong>GCSE Portal</strong> (Year 10-11) and the <strong>A-Level Portal</strong> (Year 12-13) using the navigation menu or the homepage selection cards.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-white rounded-2xl border border-slate-200 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group" onclick="toggleFaq(this)">
+                    <div class="p-6 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 text-lg">Do I need to pay for resources?</h3>
+                        <div class="faq-icon text-2xl text-slate-300 transition-transform duration-300 font-light">+</div>
+                    </div>
+                    <div class="faq-ans px-6 text-slate-600 leading-relaxed">
+                        <div class="faq-inner">
+                            No. All core revision materials—including past papers, mark schemes, and summary notes—are completely free. We believe education should be accessible to everyone.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="faq-section mb-16">
+            <h2 class="text-xs font-bold text-blue-500 uppercase tracking-[0.2em] mb-8 flex items-center gap-4">
+                <span class="w-12 h-[1px] bg-blue-200"></span> GCSE Support
+            </h2>
+            <div class="space-y-4">
+                
+                <div class="faq-item bg-white rounded-2xl border border-slate-200 cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-blue-200 hover:-translate-y-1 group" onclick="toggleFaq(this)">
+                    <div class="p-6 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 text-lg">Are the papers updated for 2026?</h3>
+                        <div class="faq-icon text-2xl text-slate-300 transition-transform duration-300 font-light group-hover:text-blue-500">+</div>
+                    </div>
+                    <div class="faq-ans px-6 text-slate-600 leading-relaxed">
+                        <div class="faq-inner">
+                            Yes. We regularly update our database to align with the latest 2026 specifications for AQA, Edexcel, OCR, and Eduqas. If a specification changes, we flag old resources as "Legacy".
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-white rounded-2xl border border-slate-200 cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-blue-200 hover:-translate-y-1 group" onclick="toggleFaq(this)">
+                    <div class="p-6 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 text-lg">Do you have Foundation Tier content?</h3>
+                        <div class="faq-icon text-2xl text-slate-300 transition-transform duration-300 font-light group-hover:text-blue-500">+</div>
+                    </div>
+                    <div class="faq-ans px-6 text-slate-600 leading-relaxed">
+                        <div class="faq-inner">
+                            Absolutely. For Maths and Sciences, you can filter resources by 'Foundation' or 'Higher' tier to ensure you aren't revising irrelevant content.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="faq-section mb-16">
+            <h2 class="text-xs font-bold text-purple-500 uppercase tracking-[0.2em] mb-8 flex items-center gap-4">
+                <span class="w-12 h-[1px] bg-purple-200"></span> A-Level & UCAS
+            </h2>
+            <div class="space-y-4">
+                
+                <div class="faq-item bg-white rounded-2xl border border-slate-200 cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-purple-200 hover:-translate-y-1 group" onclick="toggleFaq(this)">
+                    <div class="p-6 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 text-lg">Does the site help with Personal Statements?</h3>
+                        <div class="faq-icon text-2xl text-slate-300 transition-transform duration-300 font-light group-hover:text-purple-500">+</div>
+                    </div>
+                    <div class="faq-ans px-6 text-slate-600 leading-relaxed">
+                        <div class="faq-inner">
+                            Yes, visit the <strong><a href="/study_pages/ucasHub.html" class="text-purple-600 font-bold hover:underline">UCAS Hub</a></strong>. We have a breakdown of how to structure your statement, examples of successful Oxbridge applications, and super-curricular reading lists.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item bg-white rounded-2xl border border-slate-200 cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-purple-200 hover:-translate-y-1 group" onclick="toggleFaq(this)">
+                    <div class="p-6 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 text-lg">What is the "Focus Room"?</h3>
+                        <div class="faq-icon text-2xl text-slate-300 transition-transform duration-300 font-light group-hover:text-purple-500">+</div>
+                    </div>
+                    <div class="faq-ans px-6 text-slate-600 leading-relaxed">
+                        <div class="faq-inner">
+                            The Focus Room is a shared tool for both GCSE and A-Level students. It provides a distraction-free interface with Pomodoro timers, lofi music, and task tracking to help you complete "Deep Work" sessions.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="no-results" class="hidden text-center py-12">
+            <div class="text-6xl mb-4">🤔</div>
+            <h3 class="text-xl font-bold text-slate-800 mb-2">No answers found</h3>
+            <p class="text-slate-500">Try searching for a different keyword or browse the categories above.</p>
+        </div>
+
+    </main>
+
+    <script>
+        // Toggle FAQ Accordion
+        function toggleFaq(el) {
+            const answer = el.querySelector('.faq-ans');
+            const icon = el.querySelector('.faq-icon');
+            const isBlue = el.closest('.faq-section').querySelector('h2').innerText.includes('GCSE');
+            const isPurple = el.closest('.faq-section').querySelector('h2').innerText.includes('A-Level');
+            
+            // Define active colors based on section
+            let activeBorder = 'border-slate-400';
+            if(isBlue) activeBorder = 'border-blue-400';
+            if(isPurple) activeBorder = 'border-purple-400';
+
+            if (answer.classList.contains('open')) {
+                // Close
+                answer.classList.remove('open');
+                icon.style.transform = 'rotate(0deg)';
+                el.classList.remove(activeBorder, 'ring-1', activeBorder.replace('border-', 'ring-'));
+            } else {
+                // Open
+                answer.classList.add('open');
+                icon.style.transform = 'rotate(45deg)';
+                el.classList.add(activeBorder);
+            }
+        }
+
+        // Search/Filter Functionality
+        function filterFAQs() {
+            const input = document.getElementById('faqSearch');
+            const filter = input.value.toLowerCase();
+            const items = document.querySelectorAll('.faq-item');
+            const sections = document.querySelectorAll('.faq-section');
+            let hasResults = false;
+
+            items.forEach(item => {
+                const text = item.innerText.toLowerCase();
+                if (text.includes(filter)) {
+                    item.style.display = "";
+                    hasResults = true;
+                } else {
+                    item.style.display = "none";
+                }
+            });
+
+            // Hide empty sections
+            sections.forEach(section => {
+                const visibleItems = section.querySelectorAll('.faq-item:not([style*="display: none"])');
+                if(visibleItems.length === 0) section.style.display = "none";
+                else section.style.display = "";
+            });
+
+            // Show "No Results" message
+            const noResultsMsg = document.getElementById('no-results');
+            if (!hasResults) {
+                noResultsMsg.classList.remove('hidden');
+            } else {
+                noResultsMsg.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

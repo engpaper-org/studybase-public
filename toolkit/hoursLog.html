@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Hours Log | StudyBase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .bg-grid-slate { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23f1f5f9'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e"); }
+    </style>
+</head>
+<body class="bg-[#f4f7f9] text-slate-800 min-h-screen relative">
+    <div class="absolute inset-0 bg-grid-slate pointer-events-none -z-10"></div>
+
+    <div class="max-w-4xl mx-auto px-6 py-12 flex flex-col items-center">
+        
+        <div class="w-full mb-8">
+            <a href="/toolkit/index.html" class="text-violet-500 font-bold text-sm flex items-center mb-4 hover:text-violet-600 transition-colors">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Back to Toolkit
+            </a>
+            <h1 class="text-3xl font-black text-slate-900">Study Session Logger</h1>
+            <p class="text-slate-500 mt-1 text-sm">Track your deep work. Start the timer, then save the session to your log.</p>
+        </div>
+
+        <div class="bg-white p-10 rounded-[2.5rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)] border border-slate-200 w-full text-center relative overflow-hidden mb-12">
+            <div class="absolute -top-10 -right-10 w-40 h-40 bg-violet-100 rounded-full blur-2xl opacity-50 pointer-events-none"></div>
+            
+            <input type="text" id="session-topic" placeholder="What are you studying? (e.g. Physics Mechanics)" class="w-full text-center bg-transparent border-b-2 border-slate-100 outline-none focus:border-violet-300 font-bold text-lg text-slate-700 pb-2 mb-10 placeholder-slate-300">
+
+            <div class="text-7xl md:text-8xl font-mono font-black text-slate-800 mb-10 tracking-tighter" id="stopwatch">
+                00:00:00
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button id="start-btn" onclick="toggleTimer()" class="w-full sm:w-48 bg-violet-600 hover:bg-violet-700 text-white font-black text-lg py-4 rounded-2xl shadow-md hover:shadow-lg transition-all">
+                    START
+                </button>
+                <button onclick="logSession()" id="log-btn" class="w-full sm:w-48 bg-slate-100 text-slate-400 font-bold text-lg py-4 rounded-2xl transition-all cursor-not-allowed" disabled>
+                    Save to Log
+                </button>
+            </div>
+        </div>
+
+        <div class="w-full">
+            <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center">
+                <i class="fa-solid fa-chart-bar mr-2 text-violet-500"></i> Recent Sessions
+            </h3>
+            
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6">
+                <div id="log-list" class="space-y-4">
+                    <div id="empty-log" class="text-center py-8 text-slate-400 text-sm font-medium">
+                        No sessions logged yet.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let startTime = 0;
+        let elapsedTime = 0;
+        let timerInterval;
+        let isRunning = false;
+
+        const display = document.getElementById('stopwatch');
+        const startBtn = document.getElementById('start-btn');
+        const logBtn = document.getElementById('log-btn');
+
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function toggleTimer() {
+            if (isRunning) {
+                // Pause
+                clearInterval(timerInterval);
+                isRunning = false;
+                startBtn.innerText = "RESUME";
+                startBtn.classList.replace('bg-red-500', 'bg-violet-600');
+                startBtn.classList.remove('hover:bg-red-600');
+                
+                // Enable Log button
+                if (elapsedTime > 0) {
+                    logBtn.disabled = false;
+                    logBtn.classList.replace('bg-slate-100', 'bg-slate-800');
+                    logBtn.classList.replace('text-slate-400', 'text-white');
+                    logBtn.classList.replace('cursor-not-allowed', 'hover:bg-slate-700');
+                }
+            } else {
+                // Start
+                startTime = Date.now() - elapsedTime;
+                timerInterval = setInterval(() => {
+                    elapsedTime = Date.now() - startTime;
+                    display.innerText = formatTime(elapsedTime);
+                }, 1000);
+                
+                isRunning = true;
+                startBtn.innerText = "PAUSE";
+                startBtn.classList.replace('bg-violet-600', 'bg-red-500');
+                startBtn.classList.add('hover:bg-red-600');
+                
+                // Disable Log button while running
+                logBtn.disabled = true;
+                logBtn.classList.replace('bg-slate-800', 'bg-slate-100');
+                logBtn.classList.replace('text-white', 'text-slate-400');
+                logBtn.classList.replace('hover:bg-slate-700', 'cursor-not-allowed');
+            }
+        }
+
+        function logSession() {
+            const topic = document.getElementById('session-topic').value || "Untitled Session";
+            const timeString = formatTime(elapsedTime);
+            
+            // Generate Date String
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) + ' at ' + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+            const logList = document.getElementById('log-list');
+            const emptyState = document.getElementById('empty-log');
+            if (emptyState) emptyState.remove();
+
+            const entry = document.createElement('div');
+            entry.className = "flex items-center justify-between p-4 bg-slate-50 border border-slate-100 rounded-xl animate-[fadeIn_0.3s_ease-out]";
+            entry.innerHTML = `
+                <div>
+                    <h4 class="font-bold text-slate-800">${topic}</h4>
+                    <p class="text-xs text-slate-400 mt-1">${dateStr}</p>
+                </div>
+                <div class="bg-violet-100 text-violet-700 font-mono font-bold px-4 py-2 rounded-lg text-sm shadow-sm">
+                    + ${timeString}
+                </div>
+            `;
+            
+            logList.prepend(entry);
+
+            // Reset Timer
+            elapsedTime = 0;
+            display.innerText = "00:00:00";
+            document.getElementById('session-topic').value = '';
+            
+            logBtn.disabled = true;
+            logBtn.classList.replace('bg-slate-800', 'bg-slate-100');
+            logBtn.classList.replace('text-white', 'text-slate-400');
+            logBtn.classList.replace('hover:bg-slate-700', 'cursor-not-allowed');
+            startBtn.innerText = "START";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ALevelHelp | Resource Library</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="/assets/js/userReplace.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/assets/js/hashtagProto.js" defer></script>
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/envCheck.js"></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/eSite.js" defer></script>
+    <script>const PAGE_ID = "alevel_resources";</script>
+    <script src="/assets/js/sessionManager.js" defer></script>
+    <script src="/assets/js/resourceErrorPopup.js" defer></script>
+    <script src="/autoSafe/js/mainInput.js" defer></script>
+    <script src="/assets/js/deviceCheck.js" defer></script>
+    <script src="/assets/js/timeCheck.js" defer></script>
+    <script src="/myaccount/js/timeRecords.js" defer></script>
+    <script src="/assets/js/services.js"></script>
+    <script src="/assets/js/checkForLoggedInHash_Resources.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <script src="/assets/js/checkCookieConsent.js"></script>
+    <script src="/assets/js/banner.js" defer></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+    <script src="/assets/js/cookieConsent.js"></script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background:
+                radial-gradient(circle at top right, rgba(168, 85, 247, 0.10), transparent 28%),
+                radial-gradient(circle at bottom left, rgba(236, 72, 153, 0.08), transparent 25%),
+                #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        @keyframes enter {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-enter { animation: enter 0.6s ease-out forwards; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+
+        img { -webkit-user-drag: none; user-select: none; pointer-events: none; }
+
+        .resource-card {
+            transition: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 38px -10px rgba(147, 51, 234, 0.18);
+            border-color: #d8b4fe;
+        }
+
+        .glass-panel {
+            background: rgba(255,255,255,0.78);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .hero-glow {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(168,85,247,0.16), transparent 20%),
+                radial-gradient(circle at 80% 30%, rgba(236,72,153,0.14), transparent 24%);
+        }
+
+        .search-shell {
+            background: rgba(255,255,255,0.78);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.7);
+            box-shadow: 0 18px 45px rgba(15,23,42,0.08);
+        }
+
+        .search-shell:focus-within {
+            box-shadow: 0 22px 50px rgba(147,51,234,0.14);
+        }
+
+        .image-fallback {
+            background:
+                linear-gradient(135deg, rgba(248,250,252,1), rgba(241,245,249,1));
+        }
+
+        .private-overlay {
+            background: linear-gradient(to top, rgba(15,23,42,0.82), rgba(15,23,42,0.18));
+        }
+    </style>
+</head>
+
+<body class="flex flex-col min-h-screen text-slate-900 bg-[#F6F9FC]">
+
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-purple-100/60 rounded-full blur-3xl opacity-60"></div>
+        <div class="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-pink-100/60 rounded-full blur-3xl opacity-60"></div>
+    </div>
+
+    <header class="relative pt-32 pb-14 overflow-visible z-10">
+        <div class="hero-glow"></div>
+
+        <div class="max-w-[90rem] mx-auto px-6">
+            <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
+
+                <div class="w-full animate-enter z-20">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-100 shadow-sm text-purple-700 text-xs font-bold uppercase tracking-widest mb-8">
+                        <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+                        A-Level & UCAS Archive
+                    </div>
+
+                    <h1 class="text-5xl md:text-7xl font-black text-slate-900 mb-6 tracking-tight leading-[1.02] max-w-4xl">
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-fuchsia-500 to-pink-600">
+                            Welcome to the Resource Vault.
+                        </span>
+                    </h1>
+
+                    <p class="text-lg text-slate-500 mb-10 max-w-xl leading-relaxed font-medium">
+                        Advanced materials for Year 12 & 13. Access A* exemplar essays, deep-dive revision notes, and university application guides.
+                    </p>
+                </div>
+
+                <div class="hidden lg:flex justify-center items-center relative animate-enter z-10" style="animation-delay: 0.2s;">
+                    <div class="absolute w-[520px] h-[520px] border border-purple-100/80 rounded-full animate-[spin_60s_linear_infinite]"></div>
+                    <div class="absolute w-[420px] h-[420px] border border-pink-100/70 rounded-full animate-[spin_40s_linear_infinite_reverse]"></div>
+                    <div class="relative animate-float">
+                        <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                             alt="A-Level Library"
+                             class="w-[500px] h-auto rounded-[3rem] shadow-[0_30px_80px_rgba(15,23,42,0.18)] rotate-[3deg] border-[12px] border-white z-10 relative">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="relative z-20 px-6 -mt-4 mb-6">
+        <div class="max-w-4xl mx-auto">
+            <div class="search-shell rounded-[2rem] p-2">
+                <div class="relative flex items-center">
+                    <div class="pl-6 text-slate-400 transition-colors">
+                        <i class="fas fa-search text-xl"></i>
+                    </div>
+                    <input
+                        type="text"
+                        id="searchInput"
+                        onkeyup="filterResources()"
+                        class="w-full bg-transparent border-none px-6 py-4 text-lg text-slate-800 placeholder-slate-400 focus:ring-0 outline-none font-medium"
+                        placeholder="Search 'Psychology AQA', 'Mechanics', or 'UCAS'..."
+                    >
+                    <button type="button" class="hidden md:block mr-2 bg-purple-600 text-white px-8 py-3 rounded-full font-bold hover:bg-purple-700 transition-all shadow-lg shadow-purple-500/20">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="flex-grow py-10 relative z-10">
+        <div class="max-w-[95rem] mx-auto px-6">
+
+            <div id="global-banner-marker"></div>
+
+            <div id="resource-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                <div class="col-span-full flex flex-col items-center justify-center py-24">
+                    <div class="w-16 h-16 border-4 border-slate-200 border-t-purple-600 rounded-full animate-spin mb-6"></div>
+                    <p class="text-slate-400 font-bold uppercase tracking-widest text-xs animate-pulse">Loading Advanced Content...</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="report-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-white w-full md:w-1/2 max-w-4xl h-[80vh] rounded-[2rem] shadow-2xl relative overflow-hidden animate-enter flex flex-col">
+            <div class="flex items-center justify-between p-6 border-b border-slate-100">
+                <h3 class="font-bold text-slate-800 text-lg">Report Content</h3>
+                <button onclick="closeReportModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <iframe id="report-iframe" class="flex-grow w-full border-none bg-slate-50" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+  const WORKER = "https://api.studybase.site";
+
+  let openMode = "public";
+  let allResources = [];
+  window.SB_RESOURCE_OPEN_MODE = "unknown";
+
+  function setBannerResourceMode(mode) {
+    window.SB_RESOURCE_OPEN_MODE = mode;
+    window.dispatchEvent(
+      new CustomEvent("sb:resource-mode-changed", {
+        detail: { mode }
+      })
+    );
+  }
+
+  const RESOURCE_DATA_BASE = "/assets/resourceData/alevel";
+  const ROOT_FOLDER = "000";
+
+  let folderSchema = [];
+  let resourceMain = [];
+  let folderHistory = [];
+  let currentFolderId = ROOT_FOLDER;
+
+  async function loadPublicResourceData() {
+    const [schemaRes, mainRes] = await Promise.all([
+      fetch(`${RESOURCE_DATA_BASE}/schema.json`, { cache: "no-store" }),
+      fetch(`${RESOURCE_DATA_BASE}/main.json`, { cache: "no-store" }),
+    ]);
+
+    folderSchema = await schemaRes.json();
+    resourceMain = await mainRes.json();
+
+    folderSchema = (folderSchema || []).map(f => ({
+      ...f,
+      folderId: String(f.folderId),
+      folder: String(f.folder ?? ROOT_FOLDER),
+      iconurl: f.iconurl || f.icon || "pass",
+    }));
+
+    resourceMain = (resourceMain || []).map(r => ({
+      ...r,
+      folderLoc: String(r.folderLoc ?? ROOT_FOLDER),
+      openInNewTab: !!r.openInNewTab,
+    }));
+
+    currentFolderId = ROOT_FOLDER;
+    folderHistory = [];
+  }
+
+  function getVisiblePublicItems(folderId) {
+    const fid = String(folderId);
+
+    const backItem = (fid !== ROOT_FOLDER)
+      ? [{ __type: "back", name: "Back", iconurl: "pass" }]
+      : [];
+
+    const foldersHere = folderSchema
+      .filter(f => f.folder === fid)
+      .map(f => ({
+        __type: "folder",
+        folderId: f.folderId,
+        name: f.name,
+        iconurl: f.iconurl || "pass",
+      }));
+
+    const resourcesHere = resourceMain
+      .filter(r => r.folderLoc === fid)
+      .map(r => ({
+        __type: "resource",
+        name: r.name,
+        iconurl: r.iconurl || "pass",
+        url: r.url,
+        openInNewTab: !!r.openInNewTab,
+      }));
+
+    return backItem.concat(foldersHere, resourcesHere);
+  }
+
+  async function loadResources() {
+    const u = localStorage.getItem("gh_username");
+    const p = localStorage.getItem("gh_password");
+    const d = localStorage.getItem("gh_device");
+
+    try {
+      const res = await fetch(WORKER + "/resources/list", {
+        method: "POST",
+        body: JSON.stringify({ username: u, password: p, deviceCode: d }),
+      }).then(r => r.json());
+
+      let list = res.resources || [];
+
+      if (list.length > 0 && list[0].name === "DATA_Public") {
+        openMode = "public";
+        setBannerResourceMode("public");
+        await loadPublicResourceData();
+        allResources = getVisiblePublicItems(currentFolderId);
+        renderGrid(allResources);
+        return;
+      }
+
+      openMode = "access_only";
+      setBannerResourceMode("access_only");
+      allResources = list;
+      renderGrid(allResources);
+    } catch (error) {
+      console.error(error);
+      setBannerResourceMode("public");
+      document.getElementById("resource-grid").innerHTML = `
+        <div class="col-span-full text-center py-20 bg-red-50 rounded-[3rem] border border-red-100">
+          <p class="text-red-600 font-bold mb-4">Database Connection Failed</p>
+          <button onclick="loadResources()" class="px-8 py-3 bg-red-600 text-white rounded-xl font-bold">Retry</button>
+        </div>
+      `;
+    }
+  }
+
+  function createFallbackContent(displayName, verifiedHtml, extraClasses = "") {
+    return `
+      <div class="image-fallback w-full h-full flex items-center justify-center p-4 ${extraClasses}">
+        <h3 class="font-bold text-sm text-slate-700 text-center leading-snug group-hover:text-blue-600 transition-colors">
+          ${displayName}${verifiedHtml}
+        </h3>
+      </div>
+    `;
+  }
+
+  function handleImageError(img) {
+    const fallback = img.closest("[data-resource-visual]");
+    if (!fallback) return;
+
+    fallback.innerHTML = fallback.dataset.fallback || `
+      <div class="image-fallback w-full h-full flex items-center justify-center p-4">
+        <h3 class="font-bold text-sm text-slate-700 text-center leading-snug">Resource</h3>
+      </div>
+    `;
+  }
+
+  function renderGrid(items) {
+    const grid = document.getElementById("resource-grid");
+    grid.innerHTML = "";
+
+    if (openMode === "public") {
+      grid.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6";
+    } else {
+      grid.className = "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4";
+    }
+
+    if (!items || items.length === 0) {
+      grid.innerHTML = `<div class="col-span-full text-center py-20"><p class="text-slate-400 font-bold text-lg">No resources found.</p></div>`;
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+
+    items.forEach((item, index) => {
+      let displayName = item.name;
+      let verifiedHtml = "";
+      let isPopular = false;
+      let isRising = false;
+      let isBeta = false;
+      let isOriginal = false;
+
+      if (displayName.includes("-v-")) {
+        displayName = displayName.replace("-v-", "");
+        verifiedHtml = ` <i class="fas fa-check-circle text-blue-500 ml-1" title="Verified Resource"></i>`;
+      }
+
+      if (displayName.includes("-p-")) {
+        displayName = displayName.replace("-p-", "");
+        isPopular = true;
+      }
+
+      if (displayName.includes("-r-")) {
+        displayName = displayName.replace("-r-", "");
+        isRising = true;
+      }
+
+      if (displayName.includes("-b-")) {
+        displayName = displayName.replace("-b-", "");
+        isBeta = true;
+      }
+
+      if (displayName.includes("-o-")) {
+        displayName = displayName.replace("-o-", "");
+        isOriginal = true;
+      }
+
+      let imageUrl = item.iconurl;
+      let tagHtml = "";
+
+      if (openMode === "public" && item.__type === "folder") {
+        tagHtml = `
+          <div class="absolute top-2 left-2 z-30 bg-purple-600/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-purple-500/40">
+            <i class="fas fa-folder"></i> Folder
+          </div>`;
+        if (imageUrl === "pass") imageUrl = "/assets/g-icons/folder.jpg";
+
+      } else if (openMode === "public" && item.__type === "back") {
+        tagHtml = `
+          <div class="absolute top-2 left-2 z-30 bg-slate-900/90 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-white/10">
+            <i class="fas fa-arrow-left"></i> Back
+          </div>`;
+        if (imageUrl === "pass") imageUrl = "/assets/siteIcons/back.png";
+
+      } else {
+        if (isBeta) {
+          if (imageUrl === "pass") imageUrl = "/assets/g-icons/beta.jpg";
+          tagHtml = `
+            <div class="absolute top-2 left-2 z-30 bg-purple-600/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-purple-500/50">
+              <i class="fas fa-lock"></i> Beta
+            </div>`;
+        }
+
+        else if (isPopular) {
+          if (imageUrl === "pass") imageUrl = "/assets/g-icons/popular.jpg";
+          tagHtml = `
+            <div class="absolute top-2 left-2 z-30 bg-orange-500/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-orange-400/50">
+              <i class="fas fa-fire animate-pulse"></i> Popular
+            </div>`;
+        }
+
+        else if (isOriginal) {
+          if (imageUrl === "pass") imageUrl = "/assets/g-icons/original.jpg";
+          tagHtml = `
+            <div class="absolute top-2 left-2 z-30 bg-emerald-600/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-emerald-500/50">
+              <i class="fas fa-star"></i> Site Original
+            </div>`;
+        }
+
+        else if (isRising) {
+          if (imageUrl === "pass") imageUrl = "/assets/g-icons/rising.jpg";
+          tagHtml = `
+            <div class="absolute top-2 left-2 z-30 bg-blue-500/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-blue-400/50">
+              <i class="fas fa-arrow-trend-up"></i> Rising
+            </div>`;
+        }
+      }
+
+      const card = document.createElement("div");
+      const shouldAnimate = index < 24;
+      let contentHtml = "";
+
+      if (openMode === "public") {
+        card.className =
+          "resource-card group bg-white/80 backdrop-blur-sm rounded-[1.75rem] p-4 border border-slate-200 cursor-pointer flex flex-col h-full shadow-sm relative";
+        card.style.contentVisibility = "auto";
+        card.style.containIntrinsicSize = "1px 300px";
+
+        if (imageUrl === "pass") {
+          contentHtml = `
+            ${tagHtml}
+            <div class="flex-grow flex items-center justify-center min-h-[10rem] p-3 rounded-2xl image-fallback border border-slate-100">
+              <h3 class="font-bold text-sm text-slate-700 text-center leading-snug group-hover:text-blue-600 transition-colors">
+                ${displayName}${verifiedHtml}
+              </h3>
+            </div>
+          `;
+        } else {
+          const fallbackHtml = `
+            ${tagHtml}
+            ${createFallbackContent(displayName, verifiedHtml, "rounded-2xl border border-slate-100")}
+          `;
+
+          contentHtml = `
+            <div data-resource-visual data-fallback='${fallbackHtml.replace(/'/g, "&apos;")}' class="aspect-square w-full overflow-hidden rounded-2xl bg-slate-50 relative mb-4 border border-slate-100">
+              ${tagHtml}
+              <img src="${imageUrl}" onerror="handleImageError(this)" class="w-full h-full object-cover relative z-10 group-hover:scale-110 transition-transform duration-500" loading="lazy">
+              <div class="absolute inset-0 bg-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity z-20 flex items-center justify-center backdrop-blur-[2px]">
+                <div class="bg-white text-blue-600 px-4 py-2 rounded-full text-xs font-bold transform scale-90 group-hover:scale-100 transition-transform shadow-xl">View</div>
+              </div>
+            </div>
+            <div class="px-1 text-center flex-grow flex flex-col justify-start">
+              <h3 class="font-bold text-sm text-slate-700 leading-snug group-hover:text-blue-600 transition-colors line-clamp-2">
+                ${displayName}${verifiedHtml}
+              </h3>
+            </div>
+          `;
+        }
+      } else {
+        card.className =
+          "resource-card group aspect-square bg-white rounded-2xl border border-slate-200 cursor-pointer shadow-sm relative overflow-hidden flex items-center justify-center";
+
+        if (imageUrl === "pass") {
+          contentHtml = `
+            <div class="p-3 w-full h-full flex items-center justify-center image-fallback">
+              <h3 class="font-bold text-sm text-slate-700 text-center leading-snug group-hover:text-blue-600 transition-colors">
+                ${displayName}${verifiedHtml}
+              </h3>
+            </div>
+          `;
+        } else {
+          const hoverVerifiedHtml = verifiedHtml
+            ? ` <i class="fas fa-check-circle text-blue-400 ml-1" title="Verified Resource"></i>`
+            : "";
+
+          const fallbackHtml = createFallbackContent(displayName, verifiedHtml);
+
+          contentHtml = `
+            ${tagHtml}
+            <div data-resource-visual data-fallback='${fallbackHtml.replace(/'/g, "&apos;")}' class="absolute inset-0">
+              <img src="${imageUrl}" onerror="handleImageError(this)" class="absolute inset-0 w-full h-full object-cover z-10 group-hover:scale-110 transition-transform duration-500" loading="lazy">
+              <div class="absolute inset-0 private-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center p-3 backdrop-blur-[1px]">
+                <h3 class="font-bold text-sm text-white text-center leading-snug transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                  ${displayName}${hoverVerifiedHtml}
+                </h3>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      if (shouldAnimate) {
+        card.classList.add("animate-enter");
+        card.style.animationDelay = `${index * 40}ms`;
+      }
+
+      card.onclick = () => handleClick(item);
+      card.innerHTML = contentHtml;
+      fragment.appendChild(card);
+    });
+
+    grid.appendChild(fragment);
+  }
+
+  const SB_SEARCH_HISTORY_KEY = "sb_searchHistory";
+  const SB_SAVE_SEARCH_HISTORY_TOGGLE = "sb_saveSearchHistory";
+  let _sbSearchSaveTimer = null;
+
+  function sbShouldSaveSearchHistory() {
+    const v = (localStorage.getItem(SB_SAVE_SEARCH_HISTORY_TOGGLE) || "").toLowerCase().trim();
+    if (v === "false") return false;
+    return true;
+  }
+
+  function sbReadSearchHistory() {
+    try {
+      const raw = localStorage.getItem(SB_SEARCH_HISTORY_KEY);
+      if (!raw) return [];
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function sbWriteSearchHistory(arr) {
+    try {
+      localStorage.setItem(SB_SEARCH_HISTORY_KEY, JSON.stringify(arr));
+    } catch {}
+  }
+
+  function sbQueueSaveSearchTerm(term) {
+    if (!sbShouldSaveSearchHistory()) return;
+
+    const t = (term || "").trim();
+    if (t.length < 2) return;
+
+    clearTimeout(_sbSearchSaveTimer);
+    _sbSearchSaveTimer = setTimeout(() => {
+      const history = sbReadSearchHistory();
+      const lower = t.toLowerCase();
+      const cleaned = history.filter(x => String(x).toLowerCase() !== lower);
+      cleaned.unshift(t);
+      const capped = cleaned.slice(0, 50);
+      sbWriteSearchHistory(capped);
+    }, 450);
+  }
+
+  function filterResources() {
+    const raw = (document.getElementById("searchInput").value || "").trim();
+    const query = raw.toLowerCase();
+
+    sbQueueSaveSearchTerm(raw);
+
+    if (openMode === "public") {
+      const baseItems = getVisiblePublicItems(currentFolderId);
+
+      if (!query) {
+        allResources = baseItems;
+        renderGrid(allResources);
+        return;
+      }
+
+      const filtered = baseItems.filter(it => {
+        if (it.__type === "back") return true;
+        return (it.name || "").toLowerCase().includes(query);
+      });
+
+      renderGrid(filtered);
+      return;
+    }
+
+    const filtered = (allResources || []).filter(item =>
+      (item.name || "").toLowerCase().includes(query)
+    );
+    renderGrid(filtered);
+  }
+
+  function handleClick(item) {
+    if (openMode === "public") {
+      if (item.__type === "back") {
+        const prev = folderHistory.pop();
+        currentFolderId = prev ?? ROOT_FOLDER;
+        allResources = getVisiblePublicItems(currentFolderId);
+        renderGrid(allResources);
+        return;
+      }
+
+      if (item.__type === "folder") {
+        folderHistory.push(currentFolderId);
+        currentFolderId = String(item.folderId);
+        allResources = getVisiblePublicItems(currentFolderId);
+        renderGrid(allResources);
+        return;
+      }
+
+      const target = (item.url || "").toString().trim();
+      if (!target) return;
+
+      if (item.openInNewTab) window.open(target, "_blank");
+      else window.location.href = target;
+
+      return;
+    }
+
+    const encoded = btoa(item.name);
+    window.location.href = "material.html?material-ID=" + encoded + "#primary-access";
+  }
+
+  function openReportModal() {
+    document.getElementById("report-modal").classList.remove("hidden");
+    document.getElementById("report-iframe").src =
+      `/report.html?pageUrl=${encodeURIComponent(window.location.href)}`;
+  }
+
+  function closeReportModal() {
+    document.getElementById("report-modal").classList.add("hidden");
+    document.getElementById("report-iframe").src = "";
+  }
+
+  loadResources();
+</script>
+</body>
+</html>

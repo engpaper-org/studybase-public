@@ -1,0 +1,62 @@
+[
+  {
+    "name": "BBC Bitesize A-Level Maths",
+    "iconurl": "/assets/app-icons/bcbite.jpg",
+    "url": "https://www.bbc.co.uk/bitesize",
+    "openInNewTab": true,
+    "folderLoc": "000"
+  },
+  {
+    "name": "Maths Genie (A-Level)",
+    "iconurl": "/assets/app-icons/mathsgenie.jpg",
+    "url": "https://www.mathsgenie.co.uk/",
+    "openInNewTab": true,
+    "folderLoc": "000"
+  },
+
+  {
+    "name": "AQA A-Level Maths Past Papers",
+    "iconurl": "/assets/app-icons/aqa.jpg",
+    "url": "https://www.aqa.org.uk/subjects/mathematics/as-and-a-level/mathematics-7357/assessment-resources",
+    "openInNewTab": true,
+    "folderLoc": "010"
+  },
+  {
+    "name": "Edexcel A-Level Maths Past Papers",
+    "iconurl": "/assets/app-icons/pearson.jpg",
+    "url": "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/mathematics-2017.coursematerials.html#filterQuery=category:Pearson-UK:Category%2FExam-materials",
+    "openInNewTab": true,
+    "folderLoc": "010"
+  },
+
+  {
+    "name": "AQA A-Level Physics Past Papers",
+    "iconurl": "/assets/app-icons/aqa.jpg",
+    "url": "https://www.aqa.org.uk/subjects/science/as-and-a-level/physics-7408/assessment-resources",
+    "openInNewTab": true,
+    "folderLoc": "011"
+  },
+
+  {
+    "name": "OCR A-Level Physics Specification",
+    "iconurl": "/assets/app-icons/ocr.jpg",
+    "url": "https://www.ocr.org.uk/qualifications/as-and-a-level/physics-a-h556-h556-from-2015/",
+    "openInNewTab": true,
+    "folderLoc": "002"
+  },
+  {
+    "name": "AQA A-Level Physics Specification",
+    "iconurl": "/assets/app-icons/aqa.jpg",
+    "url": "https://www.aqa.org.uk/subjects/science/as-and-a-level/physics-7408/specification-at-a-glance",
+    "openInNewTab": true,
+    "folderLoc": "002"
+  },
+
+  {
+    "name": "Science Shorts (YouTube)",
+    "iconurl": "/assets/app-icons/youtube.jpg",
+    "url": "https://www.youtube.com/@ScienceShorts",
+    "openInNewTab": true,
+    "folderLoc": "003"
+  }
+]

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellbeing Hub | GCSEHelp</title>
+
+    <!--Cookie consent banner and google analytics-->
+    <script src="/assets/js/checkCookieConsent.js"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+
+        // 1. Determine current state
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        // 2. Set default based on that state
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+
+    <script src="/assets/js/cookieConsent.js"></script>
+    <!-- End of consent and analytics -->
+
+    
+    <link rel="icon" href="https://static-assets.papersweb-assets.site/siteIcons/gcsehelp.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/loginAnimationCheck.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <style>
+        /* This handles the actual size change */
+        @keyframes breath {
+            0%, 100% { transform: scale(0.8); }
+            50% { transform: scale(1.4); }
+        }
+        
+        /* This handles the text change synchronized with the circle */
+        @keyframes textChange {
+            0%, 45%, 100% { content: "Inhale"; color: #6366f1; }
+            50%, 95% { content: "Exhale"; color: #4338ca; }
+        }
+
+        .animate-breath {
+            animation: breath 8s ease-in-out infinite;
+        }
+
+        .breath-text::after {
+            content: "Inhale";
+            animation: textChange 8s ease-in-out infinite;
+        }
+
+        .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-white text-slate-800">
+
+    <header class="relative bg-gradient-to-b from-indigo-50 to-white pt-20 pb-16 overflow-hidden text-center">
+        <div class="max-w-7xl mx-auto px-4 relative z-10">
+            <span class="inline-block py-1 px-3 rounded-full bg-indigo-100 text-indigo-700 text-sm font-semibold mb-6 uppercase tracking-wider">Mindfulness</span>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 mb-6 tracking-tight">
+                Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-500">Calm Center.</span>
+            </h1>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                Take a moment to reset. A calm mind retains information much better than a stressed one.
+            </p>
+        </div>
+    </header>
+
+    <section class="py-12 bg-white">
+        <div class="max-w-3xl mx-auto px-4 text-center bg-slate-50 rounded-[3rem] p-16 border border-indigo-100 shadow-sm relative overflow-hidden">
+            <h2 class="text-2xl font-bold mb-2 text-slate-800 relative z-10">Box Breathing</h2>
+            <p class="text-slate-500 mb-12 relative z-10">Sync your breath with the circle's movement.</p>
+            
+            <div class="relative flex items-center justify-center h-80 z-10">
+                <div class="absolute w-48 h-48 bg-indigo-200 rounded-full animate-breath blur-2xl opacity-40"></div>
+                
+                <div class="animate-breath w-40 h-40 bg-white border-8 border-indigo-500 rounded-full flex items-center justify-center shadow-2xl z-20">
+                    <span class="breath-text font-black uppercase tracking-widest text-sm"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-8">
+            <div class="p-8 bg-white border border-slate-100 rounded-3xl shadow-sm hover:shadow-md transition-all">
+                <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner">💤</div>
+                <h3 class="text-xl font-bold mb-3">Priority: Sleep</h3>
+                <p class="text-slate-500 leading-relaxed">Sleep is when your brain moves info from short-term to long-term memory. 8 hours is your best revision tool.</p>
+            </div>
+            <div class="p-8 bg-white border border-slate-100 rounded-3xl shadow-sm hover:shadow-md transition-all">
+                <div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner">🚶‍♀️</div>
+                <h3 class="text-xl font-bold mb-3">Movement Breaks</h3>
+                <p class="text-slate-500 leading-relaxed">A 15-minute walk clears cortisol (the stress hormone) from your system, allowing you to focus again.</p>
+            </div>
+            <div class="p-8 bg-white border border-slate-100 rounded-3xl shadow-sm hover:shadow-md transition-all">
+                <div class="w-12 h-12 bg-purple-50 rounded-2xl flex items-center justify-center text-2xl mb-6 shadow-inner">📵</div>
+                <h3 class="text-xl font-bold mb-3">Phone Boundaries</h3>
+                <p class="text-slate-500 leading-relaxed">Doomscrolling drains your mental energy. Try leaving your phone in another room during study blocks.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-slate-900 rounded-t-[4rem] text-white">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-4 tracking-tight">How are you feeling?</h2>
+            <p class="text-slate-400 mb-12">Select your current vibe for a quick piece of advice.</p>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="setMood('stressed')" class="px-8 py-4 bg-white/5 hover:bg-white/10 rounded-2xl transition border border-white/10 font-bold">😫 Stressed</button>
+                <button onclick="setMood('tired')" class="px-8 py-4 bg-white/5 hover:bg-white/10 rounded-2xl transition border border-white/10 font-bold">😴 Exhausted</button>
+                <button onclick="setMood('productive')" class="px-8 py-4 bg-white/5 hover:bg-white/10 rounded-2xl transition border border-white/10 font-bold">🔥 Productive</button>
+                <button onclick="setMood('overwhelmed')" class="px-8 py-4 bg-white/5 hover:bg-white/10 rounded-2xl transition border border-white/10 font-bold">😵 Overwhelmed</button>
+            </div>
+            
+            <div id="moodFeedback" class="mt-16 text-2xl font-semibold text-indigo-400 max-w-2xl mx-auto italic min-h-[80px]"></div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-white py-12 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="text-2xl font-bold mb-6">GCSEHelp.site</div>
+            <p class="text-slate-500 text-sm">&copy; 2025 GCSEHelp. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function setMood(mood) {
+            const feedback = document.getElementById('moodFeedback');
+            const responses = {
+                stressed: "Stop. Breathe for 2 minutes. Whatever is worrying you is more manageable when you aren't in 'fight or flight' mode.",
+                tired: "Your brain is full. A 20-minute power nap or an early night will do more for your grades than one more hour of reading.",
+                productive: "Keep that momentum! Work on your hardest topic now while your energy is high.",
+                overwhelmed: "Break it down. Don't look at the whole subject. Just pick one 5-minute task and do that. Then stop."
+            };
+            feedback.innerHTML = `<div class="fade-in">${responses[mood]}</div>`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "pageId": "alevel_computing",
+  "badgeText": "A-Level Subject Hub",
+  "badgeClass": "bg-cyan-50 border-cyan-100 text-cyan-700",
+  "highlightClass": "bg-gradient-to-r from-cyan-700 to-blue-700",
+  "title": "Computer Science.",
+  "highlight": "Architected.",
+  "description": "Study computational theory, advanced programming and system design with analytical precision.",
+  "heroImage": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f",
+  "sections": [
+    {
+      "title": "Programming and Algorithms",
+      "text": "Object-oriented programming, recursion, data structures and algorithm efficiency."
+    },
+    {
+      "title": "Computer Systems",
+      "text": "Processors, assembly language, memory management and virtual machines."
+    },
+    {
+      "title": "Theory of Computation",
+      "text": "Finite state machines, Turing machines, regular expressions and complexity."
+    },
+    {
+      "title": "Databases",
+      "text": "Relational databases, SQL, normalisation and data modelling."
+    },
+    {
+      "title": "Networks and Cybersecurity",
+      "text": "Protocols, encryption, authentication and penetration testing principles."
+    },
+    {
+      "title": "NEA Project",
+      "text": "Independent programming project involving analysis, design, implementation and evaluation."
+    }
+  ],
+  "usefulLinks": [
+    { "title": "OCR A-Level Computer Science Specification", "url": "https://www.ocr.org.uk/qualifications/as-and-a-level/computer-science-h046-h446-from-2015/" }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "pageId": "gcse_english",
+  "badgeText": "GCSE Subject Hub",
+  "badgeClass": "bg-red-50 border-red-100 text-red-700",
+  "highlightClass": "bg-gradient-to-r from-red-600 to-rose-600",
+  "title": "English Language.",
+  "highlight": "Mastered.",
+  "description": "Develop analytical reading and confident writing skills across fiction and non-fiction texts.",
+  "heroImage": "https://images.unsplash.com/photo-1455390582262-044cdead277a",
+  "sections": [
+    { "title": "Reading Skills", "text": "Inference, language analysis, structural analysis, evaluation and comparison of texts." },
+    { "title": "Creative Writing", "text": "Narrative and descriptive writing using ambitious vocabulary, varied sentence structures and accurate punctuation." },
+    { "title": "Transactional Writing", "text": "Articles, speeches, letters and reports with clear purpose, audience and tone." },
+    { "title": "Exam Technique", "text": "Timing strategies, mark scheme awareness (AO1–AO6) and planning effectively." }
+  ],
+  "usefulLinks": [
+    { "title": "AQA English Language Specification", "url": "https://www.aqa.org.uk/subjects/english/gcse/english-language-8700" }
+  ]
+}

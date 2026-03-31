@@ -1,0 +1,63 @@
+const IMAGES = [
+        "/aS/assets/images/loading1.jpg",
+        "/aS/assets/images/loading2.jpg",
+        "/aS/assets/images/loading3.jpg",
+        "/aS/assets/images/loading4.jpg",
+        "/aS/assets/images/loading5.jpg",
+        "/aS/assets/images/loading6.jpg",
+        "/aS/assets/images/loading7.jpg",
+        "/aS/assets/images/loading8.jpg",
+        "/aS/assets/images/loading9.jpg",
+        "/aS/assets/images/loading10.jpg"
+      ];
+
+
+const TEXT_DATA = {
+  breaks: [
+    "Been on a while? Step away for a bit — even a short break helps.",
+    "If you said one game and you’re still here, that’s your cue.",
+    "If it’s hard to stop, that’s usually when you should."
+  ],
+
+  credentials: [
+    "Don’t pass your login around — it’s meant for you.",
+    "If your account gets shared, it can get restricted.",
+    "If it’s already been shared, let us know at studybase.site/legal."
+  ],
+
+  safeguarding: [
+    "If something on here — or outside of it — is worrying you, tell us at studybase.site/legal and we’ll pass it on anonymously.",
+    "Worried about something? Report it at studybase.site/legal — we’ll forward it on anonymously.",
+    "Seen something concerning? Let us know at studybase.site/legal so it can be looked into."
+  ],
+
+  tips: [
+    "Set a timer before you start — it helps you stay in control.",
+    "If you’re stuck, step away and come back later.",
+    "Doing one thing properly beats rushing through loads."
+  ],
+
+  focus: [
+    "Too many tabs open? Close a few and focus on one thing.",
+    "You’ll get more done focusing for 10 minutes than drifting for 30.",
+    "Focus first, then relax after."
+  ],
+
+  time: [
+    "Time goes quickly on here — check in with yourself.",
+    "Set a limit before you start — it’s easier than stopping later.",
+    "A quick session can turn into an hour. Keep track of it."
+  ],
+
+  fairuse: [
+    "Use the site properly so it stays working for everyone.",
+    "Trying to bypass systems can lead to access being removed.",
+    "Keep things fair — it helps keep everything running smoothly."
+  ],
+
+  responsibility: [
+    "Use it in a way you’d be fine explaining if asked.",
+    "If you have to hide it, it’s probably not the right time.",
+    "Be smart about when and where you’re on here."
+  ]
+};

@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyBase | Login</title>
+  <link rel="icon" href="/assets/siteIcons/main.ico">
+  <script src="/assets/js/iframeCheck.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>const SHOW_CONSENT_BANNER = false;</script>
+  <script src="/assets/js/checkCookieConsent.js"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+    gtag('consent', 'default', {
+      'ad_storage': hasConsented ? 'granted' : 'denied',
+      'ad_user_data': hasConsented ? 'granted' : 'denied',
+      'ad_personalization': hasConsented ? 'granted' : 'denied',
+      'analytics_storage': hasConsented ? 'granted' : 'denied'
+    });
+    gtag('js', new Date());
+    gtag('config', 'G-N7LHC0S1T1');
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+  <script src="/assets/js/cookieConsent.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .bg-mesh {
+      background-color: #f8fafc;
+      background-image:
+        radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.10) 0px, transparent 55%),
+        radial-gradient(at 100% 0%, rgba(147, 51, 234, 0.06) 0px, transparent 55%),
+        radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.10) 0px, transparent 55%),
+        radial-gradient(at 0% 100%, rgba(147, 51, 234, 0.06) 0px, transparent 55%);
+      background-size: 100% 100%;
+    }
+    .bg-grid {
+      background-size: 44px 44px;
+      background-image:
+        linear-gradient(to right, rgba(148, 163, 184, 0.10) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.10) 1px, transparent 1px);
+    }
+    @keyframes rotation { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+    @keyframes pulseSoft { 0%,100% { opacity: .55; transform: scale(.98);} 50% { opacity: 1; transform: scale(1);} }
+    .loader-ring {
+      width: 52px;
+      height: 52px;
+      border: 5px solid #e2e8f0;
+      border-bottom-color: #2563eb;
+      border-radius: 9999px;
+      display: inline-block;
+      animation: rotation 1s linear infinite;
+    }
+    .status-pulse { animation: pulseSoft 1.6s ease-in-out infinite; }
+    .feature-card { opacity: 0; transform: translateY(12px) scale(.98); transition: opacity .45s ease, transform .45s ease; pointer-events: none; }
+    .feature-card.active { opacity: 1; transform: translateY(0) scale(1); }
+    .quick-digit {
+      width: 3.35rem;
+      height: 4rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 800;
+      border-radius: 1rem;
+      border: 1px solid rgb(203 213 225);
+      background: rgb(248 250 252);
+      color: rgb(15 23 42);
+      transition: all .18s ease;
+    }
+    .quick-digit:focus {
+      background: white;
+      border-color: rgb(59 130 246);
+      box-shadow: 0 0 0 4px rgba(59,130,246,.14);
+    }
+    :focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(37,99,235,.25); border-color: rgba(37,99,235,.85) !important; }
+    @media (prefers-reduced-motion: reduce) {
+      .loader-ring, .status-pulse { animation: none; }
+      .feature-card { transition: none; }
+      .animate-pulse { animation: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-mesh min-h-screen flex flex-col relative overflow-hidden text-slate-800 items-center justify-center">
+  <div class="absolute inset-0 bg-grid pointer-events-none z-0"></div>
+  <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-400/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-400/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+
+  <div class="w-full flex items-center justify-center p-4 relative z-10">
+    <div class="absolute top-[104px] left-4 right-4 mx-auto max-w-3xl hidden sm:block">
+      <div class="flex items-center justify-center gap-2 text-xs">
+        <div class="flex items-center gap-2">
+          <span id="stepDot1" class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+          <span id="stepLabel1" class="font-bold text-slate-700">Login</span>
+        </div>
+        <span class="text-slate-300">—</span>
+        <div class="flex items-center gap-2">
+          <span id="stepDot2" class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+          <span id="stepLabel2" class="font-bold text-slate-400">Verify device</span>
+        </div>
+        <span class="text-slate-300">—</span>
+        <div class="flex items-center gap-2">
+          <span id="stepDot3" class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+          <span id="stepLabel3" class="font-bold text-slate-400">Done</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="section-login" class="w-full max-w-md bg-white/85 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-2xl border border-white/60 transform transition-all">
+      <div class="text-center mb-7">
+        <div class="mx-auto w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center mb-4 shadow-sm">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3 1.343 3 3v2a2 2 0 01-2 2H8a2 2 0 01-2-2v-2c0-1.657 1.343-3 3-3m6 0V9a3 3 0 10-6 0v2m6 0H9"/>
+          </svg>
+        </div>
+        <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Sign in</h2>
+        <p class="text-slate-600 mt-2 text-sm">Use your StudyBase credentials to continue.</p>
+      </div>
+
+      <div class="space-y-5">
+        <div id="inlineError" class="hidden rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 font-semibold">Something went wrong.</div>
+
+        <div class="group">
+          <label for="inputUsername" class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2 ml-1 group-focus-within:text-blue-600 transition-colors">Username</label>
+          <input id="inputUsername" autocomplete="username" inputmode="text" placeholder="Enter your username" class="w-full px-5 py-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:bg-white focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500 transition-all duration-200">
+        </div>
+
+        <div class="group">
+          <div class="flex items-center justify-between mb-2 ml-1">
+            <label for="inputPassword" class="block text-xs font-bold text-slate-500 uppercase tracking-wide group-focus-within:text-blue-600 transition-colors">Password</label>
+            <button id="togglePassword" type="button" class="text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors">Show</button>
+          </div>
+          <input id="inputPassword" type="password" autocomplete="current-password" placeholder="••••••••" class="w-full px-5 py-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:bg-white focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500 transition-all duration-200">
+        </div>
+
+        <button id="loginButton" type="button" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-extrabold py-4 rounded-2xl shadow-lg shadow-blue-600/25 transform transition hover:-translate-y-0.5 active:translate-y-0 focus:ring-4 focus:ring-blue-500/30 disabled:opacity-60 disabled:cursor-not-allowed">
+          <span id="loginBtnText">Log In</span>
+          <span id="loginBtnSpinner" class="hidden ml-2 align-middle"><span class="inline-block w-4 h-4 rounded-full border-2 border-white/50 border-b-white animate-spin"></span></span>
+        </button>
+
+        <div class="pt-2 flex items-center justify-between text-xs text-slate-500">
+          <span>Protected by Cloudflare</span>
+          <span class="font-semibold text-slate-600">Study Base Security Checkpoint</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="section-device-check" class="hidden w-full max-w-lg bg-white/90 backdrop-blur-xl p-10 rounded-3xl shadow-2xl border border-white/60">
+      <div class="text-center">
+        <div class="mx-auto mb-6 w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
+          <div class="loader-ring"></div>
+        </div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-extrabold mb-4">
+          <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span> DEVICE CHECK
+        </div>
+        <h2 class="text-3xl font-extrabold text-slate-900 mb-3">Checking if device is verified…</h2>
+        <p class="text-slate-600 max-w-md mx-auto leading-relaxed">Please wait while we securely check whether this device has already been approved for your account.</p>
+        <div class="mt-6 inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm font-bold text-slate-700">
+          <span class="status-pulse inline-flex h-2.5 w-2.5 rounded-full bg-blue-600"></span>
+          <span id="checkingCodePreview">Device code: —</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="section-device-status" class="hidden w-full max-w-lg bg-white/90 backdrop-blur-xl p-10 rounded-3xl shadow-2xl border border-white/60">
+      <div class="text-center">
+        <div id="deviceStatusIconWrap" class="mx-auto mb-6 w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center">
+          <div id="deviceStatusIcon" class="text-4xl">🖥️</div>
+        </div>
+        <div id="deviceStatusBadge" class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-extrabold mb-4">
+          <span class="w-2 h-2 rounded-full bg-slate-500"></span> DEVICE STATUS
+        </div>
+        <h2 id="deviceStatusTitle" class="text-3xl font-extrabold text-slate-900 mb-3">Checking device…</h2>
+        <p id="deviceStatusText" class="text-slate-600 max-w-md mx-auto leading-relaxed">Please wait a moment.</p>
+        <div id="deviceStatusCode" class="mt-6 inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm font-bold text-slate-700">Device code: —</div>
+        <button id="launchAppBtn" type="button" class="hidden mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold py-4 rounded-2xl shadow-lg shadow-blue-600/25 transition-all">Launch app</button>
+      </div>
+    </div>
+
+    <div id="section-quick-login" class="hidden w-full max-w-lg bg-white/90 backdrop-blur-xl p-10 rounded-3xl shadow-2xl border border-white/60">
+      <div class="text-center">
+        <div class="mx-auto w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-6 text-3xl">⚡</div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-extrabold mb-4">
+          <span class="w-2 h-2 rounded-full bg-blue-600"></span> QUICK LOGIN
+        </div>
+        <h2 class="text-3xl font-extrabold text-slate-900 mb-3">Enter your 6 digit code</h2>
+        <p class="text-slate-600 max-w-md mx-auto leading-relaxed">
+          This device is already approved. Enter the Quick Login code you set earlier to continue without full device verification.
+        </p>
+
+        <div class="mt-8 flex items-center justify-center gap-2 sm:gap-3">
+          <input class="quick-digit" id="qlDigit0" type="password" inputmode="numeric" maxlength="1" autocomplete="one-time-code" />
+          <input class="quick-digit" id="qlDigit1" type="password" inputmode="numeric" maxlength="1" />
+          <input class="quick-digit" id="qlDigit2" type="password" inputmode="numeric" maxlength="1" />
+          <input class="quick-digit" id="qlDigit3" type="password" inputmode="numeric" maxlength="1" />
+          <input class="quick-digit" id="qlDigit4" type="password" inputmode="numeric" maxlength="1" />
+          <input class="quick-digit" id="qlDigit5" type="password" inputmode="numeric" maxlength="1" />
+        </div>
+
+        <p id="quickLoginError" class="hidden mt-5 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 font-semibold">
+          Incorrect code. Please try again.
+        </p>
+
+        <div class="mt-8 flex flex-col sm:flex-row gap-3">
+          <button id="quickLoginBackBtn" type="button" class="sm:flex-1 bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 font-extrabold py-3.5 rounded-2xl transition-colors">
+            Back
+          </button>
+          <button id="quickLoginContinueBtn" type="button" class="sm:flex-1 bg-blue-600 hover:bg-blue-700 text-white font-extrabold py-3.5 rounded-2xl shadow-lg shadow-blue-600/25 transition-all">
+            Continue
+          </button>
+        </div>
+
+        <button id="quickLoginForgotBtn" type="button" class="mt-4 text-sm font-bold text-slate-500 hover:text-slate-900 underline">
+         Forgot code?
+        </button>
+
+        <p class="text-xs text-slate-500 mt-4">
+          Approved device code: <span id="quickLoginDevicePreview" class="font-bold text-slate-700">—</span>
+        </p>
+      </div>
+    </div>
+
+    <div id="section-verify" class="hidden w-full max-w-[95%] h-[85vh] bg-white rounded-3xl shadow-2xl border border-slate-200/60 overflow-y-auto md:overflow-hidden flex flex-col md:flex-row">
+      <div class="w-full md:w-1/2 lg:w-5/12 p-8 lg:p-12 flex flex-col bg-slate-50 relative overflow-y-auto">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+        <div class="mb-auto">
+          <div class="flex items-center justify-between gap-3 mb-6">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-extrabold"><span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span> VERIFICATION REQUIRED</div>
+            <button id="backToLoginBtn" type="button" class="text-xs font-bold text-slate-500 hover:text-slate-800 underline">Back</button>
+          </div>
+          <h2 class="text-3xl font-extrabold text-slate-900 mb-3">Verify device</h2>
+          <p class="text-slate-600 leading-relaxed mb-6">Copy your unique code, paste it into the Google Form on the right, then come back and confirm.</p>
+          <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm mb-4 relative group hover:border-blue-300 transition-colors">
+            <p class="text-xs font-extrabold text-slate-400 uppercase tracking-wider mb-2 text-center">Your unique device code</p>
+            <button id="deviceCodeBox" type="button" class="w-full bg-slate-900 rounded-xl p-4 text-center cursor-pointer group-hover:shadow-lg transition-shadow">
+              <span id="deviceCodeText" class="font-mono text-2xl text-green-400 tracking-[0.2em] font-extrabold drop-shadow-md">LOADING...</span>
+            </button>
+          </div>
+          <div class="flex gap-3 mb-6">
+            <button id="copyCodeBtn" class="flex-1 bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 font-bold py-2.5 px-4 rounded-xl transition-colors flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+              Copy code
+            </button>
+          </div>
+          <button id="confirmButton" class="w-full bg-green-600 hover:bg-green-700 text-white font-extrabold py-4 rounded-2xl shadow-lg shadow-green-600/25 transition-all transform active:scale-[0.98]">I have submitted the form</button>
+          <p class="text-xs text-slate-500 mt-4 leading-relaxed">Tip: type your code exactly as shown. Do not include extra spaces.</p>
+        </div>
+        <button id="adminOverrideBtn" class="mt-6 text-xs text-slate-400 hover:text-slate-600 underline self-start transition-colors">Admin Override</button>
+      </div>
+      <div class="w-full md:w-1/2 lg:w-7/12 bg-slate-200 relative min-h-[500px] md:min-h-0">
+        <div class="absolute inset-0 bg-slate-100 flex items-center justify-center z-0"><span class="text-slate-400 text-sm animate-pulse">Loading Google Form...</span></div>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdhoOrL1hY9wwMVmI_9Kh28Q2i69L1sQGW1Kp66iOjE0ueg1g/viewform?usp=header" class="w-full h-full relative z-10 border-0" allowtransparency="true" title="StudyBase device verification form"></iframe>
+      </div>
+    </div>
+
+    <div id="section-loading" class="hidden w-full max-w-[95%] h-[85vh] bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 border border-white/60">
+      <div class="flex flex-col items-center justify-center p-12 bg-slate-50 relative">
+        <div class="loader-ring mb-8"></div>
+        <h2 class="text-3xl font-extrabold text-slate-900 mb-2">Verifying…</h2>
+        <p class="text-slate-600 text-center max-w-xs">We’re checking with the server to confirm your form submission.</p>
+        <div class="mt-8 px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-xs font-extrabold animate-pulse">Don’t close this window</div>
+        <button id="cancelVerifyBtn" type="button" class="mt-6 text-xs font-bold text-slate-500 hover:text-slate-900 underline">Cancel and go back</button>
+      </div>
+      <div class="relative bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center overflow-hidden p-8">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"></div>
+        <div class="relative w-full max-w-sm h-64 flex items-center justify-center">
+          <div id="fc1" class="feature-card absolute inset-0 flex items-center justify-center active">
+            <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl text-white border border-white/20 shadow-xl text-center w-full">
+              <div class="text-4xl mb-4">🔐</div>
+              <h3 class="text-xl font-extrabold mb-2">Secure login</h3>
+              <p class="text-blue-100 text-sm">Credentials are validated via encrypted server channels.</p>
+            </div>
+          </div>
+          <div id="fc2" class="feature-card absolute inset-0 flex items-center justify-center">
+            <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl text-white border border-white/20 shadow-xl text-center w-full">
+              <div class="text-4xl mb-4">🧩</div>
+              <h3 class="text-xl font-extrabold mb-2">Device check</h3>
+              <p class="text-blue-100 text-sm">One-time verification helps prevent shared-account abuse.</p>
+            </div>
+          </div>
+          <div id="fc3" class="feature-card absolute inset-0 flex items-center justify-center">
+            <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl text-white border border-white/20 shadow-xl text-center w-full">
+              <div class="text-4xl mb-4">⚡</div>
+              <h3 class="text-xl font-extrabold mb-2">Fast access</h3>
+              <p class="text-blue-100 text-sm">Ultra-fast delivery powered by Cloudflare’s edge network.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-error" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="errorTitle">
+    <div class="bg-white p-8 rounded-3xl max-w-sm w-full shadow-2xl text-center border border-red-100">
+      <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">⚠️</div>
+      <h3 id="errorTitle" class="text-xl font-extrabold text-slate-900 mb-2">Access denied</h3>
+      <p id="errorText" class="text-slate-600 mb-8">Something went wrong.</p>
+      <button id="modalCloseBtn" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-900 py-3.5 rounded-xl font-extrabold transition-colors">Try again</button>
+    </div>
+  </div>
+
+  <div id="modal-shutdown" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-md flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true">
+    <div class="bg-white p-8 rounded-3xl max-w-sm w-full shadow-2xl text-center border-t-4 border-red-500">
+      <div class="text-6xl mb-6">⛔</div>
+      <h3 class="text-2xl font-extrabold text-slate-900 mb-3">System locked</h3>
+      <p class="text-slate-600 mb-8">The login system has been temporarily disabled for maintenance or security reasons.<br><br>Please try again later.</p>
+      <button id="returnHomeBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-extrabold shadow-lg shadow-blue-500/25 transition-all">Return home</button>
+    </div>
+  </div>
+
+  <div id="modal-agree" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true">
+    <div class="bg-white p-8 rounded-3xl text-center max-w-sm w-full shadow-2xl border border-white/50">
+      <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 8 0 11-18 0 9 8 0 0118 0z"></path></svg>
+      </div>
+      <h3 class="text-xl font-extrabold text-slate-900 mb-3">Terms of service</h3>
+      <p class="text-slate-600 mb-8 text-sm leading-relaxed">By continuing, you agree to our <a href="#" id="privacyLinkTerms" class="text-blue-600 font-extrabold hover:underline">Terms of Service</a> and <a href="#" id="privacyLinkPolicy" class="text-blue-600 font-extrabold hover:underline">Privacy Policy</a>. Strict adherence to school policies is required.</p>
+      <div class="flex gap-3">
+        <button id="agreeCancel" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 py-3 rounded-xl font-extrabold transition-colors">Cancel</button>
+        <button id="agreeContinue" class="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-extrabold shadow-lg shadow-green-600/25 transition-colors">Accept & Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-confirm" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true">
+    <div class="bg-white p-8 rounded-3xl text-center max-w-sm w-full shadow-2xl">
+      <h3 class="text-xl font-extrabold text-slate-900 mb-2">Is the form submitted?</h3>
+      <p class="text-slate-600 text-sm mb-8">We can’t verify your device until the Google Form is completed with your unique code.</p>
+      <div class="flex gap-3">
+        <button id="confirmCancel" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 py-3 rounded-xl font-extrabold transition-colors">Go back</button>
+        <button id="confirmYes" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-extrabold shadow-lg shadow-blue-600/25 transition-colors">Yes, verified</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-admin" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-md flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true">
+    <div class="bg-white p-8 rounded-3xl max-w-sm w-full shadow-2xl border border-slate-200">
+      <h3 class="text-lg font-extrabold mb-1 text-slate-900">Admin override</h3>
+      <p class="text-slate-600 text-xs mb-6">Enter administrative credentials to bypass device verification manually.</p>
+      <div class="space-y-4 mb-6 text-left">
+        <div>
+          <label class="block text-xs font-extrabold text-slate-500 mb-1 uppercase" for="adminUsername">Username</label>
+          <input id="adminUsername" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-slate-500 focus:border-slate-500 text-sm transition-all">
+        </div>
+        <div>
+          <label class="block text-xs font-extrabold text-slate-500 mb-1 uppercase" for="adminPhrase">Override phrase</label>
+          <input id="adminPhrase" type="password" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-slate-500 focus:border-slate-500 text-sm transition-all">
+        </div>
+      </div>
+      <p id="adminError" class="text-xs text-red-600 mb-4 hidden bg-red-50 p-2 rounded-xl text-center border border-red-100 font-extrabold">Override failed. Wait 5s.</p>
+      <div class="flex justify-end gap-3 pt-2 border-t border-slate-100">
+        <button id="adminCancel" class="px-4 py-2 text-sm rounded-xl bg-white border border-slate-200 hover:bg-slate-50 font-bold transition-colors">Cancel</button>
+        <button id="adminSubmit" class="px-5 py-2 text-sm rounded-xl bg-slate-900 text-white hover:bg-black font-extrabold shadow-lg transition-colors">Authorize</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-ban" class="hidden fixed inset-0 bg-slate-900/75 backdrop-blur-md flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="banTitle">
+    <div class="bg-white p-8 rounded-3xl max-w-md w-full shadow-2xl text-center border border-red-100">
+      <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6 text-4xl">🚫</div>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-extrabold mb-4">
+        <span class="w-2 h-2 rounded-full bg-red-600"></span> ACCOUNT BANNED
+      </div>
+      <h3 id="banTitle" class="text-2xl font-extrabold text-slate-900 mb-3">Your account has been banned</h3>
+      <p class="text-slate-600 text-sm mb-2">Reason:</p>
+      <div id="banReasonText" class="mb-8 rounded-2xl border border-red-100 bg-red-50 px-4 py-4 text-sm text-red-800 font-semibold">
+        No reason provided.
+      </div>
+
+      <div class="space-y-3">
+        <button id="banMoreInfoBtn" class="w-full bg-slate-900 hover:bg-black text-white py-3.5 rounded-xl font-extrabold transition-colors">
+          More info
+        </button>
+        <button id="banAppealBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl font-extrabold shadow-lg shadow-blue-600/25 transition-colors">
+          Appeal ban
+        </button>
+        <button id="banCloseBtn" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-900 py-3.5 rounded-xl font-extrabold transition-colors">
+          Back to login
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  const WORKER = "https://api.studybase.site";
+  const DEVICE_CODE_CHARS = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const DEVICE_CODE_LENGTH = 12;
+  const CHECK_MIN_MS = 2000;
+  const QUICK_LOGIN_KEYS = {
+    enabled: "sb_quickLogin",
+    hash: "sb_quickLoginCodeHash",
+    deviceB64: "gh_device_b64"
+  };
+
+  let verifyPoll = null;
+  let pendingQuickLoginDecodedDevice = "";
+
+  function setInlineError(msg) {
+    const box = document.getElementById("inlineError");
+    if (!box) return;
+    if (!msg) {
+      box.classList.add("hidden");
+      box.textContent = "";
+      return;
+    }
+    box.textContent = msg;
+    box.classList.remove("hidden");
+  }
+
+  function setLoginLoading(on) {
+    const btn = document.getElementById("loginButton");
+    const txt = document.getElementById("loginBtnText");
+    const spn = document.getElementById("loginBtnSpinner");
+    btn.disabled = !!on;
+    txt.textContent = on ? "Signing in…" : "Log In";
+    spn.classList.toggle("hidden", !on);
+  }
+
+  function setStepper(step) {
+    [1, 2, 3].forEach((n) => {
+      const dot = document.getElementById(`stepDot${n}`);
+      const label = document.getElementById(`stepLabel${n}`);
+      const active = n === step;
+      dot.className = "w-2.5 h-2.5 rounded-full " + (active ? "bg-blue-600" : "bg-slate-300");
+      label.className = "font-bold " + (active ? "text-slate-700" : "text-slate-400");
+    });
+  }
+
+  function hideMainSections() {
+    [
+      "section-login",
+      "section-device-check",
+      "section-device-status",
+      "section-quick-login",
+      "section-verify",
+      "section-loading"
+    ].forEach((id) => {
+      document.getElementById(id)?.classList.add("hidden");
+    });
+  }
+
+  function showSection(id) {
+    hideMainSections();
+    document.getElementById(id)?.classList.remove("hidden");
+  }
+
+  function resetToLogin() {
+    stopVerifyPolling();
+    pendingQuickLoginDecodedDevice = "";
+    clearQuickLoginInputs();
+    [
+      "modal-error",
+      "modal-shutdown",
+      "modal-confirm",
+      "modal-agree",
+      "modal-admin",
+      "modal-ban"
+    ].forEach((id) => {
+      document.getElementById(id)?.classList.add("hidden");
+    });
+    showSection("section-login");
+    setInlineError("");
+    setLoginLoading(false);
+    setStepper(1);
+    document.getElementById("inputUsername")?.focus();
+  }
+
+  function openLegal(e) {
+    e.preventDefault();
+    window.open("legal.html", "_blank");
+  }
+
+  function normalizeDeviceCode(value) {
+    return (value || "")
+      .toString()
+      .toUpperCase()
+      .replace(/[^1-9A-Z]/g, "");
+  }
+
+  function generateCode(length = DEVICE_CODE_LENGTH) {
+    let code = "";
+    for (let i = 0; i < length; i++) {
+      code += DEVICE_CODE_CHARS[Math.floor(Math.random() * DEVICE_CODE_CHARS.length)];
+    }
+    return code;
+  }
+
+  function getStoredCreds() {
+    return {
+      username: (localStorage.getItem("gh_username") || "").trim(),
+      password: (localStorage.getItem("gh_password") || "").trim(),
+      deviceCode: normalizeDeviceCode(localStorage.getItem("gh_device") || "")
+    };
+  }
+
+  function getQuickLoginEnabled() {
+    return localStorage.getItem(QUICK_LOGIN_KEYS.enabled) === "true";
+  }
+
+  function getQuickLoginHash() {
+    return (localStorage.getItem(QUICK_LOGIN_KEYS.hash) || "").trim();
+  }
+
+  function getStoredDeviceB64() {
+    return (localStorage.getItem(QUICK_LOGIN_KEYS.deviceB64) || "").trim();
+  }
+
+  function encodeDeviceCodeToB64(code) {
+    try {
+      return btoa(code);
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function decodeDeviceCodeFromB64(b64) {
+    try {
+      return normalizeDeviceCode(atob(b64));
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function persistDeviceCode(code) {
+    const normalized = normalizeDeviceCode(code);
+    if (!normalized) return;
+    localStorage.setItem("gh_device", normalized);
+    localStorage.setItem(QUICK_LOGIN_KEYS.deviceB64, encodeDeviceCodeToB64(normalized));
+  }
+
+  async function sha256(text) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(text);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  async function postJson(url, body) {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    }).catch(() => null);
+    if (!res) return null;
+    return res.json().catch(() => null);
+  }
+
+  function showError(message) {
+    document.getElementById("errorText").textContent = message || "Something went wrong.";
+    document.getElementById("modal-error").classList.remove("hidden");
+    setLoginLoading(false);
+  }
+
+  function showShutdownPopup() {
+    document.getElementById("modal-shutdown").classList.remove("hidden");
+    setLoginLoading(false);
+  }
+
+  function openParentNewTab(url) {
+    try {
+      if (window.parent && window.parent !== window) {
+        window.parent.open(url, "_blank", "noopener");
+        return;
+      }
+    } catch (_) {}
+    window.open(url, "_blank", "noopener");
+  }
+
+  function showBanPopup(reason = "No reason provided.") {
+    stopVerifyPolling();
+    setLoginLoading(false);
+    document.getElementById("banReasonText").textContent = reason;
+    document.getElementById("modal-ban").classList.remove("hidden");
+  }
+
+  function redirectParentAndClose(url) {
+    if (window.parent && window.parent !== window) {
+      try {
+        window.parent.location.href = url;
+        return;
+      } catch (_) {}
+    }
+    if (window.opener && !window.opener.closed) {
+      try {
+        window.opener.location.href = url;
+        window.close();
+        return;
+      } catch (_) {}
+    }
+    window.location.href = url;
+  }
+
+  function completeLoginSuccess() {
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage("login-success", "*");
+    }
+    if (window.opener && !window.opener.closed) {
+      try {
+        window.opener.location.hash = "logged-in";
+        window.opener.location.reload();
+        window.close();
+        return;
+      } catch (_) {}
+    }
+    redirectParentAndClose("/index.html#logged-in");
+  }
+
+  async function waitAtLeast(started, ms) {
+    const elapsed = Date.now() - started;
+    if (elapsed < ms) {
+      await new Promise((resolve) => setTimeout(resolve, ms - elapsed));
+    }
+  }
+
+  async function forcePaint(delay = 0) {
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    if (delay > 0) {
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
+  }
+
+  function updateDeviceStatus(ok, deviceCode, customText = "") {
+    const wrap = document.getElementById("deviceStatusIconWrap");
+    const icon = document.getElementById("deviceStatusIcon");
+    const badge = document.getElementById("deviceStatusBadge");
+    const title = document.getElementById("deviceStatusTitle");
+    const text = document.getElementById("deviceStatusText");
+    const code = document.getElementById("deviceStatusCode");
+    const btn = document.getElementById("launchAppBtn");
+
+    code.textContent = `Device code: ${deviceCode || "—"}`;
+
+    if (ok) {
+      wrap.className = "mx-auto mb-6 w-20 h-20 rounded-full bg-green-100 flex items-center justify-center";
+      badge.className = "inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-extrabold mb-4";
+      badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-green-600"></span> VERIFIED';
+      icon.textContent = "✅";
+      title.textContent = "Device already verified!";
+      text.textContent = customText || "This device is already approved. You can continue straight into the app.";
+      btn.classList.remove("hidden");
+    } else {
+      wrap.className = "mx-auto mb-6 w-20 h-20 rounded-full bg-amber-100 flex items-center justify-center";
+      badge.className = "inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-extrabold mb-4";
+      badge.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-500"></span> NOT VERIFIED';
+      icon.textContent = "⚠️";
+      title.textContent = "Device not verified";
+      text.textContent = customText || "This device still needs approval. We’ll now take you to the verification page so you can submit a code.";
+      btn.classList.add("hidden");
+    }
+  }
+
+  function beginFreshVerificationFlow() {
+    const newCode = generateCode();
+    persistDeviceCode(newCode);
+    document.getElementById("deviceCodeText").innerText = newCode;
+    document.getElementById("checkingCodePreview").textContent = `Device code: ${newCode}`;
+    document.getElementById("deviceStatusCode").textContent = `Device code: ${newCode}`;
+    document.getElementById("modal-agree").classList.remove("hidden");
+  }
+
+  async function showUnverifiedThenContinue(existingCode = "") {
+    const previewCode = existingCode || "No saved device code";
+    showSection("section-device-status");
+    updateDeviceStatus(false, previewCode, existingCode
+      ? "This saved device code is not approved yet. We’ll now take you to the verification page so you can submit a new code."
+      : "No verified device code was found for this browser yet. We’ll now take you to the verification page so you can submit a new code.");
+    setStepper(2);
+    await forcePaint(30);
+    await new Promise((resolve) => setTimeout(resolve, 1400));
+    beginFreshVerificationFlow();
+  }
+
+  function getQuickLoginDigits() {
+    const digits = [];
+    for (let i = 0; i < 6; i++) {
+      digits.push((document.getElementById(`qlDigit${i}`)?.value || "").replace(/\D/g, ""));
+    }
+    return digits.join("");
+  }
+
+  function clearQuickLoginInputs() {
+    for (let i = 0; i < 6; i++) {
+      const el = document.getElementById(`qlDigit${i}`);
+      if (el) el.value = "";
+    }
+    document.getElementById("quickLoginError").classList.add("hidden");
+  }
+
+  function openQuickLoginStep(deviceCode) {
+    pendingQuickLoginDecodedDevice = deviceCode;
+    document.getElementById("quickLoginDevicePreview").textContent = deviceCode || "—";
+    clearQuickLoginInputs();
+    showSection("section-quick-login");
+    setStepper(3);
+    setTimeout(() => document.getElementById("qlDigit0")?.focus(), 20);
+  }
+
+  async function verifyQuickLoginCodeAndContinue() {
+    const entered = getQuickLoginDigits();
+    const savedHash = getQuickLoginHash();
+    const errorBox = document.getElementById("quickLoginError");
+
+    if (!/^\d{6}$/.test(entered) || !savedHash) {
+      errorBox.textContent = "Enter your full 6 digit code to continue.";
+      errorBox.classList.remove("hidden");
+      return;
+    }
+
+    const enteredHash = await sha256(entered);
+    if (enteredHash !== savedHash) {
+      errorBox.textContent = "Incorrect code. Please try again.";
+      errorBox.classList.remove("hidden");
+      clearQuickLoginInputs();
+      document.getElementById("qlDigit0")?.focus();
+      return;
+    }
+
+    if (!pendingQuickLoginDecodedDevice) {
+      errorBox.textContent = "Quick Login could not continue. Please sign in again.";
+      errorBox.classList.remove("hidden");
+      return;
+    }
+
+    persistDeviceCode(pendingQuickLoginDecodedDevice);
+    completeLoginSuccess();
+  }
+
+  async function checkSavedQuickLoginDevice(username, password) {
+    const quickLoginEnabled = getQuickLoginEnabled();
+    const savedHash = getQuickLoginHash();
+    const deviceB64 = getStoredDeviceB64();
+
+    if (!quickLoginEnabled || !savedHash || !deviceB64) {
+      return { usable: false };
+    }
+
+    const decodedDevice = decodeDeviceCodeFromB64(deviceB64);
+    if (!decodedDevice) {
+      return { usable: false };
+    }
+
+    document.getElementById("checkingCodePreview").textContent = `Device code: ${decodedDevice}`;
+    document.getElementById("deviceCodeText").innerText = decodedDevice;
+
+    showSection("section-device-check");
+    setStepper(2);
+    await forcePaint(80);
+
+    const started = Date.now();
+    const result = await postJson(WORKER + "/auth/check", { username, password, deviceCode: decodedDevice });
+    await waitAtLeast(started, CHECK_MIN_MS);
+
+    if (result && result.error === "System is currently unavailable") {
+      showShutdownPopup();
+      return { handled: true, usable: false };
+    }
+
+    if (result && result.ok === false && result.banned === true) {
+      showBanPopup(result.reason || "No reason provided.");
+      return { handled: true, usable: false };
+    }
+
+    if (result && result.ok) {
+      return { usable: true, decodedDevice };
+    }
+
+    return { usable: false, decodedDevice };
+  }
+
+  async function checkExistingDeviceVerification(providedCreds = null) {
+    const { username, password, deviceCode } = providedCreds || getStoredCreds();
+    if (!username || !password || !deviceCode) {
+      await showUnverifiedThenContinue("");
+      return false;
+    }
+
+    document.getElementById("checkingCodePreview").textContent = `Device code: ${deviceCode}`;
+    document.getElementById("deviceCodeText").innerText = deviceCode;
+    showSection("section-device-check");
+    setStepper(3);
+    await forcePaint(80);
+
+    const started = Date.now();
+    const result = await postJson(WORKER + "/auth/check", { username, password, deviceCode });
+    await waitAtLeast(started, CHECK_MIN_MS);
+
+    if (result && result.error === "System is currently unavailable") {
+      showShutdownPopup();
+      return false;
+    }
+
+    if (result && result.ok) {
+      showSection("section-device-status");
+      updateDeviceStatus(true, deviceCode);
+      setStepper(3);
+      return true;
+    }
+
+    if (result && result.ok === false && result.banned === true) {
+      showBanPopup(result.reason || "No reason provided.");
+      return false;
+    }
+
+    showSection("section-device-status");
+    updateDeviceStatus(false, deviceCode, "This saved device code is not approved yet. We’ll now take you to the verification page so you can submit a new code.");
+    setStepper(2);
+    await new Promise((resolve) => setTimeout(resolve, 1400));
+    beginFreshVerificationFlow();
+    return false;
+  }
+
+  function stopVerifyPolling() {
+    if (verifyPoll) {
+      clearInterval(verifyPoll);
+      verifyPoll = null;
+    }
+  }
+
+  function startVerificationPolling() {
+    stopVerifyPolling();
+    showSection("section-loading");
+    setStepper(3);
+    const started = Date.now();
+
+    verifyPoll = setInterval(async () => {
+      if (Date.now() - started > 60000) {
+        stopVerifyPolling();
+        return showError("Your device could not be verified. If this was your first try, close the window and try again.");
+      }
+
+      const { username, password, deviceCode } = getStoredCreds();
+      const result = await postJson(WORKER + "/auth/check", { username, password, deviceCode });
+
+      if (result && result.error === "System is currently unavailable") {
+        stopVerifyPolling();
+        return showShutdownPopup();
+      }
+
+      if (result && result.ok === false && result.banned === true) {
+        stopVerifyPolling();
+        return showBanPopup(result.reason || "No reason provided.");
+      }
+
+      if (result && result.ok) {
+        stopVerifyPolling();
+        persistDeviceCode(deviceCode);
+        completeLoginSuccess();
+      }
+    }, 5000);
+  }
+
+  document.getElementById("privacyLinkTerms").onclick = openLegal;
+  document.getElementById("privacyLinkPolicy").onclick = openLegal;
+  document.getElementById("returnHomeBtn").onclick = () => redirectParentAndClose("/index.html");
+  document.getElementById("modalCloseBtn").onclick = () => resetToLogin();
+  document.getElementById("banCloseBtn").onclick = () => resetToLogin();
+  document.getElementById("banMoreInfoBtn").onclick = () => openParentNewTab("/support/ban/account_ban.html");
+  document.getElementById("banAppealBtn").onclick = () => openParentNewTab("/support/ban/appeal.html");
+
+  document.getElementById("togglePassword").onclick = () => {
+    const inp = document.getElementById("inputPassword");
+    const isPw = inp.type === "password";
+    inp.type = isPw ? "text" : "password";
+    document.getElementById("togglePassword").textContent = isPw ? "Hide" : "Show";
+    inp.focus();
+  };
+
+  function maybeSubmit(e) {
+    if (e.key === "Enter") document.getElementById("loginButton").click();
+  }
+  document.getElementById("inputUsername").addEventListener("keydown", maybeSubmit);
+  document.getElementById("inputPassword").addEventListener("keydown", maybeSubmit);
+
+  document.getElementById("deviceCodeBox").onclick = () => {
+    const code = document.getElementById("deviceCodeText").innerText;
+    const btn = document.getElementById("copyCodeBtn");
+    const original = btn.innerHTML;
+    navigator.clipboard.writeText(code);
+    btn.innerHTML = "Copied!";
+    setTimeout(() => { btn.innerHTML = original; }, 1500);
+  };
+  document.getElementById("copyCodeBtn").onclick = () => document.getElementById("deviceCodeBox").click();
+  document.getElementById("backToLoginBtn").onclick = () => { showSection("section-login"); setStepper(1); };
+  document.getElementById("cancelVerifyBtn").onclick = () => { stopVerifyPolling(); showSection("section-verify"); setStepper(2); };
+  document.getElementById("agreeCancel").onclick = () => document.getElementById("modal-agree").classList.add("hidden");
+  document.getElementById("agreeContinue").onclick = () => {
+    document.getElementById("modal-agree").classList.add("hidden");
+    showSection("section-verify");
+    setStepper(2);
+  };
+  document.getElementById("confirmButton").onclick = () => document.getElementById("modal-confirm").classList.remove("hidden");
+  document.getElementById("confirmCancel").onclick = () => document.getElementById("modal-confirm").classList.add("hidden");
+  document.getElementById("confirmYes").onclick = () => {
+    document.getElementById("modal-confirm").classList.add("hidden");
+    startVerificationPolling();
+  };
+  document.getElementById("launchAppBtn").onclick = () => completeLoginSuccess();
+
+  document.getElementById("quickLoginBackBtn").onclick = () => {
+    clearQuickLoginInputs();
+    showSection("section-login");
+    setStepper(1);
+  };
+
+  document.getElementById("quickLoginContinueBtn").onclick = async () => {
+    await verifyQuickLoginCodeAndContinue();
+  };
+
+  for (let i = 0; i < 6; i++) {
+    const input = document.getElementById(`qlDigit${i}`);
+    input.addEventListener("input", (e) => {
+      const value = (e.target.value || "").replace(/\D/g, "").slice(0, 1);
+      e.target.value = value;
+      document.getElementById("quickLoginError").classList.add("hidden");
+      if (value && i < 5) {
+        document.getElementById(`qlDigit${i + 1}`)?.focus();
+      }
+    });
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Backspace" && !e.target.value && i > 0) {
+        document.getElementById(`qlDigit${i - 1}`)?.focus();
+      }
+      if (e.key === "Enter") {
+        e.preventDefault();
+        document.getElementById("quickLoginContinueBtn").click();
+      }
+    });
+
+    input.addEventListener("paste", (e) => {
+      e.preventDefault();
+      const pasted = (e.clipboardData?.getData("text") || "").replace(/\D/g, "").slice(0, 6);
+      if (!pasted) return;
+      pasted.split("").forEach((char, idx) => {
+        const target = document.getElementById(`qlDigit${idx}`);
+        if (target) target.value = char;
+      });
+      const focusIndex = Math.min(pasted.length, 5);
+      document.getElementById(`qlDigit${focusIndex}`)?.focus();
+      document.getElementById("quickLoginError").classList.add("hidden");
+    });
+  }
+
+  const cards = [window.fc1, window.fc2, window.fc3].filter(Boolean);
+  let cardIndex = 0;
+  function showCard(i) { cards.forEach((c, idx) => c.classList.toggle("active", idx === i)); }
+  if (cards.length) {
+    showCard(0);
+    setInterval(() => {
+      cardIndex = (cardIndex + 1) % cards.length;
+      showCard(cardIndex);
+    }, 3000);
+  }
+
+  document.getElementById("loginButton").addEventListener("click", async () => {
+    setInlineError("");
+    clearQuickLoginInputs();
+    document.getElementById("modal-agree").classList.add("hidden");
+    document.getElementById("modal-ban").classList.add("hidden");
+    setLoginLoading(true);
+
+    const username = document.getElementById("inputUsername").value.trim();
+    const password = document.getElementById("inputPassword").value.trim();
+
+    if (!username || !password) {
+      setLoginLoading(false);
+      return showError("Please enter your username and password.");
+    }
+
+    const started = Date.now();
+    const result = await postJson(WORKER + "/auth/login", { username, password });
+    await waitAtLeast(started, CHECK_MIN_MS);
+
+    if (result && result.error === "System is currently unavailable") {
+      return showShutdownPopup();
+    }
+    if (!result || !result.ok) {
+      return showError("Incorrect username or password.");
+    }
+    if (result.adminBypass === true) {
+      if (result.adminSessionToken) {
+        localStorage.setItem("gh_device", result.adminSessionToken);
+      }
+      localStorage.removeItem("gh_username");
+      localStorage.removeItem("gh_password");
+      completeLoginSuccess();
+      return;
+    }
+
+    localStorage.setItem("gh_username", username);
+    localStorage.setItem("gh_password", password);
+    setLoginLoading(false);
+
+    const quickLoginCheck = await checkSavedQuickLoginDevice(username, password);
+    if (quickLoginCheck && quickLoginCheck.handled) return;
+
+    if (quickLoginCheck && quickLoginCheck.usable && quickLoginCheck.decodedDevice) {
+      openQuickLoginStep(quickLoginCheck.decodedDevice);
+      return;
+    }
+
+    const existingDevice = normalizeDeviceCode(localStorage.getItem("gh_device") || "");
+    if (existingDevice) {
+      persistDeviceCode(existingDevice);
+      await checkExistingDeviceVerification({ username, password, deviceCode: existingDevice });
+      return;
+    }
+
+    await showUnverifiedThenContinue("");
+  });
+
+  function startForgotCodeRecoveryFlow() {
+  pendingQuickLoginDecodedDevice = "";
+
+  const newCode = generateCode();
+  persistDeviceCode(newCode);
+
+  document.getElementById("deviceCodeText").innerText = newCode;
+  document.getElementById("checkingCodePreview").textContent = `Device code: ${newCode}`;
+  document.getElementById("deviceStatusCode").textContent = `Device code: ${newCode}`;
+
+  clearQuickLoginInputs();
+  document.getElementById("quickLoginError").classList.add("hidden");
+
+  showSection("section-verify");
+  setStepper(2);
+}
+
+document.getElementById("quickLoginForgotBtn").onclick = () => {
+  startForgotCodeRecoveryFlow();
+};
+
+  const adminModal = document.getElementById("modal-admin");
+  const adminBtn = document.getElementById("adminOverrideBtn");
+  const adminCancel = document.getElementById("adminCancel");
+  const adminSubmit = document.getElementById("adminSubmit");
+  const adminError = document.getElementById("adminError");
+  const adminUsername = document.getElementById("adminUsername");
+  const adminPhrase = document.getElementById("adminPhrase");
+  let adminCooldown = false;
+
+  adminBtn.onclick = () => {
+    adminError.classList.add("hidden");
+    adminUsername.value = localStorage.getItem("gh_username") || "";
+    adminPhrase.value = "";
+    adminModal.classList.remove("hidden");
+  };
+  adminCancel.onclick = () => adminModal.classList.add("hidden");
+  adminSubmit.onclick = async () => {
+    if (adminCooldown) return;
+    const username = adminUsername.value.trim();
+    const phrase = adminPhrase.value.trim();
+    const deviceCode = normalizeDeviceCode(localStorage.getItem("gh_device") || "");
+    if (!username || !phrase || !deviceCode) {
+      adminError.textContent = "Missing fields or device code.";
+      adminError.classList.remove("hidden");
+      return;
+    }
+
+    adminSubmit.disabled = true;
+    adminSubmit.classList.add("opacity-60", "cursor-not-allowed");
+    adminError.classList.add("hidden");
+
+    const res = await postJson(WORKER + "/overide/addUser", {
+      username,
+      overridePhrase: phrase,
+      deviceCode
+    });
+
+    if (!res || !res.ok) {
+      adminError.textContent = "Override failed. Please wait 5 seconds before trying again.";
+      adminError.classList.remove("hidden");
+      adminCooldown = true;
+      setTimeout(() => {
+        adminCooldown = false;
+        adminSubmit.disabled = false;
+        adminSubmit.classList.remove("opacity-60", "cursor-not-allowed");
+      }, 5000);
+      return;
+    }
+
+    adminModal.classList.add("hidden");
+    completeLoginSuccess();
+  };
+
+  showSection("section-login");
+  setStepper(1);
+  document.getElementById("inputUsername").focus();
+</script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering AOs | A-Level Guide</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/loginAnimationCheck.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/adminUi.js" defer></script>
+    <script>const PAGE_ID = "ao_guide";</script>
+
+    <!--Cookie consent banner and google analytics-->
+    <script src="/assets/js/checkCookieConsent.js"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+
+        // 1. Determine current state
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        // 2. Set default based on that state
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+
+    <script src="/assets/js/cookieConsent.js"></script>
+    <!-- End of consent and analytics -->
+
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #9333ea 0%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .ao-card { transition: all 0.3s ease; }
+        .ao-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        
+        .tab-btn.active { background-color: #f3e8ff; color: #7e22ce; border-color: #d8b4fe; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <header class="pt-32 pb-16 bg-white border-b border-slate-200 overflow-hidden relative">
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <span class="px-4 py-2 bg-purple-50 text-purple-700 rounded-full text-xs font-bold uppercase tracking-widest mb-6 inline-block border border-purple-100">For Year 12 & 13</span>
+            <h1 class="text-5xl md:text-6xl font-black mb-6 tracking-tight">
+                Decode the <span class="gradient-text">Mark Scheme</span>
+            </h1>
+            <p class="text-lg text-slate-500 leading-relaxed max-w-2xl mx-auto">
+                A-Levels aren't just about what you know—they are about how you use it. Understanding AO1, AO2, and AO3 is the secret to moving from a B to an A*.
+            </p>
+        </div>
+        
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+            <div class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-[-10%] left-[-5%] w-96 h-96 bg-pink-500/5 rounded-full blur-3xl"></div>
+        </div>
+    </header>
+
+    <section class="py-20 max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <div class="ao-card bg-white p-8 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 font-black text-8xl text-slate-200 group-hover:text-purple-100 transition-colors">1</div>
+                <div class="relative z-10">
+                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 font-bold mb-6">K</div>
+                    <h3 class="text-2xl font-bold mb-3">AO1: Knowledge</h3>
+                    <p class="text-slate-500 text-sm mb-4">"Demonstrate knowledge and understanding of scientific ideas, processes, techniques and procedures."</p>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>Defining terms accurately</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>Citing theories/studies</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>Using correct terminology</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="ao-card bg-white p-8 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 font-black text-8xl text-slate-200 group-hover:text-purple-100 transition-colors">2</div>
+                <div class="relative z-10">
+                    <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600 font-bold mb-6">A</div>
+                    <h3 class="text-2xl font-bold mb-3">AO2: Application</h3>
+                    <p class="text-slate-500 text-sm mb-4">"Apply knowledge and understanding to theoretical and practical contexts."</p>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>Linking theory to the 'Item'</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>Solving novel problems</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>Contextualising your answer</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="ao-card bg-white p-8 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 font-black text-8xl text-slate-200 group-hover:text-purple-100 transition-colors">3</div>
+                <div class="relative z-10">
+                    <div class="w-12 h-12 bg-pink-50 rounded-xl flex items-center justify-center text-pink-600 font-bold mb-6">E</div>
+                    <h3 class="text-2xl font-bold mb-3">AO3: Evaluation</h3>
+                    <p class="text-slate-500 text-sm mb-4">"Analyse, interpret and evaluate scientific information, ideas and evidence."</p>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-pink-500 rounded-full"></span>Strengths & Weaknesses</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-pink-500 rounded-full"></span>Competing arguments</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-pink-500 rounded-full"></span>Justified conclusions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-t border-slate-200">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">Subject-Specific Breakdowns</h2>
+                <p class="text-slate-500">Select a subject to see how marks are distributed.</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-2 mb-10">
+                <button onclick="switchTab('psych')" class="tab-btn active px-6 py-2 rounded-full border border-transparent font-semibold text-sm text-slate-600 hover:bg-slate-50 transition-colors">Psychology</button>
+                <button onclick="switchTab('history')" class="tab-btn px-6 py-2 rounded-full border border-transparent font-semibold text-sm text-slate-600 hover:bg-slate-50 transition-colors">History</button>
+                <button onclick="switchTab('english')" class="tab-btn px-6 py-2 rounded-full border border-transparent font-semibold text-sm text-slate-600 hover:bg-slate-50 transition-colors">English Lit</button>
+                <button onclick="switchTab('science')" class="tab-btn px-6 py-2 rounded-full border border-transparent font-semibold text-sm text-slate-600 hover:bg-slate-50 transition-colors">Sciences</button>
+            </div>
+
+            <div id="psych-content" class="bg-slate-50 rounded-3xl p-8 md:p-12 border border-slate-200 tab-content">
+                <div class="flex flex-col md:flex-row gap-10 items-center">
+                    <div class="w-full md:w-1/2">
+                        <h3 class="text-2xl font-bold text-slate-900 mb-4">Psychology (AQA)</h3>
+                        <p class="text-slate-600 mb-6">In a 16-mark essay, the split is usually <strong>6 marks for Description (AO1)</strong> and <strong>10 marks for Evaluation (AO3)</strong>.</p>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                                <span class="text-xs font-bold text-blue-600 uppercase tracking-wide">AO1 Tip</span>
+                                <p class="text-sm text-slate-700 mt-1">Don't over-describe. You only have 6 marks. Keep outlining concise.</p>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                                <span class="text-xs font-bold text-pink-600 uppercase tracking-wide">AO3 Tip</span>
+                                <p class="text-sm text-slate-700 mt-1">Use the "PEEL" structure: Point, Evidence, Explain, Link back to the question.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 flex justify-center">
+                        <div class="w-64 h-64 relative rounded-full border-[16px] border-slate-200 flex items-center justify-center">
+                            <svg viewBox="0 0 36 36" class="w-full h-full absolute transform -rotate-90">
+                                <path class="text-blue-500" stroke-dasharray="37, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.8" />
+                                <path class="text-pink-500" stroke-dasharray="63, 100" stroke-dashoffset="-37" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.8" />
+                            </svg>
+                            <div class="text-center">
+                                <div class="text-3xl font-black text-slate-800">16</div>
+                                <div class="text-xs font-bold text-slate-400 uppercase">Marks Total</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="history-content" class="hidden bg-slate-50 rounded-3xl p-8 md:p-12 border border-slate-200 tab-content">
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">History</h3>
+                <p class="text-slate-600 mb-6">Heavily weighted towards Argument (AO3) and Knowledge (AO1). Source questions introduce AO2 (Analysis of provenance).</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-white rounded-xl border border-slate-200">
+                        <span class="font-bold text-slate-800">The "So What?" Test</span>
+                        <p class="text-sm text-slate-500 mt-1">For every fact (AO1) you write, you must explain its significance (AO3) to the question.</p>
+                    </div>
+                </div>
+            </div>
+
+             <div id="english-content" class="hidden bg-slate-50 rounded-3xl p-8 md:p-12 border border-slate-200 tab-content">
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">English Literature</h3>
+                <p class="text-slate-600 mb-6">AO1 (Articulate argument), AO2 (Analysis of methods), AO3 (Context), AO4 (Connections), AO5 (Alternative interpretations).</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-white rounded-xl border border-slate-200">
+                        <span class="font-bold text-slate-800">Context is King (AO3)</span>
+                        <p class="text-sm text-slate-500 mt-1">Don't bolt on history. Context must illuminate the text.</p>
+                    </div>
+                </div>
+            </div>
+
+             <div id="science-content" class="hidden bg-slate-50 rounded-3xl p-8 md:p-12 border border-slate-200 tab-content">
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">Biology / Chemistry / Physics</h3>
+                <p class="text-slate-600 mb-6">AO1 (Recall), AO2 (Apply to unknown situations), AO3 (Analyze data/Practical skills).</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-white rounded-xl border border-slate-200">
+                        <span class="font-bold text-slate-800">The AO2 Trap</span>
+                        <p class="text-sm text-slate-500 mt-1">Most students lose marks here by just reciting notes instead of using the data provided in the question.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        function switchTab(subject) {
+            // Hide all content
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            // Remove active class from buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected content
+            document.getElementById(subject + '-content').classList.remove('hidden');
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

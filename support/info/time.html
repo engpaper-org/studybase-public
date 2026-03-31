@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance Mode | StudyBase</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+
+    <script src="/assets/js/sessionManager.js" defer></script>
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/loginAnimationCheck.js" defer></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>const PAGE_ID = "maintenance_page";</script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+    </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            900: '#1e3a8a',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'blob': 'blob 7s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .bg-grid-slate-100 {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23f1f5f9'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900 flex flex-col min-h-screen">
+
+    <nav id="navbar-placeholder" class="sticky top-0 z-50"></nav>
+
+    <header class="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden border-b border-slate-200">
+        <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-20"></div>
+
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl -z-10 pointer-events-none">
+            <div class="absolute top-0 left-10 w-72 h-72 bg-amber-400 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob"></div>
+            <div class="absolute top-0 right-10 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-2000"></div>
+        </div>
+
+        <div class="max-w-3xl mx-auto px-6 relative z-10 text-center">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-100 mb-6 text-amber-700 text-xs font-bold uppercase tracking-widest shadow-sm">
+                <i class="fas fa-screwdriver-wrench"></i> Scheduled Maintenance
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight leading-[1.1] mb-6 text-slate-900">
+                StudyBase is currently<br>
+                <span class="text-gradient">in Maintenance Mode</span>
+            </h1>
+
+            <p class="text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed font-body">
+                To help keep our site and infrastructure up and running smoothly, StudyBase temporarily shuts down each night between
+                <strong>11:00pm and 4:00am</strong>. This helps reduce stress on the system and gives us time to deploy updates,
+                improvements, and bug fixes ready for the next day. We are sorry for any inconvenience this may cause.
+            </p>
+        </div>
+    </header>
+
+    <main class="flex-grow py-12 bg-slate-50">
+        <div class="max-w-3xl mx-auto px-6">
+
+            <div class="bg-white p-8 md:p-12 rounded-[2rem] shadow-sm border border-slate-100 mb-8">
+                <h2 class="text-2xl font-black text-slate-900 mb-4">Why is the site unavailable?</h2>
+                <p class="text-slate-600 mb-6 font-body leading-relaxed">
+                    StudyBase performs scheduled maintenance overnight to keep the platform stable, fast, and reliable during the busiest parts of the day.
+                    During this time, our systems may process updates, refresh internal services, carry out health checks, and roll out fixes or improvements.
+                </p>
+                <p class="text-slate-600 font-body leading-relaxed">
+                    This maintenance window helps protect the platform from unnecessary strain and ensures everything is ready for students the following morning.
+                    Full access will automatically return once the maintenance period ends at <strong>4:00am</strong>.
+                </p>
+            </div>
+
+            <div class="bg-white p-8 md:p-12 rounded-[2rem] shadow-sm border border-slate-100 mb-8">
+                <h2 class="text-2xl font-black text-slate-900 mb-6">What happens during maintenance?</h2>
+
+                <div class="space-y-6">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-black">1</div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-1">System updates are applied</h3>
+                            <p class="text-slate-500 text-sm font-body">Important improvements, fixes, and optimisations are pushed so the platform is ready for the next day.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-black">2</div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-1">Infrastructure load is reduced</h3>
+                            <p class="text-slate-500 text-sm font-body">Temporarily shutting down overnight helps reduce strain on our systems and improves long-term reliability.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-black">3</div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-1">Services are prepared for the morning</h3>
+                            <p class="text-slate-500 text-sm font-body">Caches, data, and key systems are refreshed so everything is running properly when access reopens.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-12">
+                <h2 class="text-2xl font-black text-slate-900 mb-6 ml-2">Frequently Asked Questions</h2>
+
+                <div class="space-y-4">
+                    <details class="group bg-white p-6 rounded-2xl border border-slate-100 shadow-sm open:border-blue-200 transition-all cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold text-slate-900 list-none">
+                            When will access return?
+                            <span class="text-blue-500 transform group-open:rotate-180 transition-transform"><i class="fas fa-chevron-down text-sm"></i></span>
+                        </summary>
+                        <p class="text-slate-500 mt-4 text-sm font-body leading-relaxed">
+                            Access normally returns automatically from <strong>4:00am</strong>. In rare cases, maintenance may take slightly longer if we are deploying important fixes.
+                        </p>
+                    </details>
+
+                    <details class="group bg-white p-6 rounded-2xl border border-slate-100 shadow-sm open:border-blue-200 transition-all cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold text-slate-900 list-none">
+                            Why not leave the site online overnight?
+                            <span class="text-blue-500 transform group-open:rotate-180 transition-transform"><i class="fas fa-chevron-down text-sm"></i></span>
+                        </summary>
+                        <p class="text-slate-500 mt-4 text-sm font-body leading-relaxed">
+                            Taking the platform offline overnight gives our infrastructure time to recover, process updates, and reduce background stress on the system.
+                        </p>
+                    </details>
+
+                    <details class="group bg-white p-6 rounded-2xl border border-slate-100 shadow-sm open:border-blue-200 transition-all cursor-pointer">
+                        <summary class="flex justify-between items-center font-bold text-slate-900 list-none">
+                            Do I need to do anything?
+                            <span class="text-blue-500 transform group-open:rotate-180 transition-transform"><i class="fas fa-chevron-down text-sm"></i></span>
+                        </summary>
+                        <p class="text-slate-500 mt-4 text-sm font-body leading-relaxed">
+                            No. Once the maintenance period ends, the site will become available again as normal.
+                        </p>
+                    </details>
+                </div>
+            </div>
+
+            <div class="mt-16 pt-10 border-t border-slate-200 text-center">
+                <h3 class="text-lg font-bold text-slate-900 mb-4">Thank you for your patience</h3>
+                <p class="text-slate-500 max-w-2xl mx-auto font-body leading-relaxed">
+                    We appreciate your understanding while we keep StudyBase secure, stable, and ready for the next day.
+                </p>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="footer-placeholder" class="mt-auto"></div>
+
+</body>
+</html>

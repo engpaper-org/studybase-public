@@ -1,0 +1,46 @@
+{
+  "pageId": "alevel_english",
+  "badgeText": "A-Level Subject Hub",
+  "badgeClass": "bg-red-50 border-red-100 text-red-700",
+  "highlightClass": "bg-gradient-to-r from-red-700 to-rose-700",
+  "title": "English Literature.",
+  "highlight": "Analysed.",
+  "description": "Engage in critical analysis of poetry, prose and drama through contextual, thematic and theoretical perspectives.",
+  "heroImage": "https://images.unsplash.com/photo-1455390582262-044cdead277a",
+  "sections": [
+    {
+      "title": "Shakespeare",
+      "text": "Detailed analysis of language, form and structure within historical and cultural context."
+    },
+    {
+      "title": "Poetry",
+      "text": "Comparative study of pre- and post-1900 poetry with focus on interpretation and critical debate."
+    },
+    {
+      "title": "Prose",
+      "text": "Thematic and contextual study of novels across time periods."
+    },
+    {
+      "title": "Drama",
+      "text": "Modern and classic plays, analysing character, dramatic method and audience response."
+    },
+    {
+      "title": "Literary Theory",
+      "text": "Applying feminist, Marxist, post-colonial or other critical perspectives where required."
+    },
+    {
+      "title": "Coursework (NEA)",
+      "text": "Independent comparative essay exploring texts of personal choice."
+    },
+    {
+      "title": "Essay Technique",
+      "text": "Constructing conceptual arguments, embedding quotations and integrating context fluently."
+    }
+  ],
+  "usefulLinks": [
+    {
+      "title": "AQA A-Level English Literature Specification",
+      "url": "https://www.aqa.org.uk/subjects/english/as-and-a-level/english-literature-a-7711-7712"
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 | Page Not Found</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/loginAnimationCheck.js" defer></script>
+    <script src="/assets/js/sessionManager.js" defer></script>
+    <script>const PAGE_ID = "404";</script>
+
+    <!--Cookie consent banner and google analytics-->
+    <script src="/assets/js/checkCookieConsent.js"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+
+        // 1. Determine current state
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        // 2. Set default based on that state
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+
+    <script src="/assets/js/cookieConsent.js"></script>
+    <!-- End of consent and analytics -->
+
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .gradient-text { 
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+
+        @keyframes float { 
+            0%, 100% { transform: translateY(0px) rotate(0deg); } 
+            50% { transform: translateY(-20px) rotate(5deg); } 
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 flex flex-col min-h-screen">
+
+    <main class="flex-grow flex items-center justify-center relative overflow-hidden py-32 px-6">
+        
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
+            <div class="absolute top-[20%] left-[10%] w-72 h-72 bg-blue-500/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-[20%] right-[10%] w-72 h-72 bg-purple-500/5 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="max-w-3xl w-full text-center relative z-10">
+            
+            <div class="relative inline-block mb-8">
+                <h1 class="text-[10rem] md:text-[12rem] font-black leading-none gradient-text select-none opacity-90">404</h1>
+                <div class="absolute top-0 -right-8 text-6xl animate-float" style="animation-delay: 0.5s">❓</div>
+                <div class="absolute bottom-0 -left-8 text-6xl animate-float" style="animation-delay: 1.5s">🛑</div>
+            </div>
+
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-6 tracking-tight">
+                This topic isn't on the syllabus.
+            </h2>
+            
+            <p class="text-lg md:text-xl text-slate-500 mb-12 leading-relaxed max-w-xl mx-auto">
+                The page you are looking for has been moved, deleted, or never existed. Don't worry—it won't come up in the exam.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="/gcse/index.html" class="w-full sm:w-auto px-8 py-4 bg-white border border-slate-200 text-slate-700 font-bold rounded-2xl hover:border-blue-500 hover:text-blue-600 hover:-translate-y-1 transition-all shadow-sm group">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1 group-hover:text-blue-400">Return to</span>
+                    GCSE Portal
+                </a>
+                
+                <a href="/alevel/index.html" class="w-full sm:w-auto px-8 py-4 bg-white border border-slate-200 text-slate-700 font-bold rounded-2xl hover:border-purple-500 hover:text-purple-600 hover:-translate-y-1 transition-all shadow-sm group">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1 group-hover:text-purple-400">Return to</span>
+                    A-Level Portal
+                </a>
+            </div>
+
+            <div class="mt-12">
+                <a href="/index.html" class="text-sm font-semibold text-slate-400 hover:text-slate-600 transition-colors border-b border-transparent hover:border-slate-400">
+                    &larr; Back to Landing Page
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    </body>
+</html>

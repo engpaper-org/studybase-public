@@ -1,0 +1,35 @@
+{
+  "pageId": "alevel_chemistry",
+  "badgeText": "A-Level Subject Hub",
+  "badgeClass": "bg-purple-50 border-purple-100 text-purple-700",
+  "highlightClass": "bg-gradient-to-r from-purple-700 to-indigo-700",
+  "title": "Chemistry.",
+  "highlight": "Analysed.",
+  "description": "Explore physical, organic and inorganic chemistry with advanced mathematical application and practical investigation.",
+  "heroImage": "https://images.unsplash.com/photo-1581093458791-9d09f1f13e66",
+  "sections": [
+    {
+      "title": "Physical Chemistry",
+      "text": "Atomic structure, thermodynamics, kinetics, equilibria, acids and bases, electrochemistry and rate equations."
+    },
+    {
+      "title": "Inorganic Chemistry",
+      "text": "Periodicity, Group 2 and 7 chemistry, transition metals and complex ions."
+    },
+    {
+      "title": "Organic Chemistry",
+      "text": "Reaction mechanisms, alkanes, alkenes, halogenoalkanes, alcohols, carbonyls, aromatic chemistry and polymers."
+    },
+    {
+      "title": "Analytical Techniques",
+      "text": "Mass spectrometry, IR, NMR spectroscopy and chromatography."
+    },
+    {
+      "title": "Practical Skills",
+      "text": "Titrations, calorimetry, synthesis and purification, error analysis and evaluation."
+    }
+  ],
+  "usefulLinks": [
+    { "title": "AQA A-Level Chemistry Specification", "url": "https://www.aqa.org.uk/subjects/science/as-and-a-level/chemistry-7404-7405" }
+  ]
+}

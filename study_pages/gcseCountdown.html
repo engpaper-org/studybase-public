@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCSE Countdown | StudyBase Style</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+(function () {
+
+    function isInIframe() {
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true; // cross-origin iframe
+        }
+    }
+
+    if (!isInIframe()) {
+        loadScript("/assets/js/sessionManager.js");
+        loadScript("/assets/js/navbar.js");
+        loadScript("/assets/js/footer.js");
+        loadScript("/assets/js/loginAnimationCheck.js");
+
+    
+    }
+
+    function loadScript(src) {
+        const s = document.createElement("script");
+        s.src = src;
+        s.defer = true;
+        document.head.appendChild(s);
+    }
+
+})();
+</script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: 0, transform: 'translateY(20px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Dark mode grid based on reference */
+        .bg-grid-slate-800 {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%231e293b'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #60a5fa 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200 font-sans selection:bg-blue-900 selection:text-blue-100 min-h-screen relative overflow-x-hidden p-6 md:p-12">
+
+    <div class="fixed inset-0 bg-grid-slate-800 [mask-image:linear-gradient(0deg,transparent,rgba(0,0,0,1))] -z-20"></div>
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl -z-10 pointer-events-none">
+        <div class="absolute top-0 left-10 w-72 h-72 bg-blue-600 rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-blob"></div>
+        <div class="absolute top-0 right-10 w-72 h-72 bg-purple-600 rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-1/2 w-72 h-72 bg-emerald-600 rounded-full mix-blend-screen filter blur-[100px] opacity-10 animate-blob animation-delay-4000"></div>
+    </div>
+
+    <div class="max-w-3xl mx-auto relative z-10">
+        
+        <header class="text-center mb-16 pt-8">
+            <div class="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-slate-900/80 border border-slate-700 mb-8 text-slate-300 text-xs font-bold uppercase tracking-widest shadow-lg shadow-black/50 backdrop-blur-md cursor-default">
+                <span class="relative flex h-2.5 w-2.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-500"></span>
+                </span>
+                <span>GCSE Countdown</span>
+            </div>
+
+            <h1 class="text-5xl md:text-6xl font-black tracking-tight leading-[1.05] mb-4 text-white">
+                Exam <span class="text-gradient">Countdown</span>
+            </h1>
+            <p class="text-lg text-slate-400 font-body">These are official dates published by exam boards, due to clashed or other reasons schools may change your exam dates, please don't rely on these dates.</p>
+        </header>
+
+        <div>
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4 ml-2 flex items-center gap-2">
+                <i class="fa-solid fa-hourglass-half text-blue-500"></i> Upcoming
+            </h3>
+            <div id="upcoming-container" class="flex flex-col gap-4 mb-12"></div>
+        </div>
+
+        <div>
+            <h3 class="text-xs font-bold text-slate-600 uppercase tracking-widest mb-4 ml-2 flex items-center gap-2">
+                <i class="fa-solid fa-check-double"></i> Completed
+            </h3>
+            <div id="past-container" class="flex flex-col gap-4"></div>
+        </div>
+        
+    </div>
+
+    <script>
+        // 1. JSON Data
+        const examsJSON = `[
+{ "subject": "English Literature", "paper": "Paper 1 (Shakespeare & 19th Century Novel)", "examBoard": "AQA", "date": "2026-05-11" },
+
+{ "subject": "Biology", "paper": "Paper 1 (Cell Biology, Organisation, Infection, Bioenergetics)", "examBoard": "Edexcel", "date": "2026-05-12" },
+
+{ "subject": "Religious Studies", "paper": "Paper 1 (Beliefs & Teachings)", "examBoard": "AQA", "date": "2026-05-12" },
+
+{ "subject": "Geography", "paper": "Paper 1 (Physical Geography)", "examBoard": "AQA", "date": "2026-05-13" },
+
+{ "subject": "Computer Science", "paper": "Component 1 (Computer Systems)", "examBoard": "OCR", "date": "2026-05-13" },
+
+{ "subject": "Mathematics", "paper": "Paper 1 (Non-Calculator)", "examBoard": "Edexcel", "date": "2026-05-14" },
+
+{ "subject": "Citizenship", "paper": "Paper 2 (Rights & Responsibilities)", "examBoard": "OCR", "date": "2026-05-14" },
+
+{ "subject": "History", "paper": "Paper 1 (Understanding the Modern World)", "examBoard": "AQA", "date": "2026-05-15" },
+
+{ "subject": "Chemistry", "paper": "Paper 1 (Atomic Structure, Bonding, Quantitative Chemistry)", "examBoard": "Edexcel", "date": "2026-05-18" },
+
+{ "subject": "Economics", "paper": "Paper 1 (Microeconomics)", "examBoard": "OCR", "date": "2026-05-18" },
+
+{ "subject": "English Literature", "paper": "Paper 2 (Modern Texts & Poetry)", "examBoard": "AQA", "date": "2026-05-19" },
+
+{ "subject": "Computer Science", "paper": "Component 2 (Algorithms & Programming)", "examBoard": "OCR", "date": "2026-05-19" },
+
+{ "subject": "French", "paper": "Listening", "examBoard": "AQA", "date": "2026-05-20" },
+
+{ "subject": "Religious Studies", "paper": "Paper 2 (Themes)", "examBoard": "AQA", "date": "2026-05-20" },
+
+{ "subject": "English Language", "paper": "Paper 1 (Creative Reading & Writing)", "examBoard": "AQA", "date": "2026-05-21" },
+
+{ "subject": "Physical Education", "paper": "Component 1 (Fitness & Body Systems)", "examBoard": "Edexcel", "date": "2026-05-22" },
+
+{ "subject": "Physics", "paper": "Paper 1 (Energy, Electricity, Particle Model)", "examBoard": "Edexcel", "date": "2026-06-02" },
+
+{ "subject": "Mathematics", "paper": "Paper 2 (Calculator)", "examBoard": "Edexcel", "date": "2026-06-03" },
+
+{ "subject": "Geography", "paper": "Paper 2 (Human Geography)", "examBoard": "AQA", "date": "2026-06-03" },
+
+{ "subject": "History", "paper": "Paper 2 (Shaping the Nation)", "examBoard": "AQA", "date": "2026-06-04" },
+
+{ "subject": "French", "paper": "Reading", "examBoard": "AQA", "date": "2026-06-04" },
+
+{ "subject": "English Language", "paper": "Paper 2 (Writers’ Viewpoints & Perspectives)", "examBoard": "AQA", "date": "2026-06-05" },
+
+{ "subject": "Music", "paper": "Listening & Appraising", "examBoard": "Edexcel", "date": "2026-06-05" },
+
+{ "subject": "Biology", "paper": "Paper 2 (Homeostasis, Ecology, Evolution)", "examBoard": "Edexcel", "date": "2026-06-08" },
+
+{ "subject": "French", "paper": "Writing", "examBoard": "AQA", "date": "2026-06-08" },
+
+{ "subject": "Spanish", "paper": "Listening", "examBoard": "AQA", "date": "2026-06-09" },
+
+{ "subject": "Design Technology", "paper": "Written Exam (Core Technical Principles)", "examBoard": "AQA", "date": "2026-06-10" },
+
+{ "subject": "Mathematics", "paper": "Paper 3 (Calculator)", "examBoard": "Edexcel", "date": "2026-06-10" },
+
+{ "subject": "Geography", "paper": "Paper 3 (Fieldwork & Issue Evaluation)", "examBoard": "AQA", "date": "2026-06-11" },
+
+{ "subject": "Chemistry", "paper": "Paper 2 (Rates, Organic Chemistry, Analysis)", "examBoard": "Edexcel", "date": "2026-06-12" },
+
+{ "subject": "Physics", "paper": "Paper 2 (Forces, Waves, Magnetism)", "examBoard": "Edexcel", "date": "2026-06-15" },
+
+{ "subject": "Spanish", "paper": "Reading", "examBoard": "AQA", "date": "2026-06-16" },
+
+{ "subject": "Spanish", "paper": "Writing", "examBoard": "AQA", "date": "2026-06-17" }
+]`;
+
+        let exams = JSON.parse(examsJSON);
+
+        // 2. Icon Assignment
+        function getStyle(subject) {
+            const sub = subject.toLowerCase();
+            if (sub.includes('math')) return { icon: 'fa-calculator', color: 'text-blue-400' };
+            if (sub.includes('english')) return { icon: 'fa-book-open', color: 'text-yellow-400' };
+            if (sub.includes('bio')) return { icon: 'fa-dna', color: 'text-emerald-400' };
+            if (sub.includes('chem')) return { icon: 'fa-flask', color: 'text-purple-400' };
+            if (sub.includes('phys')) return { icon: 'fa-atom', color: 'text-cyan-400' };
+            if (sub.includes('history')) return { icon: 'fa-landmark', color: 'text-orange-400' };
+            if (sub.includes('computer') || sub.includes('cs')) return { icon: 'fa-laptop-code', color: 'text-indigo-400' };
+            if (sub.includes('french') || sub.includes('spanish')) return { icon: 'fa-language', color: 'text-pink-400' };
+            return { icon: 'fa-pen-nib', color: 'text-slate-400' };
+        }
+
+        // 3. Time Calculations & Sorting
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); 
+
+        exams.forEach(exam => {
+            const examDay = new Date(exam.date);
+            const diffTime = examDay.getTime() - today.getTime();
+            exam.daysRemaining = Math.ceil(diffTime / (1000 * 3600 * 24));
+        });
+
+        const upcomingExams = exams.filter(e => e.daysRemaining >= 0).sort((a, b) => a.daysRemaining - b.daysRemaining);
+        const pastExams = exams.filter(e => e.daysRemaining < 0).sort((a, b) => b.daysRemaining - a.daysRemaining); 
+
+        // 4. Render Engine
+        function renderExams(examArray, containerId, isPast) {
+            const container = document.getElementById(containerId);
+            if(examArray.length === 0) {
+                container.innerHTML = `<div class="text-slate-500 text-sm italic p-5 text-center bg-slate-900/50 border border-slate-800 rounded-2xl backdrop-blur-md">Nothing to show.</div>`;
+                return;
+            }
+
+            examArray.forEach((exam, index) => {
+                const style = getStyle(exam.subject);
+                const formattedDate = new Date(exam.date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+                
+                let rightSide = '';
+                let cardClass = 'bg-slate-900/60 border border-slate-700/50 hover:bg-slate-800/80 hover:border-slate-600';
+                
+                // Styling for "Next Up" vs "Past"
+                if (!isPast && index === 0) {
+                    cardClass = 'bg-slate-800/80 border border-blue-500/30 shadow-[0_0_20px_rgba(59,130,246,0.1)]';
+                } else if (isPast) {
+                    cardClass = 'bg-slate-900/30 border border-slate-800/50 opacity-50 grayscale hover:opacity-100 transition-opacity';
+                }
+
+                // Numbers logic
+                if (!isPast) {
+                    const dayText = exam.daysRemaining === 1 ? 'Day' : 'Days';
+                    if (exam.daysRemaining === 0) {
+                        rightSide = `<span class="px-4 py-2 bg-yellow-500/10 text-yellow-500 font-bold uppercase tracking-widest text-xs rounded-lg border border-yellow-500/20">Today</span>`;
+                    } else {
+                        rightSide = `
+                            <div class="text-right flex flex-col items-end">
+                                <span class="text-4xl font-black text-white leading-none">${exam.daysRemaining}</span>
+                                <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">${dayText}</span>
+                            </div>`;
+                    }
+                } else {
+                    const daysAgo = Math.abs(exam.daysRemaining);
+                    rightSide = `
+                        <div class="text-right flex flex-col items-end">
+                            <i class="fa-solid fa-check text-slate-500 mb-1"></i>
+                            <span class="text-xs text-slate-500 font-body">${daysAgo} ${daysAgo === 1 ? 'day' : 'days'} ago</span>
+                        </div>`;
+                }
+
+                const delay = (index * 0.1) + (isPast ? 0.4 : 0);
+
+                container.innerHTML += `
+                    <div class="group flex items-center justify-between p-5 md:p-6 rounded-[2rem] transition-all duration-300 backdrop-blur-xl animate-fade-in-up opacity-0 ${cardClass}" style="animation-delay: ${delay}s">
+                        
+                        <div class="flex items-center gap-5 w-full pr-4">
+                            <div class="w-14 h-14 md:w-16 md:h-16 rounded-[1.25rem] bg-slate-800/80 border border-slate-700 flex items-center justify-center shrink-0 shadow-inner">
+                                <i class="fa-solid ${style.icon} ${style.color} text-2xl"></i>
+                            </div>
+                            
+                            <div class="flex flex-col flex-1">
+                                <div class="flex items-center gap-3 mb-1">
+                                    <h2 class="text-xl font-black text-white">${exam.subject}</h2>
+                                    ${(!isPast && index === 0) ? '<span class="px-2.5 py-1 bg-blue-500/20 text-blue-300 text-[9px] font-bold uppercase tracking-widest rounded-md border border-blue-500/30">Next Up</span>' : ''}
+                                </div>
+                                
+                                <div class="flex flex-wrap items-center gap-2 mb-2">
+                                    <span class="px-2 py-0.5 bg-slate-800 rounded-md text-slate-300 text-[10px] font-bold uppercase tracking-widest border border-slate-700">
+                                        ${exam.paper}
+                                    </span>
+                                    <span class="px-2 py-0.5 bg-white/5 rounded-md text-slate-400 text-[10px] font-bold uppercase tracking-widest border border-white/5">
+                                        ${exam.examBoard}
+                                    </span>
+                                </div>
+
+                                <p class="text-xs text-slate-500 font-body flex items-center gap-1.5">
+                                    <i class="fa-regular fa-calendar text-slate-600"></i> ${formattedDate}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="shrink-0">
+                            ${rightSide}
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        renderExams(upcomingExams, 'upcoming-container', false);
+        renderExams(pastExams, 'past-container', true);
+
+    </script>
+</body>
+</html>

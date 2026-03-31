@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report an Issue</title>
+    <script src="/assets/js/iframeCheck.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!--Cookie consent banner and google analytics-->
+    <script src="/assets/js/checkCookieConsent.js"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+
+        // 1. Determine current state
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        // 2. Set default based on that state
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+
+    <script src="/assets/js/cookieConsent.js"></script>
+    <!-- End of consent and analytics -->
+     
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #F6F9FC; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        /* Animation */
+        .animate-enter { animation: enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes enter { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 relative overflow-y-auto">
+
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute top-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-100/60 rounded-full blur-3xl opacity-60"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-100/60 rounded-full blur-3xl opacity-60"></div>
+    </div>
+
+    <div class="w-full max-w-lg relative z-10 animate-enter my-10">
+        
+        <div class="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[2.5rem] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] p-8 md:p-10 relative overflow-hidden">
+            
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-gradient-to-br from-red-50 to-orange-50 text-red-500 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-5 shadow-sm border border-red-100/50">
+                    <i class="fas fa-bug"></i>
+                </div>
+                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Report an Issue</h1>
+                <p class="text-slate-500 mt-2 text-sm font-medium">Help us keep the database clean and functional.</p>
+            </div>
+
+            <form id="reportForm" class="space-y-5" onsubmit="submitReport(event)">
+                
+                <div>
+                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-2">Problem Location</label>
+                    <div class="relative group">
+                        <span class="absolute left-4 top-3.5 text-slate-400 group-focus-within:text-blue-500 transition-colors"><i class="fas fa-link"></i></span>
+                        <input type="text" id="urlInput" required
+                            class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl py-3.5 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium placeholder-slate-400 truncate"
+                            placeholder="https://studybase.site/resource...">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-2">What's wrong?</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-3.5 text-slate-400"><i class="fas fa-triangle-exclamation"></i></span>
+                        <select id="problemType" required
+                            class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl py-3.5 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium appearance-none cursor-pointer">
+                            <option value="" disabled selected>Select category...</option>
+                            <option value="safety">Inappropriate content</option>
+                            <option value="ruffle">Ruffle failed to load SWF</option>
+                            <option value="broken_link">Won’t load</option>
+                            <option value="404">404 / Not found</option>
+                            <option value="controls">Controls not working</option>
+                            <option value="laggy">Very laggy</option>
+                            <option value="overheat">Device overheating</option>
+                            <option value="no-flash">Flash required (unsupported)</option>
+                            <option value="screen">Screen / fullscreen issue</option>
+                            <option value="name-error">Incorrect title</option>
+                            <option value="other">Other</option>
+
+                        </select>
+                        <span class="absolute right-4 top-3.5 text-slate-400 pointer-events-none text-xs"><i class="fas fa-chevron-down"></i></span>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-2">Details</label>
+                    <textarea id="explanation" rows="4" required
+                        class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium resize-none placeholder-slate-400"
+                        placeholder="Please describe exactly what happened..."></textarea>
+                </div>
+
+                <button type="submit" id="submitBtn" 
+                    class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 mt-2">
+                    <span>Submit Report</span>
+                </button>
+            </form>
+
+            <div id="successMessage" class="hidden absolute inset-0 bg-white z-20 flex flex-col items-center justify-center text-center p-8 animate-enter">
+                <div class="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center text-3xl mb-6 shadow-sm">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Report Sent!</h3>
+                <p class="text-slate-500 mt-2 text-sm max-w-xs mx-auto">Our admins have been notified via Discord and will investigate shortly.</p>
+                <button onclick="parent.closeReportModal()" class="mt-8 px-8 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-colors text-sm">
+                    Close Window
+                </button>
+            </div>
+            
+            <div id="errorMessage" class="hidden mt-4 p-4 bg-red-50 text-red-600 rounded-xl text-center text-sm font-bold border border-red-100">
+                Something went wrong. Please try again.
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Set worker URL
+        const WORKER_URL = "https://report-problem.studybase.site";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const pageUrl = params.get('pageUrl');
+            const input = document.getElementById('urlInput');
+
+            if (pageUrl && pageUrl !== "undefined" && pageUrl !== "") {
+                input.value = pageUrl;
+                input.classList.add('bg-blue-50/30');
+            }
+        });
+
+        async function submitReport(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitBtn');
+            const success = document.getElementById('successMessage');
+            const errorMsg = document.getElementById('errorMessage');
+            
+            // Prepare Data
+            const data = {
+                url: document.getElementById('urlInput').value,
+                type: document.getElementById('problemType').value,
+                notes: document.getElementById('explanation').value,
+                timestamp: new Date().toISOString()
+            };
+
+            // Loading State
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
+            errorMsg.classList.add('hidden');
+
+            try {
+                // Send to Cloudflare Worker
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    success.classList.remove('hidden');
+                } else {
+                    throw new Error('Server returned error');
+                }
+            } catch (err) {
+                console.error(err);
+                btn.disabled = false;
+                btn.innerHTML = '<span>Try Again</span>';
+                errorMsg.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

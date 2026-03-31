@@ -1,0 +1,284 @@
+{
+  "version": "v2.0",
+  "date": "2026.3.14",
+  "title": "StudyBase Unified Legal Policy",
+  "description": "A combined legal document incorporating Terms of Use, Terms and Conditions, Privacy Policy, Cookie and Local Storage Notice, Moderation Notice, Proxy/Embedded Content Disclaimer, and Account/Access Terms.",
+  "clauses": [
+    {
+      "id": "1",
+      "title": "Definitions & Scope",
+      "badge": "FOUNDATION",
+      "content": "<strong>\"The Service\"</strong> means the StudyBase platform, including all pages, subdomains, scripts, dashboards, legal notices, account systems, embedded applications, proxy interfaces, APIs, analytics scripts, moderation tools, and associated infrastructure.<br><br><strong>\"The Provider\"</strong> means the operator, maintainer, and legal owner or controller of the Service.<br><br><strong>\"User\"</strong> means any person who accesses, browses, views, interacts with, submits information to, or otherwise uses any part of the Service.<br><br><strong>\"Device Data\"</strong> means information stored on or read from a user's browser or device, including localStorage, sessionStorage, similar browser technologies, scripts, and tags.<br><br>This Unified Legal Policy governs your access to and use of the Service. By using the Service, you agree to be bound by it."
+    },
+    {
+      "id": "2",
+      "title": "Nature of this Document",
+      "badge": "LEGAL",
+      "content": "This document is intended to operate as the Service's primary legal notice and includes, where applicable, terms of use, terms and conditions, privacy disclosures, storage technology disclosures, moderation rules, and access restrictions.<br><br>Where a shorter notice, banner, modal, consent prompt, or page-specific warning appears elsewhere on the Service, that shorter notice supplements this document and does not replace it."
+    },
+    {
+      "id": "3",
+      "title": "Eligibility, Age & Minors",
+      "badge": "COMPLIANCE",
+      "content": "The Service is intended primarily for students and educational users, including GCSE and A-Level users. You must be at least 13 years old to use the Service independently.<br><br>If you are under 18, you confirm that you have permission from a parent, guardian, teacher, or other responsible adult to use the Service.<br><br>The Provider does not accept liability for unauthorised, unsupervised, or institutionally prohibited use by minors."
+    },
+    {
+      "id": "4",
+      "title": "Children's Privacy & Child-Accessible Service Status",
+      "badge": "CHILDREN",
+      "content": "Because the Service is likely to be accessed by children and older teenagers, the Provider aims to minimise the collection of directly identifying information and to keep core functionality usable without requiring real names, home addresses, or personal email addresses.<br><br>Users must not submit unnecessary personal information into display-name fields, report forms, search fields, feedback forms, or any other free-text area.<br><br>Users are specifically warned not to use their real full name as a display name unless they consciously choose to do so and understand the risk of disclosure."
+    },
+    {
+      "id": "5",
+      "title": "Acceptance of Terms",
+      "badge": "MANDATORY",
+      "content": "By accessing, loading, browsing, interacting with, or continuing to use the Service, you acknowledge that you have read and accepted this document.<br><br>Where a consent banner, overlay, or acceptance mechanism is presented, continued access may be conditional upon affirmative acceptance."
+    },
+    {
+      "id": "6",
+      "title": "Educational Purpose & No Academic Guarantee",
+      "badge": "EDUCATION",
+      "content": "The Service is designed primarily as a revision, study-support, and educational resource platform. Some features may include entertainment-style interfaces, embedded content, interactive media, or gamified mechanics; however, educational support remains the stated primary purpose of the Service.<br><br>The Provider makes no promise, warranty, or guarantee of grades, exam performance, educational outcomes, admissions, or career results."
+    },
+    {
+      "id": "7",
+      "title": "Privacy Information Summary",
+      "badge": "PRIVACY",
+      "content": "The Service may process limited personal data and device-related information for security, access control, abuse prevention, analytics, feature operation, and user convenience.<br><br>Depending on how you use the Service, this may include browser information, IP-related request data, page URLs, material identifiers, device/browser storage values, report submissions, consent events, access state, and session or membership status."
+    },
+    {
+      "id": "8",
+      "title": "Technical Data Collected Automatically",
+      "badge": "ANALYTICS",
+      "content": "When you access the Service, certain technical information may be collected automatically by the Service, its hosting/infrastructure providers, or integrated scripts. This may include IP address data, browser type, user agent, approximate device type, referring page, request timing, viewed page URL, error states, and similar diagnostic information.<br><br>This information may be used for security, fraud and abuse prevention, troubleshooting, service analytics, infrastructure maintenance, and verifying that pages are opened in the expected context."
+    },
+    {
+      "id": "9",
+      "title": "Data You Submit Explicitly",
+      "badge": "USER INPUT",
+      "content": "Where the Service provides report forms, account-related forms, display-name inputs, support inputs, or other user-controlled text fields, information you choose to submit may be processed by the Service.<br><br>This may include user-entered display names, report reasons, typed search terms, manually entered override codes, and any other content you voluntarily input.<br><br>You must not submit confidential, medical, financial, or excessive personal information unless the Service clearly and expressly requests it."
+    },
+    {
+      "id": "10",
+      "title": "Consent Mechanisms, Local Storage & Similar Technologies",
+      "badge": "COOKIES",
+      "content": "The Service uses browser storage technologies including <strong>localStorage</strong> and, where applicable, similar browser-side storage or access mechanisms. For legal and transparency purposes, these technologies should be treated in a similar manner to cookies where applicable.<br><br>The Service may also use scripts, tags, and consent-controlled analytics or advertising-related settings to manage functionality and permissions."
+    },
+    {
+      "id": "11",
+      "title": "Consent Status & Consent Logging",
+      "badge": "CONSENT",
+      "content": "The Service may store a consent state on your device, including a flag indicating that consent has been granted, together with a locally generated consent identifier for repeat recognition and compliance logging.<br><br>When consent is accepted, the Service may also transmit limited consent-related information such as a pseudonymous consent identifier, the current page URL, and browser user-agent information to a third-party logging endpoint for audit or compliance purposes."
+    },
+    {
+      "id": "12",
+      "title": "Google Consent Mode & Analytics Controls",
+      "badge": "GOOGLE",
+      "content": "Where implemented, the Service may update Google Consent Mode settings after user acceptance, including settings related to advertising storage, advertising user data, personalisation, and analytics storage.<br><br>The Service may also refresh or initialise analytics-related configuration after consent has been granted.<br><br>If Google services are used, those services operate under their own terms and privacy policies in addition to this document."
+    },
+    {
+      "id": "13",
+      "title": "Data Stored Locally on Your Device",
+      "badge": "DEVICE DATA",
+      "content": "The Service may store or read the following categories of information locally on your browser or device: consent flags; pseudonymous consent identifiers; device identifiers; login-related state; stored usernames; stored passwords or password-like values; session expiry timestamps; local feature toggles; play or view history; recently accessed resources; content preference flags; first-name or display-name personalisation values; search safety violation counts; and short-term anti-loop or anti-refresh state values.<br><br>This information is primarily stored client-side rather than in a conventional central user database."
+    },
+    {
+      "id": "14",
+      "title": "Locally Stored Keys & Current Implementation Examples",
+      "badge": "IMPLEMENTATION",
+      "content": "Examples of client-side values currently used by the Service may include keys such as <strong>site_consent_granted</strong>, <strong>consent_uid</strong>, <strong>gh_device</strong>, <strong>gh_username</strong>, <strong>gh_password</strong>, <strong>gh_session_expiry</strong>, <strong>gh_session_expiry_set_at</strong>, <strong>sb_recentlyPlayed</strong>, <strong>sb_saveRecentlyPlayed</strong>, <strong>sb_firstName</strong>, <strong>sb_searchguard_violations</strong>, and similar operational keys.<br><br>These examples are included for transparency and may change over time as the Service evolves."
+    },
+    {
+      "id": "15",
+      "title": "Retention of Local Device Data",
+      "badge": "RETENTION",
+      "content": "Locally stored browser data generally remains on your device until it expires, is overwritten, is cleared by browser or device behaviour, or is manually deleted by you.<br><br>Some values may persist across sessions. Others may be temporary or refreshed automatically.<br><br>The Provider does not guarantee any specific retention duration for local browser data and is not responsible for loss of settings, account state, or history caused by clearing storage, changing browsers, using private browsing, changing devices, browser resets, or security software."
+    },
+    {
+      "id": "16",
+      "title": "Deletion, Reset & User Responsibility for Local Data",
+      "badge": "USER CONTROL",
+      "content": "You are responsible for managing, deleting, exporting, or preserving any browser-side data stored by the Service on your device.<br><br>If you clear localStorage, sessionStorage, browser cache, or related site data, some or all local functionality may reset, including consent status, personalisation, login state, recent history, or premium-related display state.<br><br>The Provider may be unable to restore such data."
+    },
+    {
+      "id": "17",
+      "title": "Analytics Events & Material Tracking",
+      "badge": "ANALYTICS",
+      "content": "The Service may send lightweight usage events when certain materials or resources are opened. In the current implementation, a resource identifier or material identifier may be transmitted to an external logging or script endpoint for analytics or usage measurement.<br><br>The Provider uses this to understand which resources are accessed and to help maintain, improve, or audit the Service."
+    },
+    {
+      "id": "18",
+      "title": "Third-Party Analytics & Infrastructure Providers",
+      "badge": "EXTERNAL",
+      "content": "The Service may rely on third-party providers for analytics, logging, CDN delivery, scripts, consent-related functionality, serverless functions, hosting, or access infrastructure. Such providers may process technical data under their own privacy terms.<br><br>This may include, without limitation, Google services, Cloudflare or similar infrastructure services, Google Apps Script endpoints, and other third-party processors or platforms used by the Service from time to time."
+    },
+    {
+      "id": "19",
+      "title": "User Rights & Privacy Requests",
+      "badge": "RIGHTS",
+      "content": "Where applicable under UK data protection law, users may have rights relating to access, correction, erasure, restriction, objection, and similar privacy rights in relation to personal data processed by or for the Service.<br><br>Because the Service uses significant client-side storage, many values may be directly viewable or deletable by the user through their own browser settings.<br><br>For server-side or third-party transmitted data, requests should be made using the contact route specified by the Provider on the Service."
+    },
+    {
+      "id": "20",
+      "title": "Reports, Moderation & Webhook-Based Submissions",
+      "badge": "MODERATION",
+      "content": "The Service may provide reporting, moderation, or abuse-handling tools that transmit submissions and associated technical metadata to third-party endpoints such as webhook systems or script-based logging services.<br><br>Where a user submits a report, support item, or moderation-triggering event, the transmitted information may include the content of the submission, timestamps, page context, device/session context, and IP-related request data as available to the receiving endpoint or infrastructure.<br><br>Such processing is carried out for moderation, anti-spam, abuse prevention, integrity protection, and internal review."
+    },
+    {
+      "id": "21",
+      "title": "False Reports, Spam & Malicious Payloads",
+      "badge": "ABUSE",
+      "isWarning": true,
+      "content": "Users must not submit false reports, spam the reporting system, flood webhook endpoints, submit malicious payloads, attempt injection attacks, or use the Service to test exploit strings against its forms, scripts, or moderation tools.<br><br>The Provider reserves the right to restrict, suspend, or permanently block access where misuse is suspected."
+    },
+    {
+      "id": "22",
+      "title": "Search Safety, Hash Matching & Automated Filtering",
+      "badge": "AUTOMATED",
+      "content": "The Service may implement automated search-safety and text filtering systems. In the current implementation, search input may be normalised, hashed, compared against locally loaded blocked references, and actioned automatically where a match is detected.<br><br>The Service may store a count of local violations on the user's device, display moderation or warning modals, disable search after repeated violations, and provide for a local override mechanism in limited scenarios.<br><br>These systems are automated and may produce false positives or false negatives."
+    },
+    {
+      "id": "23",
+      "title": "Moderation Review Thresholds & Enforcement",
+      "badge": "ENFORCEMENT",
+      "content": "The Service may escalate repeated misuse signals for review. In the current implementation, repeated search-safety violations may trigger stronger warnings, local lockouts, or review messaging.<br><br>The Provider reserves the right to interpret repeated misuse, evasion attempts, or hostile interaction with moderation tools as a breach of this document."
+    },
+    {
+      "id": "24",
+      "title": "No Warranty for Filter Effectiveness",
+      "badge": "DISCLAIMER",
+      "content": "All automated moderation, word filtering, search blocking, and content warning systems are provided on an \"as is\" and \"best efforts\" basis only.<br><br>The Provider does not warrant that any automated filter, blocked-word list, or safety mechanism will detect, prevent, or fully remove all harmful, offensive, explicit, or abusive content."
+    },
+    {
+      "id": "25",
+      "title": "Account Architecture & Client-Side Access State",
+      "badge": "ACCOUNTS",
+      "content": "The Service may use a hybrid access architecture involving browser-stored identifiers, local session values, access flags, redirect logic, server-side validation, and resource-mode checks rather than a conventional always-centralised user-account system.<br><br>As a result, certain account-like experiences on the Service may depend partly or substantially on local browser state existing on the correct device and browser."
+    },
+    {
+      "id": "26",
+      "title": "Login State, Membership Checks & Premium Status",
+      "badge": "MEMBERSHIP",
+      "content": "The Service may read locally stored login-related values such as a device identifier, username, and password-like credential values in order to determine whether the user appears signed in, whether membership status should be queried, and whether premium or Diamond membership banners, plan controls, or upgrade prompts should be shown.<br><br>The Service may query a remote membership endpoint and may periodically re-check membership status while the user is in a restricted or private-resource access mode."
+    },
+    {
+      "id": "27",
+      "title": "Session Expiry, Device State & Automatic Logout",
+      "badge": "SESSION",
+      "content": "The Service may store session-expiry timestamps locally and may automatically require re-authentication once a locally tracked session has expired.<br><br>The current implementation may clear stored login-related values and redirect the user after expiry. The timing rules used by the Service may change over time and are not guaranteed to remain constant."
+    },
+    {
+      "id": "28",
+      "title": "Personalisation & User-Visible Token Replacement",
+      "badge": "PERSONALISATION",
+      "content": "The Service may allow limited client-side personalisation, including replacing text placeholders using a locally stored first name or display-name value.<br><br>This feature is provided for convenience only. Users must not input sensitive or identifying information that they would not want displayed on screen."
+    },
+    {
+      "id": "29",
+      "title": "Recently Viewed / Recently Played History",
+      "badge": "HISTORY",
+      "content": "The Service may locally store a list of recently accessed materials, resources, or play/view history on the user's device to improve convenience and continuity. In the current implementation, a recently played list may store titles and URLs and may keep only a limited number of entries.<br><br>This history is generally stored locally on the device and may be disabled, overwritten, or deleted through browser storage changes."
+    },
+    {
+      "id": "30",
+      "title": "Page Integrity, Frame Checks & Access Context",
+      "badge": "SECURITY",
+      "content": "The Service may enforce page-integrity checks, iframe-only access conditions, origin or referer expectations, direct-access blocks, resource-open-mode requirements, and similar navigation guards in order to preserve expected application flow and reduce misuse.<br><br>Some pages may refuse to load outside the intended frame or interface context and may redirect to an error or access-warning page when accessed directly."
+    },
+    {
+      "id": "31",
+      "title": "Error Codes, Diagnostics & Security Signals",
+      "badge": "SYSTEM",
+      "content": "The Service may generate or display structured error codes, access-denied codes, session-expired codes, security-layer codes, routing errors, storage errors, network errors, and similar diagnostics.<br><br>These codes are provided for operational transparency, debugging, access control, and support flow. They do not create any entitlement to continued access."
+    },
+    {
+      "id": "32",
+      "title": "Third-Party Content, Embedded Apps & External Resources",
+      "badge": "EXTERNAL",
+      "content": "The Service may embed, frame, link to, or provide access to third-party applications, games, resources, media, websites, and software that are owned, hosted, or controlled by other parties.<br><br>The Provider does not guarantee the safety, legality, quality, availability, privacy practices, or technical behaviour of third-party content."
+    },
+    {
+      "id": "33",
+      "title": "Proxy Interfaces & External Website Access",
+      "badge": "HIGH RISK",
+      "isWarning": true,
+      "content": "Where the Service offers proxy-style access or embedded browsing interfaces, any destination website, embedded page, or external resource accessed through that mechanism remains a third-party service.<br><br>Third parties may set their own cookies, use their own storage technologies, perform their own analytics, display their own advertising, or collect data independently of the Provider.<br><br>The Provider has no control over, and accepts no responsibility for, tracking, malware, inappropriate content, or unlawful content served by third parties."
+    },
+    {
+      "id": "34",
+      "title": "Ghost Features, Cloaks, Panic Buttons & Institutional Bypass Risk",
+      "badge": "FINAL WARNING",
+      "isWarning": true,
+      "content": "Any visual cloaks, ghost modes, panic buttons, disguised tabs, alternate branding views, or similar concealment features are provided solely as convenience tools and <strong>are not guaranteed</strong> to evade or defeat school, employer, parental, or institutional monitoring systems.<br><br>You assume 100% of the risk of using such features in breach of any school rules, acceptable-use policy, employer IT policy, monitoring agreement, or network terms.<br><br>The Provider is not liable for detentions, disciplinary action, warnings, exclusion, confiscation of devices, monitoring alerts, account sanctions, or network blocks."
+    },
+    {
+      "id": "35",
+      "title": "Acceptable Use Rules",
+      "badge": "RULES",
+      "content": "You must not: reverse engineer the Service; scrape it at scale; overload it; test exploits against it; send malicious payloads; automate access in a harmful way; tamper with client-side logic to bypass restrictions; interfere with analytics, consent, security, or moderation systems; attempt unauthorised access to restricted resources; or use the Service to facilitate harassment, abuse, or unlawful conduct.<br><br>The Provider may take technical or administrative action where misuse is detected or reasonably suspected."
+    },
+    {
+      "id": "36",
+      "title": "Institutional, School & Workplace Responsibility",
+      "badge": "MANDATORY",
+      "isWarning": true,
+      "content": "You are solely responsible for making sure your use of the Service is permitted under the policies of your school, college, university, workplace, library, or any other institution or network you use.<br><br>The Provider does not represent that any institution will regard the Service, its embedded resources, or its proxy-access features as permitted, educational, or compliant with their rules."
+    },
+    {
+      "id": "37",
+      "title": "Intellectual Property & Brand Rights",
+      "badge": "IP",
+      "content": "Except for third-party content and third-party marks, the Service's own code, branding, layout, text, original graphics, and platform architecture remain the property of the Provider or its licensors.<br><br>You must not copy, redistribute, republish, or commercially exploit proprietary parts of the Service except where allowed by law or with permission."
+    },
+    {
+      "id": "38",
+      "title": "Third-Party Trademarks, Games & DMCA / Takedown Position",
+      "badge": "DMCA",
+      "content": "The Service may act as an index, portal, interface, or access point to third-party resources. The Provider does not claim ownership of third-party trademarks, games, media, titles, or branding that may appear through linked or embedded content.<br><br>If you are a copyright owner, authorised representative, or rights holder and believe a linked or embedded item infringes your rights, you may send a takedown request using the Provider's published contact route. The request should identify the work, the allegedly infringing material, the location of that material, your authority, and your contact information. The Provider may remove or disable access after review."
+    },
+    {
+      "id": "39",
+      "title": "Premium Plans, Pricing & Upgrade Features",
+      "badge": "PLANS",
+      "content": "The Service may present upgrade offers, premium plans, membership prompts, or Diamond-tier access language. Prices, features, durations, and plan naming may change at any time unless prohibited by applicable law.<br><br>Displayed membership state may depend on device-linked or browser-linked status and may not transfer cleanly between devices or cleared browsers."
+    },
+    {
+      "id": "40",
+      "title": "No Warranty, Service Availability & Security Disclaimer",
+      "badge": "DISCLAIMER",
+      "isMonospace": true,
+      "content": "THE SERVICE IS PROVIDED \"AS IS\" AND \"AS AVAILABLE\" WITHOUT GUARANTEES OF UPTIME, CONTINUITY, PERFORMANCE, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, OR SECURITY.<br><br>THE PROVIDER DOES NOT GUARANTEE THAT THE SERVICE WILL BE FREE FROM BUGS, DATA LOSS, FILTER FAILURES, INTERRUPTIONS, VULNERABILITIES, THIRD-PARTY OUTAGES, TRACKING BY EXTERNAL SITES, OR MISCONFIGURATION."
+    },
+    {
+      "id": "41",
+      "title": "Limitation of Liability",
+      "badge": "LIMITATION",
+      "isMonospace": true,
+      "content": "TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE PROVIDER SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, DISCIPLINARY, EDUCATIONAL, NETWORK, OR REPUTATIONAL LOSS ARISING FROM OR RELATED TO USE OF THE SERVICE.<br><br>THIS INCLUDES LOSS ARISING FROM THIRD-PARTY CONTENT, INSTITUTIONAL SANCTIONS, SESSION LOSS, CLIENT-SIDE DATA LOSS, FILTER FAILURE, MODERATION ACTION, OR ACCESS RESTRICTION.<br><br>TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE PROVIDER'S TOTAL LIABILITY SHALL NOT EXCEED £0.00."
+    },
+    {
+      "id": "42",
+      "title": "Force Majeure",
+      "badge": "GENERAL",
+      "content": "The Provider shall not be responsible for any failure or delay caused by events outside reasonable control, including infrastructure outages, CDN failures, DNS issues, upstream service failures, webhook failures, browser changes, institutional filtering, regulatory action, cyber incidents, or network restrictions."
+    },
+    {
+      "id": "43",
+      "title": "Changes to the Service & Changes to this Policy",
+      "badge": "UPDATES",
+      "content": "The Provider may change, suspend, restrict, or discontinue any part of the Service, and may amend this Unified Legal Policy at any time.<br><br>Where practical, the most recent version and date should be published on the Service. Continued use after an update constitutes acceptance of the revised version."
+    },
+    {
+      "id": "44",
+      "title": "Severability, Interpretation & Survival",
+      "badge": "LEGAL",
+      "content": "If any part of this document is found unenforceable, the remaining parts shall continue in full force to the maximum extent permitted by law.<br><br>Clauses concerning privacy, storage technologies, liability, acceptable use, intellectual property, institutional responsibility, moderation, and dispute-related matters shall survive termination or discontinuation of access where applicable."
+    },
+    {
+      "id": "45",
+      "title": "Governing Law & Jurisdiction",
+      "badge": "FINAL",
+      "content": "This document and any dispute or claim arising out of or in connection with it shall be governed by the laws of England and Wales.<br><br>Subject to any mandatory consumer rights that cannot lawfully be excluded, the courts of England and Wales shall have exclusive jurisdiction."
+    }
+  ]
+}

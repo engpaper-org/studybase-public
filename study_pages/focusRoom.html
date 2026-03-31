@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Room | GCSEHelp</title>
+    <link rel="icon" href="https://static-assets.papersweb-assets.site/siteIcons/gcsehelp.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/loginAnimationCheck.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+
+    <!--Cookie consent banner and google analytics-->
+    <script src="/assets/js/checkCookieConsent.js"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+
+        // 1. Determine current state
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        // 2. Set default based on that state
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+
+    <script src="/assets/js/cookieConsent.js"></script>
+    <!-- End of consent and analytics -->
+
+    
+    <style>
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        .timer-glow { filter: drop-shadow(0 0 15px rgba(37, 99, 235, 0.2)); }
+    </style>
+</head>
+<body class="bg-white text-slate-800 antialiased overflow-x-hidden">
+
+    <header class="pt-20 pb-12 text-center">
+        <div class="max-w-7xl mx-auto px-4">
+            <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight">Focus Room</h1>
+            <p class="text-slate-500">25 minutes of work. 5 minutes of rest. Maximum retention.</p>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 pb-24">
+        <div class="bg-slate-50 border border-slate-100 rounded-[3rem] p-8 md:p-16 shadow-sm flex flex-col items-center relative overflow-hidden">
+            
+            <div class="mb-8 px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-bold uppercase tracking-widest">
+                Session #<span id="sessionCount">1</span>
+            </div>
+
+            <div class="relative flex items-center justify-center mb-12 timer-glow">
+                <svg class="w-64 h-64 md:w-80 md:h-80">
+                    <circle class="text-slate-200" stroke-width="8" stroke="currentColor" fill="transparent" r="120" cx="160" cy="160" />
+                    <circle id="progressRing" class="text-blue-600 progress-ring__circle" stroke-width="8" stroke-dasharray="753.98" stroke-dashoffset="0" stroke-linecap="round" stroke="currentColor" fill="transparent" r="120" cx="160" cy="160" />
+                </svg>
+                <div class="absolute text-6xl md:text-7xl font-black text-slate-900 tabular-nums" id="timerDisplay">
+                    25:00
+                </div>
+            </div>
+
+            <div class="flex gap-4 mb-12">
+                <button id="startBtn" class="px-10 py-4 bg-blue-600 text-white rounded-2xl font-bold text-lg hover:bg-blue-700 hover:shadow-lg transition-all active:scale-95">
+                    Start Focus
+                </button>
+                <button id="resetBtn" class="px-10 py-4 bg-white border border-slate-200 text-slate-600 rounded-2xl font-bold text-lg hover:bg-slate-100 transition-all active:scale-95">
+                    Reset
+                </button>
+            </div>
+
+            <div class="flex p-1 bg-slate-200/50 rounded-2xl w-full max-w-xs">
+                <button id="workMode" class="flex-1 py-2 rounded-xl text-sm font-bold bg-white text-blue-600 shadow-sm transition-all">Focus</button>
+                <button id="breakMode" class="flex-1 py-2 rounded-xl text-sm font-bold text-slate-500 hover:text-slate-700 transition-all">Break</button>
+            </div>
+        </div>
+
+        <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="p-4 bg-white border border-slate-100 rounded-2xl text-center shadow-sm">
+                <div class="text-2xl mb-2">🌧️</div>
+                <p class="text-xs font-bold text-slate-400 uppercase">Rainy Cafe</p>
+                <button onclick="toggleAudio('rain')" id="btn-rain" class="mt-2 text-xs text-blue-600 font-bold">Play</button>
+            </div>
+            <div class="p-4 bg-white border border-slate-100 rounded-2xl text-center shadow-sm">
+                <div class="text-2xl mb-2">📚</div>
+                <p class="text-xs font-bold text-slate-400 uppercase">Library</p>
+                <button onclick="toggleAudio('library')" id="btn-library" class="mt-2 text-xs text-blue-600 font-bold">Play</button>
+            </div>
+            <div class="p-4 bg-white border border-slate-100 rounded-2xl text-center shadow-sm">
+                <div class="text-2xl mb-2">🔥</div>
+                <p class="text-xs font-bold text-slate-400 uppercase">Fireplace</p>
+                <button onclick="toggleAudio('fire')" id="btn-fire" class="mt-2 text-xs text-blue-600 font-bold">Play</button>
+            </div>
+            <div class="p-4 bg-white border border-slate-100 rounded-2xl text-center shadow-sm">
+                <div class="text-2xl mb-2">🍃</div>
+                <p class="text-xs font-bold text-slate-400 uppercase">Forest</p>
+                <button onclick="toggleAudio('forest')" id="btn-forest" class="mt-2 text-xs text-blue-600 font-bold">Play</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let timer;
+        let timeLeft = 25 * 60;
+        let isRunning = false;
+        let currentMode = 'work';
+        const ring = document.getElementById('progressRing');
+        const circumference = 2 * Math.PI * 120;
+
+        // Initialize localStorage session count
+        let count = localStorage.getItem('pomodoroCount') || 1;
+        document.getElementById('sessionCount').innerText = count;
+
+        function updateDisplay() {
+            const mins = Math.floor(timeLeft / 60);
+            const secs = timeLeft % 60;
+            document.getElementById('timerDisplay').innerText = `${mins}:${secs.toString().padStart(2, '0')}`;
+            
+            const total = currentMode === 'work' ? 25 * 60 : 5 * 60;
+            const offset = circumference - (timeLeft / total) * circumference;
+            ring.style.strokeDashoffset = offset;
+        }
+
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timer);
+                document.getElementById('startBtn').innerText = 'Resume';
+            } else {
+                timer = setInterval(() => {
+                    timeLeft--;
+                    updateDisplay();
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        alert(currentMode === 'work' ? "Work session over! Take a break." : "Break over! Back to work.");
+                        if(currentMode === 'work') {
+                            count++;
+                            localStorage.setItem('pomodoroCount', count);
+                            document.getElementById('sessionCount').innerText = count;
+                        }
+                        resetTimer();
+                    }
+                }, 1000);
+                document.getElementById('startBtn').innerText = 'Pause';
+            }
+            isRunning = !isRunning;
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            timeLeft = currentMode === 'work' ? 25 * 60 : 5 * 60;
+            document.getElementById('startBtn').innerText = 'Start Focus';
+            updateDisplay();
+        }
+
+        document.getElementById('workMode').onclick = () => {
+            currentMode = 'work';
+            document.getElementById('workMode').className = "flex-1 py-2 rounded-xl text-sm font-bold bg-white text-blue-600 shadow-sm transition-all";
+            document.getElementById('breakMode').className = "flex-1 py-2 rounded-xl text-sm font-bold text-slate-500 hover:text-slate-700 transition-all";
+            resetTimer();
+        };
+
+        document.getElementById('breakMode').onclick = () => {
+            currentMode = 'break';
+            document.getElementById('breakMode').className = "flex-1 py-2 rounded-xl text-sm font-bold bg-white text-blue-600 shadow-sm transition-all";
+            document.getElementById('workMode').className = "flex-1 py-2 rounded-xl text-sm font-bold text-slate-500 hover:text-slate-700 transition-all";
+            resetTimer();
+        };
+
+        document.getElementById('startBtn').onclick = toggleTimer;
+        document.getElementById('resetBtn').onclick = resetTimer;
+
+        // Simple Audio Toggle Mockup (Links to external ambient sounds can be added here)
+        function toggleAudio(type) {
+            const btn = document.getElementById('btn-' + type);
+            btn.innerText = btn.innerText === 'Play' ? 'Stop' : 'Play';
+            btn.classList.toggle('text-red-500');
+        }
+
+        updateDisplay();
+    </script>
+</body>
+</html>

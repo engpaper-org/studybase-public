@@ -1,0 +1,119 @@
+{
+  "version": "v2.0",
+  "date": "2026.3.03",
+  "clauses": [
+    {
+      "id": "1",
+      "title": "Definitions & Scope",
+      "content": "<strong>\"The Service\"</strong> refers to the StudyBase platform, inclusive of all subdomains, static and dynamic pages, Interactive Resources, DCAM modules, account dashboards, simulations, device-level settings systems, and associated APIs.<br><br><strong>\"The Provider\"</strong> refers to the administrator(s) and legal owner(s) of StudyBase.site.<br><br><strong>\"User\"</strong> refers to any individual accessing the Service.<br><br>This Master Service Agreement (MSA) governs your access to and use of the Service. By accessing any part of the Service, you agree to be legally bound by these Terms under the laws of England and Wales."
+    },
+    {
+      "id": "2",
+      "title": "Data Architecture & Storage",
+      "badge": "CRITICAL",
+      "content": "The Service operates using a hybrid architecture consisting of server-side validation, webhook verification, hashed identifiers, and browser-based storage mechanisms (localStorage and sessionStorage).<br><br>The Service may store device-level preferences including, but not limited to: display name, redirect behaviour, content warning preferences, recently played resources, search history, and UI configuration settings.<br><br>This data is stored locally within your browser and is not automatically transmitted to the Provider unless required for security validation or infrastructure integrity.<br><br>By using the Service, you consent to the creation of a Unique Client Identifier (UCI) and the limited processing of contextual metadata necessary to maintain secure operation."
+    },
+    {
+      "id": "3",
+      "title": "Institutional & Network Responsibility",
+      "badge": "MANDATORY",
+      "isWarning": true,
+      "content": "You are solely responsible for ensuring that your use of the Service complies with your institution's Acceptable Use Policy (AUP), employer IT policy, or network restrictions.<br><br>The Provider disclaims all liability arising from disciplinary action taken against you by any school, college, workplace, or organisation due to your access of the Service."
+    },
+    {
+      "id": "4",
+      "title": "Educational Intent",
+      "content": "Interactive Resources and DCAM modules are designed for revision, logic training, and academic support. Any entertainment value is incidental.<br><br>The Provider makes no representation that all third parties will interpret the Service as educational in nature."
+    },
+    {
+      "id": "5",
+      "title": "Academic Disclaimer",
+      "content": "<strong>NO GUARANTEE OF RESULTS:</strong> The Service is provided as a supplementary aid only. The Provider makes no guarantee regarding exam performance, grades, academic placement, or career outcomes.<br><br>Use of the Service does not replace formal education or teacher instruction."
+    },
+    {
+      "id": "6",
+      "title": "Session State & Redirect Logic",
+      "content": "The Service utilises hash-based state validation (e.g., primary-access markers), grace period enforcement, and redirect logic to maintain structural integrity.<br><br>Users may configure certain redirect behaviours via Settings; however, core validation mechanisms remain active and cannot be disabled.<br><br>Temporary session timestamps may be stored to determine whether access originated from an authorised flow."
+    },
+    {
+      "id": "7",
+      "title": "Device-Level Preferences",
+      "badge": "LOCAL DATA",
+      "content": "Preferences such as display name, activity logging, redirect configuration, and content warning controls are stored locally within your browser.<br><br>You may clear this data at any time using browser settings or the \"Delete All Local Data\" function provided within the account dashboard.<br><br>The Provider does not guarantee persistence across browsers, devices, or private sessions."
+    },
+    {
+      "id": "8",
+      "title": "Recently Viewed & Search History",
+      "badge": "ACTIVITY LOG",
+      "content": "If enabled, the Service may locally record resource titles, URLs accessed, and search terms entered within the platform.<br><br>This information remains on your device and is not centrally stored by the Provider except where required for security validation."
+    },
+    {
+      "id": "9",
+      "title": "Display Name & Personalisation Tokens",
+      "badge": "PERSONALISATION",
+      "content": "If you provide a display name, the Service may dynamically replace template tokens (e.g., \"{user}\") across pages within your browser session.<br><br>This substitution is performed client-side and does not constitute public publication unless explicitly stated elsewhere."
+    },
+    {
+      "id": "10",
+      "title": "Content Warning Controls",
+      "badge": "OPTIONAL SAFETY",
+      "content": "Certain resources may display a content warning prior to loading. Users may disable these warnings within Settings.<br><br>If disabled, content loads immediately. The Provider accepts no liability for adverse reactions resulting from bypassed warnings."
+    },
+    {
+      "id": "11",
+      "title": "Automatic Logout & Redirect Enforcement",
+      "badge": "SECURITY",
+      "content": "If configured, authentication tokens may be cleared automatically when accessing pages outside of an authorised validation flow.<br><br>The Provider shall not be liable for session termination caused by user-enabled security options."
+    },
+    {
+      "id": "12",
+      "title": "Resource Validation & Webhooks",
+      "badge": "AUTOMATED",
+      "content": "When requesting specific resources, automated verification may occur to confirm state validity and prevent unauthorised link sharing. This may include hashed identifiers, IP verification, or state confirmation via webhook."
+    },
+    {
+      "id": "13",
+      "title": "Intellectual Property",
+      "content": "All source code, design systems, text, graphics, simulations, and architecture remain the exclusive property of the Provider.<br><br>You are granted a limited, non-transferable, revocable licence for personal, non-commercial educational use only."
+    },
+    {
+      "id": "14",
+      "title": "Third-Party Services",
+      "badge": "EXTERNAL",
+      "content": "The Service may integrate with third-party providers including but not limited to Google Forms, analytics services, and hosting platforms.<br><br>When interacting with these services, you are subject to their respective Terms and Privacy Policies."
+    },
+    {
+      "id": "15",
+      "title": "Health & Accessibility",
+      "content": "Certain resources may contain motion effects or high-contrast visuals. Users with photosensitivity or related conditions use the Service at their own risk."
+    },
+    {
+      "id": "16",
+      "title": "Limitation of Liability",
+      "isMonospace": true,
+      "content": "THE SERVICE IS PROVIDED \"AS IS\" AND \"AS AVAILABLE\" WITHOUT WARRANTIES OF ANY KIND. TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE PROVIDER DISCLAIMS ALL LIABILITY FOR DIRECT, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING FROM USE OR INABILITY TO USE THE SERVICE."
+    },
+    {
+      "id": "17",
+      "title": "Administrative Consequences",
+      "badge": "FINAL WARNING",
+      "isWarning": true,
+      "content": "The Provider will not intervene in disciplinary matters arising from your use of the Service within institutional environments."
+    },
+    {
+      "id": "18",
+      "title": "Service Modifications & Continuity",
+      "content": "The Provider reserves the right to modify, suspend, rename, or discontinue the Service at any time without prior notice. The Provider is not liable for downtime caused by third-party infrastructure failures."
+    },
+    {
+      "id": "19",
+      "title": "Force Majeure",
+      "content": "The Provider shall not be liable for any failure to perform due to causes beyond reasonable control, including but not limited to cloud provider outages, DNS disruptions, filtering systems, or governmental restrictions."
+    },
+    {
+      "id": "20",
+      "title": "Governing Law",
+      "content": "These Terms are governed by the laws of England and Wales. Any dispute shall be subject to the exclusive jurisdiction of the courts of England and Wales."
+    }
+  ]
+}
