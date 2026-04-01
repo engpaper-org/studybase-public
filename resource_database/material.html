@@ -652,10 +652,12 @@ const SUBJECTS = Object.entries(SUBJECT_LINKS).map(([title, value]) => ({
 
 function forcePrimaryAccessHash() {
     const url = new URL(window.location.href);
+
     if (url.hash !== "#primary-access") {
         url.hash = "primary-access";
-        history.replaceState(null, "", url.toString());
     }
+
+    return url.toString();
 }
 
 function decodeBase64Unicode(str) {
@@ -746,8 +748,7 @@ function generateShareLink(name, resourceName, resourceUrl, timeCreated) {
 }
 
 function getMainPageUrlForShare() {
-    forcePrimaryAccessHash();
-    const url = new URL(window.location.href);
+    const url = new URL(forcePrimaryAccessHash());
     url.hash = "primary-access";
     return url.toString();
 }
@@ -925,7 +926,7 @@ function runTurnstileCheck() {
 }
 
 async function boot() {
-    forcePrimaryAccessHash();
+    //forcePrimaryAccessHash();
     updateFavouriteButton();
 
     try {
@@ -936,7 +937,7 @@ async function boot() {
         }
     } catch (e) {}
 
-    forcePrimaryAccessHash();
+    //forcePrimaryAccessHash();
 
     try {
         await runTurnstileCheck();
