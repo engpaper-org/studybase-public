@@ -6,12 +6,369 @@
             window.location.pathname.includes("support") ||
             categoryParam === "support";
 
+        const navStyles = `
+    <style id="sb-navbar-enhanced-styles">
+        .sb-nav-wrap {
+            position: relative;
+            z-index: 60;
+            width: 100%;
+            border-bottom: 1px solid rgba(226,232,240,0.75);
+            background:
+                radial-gradient(circle at top center, rgba(99,102,241,0.08), transparent 42%),
+                linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92));
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: 0 8px 24px rgba(15,23,42,0.04);
+        }
+
+        .sb-nav-inner {
+            max-width: 84rem;
+            margin: 0 auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .sb-nav-inner {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .sb-nav-inner {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+
+        .sb-nav-panel {
+            min-height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .sb-nav-content {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.85rem 0;
+        }
+
+        .sb-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            min-width: 0;
+            border-radius: 1rem;
+            padding: 0.3rem 0;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .sb-brand:hover {
+            opacity: 0.92;
+        }
+
+        .sb-brand-logo-shell {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .sb-brand-logo-shell::before {
+            content: "";
+            position: absolute;
+            inset: -6px;
+            border-radius: 1.3rem;
+            background: radial-gradient(circle, rgba(99,102,241,0.14), transparent 70%);
+            pointer-events: none;
+        }
+
+        .sb-brand-logo {
+            position: relative;
+            width: 2.65rem;
+            height: 2.65rem;
+            border-radius: 1rem;
+            object-fit: cover;
+            background: white;
+            border: 1px solid rgba(226,232,240,0.9);
+            box-shadow:
+                0 8px 22px rgba(15,23,42,0.08),
+                inset 0 1px 0 rgba(255,255,255,0.9);
+        }
+
+        .sb-brand-title {
+            font-weight: 900;
+            font-size: 1.08rem;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            color: #0f172a;
+            white-space: nowrap;
+        }
+
+        .sb-brand-title span {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 55%, #4f46e5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sb-brand-subtitle {
+            margin-top: 0.32rem;
+            font-size: 11px;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #94a3b8;
+            white-space: nowrap;
+        }
+
+        .sb-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.2rem;
+            border-radius: 1rem;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+        }
+
+        .sb-nav-trigger {
+            height: 2.75rem;
+            padding: 0 1rem;
+            border-radius: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-size: 0.875rem;
+            font-weight: 800;
+            color: #475569;
+            transition:
+                background-color 0.18s ease,
+                color 0.18s ease,
+                transform 0.18s ease,
+                box-shadow 0.18s ease;
+            outline: none;
+        }
+
+        .sb-nav-trigger:hover {
+            transform: translateY(-1px);
+            background: rgba(255,255,255,0.78);
+            box-shadow: 0 8px 18px rgba(15,23,42,0.05);
+        }
+
+        .sb-nav-trigger i {
+            font-size: 10px;
+            transition: transform 0.2s ease;
+        }
+
+        .sb-nav-trigger-purple:hover {
+            color: #7c3aed;
+        }
+
+        .sb-nav-trigger-indigo:hover {
+            color: #4f46e5;
+        }
+
+        .sb-nav-trigger-slate:hover {
+            color: #0f172a;
+        }
+
+        .sb-mobile-icon-btn {
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 0.95rem;
+            border: 1px solid rgba(226,232,240,0.9);
+            background: rgba(255,255,255,0.84);
+            color: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(15,23,42,0.05);
+            transition: all 0.18s ease;
+        }
+
+        .sb-mobile-icon-btn:hover {
+            color: #4f46e5;
+            border-color: rgba(165,180,252,0.9);
+            background: white;
+        }
+
+        .sb-floating-menu {
+            position: fixed;
+            z-index: 80;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.16s ease, transform 0.16s ease;
+            transform: translateY(6px);
+        }
+
+        .sb-floating-menu.sb-menu-open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .sb-dropdown-card {
+            border-radius: 1.35rem;
+            border: 1px solid rgba(226,232,240,0.85);
+            background:
+                radial-gradient(circle at top left, rgba(99,102,241,0.06), transparent 32%),
+                linear-gradient(180deg, rgba(255,255,255,0.97), rgba(255,255,255,0.94));
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow:
+                0 24px 60px rgba(15,23,42,0.12),
+                inset 0 1px 0 rgba(255,255,255,0.8);
+            padding: 0.8rem;
+        }
+
+        .sb-dropdown-head {
+            padding: 0.45rem 0.7rem 0.75rem;
+        }
+
+        .sb-dropdown-title {
+            font-size: 0.95rem;
+            font-weight: 900;
+            color: #0f172a;
+            letter-spacing: -0.02em;
+        }
+
+        .sb-dropdown-subtitle {
+            margin-top: 0.2rem;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: #64748b;
+            line-height: 1.4;
+        }
+
+        .sb-dropdown-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+            border-radius: 1rem;
+            padding: 0.9rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #334155;
+            transition:
+                background-color 0.18s ease,
+                color 0.18s ease,
+                transform 0.18s ease;
+        }
+
+        .sb-dropdown-link:hover {
+            background: rgba(248,250,252,0.95);
+            color: #0f172a;
+            transform: translateX(2px);
+        }
+
+        .sb-dropdown-link-primary-purple {
+            color: #7c3aed;
+            background: rgba(245,243,255,0.78);
+        }
+
+        .sb-dropdown-link-primary-purple:hover {
+            background: rgba(243,232,255,0.95);
+            color: #6d28d9;
+        }
+
+        .sb-dropdown-link-primary-indigo {
+            color: #4f46e5;
+            background: rgba(238,242,255,0.8);
+        }
+
+        .sb-dropdown-link-primary-indigo:hover {
+            background: rgba(224,231,255,0.95);
+            color: #4338ca;
+        }
+
+        .sb-mobile-menu-shell {
+            border-top: 1px solid rgba(226,232,240,0.75);
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.95), rgba(248,250,252,0.94));
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .sb-mobile-card {
+            border-radius: 1.2rem;
+            border: 1px solid rgba(226,232,240,0.75);
+            background: rgba(255,255,255,0.82);
+            box-shadow:
+                0 10px 30px rgba(15,23,42,0.06),
+                inset 0 1px 0 rgba(255,255,255,0.8);
+            padding: 1rem;
+        }
+
+        .sb-login-primary {
+            height: 2.75rem;
+            padding: 0 1.3rem;
+            border-radius: 0.95rem;
+            background: linear-gradient(135deg, #111827 0%, #312e81 100%);
+            color: white;
+            font-weight: 800;
+            font-size: 0.875rem;
+            box-shadow: 0 12px 24px rgba(79,70,229,0.20);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+        }
+
+        .sb-login-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(79,70,229,0.28);
+            background: linear-gradient(135deg, #111827 0%, #4338ca 100%);
+        }
+
+        .sb-account-primary {
+            height: 2.75rem;
+            padding: 0 1.2rem;
+            border-radius: 0.95rem;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            font-weight: 800;
+            font-size: 0.875rem;
+            box-shadow: 0 12px 24px rgba(99,102,241,0.24);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .sb-account-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 30px rgba(99,102,241,0.3);
+        }
+
+        .sb-logout-btn {
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 0.95rem;
+            border: 1px solid rgba(226,232,240,0.9);
+            background: rgba(255,255,255,0.84);
+            color: #64748b;
+            transition: all 0.18s ease;
+        }
+
+        .sb-logout-btn:hover {
+            color: #dc2626;
+            border-color: rgba(254,202,202,0.9);
+            background: rgba(254,242,242,0.95);
+        }
+    </style>
+`;
+
+        if (!document.getElementById("sb-navbar-enhanced-styles")) {
+            document.head.insertAdjacentHTML("beforeend", navStyles);
+        }
+
         let brandNameHTML = `
             <div class="flex flex-col leading-none min-w-0">
-                <span class="text-[1.05rem] md:text-[1.2rem] font-black text-slate-900 tracking-[-0.03em]">
-                    StudyBase<span class="text-indigo-600">.site</span>
+                <span class="sb-brand-title">
+                    StudyBase<span>.site</span>
                 </span>
-                <span class="text-[11px] md:text-xs text-slate-400 font-semibold tracking-wide mt-1">
+                <span class="sb-brand-subtitle">
                     Modern learning, refined
                 </span>
             </div>
@@ -20,10 +377,10 @@
         if (isSupport) {
             brandNameHTML = `
                 <div class="flex flex-col leading-none min-w-0">
-                    <span class="text-[1.05rem] md:text-[1.2rem] font-black text-slate-900 tracking-[-0.03em]">
-                        StudyBase<span class="text-indigo-600">.site</span>
+                    <span class="sb-brand-title">
+                        StudyBase<span>.site</span>
                     </span>
-                    <span class="text-[11px] md:text-xs text-slate-400 font-semibold tracking-wide mt-1">
+                    <span class="sb-brand-subtitle">
                         Support Centre
                     </span>
                 </div>
@@ -31,130 +388,131 @@
         }
 
         const navHTML = `
-        <header class="relative z-50 w-full border-b border-slate-200 bg-white">
-            <nav id="sb-nav-shell" class="relative w-full bg-white transition-all font-sans">
-                <div class="w-full px-4 sm:px-6 lg:px-8">
-                    <div class="h-[74px] flex items-center justify-between gap-4">
-                        <a href="/index.html" class="flex items-center gap-3 min-w-0 group">
-                            <div class="relative shrink-0">
-                                <img
-                                    src="/assets/siteIcons/main.ico"
-                                    alt="Logo"
-                                    class="w-10 h-10 rounded-2xl ring-1 ring-slate-200 bg-white object-cover"
-                                >
+        <header class="sb-nav-wrap">
+            <nav id="sb-nav-shell" class="relative w-full font-sans">
+                <div class="sb-nav-inner">
+                    <div class="sb-nav-panel">
+                        <div class="sb-nav-content">
+                            <a href="/index.html" class="sb-brand">
+                                <div class="sb-brand-logo-shell">
+                                    <img
+                                        src="/assets/siteIcons/navbar.png"
+                                        alt="Logo"
+                                        class="sb-brand-logo"
+                                    >
+                                </div>
+                                ${brandNameHTML}
+                            </a>
+
+                            <div class="hidden md:flex items-center gap-4">
+                                <div class="sb-nav-links">
+                                    <button
+                                        type="button"
+                                        data-dropdown-trigger="student-tools"
+                                        class="sb-nav-trigger sb-nav-trigger-purple"
+                                    >
+                                        <span>Student Tools</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        data-dropdown-trigger="resources"
+                                        class="sb-nav-trigger sb-nav-trigger-indigo"
+                                    >
+                                        <span>Resources</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        data-dropdown-trigger="support"
+                                        class="sb-nav-trigger sb-nav-trigger-slate"
+                                    >
+                                        <span>Support</span>
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+                                </div>
+
+                                <div id="loginBtnContainer" class="flex items-center gap-2"></div>
                             </div>
-                            ${brandNameHTML}
-                        </a>
 
-                        <div class="hidden md:flex items-center gap-4">
-                            <div class="flex items-center gap-1">
-                                <button
-                                    type="button"
-                                    data-dropdown-trigger="student-tools"
-                                    class="sb-nav-trigger h-11 px-4 rounded-xl flex items-center gap-2 text-[13px] lg:text-sm font-bold text-slate-600 hover:text-purple-600 hover:bg-purple-50 transition-all outline-none"
-                                >
-                                    <span>Student Tools</span>
-                                    <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
-                                </button>
-
-                                <button
-                                    type="button"
-                                    data-dropdown-trigger="resources"
-                                    class="sb-nav-trigger h-11 px-4 rounded-xl flex items-center gap-2 text-[13px] lg:text-sm font-bold text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 transition-all outline-none"
-                                >
-                                    <span>Resources</span>
-                                    <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
-                                </button>
-
-                                <button
-                                    type="button"
-                                    data-dropdown-trigger="support"
-                                    class="sb-nav-trigger h-11 px-4 rounded-xl flex items-center gap-2 text-[13px] lg:text-sm font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all outline-none"
-                                >
-                                    <span>Support</span>
-                                    <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+                            <div class="md:hidden flex items-center gap-2">
+                                <button id="mobile-menu-btn" class="sb-mobile-icon-btn" aria-label="Open menu">
+                                    <i class="fa-solid fa-bars text-lg"></i>
                                 </button>
                             </div>
-
-                            <div id="loginBtnContainer" class="flex items-center gap-2"></div>
-                        </div>
-
-                        <div class="md:hidden flex items-center gap-2">
-                            <div id="loginBtnContainer" class="hidden"></div>
-                            <button id="mobile-menu-btn" class="w-11 h-11 rounded-xl border border-slate-200 bg-white text-slate-700 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50 transition-all outline-none flex items-center justify-center">
-                                <i class="fa-solid fa-bars text-lg"></i>
-                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 bg-white">
-                    <div class="px-4 pb-5 pt-3 space-y-4">
-                        <div class="rounded-[1.15rem] border border-purple-100 bg-gradient-to-br from-purple-50 to-white p-4">
+                <div id="mobile-menu" class="hidden md:hidden sb-mobile-menu-shell">
+                    <div class="sb-nav-inner px-4 pb-5 pt-3 space-y-4">
+                        <div class="sb-mobile-card">
                             <div class="mb-3">
                                 <h4 class="text-sm font-black text-slate-900">Student Toolbox</h4>
                                 <p class="text-xs text-slate-500 font-medium mt-1">View all our available tools</p>
                             </div>
                             <div class="space-y-2">
-                                <a href="/toolkit/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-purple-600 hover:bg-white transition-colors">
+                                <a href="/toolkit/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-purple-600 hover:bg-purple-50 transition-colors">
                                     <span>Student Toolbox</span>
                                     <i class="fa-solid fa-arrow-right text-xs"></i>
                                 </a>
-                                <a href="/toolkit/focusRoom.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                <a href="/toolkit/focusRoom.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
                                     <span>The Focus Room</span>
                                     <i class="fa-solid fa-bullseye text-xs opacity-60"></i>
                                 </a>
-                                <a href="/toolkit/timetable.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                <a href="/toolkit/timetable.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
                                     <span>Timetable Generator</span>
                                     <i class="fa-solid fa-calendar-days text-xs opacity-60"></i>
                                 </a>
-                                <a href="/toolkit/countdown.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                <a href="/toolkit/countdown.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
                                     <span>Countdowns</span>
                                     <i class="fa-solid fa-hourglass-half text-xs opacity-60"></i>
                                 </a>
-                                <a href="/toolkit/mindmap.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                <a href="/toolkit/mindmap.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
                                     <span>Mindmaps</span>
                                     <i class="fa-solid fa-diagram-project text-xs opacity-60"></i>
                                 </a>
                             </div>
                         </div>
 
-                        <div class="rounded-[1.15rem] border border-indigo-100 bg-gradient-to-br from-indigo-50 to-white p-4">
+                        <div class="sb-mobile-card">
                             <div class="mb-3">
                                 <h4 class="text-sm font-black text-slate-900">Resources</h4>
                                 <p class="text-xs text-slate-500 font-medium mt-1">Explore revision materials and guides</p>
                             </div>
                             <div class="space-y-2">
-                                <a href="/resource_database/index.html#primary-access" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-indigo-600 hover:bg-white transition-colors">
+                                <a href="/resource_database/index.html#primary-access" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-indigo-600 hover:bg-indigo-50 transition-colors">
                                     <span>Full Resource Database</span>
                                     <i class="fa-solid fa-database text-xs opacity-70"></i>
                                 </a>
-                                <a href="/subjects/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                <a href="/subjects/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
                                     <span>Subject Specific Resources</span>
                                     <i class="fa-solid fa-book-open text-xs opacity-60"></i>
                                 </a>
-                                <a href="/blogs/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                <a href="/blogs/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
                                     <span>StudyBase Blogs</span>
                                     <i class="fa-solid fa-pen-nib text-xs opacity-60"></i>
                                 </a>
                             </div>
                         </div>
 
-                        <div class="rounded-[1.15rem] border border-slate-200 bg-slate-50/80 p-4">
+                        <div class="sb-mobile-card">
                             <div class="mb-3">
                                 <h4 class="text-sm font-black text-slate-900">Support</h4>
                                 <p class="text-xs text-slate-500 font-medium mt-1">Help, policies and ways to contribute</p>
                             </div>
                             <div class="space-y-2">
-                                <a href="/legal/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                <a href="/legal/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
                                     <span>Privacy & Terms</span>
                                     <i class="fa-solid fa-shield-halved text-xs opacity-60"></i>
                                 </a>
-                                <a href="/faq.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                <a href="/support/help_center.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
                                     <span>Help Center</span>
                                     <i class="fa-solid fa-circle-question text-xs opacity-60"></i>
                                 </a>
-                                <a href="/legal/contributions.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                <a href="/legal/contributions.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
                                     <span>Contributions</span>
                                     <i class="fa-solid fa-hand-holding-heart text-xs opacity-60"></i>
                                 </a>
@@ -167,31 +525,30 @@
             </nav>
         </header>
 
-        <!-- DESKTOP DROPDOWNS -->
-        <div id="sb-dropdown-student-tools" data-dropdown-menu="student-tools" class="fixed z-[80] hidden opacity-0 pointer-events-none transition-opacity duration-150">
-            <div class="w-[320px] rounded-[1.15rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.12)] p-3">
-                <div class="px-3 pb-3">
-                    <p class="text-sm font-black text-slate-900">Student Toolbox</p>
-                    <p class="text-xs text-slate-500 font-medium mt-1">View all our available tools</p>
+        <div id="sb-dropdown-student-tools" data-dropdown-menu="student-tools" class="sb-floating-menu hidden">
+            <div class="sb-dropdown-card w-[330px]">
+                <div class="sb-dropdown-head">
+                    <p class="sb-dropdown-title">Student Toolbox</p>
+                    <p class="sb-dropdown-subtitle">View all our available tools</p>
                 </div>
                 <div class="space-y-1">
-                    <a href="/toolkit/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-purple-600 hover:bg-purple-50 transition-colors">
+                    <a href="/toolkit/index.html" class="sb-dropdown-link sb-dropdown-link-primary-purple">
                         <span>Student Toolbox</span>
                         <i class="fa-solid fa-arrow-right text-xs"></i>
                     </a>
-                    <a href="/toolkit/focusRoom.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+                    <a href="/toolkit/focusRoom.html" class="sb-dropdown-link">
                         <span>The Focus Room</span>
                         <i class="fa-solid fa-bullseye text-xs opacity-60"></i>
                     </a>
-                    <a href="/toolkit/timetable.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+                    <a href="/toolkit/timetable.html" class="sb-dropdown-link">
                         <span>Timetable Generator</span>
                         <i class="fa-solid fa-calendar-days text-xs opacity-60"></i>
                     </a>
-                    <a href="/toolkit/countdown.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+                    <a href="/toolkit/countdown.html" class="sb-dropdown-link">
                         <span>Countdowns</span>
                         <i class="fa-solid fa-hourglass-half text-xs opacity-60"></i>
                     </a>
-                    <a href="/toolkit/mindmap.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+                    <a href="/toolkit/mindmap.html" class="sb-dropdown-link">
                         <span>Mindmaps</span>
                         <i class="fa-solid fa-diagram-project text-xs opacity-60"></i>
                     </a>
@@ -199,22 +556,22 @@
             </div>
         </div>
 
-        <div id="sb-dropdown-resources" data-dropdown-menu="resources" class="fixed z-[80] hidden opacity-0 pointer-events-none transition-opacity duration-150">
-            <div class="w-[320px] rounded-[1.15rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.12)] p-3">
-                <div class="px-3 pb-3">
-                    <p class="text-sm font-black text-slate-900">Resources</p>
-                    <p class="text-xs text-slate-500 font-medium mt-1">Explore revision materials and guides</p>
+        <div id="sb-dropdown-resources" data-dropdown-menu="resources" class="sb-floating-menu hidden">
+            <div class="sb-dropdown-card w-[330px]">
+                <div class="sb-dropdown-head">
+                    <p class="sb-dropdown-title">Resources</p>
+                    <p class="sb-dropdown-subtitle">Explore revision materials and guides</p>
                 </div>
                 <div class="space-y-1">
-                    <a href="/resource_database/index.html#primary-access" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-indigo-600 hover:bg-indigo-50 transition-colors">
+                    <a href="/resource_database/index.html#primary-access" class="sb-dropdown-link sb-dropdown-link-primary-indigo">
                         <span>Full Resource Database</span>
                         <i class="fa-solid fa-database text-xs opacity-70"></i>
                     </a>
-                    <a href="/subjects/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+                    <a href="/subjects/index.html" class="sb-dropdown-link">
                         <span>Subject Specific Resources</span>
                         <i class="fa-solid fa-book-open text-xs opacity-60"></i>
                     </a>
-                    <a href="/blogs/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+                    <a href="/blogs/index.html" class="sb-dropdown-link">
                         <span>StudyBase Blogs</span>
                         <i class="fa-solid fa-pen-nib text-xs opacity-60"></i>
                     </a>
@@ -222,22 +579,22 @@
             </div>
         </div>
 
-        <div id="sb-dropdown-support" data-dropdown-menu="support" class="fixed z-[80] hidden opacity-0 pointer-events-none transition-opacity duration-150">
-            <div class="w-[300px] rounded-[1.15rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.12)] p-3">
-                <div class="px-3 pb-3">
-                    <p class="text-sm font-black text-slate-900">Support</p>
-                    <p class="text-xs text-slate-500 font-medium mt-1">Help, policies and ways to contribute</p>
+        <div id="sb-dropdown-support" data-dropdown-menu="support" class="sb-floating-menu hidden">
+            <div class="sb-dropdown-card w-[305px]">
+                <div class="sb-dropdown-head">
+                    <p class="sb-dropdown-title">Support</p>
+                    <p class="sb-dropdown-subtitle">Help, policies and ways to contribute</p>
                 </div>
                 <div class="space-y-1">
-                    <a href="/legal/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+                    <a href="/legal/index.html" class="sb-dropdown-link">
                         <span>Privacy & Terms</span>
                         <i class="fa-solid fa-shield-halved text-xs opacity-60"></i>
                     </a>
-                    <a href="/support/help_center.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+                    <a href="/support/help_center.html" class="sb-dropdown-link">
                         <span>Help Center</span>
                         <i class="fa-solid fa-circle-question text-xs opacity-60"></i>
                     </a>
-                    <a href="/legal/contributions.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors">
+                    <a href="/legal/contributions.html" class="sb-dropdown-link">
                         <span>Contributions</span>
                         <i class="fa-solid fa-hand-holding-heart text-xs opacity-60"></i>
                     </a>
@@ -285,8 +642,8 @@
             if (!trigger || !menu) return;
 
             const rect = trigger.getBoundingClientRect();
-            const menuWidth = menu.offsetWidth || (id === "support" ? 300 : 320);
-            const gap = 8;
+            const menuWidth = menu.offsetWidth || (id === "support" ? 305 : 330);
+            const gap = 10;
 
             let left = rect.left;
             if (id === "support") {
@@ -302,13 +659,12 @@
 
         function hideAllMenus() {
             menus.forEach((menu) => {
-                menu.classList.add("hidden", "pointer-events-none");
-                menu.classList.remove("opacity-100");
-                menu.classList.add("opacity-0");
+                menu.classList.add("hidden");
+                menu.classList.remove("sb-menu-open");
             });
 
             triggers.forEach((trigger) => {
-                trigger.classList.remove("bg-slate-100", "bg-indigo-50", "bg-purple-50", "text-slate-900", "text-indigo-600", "text-purple-600");
+                trigger.classList.remove("bg-white", "text-slate-900", "text-indigo-600", "text-purple-600", "shadow-sm");
                 const icon = trigger.querySelector("i");
                 if (icon) icon.style.transform = "";
             });
@@ -321,17 +677,20 @@
                 const triggerId = trigger.getAttribute("data-dropdown-trigger");
                 const icon = trigger.querySelector("i");
 
-                trigger.classList.remove("bg-slate-100", "bg-indigo-50", "bg-purple-50", "text-slate-900", "text-indigo-600", "text-purple-600");
+                trigger.classList.remove("bg-white", "text-slate-900", "text-indigo-600", "text-purple-600", "shadow-sm");
                 if (icon) icon.style.transform = "";
 
                 if (triggerId === id) {
+                    trigger.classList.add("bg-white", "shadow-sm");
+
                     if (id === "student-tools") {
-                        trigger.classList.add("bg-purple-50", "text-purple-600");
+                        trigger.classList.add("text-purple-600");
                     } else if (id === "resources") {
-                        trigger.classList.add("bg-indigo-50", "text-indigo-600");
+                        trigger.classList.add("text-indigo-600");
                     } else {
-                        trigger.classList.add("bg-slate-100", "text-slate-900");
+                        trigger.classList.add("text-slate-900");
                     }
+
                     if (icon) icon.style.transform = "rotate(180deg)";
                 }
             });
@@ -339,6 +698,7 @@
 
         function openMenu(id) {
             clearTimeout(closeTimer);
+
             if (activeId === id) {
                 positionMenu(id);
                 return;
@@ -353,8 +713,7 @@
             positionMenu(id);
 
             requestAnimationFrame(() => {
-                menu.classList.remove("pointer-events-none", "opacity-0");
-                menu.classList.add("opacity-100");
+                menu.classList.add("sb-menu-open");
             });
 
             styleActiveTrigger(id);
@@ -365,7 +724,7 @@
             clearTimeout(closeTimer);
             closeTimer = setTimeout(() => {
                 hideAllMenus();
-            }, 220);
+            }, 180);
         }
 
         function cancelClose() {
@@ -377,8 +736,8 @@
 
             trigger.addEventListener("mouseenter", () => openMenu(id));
             trigger.addEventListener("mouseleave", scheduleClose);
-
             trigger.addEventListener("focus", () => openMenu(id));
+
             trigger.addEventListener("click", (e) => {
                 e.preventDefault();
                 if (activeId === id) {
@@ -394,13 +753,9 @@
             menu.addEventListener("mouseleave", scheduleClose);
         });
 
-        window.addEventListener(
-            "scroll",
-            () => {
-                if (activeId) positionMenu(activeId);
-            },
-            { passive: true }
-        );
+        window.addEventListener("scroll", () => {
+            if (activeId) positionMenu(activeId);
+        }, { passive: true });
 
         window.addEventListener("resize", () => {
             if (activeId) positionMenu(activeId);
@@ -409,9 +764,7 @@
         document.addEventListener("click", (e) => {
             const insideTrigger = e.target.closest("[data-dropdown-trigger]");
             const insideMenu = e.target.closest("[data-dropdown-menu]");
-            if (!insideTrigger && !insideMenu) {
-                hideAllMenus();
-            }
+            if (!insideTrigger && !insideMenu) hideAllMenus();
         });
 
         function closeLoginOverlay() {
@@ -590,14 +943,12 @@
 
                 const accountBtn = document.createElement("button");
                 accountBtn.innerHTML = `<i class="fa-solid fa-user mr-2"></i> Account`;
-                accountBtn.className =
-                    "h-11 px-5 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-colors text-sm shadow-md shadow-indigo-200/70";
+                accountBtn.className = "sb-account-primary";
                 accountBtn.addEventListener("click", openAccountModal);
 
                 const logoutBtn = document.createElement("button");
                 logoutBtn.innerHTML = `<i class="fa-solid fa-arrow-right-from-bracket"></i>`;
-                logoutBtn.className =
-                    "w-11 h-11 rounded-xl border border-slate-200 bg-white text-slate-400 hover:text-red-600 hover:bg-red-50 hover:border-red-200 font-bold transition-colors text-sm";
+                logoutBtn.className = "sb-logout-btn";
                 logoutBtn.onclick = handleLogout;
 
                 desktopContainer.classList.add("flex", "items-center", "gap-2");
@@ -608,7 +959,7 @@
                     const mobAccountBtn = document.createElement("button");
                     mobAccountBtn.innerHTML = `<i class="fa-solid fa-user mr-2"></i> My Account`;
                     mobAccountBtn.className =
-                        "w-full bg-indigo-600 text-white px-4 py-3.5 rounded-2xl font-bold text-sm shadow-md shadow-indigo-200/70";
+                        "w-full bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-4 py-3.5 rounded-2xl font-bold text-sm shadow-md";
                     mobAccountBtn.addEventListener("click", openAccountModal);
 
                     const mobLogoutBtn = document.createElement("button");
@@ -623,8 +974,7 @@
             } else {
                 const btn = document.createElement("button");
                 btn.innerHTML = `Log in <i class="fa-solid fa-arrow-right ml-1"></i>`;
-                btn.className =
-                    "h-11 px-6 rounded-xl bg-slate-900 text-white font-bold hover:bg-indigo-600 transition-colors text-sm shadow-md";
+                btn.className = "sb-login-primary";
                 btn.onclick = createLoginOverlay;
                 desktopContainer.appendChild(btn);
 
@@ -632,7 +982,7 @@
                     const mobBtn = document.createElement("button");
                     mobBtn.innerHTML = `<i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Log in`;
                     mobBtn.className =
-                        "w-full bg-slate-900 text-white px-4 py-3.5 rounded-2xl font-bold text-sm shadow-md";
+                        "w-full bg-gradient-to-r from-slate-900 to-indigo-700 text-white px-4 py-3.5 rounded-2xl font-bold text-sm shadow-md";
                     mobBtn.onclick = createLoginOverlay;
                     mobileContainer.appendChild(mobBtn);
                 }
