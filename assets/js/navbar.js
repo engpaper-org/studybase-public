@@ -31,153 +31,145 @@
         }
 
         const navHTML = `
-        <header class="relative z-50">
-            <div class="px-3 md:px-5 pt-2">
-                <nav id="sb-nav-shell" class="relative max-w-7xl mx-auto rounded-[1.45rem] border border-slate-200/90 bg-white shadow-[0_6px_26px_rgba(15,23,42,0.06)] transition-all font-sans">
-                    <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-80 pointer-events-none"></div>
-
-                    <div class="px-4 sm:px-6 lg:px-7">
-                        <div class="h-[74px] flex items-center justify-between gap-4">
-                            <a href="/index.html" class="flex items-center gap-3 min-w-0 group">
-                                <div class="relative shrink-0">
-                                    <div class="absolute inset-0 rounded-2xl bg-indigo-500/10 blur-md scale-110 group-hover:scale-125 transition-transform duration-300"></div>
-                                    <img
-                                        src="/assets/siteIcons/main.ico"
-                                        alt="Logo"
-                                        class="relative w-10 h-10 rounded-2xl shadow-sm ring-1 ring-slate-200 bg-white object-cover group-hover:scale-[1.04] transition-transform duration-300"
-                                    >
-                                </div>
-                                ${brandNameHTML}
-                            </a>
-
-                            <div class="hidden md:flex items-center gap-3">
-                                <div class="flex items-center rounded-full border border-slate-200/80 bg-white shadow-sm px-2 py-1.5">
-                                    
-                                    <button
-                                        type="button"
-                                        data-dropdown-trigger="student-tools"
-                                        class="sb-nav-trigger h-11 px-4 rounded-full flex items-center gap-2 text-[13px] lg:text-sm font-bold text-slate-600 hover:text-purple-600 hover:bg-purple-50/80 transition-all outline-none"
-                                    >
-                                        <span>Student Tools</span>
-                                        <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        data-dropdown-trigger="resources"
-                                        class="sb-nav-trigger h-11 px-4 rounded-full flex items-center gap-2 text-[13px] lg:text-sm font-bold text-slate-600 hover:text-indigo-600 hover:bg-indigo-50/80 transition-all outline-none"
-                                    >
-                                        <span>Resources</span>
-                                        <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        data-dropdown-trigger="support"
-                                        class="sb-nav-trigger h-11 px-4 rounded-full flex items-center gap-2 text-[13px] lg:text-sm font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all outline-none"
-                                    >
-                                        <span>Support</span>
-                                        <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
-                                    </button>
-                                </div>
-
-                                <div class="pl-1">
-                                    <div id="loginBtnContainer" class="flex items-center gap-2"></div>
-                                </div>
+        <header class="relative z-50 w-full border-b border-slate-200 bg-white">
+            <nav id="sb-nav-shell" class="relative w-full bg-white transition-all font-sans">
+                <div class="w-full px-4 sm:px-6 lg:px-8">
+                    <div class="h-[74px] flex items-center justify-between gap-4">
+                        <a href="/index.html" class="flex items-center gap-3 min-w-0 group">
+                            <div class="relative shrink-0">
+                                <img
+                                    src="/assets/siteIcons/main.ico"
+                                    alt="Logo"
+                                    class="w-10 h-10 rounded-2xl ring-1 ring-slate-200 bg-white object-cover"
+                                >
                             </div>
+                            ${brandNameHTML}
+                        </a>
 
-                            <div class="md:hidden flex items-center gap-2">
-                                <div id="loginBtnContainer" class="hidden"></div>
-                                <button id="mobile-menu-btn" class="w-11 h-11 rounded-2xl border border-slate-200 bg-white/90 text-slate-700 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50 transition-all shadow-sm outline-none flex items-center justify-center">
-                                    <i class="fa-solid fa-bars text-lg"></i>
+                        <div class="hidden md:flex items-center gap-4">
+                            <div class="flex items-center gap-1">
+                                <button
+                                    type="button"
+                                    data-dropdown-trigger="student-tools"
+                                    class="sb-nav-trigger h-11 px-4 rounded-xl flex items-center gap-2 text-[13px] lg:text-sm font-bold text-slate-600 hover:text-purple-600 hover:bg-purple-50 transition-all outline-none"
+                                >
+                                    <span>Student Tools</span>
+                                    <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    data-dropdown-trigger="resources"
+                                    class="sb-nav-trigger h-11 px-4 rounded-xl flex items-center gap-2 text-[13px] lg:text-sm font-bold text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 transition-all outline-none"
+                                >
+                                    <span>Resources</span>
+                                    <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
+                                </button>
+
+                                <button
+                                    type="button"
+                                    data-dropdown-trigger="support"
+                                    class="sb-nav-trigger h-11 px-4 rounded-xl flex items-center gap-2 text-[13px] lg:text-sm font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all outline-none"
+                                >
+                                    <span>Support</span>
+                                    <i class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"></i>
                                 </button>
                             </div>
+
+                            <div id="loginBtnContainer" class="flex items-center gap-2"></div>
+                        </div>
+
+                        <div class="md:hidden flex items-center gap-2">
+                            <div id="loginBtnContainer" class="hidden"></div>
+                            <button id="mobile-menu-btn" class="w-11 h-11 rounded-xl border border-slate-200 bg-white text-slate-700 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50 transition-all outline-none flex items-center justify-center">
+                                <i class="fa-solid fa-bars text-lg"></i>
+                            </button>
                         </div>
                     </div>
+                </div>
 
-                    <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200/80 bg-white/95 backdrop-blur-2xl">
-                        <div class="px-4 pb-5 pt-3 space-y-4">
-                            <div class="rounded-[1.4rem] border border-purple-100 bg-gradient-to-br from-purple-50 to-white p-4">
-                                <div class="mb-3">
-                                    <h4 class="text-sm font-black text-slate-900">Student Toolbox</h4>
-                                    <p class="text-xs text-slate-500 font-medium mt-1">View all our available tools</p>
-                                </div>
-                                <div class="space-y-2">
-                                    <a href="/toolkit/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-purple-600 hover:bg-white transition-colors">
-                                        <span>Student Toolbox</span>
-                                        <i class="fa-solid fa-arrow-right text-xs"></i>
-                                    </a>
-                                    <a href="/toolkit/focusRoom.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
-                                        <span>The Focus Room</span>
-                                        <i class="fa-solid fa-bullseye text-xs opacity-60"></i>
-                                    </a>
-                                    <a href="/toolkit/timetable.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
-                                        <span>Timetable Generator</span>
-                                        <i class="fa-solid fa-calendar-days text-xs opacity-60"></i>
-                                    </a>
-                                    <a href="/toolkit/countdown.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
-                                        <span>Countdowns</span>
-                                        <i class="fa-solid fa-hourglass-half text-xs opacity-60"></i>
-                                    </a>
-                                    <a href="/toolkit/mindmap.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
-                                        <span>Mindmaps</span>
-                                        <i class="fa-solid fa-diagram-project text-xs opacity-60"></i>
-                                    </a>
-                                </div>
+                <div id="mobile-menu" class="hidden md:hidden border-t border-slate-200 bg-white">
+                    <div class="px-4 pb-5 pt-3 space-y-4">
+                        <div class="rounded-[1.15rem] border border-purple-100 bg-gradient-to-br from-purple-50 to-white p-4">
+                            <div class="mb-3">
+                                <h4 class="text-sm font-black text-slate-900">Student Toolbox</h4>
+                                <p class="text-xs text-slate-500 font-medium mt-1">View all our available tools</p>
                             </div>
-
-                            <div class="rounded-[1.4rem] border border-indigo-100 bg-gradient-to-br from-indigo-50 to-white p-4">
-                                <div class="mb-3">
-                                    <h4 class="text-sm font-black text-slate-900">Resources</h4>
-                                    <p class="text-xs text-slate-500 font-medium mt-1">Explore revision materials and guides</p>
-                                </div>
-                                <div class="space-y-2">
-                                    <a href="/resource_database/index.html#primary-access" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-indigo-600 hover:bg-white transition-colors">
-                                        <span>Full Resource Database</span>
-                                        <i class="fa-solid fa-database text-xs opacity-70"></i>
-                                    </a>
-                                    <a href="/subjects/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
-                                        <span>Subject Specific Resources</span>
-                                        <i class="fa-solid fa-book-open text-xs opacity-60"></i>
-                                    </a>
-                                    <a href="/blogs/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
-                                        <span>StudyBase Blogs</span>
-                                        <i class="fa-solid fa-pen-nib text-xs opacity-60"></i>
-                                    </a>
-                                </div>
+                            <div class="space-y-2">
+                                <a href="/toolkit/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-purple-600 hover:bg-white transition-colors">
+                                    <span>Student Toolbox</span>
+                                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                                </a>
+                                <a href="/toolkit/focusRoom.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                    <span>The Focus Room</span>
+                                    <i class="fa-solid fa-bullseye text-xs opacity-60"></i>
+                                </a>
+                                <a href="/toolkit/timetable.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                    <span>Timetable Generator</span>
+                                    <i class="fa-solid fa-calendar-days text-xs opacity-60"></i>
+                                </a>
+                                <a href="/toolkit/countdown.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                    <span>Countdowns</span>
+                                    <i class="fa-solid fa-hourglass-half text-xs opacity-60"></i>
+                                </a>
+                                <a href="/toolkit/mindmap.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                    <span>Mindmaps</span>
+                                    <i class="fa-solid fa-diagram-project text-xs opacity-60"></i>
+                                </a>
                             </div>
-
-                            <div class="rounded-[1.4rem] border border-slate-200 bg-slate-50/80 p-4">
-                                <div class="mb-3">
-                                    <h4 class="text-sm font-black text-slate-900">Support</h4>
-                                    <p class="text-xs text-slate-500 font-medium mt-1">Help, policies and ways to contribute</p>
-                                </div>
-                                <div class="space-y-2">
-                                    <a href="/legal/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
-                                        <span>Privacy & Terms</span>
-                                        <i class="fa-solid fa-shield-halved text-xs opacity-60"></i>
-                                    </a>
-                                    <a href="/faq.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
-                                        <span>Help Center</span>
-                                        <i class="fa-solid fa-circle-question text-xs opacity-60"></i>
-                                    </a>
-                                    <a href="/legal/contributions.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
-                                        <span>Contributions</span>
-                                        <i class="fa-solid fa-hand-holding-heart text-xs opacity-60"></i>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div id="mobileLoginBtnContainer" class="pt-1"></div>
                         </div>
+
+                        <div class="rounded-[1.15rem] border border-indigo-100 bg-gradient-to-br from-indigo-50 to-white p-4">
+                            <div class="mb-3">
+                                <h4 class="text-sm font-black text-slate-900">Resources</h4>
+                                <p class="text-xs text-slate-500 font-medium mt-1">Explore revision materials and guides</p>
+                            </div>
+                            <div class="space-y-2">
+                                <a href="/resource_database/index.html#primary-access" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-indigo-600 hover:bg-white transition-colors">
+                                    <span>Full Resource Database</span>
+                                    <i class="fa-solid fa-database text-xs opacity-70"></i>
+                                </a>
+                                <a href="/subjects/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                    <span>Subject Specific Resources</span>
+                                    <i class="fa-solid fa-book-open text-xs opacity-60"></i>
+                                </a>
+                                <a href="/blogs/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                    <span>StudyBase Blogs</span>
+                                    <i class="fa-solid fa-pen-nib text-xs opacity-60"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="rounded-[1.15rem] border border-slate-200 bg-slate-50/80 p-4">
+                            <div class="mb-3">
+                                <h4 class="text-sm font-black text-slate-900">Support</h4>
+                                <p class="text-xs text-slate-500 font-medium mt-1">Help, policies and ways to contribute</p>
+                            </div>
+                            <div class="space-y-2">
+                                <a href="/legal/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                    <span>Privacy & Terms</span>
+                                    <i class="fa-solid fa-shield-halved text-xs opacity-60"></i>
+                                </a>
+                                <a href="/faq.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                    <span>Help Center</span>
+                                    <i class="fa-solid fa-circle-question text-xs opacity-60"></i>
+                                </a>
+                                <a href="/legal/contributions.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-white transition-colors">
+                                    <span>Contributions</span>
+                                    <i class="fa-solid fa-hand-holding-heart text-xs opacity-60"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div id="mobileLoginBtnContainer" class="pt-1"></div>
                     </div>
-                </nav>
-            </div>
+                </div>
+            </nav>
         </header>
 
         <!-- DESKTOP DROPDOWNS -->
         <div id="sb-dropdown-student-tools" data-dropdown-menu="student-tools" class="fixed z-[80] hidden opacity-0 pointer-events-none transition-opacity duration-150">
-            <div class="w-[320px] rounded-[1.4rem] border border-slate-200/90 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.12)] p-3">
+            <div class="w-[320px] rounded-[1.15rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.12)] p-3">
                 <div class="px-3 pb-3">
                     <p class="text-sm font-black text-slate-900">Student Toolbox</p>
                     <p class="text-xs text-slate-500 font-medium mt-1">View all our available tools</p>
@@ -208,7 +200,7 @@
         </div>
 
         <div id="sb-dropdown-resources" data-dropdown-menu="resources" class="fixed z-[80] hidden opacity-0 pointer-events-none transition-opacity duration-150">
-            <div class="w-[320px] rounded-[1.4rem] border border-slate-200/90 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.12)] p-3">
+            <div class="w-[320px] rounded-[1.15rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.12)] p-3">
                 <div class="px-3 pb-3">
                     <p class="text-sm font-black text-slate-900">Resources</p>
                     <p class="text-xs text-slate-500 font-medium mt-1">Explore revision materials and guides</p>
@@ -231,7 +223,7 @@
         </div>
 
         <div id="sb-dropdown-support" data-dropdown-menu="support" class="fixed z-[80] hidden opacity-0 pointer-events-none transition-opacity duration-150">
-            <div class="w-[300px] rounded-[1.4rem] border border-slate-200/90 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.12)] p-3">
+            <div class="w-[300px] rounded-[1.15rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.12)] p-3">
                 <div class="px-3 pb-3">
                     <p class="text-sm font-black text-slate-900">Support</p>
                     <p class="text-xs text-slate-500 font-medium mt-1">Help, policies and ways to contribute</p>
@@ -294,7 +286,7 @@
 
             const rect = trigger.getBoundingClientRect();
             const menuWidth = menu.offsetWidth || (id === "support" ? 300 : 320);
-            const gap = 10;
+            const gap = 8;
 
             let left = rect.left;
             if (id === "support") {
@@ -316,7 +308,7 @@
             });
 
             triggers.forEach((trigger) => {
-                trigger.classList.remove("bg-slate-100", "bg-indigo-50/80", "bg-purple-50/80", "text-slate-900", "text-indigo-600", "text-purple-600");
+                trigger.classList.remove("bg-slate-100", "bg-indigo-50", "bg-purple-50", "text-slate-900", "text-indigo-600", "text-purple-600");
                 const icon = trigger.querySelector("i");
                 if (icon) icon.style.transform = "";
             });
@@ -329,14 +321,14 @@
                 const triggerId = trigger.getAttribute("data-dropdown-trigger");
                 const icon = trigger.querySelector("i");
 
-                trigger.classList.remove("bg-slate-100", "bg-indigo-50/80", "bg-purple-50/80", "text-slate-900", "text-indigo-600", "text-purple-600");
+                trigger.classList.remove("bg-slate-100", "bg-indigo-50", "bg-purple-50", "text-slate-900", "text-indigo-600", "text-purple-600");
                 if (icon) icon.style.transform = "";
 
                 if (triggerId === id) {
                     if (id === "student-tools") {
-                        trigger.classList.add("bg-purple-50/80", "text-purple-600");
+                        trigger.classList.add("bg-purple-50", "text-purple-600");
                     } else if (id === "resources") {
-                        trigger.classList.add("bg-indigo-50/80", "text-indigo-600");
+                        trigger.classList.add("bg-indigo-50", "text-indigo-600");
                     } else {
                         trigger.classList.add("bg-slate-100", "text-slate-900");
                     }
@@ -599,13 +591,13 @@
                 const accountBtn = document.createElement("button");
                 accountBtn.innerHTML = `<i class="fa-solid fa-user mr-2"></i> Account`;
                 accountBtn.className =
-                    "h-11 px-5 rounded-full bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-colors text-sm shadow-md shadow-indigo-200/70";
+                    "h-11 px-5 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-colors text-sm shadow-md shadow-indigo-200/70";
                 accountBtn.addEventListener("click", openAccountModal);
 
                 const logoutBtn = document.createElement("button");
                 logoutBtn.innerHTML = `<i class="fa-solid fa-arrow-right-from-bracket"></i>`;
                 logoutBtn.className =
-                    "w-11 h-11 rounded-full border border-slate-200 bg-white text-slate-400 hover:text-red-600 hover:bg-red-50 hover:border-red-200 font-bold transition-colors text-sm shadow-sm";
+                    "w-11 h-11 rounded-xl border border-slate-200 bg-white text-slate-400 hover:text-red-600 hover:bg-red-50 hover:border-red-200 font-bold transition-colors text-sm";
                 logoutBtn.onclick = handleLogout;
 
                 desktopContainer.classList.add("flex", "items-center", "gap-2");
@@ -632,7 +624,7 @@
                 const btn = document.createElement("button");
                 btn.innerHTML = `Log in <i class="fa-solid fa-arrow-right ml-1"></i>`;
                 btn.className =
-                    "h-11 px-6 rounded-full bg-slate-900 text-white font-bold hover:bg-indigo-600 transition-colors text-sm shadow-md";
+                    "h-11 px-6 rounded-xl bg-slate-900 text-white font-bold hover:bg-indigo-600 transition-colors text-sm shadow-md";
                 btn.onclick = createLoginOverlay;
                 desktopContainer.appendChild(btn);
 

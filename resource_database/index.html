@@ -12,7 +12,6 @@
     <script src="/assets/js/navbar.js" defer></script>
     <script src="/assets/js/envCheck.js"></script>
     <script src="/assets/js/footer.js" defer></script>
-    <script src="/assets/js/eSite.js" defer></script>
     <script>const PAGE_ID = "alevel_resources";</script>
     <script src="/assets/js/sessionManager.js" defer></script>
     <script src="/assets/js/resourceErrorPopup.js" defer></script>
@@ -26,7 +25,6 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 
     <script src="/assets/js/checkCookieConsent.js"></script>
-    <script src="/assets/js/banner.js" defer></script>
 
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -120,31 +118,39 @@
         .private-overlay {
             background: linear-gradient(to top, rgba(15,23,42,0.82), rgba(15,23,42,0.18));
         }
+
+        .favourites-shell {
+            background: rgba(255,255,255,0.84);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.72);
+            box-shadow: 0 18px 45px rgba(15,23,42,0.08);
+        }
+
+        .favourite-mini-card {
+            transition: all 0.22s ease;
+        }
+
+        .favourite-mini-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(147, 51, 234, 0.12);
+            border-color: #d8b4fe;
+        }
     </style>
 </head>
 
 <body class="flex flex-col min-h-screen text-slate-900 bg-[#F6F9FC]">
-
-  
 
     <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div class="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-purple-100/60 rounded-full blur-3xl opacity-60"></div>
         <div class="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-pink-100/60 rounded-full blur-3xl opacity-60"></div>
     </div>
 
-    
-
     <header class="relative pt-32 pb-14 overflow-visible z-10">
-      
         <div class="hero-glow"></div>
-        
 
         <div class="max-w-[90rem] mx-auto px-6">
-          
             <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
-
-              
-
                 <div class="w-full animate-enter z-20">
                     <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-100 shadow-sm text-purple-700 text-xs font-bold uppercase tracking-widest mb-8">
                         <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
@@ -197,6 +203,24 @@
         </div>
     </section>
 
+    <section id="favourites-section" class="relative z-20 px-6 mb-8 hidden">
+        <div class="max-w-[95rem] mx-auto">
+            <div class="favourites-shell rounded-[2rem] p-5 md:p-6">
+                <div class="flex items-center gap-3 mb-5">
+                    <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Favourites</h2>
+                        <p class="text-sm text-slate-500 font-medium">Your saved resources, shown first.</p>
+                    </div>
+                </div>
+
+                <div id="favourites-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4"></div>
+            </div>
+        </div>
+    </section>
+
     <div class="flex-grow py-10 relative z-10">
         <div class="max-w-[95rem] mx-auto px-6">
 
@@ -229,6 +253,7 @@
 
   let openMode = "public";
   let allResources = [];
+  let allAccessOnlyResources = [];
   window.SB_RESOURCE_OPEN_MODE = "unknown";
 
   function setBannerResourceMode(mode) {
@@ -303,6 +328,168 @@
     return backItem.concat(foldersHere, resourcesHere);
   }
 
+  function readFavouriteIds() {
+    try {
+      const raw = localStorage.getItem("sb_fav");
+      const parsed = JSON.parse(raw || "[]");
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function getEncodedMaterialIdFromName(name) {
+    try {
+      return btoa(name);
+    } catch {
+      return "";
+    }
+  }
+
+  function getFavouriteResources() {
+    if (openMode !== "access_only") return [];
+
+    const favouriteIds = readFavouriteIds();
+    if (!favouriteIds.length) return [];
+
+    const favouriteSet = new Set(favouriteIds);
+
+    return (allAccessOnlyResources || []).filter(item => {
+      const encoded = getEncodedMaterialIdFromName(item.name || "");
+      return encoded && favouriteSet.has(encoded);
+    });
+  }
+
+  function renderFavourites() {
+    const section = document.getElementById("favourites-section");
+    const grid = document.getElementById("favourites-grid");
+
+    if (!section || !grid) return;
+
+    if (openMode !== "access_only") {
+      section.classList.add("hidden");
+      grid.innerHTML = "";
+      return;
+    }
+
+    const favourites = getFavouriteResources();
+
+    if (!favourites.length) {
+      section.classList.add("hidden");
+      grid.innerHTML = "";
+      return;
+    }
+
+    section.classList.remove("hidden");
+    grid.innerHTML = "";
+
+    const fragment = document.createDocumentFragment();
+
+    favourites.forEach((item, index) => {
+      let displayName = item.name;
+      let verifiedHtml = "";
+      let isPopular = false;
+      let isRising = false;
+      let isBeta = false;
+      let isOriginal = false;
+
+      if (displayName.includes("-v-")) {
+        displayName = displayName.replace("-v-", "");
+        verifiedHtml = ` <i class="fas fa-check-circle text-blue-500 ml-1" title="Verified Resource"></i>`;
+      }
+
+      if (displayName.includes("-p-")) {
+        displayName = displayName.replace("-p-", "");
+        isPopular = true;
+      }
+
+      if (displayName.includes("-r-")) {
+        displayName = displayName.replace("-r-", "");
+        isRising = true;
+      }
+
+      if (displayName.includes("-b-")) {
+        displayName = displayName.replace("-b-", "");
+        isBeta = true;
+      }
+
+      if (displayName.includes("-o-")) {
+        displayName = displayName.replace("-o-", "");
+        isOriginal = true;
+      }
+
+      let imageUrl = item.iconurl;
+      let tagHtml = `
+        <div class="absolute top-2 left-2 z-30 bg-amber-500/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-amber-400/50">
+          <i class="fas fa-star"></i> Favourite
+        </div>`;
+
+      if (isBeta) {
+        if (imageUrl === "pass") imageUrl = "/assets/g-icons/beta.jpg";
+      } else if (isPopular) {
+        if (imageUrl === "pass") imageUrl = "/assets/g-icons/popular.jpg";
+      } else if (isOriginal) {
+        if (imageUrl === "pass") imageUrl = "/assets/g-icons/original.jpg";
+      } else if (isRising) {
+        if (imageUrl === "pass") imageUrl = "/assets/g-icons/rising.jpg";
+      }
+
+      const card = document.createElement("div");
+      card.className =
+        "favourite-mini-card group aspect-square bg-white rounded-2xl border border-slate-200 cursor-pointer shadow-sm relative overflow-hidden flex items-center justify-center";
+      card.style.contentVisibility = "auto";
+      card.style.containIntrinsicSize = "1px 220px";
+
+      let contentHtml = "";
+
+      if (imageUrl === "pass") {
+        contentHtml = `
+          ${tagHtml}
+          <div class="p-3 w-full h-full flex items-center justify-center image-fallback">
+            <h3 class="font-bold text-sm text-slate-700 text-center leading-snug group-hover:text-blue-600 transition-colors">
+              ${displayName}${verifiedHtml}
+            </h3>
+          </div>
+        `;
+      } else {
+        const hoverVerifiedHtml = verifiedHtml
+          ? ` <i class="fas fa-check-circle text-blue-400 ml-1" title="Verified Resource"></i>`
+          : "";
+
+        const fallbackHtml = `
+          <div class="image-fallback w-full h-full flex items-center justify-center p-4">
+            <h3 class="font-bold text-sm text-slate-700 text-center leading-snug">
+              ${displayName}${verifiedHtml}
+            </h3>
+          </div>
+        `;
+
+        contentHtml = `
+          ${tagHtml}
+          <div data-resource-visual data-fallback='${fallbackHtml.replace(/'/g, "&apos;")}' class="absolute inset-0">
+            <img src="${imageUrl}" onerror="handleImageError(this)" class="absolute inset-0 w-full h-full object-cover z-10 group-hover:scale-110 transition-transform duration-500" loading="lazy">
+            <div class="absolute inset-0 private-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center p-3 backdrop-blur-[1px]">
+              <h3 class="font-bold text-sm text-white text-center leading-snug transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                ${displayName}${hoverVerifiedHtml}
+              </h3>
+            </div>
+          </div>
+        `;
+      }
+
+      if (index < 12) {
+        card.classList.add("animate-enter");
+        card.style.animationDelay = `${index * 35}ms`;
+      }
+
+      card.onclick = () => handleClick(item);
+      card.innerHTML = contentHtml;
+      fragment.appendChild(card);
+    });
+
+    grid.appendChild(fragment);
+  }
+
   async function loadResources() {
     const u = localStorage.getItem("gh_username");
     const p = localStorage.getItem("gh_password");
@@ -320,18 +507,23 @@
         openMode = "public";
         setBannerResourceMode("public");
         await loadPublicResourceData();
+        allAccessOnlyResources = [];
         allResources = getVisiblePublicItems(currentFolderId);
+        renderFavourites();
         renderGrid(allResources);
         return;
       }
 
       openMode = "access_only";
       setBannerResourceMode("access_only");
+      allAccessOnlyResources = list.slice();
       allResources = list;
+      renderFavourites();
       renderGrid(allResources);
     } catch (error) {
       console.error(error);
       setBannerResourceMode("public");
+      document.getElementById("favourites-section").classList.add("hidden");
       document.getElementById("resource-grid").innerHTML = `
         <div class="col-span-full text-center py-20 bg-red-50 rounded-[3rem] border border-red-100">
           <p class="text-red-600 font-bold mb-4">Database Connection Failed</p>
@@ -605,6 +797,7 @@
       if (!query) {
         allResources = baseItems;
         renderGrid(allResources);
+        renderFavourites();
         return;
       }
 
@@ -614,6 +807,7 @@
       });
 
       renderGrid(filtered);
+      renderFavourites();
       return;
     }
 
@@ -621,6 +815,7 @@
       (item.name || "").toLowerCase().includes(query)
     );
     renderGrid(filtered);
+    renderFavourites();
   }
 
   function handleClick(item) {
@@ -630,6 +825,7 @@
         currentFolderId = prev ?? ROOT_FOLDER;
         allResources = getVisiblePublicItems(currentFolderId);
         renderGrid(allResources);
+        renderFavourites();
         return;
       }
 
@@ -638,6 +834,7 @@
         currentFolderId = String(item.folderId);
         allResources = getVisiblePublicItems(currentFolderId);
         renderGrid(allResources);
+        renderFavourites();
         return;
       }
 
@@ -664,6 +861,12 @@
     document.getElementById("report-modal").classList.add("hidden");
     document.getElementById("report-iframe").src = "";
   }
+
+  window.addEventListener("storage", (event) => {
+    if (event.key === "sb_fav") {
+      renderFavourites();
+    }
+  });
 
   loadResources();
 </script>

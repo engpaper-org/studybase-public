@@ -7,9 +7,7 @@
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
     <script src="/autoSafe/js/update.js" defer></script>
 
-    <!-- Run hashtag protocol BEFORE anything else -->
     <script src="/assets/js/hashtagProto.js"></script>
-    
     <script src="/myaccount/js/settingsSafetyWarning.js"></script>
 
     <link rel="icon" href="/assets/siteIcons/main.ico">
@@ -27,7 +25,6 @@
     <script src="/assets/js/deviceCheck.js" defer></script>
     <script src="/assets/js/timeCheck.js" defer></script>
 
-    <!--Cookie consent banner and google analytics-->
     <script src="/assets/js/checkCookieConsent.js"></script>
 
     <script>
@@ -91,6 +88,11 @@
         }
 
         .glass-btn.danger:hover { color: #ef4444; }
+        .glass-btn.favourite-active {
+            color: #d97706;
+            background: #fff7ed;
+            border-color: rgba(251, 191, 36, 0.35);
+        }
 
         .loader { border-radius: 9999px; border-top-color: rgb(37 99 235); }
 
@@ -160,13 +162,11 @@
     </div>
 </div>
 
-<!-- STEP 1: "Preparing" screen while we run hashtag protocol + fetch material URL -->
 <div id="bootScreen" class="w-full h-screen flex flex-col items-center justify-center">
     <div class="loader border-8 border-slate-300 border-t-blue-600 rounded-full w-20 h-20 animate-spin"></div>
     <p id="bootText" class="mt-4 text-slate-600 text-lg font-medium">Preparing…</p>
 </div>
 
-<!-- STEP 2: Subject + board picker -->
 <div id="subjectPicker" class="hidden fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-[80] flex items-center justify-center p-4">
     <div class="w-full max-w-5xl bg-white rounded-[2rem] shadow-2xl overflow-hidden">
         <div class="p-7 border-b border-slate-100">
@@ -208,7 +208,6 @@
     </div>
 </div>
 
-<!-- STEP 2.5: Type picker -->
 <div id="typePicker" class="hidden fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-[85] flex items-center justify-center p-4">
     <div class="w-full max-w-3xl bg-white rounded-[2rem] shadow-2xl overflow-hidden update-modal-card">
         <div class="p-7 border-b border-slate-100">
@@ -325,7 +324,6 @@
     </div>
 </div>
 
-<!-- STEP 3: display.html shown while the final iframe is loading -->
 <div id="loadingScreen" class="hidden fixed inset-0 bg-white z-[70]">
     <iframe
         id="loadingAdFrame"
@@ -337,20 +335,69 @@
 </div>
 
 <div id="overlayButtons" class="hidden fixed top-6 left-6 flex flex-col gap-3 z-40">
-    <button onclick="goBack()" class="glass-btn group relative" aria-label="Back">
+    <button onclick="goBack()" class="glass-btn group relative" aria-label="Return">
         <i class="fas fa-arrow-left"></i>
-        <span class="absolute left-full ml-3 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Back</span>
+        <span class="absolute left-full ml-3 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Return</span>
     </button>
 
-    <button onclick="openReportModal()" class="glass-btn group relative" aria-label="Report Issue">
-        <i class="fas fa-flag"></i>
-        <span class="absolute left-full ml-3 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Report Issue</span>
+    <button id="favouriteBtn" onclick="toggleFavourite()" class="glass-btn group relative" aria-label="Favourite">
+        <i class="fas fa-star"></i>
+        <span class="absolute left-full ml-3 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Favourite</span>
+    </button>
+
+    <button onclick="openMenu()" class="glass-btn group relative" aria-label="Menu">
+        <i class="fas fa-bars"></i>
+        <span class="absolute left-full ml-3 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Menu</span>
     </button>
 
     <button onclick="logoutUser()" class="glass-btn danger group relative" aria-label="Logout">
         <i class="fas fa-right-from-bracket"></i>
         <span class="absolute left-full ml-3 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Logout</span>
     </button>
+</div>
+
+<div id="menuPanel" class="hidden fixed top-6 left-20 z-[95] w-[320px] rounded-[1.5rem] border border-white/60 bg-white/95 backdrop-blur-xl shadow-2xl overflow-hidden animate-fade-in">
+    <div class="px-5 py-4 border-b border-slate-100 bg-gradient-to-r from-blue-50 to-white flex items-start justify-between gap-3">
+        <div>
+            <p class="text-xs font-bold tracking-[0.18em] text-blue-600 uppercase">Resource Menu</p>
+            <h3 class="text-lg font-extrabold text-slate-900 mt-1">Quick actions</h3>
+        </div>
+        <button onclick="closeMenu()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 transition-colors flex items-center justify-center" aria-label="Close menu">
+            <i class="fas fa-xmark"></i>
+        </button>
+    </div>
+
+    <div class="p-3 space-y-2">
+        <button onclick="shareCurrentPage()" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-slate-50 transition text-left">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <i class="fas fa-share-nodes"></i>
+            </div>
+            <div>
+                <p class="font-bold text-slate-900">Share page</p>
+                <p class="text-xs text-slate-500">Create a ready-to-share link</p>
+            </div>
+        </button>
+
+        <button onclick="confirmReloadResource()" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-slate-50 transition text-left">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                <i class="fas fa-rotate-right"></i>
+            </div>
+            <div>
+                <p class="font-bold text-slate-900">Reload resource</p>
+                <p class="text-xs text-slate-500">Reload the internal iframe</p>
+            </div>
+        </button>
+
+        <button onclick="openReportFromMenu()" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-slate-50 transition text-left">
+            <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
+                <i class="fas fa-triangle-exclamation"></i>
+            </div>
+            <div>
+                <p class="font-bold text-slate-900">Report a problem</p>
+                <p class="text-xs text-slate-500">Open the issue report form</p>
+            </div>
+        </button>
+    </div>
 </div>
 
 <iframe id="materialFrame" src="" class="hidden w-full h-full" allow="pointer-lock; fullscreen; autoplay" allowfullscreen></iframe>
@@ -373,6 +420,58 @@
     </div>
 </div>
 
+<div id="shareModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[110] flex items-center justify-center p-4 animate-fade-in">
+    <div class="bg-white w-full max-w-xl rounded-[2rem] shadow-2xl relative overflow-hidden update-modal-card">
+        <div class="flex items-center justify-between p-6 border-b border-slate-100 bg-white">
+            <div>
+                <p class="text-xs font-bold tracking-[0.18em] text-blue-600 uppercase">Share page</p>
+                <h3 class="font-extrabold text-slate-900 text-xl mt-1">Link ready to share</h3>
+            </div>
+            <button onclick="closeShareModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="p-6">
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                <label class="block text-sm font-bold text-slate-700 mb-2">Generated link</label>
+                <textarea id="shareLinkOutput" readonly class="w-full h-32 resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:outline-none"></textarea>
+            </div>
+
+            <div class="mt-4 flex flex-col sm:flex-row gap-3">
+                <button onclick="copyShareLink()" class="flex-1 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold transition-colors">
+                    Copy link
+                </button>
+                <button onclick="nativeShareLink()" class="flex-1 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold transition-colors">
+                    Share
+                </button>
+            </div>
+
+            <p id="shareStatus" class="mt-3 text-sm text-slate-500"></p>
+        </div>
+    </div>
+</div>
+
+<div id="reloadConfirmModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[110] flex items-center justify-center p-4 animate-fade-in">
+    <div class="bg-white w-full max-w-md rounded-[2rem] shadow-2xl overflow-hidden update-modal-card">
+        <div class="p-6 border-b border-slate-100">
+            <p class="text-xs font-bold tracking-[0.18em] text-amber-600 uppercase">Warning</p>
+            <h3 class="font-extrabold text-slate-900 text-xl mt-1">Reload resource?</h3>
+            <p class="text-sm text-slate-600 mt-2">
+                This will reload the internal resource iframe and may reset progress on the current page.
+            </p>
+        </div>
+        <div class="p-6 flex gap-3">
+            <button onclick="closeReloadConfirm()" class="flex-1 px-4 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold transition-colors">
+                Cancel
+            </button>
+            <button onclick="reloadResource()" class="flex-1 px-4 py-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold transition-colors">
+                Reload
+            </button>
+        </div>
+    </div>
+</div>
+
 <div id="networkModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
     <div class="bg-white p-8 rounded-2xl max-w-md w-full text-center shadow-2xl">
         <h2 class="text-2xl font-bold text-red-600 mb-2">No Internet Connection</h2>
@@ -385,8 +484,6 @@
 
 <script>
 const WORKER = "https://api.studybase.site";
-
-//const TURNSTILE_SITE_KEY = "0x4AAAAAACxsClLBNoaHGiZm";
 const TURNSTILE_SITE_KEY = "0x4AAAAAACxsClLBNoaHGiZm";
 
 let turnstileToken = null;
@@ -541,65 +638,119 @@ const SUBJECT_LINKS = {
             }
         ]
     },
-
-    "English": {
-        icon: "fa-book-open",
-        boards: [
-            {
-                name: "AQA",
-                pastPaper: "",
-                spec: ""
-            },
-            {
-                name: "Edexcel",
-                pastPaper: "",
-                spec: ""
-            },
-            {
-                name: "OCR",
-                pastPaper: "",
-                spec: ""
-            }
-        ]
-    },
-    "Further Maths": {
-        icon: "fa-infinity",
-        boards: [
-            { name: "AQA", pastPaper: "", spec: "" },
-            { name: "Edexcel", pastPaper: "", spec: "" },
-            { name: "OCR", pastPaper: "", spec: "" }
-        ]
-    },
-    "Psychology": {
-        icon: "fa-brain",
-        boards: [
-            { name: "AQA", pastPaper: "", spec: "" },
-            { name: "Edexcel", pastPaper: "", spec: "" },
-            { name: "OCR", pastPaper: "", spec: "" }
-        ]
-    },
-    "Economics": {
-        icon: "fa-chart-line",
-        boards: [
-            { name: "AQA", pastPaper: "", spec: "" },
-            { name: "Edexcel", pastPaper: "", spec: "" },
-            { name: "OCR", pastPaper: "", spec: "" }
-        ]
-    },
-    "Business": {
-        icon: "fa-briefcase",
-        boards: [
-            { name: "AQA", pastPaper: "", spec: "" },
-            { name: "Edexcel", pastPaper: "", spec: "" },
-            { name: "OCR", pastPaper: "", spec: "" }
-        ]
-    }
+    "English": { icon: "fa-book-open", boards: [{ name: "AQA", pastPaper: "", spec: "" }, { name: "Edexcel", pastPaper: "", spec: "" }, { name: "OCR", pastPaper: "", spec: "" }] },
+    "Further Maths": { icon: "fa-infinity", boards: [{ name: "AQA", pastPaper: "", spec: "" }, { name: "Edexcel", pastPaper: "", spec: "" }, { name: "OCR", pastPaper: "", spec: "" }] },
+    "Psychology": { icon: "fa-brain", boards: [{ name: "AQA", pastPaper: "", spec: "" }, { name: "Edexcel", pastPaper: "", spec: "" }, { name: "OCR", pastPaper: "", spec: "" }] },
+    "Economics": { icon: "fa-chart-line", boards: [{ name: "AQA", pastPaper: "", spec: "" }, { name: "Edexcel", pastPaper: "", spec: "" }, { name: "OCR", pastPaper: "", spec: "" }] },
+    "Business": { icon: "fa-briefcase", boards: [{ name: "AQA", pastPaper: "", spec: "" }, { name: "Edexcel", pastPaper: "", spec: "" }, { name: "OCR", pastPaper: "", spec: "" }] }
 };
 
 const SUBJECTS = Object.entries(SUBJECT_LINKS).map(([title, value]) => ({
     title,
     icon: value.icon || "fa-book-open"
 }));
+
+function forcePrimaryAccessHash() {
+    const url = new URL(window.location.href);
+    if (url.hash !== "#primary-access") {
+        url.hash = "primary-access";
+        history.replaceState(null, "", url.toString());
+    }
+}
+
+function decodeBase64Unicode(str) {
+    try {
+        return decodeURIComponent(escape(atob(str)));
+    } catch (e) {
+        try {
+            return atob(str);
+        } catch (_) {
+            return "";
+        }
+    }
+}
+
+function getEncodedMaterialId() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("material-ID") || "";
+}
+
+function getDecodedMaterialName() {
+    const encoded = getEncodedMaterialId();
+    return decodeBase64Unicode(encoded) || "Untitled resource";
+}
+
+function getFavourites() {
+    try {
+        const raw = localStorage.getItem("sb_fav");
+        const parsed = JSON.parse(raw || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveFavourites(list) {
+    localStorage.setItem("sb_fav", JSON.stringify(list));
+}
+
+function isCurrentFavourite() {
+    const encoded = getEncodedMaterialId();
+    if (!encoded) return false;
+    return getFavourites().includes(encoded);
+}
+
+function updateFavouriteButton() {
+    const btn = document.getElementById("favouriteBtn");
+    if (!btn) return;
+
+    const active = isCurrentFavourite();
+    btn.classList.toggle("favourite-active", active);
+
+    const icon = btn.querySelector("i");
+    const label = btn.querySelector("span");
+
+    if (icon) icon.className = active ? "fas fa-star" : "far fa-star";
+    if (label) label.textContent = active ? "Unfavourite" : "Favourite";
+}
+
+function toggleFavourite() {
+    const encoded = getEncodedMaterialId();
+    if (!encoded) return;
+
+    const list = getFavourites();
+    const index = list.indexOf(encoded);
+
+    if (index >= 0) {
+        list.splice(index, 1);
+    } else {
+        list.push(encoded);
+    }
+
+    saveFavourites(list);
+    updateFavouriteButton();
+}
+
+function generateShareLink(name, resourceName, resourceUrl, timeCreated) {
+    const payload = {
+        name: name || "Someone",
+        resourceName: resourceName || "Untitled resource",
+        resourceUrl: resourceUrl || "",
+        timeCreated: timeCreated || new Date().toISOString()
+    };
+
+    const json = JSON.stringify(payload);
+    const encoded = btoa(unescape(encodeURIComponent(json)));
+
+    return `${window.location.origin}/share/link?data=${encodeURIComponent(encoded)}`;
+}
+
+function getMainPageUrlForShare() {
+    forcePrimaryAccessHash();
+    const url = new URL(window.location.href);
+    url.hash = "primary-access";
+    return url.toString();
+}
 
 function goBack() {
     window.location.href = "/resource_database/index.html#primary-access";
@@ -612,12 +763,25 @@ function logoutUser() {
     window.location.href = "/resource_database/index.html";
 }
 
+function openMenu() {
+    document.getElementById("menuPanel").classList.remove("hidden");
+}
+
+function closeMenu() {
+    document.getElementById("menuPanel").classList.add("hidden");
+}
+
 function openReportModal() {
     const modal = document.getElementById('reportModal');
     const iframe = document.getElementById('reportFrame');
     const currentUrl = encodeURIComponent(window.location.href);
     iframe.src = `/report.html?pageUrl=${currentUrl}`;
     modal.classList.remove('hidden');
+}
+
+function openReportFromMenu() {
+    closeMenu();
+    openReportModal();
 }
 
 function closeReportModal() {
@@ -627,6 +791,83 @@ function closeReportModal() {
     setTimeout(() => { iframe.src = ""; }, 300);
 }
 window.closeReportModal = closeReportModal;
+
+function openShareModal(link) {
+    document.getElementById("shareLinkOutput").value = link;
+    document.getElementById("shareStatus").textContent = "";
+    document.getElementById("shareModal").classList.remove("hidden");
+}
+
+function closeShareModal() {
+    document.getElementById("shareModal").classList.add("hidden");
+}
+
+async function copyShareLink() {
+    const output = document.getElementById("shareLinkOutput");
+    const status = document.getElementById("shareStatus");
+
+    try {
+        await navigator.clipboard.writeText(output.value);
+        status.textContent = "Link copied.";
+    } catch (e) {
+        output.select();
+        document.execCommand("copy");
+        status.textContent = "Link copied.";
+    }
+}
+
+async function nativeShareLink() {
+    const link = document.getElementById("shareLinkOutput").value;
+    const status = document.getElementById("shareStatus");
+
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: "Shared StudyBase page",
+                text: "Here is a shared page.",
+                url: link
+            });
+            status.textContent = "Share sheet opened.";
+        } catch (e) {
+            status.textContent = "";
+        }
+    } else {
+        status.textContent = "Native sharing is not available on this device.";
+    }
+}
+
+function shareCurrentPage() {
+    closeMenu();
+
+    const firstName = localStorage.getItem("sb_firstName") || "Someone";
+    const resourceName = getDecodedMaterialName();
+    const resourceUrl = getMainPageUrlForShare();
+    const timeCreated = new Date().toISOString();
+
+    const link = generateShareLink(firstName, resourceName, resourceUrl, timeCreated);
+    openShareModal(link);
+}
+
+function confirmReloadResource() {
+    closeMenu();
+    document.getElementById("reloadConfirmModal").classList.remove("hidden");
+}
+
+function closeReloadConfirm() {
+    document.getElementById("reloadConfirmModal").classList.add("hidden");
+}
+
+function reloadResource() {
+    closeReloadConfirm();
+
+    const frame = document.getElementById("materialFrame");
+    if (!frame || !materialFinalUrl) return;
+
+    frame.src = "about:blank";
+    setTimeout(() => {
+        frame.src = materialFinalUrl;
+    }, 30);
+}
 
 function runTurnstileCheck() {
     return new Promise((resolve, reject) => {
@@ -684,6 +925,9 @@ function runTurnstileCheck() {
 }
 
 async function boot() {
+    forcePrimaryAccessHash();
+    updateFavouriteButton();
+
     try {
         if (typeof window.hashtagProto === "function") {
             await window.hashtagProto();
@@ -691,6 +935,8 @@ async function boot() {
             await window.hashtagProtoReady;
         }
     } catch (e) {}
+
+    forcePrimaryAccessHash();
 
     try {
         await runTurnstileCheck();
@@ -952,10 +1198,6 @@ function submitCustomUrl() {
     proceedToLoad(pendingSubject);
 }
 
-/* UPDATED:
-   display.html is now shown as the loading screen
-   while the real material iframe loads in the background.
-*/
 function proceedToLoad(subjectTitle) {
     const loading = document.getElementById("loadingScreen");
     const loadingAdFrame = document.getElementById("loadingAdFrame");
@@ -976,6 +1218,7 @@ function proceedToLoad(subjectTitle) {
         loadingAdFrame.src = "about:blank";
         frame.classList.remove("hidden");
         overlayButtons.classList.remove("hidden");
+        updateFavouriteButton();
         startStatePolling();
     };
 
@@ -1019,6 +1262,7 @@ function showProto(reason) {
     document.getElementById("loadingScreen").classList.add("hidden");
     document.getElementById("subjectPicker").classList.add("hidden");
     document.getElementById("typePicker").classList.add("hidden");
+    closeMenu();
 
     const overlay = document.getElementById("protoOverlay");
     const protoFrame = document.getElementById("protoFrame");
@@ -1066,6 +1310,29 @@ function beginReconnectMode() {
         }
     }, 1000);
 }
+
+document.addEventListener("click", (event) => {
+    const menu = document.getElementById("menuPanel");
+    const menuBtn = document.querySelector('#overlayButtons button[aria-label="Menu"]');
+
+    if (!menu || menu.classList.contains("hidden")) return;
+
+    const clickedInsideMenu = menu.contains(event.target);
+    const clickedMenuButton = menuBtn && menuBtn.contains(event.target);
+
+    if (!clickedInsideMenu && !clickedMenuButton) {
+        closeMenu();
+    }
+});
+
+window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+        closeMenu();
+        closeShareModal();
+        closeReloadConfirm();
+        closeReportModal();
+    }
+});
 
 boot();
 </script>
