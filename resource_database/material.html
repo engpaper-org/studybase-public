@@ -1164,10 +1164,10 @@ function selectType(typeValue) {
 
     if (typeValue === "past_paper") {
         if (!pendingBoard.pastPaper) return;
-        localStorage.setItem("type", `/resource_database/pdf_viewer.html?url=${encodeURIComponent(pendingBoard.pastPaper)}`);
+        localStorage.setItem("type", pendingBoard.pastPaper);
     } else if (typeValue === "specification") {
         if (!pendingBoard.spec) return;
-        localStorage.setItem("type", `/resource_database/pdf_viewer.html?url=${encodeURIComponent(pendingBoard.spec)}`);
+        localStorage.setItem("type", pendingBoard.spec);
     } else {
         localStorage.setItem("type", typeValue);
     }
