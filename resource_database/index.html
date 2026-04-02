@@ -83,6 +83,17 @@
             border-color: #d8b4fe;
         }
 
+        .announcement-card {
+            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
+        }
+
+        .announcement-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 42px rgba(15, 23, 42, 0.16);
+            border-color: rgba(216, 180, 254, 0.95);
+        }
+
         .glass-panel {
             background: rgba(255,255,255,0.78);
             backdrop-filter: blur(14px);
@@ -135,6 +146,18 @@
             transform: translateY(-4px);
             box-shadow: 0 14px 30px rgba(147, 51, 234, 0.12);
             border-color: #d8b4fe;
+        }
+
+        .top-cards-shell {
+            background: rgba(255,255,255,0.84);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.72);
+            box-shadow: 0 18px 45px rgba(15,23,42,0.08);
+        }
+
+        .announcement-bottom-overlay {
+            background: linear-gradient(to top, rgba(15,23,42,0.92), rgba(15,23,42,0.42), rgba(15,23,42,0));
         }
     </style>
 </head>
@@ -203,6 +226,28 @@
         </div>
     </section>
 
+    <section id="top-cards-section" class="relative z-20 px-6 mb-8 hidden">
+        <div class="max-w-[95rem] mx-auto">
+            <div class="top-cards-shell rounded-[2rem] p-5 md:p-6">
+                <div class="flex items-center justify-between gap-4 mb-5">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Announcements</h2>
+                            <p id="top-cards-subtitle" class="text-sm text-slate-500 font-medium">Important updates and featured notices.</p>
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+                <div id="top-cards-grid" class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-4"></div>
+            </div>
+        </div>
+    </section>
+
     <section id="favourites-section" class="relative z-20 px-6 mb-8 hidden">
         <div class="max-w-[95rem] mx-auto">
             <div class="favourites-shell rounded-[2rem] p-5 md:p-6">
@@ -236,6 +281,41 @@
         </div>
     </div>
 
+    <div id="announcement-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[120] flex items-center justify-center p-4">
+    <div class="bg-white w-full md:w-[92vw] max-w-6xl h-[82vh] rounded-[2rem] shadow-2xl relative overflow-hidden animate-enter flex flex-col border border-white/70">
+        <div class="flex items-center justify-between p-5 md:p-6 border-b border-slate-100 bg-white/95 backdrop-blur-sm">
+            <div class="flex items-center gap-3 min-w-0">
+                <div class="w-10 h-10 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center shrink-0">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div class="min-w-0">
+                    <p class="text-[11px] uppercase tracking-[0.18em] font-extrabold text-slate-400">Announcement</p>
+                    <h3 id="announcement-modal-title" class="font-black text-slate-900 text-lg md:text-xl truncate">
+                        Announcement
+                    </h3>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                onclick="closeAnnouncementModal()"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors shrink-0"
+                aria-label="Close announcement"
+            >
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <iframe
+            id="announcement-iframe"
+            class="flex-grow w-full border-0 bg-slate-50"
+            src=""
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+    </div>
+</div>
+
     <div id="report-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
         <div class="bg-white w-full md:w-1/2 max-w-4xl h-[80vh] rounded-[2rem] shadow-2xl relative overflow-hidden animate-enter flex flex-col">
             <div class="flex items-center justify-between p-6 border-b border-slate-100">
@@ -250,10 +330,12 @@
 
     <script>
   const WORKER = "https://api.studybase.site";
+  const TOP_CARDS_ENDPOINT = "https://alert-api.studybase.site/top_cards";
 
   let openMode = "public";
   let allResources = [];
   let allAccessOnlyResources = [];
+  let topCards = [];
   window.SB_RESOURCE_OPEN_MODE = "unknown";
 
   function setBannerResourceMode(mode) {
@@ -272,6 +354,15 @@
   let resourceMain = [];
   let folderHistory = [];
   let currentFolderId = ROOT_FOLDER;
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
 
   async function loadPublicResourceData() {
     const [schemaRes, mainRes] = await Promise.all([
@@ -488,6 +579,172 @@
     });
 
     grid.appendChild(fragment);
+  }
+
+  function normaliseTopCardList(cards) {
+    if (!Array.isArray(cards)) return [];
+
+    return cards
+      .filter(card => card && typeof card === "object")
+      .map(card => ({
+        title: String(card.title || "").trim(),
+        imageUrl: String(card.imageUrl || "").trim(),
+        iframeUrl: String(card.iframeUrl || "").trim()
+      }))
+      .filter(card => card.title && card.iframeUrl)
+      .slice(0, 4);
+  }
+
+  async function loadTopCards() {
+    const section = document.getElementById("top-cards-section");
+    const grid = document.getElementById("top-cards-grid");
+    const subtitle = document.getElementById("top-cards-subtitle");
+
+    if (!section || !grid || !subtitle) return;
+
+    section.classList.add("hidden");
+    grid.innerHTML = "";
+    subtitle.textContent = "Important updates and featured notices.";
+
+    try {
+      const deviceCode = (localStorage.getItem("gh_device") || "").trim();
+
+      const res = await fetch(TOP_CARDS_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ deviceCode })
+      });
+
+      if (res.status === 401 || res.status === 403) {
+        topCards = [];
+        section.classList.add("hidden");
+        grid.innerHTML = "";
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error(`Top cards request failed with ${res.status}`);
+      }
+
+      const data = await res.json();
+      const cards = normaliseTopCardList(data.cards);
+
+      if (!cards.length) {
+        topCards = [];
+        section.classList.add("hidden");
+        grid.innerHTML = "";
+        return;
+      }
+
+      topCards = cards;
+      subtitle.textContent = data.authorised
+        ? "Priority member updates and featured notices."
+        : "General updates and featured notices.";
+
+      renderTopCards(cards);
+    } catch (error) {
+      console.error("Failed to load top cards:", error);
+      topCards = [];
+      section.classList.add("hidden");
+      grid.innerHTML = "";
+    }
+  }
+
+  function renderTopCards(cards) {
+    const section = document.getElementById("top-cards-section");
+    const grid = document.getElementById("top-cards-grid");
+
+    if (!section || !grid) return;
+
+    const cleanCards = normaliseTopCardList(cards);
+
+    if (!cleanCards.length) {
+      section.classList.add("hidden");
+      grid.innerHTML = "";
+      return;
+    }
+
+    grid.innerHTML = "";
+    section.classList.remove("hidden");
+
+    const fragment = document.createDocumentFragment();
+
+    cleanCards.forEach((cardData, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "announcement-card col-span-2 relative overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white text-left shadow-sm group";
+      button.style.aspectRatio = "2.09 / 1";
+      button.style.contentVisibility = "auto";
+      button.style.containIntrinsicSize = "1px 260px";
+
+      const baseLayer = document.createElement("div");
+      baseLayer.className = "absolute inset-0 image-fallback";
+      button.appendChild(baseLayer);
+
+      if (cardData.imageUrl) {
+        const bg = document.createElement("div");
+        bg.className = "absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]";
+        bg.style.backgroundImage = `url("${cardData.imageUrl.replace(/"/g, '\\"')}")`;
+        button.appendChild(bg);
+      }
+
+      const tint = document.createElement("div");
+      tint.className = "absolute inset-0 bg-gradient-to-br from-violet-600/10 via-transparent to-pink-500/10";
+      button.appendChild(tint);
+
+      const bottom = document.createElement("div");
+      bottom.className = "absolute inset-x-0 bottom-0 p-5 md:p-6 announcement-bottom-overlay";
+      bottom.innerHTML = `
+        <div class="inline-flex items-center gap-2 mb-2 px-2.5 py-1 rounded-full bg-white/15 text-white text-[10px] font-extrabold uppercase tracking-[0.18em] backdrop-blur-sm">
+          <i class="fas fa-bullhorn text-[10px]"></i>
+          Announcement
+        </div>
+        <h3 class="text-white text-lg md:text-xl font-black tracking-tight leading-tight max-w-[90%] drop-shadow-sm">
+          ${escapeHtml(cardData.title)}
+        </h3>
+      `;
+      button.appendChild(bottom);
+
+      const shine = document.createElement("div");
+      shine.className = "absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/[0.04]";
+      button.appendChild(shine);
+
+      if (index < 4) {
+        button.classList.add("animate-enter");
+        button.style.animationDelay = `${index * 50}ms`;
+      }
+
+      button.addEventListener("click", () => openAnnouncementModal(cardData));
+      fragment.appendChild(button);
+    });
+
+    grid.appendChild(fragment);
+  }
+
+  function openAnnouncementModal(cardData) {
+    if (!cardData || !cardData.iframeUrl) return;
+
+    const modal = document.getElementById("announcement-modal");
+    const iframe = document.getElementById("announcement-iframe");
+    const title = document.getElementById("announcement-modal-title");
+
+    title.textContent = cardData.title || "Announcement";
+    iframe.src = cardData.iframeUrl;
+    modal.classList.remove("hidden");
+    document.body.classList.add("overflow-hidden");
+  }
+
+  function closeAnnouncementModal() {
+    const modal = document.getElementById("announcement-modal");
+    const iframe = document.getElementById("announcement-iframe");
+    const title = document.getElementById("announcement-modal-title");
+
+    modal.classList.add("hidden");
+    iframe.src = "";
+    title.textContent = "Announcement";
+    document.body.classList.remove("overflow-hidden");
   }
 
   async function loadResources() {
@@ -862,12 +1119,26 @@
     document.getElementById("report-iframe").src = "";
   }
 
+  document.getElementById("announcement-modal").addEventListener("click", (event) => {
+    if (event.target.id === "announcement-modal") {
+      closeAnnouncementModal();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeAnnouncementModal();
+      closeReportModal();
+    }
+  });
+
   window.addEventListener("storage", (event) => {
     if (event.key === "sb_fav") {
       renderFavourites();
     }
   });
 
+  loadTopCards();
   loadResources();
 </script>
 </body>
