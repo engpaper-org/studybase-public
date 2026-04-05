@@ -12,6 +12,7 @@
     <script src="/assets/js/navbar.js" defer></script>
     <script src="/assets/js/envCheck.js"></script>
     <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/apg/js/main.js" defer></script>
     <script>const PAGE_ID = "alevel_resources";</script>
     <script src="/assets/js/sessionManager.js" defer></script>
     <script src="/assets/js/resourceErrorPopup.js" defer></script>
@@ -159,6 +160,199 @@
         .announcement-bottom-overlay {
             background: linear-gradient(to top, rgba(15,23,42,0.92), rgba(15,23,42,0.42), rgba(15,23,42,0));
         }
+                .apg-shell {
+            background: rgba(255,255,255,0.84);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.72);
+            box-shadow: 0 18px 45px rgba(15,23,42,0.08);
+        }
+
+        .apg-rail {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 0.35rem;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .apg-rail::-webkit-scrollbar {
+            display: none;
+        }
+
+        .apg-story-btn {
+            flex: 0 0 auto;
+            width: 92px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .apg-story-ring {
+            width: 84px;
+            height: 84px;
+            margin: 0 auto 0.6rem;
+            padding: 3px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #7c3aed, #ec4899, #f59e0b);
+            box-shadow: 0 10px 24px rgba(124, 58, 237, 0.18);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .apg-story-btn:hover .apg-story-ring {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 16px 30px rgba(124, 58, 237, 0.24);
+        }
+
+        .apg-story-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 9999px;
+            overflow: hidden;
+            background: #fff;
+            border: 3px solid rgba(255,255,255,0.96);
+            position: relative;
+        }
+
+        .apg-story-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .apg-story-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ede9fe, #fce7f3);
+            color: #6d28d9;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .apg-story-name {
+            display: block;
+            font-size: 0.78rem;
+            line-height: 1.05rem;
+            font-weight: 700;
+            color: #0f172a;
+            max-width: 92px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin: 0 auto;
+        }
+
+        .apg-story-date {
+            display: block;
+            font-size: 0.7rem;
+            line-height: 0.95rem;
+            color: #64748b;
+            font-weight: 600;
+            margin-top: 0.12rem;
+        }
+
+.apg-story-frame {
+    width: min(92vw, calc(88vh * 9 / 16));
+    height: min(88vh, calc(92vw * 16 / 9));
+    aspect-ratio: 9 / 16;
+    background: #000;
+}
+
+.apg-story-image,
+.apg-story-iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: 0;
+    background: #000;
+}
+
+.apg-story-image {
+    object-fit: cover;
+    object-position: center;
+}
+
+        .apg-story-iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: #000;
+            display: block;
+        }
+
+        .apg-request-btn {
+            flex: 0 0 auto;
+            width: 92px;
+            background: transparent;
+            border: none;
+            padding: 0;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .apg-request-ring {
+            width: 84px;
+            height: 84px;
+            margin: 0 auto 0.6rem;
+            padding: 3px;
+            border-radius: 9999px;
+            background: linear-gradient(135deg, #0f172a, #334155);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+
+        .apg-request-btn:hover .apg-request-ring {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 16px 30px rgba(15, 23, 42, 0.2);
+        }
+
+        .apg-request-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 9999px;
+            border: 3px solid rgba(255,255,255,0.96);
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0f172a;
+            font-size: 1.2rem;
+        }
+
+        .apg-modal-frame-shell {
+            background: radial-gradient(circle at top right, rgba(124,58,237,0.16), transparent 26%),
+                        radial-gradient(circle at bottom left, rgba(236,72,153,0.12), transparent 24%),
+                        #050816;
+        }
+
+        .apg-story-iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #000;
+    display: block;
+}
+
+
+        .apg-confetti-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 15;
+        }
+
     </style>
 </head>
 
@@ -226,27 +420,27 @@
         </div>
     </section>
 
-    <section id="top-cards-section" class="relative z-20 px-6 mb-8 hidden">
-        <div class="max-w-[95rem] mx-auto">
-            <div class="top-cards-shell rounded-[2rem] p-5 md:p-6">
-                <div class="flex items-center justify-between gap-4 mb-5">
-                    <div class="flex items-center gap-3">
-                        <div class="w-11 h-11 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center">
-                            <i class="fas fa-bullhorn"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Announcements</h2>
-                            <p id="top-cards-subtitle" class="text-sm text-slate-500 font-medium">Important updates and featured notices.</p>
-                        </div>
+    <section id="apg-section" class="relative z-20 px-6 mb-8 hidden">
+    <div class="max-w-[95rem] mx-auto">
+        <div class="apg-shell rounded-[2rem] p-5 md:p-6">
+            <div class="flex items-center justify-between gap-4 mb-5">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-pink-50 text-pink-500 flex items-center justify-center">
+                        <i class="fas fa-cake-candles"></i>
                     </div>
-
-                    
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Birthdays this week.</h2>
+                        <p id="apg-subtitle" class="text-sm text-slate-500 font-medium">
+                            Birthday stories for this week.
+                        </p>
+                    </div>
                 </div>
-
-                <div id="top-cards-grid" class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-4"></div>
             </div>
+
+            <div id="apg-rail" class="apg-rail"></div>
         </div>
-    </section>
+    </div>
+</section>
 
     <section id="favourites-section" class="relative z-20 px-6 mb-8 hidden">
         <div class="max-w-[95rem] mx-auto">
@@ -281,39 +475,136 @@
         </div>
     </div>
 
-    <div id="announcement-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[120] flex items-center justify-center p-4">
-    <div class="bg-white w-full md:w-[92vw] max-w-6xl h-[82vh] rounded-[2rem] shadow-2xl relative overflow-hidden animate-enter flex flex-col border border-white/70">
+  <div id="apg-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[120] flex items-center justify-center p-4">
+    <div class="apg-story-frame apg-modal-frame-shell rounded-[2rem] shadow-2xl relative overflow-hidden animate-enter border border-white/10">
+        <div class="absolute top-0 left-0 right-0 z-20 p-4 flex items-center justify-between bg-gradient-to-b from-black/55 to-transparent">
+            <div class="min-w-0">
+                <p id="apg-modal-name" class="text-white font-black text-base truncate">Birthday story</p>
+                <p id="apg-modal-date" class="text-white/70 text-xs font-semibold">This week</p>
+            </div>
+
+            <button
+                type="button"
+                onclick="closeApgModal()"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-white/12 text-white hover:bg-white/20 transition-colors shrink-0"
+                aria-label="Close APG"
+            >
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <canvas id="apg-confetti-canvas" class="apg-confetti-canvas"></canvas>
+
+        <img
+            id="apg-image"
+            class="hidden apg-story-image"
+            src=""
+            alt=""
+        >
+
+        <iframe
+            id="apg-iframe"
+            class="hidden apg-story-iframe"
+            src=""
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+    </div>
+</div>
+
+<div id="apg-request-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[121] flex items-center justify-center p-4">
+    <div class="bg-white w-full md:w-[92vw] max-w-4xl h-[80vh] rounded-[2rem] shadow-2xl relative overflow-hidden animate-enter flex flex-col border border-white/70">
         <div class="flex items-center justify-between p-5 md:p-6 border-b border-slate-100 bg-white/95 backdrop-blur-sm">
             <div class="flex items-center gap-3 min-w-0">
-                <div class="w-10 h-10 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center shrink-0">
-                    <i class="fas fa-bullhorn"></i>
+                <div class="w-10 h-10 rounded-2xl bg-pink-50 text-pink-500 flex items-center justify-center shrink-0">
+                    <i class="fas fa-cake-candles"></i>
                 </div>
                 <div class="min-w-0">
-                    <p class="text-[11px] uppercase tracking-[0.18em] font-extrabold text-slate-400">Announcement</p>
-                    <h3 id="announcement-modal-title" class="font-black text-slate-900 text-lg md:text-xl truncate">
-                        Announcement
+                    <p class="text-[11px] uppercase tracking-[0.18em] font-extrabold text-slate-400">APG</p>
+                    <h3 class="font-black text-slate-900 text-lg md:text-xl truncate">
+                        Request to be added
                     </h3>
                 </div>
             </div>
 
             <button
                 type="button"
-                onclick="closeAnnouncementModal()"
+                onclick="closeApgRequestModal()"
                 class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors shrink-0"
-                aria-label="Close announcement"
+                aria-label="Close APG request"
             >
                 <i class="fas fa-times"></i>
             </button>
         </div>
 
         <iframe
-            id="announcement-iframe"
+            id="apg-request-iframe"
             class="flex-grow w-full border-0 bg-slate-50"
+            src=""
+            referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+    </div>
+</div><div id="apg-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[120] flex items-center justify-center p-4">
+    <div class="apg-modal-frame-shell w-full max-w-[430px] h-[86vh] rounded-[2rem] shadow-2xl relative overflow-hidden animate-enter border border-white/10">
+        <div class="absolute top-0 left-0 right-0 z-20 p-4 flex items-center justify-between bg-gradient-to-b from-black/55 to-transparent">
+            <div class="min-w-0">
+                <p id="apg-modal-name" class="text-white font-black text-base truncate">Birthday story</p>
+                <p id="apg-modal-date" class="text-white/70 text-xs font-semibold">This week</p>
+            </div>
+
+            <button
+                type="button"
+                onclick="closeApgModal()"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-white/12 text-white hover:bg-white/20 transition-colors shrink-0"
+                aria-label="Close APG"
+            >
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <iframe
+            id="apg-iframe"
+            class="apg-story-iframe"
             src=""
             allowfullscreen
             referrerpolicy="strict-origin-when-cross-origin"
         ></iframe>
     </div>
+</div>
+
+<div id="apg-request-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[121] flex items-center justify-center p-4">
+    <div class="bg-white w-full md:w-[92vw] max-w-4xl h-[80vh] rounded-[2rem] shadow-2xl relative overflow-hidden animate-enter flex flex-col border border-white/70">
+        <div class="flex items-center justify-between p-5 md:p-6 border-b border-slate-100 bg-white/95 backdrop-blur-sm">
+            <div class="flex items-center gap-3 min-w-0">
+                <div class="w-10 h-10 rounded-2xl bg-pink-50 text-pink-500 flex items-center justify-center shrink-0">
+                    <i class="fas fa-cake-candles"></i>
+                </div>
+                <div class="min-w-0">
+                    <p class="text-[11px] uppercase tracking-[0.18em] font-extrabold text-slate-400">APG</p>
+                    <h3 class="font-black text-slate-900 text-lg md:text-xl truncate">
+                        Request to be added
+                    </h3>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                onclick="closeApgRequestModal()"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors shrink-0"
+                aria-label="Close APG request"
+            >
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <iframe
+            id="apg-request-iframe"
+            class="flex-grow w-full border-0 bg-slate-50"
+            src=""
+            referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+    </div>
+</div>
 </div>
 
     <div id="report-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
@@ -330,7 +621,7 @@
 
     <script>
   const WORKER = "https://api.studybase.site";
-  const TOP_CARDS_ENDPOINT = "https://alert-api.studybase.site/top_cards";
+    const APG_ENDPOINT = "https://alert-api.studybase.site/apg/list";
 
   let openMode = "public";
   let allResources = [];
@@ -1119,9 +1410,11 @@
     document.getElementById("report-iframe").src = "";
   }
 
-  document.getElementById("announcement-modal").addEventListener("click", (event) => {
-    if (event.target.id === "announcement-modal") {
-      closeAnnouncementModal();
+    document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeApgModal();
+      closeApgRequestModal();
+      closeReportModal();
     }
   });
 
@@ -1138,7 +1431,159 @@
     }
   });
 
-  loadTopCards();
+
+  let apgConfettiAnimationId = null;
+  let apgConfettiPieces = [];
+
+  function stopApgConfetti() {
+    if (apgConfettiAnimationId) {
+      cancelAnimationFrame(apgConfettiAnimationId);
+      apgConfettiAnimationId = null;
+    }
+
+    const canvas = document.getElementById("apg-confetti-canvas");
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    apgConfettiPieces = [];
+  }
+
+  function startApgConfetti() {
+    const canvas = document.getElementById("apg-confetti-canvas");
+    if (!canvas) return;
+
+    const modalFrame = canvas.parentElement;
+    if (!modalFrame) return;
+
+    stopApgConfetti();
+
+    const rect = modalFrame.getBoundingClientRect();
+    const ratio = window.devicePixelRatio || 1;
+    canvas.width = Math.max(1, Math.floor(rect.width * ratio));
+    canvas.height = Math.max(1, Math.floor(rect.height * ratio));
+    canvas.style.width = rect.width + "px";
+    canvas.style.height = rect.height + "px";
+
+    const ctx = canvas.getContext("2d");
+    ctx.scale(ratio, ratio);
+
+    const colours = ["#f59e0b", "#ec4899", "#7c3aed", "#22c55e", "#38bdf8", "#ffffff"];
+    const pieceCount = 140;
+    const width = rect.width;
+    const height = rect.height;
+
+    apgConfettiPieces = Array.from({ length: pieceCount }, () => ({
+      x: Math.random() * width,
+      y: -20 - Math.random() * height * 0.35,
+      size: 6 + Math.random() * 8,
+      speedY: 2.2 + Math.random() * 3.8,
+      speedX: -1.8 + Math.random() * 3.6,
+      rotation: Math.random() * Math.PI * 2,
+      rotationSpeed: -0.18 + Math.random() * 0.36,
+      color: colours[Math.floor(Math.random() * colours.length)],
+      shape: Math.random() > 0.5 ? "rect" : "circle",
+      sway: Math.random() * Math.PI * 2
+    }));
+
+    const start = performance.now();
+    const duration = 4200;
+
+    function frame(now) {
+      const elapsed = now - start;
+      ctx.clearRect(0, 0, width, height);
+
+      apgConfettiPieces.forEach(piece => {
+        piece.y += piece.speedY;
+        piece.x += piece.speedX + Math.sin((elapsed / 260) + piece.sway) * 0.7;
+        piece.rotation += piece.rotationSpeed;
+
+        ctx.save();
+        ctx.translate(piece.x, piece.y);
+        ctx.rotate(piece.rotation);
+        ctx.fillStyle = piece.color;
+
+        if (piece.shape === "rect") {
+          ctx.fillRect(-piece.size / 2, -piece.size / 2, piece.size, piece.size * 0.6);
+        } else {
+          ctx.beginPath();
+          ctx.arc(0, 0, piece.size / 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.restore();
+
+        if (piece.y > height + 24) {
+          piece.y = -20 - Math.random() * 60;
+          piece.x = Math.random() * width;
+        }
+      });
+
+      if (elapsed < duration) {
+        apgConfettiAnimationId = requestAnimationFrame(frame);
+      } else {
+        stopApgConfetti();
+      }
+    }
+
+    apgConfettiAnimationId = requestAnimationFrame(frame);
+  }
+
+  function openApgModalFromImage(name, dateText, imageUrl) {
+    const modal = document.getElementById("apg-modal");
+    const modalName = document.getElementById("apg-modal-name");
+    const modalDate = document.getElementById("apg-modal-date");
+    const image = document.getElementById("apg-image");
+    const iframe = document.getElementById("apg-iframe");
+
+    if (!modal || !modalName || !modalDate || !image || !iframe) return;
+
+    modalName.textContent = name || "Birthday story";
+    modalDate.textContent = dateText || "This week";
+    iframe.classList.add("hidden");
+    iframe.src = "";
+    image.classList.remove("hidden");
+    image.src = imageUrl || "";
+    image.alt = name ? `${name} birthday story` : "Birthday story";
+    modal.classList.remove("hidden");
+    document.body.classList.add("overflow-hidden");
+
+    requestAnimationFrame(() => startApgConfetti());
+  }
+
+  const originalCloseApgModal = window.closeApgModal;
+  window.closeApgModal = function() {
+    stopApgConfetti();
+    if (typeof originalCloseApgModal === "function") {
+      originalCloseApgModal();
+      return;
+    }
+
+    const modal = document.getElementById("apg-modal");
+    const image = document.getElementById("apg-image");
+    const iframe = document.getElementById("apg-iframe");
+    if (modal) modal.classList.add("hidden");
+    if (image) {
+      image.classList.add("hidden");
+      image.src = "";
+    }
+    if (iframe) iframe.src = "";
+    document.body.classList.remove("overflow-hidden");
+  };
+
+  window.addEventListener("resize", () => {
+    const modal = document.getElementById("apg-modal");
+    if (modal && !modal.classList.contains("hidden")) {
+      const image = document.getElementById("apg-image");
+      if (image && !image.classList.contains("hidden")) {
+        requestAnimationFrame(() => startApgConfetti());
+      }
+    }
+  });
+
+  window.openApgModalFromImage = openApgModalFromImage;
+
+  window.SB_APG_ENDPOINT = APG_ENDPOINT;
   loadResources();
 </script>
 </body>

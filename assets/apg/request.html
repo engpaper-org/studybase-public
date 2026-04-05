@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Submission Terms</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --bg-a: #f7f9fc;
+      --bg-b: #eef3fb;
+      --card: rgba(255,255,255,0.95);
+      --border: rgba(15,23,42,0.08);
+      --text: #0f172a;
+      --muted: #475569;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --secondary: #e2e8f0;
+      --secondary-hover: #cbd5e1;
+      --danger-bg: #fff7ed;
+      --danger-border: #fdba74;
+      --danger-text: #9a3412;
+      --warning-bg: #fef2f2;
+      --warning-border: #fca5a5;
+      --warning-text: #991b1b;
+      --info-bg: #eff6ff;
+      --info-border: #93c5fd;
+      --info-text: #1e3a8a;
+      --success-bg: #ecfdf5;
+      --success-border: #86efac;
+      --success-text: #166534;
+      --radius: 24px;
+      --shadow: 0 24px 60px rgba(15,23,42,0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(37,99,235,0.10), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(59,130,246,0.08), transparent 35%),
+        linear-gradient(180deg, var(--bg-a), var(--bg-b));
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 920px;
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .slide {
+      display: none;
+      min-height: 620px;
+      padding: 34px;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 26px;
+    }
+
+    .slide.active {
+      display: flex;
+    }
+
+    .top {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .step {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.02;
+      letter-spacing: -0.045em;
+    }
+
+    .lead {
+      margin: 0;
+      font-size: 1.02rem;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 760px;
+    }
+
+    .rule-title {
+      font-size: clamp(1.25rem, 2.4vw, 1.95rem);
+      font-weight: 800;
+      line-height: 1.32;
+      letter-spacing: -0.03em;
+      color: #111827;
+      max-width: 760px;
+    }
+
+    .panel {
+      border-radius: 20px;
+      padding: 18px;
+      border: 1px solid rgba(15,23,42,0.08);
+      background: rgba(255,255,255,0.82);
+    }
+
+    .panel p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.78;
+      color: #1f2937;
+    }
+
+    .panel + .panel {
+      margin-top: 12px;
+    }
+
+    .warning {
+      background: var(--warning-bg);
+      border-color: var(--warning-border);
+    }
+
+    .warning p {
+      color: var(--warning-text);
+    }
+
+    .danger {
+      background: var(--danger-bg);
+      border-color: var(--danger-border);
+    }
+
+    .danger p {
+      color: var(--danger-text);
+    }
+
+    .info {
+      background: var(--info-bg);
+      border-color: var(--info-border);
+    }
+
+    .info p {
+      color: var(--info-text);
+    }
+
+    .success {
+      background: var(--success-bg);
+      border-color: var(--success-border);
+    }
+
+    .success p {
+      color: var(--success-text);
+    }
+
+    .checks {
+      display: grid;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .check {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 15px;
+      border-radius: 16px;
+      border: 1px solid rgba(15,23,42,0.08);
+      background: rgba(255,255,255,0.88);
+    }
+
+    .check input {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--primary);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .check label {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #1f2937;
+      cursor: pointer;
+    }
+
+    .bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .progress {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 540px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 16px;
+      padding: 14px 20px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+      color: #0f172a;
+    }
+
+    .btn-secondary:hover {
+      background: var(--secondary-hover);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 12px 28px rgba(29,78,216,0.25);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .qr-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+    }
+
+    .qr-box {
+      background: white;
+      border: 1px solid rgba(15,23,42,0.08);
+      border-radius: 28px;
+      padding: 22px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 320px;
+      min-width: 320px;
+      max-width: 100%;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6);
+    }
+
+    #qrcode {
+      width: 256px;
+      height: 256px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #qrcode img,
+    #qrcode canvas {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .copy-block {
+      width: 100%;
+      max-width: 760px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .copy-label {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #475569;
+      text-transform: uppercase;
+    }
+
+    .copy-row {
+      display: flex;
+      gap: 12px;
+      align-items: stretch;
+      flex-wrap: wrap;
+    }
+
+    .copy-input {
+      flex: 1;
+      min-width: 240px;
+      border: 1px solid rgba(15,23,42,0.10);
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-size: 14px;
+      color: #0f172a;
+      outline: none;
+    }
+
+    .copy-btn {
+      white-space: nowrap;
+    }
+
+    .copy-status {
+      min-height: 22px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 720px) {
+      .app {
+        padding: 14px;
+      }
+
+      .slide {
+        min-height: 100vh;
+        padding: 22px;
+      }
+
+      .bottom {
+        align-items: stretch;
+      }
+
+      .buttons {
+        width: 100%;
+      }
+
+      .buttons button {
+        flex: 1 1 100%;
+      }
+
+      .qr-box {
+        min-width: 0;
+        width: 100%;
+        min-height: 280px;
+      }
+
+      .copy-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="card">
+
+      <!-- Step 1 -->
+      <div class="slide active">
+        <div class="top">
+          <div class="step">Step 1 of 7</div>
+          <h1>Birthday Submission Terms and Conditions</h1>
+          <p class="lead">
+            Before accessing the submission form, you must read these terms carefully. By proceeding, you acknowledge that you understand these conditions and agree to comply with them.
+          </p>
+
+          <div class="panel info">
+            <p>
+              All submissions are subject to manual review and manual approval. Submission does not guarantee publication, display, approval, retention, or response.
+            </p>
+          </div>
+
+          <div class="panel">
+            <p>
+              We reserve the right to reject, remove, withhold, edit, or otherwise moderate any submission at our sole discretion, with or without notice.
+            </p>
+          </div>
+        </div>
+
+        <div class="bottom">
+          <div class="progress">Please read every page in full before continuing.</div>
+          <div class="buttons">
+            <button class="btn-primary next-btn">Continue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="slide">
+        <div class="top">
+          <div class="step">Step 2 of 7</div>
+          <h1>Identity and authority to submit</h1>
+          <div class="rule-title">
+            You may only submit your own birthday entry, your own APG, and your own associated image or content.
+          </div>
+
+          <div class="panel">
+            <p>
+              Unless expressly authorised otherwise, this form is for self-submission only. You must not submit another person’s details, image, birthday information, or other material.
+            </p>
+          </div>
+
+          <div class="panel warning">
+            <p>
+              Submission of another person’s details without permission may be treated as impersonation, misuse of the service, or submission fraud.
+            </p>
+          </div>
+        </div>
+
+        <div class="bottom">
+          <div class="progress">This form is intended only for your own submission.</div>
+          <div class="buttons">
+            <button class="btn-secondary back-btn">Back</button>
+            <button class="btn-primary next-btn">Continue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="slide">
+        <div class="top">
+          <div class="step">Step 3 of 7</div>
+          <h1>Enforcement and account action</h1>
+          <div class="rule-title">
+            False, misleading, unauthorised, or abusive submissions may result in enforcement action, including account bans.
+          </div>
+
+          <div class="panel">
+            <p>
+              If you submit content on behalf of another person without authorisation, provide false information, or misuse this process, action may be taken against your account or access rights.
+            </p>
+          </div>
+
+          <div class="panel warning">
+            <p>
+              Enforcement action may include rejection of the submission, removal of content, temporary restrictions, or permanent account bans.
+            </p>
+          </div>
+        </div>
+
+        <div class="bottom">
+          <div class="progress">Unauthorised or dishonest submissions can lead to account penalties.</div>
+          <div class="buttons">
+            <button class="btn-secondary back-btn">Back</button>
+            <button class="btn-primary next-btn">Continue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="slide">
+        <div class="top">
+          <div class="step">Step 4 of 7</div>
+          <h1>Image access and privacy warning</h1>
+          <div class="rule-title">
+            Uploaded images may be accessible by direct link, even where the underlying directories are not publicly listed.
+          </div>
+
+          <div class="panel danger">
+            <p>
+              You must not upload any image or material that is private, confidential, sensitive, embarrassing, or otherwise unsuitable for possible public access.
+            </p>
+          </div>
+
+          <div class="panel">
+            <p>
+              You should assume that any approved image may become accessible if its direct URL is obtained. You are solely responsible for deciding whether you are comfortable submitting the image.
+            </p>
+          </div>
+        </div>
+
+        <div class="bottom">
+          <div class="progress">Only upload content you are willing to risk being accessed by direct URL.</div>
+          <div class="buttons">
+            <button class="btn-secondary back-btn">Back</button>
+            <button class="btn-primary next-btn">Continue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="slide">
+        <div class="top">
+          <div class="step">Step 5 of 7</div>
+          <h1>Moderation, publication, and removal</h1>
+          <div class="rule-title">
+            Submission does not create any entitlement to publication, continued display, or preservation of submitted material.
+          </div>
+
+          <div class="panel">
+            <p>
+              We may approve or reject submissions in whole or in part. We may also remove previously approved content, delay publication, or decline to display content for any reason.
+            </p>
+          </div>
+
+          <div class="panel">
+            <p>
+              We are not required to provide reasons for rejection, removal, or enforcement decisions.
+            </p>
+          </div>
+        </div>
+
+        <div class="bottom">
+          <div class="progress">Approval remains fully discretionary at all times.</div>
+          <div class="buttons">
+            <button class="btn-secondary back-btn">Back</button>
+            <button class="btn-primary next-btn">Continue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="slide">
+        <div class="top">
+          <div class="step">Step 6 of 7</div>
+          <h1>Final acknowledgement</h1>
+          <p class="lead">
+            You must confirm every statement below before continuing to the form access page.
+          </p>
+
+          <div class="checks">
+            <div class="check">
+              <input type="checkbox" id="c1">
+              <label for="c1">I confirm that I am submitting my own information and not another person’s details, image, or birthday entry.</label>
+            </div>
+
+            <div class="check">
+              <input type="checkbox" id="c2">
+              <label for="c2">I understand that unauthorised, false, misleading, or impersonated submissions may result in rejection, moderation action, or a ban on my account.</label>
+            </div>
+
+            <div class="check">
+              <input type="checkbox" id="c3">
+              <label for="c3">I understand that all submissions are manually reviewed and manually approved, and that submission does not guarantee publication or display.</label>
+            </div>
+
+            <div class="check">
+              <input type="checkbox" id="c4">
+              <label for="c4">I understand that uploaded images may be accessible by direct link even if the image directories are not publicly listed.</label>
+            </div>
+
+            <div class="check">
+              <input type="checkbox" id="c5">
+              <label for="c5">I confirm that I will not upload anything private, confidential, sensitive, misleading, unlawful, abusive, or otherwise inappropriate.</label>
+            </div>
+
+            <div class="check">
+              <input type="checkbox" id="c6">
+              <label for="c6">I acknowledge that the site operator may reject, remove, or moderate my submission at any time and at their discretion.</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom">
+          <div class="progress" id="finalProgress">You must confirm every statement before continuing.</div>
+          <div class="buttons">
+            <button class="btn-secondary back-btn">Back</button>
+            <button class="btn-primary" id="toQrPageBtn" disabled>Continue to form access</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="slide">
+        <div class="top qr-page">
+          <div class="step">Step 7 of 7</div>
+          <h1>Form access</h1>
+          <p class="lead">
+            Scan the QR code below on your phone to open the submission form. This is recommended where the form requires file upload.
+          </p>
+
+          <div class="qr-box">
+            <div id="qrcode"></div>
+          </div>
+
+          <div class="panel info" style="width:100%; max-width:760px;">
+            <p>
+              If needed, you can also copy the direct form link below and open it manually.
+            </p>
+          </div>
+
+          <div class="copy-block">
+            <div class="copy-label">Direct form link</div>
+            <div class="copy-row">
+              <input
+                type="text"
+                class="copy-input"
+                id="formLinkInput"
+                readonly
+              />
+              <button class="btn-primary copy-btn" id="copyLinkBtn">Copy link</button>
+            </div>
+            <div class="copy-status" id="copyStatus"></div>
+          </div>
+        </div>
+
+        <div class="bottom">
+          <div class="progress">You may now scan or copy the form link.</div>
+          <div class="buttons">
+            <button class="btn-secondary back-btn">Back</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdGgLUXnzj25GVKrlqYLriVImEVIAV0aHgK7hpep6bk0OgaJQ/viewform?usp=header";
+
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const nextButtons = document.querySelectorAll(".next-btn");
+    const backButtons = document.querySelectorAll(".back-btn");
+    const checks = Array.from(document.querySelectorAll('.checks input[type="checkbox"]'));
+    const finalProgress = document.getElementById("finalProgress");
+    const toQrPageBtn = document.getElementById("toQrPageBtn");
+    const formLinkInput = document.getElementById("formLinkInput");
+    const copyLinkBtn = document.getElementById("copyLinkBtn");
+    const copyStatus = document.getElementById("copyStatus");
+    const qrcodeEl = document.getElementById("qrcode");
+
+    let currentSlide = 0;
+    let qrMade = false;
+
+    function renderSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle("active", i === index);
+      });
+      currentSlide = index;
+      window.scrollTo({ top: 0, behavior: "auto" });
+
+      if (index === 6) {
+        setupQrPage();
+      }
+    }
+
+    function setupQrPage() {
+      formLinkInput.value = GOOGLE_FORM_URL;
+
+      if (!qrMade) {
+        qrcodeEl.innerHTML = "";
+        new QRCode(qrcodeEl, {
+          text: GOOGLE_FORM_URL,
+          width: 256,
+          height: 256,
+          correctLevel: QRCode.CorrectLevel.M
+        });
+        qrMade = true;
+      }
+    }
+
+    nextButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (currentSlide < slides.length - 1) {
+          renderSlide(currentSlide + 1);
+        }
+      });
+    });
+
+    backButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (currentSlide > 0) {
+          renderSlide(currentSlide - 1);
+        }
+      });
+    });
+
+    function updateFinalState() {
+      const checked = checks.filter(c => c.checked).length;
+      const allChecked = checked === checks.length;
+
+      toQrPageBtn.disabled = !allChecked;
+      finalProgress.textContent = allChecked
+        ? "All acknowledgements completed. You may now continue to the form access page."
+        : `You must confirm every statement before continuing (${checked}/${checks.length} completed).`;
+    }
+
+    checks.forEach(check => {
+      check.addEventListener("change", updateFinalState);
+    });
+
+    toQrPageBtn.addEventListener("click", () => {
+      if (toQrPageBtn.disabled) return;
+      renderSlide(6);
+    });
+
+    copyLinkBtn.addEventListener("click", async () => {
+      const text = formLinkInput.value;
+      try {
+        await navigator.clipboard.writeText(text);
+        copyStatus.textContent = "Form link copied to clipboard.";
+      } catch (err) {
+        formLinkInput.focus();
+        formLinkInput.select();
+        copyStatus.textContent = "Could not copy automatically. The link has been selected so you can copy it manually.";
+      }
+    });
+
+    updateFinalState();
+  </script>
+</body>
+</html>
