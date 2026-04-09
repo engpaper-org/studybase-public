@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Loading & Safeguarding</title>
+    <title>Loading...</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -122,52 +122,92 @@
     <!-- Footer Security Brand -->
     <div class="absolute bottom-8 z-10 flex items-center gap-2 opacity-60">
         <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
-        <span class="text-[10px] text-white tracking-widest uppercase font-bold">Secure Gaming Environment</span>
+        <span class="text-[10px] text-white tracking-widest uppercase font-bold">StudyBase Safety</span>
     </div>
 
     <script>
         const announcements = [
-            {
-                id: 1,
-                category: "Support",
-                icon: "heart-handshake",
-                color: "bg-rose-50 text-rose-600",
-                title: "You Are Not Alone",
-                subtitle: "Life can be tough, but you don't have to face it by yourself. Friendly support is available 24/7 if you need a chat.",
-                btnText: "Talk to Someone",
-                btnUrl: "https://www.childline.org.uk/get-support/"
-            },
-            {
-                id: 2,
-                category: "Wellbeing",
-                icon: "droplets",
-                color: "bg-blue-50 text-blue-600",
-                title: "Stay Hydrated",
-                subtitle: "Even mild dehydration can make you feel tired or lose focus. Grab a glass of water before you jump into the game!",
-                btnText: "Health Tips",
-                btnUrl: "https://www.activehealth.sg/read/screen-time/how-to-keep-your-eyes-healthy-the-20-20-20-rule"
-            },
-            {
-                id: 3,
-                category: "Safety",
-                icon: "lock",
-                color: "bg-amber-50 text-amber-600",
-                title: "Protect Your Privacy",
-                subtitle: "Never share your real name, address, or passwords. Keeping your personal info private is the best way to stay safe.",
-                btnText: "Stay Safe",
-                btnUrl: "https://www.internetmatters.org/resources/online-safety-guide/"
-            },
-            {
-                id: 4,
-                category: "Balance",
-                icon: "clock",
-                color: "bg-emerald-50 text-emerald-600",
-                title: "Take a Breather",
-                subtitle: "Games are great, but fresh air is too. Try the 20-20-20 rule: every 20 mins, look at something 20ft away for 20 seconds.",
-                btnText: "Rest Advice",
-                btnUrl: "https://www.specsavers.co.uk/eye-health/computer-vision-syndrome"
-            }
-        ];
+    {
+        id: 1,
+        category: "Support",
+        icon: "heart-handshake",
+        color: "bg-rose-50 text-rose-600",
+        title: "You Are Not Alone",
+        subtitle: "If things ever feel too much, support is available. Speaking to a trusted person or support service can really help.",
+        btnText: "Get Support",
+        btnUrl: "https://www.childline.org.uk/"
+    },
+    {
+        id: 2,
+        category: "Wellbeing",
+        icon: "droplets",
+        color: "bg-sky-50 text-sky-600",
+        title: "Grab Some Water",
+        subtitle: "A quick drink can help you feel more awake and focused before opening your next resource.",
+        btnText: "Wellbeing Tips",
+        btnUrl: "https://www.nhs.uk/live-well/"
+    },
+    {
+        id: 3,
+        category: "Safety",
+        icon: "shield",
+        color: "bg-amber-50 text-amber-600",
+        title: "Keep Personal Info Private",
+        subtitle: "Never share your real name, address, school, phone number, or passwords with people online.",
+        btnText: "Online Safety",
+        btnUrl: "https://www.internetmatters.org/"
+    },
+    {
+        id: 4,
+        category: "Balance",
+        icon: "clock",
+        color: "bg-emerald-50 text-emerald-600",
+        title: "Rest Your Eyes",
+        subtitle: "Try the 20-20-20 rule: every 20 minutes, look at something far away for 20 seconds.",
+        btnText: "Eye Care Tips",
+        btnUrl: "https://www.specsavers.co.uk/"
+    },
+    {
+        id: 5,
+        category: "Security",
+        icon: "key-round",
+        color: "bg-violet-50 text-violet-600",
+        title: "Do Not Share Credentials",
+        subtitle: "Your login details are for your own access only. Sharing usernames, passwords, or access codes can put accounts and resources at risk.",
+        btnText: "Stay Secure",
+        btnUrl: "https://www.ncsc.gov.uk/"
+    },
+    {
+        id: 6,
+        category: "Respect",
+        icon: "badge-check",
+        color: "bg-indigo-50 text-indigo-600",
+        title: "Be Careful Who You Trust",
+        subtitle: "Not everyone online is who they say they are. If something feels off, do not reply or share anything personal.",
+        btnText: "Safety Advice",
+        btnUrl: "https://www.nspcc.org.uk/"
+    },
+    {
+        id: 7,
+        category: "Wellbeing",
+        icon: "moon-star",
+        color: "bg-cyan-50 text-cyan-700",
+        title: "Take Short Breaks",
+        subtitle: "A quick stretch or short pause can help you stay comfortable and focused while browsing resources.",
+        btnText: "Healthy Habits",
+        btnUrl: "https://www.nhs.uk/live-well/exercise/"
+    },
+    {
+        id: 8,
+        category: "Safety",
+        icon: "triangle-alert",
+        color: "bg-orange-50 text-orange-600",
+        title: "Report Anything Suspicious",
+        subtitle: "If you notice strange messages, unusual behaviour, or anything unsafe, tell a trusted adult straight away.",
+        btnText: "Learn More",
+        btnUrl: "https://www.childline.org.uk/info-advice/bullying-abuse-safety/online-mobile-safety/"
+    }
+];
 
         function getSeenMessages() {
             try { return JSON.parse(localStorage.getItem('safeguard_rotation') || '[]'); } 
