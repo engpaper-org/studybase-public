@@ -1,307 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loading Screen</title>
-</head>
-<body style="margin:0;padding:0;background:#ffffff;">
-  <div
-    id="sb-load-host"
-    style="position:fixed;inset:0;width:100vw;height:100vh;display:block;background:#ffffff;"
-  ></div>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Loading & Safeguarding</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @keyframes rise {
+            0% { transform: translateY(10vh) scale(0.5); opacity: 0; }
+            15% { opacity: 0.7; }
+            100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+        }
 
-  <script>
-    (function () {
-      // 1. Image List (Full Screen Backgrounds)
-      const IMAGES = [
-        "/aS/assets/images/loading1.jpg",
-        "/aS/assets/images/loading2.jpg",
-        "/aS/assets/images/loading3.jpg",
-        "/aS/assets/images/loading4.jpg",
-        "/aS/assets/images/loading5.jpg",
-        "/aS/assets/images/loading6.jpg",
-        "/aS/assets/images/loading7.jpg",
-        "/aS/assets/images/loading8.jpg",
-        "/aS/assets/images/loading9.jpg",
-        "/aS/assets/images/loading10.jpg",
-        "/aS/assets/images/loading11.jpg",
-        "/aS/assets/images/loading12.jpg",
-        "/aS/assets/images/loading13.jpg",
-        "/aS/assets/images/loading14.jpg",
-        "/aS/assets/images/loading15.jpg",
-        "/aS/assets/images/loading16.jpg",
-        "/aS/assets/images/loading17.jpg",
-        "/aS/assets/images/loading18.jpg",
-        "/aS/assets/images/loading19.jpg"
-      ];
-
-      // 2. JSON for the 3 Text Types (Tips)
-      const TEXT_DATA = {
-  breaks: [
-    "Been on a while? Step away for a bit — even a short break helps.",
-    "If you said one game and you’re still here, that’s your cue.",
-    "If it’s hard to stop, that’s usually when you should."
-  ],
-
-  credentials: [
-    "Don’t pass your login around — it’s meant for you.",
-    "If your account gets shared, it can get restricted.",
-    "If it’s already been shared, let us know at studybase.site/legal."
-  ],
-
-  safeguarding: [
-    "If something on here — or outside of it — is worrying you, tell us at studybase.site/legal and we’ll pass it on anonymously.",
-    "Worried about something? Report it at studybase.site/legal — we’ll forward it on anonymously.",
-    "Seen something concerning? Let us know at studybase.site/legal so it can be looked into."
-  ],
-
-  tips: [
-    "Set a timer before you start — it helps you stay in control.",
-    "If you’re stuck, step away and come back later.",
-    "Doing one thing properly beats rushing through loads."
-  ],
-
-  focus: [
-    "Too many tabs open? Close a few and focus on one thing.",
-    "You’ll get more done focusing for 10 minutes than drifting for 30.",
-    "Focus first, then relax after."
-  ],
-
-  time: [
-    "Time goes quickly on here — check in with yourself.",
-    "Set a limit before you start — it’s easier than stopping later.",
-    "A quick session can turn into an hour. Keep track of it."
-  ],
-
-  fairuse: [
-    "Use the site properly so it stays working for everyone.",
-    "Trying to bypass systems can lead to access being removed.",
-    "Keep things fair — it helps keep everything running smoothly."
-  ],
-
-  responsibility: [
-    "Use it in a way you’d be fine explaining if asked.",
-    "If you have to hide it, it’s probably not the right time.",
-    "Be smart about when and where you’re on here."
-  ]
-};
-
-      const host = document.getElementById("sb-load-host");
-      const shadow = host.attachShadow({ mode: "open" });
-
-      shadow.innerHTML = `
-        <style>
-          :host, * {
-            box-sizing: border-box;
-          }
-
-          .sbl-root {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            background: #ffffff;
-            color: #1f2937;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end; /* Aligns content to bottom */
-          }
-
-          /* Full Screen Background */
-          .sbl-bg {
+        .bubble {
             position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            bottom: -100px;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            backdrop-filter: blur(2px);
+            animation: rise infinite ease-in;
+            pointer-events: auto;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .bubble:hover {
+            transform: scale(1.4);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .bubble.popped {
+            transform: scale(3);
             opacity: 0;
-            transition: opacity 1s ease-in-out;
+            pointer-events: none;
+        }
+
+        /* Loading border animation around the card */
+        .loading-border-container {
+            position: relative;
+            padding: 4px; /* Space for the border */
+            border-radius: 2.25rem;
+            background: rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .loading-border-container::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: conic-gradient(transparent, transparent, transparent, #3b82f6);
+            animation: rotate 2s linear infinite;
+            top: -25%;
+            left: -25%;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .inner-card {
+            position: relative;
+            background: white;
+            border-radius: 2rem;
             z-index: 1;
-          }
+        }
+    </style>
+</head>
+<body class="m-0 p-0 h-screen w-screen overflow-hidden bg-sky-600 flex flex-col items-center justify-center font-sans px-4">
 
-          .sbl-bg.sbl-loaded {
-            opacity: 1;
-          }
+    <!-- Background Layer (Lighter Blue Gradient) -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-400 via-sky-600 to-blue-700 z-0"></div>
+    <div id="bubbles-container" class="absolute inset-0 z-0"></div>
 
-          /* Light gradient overlay to ensure the banner stands out */
-          .sbl-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(
-              to bottom, 
-              rgba(255, 255, 255, 0.2) 0%, 
-              rgba(255, 255, 255, 0.5) 60%, 
-              rgba(255, 255, 255, 0.9) 100%
-            );
-            z-index: 2;
-          }
+    <!-- Main Container -->
+    <div class="z-10 w-full max-w-xl">
+        
+        <!-- Loading Border Wrapper -->
+        <div class="loading-border-container shadow-[0_20px_60px_rgba(0,0,0,0.2)]">
+            <!-- Announcement Card -->
+            <div class="inner-card overflow-hidden">
+                <div class="p-8 md:p-10 text-center flex flex-col items-center">
+                    
+                    <!-- Icon Header -->
+                    <div id="icon-box" class="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mb-6 text-blue-600 transition-colors duration-500">
+                        <i id="msg-icon" data-lucide="shield-check" class="w-8 h-8"></i>
+                    </div>
 
-          /* Bottom Container (holds loader bar + tip banner) */
-          .sbl-bottom-wrap {
-            position: relative;
-            width: 100%;
-            z-index: 10;
-            transform: translateY(20px);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-          }
-
-          .sbl-ready .sbl-bottom-wrap {
-            transform: translateY(0);
-            opacity: 1;
-            visibility: visible;
-          }
-
-          /* Indeterminate Loading Bar (Sits immediately above the banner) */
-          .sbl-progress-container {
-            width: 100%;
-            height: 4px;
-            background: rgba(37, 99, 235, 0.1); /* Very faint blue track */
-            position: relative;
-            overflow: hidden;
-          }
-
-          .sbl-progress-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 30%;
-            background: #2563eb; /* Primary blue */
-            border-radius: 4px;
-            animation: sbl-slide 1.5s infinite ease-in-out;
-          }
-
-          @keyframes sbl-slide {
-            0% { left: -30%; width: 30%; }
-            50% { width: 50%; }
-            100% { left: 100%; width: 30%; }
-          }
-
-          /* Banner at the bottom */
-          .sbl-banner {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 16px;
-            padding: 20px 24px;
-            background: #ffffff;
-            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
-          }
-
-          .sbl-badge {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #2563eb, #3b82f6);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-
-          /* Lightbulb-esque inner square */
-          .sbl-badge::before {
-            content: "";
-            width: 18px;
-            height: 18px;
-            border-radius: 4px;
-            background: rgba(255, 255, 255, 0.95);
-          }
-
-          .sbl-banner-text {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-          }
-
-          .sbl-banner-title {
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #2563eb;
-            margin-bottom: 4px;
-          }
-
-          .sbl-banner-desc {
-            font-size: 15px;
-            font-weight: 500;
-            color: #1f2937;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-          }
-
-          @media (max-width: 640px) {
-            .sbl-banner { padding: 16px; }
-          }
-        </style>
-
-        <div id="sbl-wrapper" class="sbl-root">
-          <div id="sbl-bg" class="sbl-bg"></div>
-          <div class="sbl-overlay"></div>
-
-          <div class="sbl-bottom-wrap">
-            <div class="sbl-progress-container">
-              <div class="sbl-progress-bar"></div>
+                    <!-- Label -->
+                    <span id="badge" class="text-[10px] font-black tracking-[0.2em] uppercase text-blue-500 mb-2">SAFEGUARDING</span>
+                    
+                    <!-- Content -->
+                    <h2 id="msg-title" class="text-2xl md:text-3xl text-slate-900 font-extrabold tracking-tight mb-4"></h2>
+                    <p id="msg-subtitle" class="text-slate-600 text-sm md:text-base leading-relaxed mb-8 max-w-md"></p>
+                    
+                    <!-- Action Button -->
+                    <a id="msg-btn" target="_blank" rel="noopener noreferrer" class="hidden px-10 py-3.5 text-sm font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 active:scale-95 flex items-center gap-2">
+                        <span>Get Help Now</span>
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </a>
+                </div>
             </div>
-            
-            <div class="sbl-banner">
-              <div class="sbl-badge"></div>
-              <div class="sbl-banner-text">
-                <div id="sbl-banner-title" class="sbl-banner-title">Category</div>
-                <div id="sbl-banner-desc" class="sbl-banner-desc">Loading tip...</div>
-              </div>
-            </div>
-          </div>
         </div>
-      `;
 
-      const wrapper = shadow.getElementById("sbl-wrapper");
-      const bgElement = shadow.getElementById("sbl-bg");
-      const bannerTitle = shadow.getElementById("sbl-banner-title");
-      const bannerDesc = shadow.getElementById("sbl-banner-desc");
+        <!-- Loading Section (Under the card) -->
+        <div class="flex flex-col items-center mt-8">
+            <h1 class="text-lg font-black tracking-[0.5em] text-white uppercase drop-shadow-md">Loading</h1>
+            <div class="flex gap-1 mt-2">
+                <div class="w-2 h-2 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                <div class="w-2 h-2 bg-white rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                <div class="w-2 h-2 bg-white rounded-full animate-bounce"></div>
+            </div>
+        </div>
+    </div>
 
-      function pickRandom(arr) {
-        return arr[Math.floor(Math.random() * arr.length)];
-      }
+    <!-- Footer Security Brand -->
+    <div class="absolute bottom-8 z-10 flex items-center gap-2 opacity-60">
+        <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
+        <span class="text-[10px] text-white tracking-widest uppercase font-bold">Secure Gaming Environment</span>
+    </div>
 
-      function loadScreenContent() {
-        // 1. Pick random tip data
-        const categories = Object.keys(TEXT_DATA);
-        const randomCategory = pickRandom(categories);
-        const randomText = pickRandom(TEXT_DATA[randomCategory]);
-        
-        // Populate text
-        bannerTitle.textContent = randomCategory + " Tip";
-        bannerDesc.textContent = randomText;
+    <script>
+        const announcements = [
+            {
+                id: 1,
+                category: "Support",
+                icon: "heart-handshake",
+                color: "bg-rose-50 text-rose-600",
+                title: "You Are Not Alone",
+                subtitle: "Life can be tough, but you don't have to face it by yourself. Friendly support is available 24/7 if you need a chat.",
+                btnText: "Talk to Someone",
+                btnUrl: "https://www.childline.org.uk/get-support/"
+            },
+            {
+                id: 2,
+                category: "Wellbeing",
+                icon: "droplets",
+                color: "bg-blue-50 text-blue-600",
+                title: "Stay Hydrated",
+                subtitle: "Even mild dehydration can make you feel tired or lose focus. Grab a glass of water before you jump into the game!",
+                btnText: "Health Tips",
+                btnUrl: "https://www.activehealth.sg/read/screen-time/how-to-keep-your-eyes-healthy-the-20-20-20-rule"
+            },
+            {
+                id: 3,
+                category: "Safety",
+                icon: "lock",
+                color: "bg-amber-50 text-amber-600",
+                title: "Protect Your Privacy",
+                subtitle: "Never share your real name, address, or passwords. Keeping your personal info private is the best way to stay safe.",
+                btnText: "Stay Safe",
+                btnUrl: "https://www.internetmatters.org/resources/online-safety-guide/"
+            },
+            {
+                id: 4,
+                category: "Balance",
+                icon: "clock",
+                color: "bg-emerald-50 text-emerald-600",
+                title: "Take a Breather",
+                subtitle: "Games are great, but fresh air is too. Try the 20-20-20 rule: every 20 mins, look at something 20ft away for 20 seconds.",
+                btnText: "Rest Advice",
+                btnUrl: "https://www.specsavers.co.uk/eye-health/computer-vision-syndrome"
+            }
+        ];
 
-        // Show the UI wrappers immediately
-        wrapper.classList.add("sbl-ready");
+        function getSeenMessages() {
+            try { return JSON.parse(localStorage.getItem('safeguard_rotation') || '[]'); } 
+            catch (e) { return []; }
+        }
 
-        // 2. Pick random image and preload it smoothly
-        const randomImage = pickRandom(IMAGES);
-        const img = new Image();
-        
-        img.onload = () => {
-          bgElement.style.backgroundImage = `url('${randomImage}')`;
-          // Fade in the background once it's fully downloaded
-          bgElement.classList.add("sbl-loaded");
-        };
+        function saveSeenMessages(arr) {
+            try { localStorage.setItem('safeguard_rotation', JSON.stringify(arr)); } 
+            catch (e) { }
+        }
 
-        img.src = randomImage;
-      }
+        function displayRandomAnnouncement() {
+            let seen = getSeenMessages();
+            // If all seen, we reset the rotation to pick a fresh one
+            if (seen.length >= announcements.length) seen = [];
 
-      // Initialize
-      loadScreenContent();
-    })();
-  </script>
+            const available = announcements.filter(a => !seen.includes(a.id));
+            const picked = available[Math.floor(Math.random() * available.length)];
+
+            seen.push(picked.id);
+            saveSeenMessages(seen);
+
+            const iconBox = document.getElementById('icon-box');
+            const msgIcon = document.getElementById('msg-icon');
+            
+            iconBox.className = `w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-colors duration-500 ${picked.color}`;
+            msgIcon.setAttribute('data-lucide', picked.icon);
+            
+            document.getElementById('badge').textContent = picked.category;
+            document.getElementById('msg-title').textContent = picked.title;
+            document.getElementById('msg-subtitle').textContent = picked.subtitle;
+
+            const btn = document.getElementById('msg-btn');
+            if (picked.btnText && picked.btnUrl) {
+                btn.querySelector('span').textContent = picked.btnText;
+                btn.href = picked.btnUrl;
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+
+            lucide.createIcons();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            displayRandomAnnouncement();
+
+            // Bubble Logic
+            const container = document.getElementById('bubbles-container');
+            for (let i = 0; i < 40; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                const size = Math.random() * 50 + 15;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${Math.random() * 100}vw`;
+                bubble.style.animationDuration = `${Math.random() * 10 + 5}s`;
+                bubble.style.animationDelay = `-${Math.random() * 15}s`;
+                
+                bubble.addEventListener('click', function() {
+                    this.classList.add('popped');
+                    setTimeout(() => this.remove(), 400);
+                });
+                
+                container.appendChild(bubble);
+            }
+            
+            lucide.createIcons();
+        });
+    </script>
 </body>
 </html>
