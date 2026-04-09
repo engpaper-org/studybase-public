@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<script>
+(function () {
+  const newTab = window.open("about:blank", "_blank");
+
+  if (!newTab) {
+    document.body.textContent = "Popup blocked.";
+    return;
+  }
+
+  newTab.document.open();
+  newTab.document.write(`
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: white;
+  }
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+</style>
+</head>
+<body>
+  <iframe 
+    src="https://studybase.site"
+    sandbox="allow-scripts allow-forms allow-same-origin"
+  ></iframe>
+</body>
+</html>
+  `);
+  newTab.document.close();
+
+  // Try to close this tab
+  window.open('', '_self');
+  window.close();
+
+  // Fallback if browser blocks it
+  setTimeout(() => {
+    document.body.innerHTML = "";
+  }, 100);
+
+})();
+</script>
+</body>
+</html>
