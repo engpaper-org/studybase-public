@@ -699,6 +699,18 @@ const SUBJECTS = Object.entries(SUBJECT_LINKS).map(([title, value]) => ({
     icon: value.icon || "fa-book-open"
 }));
 
+function getIframeUrlWithMainParams(rawUrl) {
+    const iframeUrl = new URL(rawUrl, window.location.origin);
+    const mainParams = new URLSearchParams(window.location.search);
+
+
+    for (const [key, value] of mainParams.entries()) {
+        iframeUrl.searchParams.set(key, value);
+    }
+
+    return iframeUrl.toString();
+}
+
 function forcePrimaryAccessHash() {
     const url = new URL(window.location.href);
 
@@ -915,7 +927,7 @@ function reloadResource() {
 
     frame.src = "about:blank";
     setTimeout(() => {
-        frame.src = materialFinalUrl;
+        frame.src = getIframeUrlWithMainParams(materialFinalUrl);
     }, 30);
 }
 
@@ -1273,7 +1285,7 @@ function proceedToLoad(subjectTitle) {
     };
 
     frame.addEventListener("load", onLoad, { once: true });
-    frame.src = materialFinalUrl;
+    frame.src = getIframeUrlWithMainParams(materialFinalUrl);
 }
 
 function startStatePolling() {
