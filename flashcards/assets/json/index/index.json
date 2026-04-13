@@ -1,0 +1,136 @@
+{
+  "subjects": [
+    {
+      "id": "biology",
+      "name": "Biology",
+      "icon": "dna",
+      "description": "GCSE and A-Level biology flashcard sets organised by specification.",
+      "examBoards": [
+        {
+          "id": "aqa",
+          "name": "AQA",
+          "topics": [
+            {
+              "id": "cell-biology",
+              "name": "Cell Biology",
+              "description": "Cell structure, microscopy, cell division and transport.",
+              "cardCount": 42
+            },
+            {
+              "id": "organisation",
+              "name": "Organisation",
+              "description": "Organisation of the digestive, circulatory and plant transport systems.",
+              "cardCount": 36
+            },
+            {
+              "id": "infection-and-response",
+              "name": "Infection and Response",
+              "description": "Communicable diseases, immunity, vaccination and medicines.",
+              "cardCount": 31
+            }
+          ]
+        },
+        {
+          "id": "edexcel",
+          "name": "Edexcel",
+          "topics": [
+            {
+              "id": "key-concepts-in-biology",
+              "name": "Key Concepts in Biology",
+              "description": "Fundamental principles including cells, enzymes and transport.",
+              "cardCount": 29
+            },
+            {
+              "id": "genetics",
+              "name": "Genetics",
+              "description": "DNA, inheritance, variation and genetic engineering.",
+              "cardCount": 34
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mathematics",
+      "name": "Mathematics",
+      "icon": "calculator",
+      "description": "Premium maths revision decks grouped by exam board and topic.",
+      "examBoards": [
+        {
+          "id": "aqa",
+          "name": "AQA",
+          "topics": [
+            {
+              "id": "algebra",
+              "name": "Algebra",
+              "description": "Expressions, equations, inequalities and algebraic proof.",
+              "cardCount": 38
+            },
+            {
+              "id": "geometry-and-measures",
+              "name": "Geometry and Measures",
+              "description": "Angles, circles, area, volume and transformations.",
+              "cardCount": 33
+            },
+            {
+              "id": "statistics-and-probability",
+              "name": "Statistics and Probability",
+              "description": "Averages, cumulative frequency, probability trees and more.",
+              "cardCount": 30
+            }
+          ]
+        },
+        {
+          "id": "ocr",
+          "name": "OCR",
+          "topics": [
+            {
+              "id": "number",
+              "name": "Number",
+              "description": "Fractions, percentages, standard form and compound measures.",
+              "cardCount": 27
+            },
+            {
+              "id": "ratio-proportion-and-rates-of-change",
+              "name": "Ratio, Proportion and Rates of Change",
+              "description": "Ratio, direct proportion, inverse proportion and growth.",
+              "cardCount": 24
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "english-literature",
+      "name": "English Literature",
+      "icon": "feather-pointed",
+      "description": "Text-based revision packs for core literature topics.",
+      "examBoards": [
+        {
+          "id": "aqa",
+          "name": "AQA",
+          "topics": [
+            {
+              "id": "macbeth",
+              "name": "Macbeth",
+              "description": "Characters, themes, context and quotations.",
+              "cardCount": 44
+            },
+            {
+              "id": "frankenstein",
+              "name": "Frankenstein",
+              "description": "Themes, structure, context and key lines.",
+              "cardCount": 40
+            },
+            {
+              "id": "power-and-conflict-poetry",
+              "name": "Power and Conflict Poetry",
+              "description": "Comparison points, quotations and contextual ideas.",
+              "cardCount": 52
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
