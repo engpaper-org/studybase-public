@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    
+    <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase | A-Level Chemistry</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="/assets/js/sessionManager.js" defer></script>
+    <script src="/assets/js/errorCheck.js" defer></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+    <script src="/assets/js/cookieConsent.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/subjects/subject-styles.css">
+
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/adminUi.js" defer></script>
+    <script src="/assets/js/services.js"></script>
+
+    <script>const PAGE_ID = "subject_chemistry";</script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#f4f7f9] text-slate-900 font-sans selection:bg-purple-100 selection:text-purple-900 overflow-x-hidden" style="--sb-accent: #7c3aed; --sb-accent-strong: #6d28d9; --sb-accent-soft: rgba(124, 58, 237, 0.18); --sb-accent-ghost: rgba(124, 58, 237, 0.12);">
+
+
+    <header class="subject-hero pt-24 pb-20 border-b border-slate-200">
+    
+        <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-20"></div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl -z-10 pointer-events-none">
+            <div class="absolute top-6 left-6 w-64 h-64 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+            <div class="absolute bottom-0 right-6 w-64 h-64 bg-fuchsia-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <span class="subject-chip">A-Level Chemistry</span>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight text-slate-900 mt-6">
+                Learn reactions through <span class="text-gradient">patterns and calculations</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-500 font-body max-w-3xl mt-6">
+                Chemistry marks come from accurate calculations and clear mechanisms. Use this hub to master core theory,
+                then practise applying it to unfamiliar contexts.
+            </p>
+            <div class="flex flex-wrap gap-3 mt-8">
+                <a class="subject-pill" href="#papers"><i class="fa-solid fa-layer-group"></i> Paper map</a>
+                <a class="subject-pill" href="#topics"><i class="fa-solid fa-sitemap"></i> Core topics</a>
+                <a class="subject-pill" href="#skills"><i class="fa-solid fa-bullseye"></i> Exam skills</a>
+                <a class="subject-pill" href="#practice"><i class="fa-solid fa-pen"></i> Quick practice</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="papers" class="py-16 section-shell">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+                <div>
+                    <span class="subject-chip">Paper map</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-4">Three papers, shared core skills</h2>
+                    <p class="text-slate-500 font-body mt-3">Each guide contains checklists, technique, and practice prompts.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="subject-card p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-slate-900">Paper 1</h3>
+                    <p class="text-slate-500 text-sm font-body mt-2">Physical and inorganic chemistry core.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Atomic structure, bonding, energetics</li>
+                        <li>Kinetics, equilibrium, redox</li>
+                        <li>Periodic trends and group chemistry</li>
+                    </ul>
+                    <a href="/subjects/chemistry/paper-1.html" class="subject-link mt-6">Open Paper 1 guide</a>
+                </div>
+
+                <div class="subject-card p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-slate-900">Paper 2</h3>
+                    <p class="text-slate-500 text-sm font-body mt-2">Physical and organic chemistry with synthesis.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Organic mechanisms and reactions</li>
+                        <li>Analysis and spectroscopy</li>
+                        <li>Routes, conditions, and yields</li>
+                    </ul>
+                    <a href="/subjects/chemistry/paper-2.html" class="subject-link mt-6">Open Paper 2 guide</a>
+                </div>
+
+                <div class="subject-card p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-slate-900">Paper 3</h3>
+                    <p class="text-slate-500 text-sm font-body mt-2">Practical skills, data analysis, and synoptic.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Required practical techniques</li>
+                        <li>Quantitative analysis and evaluation</li>
+                        <li>Synoptic links across the course</li>
+                    </ul>
+                    <a href="/subjects/chemistry/paper-3.html" class="subject-link mt-6">Open Paper 3 guide</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="topics" class="py-16 bg-white border-y border-slate-200">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+                <div>
+                    <span class="subject-chip">Core topics</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-4">Chemistry topic clusters</h2>
+                    <p class="text-slate-500 font-body mt-3">Group topics into manageable study blocks.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Physical chemistry</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Moles, equilibria, energetics, and kinetics</li>
+                        <li>Redox, electrochemistry, and rates</li>
+                        <li>Thermodynamics and equilibrium constants</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Inorganic chemistry</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Periodic trends and bonding</li>
+                        <li>Group chemistry and reactions</li>
+                        <li>Transition metals and complexes</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Organic chemistry</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Mechanisms, stereochemistry, and synthesis</li>
+                        <li>Functional group tests</li>
+                        <li>Analysis using IR and NMR</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Practical and analysis</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Titrations, reflux, distillation</li>
+                        <li>Data processing and uncertainties</li>
+                        <li>Evaluation and improvements</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-16 section-shell">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Exam skills for top marks</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Show working and units for every calculation</li>
+                        <li>Use curly arrows for mechanisms</li>
+                        <li>State reagents, conditions, and observations</li>
+                        <li>Balance equations and check oxidation states</li>
+                        <li>Quote data points in evaluation questions</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Common pitfalls to avoid</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Mixing up rate and equilibrium concepts</li>
+                        <li>Forgetting state symbols or charges</li>
+                        <li>Missing a step in multi-stage synthesis</li>
+                        <li>Incorrect significant figures</li>
+                        <li>Ignoring conditions like temperature or catalyst</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-y border-slate-200">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="subject-card p-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                    <div>
+                        <span class="subject-chip">Revision flow</span>
+                        <h2 class="text-3xl font-black text-slate-900 mt-4">A simple 3 stage plan</h2>
+                        <p class="text-slate-500 font-body mt-3">Keep calculations, mechanisms, and data skills in rotation.</p>
+                    </div>
+                    <a href="/toolkit/timetable.html" class="subject-pill"><i class="fa-solid fa-calendar-days"></i> Build a timetable</a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                        <h3 class="text-lg font-bold text-slate-900">1. Learn and map</h3>
+                        <p class="text-sm text-slate-500 font-body mt-2">Summarise each reaction and the conditions it needs.</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                        <h3 class="text-lg font-bold text-slate-900">2. Calculate and apply</h3>
+                        <p class="text-sm text-slate-500 font-body mt-2">Complete calculation sets and apply to unfamiliar data.</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                        <h3 class="text-lg font-bold text-slate-900">3. Practicals and synoptic</h3>
+                        <p class="text-sm text-slate-500 font-body mt-2">Use practical questions to connect topics across papers.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="practice" class="py-16 section-shell">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="subject-card p-8">
+                <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                    <div>
+                        <span class="subject-chip">Quick practice</span>
+                        <h2 class="text-3xl font-black text-slate-900 mt-4">10 minute drills</h2>
+                        <p class="text-slate-500 font-body mt-3">Short sessions that sharpen calculations and reaction memory.</p>
+                    </div>
+                    <a href="/toolkit/paperTracker.html" class="subject-pill"><i class="fa-solid fa-file-contract"></i> Track papers</a>
+                </div>
+                <ul class="mt-8 space-y-3 text-sm text-slate-600 font-body list-disc list-inside">
+                    <li>Balance two redox equations and identify oxidising agents.</li>
+                    <li>Complete a titration calculation with correct units.</li>
+                    <li>Sketch a reaction profile and label activation energy.</li>
+                    <li>Identify functional groups from IR and NMR clues.</li>
+                    <li>Write a mechanism with curly arrows and conditions.</li>
+                    <li>Summarise the trends across a periodic group.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
+
+
+

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    
+    <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase | Biology Paper 2</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="/assets/js/sessionManager.js" defer></script>
+    <script src="/assets/js/errorCheck.js" defer></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+    <script src="/assets/js/cookieConsent.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/subjects/subject-styles.css">
+
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/adminUi.js" defer></script>
+    <script src="/assets/js/services.js"></script>
+
+    <script>const PAGE_ID = "biology_paper_2";</script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#f4f7f9] text-slate-900 font-sans selection:bg-emerald-100 selection:text-emerald-900 overflow-x-hidden" style="--sb-accent: #16a34a; --sb-accent-strong: #15803d; --sb-accent-soft: rgba(22, 163, 74, 0.18); --sb-accent-ghost: rgba(22, 163, 74, 0.12);">
+
+
+    <header class="subject-hero pt-24 pb-16 border-b border-slate-200">
+    
+        <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-20"></div>
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <a href="/subjects/biology/index.html" class="subject-pill"><i class="fa-solid fa-arrow-left"></i> Back to Biology</a>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight text-slate-900 mt-6">Biology Paper 2</h1>
+            <p class="text-lg text-slate-500 font-body max-w-3xl mt-4">
+                Paper 2 connects big systems with real outcomes. Prioritise clear chains of reasoning and link topics together.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                <div class="subject-card p-4">
+                    <h3 class="text-sm font-bold text-slate-900">Focus</h3>
+                    <p class="text-sm text-slate-500 font-body mt-2">Respiration, photosynthesis, homeostasis, ecology.</p>
+                </div>
+                <div class="subject-card p-4">
+                    <h3 class="text-sm font-bold text-slate-900">Question style</h3>
+                    <p class="text-sm text-slate-500 font-body mt-2">Long explanations, data response, and evaluation.</p>
+                </div>
+                <div class="subject-card p-4">
+                    <h3 class="text-sm font-bold text-slate-900">Top mark signal</h3>
+                    <p class="text-sm text-slate-500 font-body mt-2">Accurate sequences and key terminology in context.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-16 section-shell">
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <div class="subject-card p-6">
+                <span class="subject-chip">Checklist</span>
+                <h2 class="text-2xl font-black text-slate-900 mt-4">Paper 2 topic checklist</h2>
+                <ul class="mt-6 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                    <li>Photosynthesis and respiration pathways</li>
+                    <li>Energy transfer and ATP</li>
+                    <li>Nervous and hormonal coordination</li>
+                    <li>Homeostasis and feedback loops</li>
+                    <li>Populations, ecosystems, and succession</li>
+                    <li>Inheritance of populations and evolution</li>
+                    <li>Responses to environmental change</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-y border-slate-200">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Exam technique</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Build chain explanations with clear steps</li>
+                        <li>Use correct terms like increase, inhibit, regulate</li>
+                        <li>Describe feedback using stimulus and response</li>
+                        <li>Link data trends to biological reasoning</li>
+                        <li>Use comparative language when asked to evaluate</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Common errors</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Confusing negative and positive feedback</li>
+                        <li>Missing steps in respiration or photosynthesis</li>
+                        <li>Ignoring the ecological context in questions</li>
+                        <li>Writing vague conclusions without data</li>
+                        <li>Forgetting to state the direction of change</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 section-shell">
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Practice set</h3>
+                    <ul class="mt-4 space-y-3 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Explain how light intensity affects photosynthesis rate.</li>
+                        <li>Describe the roles of insulin and glucagon.</li>
+                        <li>Interpret an energy pyramid and explain losses.</li>
+                        <li>Evaluate data from a population study.</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">7 day sprint plan</h3>
+                    <ol class="mt-4 space-y-2 text-sm text-slate-600 font-body list-decimal list-inside">
+                        <li>Day 1: Photosynthesis and respiration</li>
+                        <li>Day 2: Energy transfer and ATP</li>
+                        <li>Day 3: Nervous coordination and synapses</li>
+                        <li>Day 4: Hormones and homeostasis</li>
+                        <li>Day 5: Populations and ecosystems</li>
+                        <li>Day 6: Evolution and selection</li>
+                        <li>Day 7: Mixed timed data response</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
+
+
+

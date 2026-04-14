@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    
+    <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase | Physics Paper 1</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="/assets/js/sessionManager.js" defer></script>
+    <script src="/assets/js/errorCheck.js" defer></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+    <script src="/assets/js/cookieConsent.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/subjects/subject-styles.css">
+
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/adminUi.js" defer></script>
+    <script src="/assets/js/services.js"></script>
+
+    <script>const PAGE_ID = "physics_paper_1";</script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#f4f7f9] text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden" style="--sb-accent: #2563eb; --sb-accent-strong: #1d4ed8; --sb-accent-soft: rgba(37, 99, 235, 0.18); --sb-accent-ghost: rgba(37, 99, 235, 0.12);">
+
+
+    <header class="subject-hero pt-24 pb-16 border-b border-slate-200">
+    
+        <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-20"></div>
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <a href="/subjects/physics/index.html" class="subject-pill"><i class="fa-solid fa-arrow-left"></i> Back to Physics</a>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight text-slate-900 mt-6">Physics Paper 1</h1>
+            <p class="text-lg text-slate-500 font-body max-w-3xl mt-4">
+                Paper 1 tests mechanics, materials, waves, and electricity. Methodical equation use and clear diagrams will secure the marks.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                <div class="subject-card p-4">
+                    <h3 class="text-sm font-bold text-slate-900">Focus</h3>
+                    <p class="text-sm text-slate-500 font-body mt-2">Motion, forces, waves, circuits, and materials.</p>
+                </div>
+                <div class="subject-card p-4">
+                    <h3 class="text-sm font-bold text-slate-900">Question style</h3>
+                    <p class="text-sm text-slate-500 font-body mt-2">Calculation heavy with short explanations.</p>
+                </div>
+                <div class="subject-card p-4">
+                    <h3 class="text-sm font-bold text-slate-900">Top mark signal</h3>
+                    <p class="text-sm text-slate-500 font-body mt-2">Correct units and fully labeled diagrams.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-16 section-shell">
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <div class="subject-card p-6">
+                <span class="subject-chip">Checklist</span>
+                <h2 class="text-2xl font-black text-slate-900 mt-4">Paper 1 topic checklist</h2>
+                <ul class="mt-6 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                    <li>Kinematics, forces, momentum, and energy</li>
+                    <li>Materials, stress, strain, and elastic behaviour</li>
+                    <li>Waves, superposition, diffraction, and optics</li>
+                    <li>Electrical circuits and power</li>
+                    <li>Wave-particle duality basics</li>
+                    <li>Motion graphs and modelling assumptions</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-y border-slate-200">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Exam technique</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Sketch force diagrams before calculating</li>
+                        <li>Write equations with variable definitions</li>
+                        <li>Convert units before substitution</li>
+                        <li>Link every step to the physical situation</li>
+                        <li>Label wave diagrams with wavelengths and phases</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Common errors</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Ignoring direction in vector quantities</li>
+                        <li>Mixing up stress and strain units</li>
+                        <li>Forgetting to include power loss or efficiency</li>
+                        <li>Using wrong wave equation for the context</li>
+                        <li>Not explaining assumptions in modelling questions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 section-shell">
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Practice set</h3>
+                    <ul class="mt-4 space-y-3 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Calculate acceleration from a velocity-time graph.</li>
+                        <li>Find Young modulus from data and interpret.</li>
+                        <li>Explain diffraction through a narrow slit.</li>
+                        <li>Calculate current and power in a mixed circuit.</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">7 day sprint plan</h3>
+                    <ol class="mt-4 space-y-2 text-sm text-slate-600 font-body list-decimal list-inside">
+                        <li>Day 1: Kinematics and forces</li>
+                        <li>Day 2: Momentum and energy</li>
+                        <li>Day 3: Materials and stress-strain graphs</li>
+                        <li>Day 4: Waves and optics</li>
+                        <li>Day 5: Electricity and circuits</li>
+                        <li>Day 6: Mixed calculations and explanations</li>
+                        <li>Day 7: Timed paper section</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
+
+
+

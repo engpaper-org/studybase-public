@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
+    
   <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
 </head>
 <body>
-<script>
-(function () {
-  const newTab = window.open("about:blank", "_blank");
 
-  if (!newTab) {
-    document.body.textContent = "Popup blocked.";
-    return;
-  }
-
-  newTab.document.open();
-  newTab.document.write(`
-<!DOCTYPE html>
-<html>
-<head>
 <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
 <style>
   html, body {
     margin: 0;
@@ -56,3 +62,5 @@
 </script>
 </body>
 </html>
+
+

@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wellbeing Hub | GCSEHelp</title>
 
@@ -70,6 +80,7 @@
 <body class="bg-white text-slate-800">
 
     <header class="relative bg-gradient-to-b from-indigo-50 to-white pt-20 pb-16 overflow-hidden text-center">
+    
         <div class="max-w-7xl mx-auto px-4 relative z-10">
             <span class="inline-block py-1 px-3 rounded-full bg-indigo-100 text-indigo-700 text-sm font-semibold mb-6 uppercase tracking-wider">Mindfulness</span>
             <h1 class="text-5xl md:text-7xl font-extrabold text-slate-900 mb-6 tracking-tight">
@@ -153,3 +164,5 @@
     </script>
 </body>
 </html>
+
+

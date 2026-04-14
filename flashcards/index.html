@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
+    
     <meta charset="UTF-8" />
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>StudyBase | Flashcard Revision</title>
     <link rel="icon" href="/assets/siteIcons/main.ico" />
@@ -110,6 +120,7 @@
     <div id="navbar-placeholder"></div>
 
     <header class="relative pt-24 md:pt-28 pb-16 md:pb-20 overflow-hidden border-b border-slate-200/80">
+    
         <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0.72))] -z-20"></div>
         <div class="absolute -top-16 left-[10%] w-72 h-72 bg-violet-300/35 rounded-full blur-3xl animate-floaty -z-10"></div>
         <div class="absolute top-10 right-[8%] w-80 h-80 bg-indigo-300/30 rounded-full blur-3xl animate-floaty -z-10" style="animation-delay: 1.3s"></div>
@@ -734,3 +745,5 @@
     </script>
 </body>
 </html>
+
+

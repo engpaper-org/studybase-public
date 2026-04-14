@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
+    
     <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Support | StudyBase</title>
     <link rel="icon" href="/assets/siteIcons/main.ico">
@@ -75,6 +85,7 @@
 <nav id="navbar-placeholder" class="sticky top-0 z-50"></nav>
 
 <header class="relative pt-32 pb-16 lg:pt-40 lg:pb-24 overflow-hidden border-b border-slate-200">
+    
 
 <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-20"></div>
 
@@ -223,3 +234,5 @@ Your feedback helps us improve our support center.
 
 </body>
 </html>
+
+

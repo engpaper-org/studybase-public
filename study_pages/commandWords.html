@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Command Words | GCSEHelp</title>
     <link rel="icon" href="https://static-assets.papersweb-assets.site/siteIcons/gcsehelp.ico">
@@ -45,6 +55,7 @@
 <body class="text-slate-800 bg-white">
 
     <header class="relative bg-gradient-to-b from-blue-50 to-white pt-20 pb-20 overflow-hidden">
+    
         <div class="max-w-7xl mx-auto px-4 text-center relative z-10">
             <span class="inline-block py-1 px-3 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold mb-6">Exam Technique Hub</span>
             <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6 tracking-tight">
@@ -175,3 +186,5 @@
     </script>
 </body>
 </html>
+
+

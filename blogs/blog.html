@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loading Article... | StudyBase</title>
     <link rel="icon" href="/assets/siteIcons/main.ico">
@@ -86,6 +96,7 @@
             </nav>
 
             <header class="text-center mb-12">
+    
                 <span id="subtitle" class="inline-block px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs font-black uppercase tracking-widest mb-4"></span>
                 <h1 id="title" class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-6 leading-[1.1] tracking-tight"></h1>
                 <div class="flex items-center justify-center gap-4 text-sm text-slate-400 font-medium">
@@ -246,3 +257,5 @@
     </script>
 </body>
 </html>
+
+

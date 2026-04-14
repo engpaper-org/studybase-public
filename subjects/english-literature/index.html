@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    
+    <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase | A-Level English Literature</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="/assets/js/sessionManager.js" defer></script>
+    <script src="/assets/js/errorCheck.js" defer></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+    <script src="/assets/js/cookieConsent.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/subjects/subject-styles.css">
+
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/adminUi.js" defer></script>
+    <script src="/assets/js/services.js"></script>
+
+    <script>const PAGE_ID = "subject_english_lit";</script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#f4f7f9] text-slate-900 font-sans selection:bg-fuchsia-100 selection:text-fuchsia-900 overflow-x-hidden" style="--sb-accent: #c026d3; --sb-accent-strong: #a21caf; --sb-accent-soft: rgba(192, 38, 211, 0.18); --sb-accent-ghost: rgba(192, 38, 211, 0.12);">
+
+
+    <header class="subject-hero pt-24 pb-20 border-b border-slate-200">
+    
+        <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-20"></div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl -z-10 pointer-events-none">
+            <div class="absolute top-6 left-6 w-64 h-64 bg-fuchsia-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+            <div class="absolute bottom-0 right-6 w-64 h-64 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <span class="subject-chip">A-Level English Literature</span>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight text-slate-900 mt-6">
+                Write essays with <span class="text-gradient">close analysis and debate</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-500 font-body max-w-3xl mt-6">
+                English Literature rewards precise quotation, critical interpretation, and a clear line of argument. Use this
+                hub to plan essays and master unseen analysis.
+            </p>
+            <div class="flex flex-wrap gap-3 mt-8">
+                <a class="subject-pill" href="#papers"><i class="fa-solid fa-layer-group"></i> Paper map</a>
+                <a class="subject-pill" href="#topics"><i class="fa-solid fa-sitemap"></i> Core topics</a>
+                <a class="subject-pill" href="#skills"><i class="fa-solid fa-bullseye"></i> Exam skills</a>
+                <a class="subject-pill" href="#practice"><i class="fa-solid fa-pen"></i> Quick practice</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="papers" class="py-16 section-shell">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+                <div>
+                    <span class="subject-chip">Paper map</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-4">Two papers, multiple texts</h2>
+                    <p class="text-slate-500 font-body mt-3">Each guide includes checklists, technique, and practice prompts.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="subject-card p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-slate-900">Paper 1</h3>
+                    <p class="text-slate-500 text-sm font-body mt-2">Drama or Shakespeare plus a poetry component.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Close reading and interpretation</li>
+                        <li>Quotation integration</li>
+                        <li>Context and alternative readings</li>
+                    </ul>
+                    <a href="/subjects/english-literature/paper-1.html" class="subject-link mt-6">Open Paper 1 guide</a>
+                </div>
+
+                <div class="subject-card p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-slate-900">Paper 2</h3>
+                    <p class="text-slate-500 text-sm font-body mt-2">Prose and unseen poetry or comparative essays.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Comparative writing</li>
+                        <li>Unseen analysis skills</li>
+                        <li>Critical debate and evaluation</li>
+                    </ul>
+                    <a href="/subjects/english-literature/paper-2.html" class="subject-link mt-6">Open Paper 2 guide</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="topics" class="py-16 bg-white border-y border-slate-200">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+                <div>
+                    <span class="subject-chip">Core topics</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-4">English Literature skill clusters</h2>
+                    <p class="text-slate-500 font-body mt-3">Plan revision around both text knowledge and essay skills.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Close reading</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Language, structure, and form analysis</li>
+                        <li>Quotation selection and embedding</li>
+                        <li>Multiple interpretations</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Context and critics</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Historical and social context</li>
+                        <li>Critical viewpoints and debate</li>
+                        <li>Authorial intention discussion</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Comparative writing</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Comparing themes and methods</li>
+                        <li>Linking texts with coherent transitions</li>
+                        <li>Balanced evaluation</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Essay structure</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Clear thesis statements</li>
+                        <li>Paragraph structure and argument flow</li>
+                        <li>Judgement and conclusion</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-16 section-shell">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Exam skills for top marks</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Embed short quotations and analyse them</li>
+                        <li>Use topic sentences to guide the argument</li>
+                        <li>Compare texts directly in each paragraph</li>
+                        <li>Write with a clear critical voice</li>
+                        <li>Finish with a concise judgement</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Common pitfalls to avoid</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Retelling the plot</li>
+                        <li>Long quotations with no analysis</li>
+                        <li>One-sided arguments without debate</li>
+                        <li>Ignoring context where required</li>
+                        <li>Weak conclusion</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-y border-slate-200">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="subject-card p-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                    <div>
+                        <span class="subject-chip">Revision flow</span>
+                        <h2 class="text-3xl font-black text-slate-900 mt-4">A simple 3 stage plan</h2>
+                        <p class="text-slate-500 font-body mt-3">Balance text knowledge, analysis, and essay practice.</p>
+                    </div>
+                    <a href="/toolkit/timetable.html" class="subject-pill"><i class="fa-solid fa-calendar-days"></i> Build a timetable</a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                        <h3 class="text-lg font-bold text-slate-900">1. Know the texts</h3>
+                        <p class="text-sm text-slate-500 font-body mt-2">Summarise themes, characters, and key moments.</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                        <h3 class="text-lg font-bold text-slate-900">2. Practise analysis</h3>
+                        <p class="text-sm text-slate-500 font-body mt-2">Write short paragraphs on language and structure.</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                        <h3 class="text-lg font-bold text-slate-900">3. Timed essays</h3>
+                        <p class="text-sm text-slate-500 font-body mt-2">Write full essays with a clear line of argument.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="practice" class="py-16 section-shell">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="subject-card p-8">
+                <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                    <div>
+                        <span class="subject-chip">Quick practice</span>
+                        <h2 class="text-3xl font-black text-slate-900 mt-4">10 minute drills</h2>
+                        <p class="text-slate-500 font-body mt-3">Short tasks to sharpen analysis and essay structure.</p>
+                    </div>
+                    <a href="/toolkit/paperTracker.html" class="subject-pill"><i class="fa-solid fa-file-contract"></i> Track papers</a>
+                </div>
+                <ul class="mt-8 space-y-3 text-sm text-slate-600 font-body list-disc list-inside">
+                    <li>Analyse a short quotation for language and effect.</li>
+                    <li>Write a thesis statement for a given question.</li>
+                    <li>Compare a theme across two texts in four sentences.</li>
+                    <li>Summarise a critical viewpoint in your own words.</li>
+                    <li>Create a paragraph plan using point, evidence, analysis.</li>
+                    <li>Write a conclusion with judgement.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
+
+
+

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    
+    <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase | Chemistry Paper 2</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="/assets/js/sessionManager.js" defer></script>
+    <script src="/assets/js/errorCheck.js" defer></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+    <script src="/assets/js/cookieConsent.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/subjects/subject-styles.css">
+
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/adminUi.js" defer></script>
+    <script src="/assets/js/services.js"></script>
+
+    <script>const PAGE_ID = "chemistry_paper_2";</script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#f4f7f9] text-slate-900 font-sans selection:bg-purple-100 selection:text-purple-900 overflow-x-hidden" style="--sb-accent: #7c3aed; --sb-accent-strong: #6d28d9; --sb-accent-soft: rgba(124, 58, 237, 0.18); --sb-accent-ghost: rgba(124, 58, 237, 0.12);">
+
+
+    <header class="subject-hero pt-24 pb-16 border-b border-slate-200">
+    
+        <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-20"></div>
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <a href="/subjects/chemistry/index.html" class="subject-pill"><i class="fa-solid fa-arrow-left"></i> Back to Chemistry</a>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight text-slate-900 mt-6">Chemistry Paper 2</h1>
+            <p class="text-lg text-slate-500 font-body max-w-3xl mt-4">
+                Paper 2 focuses on organic chemistry and analysis. Precision with mechanisms and clear test results will lift your grade.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                <div class="subject-card p-4">
+                    <h3 class="text-sm font-bold text-slate-900">Focus</h3>
+                    <p class="text-sm text-slate-500 font-body mt-2">Organic mechanisms, synthesis, spectroscopy, analysis.</p>
+                </div>
+                <div class="subject-card p-4">
+                    <h3 class="text-sm font-bold text-slate-900">Question style</h3>
+                    <p class="text-sm text-slate-500 font-body mt-2">Mechanisms, conditions, and multi-step routes.</p>
+                </div>
+                <div class="subject-card p-4">
+                    <h3 class="text-sm font-bold text-slate-900">Top mark signal</h3>
+                    <p class="text-sm text-slate-500 font-body mt-2">Curly arrows, clear reagents, and named products.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-16 section-shell">
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <div class="subject-card p-6">
+                <span class="subject-chip">Checklist</span>
+                <h2 class="text-2xl font-black text-slate-900 mt-4">Paper 2 topic checklist</h2>
+                <ul class="mt-6 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                    <li>Organic functional groups and naming</li>
+                    <li>Nucleophilic substitution, elimination, addition</li>
+                    <li>Oxidation, reduction, and reaction conditions</li>
+                    <li>Organic synthesis routes and yields</li>
+                    <li>Infrared, NMR, and mass spectrometry</li>
+                    <li>Chromatography and qualitative tests</li>
+                    <li>Equilibria and rates in organic contexts</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-y border-slate-200">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Exam technique</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Use curly arrows from the correct electron pair</li>
+                        <li>Always state reagents and conditions</li>
+                        <li>Draw mechanisms neatly and label intermediates</li>
+                        <li>Use spectroscopy data to justify structures</li>
+                        <li>Check carbon balances in multi-step routes</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Common errors</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Missing the catalyst or conditions</li>
+                        <li>Incorrect mechanism arrows or charges</li>
+                        <li>Mixing up test results for functional groups</li>
+                        <li>Ignoring spectroscopy data</li>
+                        <li>Wrong naming of products</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 section-shell">
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Practice set</h3>
+                    <ul class="mt-4 space-y-3 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Draw the mechanism for a nucleophilic substitution.</li>
+                        <li>Plan a synthesis route to a named alcohol.</li>
+                        <li>Interpret an IR spectrum to identify a functional group.</li>
+                        <li>Predict organic test results and observations.</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">7 day sprint plan</h3>
+                    <ol class="mt-4 space-y-2 text-sm text-slate-600 font-body list-decimal list-inside">
+                        <li>Day 1: Functional groups and naming</li>
+                        <li>Day 2: Substitution and elimination</li>
+                        <li>Day 3: Addition and oxidation reactions</li>
+                        <li>Day 4: Synthesis routes and yields</li>
+                        <li>Day 5: Spectroscopy and analysis</li>
+                        <li>Day 6: Chromatography and tests</li>
+                        <li>Day 7: Mixed timed questions</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
+
+
+

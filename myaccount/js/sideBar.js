@@ -3,6 +3,7 @@
   const LINKS = [
     { href: "/myaccount/account.html", label: "Overview", icon: "fa-solid fa-house" },
     { href: "/myaccount/settings.html", label: "Settings", icon: "fa-solid fa-sliders" },
+    { href: "/myaccount/flags.html", label: "Flags", icon: "fa-solid fa-flag" },
     { href: "/myaccount/history.html", label: "History", icon: "fa-solid fa-clock-rotate-left" },
     { href: "/myaccount/plan.html", label: "Upgrade", icon: "fa-solid fa-crown" }, // <-- Added Upgrade Plan here
   ];

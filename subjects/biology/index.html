@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    
+    <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase | A-Level Biology</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="/assets/js/sessionManager.js" defer></script>
+    <script src="/assets/js/errorCheck.js" defer></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+    <script src="/assets/js/cookieConsent.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/subjects/subject-styles.css">
+
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/adminUi.js" defer></script>
+    <script src="/assets/js/services.js"></script>
+
+    <script>const PAGE_ID = "subject_biology";</script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#f4f7f9] text-slate-900 font-sans selection:bg-emerald-100 selection:text-emerald-900 overflow-x-hidden" style="--sb-accent: #16a34a; --sb-accent-strong: #15803d; --sb-accent-soft: rgba(22, 163, 74, 0.18); --sb-accent-ghost: rgba(22, 163, 74, 0.12);">
+
+
+    <header class="subject-hero pt-24 pb-20 border-b border-slate-200">
+    
+        <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-20"></div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl -z-10 pointer-events-none">
+            <div class="absolute top-6 left-6 w-64 h-64 bg-emerald-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+            <div class="absolute bottom-0 right-6 w-64 h-64 bg-lime-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <span class="subject-chip">A-Level Biology</span>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight text-slate-900 mt-6">
+                Connect systems with <span class="text-gradient">evidence-based answers</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-500 font-body max-w-3xl mt-6">
+                Biology rewards precise terminology, clear processes, and data interpretation. Use this hub to
+                link topics across papers and build the practical skills examiners love.
+            </p>
+            <div class="flex flex-wrap gap-3 mt-8">
+                <a class="subject-pill" href="#papers"><i class="fa-solid fa-layer-group"></i> Paper map</a>
+                <a class="subject-pill" href="#topics"><i class="fa-solid fa-sitemap"></i> Core topics</a>
+                <a class="subject-pill" href="#skills"><i class="fa-solid fa-bullseye"></i> Exam skills</a>
+                <a class="subject-pill" href="#practice"><i class="fa-solid fa-pen"></i> Quick practice</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="papers" class="py-16 section-shell">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+                <div>
+                    <span class="subject-chip">Paper map</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-4">Three papers, one connected story</h2>
+                    <p class="text-slate-500 font-body mt-3">Each guide includes checklists, technique, and practice prompts.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="subject-card p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-slate-900">Paper 1</h3>
+                    <p class="text-slate-500 text-sm font-body mt-2">Core biology: molecules, cells, and genetics.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Biological molecules and enzymes</li>
+                        <li>Cell structure, transport, and division</li>
+                        <li>DNA, variation, and inheritance</li>
+                    </ul>
+                    <a href="/subjects/biology/paper-1.html" class="subject-link mt-6">Open Paper 1 guide</a>
+                </div>
+
+                <div class="subject-card p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-slate-900">Paper 2</h3>
+                    <p class="text-slate-500 text-sm font-body mt-2">Systems, homeostasis, and ecosystems.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Respiration, photosynthesis, and energy</li>
+                        <li>Organ systems and feedback</li>
+                        <li>Populations, evolution, and ecology</li>
+                    </ul>
+                    <a href="/subjects/biology/paper-2.html" class="subject-link mt-6">Open Paper 2 guide</a>
+                </div>
+
+                <div class="subject-card p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-slate-900">Paper 3</h3>
+                    <p class="text-slate-500 text-sm font-body mt-2">Practical skills, data analysis, and synoptic links.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Required practical methods</li>
+                        <li>Data handling and statistics</li>
+                        <li>Evaluation and scientific writing</li>
+                    </ul>
+                    <a href="/subjects/biology/paper-3.html" class="subject-link mt-6">Open Paper 3 guide</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="topics" class="py-16 bg-white border-y border-slate-200">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+                <div>
+                    <span class="subject-chip">Core topics</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-4">Biology topic clusters</h2>
+                    <p class="text-slate-500 font-body mt-3">Group topics together so each revision session feels connected.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Molecules and cells</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Water, proteins, lipids, carbohydrates</li>
+                        <li>Enzymes, transport, membranes</li>
+                        <li>Cell division and microscopy</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Genetics and variation</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>DNA, replication, transcription, translation</li>
+                        <li>Inheritance, selection, genetic diversity</li>
+                        <li>Populations and evolution</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Systems and homeostasis</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Gas exchange, circulation, and transport</li>
+                        <li>Immunity, nerves, and endocrine control</li>
+                        <li>Feedback loops and regulation</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Energy and ecosystems</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Respiration and photosynthesis</li>
+                        <li>Food chains, energy transfer</li>
+                        <li>Cycles, conservation, and sustainability</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-16 section-shell">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Exam skills for top marks</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Use precise biological terms in every explanation</li>
+                        <li>Link structure to function in full sentences</li>
+                        <li>Explain processes step by step, no skipping</li>
+                        <li>Quote data points when evaluating experiments</li>
+                        <li>Balance equations and include units</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Common pitfalls to avoid</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Confusing diffusion, osmosis, and active transport</li>
+                        <li>Skipping keywords like activate, inhibit, or regulate</li>
+                        <li>Ignoring data when asked to evaluate</li>
+                        <li>Forgetting to label axes on graphs</li>
+                        <li>Vague statements without scientific evidence</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-y border-slate-200">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="subject-card p-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                    <div>
+                        <span class="subject-chip">Revision flow</span>
+                        <h2 class="text-3xl font-black text-slate-900 mt-4">A simple 3 stage plan</h2>
+                        <p class="text-slate-500 font-body mt-3">Rotate through content, application, and practical skills weekly.</p>
+                    </div>
+                    <a href="/toolkit/timetable.html" class="subject-pill"><i class="fa-solid fa-calendar-days"></i> Build a timetable</a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                        <h3 class="text-lg font-bold text-slate-900">1. Learn and link</h3>
+                        <p class="text-sm text-slate-500 font-body mt-2">Summarise each topic and connect it to a real example.</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                        <h3 class="text-lg font-bold text-slate-900">2. Apply to data</h3>
+                        <p class="text-sm text-slate-500 font-body mt-2">Complete data response questions with precise language.</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                        <h3 class="text-lg font-bold text-slate-900">3. Practicals and synoptic</h3>
+                        <p class="text-sm text-slate-500 font-body mt-2">Practise methods and evaluation with exam style prompts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="practice" class="py-16 section-shell">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="subject-card p-8">
+                <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                    <div>
+                        <span class="subject-chip">Quick practice</span>
+                        <h2 class="text-3xl font-black text-slate-900 mt-4">10 minute drills</h2>
+                        <p class="text-slate-500 font-body mt-3">Build accuracy before tackling a full paper.</p>
+                    </div>
+                    <a href="/toolkit/paperTracker.html" class="subject-pill"><i class="fa-solid fa-file-contract"></i> Track papers</a>
+                </div>
+                <ul class="mt-8 space-y-3 text-sm text-slate-600 font-body list-disc list-inside">
+                    <li>Explain how enzyme activity changes with temperature using a graph.</li>
+                    <li>Describe how a mutation can alter protein structure and function.</li>
+                    <li>Interpret a data set on photosynthesis rate and draw conclusions.</li>
+                    <li>Plan a practical to test membrane permeability.</li>
+                    <li>Write a short evaluation of an experiment with two improvements.</li>
+                    <li>Summarise a feedback loop in four sentences.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
+
+
+

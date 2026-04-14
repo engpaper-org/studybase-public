@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
   <meta charset="UTF-8" />
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>New Update</title>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -403,3 +413,5 @@
   </script>
 </body>
 </html>
+
+

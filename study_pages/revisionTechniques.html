@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Revision Techniques | GCSEHelp</title>
     <link rel="icon" href="https://static-assets.papersweb-assets.site/siteIcons/gcsehelp.ico">
@@ -46,6 +56,7 @@
 <body class="bg-white text-slate-800 antialiased">
 
     <header class="pt-24 pb-20 bg-slate-50 border-b border-slate-100 overflow-hidden relative">
+    
         <div class="max-w-7xl mx-auto px-4 relative z-10 text-center">
             <span class="px-4 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-bold uppercase tracking-widest mb-6 inline-block">Study Smarter, Not Harder</span>
             <h1 class="text-6xl md:text-8xl font-black text-slate-900 mb-8 tracking-tighter">
@@ -193,3 +204,5 @@
     </script>
 </body>
 </html>
+
+

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    
+    <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase | A-Level Psychology</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="/assets/js/sessionManager.js" defer></script>
+    <script src="/assets/js/errorCheck.js" defer></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+    <script src="/assets/js/cookieConsent.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/subjects/subject-styles.css">
+
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/adminUi.js" defer></script>
+    <script src="/assets/js/services.js"></script>
+
+    <script>const PAGE_ID = "subject_psychology";</script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#f4f7f9] text-slate-900 font-sans selection:bg-rose-100 selection:text-rose-900 overflow-x-hidden" style="--sb-accent: #e11d48; --sb-accent-strong: #be123c; --sb-accent-soft: rgba(225, 29, 72, 0.18); --sb-accent-ghost: rgba(225, 29, 72, 0.12);">
+
+
+    <header class="subject-hero pt-24 pb-20 border-b border-slate-200">
+    
+        <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-20"></div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-6xl -z-10 pointer-events-none">
+            <div class="absolute top-6 left-6 w-64 h-64 bg-rose-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+            <div class="absolute bottom-0 right-6 w-64 h-64 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <span class="subject-chip">A-Level Psychology</span>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight text-slate-900 mt-6">
+                Build essays with <span class="text-gradient">evidence and evaluation</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-500 font-body max-w-3xl mt-6">
+                Psychology rewards clear definitions, named studies, and balanced evaluation. Use this hub to structure
+                your knowledge and sharpen exam technique.
+            </p>
+            <div class="flex flex-wrap gap-3 mt-8">
+                <a class="subject-pill" href="#papers"><i class="fa-solid fa-layer-group"></i> Paper map</a>
+                <a class="subject-pill" href="#topics"><i class="fa-solid fa-sitemap"></i> Core topics</a>
+                <a class="subject-pill" href="#skills"><i class="fa-solid fa-bullseye"></i> Exam skills</a>
+                <a class="subject-pill" href="#practice"><i class="fa-solid fa-pen"></i> Quick practice</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="papers" class="py-16 section-shell">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+                <div>
+                    <span class="subject-chip">Paper map</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-4">Three papers, shared research skills</h2>
+                    <p class="text-slate-500 font-body mt-3">Each guide includes checklists, technique, and practice prompts.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="subject-card p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-slate-900">Paper 1</h3>
+                    <p class="text-slate-500 text-sm font-body mt-2">Intro topics such as social influence and memory.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Social influence and memory</li>
+                        <li>Attachment and psychopathology</li>
+                        <li>Key studies and evaluation</li>
+                    </ul>
+                    <a href="/subjects/psychology/paper-1.html" class="subject-link mt-6">Open Paper 1 guide</a>
+                </div>
+
+                <div class="subject-card p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-slate-900">Paper 2</h3>
+                    <p class="text-slate-500 text-sm font-body mt-2">Research methods, approaches, and biopsych.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Research design and statistics</li>
+                        <li>Approaches and debates</li>
+                        <li>Biopsychology and issues</li>
+                    </ul>
+                    <a href="/subjects/psychology/paper-2.html" class="subject-link mt-6">Open Paper 2 guide</a>
+                </div>
+
+                <div class="subject-card p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-slate-900">Paper 3</h3>
+                    <p class="text-slate-500 text-sm font-body mt-2">Option topics and synoptic evaluation.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Option topics like relationships</li>
+                        <li>Schizophrenia or eating behaviour</li>
+                        <li>Applying research methods to options</li>
+                    </ul>
+                    <a href="/subjects/psychology/paper-3.html" class="subject-link mt-6">Open Paper 3 guide</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="topics" class="py-16 bg-white border-y border-slate-200">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+                <div>
+                    <span class="subject-chip">Core topics</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-4">Psychology topic clusters</h2>
+                    <p class="text-slate-500 font-body mt-3">Group topics to support essay planning.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Core topics</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Social influence, memory, attachment</li>
+                        <li>Psychopathology and approaches</li>
+                        <li>Key studies and evaluation</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Research methods</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Experiments, observations, and questionnaires</li>
+                        <li>Sampling, ethics, validity, reliability</li>
+                        <li>Descriptive and inferential statistics</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Biopsychology</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Neurons, synapses, and brain areas</li>
+                        <li>Endocrine system and stress response</li>
+                        <li>Biological rhythms and sleep</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Options and debates</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Relationships, cognition, or schizophrenia</li>
+                        <li>Issues and debates in psychology</li>
+                        <li>Comparing theories and treatments</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-16 section-shell">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Exam skills for top marks</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Use AO1, AO2, AO3 structure in essays</li>
+                        <li>Quote named studies with key findings</li>
+                        <li>Balance strengths and limitations in evaluation</li>
+                        <li>Define key terms clearly before applying</li>
+                        <li>Use research methods to support arguments</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Common pitfalls to avoid</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Missing the evaluation part of the essay</li>
+                        <li>Describing a study without linking to the question</li>
+                        <li>Forgetting research method terminology</li>
+                        <li>Not comparing theories in depth</li>
+                        <li>Writing conclusions without judgement</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-y border-slate-200">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="subject-card p-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                    <div>
+                        <span class="subject-chip">Revision flow</span>
+                        <h2 class="text-3xl font-black text-slate-900 mt-4">A simple 3 stage plan</h2>
+                        <p class="text-slate-500 font-body mt-3">Balance AO1 knowledge, AO2 application, and AO3 evaluation.</p>
+                    </div>
+                    <a href="/toolkit/timetable.html" class="subject-pill"><i class="fa-solid fa-calendar-days"></i> Build a timetable</a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                        <h3 class="text-lg font-bold text-slate-900">1. Learn core studies</h3>
+                        <p class="text-sm text-slate-500 font-body mt-2">Create study cards with aims, procedures, and findings.</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                        <h3 class="text-lg font-bold text-slate-900">2. Apply and compare</h3>
+                        <p class="text-sm text-slate-500 font-body mt-2">Use real-life examples and compare theories.</p>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                        <h3 class="text-lg font-bold text-slate-900">3. Evaluate and reflect</h3>
+                        <p class="text-sm text-slate-500 font-body mt-2">Practise AO3 with balanced strengths and limits.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="practice" class="py-16 section-shell">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="subject-card p-8">
+                <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+                    <div>
+                        <span class="subject-chip">Quick practice</span>
+                        <h2 class="text-3xl font-black text-slate-900 mt-4">10 minute drills</h2>
+                        <p class="text-slate-500 font-body mt-3">Quick tasks to sharpen AO1 and AO3 skills.</p>
+                    </div>
+                    <a href="/toolkit/paperTracker.html" class="subject-pill"><i class="fa-solid fa-file-contract"></i> Track papers</a>
+                </div>
+                <ul class="mt-8 space-y-3 text-sm text-slate-600 font-body list-disc list-inside">
+                    <li>Write a 60 second summary of a key study.</li>
+                    <li>List two strengths and two limitations of an experiment.</li>
+                    <li>Apply a theory to a real-life scenario in four sentences.</li>
+                    <li>Explain a research method and when it is best used.</li>
+                    <li>Compare two theories using a short paragraph.</li>
+                    <li>Define a command word and give an example answer.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
+
+
+

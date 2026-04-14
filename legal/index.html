@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
+    
     <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyBase | Master Service Agreement</title>
     <link rel="icon" href="/assets/siteIcons/main.ico">
@@ -219,6 +229,7 @@
     <div class="fixed inset-x-0 top-0 h-72 pointer-events-none bg-gradient-to-b from-blue-100/50 via-transparent to-transparent z-0"></div>
 
     <header class="relative z-20 pt-32 pb-8">
+    
         <div class="max-w-7xl mx-auto px-6">
             <div class="hero-panel glass rounded-[2rem] p-8 md:p-10">
                 <div class="flex flex-col xl:flex-row justify-between gap-8 xl:items-end">
@@ -547,3 +558,5 @@
     </script>
 </body>
 </html>
+
+

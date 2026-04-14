@@ -9,7 +9,7 @@ function injectGlobalFooter() {
     const preFooters = [
         // Option A: Focus Room / Productivity
         `
-        <section class="py-24 bg-white border-t border-slate-200 relative overflow-hidden">
+        <section class="sb-prefooter sb-prefooter-light py-24 bg-white border-t border-slate-200 relative overflow-hidden">
             <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-100 rounded-full blur-[100px] opacity-60 pointer-events-none -mr-20 -mt-20"></div>
             <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
                 <div class="max-w-xl">
@@ -23,7 +23,7 @@ function injectGlobalFooter() {
         `,
         // Option B: Wellbeing / Mental Health
         `
-        <section class="py-24 bg-emerald-900 border-t border-emerald-800 relative overflow-hidden text-white">
+        <section class="sb-prefooter sb-prefooter-dark py-24 bg-emerald-900 border-t border-emerald-800 relative overflow-hidden text-white">
             <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none"></div>
             <div class="absolute top-0 right-0 p-32 bg-emerald-500/20 rounded-full blur-[100px] pointer-events-none"></div>
             <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
@@ -38,7 +38,7 @@ function injectGlobalFooter() {
         `,
         // Option C: Resource Upsell
         `
-        <section class="py-24 bg-slate-50 border-t border-slate-200 relative overflow-hidden">
+        <section class="sb-prefooter sb-prefooter-light py-24 bg-slate-50 border-t border-slate-200 relative overflow-hidden">
             <div class="absolute bottom-0 left-0 w-96 h-96 bg-purple-200 rounded-full blur-[100px] opacity-40 pointer-events-none -ml-20 -mb-20"></div>
             <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
                 <div class="max-w-xl">

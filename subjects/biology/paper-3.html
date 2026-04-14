@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    
+    <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase | Biology Paper 3</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="/assets/js/sessionManager.js" defer></script>
+    <script src="/assets/js/errorCheck.js" defer></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+    <script src="/assets/js/cookieConsent.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/subjects/subject-styles.css">
+
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/adminUi.js" defer></script>
+    <script src="/assets/js/services.js"></script>
+
+    <script>const PAGE_ID = "biology_paper_3";</script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#f4f7f9] text-slate-900 font-sans selection:bg-emerald-100 selection:text-emerald-900 overflow-x-hidden" style="--sb-accent: #16a34a; --sb-accent-strong: #15803d; --sb-accent-soft: rgba(22, 163, 74, 0.18); --sb-accent-ghost: rgba(22, 163, 74, 0.12);">
+
+
+    <header class="subject-hero pt-24 pb-16 border-b border-slate-200">
+    
+        <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-20"></div>
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <a href="/subjects/biology/index.html" class="subject-pill"><i class="fa-solid fa-arrow-left"></i> Back to Biology</a>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight text-slate-900 mt-6">Biology Paper 3</h1>
+            <p class="text-lg text-slate-500 font-body max-w-3xl mt-4">
+                Paper 3 tests practical skills and synoptic links. Focus on data handling, evaluation, and clear scientific communication.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                <div class="subject-card p-4">
+                    <h3 class="text-sm font-bold text-slate-900">Focus</h3>
+                    <p class="text-sm text-slate-500 font-body mt-2">Required practicals and data analysis.</p>
+                </div>
+                <div class="subject-card p-4">
+                    <h3 class="text-sm font-bold text-slate-900">Question style</h3>
+                    <p class="text-sm text-slate-500 font-body mt-2">Methods, evaluation, and synoptic links.</p>
+                </div>
+                <div class="subject-card p-4">
+                    <h3 class="text-sm font-bold text-slate-900">Top mark signal</h3>
+                    <p class="text-sm text-slate-500 font-body mt-2">Quantitative evaluation and precise conclusions.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-16 section-shell">
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <div class="subject-card p-6">
+                <span class="subject-chip">Checklist</span>
+                <h2 class="text-2xl font-black text-slate-900 mt-4">Paper 3 topic checklist</h2>
+                <ul class="mt-6 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                    <li>Required practical procedures and apparatus</li>
+                    <li>Variables, controls, and risk assessments</li>
+                    <li>Data processing, graphs, and statistics</li>
+                    <li>Uncertainty, accuracy, and precision</li>
+                    <li>Synoptic links across topics</li>
+                    <li>Evaluation and improvements</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-y border-slate-200">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Exam technique</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Use data values to justify every evaluation point</li>
+                        <li>Write clear method steps and identify controls</li>
+                        <li>State limitations and realistic improvements</li>
+                        <li>Explain sources of uncertainty</li>
+                        <li>Link practical outcomes to theory</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Common errors</h3>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Evaluation without reference to data</li>
+                        <li>Mixing accuracy and precision definitions</li>
+                        <li>Vague improvements like use better equipment</li>
+                        <li>Missing control variables in method design</li>
+                        <li>Ignoring units and significant figures</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 section-shell">
+        <div class="max-w-5xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">Practice set</h3>
+                    <ul class="mt-4 space-y-3 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Write a method for an osmosis practical and state controls.</li>
+                        <li>Evaluate a data table using two quantitative points.</li>
+                        <li>Explain how to improve reliability in a photosynthesis practical.</li>
+                        <li>Interpret a graph and comment on uncertainty.</li>
+                    </ul>
+                </div>
+                <div class="subject-card p-6">
+                    <h3 class="text-xl font-bold text-slate-900">7 day sprint plan</h3>
+                    <ol class="mt-4 space-y-2 text-sm text-slate-600 font-body list-decimal list-inside">
+                        <li>Day 1: Required practical summaries</li>
+                        <li>Day 2: Variables and control practice</li>
+                        <li>Day 3: Graphs and data processing</li>
+                        <li>Day 4: Uncertainty and precision</li>
+                        <li>Day 5: Evaluation question drills</li>
+                        <li>Day 6: Synoptic links between topics</li>
+                        <li>Day 7: Timed practical paper section</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
+
+
+

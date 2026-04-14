@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StudyBase | GCSE Specification</title>
     <link rel="icon" href="/assets/siteIcons/main.ico">
@@ -24,6 +34,7 @@
 <body class="bg-[#fafafa] text-slate-900 flex flex-col min-h-screen">
 
     <header class="relative pt-24 pb-12 lg:pt-32 lg:pb-20 overflow-hidden bg-white border-b border-slate-100 flex-none">
+    
         <div class="max-w-7xl mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center gap-12">
             <div class="w-full lg:w-1/2">
                 <div id="hero-badge" class="inline-flex items-center gap-3 px-4 py-2 rounded-full border mb-6 text-xs font-bold uppercase tracking-widest bg-slate-50 border-slate-200 text-slate-500">
@@ -137,3 +148,5 @@
     </script>
 </body>
 </html>
+
+

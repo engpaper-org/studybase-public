@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    (function () {
+      try {
+        const isDark = String(localStorage.getItem("darkMode") || "").toLowerCase() === "true";
+        if (isDark) document.documentElement.classList.add("dark");
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/css/dark-mode.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyBase - Flags</title>
+  <script src="/assets/js/iframeCheck.js"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
+    :root { color-scheme: light; }
+
+    .bg-grid-slate-100 {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23f1f5f9'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    .switch {
+      width: 52px;
+      height: 32px;
+      border-radius: 999px;
+      background: rgb(226 232 240);
+      position: relative;
+      transition: background .2s ease;
+      display: inline-flex;
+      align-items: center;
+      padding: 4px;
+      border: 1px solid rgb(226 232 240);
+      flex-shrink: 0;
+    }
+
+    .switch[data-on="true"] {
+      background: rgb(37 99 235);
+      border-color: rgb(37 99 235);
+    }
+
+    .switch > span {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: white;
+      transition: transform .2s ease;
+      box-shadow: 0 10px 20px rgba(2,6,23,.12);
+      transform: translateX(0px);
+    }
+
+    .switch[data-on="true"] > span {
+      transform: translateX(20px);
+    }
+  </style>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
+          },
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="min-h-screen bg-slate-50 text-slate-900 font-sans">
+  <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0.5))] -z-10"></div>
+
+  <header class="max-w-5xl mx-auto px-6 pt-10">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-slate-600 text-xs font-bold uppercase tracking-widest shadow-sm">
+          <i class="fa-solid fa-flag"></i>
+          Flags
+        </div>
+
+        <h1 class="mt-4 text-3xl md:text-4xl font-black tracking-tight">
+          Beta options
+        </h1>
+
+        <p class="mt-2 text-slate-500 font-body">
+          Experimental settings for this device. Enabling these features may impact your experience on studybase.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6 pb-14 pt-8">
+    <section class="glass-panel rounded-[2rem] shadow-xl shadow-slate-200/60 overflow-hidden">
+      <div class="px-8 py-6 border-b border-slate-200 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg border border-indigo-100">
+            <i class="fa-solid fa-flask"></i>
+          </div>
+          <div>
+            <p class="font-extrabold leading-tight">Appearance flags</p>
+            <p class="text-xs text-slate-500 font-body">Applies across StudyBase</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-8 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+          <div>
+            <p class="font-extrabold">Dark mode</p>
+            <p class="text-sm text-slate-500 font-body mt-1">
+              Use the dark theme across StudyBase. Default: light mode.
+            </p>
+            <p id="darkModeStatus" class="mt-2 text-xs font-bold uppercase tracking-widest text-slate-500">
+              Off (default)
+            </p>
+          </div>
+
+          <button
+            type="button"
+            id="toggleDarkMode"
+            class="switch"
+            aria-label="Toggle dark mode"
+            role="switch"
+            aria-checked="false"
+            data-on="false">
+            <span></span>
+          </button>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-xs text-slate-500 font-body">
+          Flags are experimental and may change without notice. Enabling this flag may lead to unexpected behaviour. You may need to reload the page before this change will take effect.
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/myaccount/js/sideBar.js"></script>
+  <script src="/myaccount/js/checkLoggedIn.js"></script>
+
+  <script>
+    if (!window.AccountAuth?.requireAuth?.()) {
+      // requireAuth already redirected
+    }
+
+    const toggle = document.getElementById("toggleDarkMode");
+    const status = document.getElementById("darkModeStatus");
+
+    function readDark() {
+      return String(localStorage.getItem("darkMode") || "").toLowerCase() === "true";
+    }
+
+    function setSwitch(on) {
+      if (!toggle) return;
+      toggle.dataset.on = on ? "true" : "false";
+      toggle.setAttribute("aria-checked", on ? "true" : "false");
+    }
+
+    function applyDark(on) {
+      if (on) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    }
+
+    function updateStatus(on) {
+      if (!status) return;
+      status.textContent = on ? "On" : "Off (default)";
+    }
+
+    function updateUI(on) {
+      setSwitch(on);
+      applyDark(on);
+      updateStatus(on);
+    }
+
+    updateUI(readDark());
+
+    toggle?.addEventListener("click", () => {
+      const next = !(toggle.dataset.on === "true");
+      localStorage.setItem("darkMode", next ? "true" : "false");
+      updateUI(next);
+    });
+
+    toggle?.addEventListener("keydown", (e) => {
+      if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+        toggle.click();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,5 +1,13 @@
 (function () {
     function initNavbar() {
+        const faHref = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css";
+        if (!document.querySelector('link[rel="stylesheet"][href*="font-awesome"]')) {
+            const faLink = document.createElement("link");
+            faLink.rel = "stylesheet";
+            faLink.href = faHref;
+            document.head.appendChild(faLink);
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
         const categoryParam = urlParams.get("category");
         const isSupport =
@@ -9,16 +17,31 @@
         const navStyles = `
     <style id="sb-navbar-enhanced-styles">
         .sb-nav-wrap {
-            position: relative;
-            z-index: 60;
-            width: 100%;
-            border-bottom: 1px solid rgba(226,232,240,0.75);
+            position: relative !important;
+            z-index: 90 !important;
+            width: 100% !important;
+            display: block;
+            isolation: isolate;
+            border-bottom: 1px solid rgba(226,232,240,0.75) !important;
             background:
                 radial-gradient(circle at top center, rgba(99,102,241,0.08), transparent 42%),
-                linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92));
+                linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92)) !important;
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
             box-shadow: 0 8px 24px rgba(15,23,42,0.04);
+        }
+
+        #sb-nav-shell {
+            position: relative;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
+        }
+
+        #sb-nav-shell,
+        #sb-nav-shell * {
+            box-sizing: border-box;
         }
 
         .sb-nav-inner {
@@ -57,6 +80,72 @@
             justify-content: space-between;
             gap: 1rem;
             padding: 0.85rem 0;
+        }
+
+        .sb-nav-desktop {
+            display: none !important;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sb-nav-mobile-toggle {
+            display: flex !important;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sb-mobile-menu-inner {
+            padding: 0.75rem 1rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sb-mobile-card h4 {
+            font-size: 0.875rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .sb-mobile-card p {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-top: 0.25rem;
+            line-height: 1.4;
+        }
+
+        .sb-mobile-card .space-y-2 > * + * {
+            margin-top: 0.5rem;
+        }
+
+        .sb-mobile-card a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+            border-radius: 1rem;
+            padding: 0.85rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #334155;
+            transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+        }
+
+        .sb-mobile-card a:hover {
+            background: rgba(248,250,252,0.95);
+            color: #0f172a;
+            transform: translateX(2px);
+        }
+
+        @media (min-width: 768px) {
+            .sb-nav-desktop {
+                display: flex !important;
+            }
+
+            .sb-nav-mobile-toggle {
+                display: none !important;
+            }
         }
 
         .sb-brand {
@@ -388,8 +477,8 @@
         }
 
         const navHTML = `
-        <header class="sb-nav-wrap">
-            <nav id="sb-nav-shell" class="relative w-full font-sans">
+        <div class="sb-nav-wrap" role="banner">
+            <div id="sb-nav-shell" class="sb-nav-shell relative w-full font-sans" role="navigation">
                 <div class="sb-nav-inner">
                     <div class="sb-nav-panel">
                         <div class="sb-nav-content">
@@ -404,7 +493,7 @@
                                 ${brandNameHTML}
                             </a>
 
-                            <div class="hidden md:flex items-center gap-4">
+                            <div class="sb-nav-desktop hidden md:flex items-center gap-4">
                                 <div class="sb-nav-links">
                                     <button
                                         type="button"
@@ -437,7 +526,7 @@
                                 <div id="loginBtnContainer" class="flex items-center gap-2"></div>
                             </div>
 
-                            <div class="md:hidden flex items-center gap-2">
+                            <div class="sb-nav-mobile-toggle md:hidden flex items-center gap-2">
                                 <button id="mobile-menu-btn" class="sb-mobile-icon-btn" aria-label="Open menu">
                                     <i class="fa-solid fa-bars text-lg"></i>
                                 </button>
@@ -447,7 +536,7 @@
                 </div>
 
                 <div id="mobile-menu" class="hidden md:hidden sb-mobile-menu-shell">
-                    <div class="sb-nav-inner px-4 pb-5 pt-3 space-y-4">
+                    <div class="sb-nav-inner sb-mobile-menu-inner px-4 pb-5 pt-3 space-y-4">
                         <div class="sb-mobile-card">
                             <div class="mb-3">
                                 <h4 class="text-sm font-black text-slate-900">Student Toolbox</h4>
@@ -522,8 +611,8 @@
                         <div id="mobileLoginBtnContainer" class="pt-1"></div>
                     </div>
                 </div>
-            </nav>
-        </header>
+            </div>
+        </div>
 
         <div id="sb-dropdown-student-tools" data-dropdown-menu="student-tools" class="sb-floating-menu hidden">
             <div class="sb-dropdown-card w-[330px]">

@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enterprise Word Logic</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -47,6 +57,7 @@
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center py-10 px-4 sm:px-6 antialiased">
 
     <header class="mb-10 text-center">
+    
         <h1 class="text-3xl font-bold tracking-tight text-white mb-2">Word Logic App</h1>
         <p class="text-slate-400 text-sm font-medium">Secure String Decryption Training</p>
     </header>
@@ -521,3 +532,5 @@
     </script>
 </body>
 </html>
+
+

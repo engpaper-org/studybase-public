@@ -1,7 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Focus Room | GCSEHelp</title>
     <link rel="icon" href="https://static-assets.papersweb-assets.site/siteIcons/gcsehelp.ico">
@@ -50,6 +60,7 @@
 <body class="bg-white text-slate-800 antialiased overflow-x-hidden">
 
     <header class="pt-20 pb-12 text-center">
+    
         <div class="max-w-7xl mx-auto px-4">
             <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-4 tracking-tight">Focus Room</h1>
             <p class="text-slate-500">25 minutes of work. 5 minutes of rest. Maximum retention.</p>
@@ -194,3 +205,5 @@
     </script>
 </body>
 </html>
+
+

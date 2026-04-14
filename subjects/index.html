@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    
+    <meta charset="UTF-8">
+    <script>
+        (function () {
+            try {
+                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
+                if (isDark) document.documentElement.classList.add('dark');
+            } catch (e) {}
+        })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/dark-mode.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase | Subject Specific Resources</title>
+    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <script src="/assets/js/sessionManager.js" defer></script>
+    <script src="/assets/js/errorCheck.js" defer></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
+
+        gtag('consent', 'default', {
+            'ad_storage': hasConsented ? 'granted' : 'denied',
+            'ad_user_data': hasConsented ? 'granted' : 'denied',
+            'ad_personalization': hasConsented ? 'granted' : 'denied',
+            'analytics_storage': hasConsented ? 'granted' : 'denied'
+        });
+
+        gtag('js', new Date());
+        gtag('config', 'G-N7LHC0S1T1');
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
+    <script src="/assets/js/cookieConsent.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/subjects/subject-styles.css">
+
+    <script src="/assets/js/navbar.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/adminUi.js" defer></script>
+    <script src="/assets/js/services.js"></script>
+
+    <script>const PAGE_ID = "subjects_index";</script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#f4f7f9] text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900 overflow-x-hidden" style="--sb-accent: #4f46e5; --sb-accent-strong: #4338ca; --sb-accent-soft: rgba(79, 70, 229, 0.18); --sb-accent-ghost: rgba(79, 70, 229, 0.12);">
+
+
+    <header class="subject-hero pt-24 pb-20 border-b border-slate-200">
+    
+        <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-20"></div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl -z-10 pointer-events-none">
+            <div class="absolute top-0 left-10 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+            <div class="absolute top-0 right-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-6 relative z-10 text-center">
+            <span class="subject-chip">Subject Hub</span>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight text-slate-900 mt-6">
+                Subject Specific <span class="text-gradient">A-Level Resources</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-500 font-body max-w-3xl mx-auto mt-6">
+                Pick a subject and follow a clean, structured revision path. Each subject includes paper guides, topic checklists,
+                exam technique, and short practice prompts. Content is spec-agnostic so it works across AQA, Edexcel, OCR, WJEC, and CCEA.
+            </p>
+            <div class="flex flex-wrap items-center justify-center gap-4 mt-8">
+                <a href="/toolkit/index.html" class="subject-pill"><i class="fa-solid fa-toolbox"></i> Revision Toolkit</a>
+                <a href="/resource_database/index.html#primary-access" class="subject-pill"><i class="fa-solid fa-database"></i> Resource Database</a>
+                <a href="#full-index" class="subject-pill"><i class="fa-solid fa-list"></i> Full Index</a>
+            </div>
+            <p class="text-xs text-slate-400 font-semibold uppercase tracking-[0.32em] mt-8">Always cross-check your exact spec</p>
+        </div>
+    </header>
+
+    <section class="py-16 section-shell">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="subject-card p-6">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-compass"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Start with the overview</h3>
+                    <p class="text-slate-500 font-body text-sm">Each subject overview gives you the paper map, core topics, and the revision flow so you know where to begin.</p>
+                </div>
+                <div class="subject-card p-6">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Drill paper guides</h3>
+                    <p class="text-slate-500 font-body text-sm">Each paper page includes checklists, exam technique, and a focused practice set for the highest return topics.</p>
+                </div>
+                <div class="subject-card p-6">
+                    <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Track progress</h3>
+                    <p class="text-slate-500 font-body text-sm">Pair these resources with the StudyBase toolkit to plan revision, track papers, and stay consistent.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-y border-slate-200">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+                <div>
+                    <span class="subject-chip">Popular A-Levels</span>
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 mt-4">Choose a subject and dive in</h2>
+                    <p class="text-slate-500 font-body mt-3">Each card includes quick links to its paper sections so you can jump straight to the content you need.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div class="subject-card p-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-bold text-slate-900">Mathematics</h3>
+                        <span class="quick-tag">3 sections</span>
+                    </div>
+                    <p class="text-slate-500 text-sm font-body mt-2">Pure, statistics, and mechanics with exam-ready method focus.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Algebra, calculus, trig, and proof</li>
+                        <li>Probability, distributions, hypothesis tests</li>
+                        <li>Kinematics, forces, energy, momentum</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2 mt-5">
+                        <a class="subject-pill" href="/subjects/maths/index.html">Overview</a>
+                        <a class="subject-pill" href="/subjects/maths/pure.html">Pure</a>
+                        <a class="subject-pill" href="/subjects/maths/statistics.html">Statistics</a>
+                        <a class="subject-pill" href="/subjects/maths/mechanics.html">Mechanics</a>
+                    </div>
+                </div>
+
+                <div class="subject-card p-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-bold text-slate-900">Biology</h3>
+                        <span class="quick-tag">3 papers</span>
+                    </div>
+                    <p class="text-slate-500 text-sm font-body mt-2">Core biology, data interpretation, and required practical skills.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Biological molecules and cell processes</li>
+                        <li>Systems, homeostasis, inheritance, ecology</li>
+                        <li>Practical skills and synoptic links</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2 mt-5">
+                        <a class="subject-pill" href="/subjects/biology/index.html">Overview</a>
+                        <a class="subject-pill" href="/subjects/biology/paper-1.html">Paper 1</a>
+                        <a class="subject-pill" href="/subjects/biology/paper-2.html">Paper 2</a>
+                        <a class="subject-pill" href="/subjects/biology/paper-3.html">Paper 3</a>
+                    </div>
+                </div>
+
+                <div class="subject-card p-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-bold text-slate-900">Chemistry</h3>
+                        <span class="quick-tag">3 papers</span>
+                    </div>
+                    <p class="text-slate-500 text-sm font-body mt-2">Physical, inorganic, and organic chemistry with core calculations.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Energetics, kinetics, equilibrium, redox</li>
+                        <li>Organic synthesis, mechanisms, spectroscopy</li>
+                        <li>Practical techniques and data evaluation</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2 mt-5">
+                        <a class="subject-pill" href="/subjects/chemistry/index.html">Overview</a>
+                        <a class="subject-pill" href="/subjects/chemistry/paper-1.html">Paper 1</a>
+                        <a class="subject-pill" href="/subjects/chemistry/paper-2.html">Paper 2</a>
+                        <a class="subject-pill" href="/subjects/chemistry/paper-3.html">Paper 3</a>
+                    </div>
+                </div>
+
+                <div class="subject-card p-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-bold text-slate-900">Physics</h3>
+                        <span class="quick-tag">3 papers</span>
+                    </div>
+                    <p class="text-slate-500 text-sm font-body mt-2">Mechanics, waves, electricity, and fields with strong equation work.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Forces, energy, materials, and waves</li>
+                        <li>Electricity, fields, particles, nuclear</li>
+                        <li>Practical skills and optional topics</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2 mt-5">
+                        <a class="subject-pill" href="/subjects/physics/index.html">Overview</a>
+                        <a class="subject-pill" href="/subjects/physics/paper-1.html">Paper 1</a>
+                        <a class="subject-pill" href="/subjects/physics/paper-2.html">Paper 2</a>
+                        <a class="subject-pill" href="/subjects/physics/paper-3.html">Paper 3</a>
+                    </div>
+                </div>
+
+                <div class="subject-card p-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-bold text-slate-900">Psychology</h3>
+                        <span class="quick-tag">3 papers</span>
+                    </div>
+                    <p class="text-slate-500 text-sm font-body mt-2">Research methods, classic studies, and option topics with essay focus.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Social influence, memory, attachment</li>
+                        <li>Research design, analysis, evaluation</li>
+                        <li>Options like relationships or schizophrenia</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2 mt-5">
+                        <a class="subject-pill" href="/subjects/psychology/index.html">Overview</a>
+                        <a class="subject-pill" href="/subjects/psychology/paper-1.html">Paper 1</a>
+                        <a class="subject-pill" href="/subjects/psychology/paper-2.html">Paper 2</a>
+                        <a class="subject-pill" href="/subjects/psychology/paper-3.html">Paper 3</a>
+                    </div>
+                </div>
+
+                <div class="subject-card p-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-bold text-slate-900">History</h3>
+                        <span class="quick-tag">2 papers + coursework</span>
+                    </div>
+                    <p class="text-slate-500 text-sm font-body mt-2">Source skills, interpretations, and long essays built on clear arguments.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Breadth and depth studies</li>
+                        <li>Source evaluation and judgement</li>
+                        <li>Independent coursework investigation</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2 mt-5">
+                        <a class="subject-pill" href="/subjects/history/index.html">Overview</a>
+                        <a class="subject-pill" href="/subjects/history/paper-1.html">Paper 1</a>
+                        <a class="subject-pill" href="/subjects/history/paper-2.html">Paper 2</a>
+                        <a class="subject-pill" href="/subjects/history/coursework.html">Coursework</a>
+                    </div>
+                </div>
+
+                <div class="subject-card p-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-bold text-slate-900">Economics</h3>
+                        <span class="quick-tag">3 papers</span>
+                    </div>
+                    <p class="text-slate-500 text-sm font-body mt-2">Micro, macro, and synoptic data response with real-world application.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Markets, elasticity, and market failure</li>
+                        <li>Macro objectives, policy, global trade</li>
+                        <li>Synoptic application and evaluation</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2 mt-5">
+                        <a class="subject-pill" href="/subjects/economics/index.html">Overview</a>
+                        <a class="subject-pill" href="/subjects/economics/paper-1.html">Paper 1</a>
+                        <a class="subject-pill" href="/subjects/economics/paper-2.html">Paper 2</a>
+                        <a class="subject-pill" href="/subjects/economics/paper-3.html">Paper 3</a>
+                    </div>
+                </div>
+
+                <div class="subject-card p-6">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-xl font-bold text-slate-900">English Literature</h3>
+                        <span class="quick-tag">2 papers</span>
+                    </div>
+                    <p class="text-slate-500 text-sm font-body mt-2">Close reading, critics, and essay craft across drama, prose, and poetry.</p>
+                    <ul class="mt-4 space-y-2 text-sm text-slate-600 font-body list-disc list-inside">
+                        <li>Shakespeare or drama text focus</li>
+                        <li>Poetry comparison and unseen analysis</li>
+                        <li>Prose study with critical debate</li>
+                    </ul>
+                    <div class="flex flex-wrap gap-2 mt-5">
+                        <a class="subject-pill" href="/subjects/english-literature/index.html">Overview</a>
+                        <a class="subject-pill" href="/subjects/english-literature/paper-1.html">Paper 1</a>
+                        <a class="subject-pill" href="/subjects/english-literature/paper-2.html">Paper 2</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 section-shell" id="full-index">
+        <div class="max-w-6xl mx-auto px-6 relative z-10">
+            <div class="text-center mb-10">
+                <span class="subject-chip">Full Index</span>
+                <h2 class="text-3xl md:text-4xl font-black text-slate-900 mt-4">Every subject page in one place</h2>
+                <p class="text-slate-500 font-body mt-3">Bookmark this section so you can jump straight to any paper or coursework guide.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Mathematics</h3>
+                    <ul class="mt-4 space-y-2 text-sm font-body">
+                        <li><a class="subject-link" href="/subjects/maths/index.html">Overview</a></li>
+                        <li><a class="subject-link" href="/subjects/maths/pure.html">Pure Mathematics</a></li>
+                        <li><a class="subject-link" href="/subjects/maths/statistics.html">Statistics</a></li>
+                        <li><a class="subject-link" href="/subjects/maths/mechanics.html">Mechanics</a></li>
+                    </ul>
+                </div>
+
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Biology</h3>
+                    <ul class="mt-4 space-y-2 text-sm font-body">
+                        <li><a class="subject-link" href="/subjects/biology/index.html">Overview</a></li>
+                        <li><a class="subject-link" href="/subjects/biology/paper-1.html">Paper 1</a></li>
+                        <li><a class="subject-link" href="/subjects/biology/paper-2.html">Paper 2</a></li>
+                        <li><a class="subject-link" href="/subjects/biology/paper-3.html">Paper 3</a></li>
+                    </ul>
+                </div>
+
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Chemistry</h3>
+                    <ul class="mt-4 space-y-2 text-sm font-body">
+                        <li><a class="subject-link" href="/subjects/chemistry/index.html">Overview</a></li>
+                        <li><a class="subject-link" href="/subjects/chemistry/paper-1.html">Paper 1</a></li>
+                        <li><a class="subject-link" href="/subjects/chemistry/paper-2.html">Paper 2</a></li>
+                        <li><a class="subject-link" href="/subjects/chemistry/paper-3.html">Paper 3</a></li>
+                    </ul>
+                </div>
+
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Physics</h3>
+                    <ul class="mt-4 space-y-2 text-sm font-body">
+                        <li><a class="subject-link" href="/subjects/physics/index.html">Overview</a></li>
+                        <li><a class="subject-link" href="/subjects/physics/paper-1.html">Paper 1</a></li>
+                        <li><a class="subject-link" href="/subjects/physics/paper-2.html">Paper 2</a></li>
+                        <li><a class="subject-link" href="/subjects/physics/paper-3.html">Paper 3</a></li>
+                    </ul>
+                </div>
+
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Psychology</h3>
+                    <ul class="mt-4 space-y-2 text-sm font-body">
+                        <li><a class="subject-link" href="/subjects/psychology/index.html">Overview</a></li>
+                        <li><a class="subject-link" href="/subjects/psychology/paper-1.html">Paper 1</a></li>
+                        <li><a class="subject-link" href="/subjects/psychology/paper-2.html">Paper 2</a></li>
+                        <li><a class="subject-link" href="/subjects/psychology/paper-3.html">Paper 3</a></li>
+                    </ul>
+                </div>
+
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">History</h3>
+                    <ul class="mt-4 space-y-2 text-sm font-body">
+                        <li><a class="subject-link" href="/subjects/history/index.html">Overview</a></li>
+                        <li><a class="subject-link" href="/subjects/history/paper-1.html">Paper 1</a></li>
+                        <li><a class="subject-link" href="/subjects/history/paper-2.html">Paper 2</a></li>
+                        <li><a class="subject-link" href="/subjects/history/coursework.html">Coursework</a></li>
+                    </ul>
+                </div>
+
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">Economics</h3>
+                    <ul class="mt-4 space-y-2 text-sm font-body">
+                        <li><a class="subject-link" href="/subjects/economics/index.html">Overview</a></li>
+                        <li><a class="subject-link" href="/subjects/economics/paper-1.html">Paper 1</a></li>
+                        <li><a class="subject-link" href="/subjects/economics/paper-2.html">Paper 2</a></li>
+                        <li><a class="subject-link" href="/subjects/economics/paper-3.html">Paper 3</a></li>
+                    </ul>
+                </div>
+
+                <div class="subject-card p-6">
+                    <h3 class="text-lg font-bold text-slate-900">English Literature</h3>
+                    <ul class="mt-4 space-y-2 text-sm font-body">
+                        <li><a class="subject-link" href="/subjects/english-literature/index.html">Overview</a></li>
+                        <li><a class="subject-link" href="/subjects/english-literature/paper-1.html">Paper 1</a></li>
+                        <li><a class="subject-link" href="/subjects/english-literature/paper-2.html">Paper 2</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-t border-slate-200">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div>
+                    <span class="subject-chip">Exam Skills</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-4">Boost your exam technique</h2>
+                    <p class="text-slate-500 font-body mt-3">Pair subject content with high-impact study skills and command word support.</p>
+                </div>
+                <div class="flex flex-wrap gap-3">
+                    <a href="/study_pages/commandWords.html" class="subject-pill"><i class="fa-solid fa-pen-nib"></i> Command Words</a>
+                    <a href="/study_pages/revisionTechniques.html" class="subject-pill"><i class="fa-solid fa-brain"></i> Revision Methods</a>
+                    <a href="/study_pages/aoGuide.html" class="subject-pill"><i class="fa-solid fa-bullseye"></i> Assessment Objectives</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+</body>
+</html>
+
+
+
