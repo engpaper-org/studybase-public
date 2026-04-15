@@ -1,33 +1,212 @@
 [
   {
-    "folderId": "001",
+    "folderId": "100",
+    "name": "Mathematics",
+    "iconurl": "/assets/app-icons/folder-maths.png",
+    "folder": "000"
+  },
+  {
+    "folderId": "101",
     "name": "Past Papers",
-    "iconurl": "/assets/app-icons/folder-papers.jpg",
-    "folder": "000"
+    "iconurl": "/assets/app-icons/folder-papers.png",
+    "folder": "100"
   },
   {
-    "folderId": "002",
+    "folderId": "102",
     "name": "Specifications",
-    "iconurl": "/assets/app-icons/folder-spec.jpg",
-    "folder": "000"
+    "iconurl": "/assets/app-icons/folder-spec.png",
+    "folder": "100"
   },
   {
-    "folderId": "003",
+    "folderId": "103",
+    "name": "Revision Sites",
+    "iconurl": "/assets/app-icons/folder-spec.png",
+    "folder": "100"
+  },
+  {
+    "folderId": "104",
     "name": "Revision Videos",
-    "iconurl": "/assets/app-icons/folder-videos.jpg",
+    "iconurl": "/assets/app-icons/folder-videos.png",
+    "folder": "100"
+  },
+  {
+    "folderId": "110",
+    "name": "Further Mathematics",
+    "iconurl": "/assets/app-icons/folder-maths.png",
     "folder": "000"
   },
-
   {
-    "folderId": "010",
-    "name": "Maths (Past Papers)",
-    "iconurl": "/assets/app-icons/folder-maths.jpg",
-    "folder": "001"
+    "folderId": "111",
+    "name": "Past Papers",
+    "iconurl": "/assets/app-icons/folder-papers.png",
+    "folder": "110"
   },
   {
-    "folderId": "011",
-    "name": "Physics (Past Papers)",
-    "iconurl": "/assets/app-icons/folder-physics.jpg",
-    "folder": "001"
+    "folderId": "112",
+    "name": "Specifications",
+    "iconurl": "/assets/app-icons/folder-spec.png",
+    "folder": "110"
+  },
+  {
+    "folderId": "113",
+    "name": "Revision Sites",
+    "iconurl": "/assets/app-icons/folder-spec.png",
+    "folder": "110"
+  },
+  {
+    "folderId": "114",
+    "name": "Revision Videos",
+    "iconurl": "/assets/app-icons/folder-videos.png",
+    "folder": "110"
+  },
+  {
+    "folderId": "120",
+    "name": "Physics",
+    "iconurl": "/assets/app-icons/folder-physics.png",
+    "folder": "000"
+  },
+  {
+    "folderId": "121",
+    "name": "Past Papers",
+    "iconurl": "/assets/app-icons/folder-papers.png",
+    "folder": "120"
+  },
+  {
+    "folderId": "122",
+    "name": "Specifications",
+    "iconurl": "/assets/app-icons/folder-spec.png",
+    "folder": "120"
+  },
+  {
+    "folderId": "123",
+    "name": "Revision Sites",
+    "iconurl": "/assets/app-icons/folder-spec.png",
+    "folder": "120"
+  },
+  {
+    "folderId": "124",
+    "name": "Revision Videos",
+    "iconurl": "/assets/app-icons/folder-videos.png",
+    "folder": "120"
+  },
+  {
+    "folderId": "130",
+    "name": "Chemistry",
+    "iconurl": "/assets/app-icons/folder-chem.png",
+    "folder": "000"
+  },
+  {
+    "folderId": "131",
+    "name": "Past Papers",
+    "iconurl": "/assets/app-icons/folder-papers.png",
+    "folder": "130"
+  },
+  {
+    "folderId": "132",
+    "name": "Specifications",
+    "iconurl": "/assets/app-icons/folder-spec.png",
+    "folder": "130"
+  },
+  {
+    "folderId": "133",
+    "name": "Revision Sites",
+    "iconurl": "/assets/app-icons/folder-spec.png",
+    "folder": "130"
+  },
+  {
+    "folderId": "134",
+    "name": "Revision Videos",
+    "iconurl": "/assets/app-icons/folder-videos.png",
+    "folder": "130"
+  },
+  {
+    "folderId": "140",
+    "name": "Biology",
+    "iconurl": "/assets/app-icons/folder-biology.png",
+    "folder": "000"
+  },
+  {
+    "folderId": "141",
+    "name": "Past Papers",
+    "iconurl": "/assets/app-icons/folder-papers.png",
+    "folder": "140"
+  },
+  {
+    "folderId": "142",
+    "name": "Specifications",
+    "iconurl": "/assets/app-icons/folder-spec.png",
+    "folder": "140"
+  },
+  {
+    "folderId": "143",
+    "name": "Revision Sites",
+    "iconurl": "/assets/app-icons/folder-spec.png",
+    "folder": "140"
+  },
+  {
+    "folderId": "144",
+    "name": "Revision Videos",
+    "iconurl": "/assets/app-icons/folder-videos.png",
+    "folder": "140"
+  },
+  {
+    "folderId": "150",
+    "name": "Computer Science",
+    "iconurl": "/assets/app-icons/folder-cs.png",
+    "folder": "000"
+  },
+  {
+    "folderId": "151",
+    "name": "Past Papers",
+    "iconurl": "/assets/app-icons/folder-papers.png",
+    "folder": "150"
+  },
+  {
+    "folderId": "152",
+    "name": "Specifications",
+    "iconurl": "/assets/app-icons/folder-spec.png",
+    "folder": "150"
+  },
+  {
+    "folderId": "153",
+    "name": "Revision Sites",
+    "iconurl": "/assets/app-icons/folder-spec.png",
+    "folder": "150"
+  },
+  {
+    "folderId": "154",
+    "name": "Revision Videos",
+    "iconurl": "/assets/app-icons/folder-videos.png",
+    "folder": "150"
+  },
+  {
+    "folderId": "160",
+    "name": "Economics",
+    "iconurl": "/assets/app-icons/folder-econ.png",
+    "folder": "000"
+  },
+  {
+    "folderId": "161",
+    "name": "Past Papers",
+    "iconurl": "/assets/app-icons/folder-papers.png",
+    "folder": "160"
+  },
+  {
+    "folderId": "162",
+    "name": "Specifications",
+    "iconurl": "/assets/app-icons/folder-spec.png",
+    "folder": "160"
+  },
+  {
+    "folderId": "163",
+    "name": "Revision Sites",
+    "iconurl": "/assets/app-icons/folder-spec.png",
+    "folder": "160"
+  },
+  {
+    "folderId": "164",
+    "name": "Revision Videos",
+    "iconurl": "/assets/app-icons/folder-videos.png",
+    "folder": "160"
   }
 ]

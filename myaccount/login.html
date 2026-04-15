@@ -274,7 +274,7 @@
       </div>
       <div class="w-full md:w-1/2 lg:w-7/12 bg-slate-200 relative min-h-[500px] md:min-h-0">
         <div class="absolute inset-0 bg-slate-100 flex items-center justify-center z-0"><span class="text-slate-400 text-sm animate-pulse">Loading Google Form...</span></div>
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdhoOrL1hY9wwMVmI_9Kh28Q2i69L1sQGW1Kp66iOjE0ueg1g/viewform?usp=header" class="w-full h-full relative z-10 border-0" allowtransparency="true" title="StudyBase device verification form"></iframe>
+        <iframe id="verificationFormFrame" src="about:blank" class="w-full h-full relative z-10 border-0 bg-white" allowtransparency="true" title="StudyBase device verification form"></iframe>
       </div>
     </div>
 
@@ -491,6 +491,7 @@
 
   function resetToLogin() {
     stopVerifyPolling();
+    setVerificationFormUrl("");
     pendingQuickLoginDecodedDevice = "";
     clearQuickLoginInputs();
     [
@@ -948,6 +949,12 @@
     }
   }
 
+  function setVerificationFormUrl(formUrl) {
+    const frame = document.getElementById("verificationFormFrame");
+    if (!frame) return;
+    frame.src = (typeof formUrl === "string" && formUrl.trim()) ? formUrl.trim() : "about:blank";
+  }
+
   function startVerificationPolling() {
     stopVerifyPolling();
     showSection("section-loading");
@@ -1012,7 +1019,11 @@
     setTimeout(() => { btn.innerHTML = original; }, 1500);
   };
   document.getElementById("copyCodeBtn").onclick = () => document.getElementById("deviceCodeBox").click();
-  document.getElementById("backToLoginBtn").onclick = () => { showSection("section-login"); setStepper(1); };
+  document.getElementById("backToLoginBtn").onclick = () => {
+    setVerificationFormUrl("");
+    showSection("section-login");
+    setStepper(1);
+  };
   document.getElementById("cancelVerifyBtn").onclick = () => { stopVerifyPolling(); showSection("section-verify"); setStepper(2); };
   document.getElementById("agreeCancel").onclick = () => document.getElementById("modal-agree").classList.add("hidden");
   document.getElementById("agreeContinue").onclick = () => {
@@ -1133,6 +1144,12 @@
     return;
   }
 
+  if (typeof result.formUrl !== "string" || !result.formUrl.trim()) {
+    resetTurnstile("login");
+    return showError("Login succeeded, but no verification form URL was returned.");
+  }
+
+  setVerificationFormUrl(result.formUrl);
   localStorage.setItem("gh_username", hashedUsername);
   localStorage.setItem("gh_password", hashedPassword);
   setLoginLoading(false);
