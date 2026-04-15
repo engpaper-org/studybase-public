@@ -37,6 +37,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
   <script src="/assets/js/cookieConsent.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
   <style>
     body { font-family: 'Inter', sans-serif; }
     .bg-mesh {
@@ -143,6 +144,12 @@
             <button id="togglePassword" type="button" class="text-xs font-bold text-slate-500 hover:text-slate-800 transition-colors">Show</button>
           </div>
           <input id="inputPassword" type="password" autocomplete="current-password" placeholder="••••••••" class="w-full px-5 py-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-slate-900 placeholder-slate-400 focus:bg-white focus:ring-4 focus:ring-blue-500/15 focus:border-blue-500 transition-all duration-200">
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
+          <p class="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">Confirm you're human</p>
+          <div id="loginTurnstile" class="flex justify-center min-h-[65px]"></div>
+          <p id="loginTurnstileError" class="hidden mt-3 text-xs font-semibold text-red-600 text-center">Please complete the security check.</p>
         </div>
 
         <button id="loginButton" type="button" class="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-extrabold py-4 rounded-2xl shadow-lg shadow-blue-600/25 transform transition hover:-translate-y-0.5 active:translate-y-0 focus:ring-4 focus:ring-blue-500/30 disabled:opacity-60 disabled:cursor-not-allowed">
@@ -360,6 +367,11 @@
           <input id="adminPhrase" type="password" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-slate-500 focus:border-slate-500 text-sm transition-all">
         </div>
       </div>
+      <div class="mb-5 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4">
+        <p class="text-[11px] font-extrabold text-slate-500 mb-3 uppercase tracking-wide text-center">Confirm you're human</p>
+        <div id="adminTurnstile" class="flex justify-center min-h-[65px]"></div>
+        <p id="adminTurnstileError" class="hidden mt-3 text-xs text-red-600 text-center font-bold">Please complete the security check.</p>
+      </div>
       <p id="adminError" class="text-xs text-red-600 mb-4 hidden bg-red-50 p-2 rounded-xl text-center border border-red-100 font-extrabold">Override failed. Wait 5s.</p>
       <div class="flex justify-end gap-3 pt-2 border-t border-slate-100">
         <button id="adminCancel" class="px-4 py-2 text-sm rounded-xl bg-white border border-slate-200 hover:bg-slate-50 font-bold transition-colors">Cancel</button>
@@ -395,7 +407,17 @@
   </div>
 
   <script>
+  const localTest = false;
   const WORKER = "https://api.studybase.site";
+  const TURNSTILE_SITE_KEYS = localTest
+    ? {
+        login: "1x00000000000000000000AA",
+        adminOverride: "1x00000000000000000000AA"
+      }
+    : {
+        login: "0x4AAAAAAC9-EW6MUp3spIEP",
+        adminOverride: "0x4AAAAAAC9-bB7cCm-tLuHn"
+      };
   const DEVICE_CODE_CHARS = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const DEVICE_CODE_LENGTH = 12;
   const CHECK_MIN_MS = 2000;
@@ -407,6 +429,10 @@
 
   let verifyPoll = null;
   let pendingQuickLoginDecodedDevice = "";
+  let loginTurnstileToken = null;
+  let adminTurnstileToken = null;
+  let loginTurnstileWidgetId = null;
+  let adminTurnstileWidgetId = null;
 
   function setInlineError(msg) {
     const box = document.getElementById("inlineError");
@@ -557,6 +583,92 @@
     }).catch(() => null);
     if (!res) return null;
     return res.json().catch(() => null);
+  }
+
+  function setTurnstileError(type, message = "") {
+    const el = document.getElementById(type === "admin" ? "adminTurnstileError" : "loginTurnstileError");
+    if (!el) return;
+    if (!message) {
+      el.textContent = "";
+      el.classList.add("hidden");
+      return;
+    }
+    el.textContent = message;
+    el.classList.remove("hidden");
+  }
+
+  function resetTurnstile(type) {
+    try {
+      if (!window.turnstile) return;
+      if (type === "admin" && adminTurnstileWidgetId !== null) {
+        turnstile.reset(adminTurnstileWidgetId);
+        adminTurnstileToken = null;
+      }
+      if (type === "login" && loginTurnstileWidgetId !== null) {
+        turnstile.reset(loginTurnstileWidgetId);
+        loginTurnstileToken = null;
+      }
+    } catch (_) {}
+  }
+
+  function renderTurnstiles() {
+    if (!window.turnstile) return false;
+
+    if (document.getElementById("loginTurnstile") && loginTurnstileWidgetId === null) {
+      loginTurnstileWidgetId = turnstile.render("#loginTurnstile", {
+        sitekey: TURNSTILE_SITE_KEYS.login,
+        theme: "light",
+        callback: function(token) {
+          loginTurnstileToken = token;
+          setTurnstileError("login", "");
+        },
+        "expired-callback": function() {
+          loginTurnstileToken = null;
+          setTurnstileError("login", "Security check expired. Please complete it again.");
+        },
+        "error-callback": function() {
+          loginTurnstileToken = null;
+          setTurnstileError("login", "Security check failed. Please try again.");
+        }
+      });
+    }
+
+    if (document.getElementById("adminTurnstile") && adminTurnstileWidgetId === null) {
+      adminTurnstileWidgetId = turnstile.render("#adminTurnstile", {
+        sitekey: TURNSTILE_SITE_KEYS.adminOverride,
+        theme: "light",
+        callback: function(token) {
+          adminTurnstileToken = token;
+          setTurnstileError("admin", "");
+        },
+        "expired-callback": function() {
+          adminTurnstileToken = null;
+          setTurnstileError("admin", "Admin security check expired. Please complete it again.");
+        },
+        "error-callback": function() {
+          adminTurnstileToken = null;
+          setTurnstileError("admin", "Admin security check failed. Please try again.");
+        }
+      });
+    }
+
+    return true;
+  }
+
+  function waitForTurnstileAndRender() {
+    if (renderTurnstiles()) return;
+    const started = Date.now();
+    const timer = setInterval(() => {
+      if (renderTurnstiles()) {
+        clearInterval(timer);
+        return;
+      }
+      if (Date.now() - started > 10000) {
+        clearInterval(timer);
+        setTurnstileError("login", "Security check could not load. Refresh and try again.");
+        setTurnstileError("admin", "Security check could not load. Refresh and try again.");
+      }
+    }, 100);
   }
 
   function showError(message) {
@@ -967,61 +1079,79 @@
   }
 
   document.getElementById("loginButton").addEventListener("click", async () => {
-    setInlineError("");
-    clearQuickLoginInputs();
-    document.getElementById("modal-agree").classList.add("hidden");
-    document.getElementById("modal-ban").classList.add("hidden");
-    setLoginLoading(true);
+  setInlineError("");
+  clearQuickLoginInputs();
+  document.getElementById("modal-agree").classList.add("hidden");
+  document.getElementById("modal-ban").classList.add("hidden");
+  setLoginLoading(true);
 
-    const username = document.getElementById("inputUsername").value.trim();
-    const password = document.getElementById("inputPassword").value.trim();
+  const username = document.getElementById("inputUsername").value.trim();
+  const password = document.getElementById("inputPassword").value.trim();
 
-    if (!username || !password) {
-      setLoginLoading(false);
-      return showError("Please enter your username and password.");
-    }
-
-    const started = Date.now();
-    const result = await postJson(WORKER + "/auth/login", { username, password });
-    await waitAtLeast(started, CHECK_MIN_MS);
-
-    if (result && result.error === "System is currently unavailable") {
-      return showShutdownPopup();
-    }
-    if (!result || !result.ok) {
-      return showError("Incorrect username or password.");
-    }
-    if (result.adminBypass === true) {
-      if (result.adminSessionToken) {
-        localStorage.setItem("gh_device", result.adminSessionToken);
-      }
-      localStorage.removeItem("gh_username");
-      localStorage.removeItem("gh_password");
-      completeLoginSuccess();
-      return;
-    }
-
-    localStorage.setItem("gh_username", username);
-    localStorage.setItem("gh_password", password);
+  if (!username || !password) {
     setLoginLoading(false);
+    return showError("Please enter your username and password.");
+  }
 
-    const quickLoginCheck = await checkSavedQuickLoginDevice(username, password);
-    if (quickLoginCheck && quickLoginCheck.handled) return;
+  const hashedUsername = await sha256(username);
+  const hashedPassword = await sha256(password);
 
-    if (quickLoginCheck && quickLoginCheck.usable && quickLoginCheck.decodedDevice) {
-      openQuickLoginStep(quickLoginCheck.decodedDevice);
-      return;
-    }
+  if (!loginTurnstileToken) {
+    setLoginLoading(false);
+    setTurnstileError("login", "Please complete the security check.");
+    return;
+  }
 
-    const existingDevice = normalizeDeviceCode(localStorage.getItem("gh_device") || "");
-    if (existingDevice) {
-      persistDeviceCode(existingDevice);
-      await checkExistingDeviceVerification({ username, password, deviceCode: existingDevice });
-      return;
-    }
-
-    await showUnverifiedThenContinue("");
+  const started = Date.now();
+  const result = await postJson(WORKER + "/auth/login", {
+    username: hashedUsername,
+    password: hashedPassword,
+    turnstileToken: loginTurnstileToken
   });
+  await waitAtLeast(started, CHECK_MIN_MS);
+
+  if (result && result.error === "System is currently unavailable") {
+    return showShutdownPopup();
+  }
+  if (!result || !result.ok) {
+    resetTurnstile("login");
+    return showError("Incorrect username or password.");
+  }
+  if (result.adminBypass === true) {
+    if (result.adminSessionToken) {
+      localStorage.setItem("gh_device", result.adminSessionToken);
+    }
+    localStorage.removeItem("gh_username");
+    localStorage.removeItem("gh_password");
+    completeLoginSuccess();
+    return;
+  }
+
+  localStorage.setItem("gh_username", hashedUsername);
+  localStorage.setItem("gh_password", hashedPassword);
+  setLoginLoading(false);
+
+  const quickLoginCheck = await checkSavedQuickLoginDevice(hashedUsername, hashedPassword);
+  if (quickLoginCheck && quickLoginCheck.handled) return;
+
+  if (quickLoginCheck && quickLoginCheck.usable && quickLoginCheck.decodedDevice) {
+    openQuickLoginStep(quickLoginCheck.decodedDevice);
+    return;
+  }
+
+  const existingDevice = normalizeDeviceCode(localStorage.getItem("gh_device") || "");
+  if (existingDevice) {
+    persistDeviceCode(existingDevice);
+    await checkExistingDeviceVerification({
+      username: hashedUsername,
+      password: hashedPassword,
+      deviceCode: existingDevice
+    });
+    return;
+  }
+
+  await showUnverifiedThenContinue("");
+});
 
   function startForgotCodeRecoveryFlow() {
   pendingQuickLoginDecodedDevice = "";
@@ -1055,6 +1185,8 @@ document.getElementById("quickLoginForgotBtn").onclick = () => {
 
   adminBtn.onclick = () => {
     adminError.classList.add("hidden");
+    setTurnstileError("admin", "");
+    resetTurnstile("admin");
     adminUsername.value = localStorage.getItem("gh_username") || "";
     adminPhrase.value = "";
     adminModal.classList.remove("hidden");
@@ -1062,12 +1194,19 @@ document.getElementById("quickLoginForgotBtn").onclick = () => {
   adminCancel.onclick = () => adminModal.classList.add("hidden");
   adminSubmit.onclick = async () => {
     if (adminCooldown) return;
+
     const username = adminUsername.value.trim();
     const phrase = adminPhrase.value.trim();
     const deviceCode = normalizeDeviceCode(localStorage.getItem("gh_device") || "");
+
     if (!username || !phrase || !deviceCode) {
       adminError.textContent = "Missing fields or device code.";
       adminError.classList.remove("hidden");
+      return;
+    }
+
+    if (!adminTurnstileToken) {
+      setTurnstileError("admin", "Please complete the admin security check.");
       return;
     }
 
@@ -1075,13 +1214,17 @@ document.getElementById("quickLoginForgotBtn").onclick = () => {
     adminSubmit.classList.add("opacity-60", "cursor-not-allowed");
     adminError.classList.add("hidden");
 
+    const hashedPhrase = await sha256(phrase);
+
     const res = await postJson(WORKER + "/overide/addUser", {
       username,
-      overridePhrase: phrase,
-      deviceCode
+      overridePhrase: hashedPhrase,
+      deviceCode,
+      turnstileToken: adminTurnstileToken
     });
 
     if (!res || !res.ok) {
+      resetTurnstile("admin");
       adminError.textContent = "Override failed. Please wait 5 seconds before trying again.";
       adminError.classList.remove("hidden");
       adminCooldown = true;
@@ -1100,6 +1243,7 @@ document.getElementById("quickLoginForgotBtn").onclick = () => {
   showSection("section-login");
   setStepper(1);
   document.getElementById("inputUsername").focus();
+  waitForTurnstileAndRender();
 </script>
 </body>
 </html>
