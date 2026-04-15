@@ -87,6 +87,12 @@
       box-shadow: 0 0 0 4px rgba(59,130,246,.14);
     }
     :focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(37,99,235,.25); border-color: rgba(37,99,235,.85) !important; }
+    @media (max-height: 760px) {
+      #section-login {
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+    }
     @media (prefers-reduced-motion: reduce) {
       .loader-ring, .status-pulse { animation: none; }
       .feature-card { transition: none; }
@@ -94,12 +100,12 @@
     }
   </style>
 </head>
-<body class="bg-mesh min-h-screen flex flex-col relative overflow-hidden text-slate-800 items-center justify-center">
+<body class="bg-mesh min-h-screen relative overflow-x-hidden overflow-y-auto text-slate-800">
   <div class="absolute inset-0 bg-grid pointer-events-none z-0"></div>
   <div class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-blue-400/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
   <div class="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-purple-400/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
 
-  <div class="w-full flex items-center justify-center p-4 relative z-10">
+  <div class="w-full min-h-screen flex items-start sm:items-center justify-center p-4 sm:p-6 relative z-10">
     <div class="absolute top-[104px] left-4 right-4 mx-auto max-w-3xl hidden sm:block">
       <div class="flex items-center justify-center gap-2 text-xs">
         <div class="flex items-center gap-2">
@@ -119,7 +125,7 @@
       </div>
     </div>
 
-    <div id="section-login" class="w-full max-w-md bg-white/85 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-2xl border border-white/60 transform transition-all">
+    <div id="section-login" class="w-full max-w-md my-6 sm:my-10 bg-white/85 backdrop-blur-xl p-6 sm:p-10 rounded-3xl shadow-2xl border border-white/60 transform transition-all">
       <div class="text-center mb-7">
         <div class="mx-auto w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center mb-4 shadow-sm">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1247,5 +1253,4 @@ document.getElementById("quickLoginForgotBtn").onclick = () => {
 </script>
 </body>
 </html>
-
 
