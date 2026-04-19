@@ -114,7 +114,7 @@
           </h1>
 
           <p class="text-base md:text-lg text-slate-500 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Find safeguarding, friend-support, privacy, and sensitive wellbeing guidance in one place.
+            Find safeguarding, friend-support, privacy, account, and access guidance in one place.
           </p>
 
           <div class="flex flex-wrap justify-center gap-3 mb-8">
@@ -147,6 +147,95 @@
 
   <main class="flex-grow py-16 px-6">
     <div class="max-w-7xl mx-auto">
+
+      <section class="mb-14">
+        <div class="mb-6">
+          <p class="text-sm font-bold uppercase tracking-[0.18em] text-slate-400 mb-2">Account and access</p>
+          <h2 class="text-2xl md:text-3xl font-black text-slate-900">Accounts, login, bans, and restrictions</h2>
+        </div>
+
+        <div id="account-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+          <a href="/support/account.html" class="support-card group bg-white rounded-[1.75rem] border border-slate-200 p-6">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <i class="fa-solid fa-user-gear"></i>
+              </div>
+              <div>
+                <h3 class="font-black text-slate-900 group-hover:text-blue-600 transition-colors">Account help</h3>
+                <p class="text-sm text-slate-500">Main account route</p>
+              </div>
+            </div>
+            <p class="text-sm text-slate-500 leading-7">Help with account routes, device checks, and working out whether the issue is normal access or a restriction.</p>
+          </a>
+
+          <a href="/support/login.html" class="support-card group bg-white rounded-[1.75rem] border border-slate-200 p-6">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <i class="fa-solid fa-key"></i>
+              </div>
+              <div>
+                <h3 class="font-black text-slate-900 group-hover:text-blue-600 transition-colors">Login & access</h3>
+                <p class="text-sm text-slate-500">Sign-in help</p>
+              </div>
+            </div>
+            <p class="text-sm text-slate-500 leading-7">Use this if you cannot sign in, your session is failing, or you need the clearest next step for account access.</p>
+          </a>
+
+          <a href="/support/ban/account_ban.html" class="support-card group bg-white rounded-[1.75rem] border border-slate-200 p-6">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center">
+                <i class="fa-solid fa-ban"></i>
+              </div>
+              <div>
+                <h3 class="font-black text-slate-900 group-hover:text-rose-600 transition-colors">Account restriction</h3>
+                <p class="text-sm text-slate-500">Restriction guidance</p>
+              </div>
+            </div>
+            <p class="text-sm text-slate-500 leading-7">Understand what a ban or restriction means and which route to use next instead of retrying the same action.</p>
+          </a>
+
+          <a href="/support/ban/appeal.html" class="support-card group bg-white rounded-[1.75rem] border border-slate-200 p-6">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <i class="fa-solid fa-gavel"></i>
+              </div>
+              <div>
+                <h3 class="font-black text-slate-900 group-hover:text-blue-600 transition-colors">Appeal a ban</h3>
+                <p class="text-sm text-slate-500">Appeal route</p>
+              </div>
+            </div>
+            <p class="text-sm text-slate-500 leading-7">Open the appeal page if a moderation or ban decision needs a formal response or review.</p>
+          </a>
+
+          <a href="/support/info/restricted_device_type.html" class="support-card group bg-white rounded-[1.75rem] border border-slate-200 p-6">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center">
+                <i class="fa-solid fa-laptop"></i>
+              </div>
+              <div>
+                <h3 class="font-black text-slate-900 group-hover:text-blue-600 transition-colors">Device restriction</h3>
+                <p class="text-sm text-slate-500">Compatibility</p>
+              </div>
+            </div>
+            <p class="text-sm text-slate-500 leading-7">Read why some devices or environments are restricted and what to try next if access depends on the device you are using.</p>
+          </a>
+
+          <a href="/support/info/time.html" class="support-card group bg-white rounded-[1.75rem] border border-slate-200 p-6">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                <i class="fa-solid fa-clock"></i>
+              </div>
+              <div>
+                <h3 class="font-black text-slate-900 group-hover:text-amber-600 transition-colors">Maintenance window</h3>
+                <p class="text-sm text-slate-500">Availability</p>
+              </div>
+            </div>
+            <p class="text-sm text-slate-500 leading-7">Check this if the site feels unavailable or limited overnight before assuming your account is broken.</p>
+          </a>
+
+        </div>
+      </section>
 
       <section class="mb-14">
         <div class="flex items-center justify-between mb-6">
@@ -474,9 +563,9 @@
 
   <script>
     const searchInput = document.getElementById('support-search');
-    const cards = [...document.querySelectorAll('#support-grid a, #topic-grid a, #sensitive-grid a, #more-grid a')];
+    const cards = [...document.querySelectorAll('#support-grid a, #topic-grid a, #sensitive-grid a, #account-grid a, #more-grid a')];
     const noResultsMessage = document.getElementById('support-no-results');
-    const grids = ['support-grid', 'topic-grid', 'sensitive-grid', 'more-grid']
+    const grids = ['support-grid', 'topic-grid', 'sensitive-grid', 'account-grid', 'more-grid']
       .map(id => document.getElementById(id))
       .filter(Boolean);
 
