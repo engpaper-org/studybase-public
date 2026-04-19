@@ -1,0 +1,173 @@
+{
+  "buttons": [
+    "buttons/red.png",
+    "buttons/blue.png",
+    "buttons/green.png",
+    "buttons/purple.png",
+    "buttons/grey.png",
+    "buttons/yellow.png"
+  ],
+  "sounds": [
+    {
+      "name": "get out tuco",
+      "audio": "audio/92116289-98e0-4dea-babc-e6f7f8bd08d9.mp3"
+    },
+    {
+      "name": "tung tung tung sahur",
+      "audio": "audio/0877ca10-d121-4ff0-984b-9f3de126b3e2.mp3"
+    },
+    {
+      "name": "vine boom",
+      "audio": "audio/707db471-c834-494e-a3d9-ada985203ef6.mp3"
+    },
+    {
+      "name": "raining tacos",
+      "audio": "audio/73905061-add1-45f1-addc-60c396d2d74e.mp3"
+    },
+    {
+      "name": "sad violin",
+      "audio": "audio/a8379e2a-b401-4c52-8919-218cd5eea95e.mp3"
+    },
+    {
+      "name": "goofy ahh sounds",
+      "audio": "audio/fb64d9f6-7584-4a3f-930b-ba6094d37fd5.mp3"
+    },
+    {
+      "name": "fn default dance",
+      "audio": "audio/939f1050-5855-470d-9630-5637dd080435.mp3"
+    },
+    {
+      "name": "back in the day",
+      "audio": "audio/13cdad16-43dc-44f1-ba0c-8cb1a99f8dba.mp3"
+    },
+    {
+      "name": "helicopter helicopter",
+      "audio": "audio/69bbbf5e-39a3-4ac4-9917-cb9c4f20047d.mp3"
+    },
+    {
+      "name": "what da dog doin",
+      "audio": "audio/a289e964-1ebc-444a-928b-66ee87693ded.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    },
+    {
+      "name": "",
+      "audio": "audio/airhorn.mp3"
+    }
+    
+  ]
+}

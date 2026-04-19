@@ -32,7 +32,7 @@ function injectGlobalFooter() {
                     <h2 class="text-3xl md:text-4xl font-black mb-4 tracking-tight">A-Levels are stressful.</h2>
                     <p class="text-emerald-100/80 text-lg font-body leading-relaxed">Don't burn out before the finish line. Explore our wellbeing guides for managing UCAS anxiety and maintaining balance.</p>
                 </div>
-                <a href="/toolkit/wellbeingHub.html" class="px-8 py-4 bg-emerald-500 text-white font-bold rounded-2xl hover:bg-emerald-400 transition-all shadow-xl shadow-emerald-900/50 whitespace-nowrap hover:-translate-y-1">Visit Wellbeing Hub</a>
+                <a href="/support/mental-health.html" class="px-8 py-4 bg-emerald-500 text-white font-bold rounded-2xl hover:bg-emerald-400 transition-all shadow-xl shadow-emerald-900/50 whitespace-nowrap hover:-translate-y-1">Visit Wellbeing Support</a>
             </div>
         </section>
         `,
@@ -46,7 +46,7 @@ function injectGlobalFooter() {
                     <h2 class="text-3xl md:text-4xl font-black mb-4 text-slate-900 tracking-tight">Missing something?</h2>
                     <p class="text-slate-500 text-lg font-body leading-relaxed">Our database is constantly updated with new 2026 predicted papers, A* exemplar essays, and mark schemes.</p>
                 </div>
-                <a href="/alevel/resources.html#primary-access" class="px-8 py-4 bg-purple-600 text-white font-bold rounded-2xl hover:bg-purple-700 transition-all shadow-xl shadow-purple-600/20 whitespace-nowrap hover:-translate-y-1">Browse A-Level Vault</a>
+                <a href="/resource_database/index.html#primary-access" class="px-8 py-4 bg-purple-600 text-white font-bold rounded-2xl hover:bg-purple-700 transition-all shadow-xl shadow-purple-600/20 whitespace-nowrap hover:-translate-y-1">Browse Resource Vault</a>
             </div>
         </section>
         `
@@ -89,7 +89,7 @@ function injectGlobalFooter() {
                 <div>
                     <h4 class="font-bold mb-6 text-white uppercase text-xs tracking-widest text-purple-400">The Toolkit</h4>
                     <ul class="space-y-4 text-sm font-medium font-body">
-                        <li><a href="/toolkit.html" class="hover:text-purple-400 transition-colors">View All Tools</a></li>
+                        <li><a href="/toolkit/index.html" class="hover:text-purple-400 transition-colors">View All Tools</a></li>
                         <li><a href="/toolkit/focusRoom.html" class="hover:text-purple-400 transition-colors">The Focus Room</a></li>
                         <li><a href="/toolkit/flashcards.html" class="hover:text-purple-400 transition-colors">Flashcard Builder</a></li>
                         <li><a href="/toolkit/timetable.html" class="hover:text-purple-400 transition-colors">Smart Planner</a></li>
@@ -100,7 +100,7 @@ function injectGlobalFooter() {
                 <div>
                     <h4 class="font-bold mb-6 text-white uppercase text-xs tracking-widest text-slate-300">Platform</h4>
                     <ul class="space-y-4 text-sm font-medium font-body">
-                        <li><a href="/faq.html" class="hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="/support/help_center.html" class="hover:text-white transition-colors">Help Center</a></li>
                         <li><a href="/legal/index.html" class="hover:text-white transition-colors">Privacy & Terms</a></li>
                         <li><a href="/legal/contributions.html" class="hover:text-white transition-colors">Contributions</a></li>
                         <li><a href="/contact.html" class="hover:text-white transition-colors">Contact Us</a></li>

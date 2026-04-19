@@ -13,7 +13,7 @@
     </script>
     <link rel="stylesheet" href="/assets/css/dark-mode.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading...</title>
+    <title>StudyBase Safety Loading Screen</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -80,6 +80,7 @@
             border-radius: 2rem;
             z-index: 1;
         }
+
     </style>
 </head>
 <body class="m-0 p-0 h-screen w-screen overflow-hidden bg-sky-600 flex flex-col items-center justify-center font-sans px-4">
@@ -107,13 +108,25 @@
                     
                     <!-- Content -->
                     <h2 id="msg-title" class="text-2xl md:text-3xl text-slate-900 font-extrabold tracking-tight mb-4"></h2>
-                    <p id="msg-subtitle" class="text-slate-600 text-sm md:text-base leading-relaxed mb-8 max-w-md"></p>
-                    
-                    <!-- Action Button -->
-                    <a id="msg-btn" target="_blank" rel="noopener noreferrer" class="hidden px-10 py-3.5 text-sm font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 active:scale-95 flex items-center gap-2">
+                    <p id="msg-subtitle" class="text-slate-600 text-sm md:text-base leading-relaxed mb-5 max-w-md"></p>
+
+                    <div id="msg-info" class="hidden w-full max-w-md rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-left mb-6">
+                        <p class="text-[10px] font-black tracking-[0.18em] uppercase text-slate-400 mb-2">Useful right now</p>
+                        <p id="msg-best-for" class="text-sm font-bold text-slate-800 leading-relaxed mb-2"></p>
+                        <p id="msg-extra" class="text-sm text-slate-500 leading-relaxed"></p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-md mb-6">
+                    <a id="msg-btn" href="/support/help_center.html" class="hidden px-10 py-3.5 text-sm font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 active:scale-95 flex items-center gap-2 justify-center w-full sm:w-auto">
                         <span>Get Help Now</span>
-                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </a>
+                    <a href="/support/help_center.html" data-support-link class="px-6 py-3.5 text-sm font-bold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 transition-all active:scale-95 flex items-center gap-2 justify-center w-full sm:w-auto">
+                        <span>Open Help Centre</span>
+                        <i data-lucide="life-buoy" class="w-4 h-4"></i>
+                    </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -137,87 +150,115 @@
 
     <script>
         const announcements = [
-    {
-        id: 1,
-        category: "Support",
-        icon: "heart-handshake",
-        color: "bg-rose-50 text-rose-600",
-        title: "You Are Not Alone",
-        subtitle: "If things ever feel too much, support is available. Speaking to a trusted person or support service can really help.",
-        btnText: "Get Support",
-        btnUrl: "https://www.childline.org.uk/"
-    },
-    {
-        id: 2,
-        category: "Wellbeing",
-        icon: "droplets",
-        color: "bg-sky-50 text-sky-600",
-        title: "Grab Some Water",
-        subtitle: "A quick drink can help you feel more awake and focused before opening your next resource.",
-        btnText: "Wellbeing Tips",
-        btnUrl: "https://www.nhs.uk/live-well/"
-    },
-    {
-        id: 3,
-        category: "Safety",
-        icon: "shield",
-        color: "bg-amber-50 text-amber-600",
-        title: "Keep Personal Info Private",
-        subtitle: "Never share your real name, address, school, phone number, or passwords with people online.",
-        btnText: "Online Safety",
-        btnUrl: "https://www.internetmatters.org/"
-    },
-    {
-        id: 4,
-        category: "Balance",
-        icon: "clock",
-        color: "bg-emerald-50 text-emerald-600",
-        title: "Rest Your Eyes",
-        subtitle: "Try the 20-20-20 rule: every 20 minutes, look at something far away for 20 seconds.",
-        btnText: "Eye Care Tips",
-        btnUrl: "https://www.specsavers.co.uk/"
-    },
-    {
-        id: 5,
-        category: "Security",
-        icon: "key-round",
-        color: "bg-violet-50 text-violet-600",
-        title: "Do Not Share Credentials",
-        subtitle: "Your login details are for your own access only. Sharing usernames, passwords, or access codes can put accounts and resources at risk.",
-        btnText: "Stay Secure",
-        btnUrl: "https://www.ncsc.gov.uk/"
-    },
-    {
-        id: 6,
-        category: "Respect",
-        icon: "badge-check",
-        color: "bg-indigo-50 text-indigo-600",
-        title: "Be Careful Who You Trust",
-        subtitle: "Not everyone online is who they say they are. If something feels off, do not reply or share anything personal.",
-        btnText: "Safety Advice",
-        btnUrl: "https://www.nspcc.org.uk/"
-    },
-    {
-        id: 7,
-        category: "Wellbeing",
-        icon: "moon-star",
-        color: "bg-cyan-50 text-cyan-700",
-        title: "Take Short Breaks",
-        subtitle: "A quick stretch or short pause can help you stay comfortable and focused while browsing resources.",
-        btnText: "Healthy Habits",
-        btnUrl: "https://www.nhs.uk/live-well/exercise/"
-    },
-    {
-        id: 8,
-        category: "Safety",
-        icon: "triangle-alert",
-        color: "bg-orange-50 text-orange-600",
-        title: "Report Anything Suspicious",
-        subtitle: "If you notice strange messages, unusual behaviour, or anything unsafe, tell a trusted adult straight away.",
-        btnText: "Learn More",
-        btnUrl: "https://www.childline.org.uk/info-advice/bullying-abuse-safety/online-mobile-safety/"
-    }
-];
+            {
+                id: 1,
+                category: "Friends",
+                icon: "messages-square",
+                color: "bg-blue-50 text-blue-600",
+                title: "Have you checked in with your friends lately?",
+                subtitle: "A simple message can matter more than you think, especially if someone has been stressed, quieter than usual, or pulling away.",
+                bestFor: "Try something direct and calm like: just checking in, how are you doing really?",
+                extra: "You do not need perfect words. Showing up and asking twice can be more helpful than trying to fix everything.",
+                btnText: "Open Check-In Guide",
+                btnUrl: "/support/check-in-on-friends.html"
+            },
+            {
+                id: 2,
+                category: "Friends",
+                icon: "user-round-search",
+                color: "bg-indigo-50 text-indigo-600",
+                title: "Noticed something change in your friends?",
+                subtitle: "Going very quiet, pulling away, seeming flat, snapping more easily, or acting suddenly different can all be signs something is wrong.",
+                bestFor: "Check in gently, stay calm, and tell a trusted adult or person if you are worried about someone's safety.",
+                extra: "Getting help for a friend is not betraying them. It is part of looking out for them when things feel serious.",
+                btnText: "Open Friend Support",
+                btnUrl: "/support/friend-acting-different.html"
+            },
+            {
+                id: 3,
+                category: "Safeguarding",
+                icon: "triangle-alert",
+                color: "bg-amber-50 text-amber-600",
+                title: "If something online feels wrong, trust that feeling",
+                subtitle: "Pressure, secrecy, threats, guilt, or someone trying to move a chat somewhere private are all reasons to step back.",
+                bestFor: "Stop replying, keep evidence if needed, and tell a trusted adult or person rather than handling it alone.",
+                extra: "You do not need proof that something is wrong before asking for help with it.",
+                btnText: "Open Warning Signs",
+                btnUrl: "/support/online-warning-signs.html"
+            },
+            {
+                id: 4,
+                category: "Safeguarding",
+                icon: "shield-alert",
+                color: "bg-orange-50 text-orange-600",
+                title: "If someone tells you to keep something secret, pause",
+                subtitle: "Unsafe people often try to isolate you, rush you, or make you feel guilty for telling someone else.",
+                bestFor: "If a secret feels uncomfortable, personal, or scary, tell a trusted adult even if someone told you not to.",
+                extra: "Real support should make you feel safer, not more trapped.",
+                btnText: "Open Secret Pressure Page",
+                btnUrl: "/support/keep-it-secret.html"
+            },
+            {
+                id: 5,
+                category: "Safety",
+                icon: "key-round",
+                color: "bg-emerald-50 text-emerald-600",
+                title: "Keep personal details private",
+                subtitle: "Do not share your full name, address, school, phone number, passwords, or private photos with people online.",
+                bestFor: "If someone is pushing for personal details, images, or proof, step back and tell someone you trust.",
+                extra: "People who respect you do not need your private information to prove anything.",
+                btnText: "Open Details Safety",
+                btnUrl: "/support/personal-details-safety.html"
+            },
+            {
+                id: 6,
+                category: "Safety",
+                icon: "message-circle-warning",
+                color: "bg-cyan-50 text-cyan-700",
+                title: "If someone is pushing you into a private chat, slow it down",
+                subtitle: "Moving things off-platform quickly, asking for secrecy, or making things feel urgent are warning signs, not proof that you should trust them.",
+                bestFor: "Stay where you feel safer, stop replying if needed, and show the messages to a trusted adult or person.",
+                extra: "You do not owe anyone a reply just because they keep messaging you.",
+                btnText: "Open Private Chat Page",
+                btnUrl: "/support/private-chat-pressure.html"
+            },
+            {
+                id: 7,
+                category: "Support",
+                icon: "mail",
+                color: "bg-indigo-50 text-indigo-600",
+                title: "Not sure where to start if you are worried?",
+                subtitle: "You do not need to work out the perfect next step before asking for help.",
+                bestFor: "Use the support routes page if you know something feels wrong but you are not sure which page fits it best.",
+                extra: "Starting somewhere simple is better than sitting with it alone because you are unsure.",
+                btnText: "Open Support Routes",
+                btnUrl: "/support/contact.html"
+            },
+            {
+                id: 8,
+                category: "Friends",
+                icon: "heart",
+                color: "bg-rose-50 text-rose-600",
+                title: "If a friend says something worrying, take it seriously",
+                subtitle: "Even if they laugh it off after, it still matters if something they said made you stop and think.",
+                bestFor: "Stay calm, stay kind, and get another trusted person involved if you are worried they might not be safe.",
+                extra: "You do not have to carry that responsibility on your own.",
+                btnText: "Open Friend Concern Page",
+                btnUrl: "/support/friend-said-something-worrying.html"
+            },
+            {
+                id: 9,
+                category: "Safety",
+                icon: "octagon-alert",
+                color: "bg-slate-100 text-slate-700",
+                title: "Threats and blackmail are not something you should handle alone",
+                subtitle: "If someone is threatening to share something, expose you, or punish you unless you do what they want, get help straight away.",
+                bestFor: "Do not keep negotiating with them on your own. Save what you can and tell a trusted adult or person quickly.",
+                extra: "When someone is using fear to control you, support matters more than trying to manage it perfectly.",
+                btnText: "Open Threats Page",
+                btnUrl: "/support/threats-and-blackmail.html"
+            }
+        ];
 
         function getSeenMessages() {
             try { return JSON.parse(localStorage.getItem('safeguard_rotation') || '[]'); } 
@@ -227,6 +268,19 @@
         function saveSeenMessages(arr) {
             try { localStorage.setItem('safeguard_rotation', JSON.stringify(arr)); } 
             catch (e) { }
+        }
+
+        function openSupportPage(url) {
+            if (!url) return;
+
+            try {
+                if (window.top && window.top !== window) {
+                    window.top.location.href = url;
+                    return;
+                }
+            } catch (e) {}
+
+            window.location.href = url;
         }
 
         function displayRandomAnnouncement() {
@@ -250,13 +304,27 @@
             document.getElementById('msg-title').textContent = picked.title;
             document.getElementById('msg-subtitle').textContent = picked.subtitle;
 
+            const infoBox = document.getElementById('msg-info');
+            const bestFor = document.getElementById('msg-best-for');
+            const extra = document.getElementById('msg-extra');
+
+            if (picked.bestFor || picked.extra) {
+                bestFor.textContent = picked.bestFor || '';
+                extra.textContent = picked.extra || '';
+                infoBox.classList.remove('hidden');
+            } else {
+                infoBox.classList.add('hidden');
+            }
+
             const btn = document.getElementById('msg-btn');
             if (picked.btnText && picked.btnUrl) {
                 btn.querySelector('span').textContent = picked.btnText;
                 btn.href = picked.btnUrl;
+                btn.dataset.supportUrl = picked.btnUrl;
                 btn.classList.remove('hidden');
             } else {
                 btn.classList.add('hidden');
+                delete btn.dataset.supportUrl;
             }
 
             lucide.createIcons();
@@ -264,6 +332,15 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             displayRandomAnnouncement();
+
+            document.body.addEventListener('click', function(event) {
+                const link = event.target.closest('[data-support-link], #msg-btn');
+                if (!link) return;
+
+                event.preventDefault();
+                const targetUrl = link.dataset.supportUrl || link.getAttribute('href');
+                openSupportPage(targetUrl);
+            });
 
             // Bubble Logic
             const container = document.getElementById('bubbles-container');

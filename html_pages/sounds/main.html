@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900">
+  <div class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.10),_transparent_28%),radial-gradient(circle_at_top_right,_rgba(168,85,247,0.08),_transparent_22%)] pointer-events-none"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+      <div class="mb-8 sm:mb-10">
+        <div class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 backdrop-blur px-3 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-slate-500 shadow-sm">
+          <i class="fa-solid fa-wave-square text-sky-500"></i>
+          Soundboard
+        </div>
+        <h1 class="mt-4 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900">Soundboard</h1>
+      </div>
+
+      <div class="mb-6 max-w-xl">
+        <label for="searchInput" class="sr-only">Search sounds</label>
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input id="searchInput" type="text" placeholder="Search sounds..." class="w-full rounded-2xl border border-slate-200 bg-white pl-11 pr-4 py-3.5 text-sm font-medium text-slate-800 shadow-sm outline-none transition focus:border-sky-300 focus:ring-4 focus:ring-sky-100" />
+        </div>
+      </div>
+
+      <div class="mb-8 flex flex-wrap gap-3">
+        <button class="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md" id="stopAllBtn">
+          <i class="fa-solid fa-stop text-slate-500"></i>
+          Stop all
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-6" id="soundGrid"></div>
+
+    </div>
+  </div>
+
+  <script>
+    const soundGrid = document.getElementById('soundGrid');
+    const stopAllBtn = document.getElementById('stopAllBtn');
+    const searchInput = document.getElementById('searchInput');
+    let soundItems = [];
+
+    function pickRandomButton(buttonPool) {
+      if (!Array.isArray(buttonPool) || !buttonPool.length) {
+        return 'buttons/png.button';
+      }
+      return buttonPool[Math.floor(Math.random() * buttonPool.length)];
+    }
+
+    function stopAllSounds() {
+      soundItems.forEach((item) => {
+        item.audio.pause();
+        item.audio.currentTime = 0;
+        item.pad.classList.remove('playing');
+      });
+    }
+
+    async function loadSoundboard() {
+      try {
+        const response = await fetch('sounds.json');
+        if (!response.ok) {
+          throw new Error('JSON load failed');
+        }
+
+        const json = await response.json();
+        const soundData = Array.isArray(json) ? json : (json.sounds || []);
+        const buttonPool = Array.isArray(json.buttons) ? json.buttons : [];
+
+        soundGrid.innerHTML = '';
+        soundItems = [];
+
+        soundData.forEach((item) => {
+          const audio = new Audio(item.audio);
+          audio.preload = 'auto';
+
+          const buttonImage = pickRandomButton(buttonPool);
+          const pad = document.createElement('button');
+          pad.type = 'button';
+          pad.className = 'group text-left';
+          pad.setAttribute('aria-label', `Play ${item.name}`);
+
+          pad.innerHTML = `
+            <div class="overflow-visible transition duration-150 group-[.playing]:scale-95">
+              <div class="relative aspect-square overflow-visible transition duration-200 group-hover:-translate-y-1">
+                <img class="mx-auto h-full w-full object-contain origin-center select-none transition duration-150 group-[.playing]:scale-x-90 group-[.playing]:scale-y-75" src="${buttonImage}" alt="${item.name}">
+              </div>
+            </div>
+            <p class="mt-3 px-1 text-center text-[0.95rem] font-bold tracking-tight text-slate-800">${item.name}</p>
+          `;
+
+          function playSound() {
+            audio.currentTime = 0;
+            audio.play().catch((err) => {
+              console.warn(`Could not play ${item.name}:`, err);
+            });
+
+            pad.classList.add('playing');
+            clearTimeout(pad._playTimeout);
+            pad._playTimeout = setTimeout(() => {
+              pad.classList.remove('playing');
+            }, 180);
+          }
+
+          pad.addEventListener('click', playSound);
+          soundGrid.appendChild(pad);
+
+          soundItems.push({
+            ...item,
+            audio,
+            pad,
+            playSound
+          });
+        });
+      } catch (error) {
+        console.error(error);
+        soundGrid.innerHTML = '<div class="col-span-full rounded-3xl border border-red-100 bg-red-50 px-5 py-4 text-sm font-medium text-red-600 shadow-sm">An unexpected error occurred.</div>';
+      }
+    }
+
+    stopAllBtn.addEventListener('click', stopAllSounds);
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim().toLowerCase();
+
+      soundItems.forEach((item) => {
+        const matches = item.name.toLowerCase().includes(query);
+        item.pad.style.display = matches ? '' : 'none';
+      });
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.repeat) return;
+
+      const pressedKey = event.key.toUpperCase();
+      const matchedItem = soundItems.find((item) => (item.key || '').toUpperCase() === pressedKey);
+
+      if (matchedItem) {
+        matchedItem.playSound();
+      }
+    });
+
+    loadSoundboard();
+  </script>
+</body>
+</html>

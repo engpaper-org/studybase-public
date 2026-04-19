@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Paper Market Sim</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="warning-banner" role="note" aria-label="simulation warning">
+    <strong>Simulation only:</strong>
+    <span>No real money, no live stock data, no real winnings, and no real trading.</span>
+  </div>
+
+  <main class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Simple Stock Simulator</p>
+        <h1>Paper Market Sim</h1>
+        <p class="hero-copy">
+          Buy and sell fake shares, watch the market move, and follow the classic red and green stock lines.
+        </p>
+      </div>
+      <div class="hero-note">
+        <strong>Important</strong>
+        <p>This is just a simulation. No real cash is used or won anywhere in this app.</p>
+      </div>
+    </header>
+
+    <section class="summary-grid" aria-label="portfolio summary">
+      <article class="stat-card">
+        <span>Fake Cash</span>
+        <strong id="cashValue">$0</strong>
+      </article>
+      <article class="stat-card">
+        <span>Holdings Value</span>
+        <strong id="holdingsValue">$0</strong>
+      </article>
+      <article class="stat-card">
+        <span>Net Worth</span>
+        <strong id="netWorthValue">$0</strong>
+      </article>
+      <article class="stat-card">
+        <span>Total P/L</span>
+        <strong id="pnlValue">$0</strong>
+      </article>
+      <article class="stat-card">
+        <span>Day</span>
+        <strong id="dayValue">1</strong>
+      </article>
+      <article class="stat-card">
+        <span>Game Score</span>
+        <strong id="gameScoreValue">0</strong>
+      </article>
+    </section>
+
+    <section class="main-grid">
+      <section class="panel chart-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Selected Stock</p>
+            <h2 id="selectedTitle">NVA</h2>
+            <p class="selected-company" id="selectedCompany"></p>
+          </div>
+          <div class="price-box">
+            <strong id="selectedPrice">$0</strong>
+            <span id="selectedMove">+0.00%</span>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <svg id="chartSvg" viewBox="0 0 760 320" preserveAspectRatio="none" aria-label="stock chart"></svg>
+          <div class="chart-meta">
+            <span id="chartLow">Low</span>
+            <span id="chartMid">Mid</span>
+            <span id="chartHigh">High</span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="button button-soft" id="stepButton" type="button">Next Tick</button>
+          <button class="button button-soft" id="dayButton" type="button">Next Day</button>
+          <button class="button button-outline" id="autoButton" type="button">Auto Off</button>
+          <button class="button button-outline" id="resetButton" type="button">Reset Sim</button>
+        </div>
+
+        <div class="stock-list" id="stockList" aria-label="simulated stocks"></div>
+      </section>
+
+      <aside class="panel trade-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Trade</p>
+            <h2>Simple Buy & Sell</h2>
+          </div>
+          <span class="warning-pill">Fake money only</span>
+        </div>
+
+        <div class="trade-box">
+          <label class="field">
+            <span>Stock</span>
+            <select id="tradeSymbol" aria-label="Choose stock"></select>
+          </label>
+
+          <label class="field">
+            <span>Shares</span>
+            <input id="sharesInput" type="number" min="1" step="1" value="1" />
+          </label>
+
+          <div class="trade-actions">
+            <button class="button button-buy" id="buyButton" type="button">Buy</button>
+            <button class="button button-sell" id="sellButton" type="button">Sell</button>
+          </div>
+
+          <p class="trade-note">
+            Reminder: every trade here is pretend. No real broker, payment, or money is connected.
+          </p>
+        </div>
+
+        <div class="holdings-section">
+          <div class="panel-head panel-head-tight">
+            <h3>Your Holdings</h3>
+          </div>
+          <div id="holdingsList" class="holdings-list"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel games-panel">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">Mini Games</p>
+          <h2>Extra Ways To Play</h2>
+        </div>
+        <span class="warning-pill">No real prizes</span>
+      </div>
+
+      <p class="games-note">
+        These are just little simulation games. They only use fake market moves and fake score, with no real money or rewards.
+      </p>
+
+      <div class="games-grid">
+        <article class="game-card">
+          <p class="eyebrow">Game 1</p>
+          <h3>Up Or Down</h3>
+          <p class="game-copy">Guess if the selected stock will finish the next tick green or red.</p>
+          <div class="game-actions">
+            <button class="button button-buy" id="tickUpButton" type="button">Guess Up</button>
+            <button class="button button-sell" id="tickDownButton" type="button">Guess Down</button>
+          </div>
+          <div class="game-stats">
+            <span>Wins <strong id="tickWins">0</strong></span>
+            <span>Losses <strong id="tickLosses">0</strong></span>
+          </div>
+          <p class="game-result" id="tickResult">Pick a direction and the sim will move one tick.</p>
+        </article>
+
+        <article class="game-card">
+          <p class="eyebrow">Game 2</p>
+          <h3>Market Mood</h3>
+          <p class="game-copy">Guess whether the whole fake market will end the next day higher or lower.</p>
+          <div class="game-actions">
+            <button class="button button-buy" id="marketUpButton" type="button">Market Up</button>
+            <button class="button button-sell" id="marketDownButton" type="button">Market Down</button>
+          </div>
+          <div class="game-stats">
+            <span>Wins <strong id="marketWins">0</strong></span>
+            <span>Losses <strong id="marketLosses">0</strong></span>
+          </div>
+          <p class="game-result" id="marketResult">Make a call and the sim will jump ahead one day.</p>
+        </article>
+
+        <article class="game-card">
+          <p class="eyebrow">Game 3</p>
+          <h3>Top Gainer</h3>
+          <p class="game-copy">Pick which stock you think will be tomorrow's biggest winner.</p>
+          <label class="field">
+            <span>Pick a stock</span>
+            <select id="topPickSymbol" aria-label="Pick tomorrow's top gainer"></select>
+          </label>
+          <div class="game-actions">
+            <button class="button button-soft" id="topPickButton" type="button">Play Round</button>
+          </div>
+          <div class="game-stats">
+            <span>Wins <strong id="topWins">0</strong></span>
+            <span>Losses <strong id="topLosses">0</strong></span>
+          </div>
+          <p class="game-result" id="topResult">Pick a stock and the sim will run one full day.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer-note">
+      Simulation warning: this page uses fictional prices and paper money only.
+    </footer>
+  </main>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
