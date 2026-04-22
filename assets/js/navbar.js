@@ -500,7 +500,7 @@
                                         data-dropdown-trigger="student-tools"
                                         class="sb-nav-trigger sb-nav-trigger-purple"
                                     >
-                                        <span>StudyBase Suite</span>
+                                        <span>Toolkit</span>
                                         <i class="fa-solid fa-chevron-down"></i>
                                     </button>
 
@@ -539,12 +539,12 @@
                     <div class="sb-nav-inner sb-mobile-menu-inner px-4 pb-5 pt-3 space-y-4">
                         <div class="sb-mobile-card">
                             <div class="mb-3">
-                                <h4 class="text-sm font-black text-slate-900">StudyBase Suite</h4>
-                                <p class="text-xs text-slate-500 font-medium mt-1">View all our available tools</p>
+                                <h4 class="text-sm font-black text-slate-900">Toolkit</h4>
+                                <p class="text-xs text-slate-500 font-medium mt-1">Open focused revision tools</p>
                             </div>
                             <div class="space-y-2">
                                 <a href="/toolkit/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-purple-600 hover:bg-purple-50 transition-colors">
-                                    <span>Student Toolbox</span>
+                                    <span>Toolkit Home</span>
                                     <i class="fa-solid fa-arrow-right text-xs"></i>
                                 </a>
                                 <a href="/toolkit/focusRoom.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
@@ -554,6 +554,14 @@
                                 <a href="/toolkit/timetable.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
                                     <span>Timetable Generator</span>
                                     <i class="fa-solid fa-calendar-days text-xs opacity-60"></i>
+                                </a>
+                                <a href="/toolkit/flashcards.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
+                                    <span>Flashcard Builder</span>
+                                    <i class="fa-solid fa-layer-group text-xs opacity-60"></i>
+                                </a>
+                                <a href="/toolkit/paperTracker.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
+                                    <span>Past Paper Tracker</span>
+                                    <i class="fa-solid fa-file-contract text-xs opacity-60"></i>
                                 </a>
                                 <a href="/toolkit/countdown.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
                                     <span>Countdowns</span>
@@ -615,25 +623,36 @@
         </div>
 
         <div id="sb-dropdown-student-tools" data-dropdown-menu="student-tools" class="sb-floating-menu hidden">
-            <div class="sb-dropdown-card w-[330px]">
+            <div class="sb-dropdown-card w-[350px]">
                 <div class="sb-dropdown-head">
-                    <p class="sb-dropdown-title">StudyBase Suite</p>
-                    <p class="sb-dropdown-subtitle">View all our available tools</p>
+                    <p class="sb-dropdown-title">Toolkit</p>
+                    <p class="sb-dropdown-subtitle">Open focused revision tools</p>
                 </div>
                 <div class="space-y-1">
-                    <a href="/suite.html" class="sb-dropdown-link sb-dropdown-link-primary-purple">
-                        <span>Suite Home</span>
+                    <a href="/toolkit/index.html" class="sb-dropdown-link sb-dropdown-link-primary-purple">
+                        <span>Toolkit Home</span>
                         <i class="fa-solid fa-arrow-right text-xs"></i>
                     </a>
-                    <a href="https://pdf.studybase.site" class="sb-dropdown-link">
-                        <span>PDF Draw</span>
+                    <a href="/toolkit/focusRoom.html" class="sb-dropdown-link">
+                        <span>Focus Room</span>
                         <i class="fa-solid fa-bullseye text-xs opacity-60"></i>
                     </a>
-                    <a href="/toolkit/index.html" class="sb-dropdown-link">
-                        <span>Student Toolkit</span>
+                    <a href="/toolkit/timetable.html" class="sb-dropdown-link">
+                        <span>Timetable Generator</span>
                         <i class="fa-solid fa-calendar-days text-xs opacity-60"></i>
                     </a>
-                    
+                    <a href="/toolkit/flashcards.html" class="sb-dropdown-link">
+                        <span>Flashcard Builder</span>
+                        <i class="fa-solid fa-layer-group text-xs opacity-60"></i>
+                    </a>
+                    <a href="/toolkit/paperTracker.html" class="sb-dropdown-link">
+                        <span>Past Paper Tracker</span>
+                        <i class="fa-solid fa-file-contract text-xs opacity-60"></i>
+                    </a>
+                    <a href="/toolkit/ucasCalculator.html" class="sb-dropdown-link">
+                        <span>UCAS Calculator</span>
+                        <i class="fa-solid fa-calculator text-xs opacity-60"></i>
+                    </a>
                 </div>
             </div>
         </div>

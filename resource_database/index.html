@@ -259,6 +259,19 @@
             box-shadow: 0 0 0 6px rgba(255,255,255,0.95);
         }
 
+        .embedded-material-shell {
+            width: 100vw;
+            height: 100vh;
+            background: #f8fafc;
+        }
+
+        .embedded-material-frame {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: #f8fafc;
+        }
+
         .random-reel-marker::before {
             left: -7px;
         }
@@ -639,6 +652,19 @@
         </div>
     </section>
 
+    <section id="embedded-material-section" class="hidden fixed inset-0 z-[100000] bg-slate-100">
+        <div class="embedded-material-shell overflow-hidden">
+            <iframe
+                id="embedded-material-frame"
+                class="embedded-material-frame"
+                src=""
+                title="Resource viewer"
+                allow="pointer-lock; fullscreen; autoplay"
+                allowfullscreen
+            ></iframe>
+        </div>
+    </section>
+
     <div class="flex-grow py-10 relative z-10">
         <div class="max-w-[95rem] mx-auto px-6">
 
@@ -858,6 +884,12 @@
   let openMode = "public";
   let allResources = [];
   let allAccessOnlyResources = [];
+  let embeddedMaterialState = {
+    open: false,
+    src: "",
+    title: "",
+    restoreItems: null
+  };
   let topCards = [];
   window.SB_RESOURCE_OPEN_MODE = "unknown";
 
@@ -1344,8 +1376,85 @@
     `;
   }
 
+  function setResourceListingHidden(hidden) {
+    const ids = [
+      "favourites-section",
+      "resource-tools-section"
+    ];
+
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle("hidden", hidden || (id === "favourites-section" && !getFavouriteResources().length));
+    });
+  }
+
+  function openEmbeddedMaterial(encodedMaterialId, displayName) {
+    const frame = document.getElementById("embedded-material-frame");
+    const section = document.getElementById("embedded-material-section");
+    const grid = document.getElementById("resource-grid");
+    if (!frame || !section || !grid) return;
+
+    const url = `material.html?material-ID=${encodeURIComponent(encodedMaterialId)}&embedded=1#primary-access`;
+    embeddedMaterialState = {
+      open: true,
+      src: url,
+      title: displayName || "Resource",
+      restoreItems: Array.isArray(allResources) ? allResources.slice() : []
+    };
+
+    setResourceListingHidden(true);
+    grid.innerHTML = "";
+    grid.className = "hidden";
+    document.body.classList.add("overflow-hidden");
+
+    section.classList.remove("hidden");
+    frame.src = url;
+  }
+
+  function closeEmbeddedMaterial() {
+    const frame = document.getElementById("embedded-material-frame");
+    const section = document.getElementById("embedded-material-section");
+    const grid = document.getElementById("resource-grid");
+
+    if (frame) frame.src = "about:blank";
+    if (section) section.classList.add("hidden");
+    if (grid) grid.className = "";
+
+    embeddedMaterialState.open = false;
+    document.body.classList.remove("overflow-hidden");
+    setResourceListingHidden(false);
+    renderFavourites();
+    renderGrid(embeddedMaterialState.restoreItems || allResources);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function reloadEmbeddedMaterial() {
+    const frame = document.getElementById("embedded-material-frame");
+    if (!frame || !embeddedMaterialState.src) return;
+    frame.src = "about:blank";
+    setTimeout(() => {
+      frame.src = embeddedMaterialState.src;
+    }, 40);
+  }
+
+  window.closeEmbeddedMaterial = closeEmbeddedMaterial;
+  window.reloadEmbeddedMaterial = reloadEmbeddedMaterial;
+
+  window.addEventListener("message", (event) => {
+    if (event.origin !== window.location.origin) return;
+    if (event.data && event.data.type === "sb-material-close") {
+      closeEmbeddedMaterial();
+    }
+  });
+
   function renderGrid(items) {
     const grid = document.getElementById("resource-grid");
+    if (embeddedMaterialState.open) {
+      grid.innerHTML = "";
+      grid.className = "hidden";
+      return;
+    }
+
     grid.innerHTML = "";
 
     if (openMode === "public") {
@@ -1733,7 +1842,9 @@
 
   function openSelectedRandomResource() {
     if (!randomResourceState.selected || randomResourceState.spinning) return;
-    handleClick(randomResourceState.selected);
+    const selected = randomResourceState.selected;
+    closeRandomResourceModal();
+    handleClick(selected);
   }
 
   function sbShouldSaveSearchHistory() {
@@ -1839,7 +1950,7 @@
     }
 
     const encoded = btoa(item.name);
-    window.location.href = "material.html?material-ID=" + encoded + "#primary-access";
+    openEmbeddedMaterial(encoded, stripResourceDecorators(item.name));
   }
 
   function openReportModal() {

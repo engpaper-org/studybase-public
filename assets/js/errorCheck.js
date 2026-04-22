@@ -271,7 +271,7 @@
 
     "ENV_403_OS": {
       title: "Restricted Device Type",
-      message: "We are sorry, but the device you are currently using is not or is no longer supported by StudyBase. This is to ensure that you have maximum security and the best experience whilst on our site.",
+      message: "StudyBase no longer supports this device type. This helps keep your account secure and gives you the best experience on the site.",
       icon: "🔒",
       buttonText: "More information",
       buttonUrl: "/support/info/restricted_device_type.html"
@@ -279,7 +279,7 @@
 
     "ENV_403_PX": {
       title: "Restricted Device Type",
-      message: "We are sorry, but the device you are currently using is not or is no longer supported by StudyBase. This is to ensure that you have maximum security and the best experience whilst on our site.",
+      message: "StudyBase no longer supports this screen size. This helps keep your account secure and gives you the best experience on the site.",
       icon: "🔒",
       buttonText: "More information",
       buttonUrl: "/support/info/restricted_device_type.html"
@@ -287,21 +287,21 @@
 
     "ENV_403_LOC": {
       title: "This content is GeoBlocked",
-      message: "We are sorry, but your current location is not supported. This is to ensure that you have maximum security and the best experience whilst on our site.",
+      message: "Your current location is not supported. This helps keep StudyBase secure and available for supported regions.",
       icon: "🔒",
       buttonText: "More information",
       buttonUrl: "/support/info/geoblock.html"
     },
     "ENV_403_LOC": {
       title: "Location collection blocked",
-      message: "To access the site we require one time location verification, this data is not sent to our servers and location is not stored on device. All that is stored locally, on device, is true or false. Once location has be check locally the location is deleted. Please enable location services for access.",
+      message: "StudyBase needs a one-time location check to continue. The check happens locally, your location is not sent to our servers, and only a true or false result is stored on your device.",
       icon: "🔒",
       buttonText: "More information",
       buttonUrl: "/support/info/geoblock.html"
     },
     "ENV_403_TIME": {
       title: "Site is being updated overnight",
-      message: "To help keep our site and our infrastructure up and running, the site shutsdown between 11pm and 4am. This is to reduce stress on the system and give it time to push all updates and bug fixes for the next day. We are sorry for any inconvinience..",
+      message: "StudyBase is unavailable between 11pm and 4am while updates and maintenance run. Please try again after 4am.",
       icon: "🔒",
       buttonText: "More information",
       buttonUrl: "/support/info/time.html"
@@ -341,6 +341,419 @@
     window.location.reload();
   }
 
+  function ensureErrorStyles() {
+    if (document.getElementById("sb-err-styles")) return;
+
+    const style = document.createElement("style");
+    style.id = "sb-err-styles";
+    style.textContent = `
+      #sb-err-overlay {
+        --sb-error-accent: #dc2626;
+        --sb-error-soft: rgba(220, 38, 38, 0.1);
+        --sb-error-border: rgba(220, 38, 38, 0.24);
+        position: fixed;
+        inset: 0;
+        z-index: 2147483000;
+        display: grid;
+        place-items: center;
+        padding: clamp(16px, 4vw, 32px);
+        background:
+          radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.26), transparent 28%),
+          rgba(15, 23, 42, 0.66);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        opacity: 1;
+        transition: opacity 220ms ease;
+      }
+
+      #sb-err-overlay.is-hidden {
+        opacity: 0;
+      }
+
+      #sb-err-card {
+        position: relative;
+        width: min(100%, 540px);
+        overflow: hidden;
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        border-radius: 28px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
+        box-shadow:
+          0 30px 90px rgba(15, 23, 42, 0.34),
+          inset 0 1px 0 rgba(255, 255, 255, 0.85);
+        color: #0f172a;
+        transform: translateY(0) scale(1);
+        opacity: 1;
+        transition:
+          transform 260ms cubic-bezier(0.16, 1, 0.3, 1),
+          opacity 220ms ease;
+      }
+
+      #sb-err-card.is-hidden {
+        transform: translateY(12px) scale(0.97);
+        opacity: 0;
+      }
+
+      .sb-error-accent {
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 6px;
+        background: linear-gradient(90deg, var(--sb-error-accent), rgba(14, 165, 233, 0.72));
+      }
+
+      .sb-error-glow {
+        position: absolute;
+        top: -120px;
+        right: -120px;
+        width: 260px;
+        height: 260px;
+        border-radius: 999px;
+        background: var(--sb-error-soft);
+        pointer-events: none;
+      }
+
+      .sb-error-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        z-index: 2;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border: 1px solid rgba(148, 163, 184, 0.24);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.8);
+        color: #475569;
+        font-size: 24px;
+        line-height: 1;
+        cursor: pointer;
+        transition:
+          transform 160ms ease,
+          background-color 160ms ease,
+          color 160ms ease,
+          border-color 160ms ease;
+      }
+
+      .sb-error-close:hover {
+        transform: translateY(-1px);
+        background: #ffffff;
+        color: #0f172a;
+        border-color: rgba(100, 116, 139, 0.34);
+      }
+
+      .sb-error-body {
+        position: relative;
+        z-index: 1;
+        padding: clamp(24px, 5vw, 36px);
+      }
+
+      .sb-error-header {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 16px;
+        align-items: center;
+        padding-right: 38px;
+      }
+
+      .sb-error-mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 54px;
+        height: 54px;
+        border: 1px solid var(--sb-error-border);
+        border-radius: 18px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.56)),
+          var(--sb-error-soft);
+        color: var(--sb-error-accent);
+        font-size: 28px;
+        font-weight: 900;
+        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.1);
+      }
+
+      .sb-error-kicker {
+        margin: 0 0 6px;
+        color: #64748b;
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        line-height: 1.2;
+        text-transform: uppercase;
+      }
+
+      #sb-err-title {
+        margin: 0;
+        color: #0f172a;
+        font-size: clamp(1.35rem, 2vw, 1.75rem);
+        font-weight: 900;
+        letter-spacing: 0;
+        line-height: 1.12;
+      }
+
+      #sb-err-message {
+        margin: 22px 0 0;
+        color: #475569;
+        font-size: 1rem;
+        line-height: 1.65;
+      }
+
+      .sb-error-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin-top: 22px;
+        padding: 12px 14px;
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        border-radius: 16px;
+        background: rgba(248, 250, 252, 0.82);
+      }
+
+      .sb-error-meta span {
+        color: #64748b;
+        font-size: 0.82rem;
+        font-weight: 800;
+      }
+
+      .sb-error-meta code {
+        color: #0f172a;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.86rem;
+        font-weight: 800;
+      }
+
+      .sb-error-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .sb-error-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0.72rem 1rem;
+        border-radius: 14px;
+        font-size: 0.94rem;
+        font-weight: 850;
+        line-height: 1;
+        text-decoration: none;
+        cursor: pointer;
+        transition:
+          transform 160ms ease,
+          border-color 160ms ease,
+          background-color 160ms ease,
+          box-shadow 160ms ease;
+      }
+
+      .sb-error-button:hover {
+        transform: translateY(-1px);
+      }
+
+      .sb-error-button:active {
+        transform: translateY(0) scale(0.98);
+      }
+
+      .sb-error-button:focus-visible,
+      .sb-error-close:focus-visible {
+        outline: 3px solid rgba(14, 165, 233, 0.28);
+        outline-offset: 3px;
+      }
+
+      .sb-error-button-secondary {
+        border: 1px solid rgba(148, 163, 184, 0.34);
+        background: rgba(255, 255, 255, 0.82);
+        color: #0f172a;
+      }
+
+      .sb-error-button-secondary:hover {
+        background: #ffffff;
+        border-color: rgba(100, 116, 139, 0.48);
+      }
+
+      .sb-error-button-primary {
+        border: 1px solid transparent;
+        background: #111827;
+        color: #ffffff;
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.2);
+      }
+
+      .sb-error-button-primary:hover {
+        background: #020617;
+        box-shadow: 0 16px 34px rgba(15, 23, 42, 0.26);
+      }
+
+      :root.dark #sb-err-overlay {
+        background:
+          radial-gradient(circle at 50% 10%, rgba(14, 165, 233, 0.16), transparent 30%),
+          rgba(2, 6, 23, 0.76);
+      }
+
+      :root.dark #sb-err-card {
+        border-color: rgba(148, 163, 184, 0.18);
+        background:
+          linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.98));
+        box-shadow:
+          0 30px 90px rgba(0, 0, 0, 0.56),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        color: #e2e8f0;
+      }
+
+      :root.dark .sb-error-close,
+      :root.dark .sb-error-button-secondary {
+        border-color: rgba(148, 163, 184, 0.18);
+        background: rgba(15, 23, 42, 0.74);
+        color: #e2e8f0;
+      }
+
+      :root.dark .sb-error-close:hover,
+      :root.dark .sb-error-button-secondary:hover {
+        background: rgba(30, 41, 59, 0.96);
+        border-color: rgba(148, 163, 184, 0.32);
+      }
+
+      :root.dark .sb-error-mark {
+        background:
+          linear-gradient(180deg, rgba(15, 23, 42, 0.72), rgba(2, 6, 23, 0.56)),
+          var(--sb-error-soft);
+        box-shadow: 0 14px 32px rgba(0, 0, 0, 0.3);
+      }
+
+      :root.dark .sb-error-kicker,
+      :root.dark .sb-error-meta span {
+        color: #94a3b8;
+      }
+
+      :root.dark #sb-err-title,
+      :root.dark .sb-error-meta code {
+        color: #f8fafc;
+      }
+
+      :root.dark #sb-err-message {
+        color: #cbd5e1;
+      }
+
+      :root.dark .sb-error-meta {
+        border-color: rgba(148, 163, 184, 0.18);
+        background: rgba(15, 23, 42, 0.6);
+      }
+
+      :root.dark .sb-error-button-primary {
+        background: #f8fafc;
+        color: #020617;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32);
+      }
+
+      :root.dark .sb-error-button-primary:hover {
+        background: #e2e8f0;
+      }
+
+      @media (max-width: 520px) {
+        .sb-error-header {
+          grid-template-columns: 1fr;
+          gap: 14px;
+          padding-right: 34px;
+        }
+
+        .sb-error-mark {
+          width: 50px;
+          height: 50px;
+        }
+
+        .sb-error-actions {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
+
+        .sb-error-button {
+          width: 100%;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #sb-err-overlay,
+        #sb-err-card,
+        .sb-error-close,
+        .sb-error-button {
+          transition: none;
+        }
+      }
+    `;
+
+    document.head.appendChild(style);
+  }
+
+  function getErrorPresentation(code) {
+    const value = String(code || "").toUpperCase();
+
+    if (value === "401" || value.startsWith("AUTH")) {
+      return {
+        label: "Authentication check",
+        accent: "#2563eb",
+        soft: "rgba(37, 99, 235, 0.12)",
+        border: "rgba(37, 99, 235, 0.28)"
+      };
+    }
+
+    if (value === "403" || value.startsWith("SEC")) {
+      return {
+        label: "Security check",
+        accent: "#dc2626",
+        soft: "rgba(220, 38, 38, 0.12)",
+        border: "rgba(220, 38, 38, 0.28)"
+      };
+    }
+
+    if (value === "404" || value.startsWith("NAV")) {
+      return {
+        label: "Page notice",
+        accent: "#d97706",
+        soft: "rgba(217, 119, 6, 0.12)",
+        border: "rgba(217, 119, 6, 0.28)"
+      };
+    }
+
+    if (value === "429" || value.startsWith("NET")) {
+      return {
+        label: "Connection notice",
+        accent: "#0891b2",
+        soft: "rgba(8, 145, 178, 0.12)",
+        border: "rgba(8, 145, 178, 0.28)"
+      };
+    }
+
+    if (value.startsWith("5") || value.startsWith("SYS")) {
+      return {
+        label: "Service notice",
+        accent: "#7c3aed",
+        soft: "rgba(124, 58, 237, 0.12)",
+        border: "rgba(124, 58, 237, 0.28)"
+      };
+    }
+
+    if (value.startsWith("ENV")) {
+      return {
+        label: "Compatibility notice",
+        accent: "#0f766e",
+        soft: "rgba(15, 118, 110, 0.12)",
+        border: "rgba(15, 118, 110, 0.28)"
+      };
+    }
+
+    return {
+      label: "StudyBase notice",
+      accent: "#dc2626",
+      soft: "rgba(220, 38, 38, 0.12)",
+      border: "rgba(220, 38, 38, 0.28)"
+    };
+  }
+
   function showErrorPopup(code) {
     const config = ERROR_MAP[code] || {
       title: "Unknown Error",
@@ -349,6 +762,7 @@
     };
 
     const displayCode = code ? code : "unknown";
+    const presentation = getErrorPresentation(displayCode);
 
     const hasActionButton =
       typeof config.buttonText === "string" &&
@@ -356,51 +770,58 @@
       typeof config.buttonUrl === "string" &&
       config.buttonUrl.trim();
 
+    ensureErrorStyles();
     document.body.style.overflow = "hidden";
 
     const overlay = document.createElement("div");
-    overlay.className = "fixed inset-0 z-[9999] bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 opacity-0 transition-opacity duration-300";
+    overlay.className = "is-hidden";
     overlay.id = "sb-err-overlay";
+    overlay.style.setProperty("--sb-error-accent", presentation.accent);
+    overlay.style.setProperty("--sb-error-soft", presentation.soft);
+    overlay.style.setProperty("--sb-error-border", presentation.border);
 
     overlay.innerHTML = `
-      <div id="sb-err-card" class="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-all duration-300 ring-1 ring-gray-900/5" role="dialog" aria-modal="true" aria-labelledby="sb-err-title">
-        
-        <div class="flex items-start sm:items-center gap-4 p-5 sm:p-6 border-b border-gray-100 bg-gray-50/50">
-          <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-white border border-gray-200 rounded-xl text-2xl shadow-sm">
-            ${config.icon}
-          </div>
-          <div class="flex flex-col">
-            <h2 id="sb-err-title" class="text-lg sm:text-xl font-bold text-gray-900 leading-tight m-0">
-              ${escapeHtml(config.title)}
-            </h2>
-            <p class="text-xs sm:text-sm text-gray-500 mt-1 mb-0">
-              Error code: <span class="font-mono font-medium text-gray-700">${escapeHtml(displayCode)}</span>
-            </p>
-          </div>
-        </div>
+      <div id="sb-err-card" class="is-hidden" role="dialog" aria-modal="true" aria-labelledby="sb-err-title" aria-describedby="sb-err-message">
+        <div class="sb-error-accent" aria-hidden="true"></div>
+        <div class="sb-error-glow" aria-hidden="true"></div>
 
-        <div class="p-5 sm:p-6 text-gray-600 text-sm sm:text-base leading-relaxed">
-          ${escapeHtml(config.message)}
-        </div>
+        <button id="sb-err-x" class="sb-error-close" type="button" aria-label="Dismiss error">&times;</button>
 
-        <div class="px-5 py-4 sm:px-6 sm:py-5 border-t border-gray-100 bg-gray-50 flex justify-end gap-3 flex-wrap">
-          ${
-            hasActionButton
-              ? `
+        <div class="sb-error-body">
+          <div class="sb-error-header">
+            <div class="sb-error-mark" aria-hidden="true">!</div>
+            <div>
+              <p class="sb-error-kicker">${escapeHtml(presentation.label)}</p>
+              <h2 id="sb-err-title">${escapeHtml(config.title)}</h2>
+            </div>
+          </div>
+
+          <p id="sb-err-message">${escapeHtml(config.message)}</p>
+
+          <div class="sb-error-meta" aria-label="Error code">
+            <span>Error code</span>
+            <code>${escapeHtml(displayCode)}</code>
+          </div>
+
+          <div class="sb-error-actions">
+            ${
+              hasActionButton
+                ? `
                 <a
                   id="sb-err-action"
                   href="${escapeHtml(config.buttonUrl)}"
-                  class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-gray-900 transition-all bg-white border border-gray-300 rounded-xl shadow-sm hover:bg-gray-100 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 active:scale-95"
+                  class="sb-error-button sb-error-button-secondary"
                 >
                   ${escapeHtml(config.buttonText)}
                 </a>
               `
-              : ""
-          }
+                : ""
+            }
 
-          <button id="sb-err-close" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold text-white transition-all bg-gray-900 border border-transparent rounded-xl shadow-sm hover:bg-gray-800 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2 active:scale-95">
-            Got it
-          </button>
+            <button id="sb-err-close" class="sb-error-button sb-error-button-primary" type="button">
+              Try again
+            </button>
+          </div>
         </div>
       </div>
     `;
@@ -408,29 +829,29 @@
     document.body.appendChild(overlay);
 
     requestAnimationFrame(() => {
-      overlay.classList.remove("opacity-0");
-      document.getElementById("sb-err-card").classList.remove("scale-95");
-      document.getElementById("sb-err-card").classList.add("scale-100");
+      overlay.classList.remove("is-hidden");
+      document.getElementById("sb-err-card")?.classList.remove("is-hidden");
     });
 
     const closeBtn = document.getElementById("sb-err-close");
+    const closeIconBtn = document.getElementById("sb-err-x");
     closeBtn?.focus({ preventScroll: true });
 
     function closeAndReloadClean() {
       document.body.style.overflow = "";
 
-      overlay.classList.add("opacity-0");
+      overlay.classList.add("is-hidden");
       const card = document.getElementById("sb-err-card");
-      card.classList.remove("scale-100");
-      card.classList.add("scale-95");
+      card?.classList.add("is-hidden");
 
       setTimeout(() => {
         overlay.remove();
         removeErrorParamAndReload();
-      }, 300);
+      }, 260);
     }
 
     closeBtn?.addEventListener("click", closeAndReloadClean);
+    closeIconBtn?.addEventListener("click", closeAndReloadClean);
 
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) closeAndReloadClean();
