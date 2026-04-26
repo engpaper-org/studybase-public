@@ -3,236 +3,382 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title></title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <title>html page | StudyBase</title>
   <script src="/assets/js/iframeCheck.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    :root {
+      --ink: #172033;
+      --muted: #667085;
+      --panel: rgba(255, 255, 255, 0.82);
+      --line: rgba(148, 163, 184, 0.26);
+      --accent: #0f766e;
+      --accent-strong: #115e59;
+      --sun: #f59e0b;
+      --rose: #e11d48;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      font-family: 'Manrope', sans-serif;
+      background:
+        radial-gradient(circle at 8% 4%, rgba(20, 184, 166, 0.22), transparent 28rem),
+        radial-gradient(circle at 86% 12%, rgba(245, 158, 11, 0.20), transparent 24rem),
+        linear-gradient(135deg, #f8fafc 0%, #edfdf8 42%, #fff7ed 100%);
+      overflow-x: hidden;
+    }
+
+    .display-font {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .sound-card {
+      position: relative;
+      isolation: isolate;
+      border: 1px solid rgba(15, 118, 110, 0.14);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(240, 253, 250, 0.7));
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+      contain: content;
+    }
+
+    .sound-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(15, 118, 110, 0.32);
+      box-shadow: 0 22px 46px rgba(15, 23, 42, 0.12);
+    }
+
+    .sound-card.is-playing {
+      border-color: rgba(225, 29, 72, 0.42);
+      box-shadow: 0 24px 54px rgba(225, 29, 72, 0.16);
+    }
+
+    .sound-card.is-playing .button-art {
+      transform: scaleX(0.92) scaleY(0.78);
+      filter: saturate(1.16);
+    }
+
+    .stop-sound-btn {
+      opacity: 0;
+      transform: translate(8px, -8px) scale(0.88);
+      pointer-events: none;
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .sound-card.is-playing .stop-sound-btn {
+      opacity: 1;
+      transform: translate(0, 0) scale(1);
+      pointer-events: auto;
+    }
+
+    .new-sound-tag {
+      background: linear-gradient(135deg, #f97316, #e11d48);
+      box-shadow: 0 10px 20px rgba(225, 29, 72, 0.22);
+    }
+
+    .glass-panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .schedule-chip {
+      background: rgba(15, 118, 110, 0.10);
+      color: var(--accent-strong);
+    }
+
+    .schedule-result.is-selected {
+      border-color: rgba(15, 118, 110, 0.42);
+      background: rgba(240, 253, 250, 0.96);
+      color: var(--accent-strong);
+    }
+
+    .toast {
+      transform: translateY(1rem);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .toast.is-visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-900">
-  <div class="relative overflow-hidden">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.10),_transparent_28%),radial-gradient(circle_at_top_right,_rgba(168,85,247,0.08),_transparent_22%)] pointer-events-none"></div>
+<body>
+  <main class="relative min-h-screen">
+    <div class="pointer-events-none fixed inset-0 opacity-70">
+      <div class="absolute left-[-8rem] top-24 h-72 w-72 rounded-full bg-teal-200/40 blur-3xl"></div>
+      <div class="absolute bottom-16 right-[-6rem] h-80 w-80 rounded-full bg-amber-200/45 blur-3xl"></div>
+    </div>
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
-      <div class="mb-8 sm:mb-10">
-        <div class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white/80 backdrop-blur px-3 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-slate-500 shadow-sm">
-          <i class="fa-solid fa-wave-square text-sky-500"></i>
-          Soundboard
+    <div class="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+      <header class="mb-8 grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div>
+          <div class="inline-flex items-center gap-2 rounded-full border border-teal-200/70 bg-white/70 px-3 py-1.5 text-[0.68rem] font-extrabold uppercase tracking-[0.22em] text-teal-700 shadow-sm">
+            <i class="fa-solid fa-wave-square"></i>
+            StudyBase sounds
+          </div>
+          <div id="lastUpdatedPill" class="mt-3 inline-flex items-center gap-2 rounded-full border border-amber-200/80 bg-amber-50 px-3 py-1.5 text-[0.68rem] font-extrabold uppercase tracking-[0.18em] text-amber-700 shadow-sm">
+            <i class="fa-solid fa-calendar-check"></i>
+            Last update loading...
+          </div>
+          <h1 class="display-font mt-4 text-5xl font-bold tracking-[-0.06em] text-slate-950 sm:text-6xl lg:text-7xl">
+            Soundboard
+          </h1>
+          <p class="mt-4 max-w-2xl text-sm font-semibold leading-6 text-slate-600 sm:text-base">
+            Fast buttons, cleaner scheduling, shareable schedule codes, and a proper stop button on anything that is currently playing.
+          </p>
         </div>
-        <h1 class="mt-4 text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900">Soundboard</h1>
-      </div>
 
-      <section class="mb-8 overflow-hidden rounded-[2rem] border border-slate-200 bg-white/85 shadow-xl shadow-slate-200/60 backdrop-blur">
-        <div class="grid gap-4 p-5 sm:p-6 lg:grid-cols-[1fr_auto] lg:items-center">
-          <div>
-            <div class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-extrabold uppercase tracking-[0.16em] text-slate-500">
-              <i class="fa-solid fa-clock text-sky-500"></i>
-              More sounds coming soon in
+        <div class="glass-panel rounded-[2rem] p-4">
+          <p class="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-500">Next sound drop</p>
+          <div id="soundCountdown" class="mt-3 grid grid-cols-4 gap-2 text-center" aria-live="polite">
+            <div class="rounded-2xl bg-white/70 px-3 py-3">
+              <span id="countdownDays" class="display-font block text-2xl font-bold tracking-tight">--</span>
+              <span class="text-[0.65rem] font-extrabold uppercase tracking-[0.14em] text-slate-400">Days</span>
             </div>
-            <p class="mt-3 max-w-2xl text-sm font-medium leading-6 text-slate-600">
-              A fresh drop is scheduled for Sunday at 9pm.
+            <div class="rounded-2xl bg-white/70 px-3 py-3">
+              <span id="countdownHours" class="display-font block text-2xl font-bold tracking-tight">--</span>
+              <span class="text-[0.65rem] font-extrabold uppercase tracking-[0.14em] text-slate-400">Hours</span>
+            </div>
+            <div class="rounded-2xl bg-white/70 px-3 py-3">
+              <span id="countdownMinutes" class="display-font block text-2xl font-bold tracking-tight">--</span>
+              <span class="text-[0.65rem] font-extrabold uppercase tracking-[0.14em] text-slate-400">Mins</span>
+            </div>
+            <div class="rounded-2xl bg-white/70 px-3 py-3">
+              <span id="countdownSeconds" class="display-font block text-2xl font-bold tracking-tight">--</span>
+              <span class="text-[0.65rem] font-extrabold uppercase tracking-[0.14em] text-slate-400">Secs</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="glass-panel mb-8 overflow-hidden rounded-[2rem]">
+        <div class="grid gap-5 p-5 lg:grid-cols-[1fr_auto] lg:items-center lg:p-6">
+          <div>
+            <div class="inline-flex items-center gap-2 rounded-full schedule-chip px-3 py-1.5 text-[0.68rem] font-extrabold uppercase tracking-[0.18em]">
+              <i class="fa-solid fa-bell"></i>
+              Scheduler
+            </div>
+            <h2 class="display-font mt-3 text-2xl font-bold tracking-[-0.04em] text-slate-950">Play a sound later</h2>
+            <p id="scheduledSoundMeta" class="mt-2 text-sm font-semibold leading-6 text-slate-600">
+              Schedule normally, or paste a schedule code from someone else. The page needs to stay open for the sound to fire.
             </p>
           </div>
 
-          <div id="soundCountdown" class="grid grid-cols-4 gap-2 text-center" aria-live="polite">
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3">
-              <span id="countdownDays" class="block text-2xl font-black tracking-tight text-slate-900">--</span>
-              <span class="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-slate-400">Days</span>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3">
-              <span id="countdownHours" class="block text-2xl font-black tracking-tight text-slate-900">--</span>
-              <span class="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-slate-400">Hours</span>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3">
-              <span id="countdownMinutes" class="block text-2xl font-black tracking-tight text-slate-900">--</span>
-              <span class="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-slate-400">Mins</span>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3">
-              <span id="countdownSeconds" class="block text-2xl font-black tracking-tight text-slate-900">--</span>
-              <span class="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-slate-400">Secs</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="mb-8 overflow-hidden rounded-[2rem] border border-slate-200 bg-white/85 shadow-xl shadow-slate-200/60 backdrop-blur">
-        <div class="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
-          <button id="openScheduleModalBtn" type="button" class="inline-flex w-fit items-center justify-center gap-2 rounded-2xl border border-violet-200 bg-violet-50 px-4 py-2.5 text-sm font-bold text-violet-700 shadow-sm transition hover:-translate-y-0.5 hover:bg-violet-100 hover:shadow-md">
-            <i class="fa-solid fa-bell"></i>
-            Schedule a sound
-          </button>
-
-          <div id="scheduledSoundBar" class="hidden min-w-0 flex-1 items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
-            <div class="min-w-0">
-              <p id="scheduledSoundTitle" class="truncate text-sm font-black tracking-tight text-slate-900">No sound scheduled</p>
-              <p id="scheduledSoundMeta" class="mt-1 text-xs font-medium text-slate-500">Choose a time and sound, then press schedule.</p>
-            </div>
-
-            <div class="flex items-center gap-2 shrink-0">
-              <div class="rounded-xl bg-white px-3 py-2 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-slate-500 shadow-sm" id="scheduledSoundStatus">Idle</div>
-              <button id="changeScheduleBtn" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50" aria-label="Change scheduled sound time">
-                <i class="fa-solid fa-pen"></i>
-              </button>
-              <button id="cancelScheduleBtn" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-red-100 bg-red-50 text-red-600 shadow-sm transition hover:-translate-y-0.5 hover:bg-red-100 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50" aria-label="Cancel scheduled sound">
-                <i class="fa-solid fa-xmark"></i>
-              </button>
-            </div>
-          </div>
-
-          <div id="scheduleBarPlaceholder" class="flex flex-1 items-center rounded-2xl border border-dashed border-slate-200 bg-slate-50/80 px-4 py-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-400 sm:justify-end">
-            No sound scheduled
-          </div>
-        </div>
-
-        <div id="scheduledCountdownWrap" class="hidden border-t border-slate-200 px-4 pb-4 pt-0 sm:px-5 sm:pb-5">
-          <div class="grid grid-cols-4 gap-2 text-center" aria-live="polite">
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3">
-              <span id="scheduleCountdownDays" class="block text-2xl font-black tracking-tight text-slate-900">--</span>
-              <span class="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-slate-400">Days</span>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3">
-              <span id="scheduleCountdownHours" class="block text-2xl font-black tracking-tight text-slate-900">--</span>
-              <span class="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-slate-400">Hours</span>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3">
-              <span id="scheduleCountdownMinutes" class="block text-2xl font-black tracking-tight text-slate-900">--</span>
-              <span class="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-slate-400">Mins</span>
-            </div>
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-3">
-              <span id="scheduleCountdownSeconds" class="block text-2xl font-black tracking-tight text-slate-900">--</span>
-              <span class="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-slate-400">Secs</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div id="scheduleModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        <div id="scheduleModalBackdrop" class="absolute inset-0 bg-slate-950/50 backdrop-blur-sm"></div>
-        <div class="relative z-10 w-full max-w-2xl overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-2xl shadow-slate-900/20">
-          <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-5 py-4 sm:px-6">
-            <div>
-              <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-slate-500">Scheduled sound</p>
-              <h2 class="mt-1 text-2xl font-black tracking-tight text-slate-900">Set one sound to play later</h2>
-            </div>
-            <button id="closeScheduleModalBtn" type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:bg-slate-50 hover:text-slate-700" aria-label="Close schedule modal">
+          <div class="flex flex-wrap gap-2 lg:justify-end">
+            <button id="openScheduleModalBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-teal-700 px-4 py-3 text-sm font-extrabold text-white shadow-lg shadow-teal-700/20 transition hover:-translate-y-0.5 hover:bg-teal-800">
+              <i class="fa-solid fa-plus"></i>
+              Schedule
+            </button>
+            <button id="cancelScheduleBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-rose-100 bg-rose-50 px-4 py-3 text-sm font-extrabold text-rose-700 transition hover:-translate-y-0.5 hover:bg-rose-100 disabled:cursor-not-allowed disabled:opacity-45">
               <i class="fa-solid fa-xmark"></i>
+              Clear
             </button>
           </div>
+        </div>
 
-          <div class="p-5 sm:p-6">
-            <p class="max-w-2xl text-sm font-medium leading-6 text-slate-600">
-              Pick a time, search for a sound, and this page will play it when the countdown hits zero. Only one scheduled sound can be active at once.
-            </p>
+        <div class="border-t border-slate-200/70 bg-white/40 p-5 lg:p-6">
+          <div id="scheduleEmptyState" class="rounded-3xl border border-dashed border-slate-300/80 bg-white/55 px-5 py-5 text-sm font-bold text-slate-500">
+            No sound scheduled yet.
+          </div>
 
-            <div class="mt-5 grid gap-3 sm:grid-cols-[180px_1fr]">
+          <div id="scheduledSoundBar" class="hidden grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div class="min-w-0">
+              <p id="scheduledSoundTitle" class="truncate text-xl font-black tracking-tight text-slate-950">No sound scheduled</p>
+              <div class="mt-3 grid grid-cols-4 gap-2 text-center" aria-live="polite">
+                <div class="rounded-2xl bg-white/80 px-3 py-3">
+                  <span id="scheduleCountdownDays" class="display-font block text-2xl font-bold">--</span>
+                  <span class="text-[0.65rem] font-extrabold uppercase tracking-[0.14em] text-slate-400">Days</span>
+                </div>
+                <div class="rounded-2xl bg-white/80 px-3 py-3">
+                  <span id="scheduleCountdownHours" class="display-font block text-2xl font-bold">--</span>
+                  <span class="text-[0.65rem] font-extrabold uppercase tracking-[0.14em] text-slate-400">Hours</span>
+                </div>
+                <div class="rounded-2xl bg-white/80 px-3 py-3">
+                  <span id="scheduleCountdownMinutes" class="display-font block text-2xl font-bold">--</span>
+                  <span class="text-[0.65rem] font-extrabold uppercase tracking-[0.14em] text-slate-400">Mins</span>
+                </div>
+                <div class="rounded-2xl bg-white/80 px-3 py-3">
+                  <span id="scheduleCountdownSeconds" class="display-font block text-2xl font-bold">--</span>
+                  <span class="text-[0.65rem] font-extrabold uppercase tracking-[0.14em] text-slate-400">Secs</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 lg:justify-end">
+              <span id="scheduledSoundStatus" class="inline-flex items-center justify-center rounded-2xl bg-white px-4 py-3 text-xs font-extrabold uppercase tracking-[0.16em] text-teal-700 shadow-sm">Idle</span>
+              <button id="changeScheduleBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-extrabold text-slate-700 transition hover:-translate-y-0.5 hover:shadow-md">
+                <i class="fa-solid fa-pen"></i>
+                Edit
+              </button>
+              <button id="copyActiveCodeBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-teal-100 bg-teal-50 px-4 py-3 text-sm font-extrabold text-teal-700 transition hover:-translate-y-0.5 hover:bg-teal-100">
+                <i class="fa-solid fa-code"></i>
+                Copy code
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mb-6 grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
+        <label for="searchInput" class="sr-only">Search sounds</label>
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input id="searchInput" type="search" placeholder="Search sounds..." class="w-full rounded-2xl border border-slate-200 bg-white/85 py-4 pl-11 pr-4 text-sm font-bold text-slate-800 shadow-sm outline-none transition focus:border-teal-300 focus:ring-4 focus:ring-teal-100" autocomplete="off" />
+        </div>
+
+        <div class="flex flex-wrap gap-2 lg:justify-end">
+          <button id="randomSoundBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-amber-100 bg-amber-50 px-4 py-4 text-sm font-extrabold text-amber-700 transition hover:-translate-y-0.5 hover:bg-amber-100">
+            <i class="fa-solid fa-shuffle"></i>
+            Random
+          </button>
+          <button id="stopAllBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-rose-100 bg-rose-600 px-4 py-4 text-sm font-extrabold text-white shadow-lg shadow-rose-600/20 transition hover:-translate-y-0.5 hover:bg-rose-700">
+            <i class="fa-solid fa-stop"></i>
+            Stop all
+          </button>
+        </div>
+      </section>
+
+      <p id="resultCount" class="mb-4 text-xs font-extrabold uppercase tracking-[0.16em] text-slate-500">Loading sounds...</p>
+      <div id="soundGrid" class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"></div>
+    </div>
+  </main>
+
+  <div id="scheduleModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div id="scheduleModalBackdrop" class="absolute inset-0 bg-slate-950/55 backdrop-blur-sm"></div>
+    <div class="relative z-10 max-h-[92vh] w-full max-w-4xl overflow-hidden rounded-[2rem] border border-white/60 bg-white shadow-2xl shadow-slate-950/25">
+      <div class="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-4 sm:px-6">
+        <div>
+          <p class="text-xs font-extrabold uppercase tracking-[0.18em] text-teal-700">Schedule sound</p>
+          <h2 class="display-font mt-1 text-3xl font-bold tracking-[-0.04em] text-slate-950">Time it, share it, replay it.</h2>
+        </div>
+        <button id="closeScheduleModalBtn" type="button" class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 transition hover:bg-slate-50 hover:text-slate-800" aria-label="Close schedule modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="max-h-[calc(92vh-92px)] overflow-y-auto p-5 sm:p-6">
+        <div class="grid gap-5 lg:grid-cols-[1fr_0.9fr]">
+          <div>
+            <div class="grid gap-3 sm:grid-cols-[190px_1fr]">
               <label class="block">
                 <span class="mb-2 block text-xs font-extrabold uppercase tracking-[0.16em] text-slate-500">Play time</span>
-                <input id="scheduleTimeInput" type="datetime-local" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-800 shadow-sm outline-none transition focus:border-violet-300 focus:ring-4 focus:ring-violet-100" />
+                <input id="scheduleTimeInput" type="datetime-local" class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-800 outline-none transition focus:border-teal-300 focus:ring-4 focus:ring-teal-100" />
               </label>
 
               <label class="block">
                 <span class="mb-2 block text-xs font-extrabold uppercase tracking-[0.16em] text-slate-500">Find a sound</span>
                 <div class="relative">
                   <i class="fa-solid fa-music absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-                  <input id="scheduleSoundSearch" type="text" placeholder="Search scheduled sound..." class="w-full rounded-2xl border border-slate-200 bg-white pl-11 pr-4 py-3 text-sm font-medium text-slate-800 shadow-sm outline-none transition focus:border-violet-300 focus:ring-4 focus:ring-violet-100" />
+                  <input id="scheduleSoundSearch" type="search" placeholder="Search scheduled sound..." class="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm font-bold text-slate-800 outline-none transition focus:border-teal-300 focus:ring-4 focus:ring-teal-100" autocomplete="off" />
                 </div>
               </label>
             </div>
 
             <div class="mt-4 rounded-3xl border border-slate-200 bg-slate-50 p-3">
-              <div id="scheduleSoundResults" class="flex max-h-64 flex-col gap-2 overflow-y-auto"></div>
+              <div id="scheduleSoundResults" class="flex max-h-72 flex-col gap-2 overflow-y-auto pr-1"></div>
             </div>
 
             <div class="mt-5 flex flex-wrap gap-3">
-              <button id="scheduleSoundBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-violet-600 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-violet-600/20 transition hover:-translate-y-0.5 hover:bg-violet-700">
+              <button id="scheduleSoundBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-teal-700 px-4 py-3 text-sm font-extrabold text-white shadow-lg shadow-teal-700/20 transition hover:-translate-y-0.5 hover:bg-teal-800">
                 <i class="fa-solid fa-bell"></i>
                 Schedule sound
               </button>
-              <button id="modalCancelScheduleBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-                Close
+              <button id="previewScheduleSoundBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-extrabold text-slate-700 transition hover:-translate-y-0.5 hover:shadow-md">
+                <i class="fa-solid fa-play"></i>
+                Preview
               </button>
             </div>
           </div>
+
+          <aside class="rounded-[1.75rem] border border-teal-100 bg-teal-50/70 p-4">
+            <div class="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.16em] text-teal-700">
+              <i class="fa-solid fa-code"></i>
+              Schedule code
+            </div>
+            <p class="mt-2 text-sm font-semibold leading-6 text-slate-600">
+              Generate a code from the selected sound and time, or paste one in. It stores the sound name and exact time.
+            </p>
+
+            <textarea id="scheduleCodeInput" rows="7" placeholder="Paste a schedule code here..." class="mt-4 w-full resize-none rounded-2xl border border-teal-100 bg-white p-3 text-xs font-bold leading-5 text-slate-700 outline-none transition focus:border-teal-300 focus:ring-4 focus:ring-teal-100"></textarea>
+
+            <div class="mt-3 grid gap-2 sm:grid-cols-2">
+              <button id="generateCodeBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-teal-200 bg-white px-3 py-3 text-xs font-extrabold text-teal-700 transition hover:-translate-y-0.5 hover:bg-teal-100">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                Generate
+              </button>
+              <button id="applyCodeBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-950 px-3 py-3 text-xs font-extrabold text-white transition hover:-translate-y-0.5 hover:bg-teal-800">
+                <i class="fa-solid fa-arrow-right"></i>
+                Use code
+              </button>
+              <button id="copyCodeBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-3 text-xs font-extrabold text-slate-700 transition hover:-translate-y-0.5 hover:shadow-sm">
+                <i class="fa-solid fa-copy"></i>
+                Copy
+              </button>
+              <button id="clearCodeBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-3 py-3 text-xs font-extrabold text-slate-700 transition hover:-translate-y-0.5 hover:shadow-sm">
+                <i class="fa-solid fa-eraser"></i>
+                Clear
+              </button>
+            </div>
+
+            <p id="scheduleCodeStatus" class="mt-3 min-h-5 text-xs font-bold text-slate-500"></p>
+          </aside>
         </div>
       </div>
-
-      <div class="mb-6 grid gap-3 lg:grid-cols-[1fr_auto] lg:items-end">
-        <div class="max-w-xl">
-        <label for="searchInput" class="sr-only">Search sounds</label>
-        <div class="relative">
-          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-          <input id="searchInput" type="text" placeholder="Search sounds..." class="w-full rounded-2xl border border-slate-200 bg-white pl-11 pr-4 py-3.5 text-sm font-medium text-slate-800 shadow-sm outline-none transition focus:border-sky-300 focus:ring-4 focus:ring-sky-100" />
-        </div>
-        </div>
-
-        <button class="stop-all-btn inline-flex items-center justify-center gap-2 rounded-2xl border border-red-100 bg-red-50 px-4 py-3.5 text-sm font-bold text-red-600 shadow-sm transition hover:-translate-y-0.5 hover:bg-red-100 hover:shadow-md" type="button">
-          <i class="fa-solid fa-stop"></i>
-          Stop all sounds
-        </button>
-      </div>
-
-      <div class="mb-8 flex flex-wrap gap-3">
-        <button class="stop-all-btn inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md" id="stopAllBtn" type="button">
-          <i class="fa-solid fa-stop text-slate-500"></i>
-          Stop all
-        </button>
-      </div>
-
-      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3 sm:gap-4" id="soundGrid"></div>
-
-      <div class="mt-8 flex justify-center">
-        <button class="stop-all-btn inline-flex items-center gap-2 rounded-2xl bg-slate-900 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-slate-900/15 transition hover:-translate-y-0.5 hover:bg-red-600" type="button">
-          <i class="fa-solid fa-stop"></i>
-          Stop all sounds
-        </button>
-      </div>
-
     </div>
-
-    <section class="relative border-y border-slate-200 bg-slate-200/70 px-4 py-14 text-center sm:px-6 lg:px-8">
-      <div class="mx-auto flex max-w-7xl flex-col items-center justify-center rounded-[2rem] border border-slate-300/70 bg-white/35 px-6 py-12 shadow-inner">
-        <div class="flex h-16 w-16 items-center justify-center rounded-2xl border border-slate-300 bg-slate-100 text-2xl text-slate-500 shadow-sm">
-          <i class="fa-solid fa-lock"></i>
-        </div>
-        <h2 class="mt-5 text-3xl font-black tracking-tight text-slate-700">Coming soon</h2>
-        <p class="mt-3 max-w-xl text-sm font-semibold leading-6 text-slate-500">
-          More soundboard buttons are being prepared and will unlock in the next drop.
-        </p>
-      </div>
-    </section>
   </div>
 
-  <button class="stop-all-btn fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 rounded-full bg-red-600 px-5 py-3 text-sm font-bold text-white shadow-xl shadow-red-600/25 transition hover:-translate-y-0.5 hover:bg-red-700" type="button">
-    <i class="fa-solid fa-stop"></i>
-    Stop
-  </button>
+  <div id="toast" class="toast fixed bottom-5 left-1/2 z-[60] -translate-x-1/2 rounded-2xl bg-slate-950 px-4 py-3 text-sm font-bold text-white shadow-2xl"></div>
 
   <script>
     const soundGrid = document.getElementById('soundGrid');
     const searchInput = document.getElementById('searchInput');
-    const stopAllButtons = document.querySelectorAll('.stop-all-btn');
+    const resultCount = document.getElementById('resultCount');
+    const lastUpdatedPill = document.getElementById('lastUpdatedPill');
+    const stopAllBtn = document.getElementById('stopAllBtn');
+    const randomSoundBtn = document.getElementById('randomSoundBtn');
     const countdownDays = document.getElementById('countdownDays');
     const countdownHours = document.getElementById('countdownHours');
     const countdownMinutes = document.getElementById('countdownMinutes');
     const countdownSeconds = document.getElementById('countdownSeconds');
+
     const openScheduleModalBtn = document.getElementById('openScheduleModalBtn');
     const scheduleModal = document.getElementById('scheduleModal');
     const scheduleModalBackdrop = document.getElementById('scheduleModalBackdrop');
     const closeScheduleModalBtn = document.getElementById('closeScheduleModalBtn');
-    const modalCancelScheduleBtn = document.getElementById('modalCancelScheduleBtn');
     const scheduleTimeInput = document.getElementById('scheduleTimeInput');
     const scheduleSoundSearch = document.getElementById('scheduleSoundSearch');
     const scheduleSoundResults = document.getElementById('scheduleSoundResults');
+    const scheduleSoundBtn = document.getElementById('scheduleSoundBtn');
+    const previewScheduleSoundBtn = document.getElementById('previewScheduleSoundBtn');
+    const changeScheduleBtn = document.getElementById('changeScheduleBtn');
+    const cancelScheduleBtn = document.getElementById('cancelScheduleBtn');
+    const copyActiveCodeBtn = document.getElementById('copyActiveCodeBtn');
     const scheduledSoundBar = document.getElementById('scheduledSoundBar');
-    const scheduleBarPlaceholder = document.getElementById('scheduleBarPlaceholder');
-    const scheduledCountdownWrap = document.getElementById('scheduledCountdownWrap');
+    const scheduleEmptyState = document.getElementById('scheduleEmptyState');
     const scheduledSoundTitle = document.getElementById('scheduledSoundTitle');
     const scheduledSoundStatus = document.getElementById('scheduledSoundStatus');
     const scheduledSoundMeta = document.getElementById('scheduledSoundMeta');
@@ -240,66 +386,108 @@
     const scheduleCountdownHours = document.getElementById('scheduleCountdownHours');
     const scheduleCountdownMinutes = document.getElementById('scheduleCountdownMinutes');
     const scheduleCountdownSeconds = document.getElementById('scheduleCountdownSeconds');
-    const scheduleSoundBtn = document.getElementById('scheduleSoundBtn');
-    const changeScheduleBtn = document.getElementById('changeScheduleBtn');
-    const cancelScheduleBtn = document.getElementById('cancelScheduleBtn');
+    const scheduleCodeInput = document.getElementById('scheduleCodeInput');
+    const generateCodeBtn = document.getElementById('generateCodeBtn');
+    const applyCodeBtn = document.getElementById('applyCodeBtn');
+    const copyCodeBtn = document.getElementById('copyCodeBtn');
+    const clearCodeBtn = document.getElementById('clearCodeBtn');
+    const scheduleCodeStatus = document.getElementById('scheduleCodeStatus');
+    const toast = document.getElementById('toast');
+
+    const SCHEDULE_STORAGE_KEY = 'sb_soundboard_schedule_v2';
+    const CODE_PREFIX = 'SB-SOUND-1:';
+
     let soundItems = [];
-    let currentlyPlayingItem = null;
     let scheduledSound = null;
     let selectedScheduledSoundName = '';
+    let toastTimer = null;
+    let soundboardLastUpdate = '';
+    let newSoundThreshold = null;
 
-    function getNextSundayAt9pm() {
-      const now = new Date();
-      const target = new Date(now);
-      const daysUntilSunday = (7 - now.getDay()) % 7;
-
-      target.setDate(now.getDate() + daysUntilSunday);
-      target.setHours(21, 0, 0, 0);
-
-      if (target <= now) {
-        target.setDate(target.getDate() + 7);
-      }
-
-      return target;
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     }
 
     function padCountdownValue(value) {
       return String(value).padStart(2, '0');
     }
 
-    function updateSoundCountdown() {
-      const target = getNextSundayAt9pm();
-      const remaining = Math.max(0, target - new Date());
-      const totalSeconds = Math.floor(remaining / 1000);
+    function parseDateOnly(value) {
+      if (!value) return null;
+      const date = new Date(`${value}T00:00:00`);
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+
+    function formatDateLabel(value) {
+      const date = parseDateOnly(value);
+      if (!date) return 'Unknown';
+      return date.toLocaleDateString([], { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    function setSoundboardLastUpdate(value) {
+      soundboardLastUpdate = value || '';
+      const lastUpdateDate = parseDateOnly(soundboardLastUpdate);
+
+      if (lastUpdateDate) {
+        newSoundThreshold = new Date(lastUpdateDate);
+        newSoundThreshold.setDate(newSoundThreshold.getDate() - 1);
+      } else {
+        newSoundThreshold = null;
+      }
+
+      lastUpdatedPill.innerHTML = `
+        <i class="fa-solid fa-calendar-check"></i>
+        Last update ${formatDateLabel(soundboardLastUpdate)}
+      `;
+    }
+
+    function isNewSound(item) {
+      const addedDate = parseDateOnly(item.dateAdded);
+      return Boolean(addedDate && newSoundThreshold && addedDate >= newSoundThreshold);
+    }
+
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.add('is-visible');
+      toastTimer = setTimeout(() => toast.classList.remove('is-visible'), 2400);
+    }
+
+    function getNextSundayAt9pm() {
+      const now = new Date();
+      const target = new Date(now);
+      const daysUntilSunday = (7 - now.getDay()) % 7;
+      target.setDate(now.getDate() + daysUntilSunday);
+      target.setHours(21, 0, 0, 0);
+      if (target <= now) target.setDate(target.getDate() + 7);
+      return target;
+    }
+
+    function setCountdownParts(prefix, remainingMs) {
+      const totalSeconds = Math.max(0, Math.floor(remainingMs / 1000));
       const days = Math.floor(totalSeconds / 86400);
       const hours = Math.floor((totalSeconds % 86400) / 3600);
       const minutes = Math.floor((totalSeconds % 3600) / 60);
       const seconds = totalSeconds % 60;
 
-      countdownDays.textContent = String(days);
-      countdownHours.textContent = padCountdownValue(hours);
-      countdownMinutes.textContent = padCountdownValue(minutes);
-      countdownSeconds.textContent = padCountdownValue(seconds);
+      prefix.days.textContent = String(days);
+      prefix.hours.textContent = padCountdownValue(hours);
+      prefix.minutes.textContent = padCountdownValue(minutes);
+      prefix.seconds.textContent = padCountdownValue(seconds);
     }
 
-    function pickRandomButton(buttonPool) {
-      if (!Array.isArray(buttonPool) || !buttonPool.length) {
-        return 'buttons/png.button';
-      }
-      return buttonPool[Math.floor(Math.random() * buttonPool.length)];
-    }
-
-    function stopAllSounds(exceptAudio = null) {
-      soundItems.forEach((item) => {
-        if (item.audio === exceptAudio) return;
-        item.audio.pause();
-        item.audio.currentTime = 0;
-        item.pad.classList.remove('playing');
-      });
-
-      if (!exceptAudio) {
-        currentlyPlayingItem = null;
-      }
+    function updateSoundCountdown() {
+      setCountdownParts({
+        days: countdownDays,
+        hours: countdownHours,
+        minutes: countdownMinutes,
+        seconds: countdownSeconds
+      }, getNextSundayAt9pm() - new Date());
     }
 
     function formatDatetimeLocal(date) {
@@ -317,10 +505,75 @@
       return next;
     }
 
+    function pickRandomButton(buttonPool) {
+      if (!Array.isArray(buttonPool) || !buttonPool.length) return 'buttons/red.png';
+      return buttonPool[Math.floor(Math.random() * buttonPool.length)];
+    }
+
+    function findSoundByName(name) {
+      const exact = soundItems.find((item) => item.name === name);
+      if (exact) return exact;
+      return soundItems.find((item) => item.name.toLowerCase() === String(name || '').toLowerCase());
+    }
+
+    function stopSound(item) {
+      if (!item) return;
+      item.audio.pause();
+      item.audio.currentTime = 0;
+      item.pad.classList.remove('is-playing');
+      item.stopButton.hidden = true;
+    }
+
+    function stopAllSounds(exceptItem = null) {
+      soundItems.forEach((item) => {
+        if (item === exceptItem) return;
+        stopSound(item);
+      });
+    }
+
+    function playSound(item, options = {}) {
+      if (!item) return;
+
+      stopAllSounds(item);
+      item.audio.currentTime = 0;
+      item.pad.classList.add('is-playing');
+      item.stopButton.hidden = false;
+
+      item.audio.play().catch((err) => {
+        item.pad.classList.remove('is-playing');
+        item.stopButton.hidden = true;
+        scheduledSoundStatus.textContent = 'Tap needed';
+        showToast(options.fromSchedule ? 'Browser blocked autoplay. Tap the sound to play it.' : 'Could not play this sound.');
+        console.warn(`Could not play ${item.name}:`, err);
+      });
+    }
+
+    function filterVisibleSounds() {
+      const query = searchInput.value.trim().toLowerCase();
+      let visible = 0;
+
+      soundItems.forEach((item) => {
+        const matches = item.name.toLowerCase().includes(query);
+        item.pad.classList.toggle('hidden', !matches);
+        if (matches) visible += 1;
+      });
+
+      resultCount.textContent = `${visible} of ${soundItems.length} sounds shown`;
+    }
+
     function openScheduleModal() {
       scheduleModal.classList.remove('hidden');
       scheduleModal.classList.add('flex');
       document.body.classList.add('overflow-hidden');
+
+      if (scheduledSound) {
+        scheduleTimeInput.value = formatDatetimeLocal(new Date(scheduledSound.targetTime));
+        selectScheduledSound(scheduledSound.soundName);
+        scheduleCodeInput.value = createScheduleCode(scheduledSound);
+      }
+
+      renderScheduleSoundResults();
+      setTimeout(() => scheduleSoundSearch.focus(), 50);
     }
 
     function closeScheduleModal() {
@@ -336,18 +589,36 @@
       scheduleCountdownSeconds.textContent = '--';
     }
 
+    function saveScheduledSound() {
+      if (!scheduledSound) {
+        localStorage.removeItem(SCHEDULE_STORAGE_KEY);
+        return;
+      }
+
+      localStorage.setItem(SCHEDULE_STORAGE_KEY, JSON.stringify(scheduledSound));
+    }
+
+    function loadSavedSchedule() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(SCHEDULE_STORAGE_KEY) || 'null');
+        if (!parsed || !parsed.soundName || !parsed.targetTime || parsed.targetTime <= Date.now()) {
+          localStorage.removeItem(SCHEDULE_STORAGE_KEY);
+          return;
+        }
+        scheduledSound = parsed;
+        selectedScheduledSoundName = parsed.soundName;
+      } catch {
+        localStorage.removeItem(SCHEDULE_STORAGE_KEY);
+      }
+    }
+
     function updateScheduledVisibility() {
       const hasSchedule = Boolean(scheduledSound);
       scheduledSoundBar.classList.toggle('hidden', !hasSchedule);
-      scheduledSoundBar.classList.toggle('flex', hasSchedule);
-      scheduledCountdownWrap.classList.toggle('hidden', !hasSchedule);
-      scheduleBarPlaceholder.classList.toggle('hidden', hasSchedule);
-    }
-
-    function updateScheduledButtonsState() {
-      const hasSchedule = Boolean(scheduledSound);
-      changeScheduleBtn.disabled = !hasSchedule;
+      scheduleEmptyState.classList.toggle('hidden', hasSchedule);
       cancelScheduleBtn.disabled = !hasSchedule;
+      changeScheduleBtn.disabled = !hasSchedule;
+      copyActiveCodeBtn.disabled = !hasSchedule;
       scheduleSoundBtn.innerHTML = hasSchedule
         ? '<i class="fa-solid fa-rotate"></i> Reschedule sound'
         : '<i class="fa-solid fa-bell"></i> Schedule sound';
@@ -355,14 +626,9 @@
 
     function selectScheduledSound(name) {
       selectedScheduledSoundName = name;
-      Array.from(scheduleSoundResults.querySelectorAll('[data-schedule-sound-name]')).forEach((button) => {
-        const active = button.dataset.scheduleSoundName === name;
-        button.classList.toggle('border-violet-300', active);
-        button.classList.toggle('bg-violet-50', active);
-        button.classList.toggle('text-violet-700', active);
-        button.classList.toggle('border-slate-200', !active);
-        button.classList.toggle('bg-white', !active);
-        button.classList.toggle('text-slate-700', !active);
+
+      scheduleSoundResults.querySelectorAll('[data-schedule-sound-name]').forEach((button) => {
+        button.classList.toggle('is-selected', button.dataset.scheduleSoundName === name);
       });
     }
 
@@ -371,59 +637,99 @@
       const filtered = soundItems.filter((item) => item.name.toLowerCase().includes(query));
 
       if (!filtered.length) {
-        scheduleSoundResults.innerHTML = '<div class="rounded-2xl border border-dashed border-slate-200 bg-white px-4 py-4 text-sm font-medium text-slate-500">No sounds match that search.</div>';
+        scheduleSoundResults.innerHTML = '<div class="rounded-2xl border border-dashed border-slate-200 bg-white px-4 py-4 text-sm font-bold text-slate-500">No sounds match that search.</div>';
         return;
       }
 
-      scheduleSoundResults.innerHTML = filtered.map((item) => {
-        const isActive = item.name === selectedScheduledSoundName;
-        return `
-          <button
-            type="button"
-            data-schedule-sound-name="${item.name.replace(/"/g, '&quot;')}"
-            class="flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left text-sm font-bold transition hover:-translate-y-0.5 ${isActive ? 'border-violet-300 bg-violet-50 text-violet-700' : 'border-slate-200 bg-white text-slate-700'}"
-          >
-            <span class="truncate">${item.name}</span>
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full ${isActive ? 'bg-violet-100 text-violet-700' : 'bg-slate-100 text-slate-500'}">
-              <i class="fa-solid ${isActive ? 'fa-check' : 'fa-wave-square'}"></i>
-            </span>
-          </button>
-        `;
-      }).join('');
+      const fragment = document.createDocumentFragment();
 
-      scheduleSoundResults.querySelectorAll('[data-schedule-sound-name]').forEach((button) => {
-        button.addEventListener('click', () => {
-          selectScheduledSound(button.dataset.scheduleSoundName);
-        });
+      filtered.forEach((item) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.scheduleSoundName = item.name;
+        button.className = 'schedule-result flex items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left text-sm font-extrabold text-slate-700 transition hover:-translate-y-0.5 hover:shadow-sm';
+        if (item.name === selectedScheduledSoundName) button.classList.add('is-selected');
+        button.innerHTML = `
+          <span class="truncate">${escapeHtml(item.name)}</span>
+          <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-500">
+            <i class="fa-solid ${item.name === selectedScheduledSoundName ? 'fa-check' : 'fa-wave-square'}"></i>
+          </span>
+        `;
+        button.addEventListener('click', () => selectScheduledSound(item.name));
+        fragment.appendChild(button);
       });
+
+      scheduleSoundResults.replaceChildren(fragment);
     }
 
-    function clearScheduledSound(options = {}) {
-      const { keepInputs = false, message = 'Choose a time and sound, then press schedule.' } = options;
+    function clearScheduledSound(message = 'Scheduled sound cleared.') {
       scheduledSound = null;
+      saveScheduledSound();
       scheduledSoundTitle.textContent = 'No sound scheduled';
       scheduledSoundStatus.textContent = 'Idle';
       scheduledSoundMeta.textContent = message;
       resetScheduledCountdownDisplay();
+      updateScheduledVisibility();
+      showToast(message);
+    }
 
-      if (!keepInputs) {
-        scheduleTimeInput.value = formatDatetimeLocal(getDefaultScheduleTime());
+    function scheduleSound(soundName, targetTime) {
+      const item = findSoundByName(soundName);
+      if (!item) {
+        scheduleCodeStatus.textContent = 'That sound is not in this soundboard.';
+        return false;
       }
 
+      if (!Number.isFinite(targetTime) || targetTime <= Date.now()) {
+        scheduleCodeStatus.textContent = 'Choose a future time.';
+        return false;
+      }
+
+      scheduledSound = {
+        soundName: item.name,
+        targetTime,
+        createdAt: Date.now()
+      };
+
+      selectedScheduledSoundName = item.name;
+      saveScheduledSound();
+      updateScheduledCountdown();
       updateScheduledVisibility();
-      updateScheduledButtonsState();
+      showToast(`Scheduled ${item.name}`);
+      return true;
+    }
+
+    function scheduleSelectedSound() {
+      const chosenSound = findSoundByName(selectedScheduledSoundName);
+      const targetTime = new Date(scheduleTimeInput.value).getTime();
+
+      if (!scheduleTimeInput.value) {
+        scheduleCodeStatus.textContent = 'Choose a time first.';
+        scheduleTimeInput.focus();
+        return;
+      }
+
+      if (!chosenSound) {
+        scheduleCodeStatus.textContent = 'Pick a sound first.';
+        scheduleSoundSearch.focus();
+        return;
+      }
+
+      if (scheduleSound(chosenSound.name, targetTime)) {
+        scheduleCodeInput.value = createScheduleCode(scheduledSound);
+        scheduleCodeStatus.textContent = 'Scheduled and code generated.';
+        closeScheduleModal();
+      }
     }
 
     function triggerScheduledSound() {
       if (!scheduledSound) return;
-      const matchedItem = soundItems.find((item) => item.name === scheduledSound.soundName);
 
-      if (matchedItem) {
-        matchedItem.playSound();
-      }
-
+      const item = findSoundByName(scheduledSound.soundName);
       const playedName = scheduledSound.soundName;
-      clearScheduledSound({ keepInputs: true, message: `Played ${playedName}. Set another sound whenever you want.` });
+
+      if (item) playSound(item, { fromSchedule: true });
+      clearScheduledSound(`Played ${playedName}. Set another whenever you want.`);
     }
 
     function updateScheduledCountdown() {
@@ -439,161 +745,227 @@
         return;
       }
 
-      const totalSeconds = Math.floor(remaining / 1000);
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
+      setCountdownParts({
+        days: scheduleCountdownDays,
+        hours: scheduleCountdownHours,
+        minutes: scheduleCountdownMinutes,
+        seconds: scheduleCountdownSeconds
+      }, remaining);
 
-      scheduleCountdownDays.textContent = String(days);
-      scheduleCountdownHours.textContent = padCountdownValue(hours);
-      scheduleCountdownMinutes.textContent = padCountdownValue(minutes);
-      scheduleCountdownSeconds.textContent = padCountdownValue(seconds);
+      const target = new Date(scheduledSound.targetTime);
+      scheduledSoundTitle.textContent = scheduledSound.soundName;
       scheduledSoundStatus.textContent = 'Scheduled';
+      scheduledSoundMeta.textContent = `Set for ${target.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}. The page must stay open.`;
     }
 
-    function scheduleSelectedSound() {
-      const chosenTime = scheduleTimeInput.value;
-      const chosenSound = soundItems.find((item) => item.name === selectedScheduledSoundName);
+    function createScheduleCode(schedule) {
+      if (!schedule) return '';
 
-      if (!chosenTime) {
-        scheduledSoundStatus.textContent = 'Missing time';
-        scheduledSoundMeta.textContent = 'Choose a time first.';
-        scheduleTimeInput.focus();
-        return;
-      }
-
-      if (!chosenSound) {
-        scheduledSoundStatus.textContent = 'Missing sound';
-        scheduledSoundMeta.textContent = 'Pick a sound from the list first.';
-        scheduleSoundSearch.focus();
-        return;
-      }
-
-      const targetTime = new Date(chosenTime);
-      if (Number.isNaN(targetTime.getTime()) || targetTime.getTime() <= Date.now()) {
-        scheduledSoundStatus.textContent = 'Invalid time';
-        scheduledSoundMeta.textContent = 'Choose a future time so the sound has something to count down to.';
-        scheduleTimeInput.focus();
-        return;
-      }
-
-      scheduledSound = {
-        soundName: chosenSound.name,
-        targetTime: targetTime.getTime()
+      const payload = {
+        v: 1,
+        soundName: schedule.soundName,
+        targetTime: new Date(schedule.targetTime).toISOString()
       };
 
-      scheduledSoundTitle.textContent = chosenSound.name;
-      scheduledSoundStatus.textContent = 'Scheduled';
-      scheduledSoundMeta.textContent = `Set for ${targetTime.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}.`;
-      updateScheduledVisibility();
-      updateScheduledButtonsState();
-      updateScheduledCountdown();
-      closeScheduleModal();
+      return CODE_PREFIX + btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    }
+
+    function parseScheduleCode(rawCode) {
+      const raw = String(rawCode || '').trim();
+      const compact = raw.startsWith(CODE_PREFIX) ? raw.slice(CODE_PREFIX.length) : raw;
+      const json = decodeURIComponent(escape(atob(compact)));
+      const payload = JSON.parse(json);
+      const targetTime = new Date(payload.targetTime).getTime();
+
+      if (!payload || payload.v !== 1 || !payload.soundName || !Number.isFinite(targetTime)) {
+        throw new Error('Invalid schedule code');
+      }
+
+      return {
+        soundName: payload.soundName,
+        targetTime
+      };
+    }
+
+    async function copyText(text) {
+      if (!text) return false;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        scheduleCodeInput.focus();
+        scheduleCodeInput.select();
+        return false;
+      }
+    }
+
+    function generateCodeFromInputs() {
+      const chosenSound = findSoundByName(selectedScheduledSoundName);
+      const targetTime = new Date(scheduleTimeInput.value).getTime();
+
+      if (!chosenSound || !Number.isFinite(targetTime)) {
+        scheduleCodeStatus.textContent = 'Pick a sound and valid time first.';
+        return;
+      }
+
+      scheduleCodeInput.value = createScheduleCode({ soundName: chosenSound.name, targetTime });
+      scheduleCodeStatus.textContent = 'Code generated.';
+    }
+
+    function applyScheduleCode() {
+      try {
+        const parsed = parseScheduleCode(scheduleCodeInput.value);
+        const item = findSoundByName(parsed.soundName);
+
+        if (!item) {
+          scheduleCodeStatus.textContent = 'This code uses a sound that is not available here.';
+          return;
+        }
+
+        if (parsed.targetTime <= Date.now()) {
+          scheduleCodeStatus.textContent = 'This schedule code is for a time that has already passed.';
+          return;
+        }
+
+        selectedScheduledSoundName = item.name;
+        scheduleTimeInput.value = formatDatetimeLocal(new Date(parsed.targetTime));
+        renderScheduleSoundResults();
+
+        if (scheduleSound(item.name, parsed.targetTime)) {
+          scheduleCodeStatus.textContent = 'Code applied and sound scheduled.';
+          closeScheduleModal();
+        }
+      } catch {
+        scheduleCodeStatus.textContent = 'That schedule code could not be read.';
+      }
+    }
+
+    function renderSoundGrid(soundData, buttonPool) {
+      const fragment = document.createDocumentFragment();
+      soundItems = soundData.map((item, index) => {
+        const audio = new Audio(item.audio);
+        audio.preload = 'metadata';
+
+        const pad = document.createElement('button');
+        const stopButton = document.createElement('span');
+        const buttonImage = pickRandomButton(buttonPool);
+        const newTag = isNewSound(item)
+          ? '<span class="new-sound-tag absolute left-2 top-2 z-20 rounded-full px-2.5 py-1 text-[0.62rem] font-black uppercase tracking-[0.16em] text-white">New</span>'
+          : '';
+        const dateLabel = item.dateAdded
+          ? `<span class="mt-1 block text-center text-[0.65rem] font-extrabold uppercase tracking-[0.12em] text-slate-400">Added ${formatDateLabel(item.dateAdded)}</span>`
+          : '';
+
+        pad.type = 'button';
+        pad.className = 'sound-card group min-h-full rounded-[1.65rem] p-3 text-left';
+        pad.dataset.soundName = item.name;
+        pad.setAttribute('aria-label', `Play ${item.name}`);
+        pad.style.contentVisibility = 'auto';
+        pad.style.containIntrinsicSize = '180px';
+
+        pad.innerHTML = `
+          <span class="relative block aspect-square rounded-[1.35rem] bg-white/55 p-2">
+            ${newTag}
+            <img class="button-art h-full w-full select-none object-contain transition duration-150" src="${escapeHtml(buttonImage)}" alt="">
+          </span>
+          <span class="mt-3 block min-h-[2.5rem] text-center text-sm font-black leading-tight tracking-tight text-slate-800">${escapeHtml(item.name)}</span>
+          ${dateLabel}
+        `;
+
+        stopButton.hidden = true;
+        stopButton.className = 'stop-sound-btn absolute right-2 top-2 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full bg-rose-600 text-white shadow-lg shadow-rose-600/25';
+        stopButton.innerHTML = '<i class="fa-solid fa-stop text-xs"></i>';
+        stopButton.setAttribute('aria-label', `Stop ${item.name}`);
+        pad.appendChild(stopButton);
+
+        const soundItem = {
+          ...item,
+          id: `sound-${index}`,
+          audio,
+          pad,
+          stopButton
+        };
+
+        pad.addEventListener('click', (event) => {
+          if (event.target.closest('.stop-sound-btn')) {
+            event.stopPropagation();
+            stopSound(soundItem);
+            return;
+          }
+
+          playSound(soundItem);
+        });
+
+        audio.addEventListener('ended', () => stopSound(soundItem));
+        audio.addEventListener('pause', () => {
+          if (audio.currentTime === 0 || audio.ended) stopSound(soundItem);
+        });
+
+        fragment.appendChild(pad);
+        return soundItem;
+      });
+
+      soundGrid.replaceChildren(fragment);
+      filterVisibleSounds();
     }
 
     async function loadSoundboard() {
       try {
-        const response = await fetch('sounds.json');
-        if (!response.ok) {
-          throw new Error('JSON load failed');
-        }
+        const response = await fetch('sounds.json', { cache: 'no-store' });
+        if (!response.ok) throw new Error('JSON load failed');
 
         const json = await response.json();
         const soundData = Array.isArray(json) ? json : (json.sounds || []);
         const buttonPool = Array.isArray(json.buttons) ? json.buttons : [];
 
-        soundGrid.innerHTML = '';
-        soundItems = [];
-
-        soundData.forEach((item) => {
-          const audio = new Audio(item.audio);
-          audio.preload = 'auto';
-
-          const buttonImage = pickRandomButton(buttonPool);
-          const pad = document.createElement('button');
-          pad.type = 'button';
-          pad.className = 'group text-left';
-          pad.setAttribute('aria-label', `Play ${item.name}`);
-
-          pad.innerHTML = `
-            <div class="overflow-visible transition duration-150 group-[.playing]:scale-95">
-              <div class="relative aspect-square overflow-visible transition duration-200 group-hover:-translate-y-1">
-                <img class="mx-auto h-full w-full object-contain origin-center select-none transition duration-150 group-[.playing]:scale-x-90 group-[.playing]:scale-y-75" src="${buttonImage}" alt="${item.name}">
-              </div>
-            </div>
-            <p class="mt-3 px-1 text-center text-[0.95rem] font-bold tracking-tight text-slate-800">${item.name}</p>
-          `;
-
-          function playSound() {
-            stopAllSounds(audio);
-            audio.currentTime = 0;
-            currentlyPlayingItem = { audio, pad };
-            audio.play().catch((err) => {
-              console.warn(`Could not play ${item.name}:`, err);
-            });
-
-            pad.classList.add('playing');
-            clearTimeout(pad._playTimeout);
-            pad._playTimeout = setTimeout(() => {
-              pad.classList.remove('playing');
-            }, 180);
-          }
-
-          audio.addEventListener('ended', () => {
-            pad.classList.remove('playing');
-            if (currentlyPlayingItem && currentlyPlayingItem.audio === audio) {
-              currentlyPlayingItem = null;
-            }
-          });
-
-          pad.addEventListener('click', playSound);
-          soundGrid.appendChild(pad);
-
-          soundItems.push({
-            ...item,
-            audio,
-            pad,
-            playSound
-          });
-        });
+        setSoundboardLastUpdate(Array.isArray(json) ? '' : json.lastUpdate);
+        renderSoundGrid(soundData, buttonPool);
 
         if (soundItems.length && !selectedScheduledSoundName) {
           selectScheduledSound(soundItems[0].name);
         }
+
+        loadSavedSchedule();
         renderScheduleSoundResults();
+        updateScheduledVisibility();
+        updateScheduledCountdown();
       } catch (error) {
         console.error(error);
-        soundGrid.innerHTML = '<div class="col-span-full rounded-3xl border border-red-100 bg-red-50 px-5 py-4 text-sm font-medium text-red-600 shadow-sm">An unexpected error occurred.</div>';
+        soundGrid.innerHTML = '<div class="col-span-full rounded-3xl border border-rose-100 bg-rose-50 px-5 py-4 text-sm font-bold text-rose-700 shadow-sm">The soundboard could not load.</div>';
+        resultCount.textContent = 'Could not load sounds';
       }
     }
 
-    stopAllButtons.forEach((button) => {
-      button.addEventListener('click', () => stopAllSounds());
+    stopAllBtn.addEventListener('click', () => stopAllSounds());
+    randomSoundBtn.addEventListener('click', () => {
+      const visible = soundItems.filter((item) => !item.pad.classList.contains('hidden'));
+      const pool = visible.length ? visible : soundItems;
+      playSound(pool[Math.floor(Math.random() * pool.length)]);
     });
 
-    searchInput.addEventListener('input', () => {
-      const query = searchInput.value.trim().toLowerCase();
-
-      soundItems.forEach((item) => {
-        const matches = item.name.toLowerCase().includes(query);
-        item.pad.style.display = matches ? '' : 'none';
-      });
-    });
-
+    searchInput.addEventListener('input', filterVisibleSounds);
     openScheduleModalBtn.addEventListener('click', openScheduleModal);
     closeScheduleModalBtn.addEventListener('click', closeScheduleModal);
-    modalCancelScheduleBtn.addEventListener('click', closeScheduleModal);
     scheduleModalBackdrop.addEventListener('click', closeScheduleModal);
     scheduleSoundSearch.addEventListener('input', renderScheduleSoundResults);
     scheduleSoundBtn.addEventListener('click', scheduleSelectedSound);
-    changeScheduleBtn.addEventListener('click', () => {
-      openScheduleModal();
-      scheduleTimeInput.showPicker?.();
-      scheduleTimeInput.focus();
+    previewScheduleSoundBtn.addEventListener('click', () => playSound(findSoundByName(selectedScheduledSoundName)));
+    changeScheduleBtn.addEventListener('click', openScheduleModal);
+    cancelScheduleBtn.addEventListener('click', () => clearScheduledSound('Scheduled sound cancelled.'));
+    generateCodeBtn.addEventListener('click', generateCodeFromInputs);
+    applyCodeBtn.addEventListener('click', applyScheduleCode);
+    clearCodeBtn.addEventListener('click', () => {
+      scheduleCodeInput.value = '';
+      scheduleCodeStatus.textContent = '';
     });
-    cancelScheduleBtn.addEventListener('click', () => {
-      clearScheduledSound({ keepInputs: true, message: 'Scheduled sound cancelled.' });
+    copyCodeBtn.addEventListener('click', async () => {
+      const copied = await copyText(scheduleCodeInput.value);
+      showToast(copied ? 'Schedule code copied' : 'Code selected. Copy it manually.');
+    });
+    copyActiveCodeBtn.addEventListener('click', async () => {
+      const copied = await copyText(createScheduleCode(scheduledSound));
+      showToast(copied ? 'Active schedule code copied' : 'Code ready to copy from the schedule modal.');
     });
 
     document.addEventListener('keydown', (event) => {
@@ -602,21 +974,15 @@
         return;
       }
 
-      if (event.repeat) return;
-
-      const pressedKey = event.key.toUpperCase();
-      const matchedItem = soundItems.find((item) => (item.key || '').toUpperCase() === pressedKey);
-
-      if (matchedItem) {
-        matchedItem.playSound();
+      if (event.key === 'Escape') {
+        stopAllSounds();
       }
     });
 
     scheduleTimeInput.value = formatDatetimeLocal(getDefaultScheduleTime());
     resetScheduledCountdownDisplay();
-    updateScheduledButtonsState();
+    updateScheduledVisibility();
     updateSoundCountdown();
-    updateScheduledCountdown();
     setInterval(() => {
       updateSoundCountdown();
       updateScheduledCountdown();

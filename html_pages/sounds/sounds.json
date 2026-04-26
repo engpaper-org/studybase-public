@@ -1,4 +1,5 @@
 {
+  "lastUpdate": "2026-04-26",
   "buttons": [
     "buttons/red.png",
     "buttons/blue.png",
@@ -9,85 +10,164 @@
   ],
   "sounds": [
     {
+      "name": "mi bombo",
+      "audio": "audio/edb21e1b-a367-4fb8-8672-8effe1a586fe.mp3",
+      "dateAdded": "2026-04-26"
+    },
+    {
+      "name": "skibidi",
+      "audio": "audio/d757be8d-2d4f-4620-a555-5e33cc306504.mp3",
+      "dateAdded": "2026-04-26"
+    },
+    {
+      "name": "man shut you god dam",
+      "audio": "audio/ee76c4fa-9199-4b6c-9641-c59fc346a54c.mp3",
+      "dateAdded": "2026-04-26"
+    },
+    {
+      "name": "scream",
+      "audio": "audio/cba4d992-6844-4aad-9b18-25bdc8a2baf3.mp3",
+      "dateAdded": "2026-04-26"
+    },
+    {
+      "name": "fart car engine",
+      "audio": "audio/5ebd2e2d-14bb-4e22-98af-da7376e0fd8d.mp3",
+      "dateAdded": "2026-04-26"
+    },
+    {
+      "name": "Cortisol song",
+      "audio": "audio/2ec06383-80fd-4c64-b40e-5a1aac877b29.mp3",
+      "dateAdded": "2026-04-26"
+    },
+    {
+      "name": "my mum is kinda homeless - song",
+      "audio": "audio/9d77db9f-64a8-42ca-954e-6405248475cc.mp3",
+      "dateAdded": "2026-04-26"
+    },
+    {
+      "name": "shatter attack",
+      "audio": "audio/1891f0aa-6a2c-4204-9712-4391a686bf6b.mp3",
+      "dateAdded": "2026-04-26"
+    },
+    {
+      "name": "hide the money yall",
+      "audio": "audio/861c4a04-a836-48e7-bcff-aa66dd1bf99e.mp3",
+      "dateAdded": "2026-04-26"
+    },
+    {
+      "name": "sad trombone meme",
+      "audio": "audio/5ed04214-8722-403e-9fac-c3f5d11b618a.mp3",
+      "dateAdded": "2026-04-26"
+    },
+    {
+      "name": "wow!",
+      "audio": "audio/5fa685e1-2d7d-46a7-b062-cd99febbd6c3.mp3",
+      "dateAdded": "2026-04-26"
+    },
+    {
+      "name": "Heavenly Sahur",
+      "audio": "audio/fehuwiht43598hgurosjnv.mp3",
+      "dateAdded": "2026-04-26"
+    },
+    {
       "name": "get out tuco",
-      "audio": "audio/92116289-98e0-4dea-babc-e6f7f8bd08d9.mp3"
+      "audio": "audio/92116289-98e0-4dea-babc-e6f7f8bd08d9.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "tung tung tung sahur",
-      "audio": "audio/0877ca10-d121-4ff0-984b-9f3de126b3e2.mp3"
+      "audio": "audio/0877ca10-d121-4ff0-984b-9f3de126b3e2.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "vine boom",
-      "audio": "audio/707db471-c834-494e-a3d9-ada985203ef6.mp3"
+      "audio": "audio/707db471-c834-494e-a3d9-ada985203ef6.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "raining tacos",
-      "audio": "audio/73905061-add1-45f1-addc-60c396d2d74e.mp3"
+      "audio": "audio/73905061-add1-45f1-addc-60c396d2d74e.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "sad violin",
-      "audio": "audio/a8379e2a-b401-4c52-8919-218cd5eea95e.mp3"
+      "audio": "audio/a8379e2a-b401-4c52-8919-218cd5eea95e.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "goofy ahh sounds",
-      "audio": "audio/fb64d9f6-7584-4a3f-930b-ba6094d37fd5.mp3"
+      "audio": "audio/fb64d9f6-7584-4a3f-930b-ba6094d37fd5.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "fn default dance",
-      "audio": "audio/939f1050-5855-470d-9630-5637dd080435.mp3"
+      "audio": "audio/939f1050-5855-470d-9630-5637dd080435.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "back in the day",
-      "audio": "audio/13cdad16-43dc-44f1-ba0c-8cb1a99f8dba.mp3"
+      "audio": "audio/13cdad16-43dc-44f1-ba0c-8cb1a99f8dba.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "helicopter helicopter",
-      "audio": "audio/69bbbf5e-39a3-4ac4-9917-cb9c4f20047d.mp3"
+      "audio": "audio/69bbbf5e-39a3-4ac4-9917-cb9c4f20047d.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "what da dog doin",
-      "audio": "audio/a289e964-1ebc-444a-928b-66ee87693ded.mp3"
+      "audio": "audio/a289e964-1ebc-444a-928b-66ee87693ded.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "faaa",
-      "audio": "audio/35f4997a-677c-4e79-a2b8-f33b688d5233.mp3"
+      "audio": "audio/35f4997a-677c-4e79-a2b8-f33b688d5233.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "gupl gulp gulp",
-      "audio": "audio/0d81a729-727a-4ed8-948f-a1e2bbd45732.mp3"
+      "audio": "audio/0d81a729-727a-4ed8-948f-a1e2bbd45732.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "John Cena",
-      "audio": "audio/f9014786-156e-43e9-aaf4-593bcefd729d.mp3"
+      "audio": "audio/f9014786-156e-43e9-aaf4-593bcefd729d.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "Kahoot",
-      "audio": "audio/5e9c62cc-4b82-44f8-bb65-0bc5d8b72eae.mp3"
+      "audio": "audio/5e9c62cc-4b82-44f8-bb65-0bc5d8b72eae.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "Hound dog",
-      "audio": "audio/f5c29735-503c-4ca7-a72d-5c600368c518.mp3"
+      "audio": "audio/f5c29735-503c-4ca7-a72d-5c600368c518.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "Clash royale",
-      "audio": "audio/7f587cb8-069b-4488-bf3a-c31d9a940272.mp3"
+      "audio": "audio/7f587cb8-069b-4488-bf3a-c31d9a940272.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "Uwu",
-      "audio": "audio/7734a0d8-d26f-49b1-9b87-45e8272b1183.mp3"
+      "audio": "audio/7734a0d8-d26f-49b1-9b87-45e8272b1183.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "Hog Raida",
-      "audio": "audio/171a8e2e-4c95-45b9-abc5-83ed81442bcf.mp3"
+      "audio": "audio/171a8e2e-4c95-45b9-abc5-83ed81442bcf.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "Full ahhh sound",
-      "audio": "audio/d999e5ab-46c8-4e3a-aa30-47480bdf95bf.mp3"
+      "audio": "audio/d999e5ab-46c8-4e3a-aa30-47480bdf95bf.mp3",
+      "dateAdded": "2026-04-19"
     },
     {
       "name": "What did he say",
-      "audio": "audio/06bd8f6e-e6d4-4d1c-852b-4b026a28632e.mp3"
+      "audio": "audio/06bd8f6e-e6d4-4d1c-852b-4b026a28632e.mp3",
+      "dateAdded": "2026-04-19"
     }
-    
   ]
 }
