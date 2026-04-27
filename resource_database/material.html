@@ -24,6 +24,7 @@
     <script src="/assets/js/hashtagProto.js"></script>
 
     <link rel="icon" href="/assets/siteIcons/main.ico">
+    <link rel="prefetch" href="/aS/open.html" as="document">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/assets/js/loginAnimationCheck.js" defer></script>
     <script src="/myaccount/js/timeRecords.js" defer></script>
@@ -1425,6 +1426,8 @@ function proceedToLoad(subjectTitle) {
     const loadingAdFrame = document.getElementById("loadingAdFrame");
     const frame = document.getElementById("materialFrame");
     const overlayButtons = document.getElementById("overlayButtons");
+    let materialFinished = false;
+    let revealTimer = null;
 
     overlayButtons.classList.add("hidden");
     frame.classList.add("hidden");
@@ -1435,33 +1438,49 @@ function proceedToLoad(subjectTitle) {
     loading.classList.remove("hidden");
 
     const finalUrl = getIframeUrlWithMainParams(materialFinalUrl);
-    const minDisplayTime = 2500;
-    const startTime = Date.now();
+
+    const revealResource = () => {
+        if (!materialFinished) return;
+
+        if (revealTimer) {
+            clearTimeout(revealTimer);
+            revealTimer = null;
+        }
+
+        window.removeEventListener("message", onIntroMessage);
+        loading.classList.add("hidden");
+
+        try { loadingAdFrame.src = "about:blank"; } catch (e) {}
+
+        overlayButtons.classList.remove("hidden");
+        updateFavouriteButton();
+        startStatePolling();
+    };
+
+    const onIntroMessage = (event) => {
+        if (event.source !== loadingAdFrame.contentWindow) return;
+        if (!event.data || event.data.type !== "STUDYBASE_INTRO_COMPLETE") return;
+
+        revealResource();
+    };
 
     const startIframeLoad = () => {
         const onLoad = () => {
             frame.removeEventListener("load", onLoad);
 
-            loading.classList.add("hidden");
-
-            try { loadingAdFrame.src = "about:blank"; } catch (e) {}
-
             frame.classList.remove("hidden");
-            overlayButtons.classList.remove("hidden");
-            updateFavouriteButton();
-            startStatePolling();
+            materialFinished = true;
+
+            window.addEventListener("message", onIntroMessage);
+            try { loadingAdFrame.src = "/aS/open.html"; } catch (e) {}
+            revealTimer = setTimeout(revealResource, 4300);
         };
 
         frame.addEventListener("load", onLoad, { once: true });
         frame.src = finalUrl;
     };
 
-    const elapsed = Date.now() - startTime;
-    const remaining = Math.max(0, minDisplayTime - elapsed);
-
-    setTimeout(() => {
-        startIframeLoad();
-    }, remaining);
+    startIframeLoad();
 }
 
 function startStatePolling() {

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/assets/js/iframeCheck.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase Intro</title>
+
+    <style>
+        :root {
+            --deep: #020617;
+            --white: #f8fafc;
+            --blue: #60a5fa;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--deep);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            opacity: 1;
+            transition: opacity 420ms ease;
+        }
+
+        .boot {
+            position: fixed;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            isolation: isolate;
+            padding: 24px;
+            background:
+                radial-gradient(circle at 50% 43%, rgba(59, 130, 246, 0.27), transparent 26%),
+                radial-gradient(circle at 50% 108%, rgba(56, 189, 248, 0.18), transparent 42%),
+                radial-gradient(circle at 14% 18%, rgba(29, 78, 216, 0.32), transparent 34%),
+                radial-gradient(circle at 86% 18%, rgba(14, 165, 233, 0.18), transparent 30%),
+                linear-gradient(135deg, #020617 0%, #071426 42%, #020617 100%);
+        }
+
+        .aurora {
+            position: absolute;
+            inset: -20%;
+            z-index: 1;
+            filter: blur(34px);
+            opacity: 0.72;
+            background:
+                conic-gradient(
+                    from 180deg at 50% 50%,
+                    transparent,
+                    rgba(59, 130, 246, 0.2),
+                    transparent,
+                    rgba(14, 165, 233, 0.24),
+                    transparent,
+                    rgba(79, 70, 229, 0.16),
+                    transparent
+                );
+            animation: auroraMove 4.5s ease-in-out infinite alternate;
+        }
+
+        .grid-floor {
+            position: absolute;
+            left: -10%;
+            right: -10%;
+            bottom: -24%;
+            height: 58%;
+            z-index: 2;
+            opacity: 0.28;
+            transform: perspective(620px) rotateX(67deg);
+            transform-origin: bottom center;
+            background-image:
+                linear-gradient(rgba(96, 165, 250, 0.24) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(96, 165, 250, 0.18) 1px, transparent 1px);
+            background-size: 70px 70px;
+            mask-image: linear-gradient(to top, black 12%, transparent 86%);
+            animation: gridMove 1.7s linear infinite;
+        }
+
+        .particles {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            border-radius: 999px;
+            background: rgba(191, 219, 254, 0.95);
+            box-shadow:
+                0 0 10px rgba(96, 165, 250, 0.95),
+                0 0 24px rgba(56, 189, 248, 0.42);
+            animation: particleRise linear infinite;
+        }
+
+        .orbit {
+            position: absolute;
+            width: min(64vw, 620px);
+            aspect-ratio: 1;
+            border-radius: 999px;
+            z-index: 4;
+            opacity: 0;
+            transform: scale(0.72);
+            animation: orbitReveal 2.15s cubic-bezier(.16,.9,.2,1) forwards;
+        }
+
+        .orbit::before,
+        .orbit::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            border: 1px solid rgba(147, 197, 253, 0.16);
+            box-shadow:
+                0 0 60px rgba(37, 99, 235, 0.24),
+                inset 0 0 65px rgba(59, 130, 246, 0.09);
+        }
+
+        .orbit::after {
+            inset: 10%;
+            border-top-color: rgba(125, 211, 252, 0.92);
+            border-right-color: rgba(96, 165, 250, 0.42);
+            border-bottom-color: rgba(147, 197, 253, 0.1);
+            border-left-color: rgba(147, 197, 253, 0.1);
+            animation: orbitSpin 3.2s linear infinite;
+        }
+
+        .light-sweep {
+            position: absolute;
+            inset: -40%;
+            z-index: 8;
+            background:
+                linear-gradient(
+                    110deg,
+                    transparent 38%,
+                    rgba(255,255,255,0.08) 45%,
+                    rgba(147,197,253,0.42) 50%,
+                    rgba(255,255,255,0.08) 55%,
+                    transparent 62%
+                );
+            transform: translateX(-85%) rotate(8deg);
+            animation: cinematicSweep 2.25s cubic-bezier(.18,.85,.18,1) forwards;
+            pointer-events: none;
+        }
+
+        .boot-panel {
+            position: relative;
+            z-index: 6;
+            width: min(94vw, 980px);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(18px) scale(0.965);
+            animation:
+                panelIn 850ms cubic-bezier(.16,1,.2,1) 180ms forwards,
+                panelExit 540ms ease 2.55s forwards;
+        }
+
+        .message-glow {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: min(560px, 80vw);
+            height: 150px;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.2), transparent 70%);
+            opacity: 0;
+            animation: glowIn 800ms ease 580ms forwards;
+            pointer-events: none;
+        }
+
+        .presented {
+            margin: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.42em;
+            color: rgba(248, 250, 252, 0.92);
+            font-size: clamp(1.65rem, 4.8vw, 3.5rem);
+            line-height: 1.16;
+            font-weight: 720;
+            letter-spacing: -0.045em;
+            opacity: 0;
+            transform: translateY(16px);
+            filter: blur(10px);
+            animation: messageIn 850ms cubic-bezier(.16,1,.2,1) 560ms forwards;
+            text-shadow:
+                0 0 24px rgba(15, 23, 42, 0.72),
+                0 0 52px rgba(37, 99, 235, 0.24);
+        }
+
+        .presented .muted {
+            color: rgba(226, 232, 240, 0.78);
+            font-weight: 560;
+        }
+
+        .presented .name {
+            background: linear-gradient(135deg, #ffffff 0%, #bfdbfe 32%, #60a5fa 68%, #38bdf8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 850;
+            text-shadow: none;
+            white-space: nowrap;
+        }
+
+        .noise {
+            position: absolute;
+            inset: 0;
+            z-index: 9;
+            opacity: 0.055;
+            pointer-events: none;
+            background-image:
+                repeating-radial-gradient(circle at 17% 31%, rgba(255,255,255,0.7) 0 1px, transparent 1px 4px);
+            mix-blend-mode: screen;
+            animation: noiseShift 600ms steps(2) infinite;
+        }
+
+        .scanlines {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0.13;
+            background:
+                linear-gradient(to bottom, rgba(255,255,255,0.18) 1px, transparent 1px);
+            background-size: 100% 5px;
+            mask-image: radial-gradient(circle at center, black, transparent 78%);
+        }
+
+        .vignette {
+            position: absolute;
+            inset: 0;
+            z-index: 11;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at center, transparent 38%, rgba(2, 6, 23, 0.42) 72%, rgba(2, 6, 23, 0.92) 100%);
+        }
+
+        .wipe {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+            pointer-events: none;
+            background:
+                linear-gradient(115deg, #ffffff 0%, #dbeafe 42%, #60a5fa 52%, #ffffff 100%);
+            transform: translateY(105%) skewY(-5deg);
+            transform-origin: bottom left;
+            animation: finalWipe 760ms cubic-bezier(.76,0,.18,1) 2.82s forwards;
+        }
+
+        @keyframes panelIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes panelExit {
+            to {
+                opacity: 0;
+                transform: translateY(-14px) scale(1.025);
+                filter: blur(10px);
+            }
+        }
+
+        @keyframes messageIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes glowIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes auroraMove {
+            from {
+                transform: translate3d(-2%, -1%, 0) rotate(0deg) scale(1);
+            }
+
+            to {
+                transform: translate3d(2%, 1%, 0) rotate(12deg) scale(1.06);
+            }
+        }
+
+        @keyframes cinematicSweep {
+            0% {
+                transform: translateX(-92%) rotate(8deg);
+                opacity: 0;
+            }
+
+            18% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(92%) rotate(8deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes orbitReveal {
+            0% {
+                opacity: 0;
+                transform: scale(0.66) rotate(-10deg);
+                filter: blur(18px);
+            }
+
+            36% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.24) rotate(14deg);
+                filter: blur(3px);
+            }
+        }
+
+        @keyframes orbitSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes gridMove {
+            to {
+                background-position: 0 70px, 70px 0;
+            }
+        }
+
+        @keyframes particleRise {
+            0% {
+                transform: translate3d(0, 110vh, 0) scale(0.7);
+                opacity: 0;
+            }
+
+            18% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate3d(var(--x), -12vh, 0) scale(1.15);
+                opacity: 0;
+            }
+        }
+
+        @keyframes noiseShift {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(-3%, 2%);
+            }
+        }
+
+        @keyframes finalWipe {
+            0% {
+                transform: translateY(105%) skewY(-5deg);
+            }
+
+            48% {
+                transform: translateY(0%) skewY(-5deg);
+            }
+
+            100% {
+                transform: translateY(-112%) skewY(-5deg);
+            }
+        }
+
+        @media (max-width: 760px) {
+            .presented {
+                font-size: clamp(1.35rem, 6vw, 2.4rem);
+            }
+        }
+
+        @media (max-width: 430px) {
+            .boot {
+                padding: 16px;
+            }
+
+            .presented {
+                flex-wrap: wrap;
+                row-gap: 0.12em;
+                column-gap: 0.34em;
+                font-size: clamp(1.2rem, 7vw, 1.75rem);
+                letter-spacing: -0.03em;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 1ms !important;
+                animation-delay: 0ms !important;
+                transition-duration: 1ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section class="boot" aria-label="StudyBase opening animation">
+        <div class="aurora"></div>
+        <div class="grid-floor"></div>
+        <div class="particles" id="particles"></div>
+        <div class="orbit"></div>
+        <div class="light-sweep"></div>
+
+        <main class="boot-panel">
+            <div class="message-glow"></div>
+
+            <p class="presented">
+                <span class="muted">Brought to you by</span>
+                <span class="name">StudyBase</span>
+            </p>
+        </main>
+
+        <div class="noise"></div>
+        <div class="scanlines"></div>
+        <div class="vignette"></div>
+        <div class="wipe"></div>
+    </section>
+
+    <script>
+        const particles = document.getElementById("particles");
+
+        for (let i = 0; i < 96; i++) {
+            const particle = document.createElement("span");
+            particle.className = "particle";
+
+            const size = Math.random() * 2.4 + 1;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.setProperty("--x", `${Math.random() * 120 - 60}px`);
+            particle.style.animationDelay = `${Math.random() * -2.8}s`;
+            particle.style.animationDuration = `${Math.random() * 1.8 + 1.6}s`;
+            particle.style.opacity = `${Math.random() * 0.75 + 0.25}`;
+
+            particles.appendChild(particle);
+        }
+
+        function finishIntro() {
+            try {
+                window.parent.postMessage({
+                    type: "STUDYBASE_INTRO_COMPLETE",
+                    source: "studybase-opening-transition",
+                    completed: true
+                }, "*");
+            } catch (e) {}
+
+            document.body.style.opacity = "0";
+        }
+
+        setTimeout(finishIntro, 3500);
+    </script>
+</body>
+</html>
