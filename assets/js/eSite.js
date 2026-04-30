@@ -1,11 +1,17 @@
 (() => {
-  const TARGET_URL = "https://e.studybase.site";
+  let TARGET_URL = "https://e.revisionbase.site";
   const DEVICE_KEY = "gh_device";
   const USER_KEY = "gh_username";
   const PASS_KEY = "gh_password";
 
   let countdownTimer = null;
   let moveTimer = null;
+
+  if (window.SiteConfig && window.SiteConfig.ready) {
+    window.SiteConfig.ready.then((config) => {
+      TARGET_URL = config?.urls?.eSite || TARGET_URL;
+    });
+  }
 
   // ---------------------------
   // helpers
@@ -321,7 +327,7 @@
               </h3>
 
               <p class="mt-3 max-w-2xl text-sm md:text-base leading-relaxed text-white/75">
-                You can now browse StudyBase without it showing up in your search history multiple times. This mode is designed to keep it to one browser history entry.
+                You can now browse RevisionBase without it showing up in your search history multiple times. This mode is designed to keep it to one browser history entry.
               </p>
             </div>
           </div>

@@ -3,7 +3,8 @@
 <head>
     
     <meta charset="UTF-8">
-    <script>
+        <script src="/assets/js/siteConfig.js"></script>
+<script>
         (function () {
             try {
                 const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
@@ -12,8 +13,9 @@
         })();
     </script>
     <link rel="stylesheet" href="/assets/css/dark-mode.css">
+    <link rel="stylesheet" href="/assets/css/revisionbase-media.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyBase | Subject Specific Resources</title>
+    <title>RevisionBase | Subject Specific Resources</title>
     <link rel="icon" href="/assets/siteIcons/main.ico">
     <script src="/assets/js/sessionManager.js" defer></script>
     <script src="/assets/js/errorCheck.js" defer></script>
@@ -87,6 +89,9 @@
                 <a href="#full-index" class="subject-pill"><i class="fa-solid fa-list"></i> Full Index</a>
             </div>
             <p class="text-xs text-slate-400 font-semibold uppercase tracking-[0.32em] mt-8">Always cross-check your exact spec</p>
+            <div class="rb-image-slot mx-auto mt-10 max-w-5xl aspect-[16/7]" data-slot-label="Subject map visual">
+                <img src="/assets/siteImages/subjects-map.jpg" alt="A-Level subject map preview" onerror="this.remove(); this.parentElement.classList.add('is-placeholder');">
+            </div>
         </div>
     </header>
 
@@ -112,7 +117,7 @@
                         <i class="fa-solid fa-chart-line"></i>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3">Track progress</h3>
-                    <p class="text-slate-500 font-body text-sm">Pair these resources with the StudyBase toolkit to plan revision, track papers, and stay consistent.</p>
+                    <p class="text-slate-500 font-body text-sm">Pair these resources with the RevisionBase toolkit to plan revision, track papers, and stay consistent.</p>
                 </div>
             </div>
         </div>

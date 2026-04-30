@@ -4,8 +4,9 @@
     <script src="/assets/js/iframeCheck.js"></script>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyBase Intro</title>
+        <script src="/assets/js/siteConfig.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RevisionBase Intro</title>
 
     <style>
         :root {
@@ -420,7 +421,7 @@
 </head>
 
 <body>
-    <section class="boot" aria-label="StudyBase opening animation">
+    <section class="boot" aria-label="RevisionBase opening animation">
         <div class="aurora"></div>
         <div class="grid-floor"></div>
         <div class="particles" id="particles"></div>
@@ -432,7 +433,7 @@
 
             <p class="presented">
                 <span class="muted">Brought to you by</span>
-                <span class="name">StudyBase</span>
+                <span class="name">RevisionBase</span>
             </p>
         </main>
 
@@ -464,8 +465,8 @@
         function finishIntro() {
             try {
                 window.parent.postMessage({
-                    type: "STUDYBASE_INTRO_COMPLETE",
-                    source: "studybase-opening-transition",
+                    type: "REVISIONBASE_INTRO_COMPLETE",
+                    source: "revisionbase-opening-transition",
                     completed: true
                 }, "*");
             } catch (e) {}

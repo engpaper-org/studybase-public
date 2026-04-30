@@ -1,141 +1,252 @@
 /**
- * StudyBase.site Global Footer Injection
- * Features: Randomized Pre-Footer (1 of 3) and Unified Footer Navigation
- * Updated for the A-Level Premium Aesthetic
+ * Site-wide global footer injection.
+ * Paper-first A-Level footer and pre-footer.
  */
 
-function injectGlobalFooter() {
-    // 1. Define the 3 different Pre-Footer options (Styled to match the new design)
+function escapeFooterHtml(value) {
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+async function getFooterConfig() {
+    if (window.SiteConfig && window.SiteConfig.ready) {
+        return window.SiteConfig.ready;
+    }
+
+    return window.SB_CONFIG || {
+        brand: {
+            name: "RevisionBase",
+            suffix: ".site",
+            displayName: "RevisionBase.site",
+            tagline:
+                "A paper-first A-Level revision service for finding past papers, marking with purpose and using focused tools to improve the next attempt."
+        },
+        urls: {
+            home: "/index.html"
+        },
+        icons: {
+            footer: "/assets/siteIcons/main.ico"
+        }
+    };
+}
+
+function getFooterBrandTitle(config) {
+    const brand = config.brand || {};
+    const name = brand.name || brand.shortName || "RevisionBase";
+    let suffix = brand.suffix || "";
+    const displayName = brand.displayName || `${name}${suffix}`;
+
+    if (!suffix && displayName.startsWith(name)) {
+        suffix = displayName.slice(name.length);
+    }
+
+    return `${escapeFooterHtml(name)}${suffix ? `<span class="text-blue-400">${escapeFooterHtml(suffix)}</span>` : ""}`;
+}
+
+async function injectGlobalFooter() {
+    const siteConfig = await getFooterConfig();
+    const footerConfig = siteConfig.footer || {};
+    if (footerConfig.enabled === false) return;
+
+    const brand = siteConfig.brand || {};
+    const icons = siteConfig.icons || {};
+    const urls = siteConfig.urls || {};
+    const brandDisplayName = brand.displayName || brand.name || "RevisionBase";
+    const brandName = brand.name || brand.shortName || "RevisionBase";
+    const brandTitle = getFooterBrandTitle(siteConfig);
+    const brandTagline =
+        brand.tagline ||
+        "A paper-first A-Level revision service for finding past papers, marking with purpose and using focused tools to improve the next attempt.";
+    const footerIcon = icons.footer || icons.favicon || "/assets/siteIcons/main.ico";
+    const homeUrl = urls.home || "/index.html";
+    const cycleStartMonth = Number.isFinite(Number(footerConfig.cycleStartMonth))
+        ? Math.max(0, Math.min(11, Number(footerConfig.cycleStartMonth)))
+        : 6;
+    const cycleYear = new Date().getMonth() >= cycleStartMonth ? new Date().getFullYear() + 1 : new Date().getFullYear();
+
     const preFooters = [
-        // Option A: Focus Room / Productivity
         `
-        <section class="sb-prefooter sb-prefooter-light py-24 bg-white border-t border-slate-200 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-100 rounded-full blur-[100px] opacity-60 pointer-events-none -mr-20 -mt-20"></div>
-            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
-                <div class="max-w-xl">
-                    <span class="text-indigo-600 font-bold uppercase tracking-widest text-xs mb-3 block"><i class="fa-solid fa-clock mr-1"></i> Productivity Tool</span>
-                    <h2 class="text-3xl md:text-4xl font-black mb-4 text-slate-900 tracking-tight">Struggling to stay focused?</h2>
-                    <p class="text-slate-500 text-lg font-body leading-relaxed">Join hundreds of A-Level students in our virtual Focus Room. Designed to minimize distractions and maximize your deep work.</p>
+        <section class="sb-prefooter py-20 bg-white border-t border-slate-200 font-sans">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid lg:grid-cols-[0.85fr_1.15fr] gap-8 items-center">
+                    <div>
+                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 border border-blue-100 text-blue-700 text-[11px] font-black uppercase tracking-[0.18em]">
+                            <i class="fa-solid fa-file-lines text-[10px]"></i>
+                            A-Level papers
+                        </span>
+                        <h2 class="mt-5 text-3xl md:text-5xl font-black tracking-tight text-slate-950">Start your next revision block with the right paper.</h2>
+                        <p class="mt-4 max-w-2xl text-slate-600 text-base md:text-lg font-body leading-relaxed">
+                            Choose a subject, exam board and year, then open the paper set before moving into marking and targeted revision.
+                        </p>
+                    </div>
+                    <div class="grid sm:grid-cols-3 gap-3">
+                        <a href="/past_papers/index.html" class="group rounded-lg border border-slate-200 bg-slate-950 p-5 text-white transition-all hover:-translate-y-0.5 hover:bg-blue-700">
+                            <i class="fa-solid fa-magnifying-glass text-blue-200"></i>
+                            <h3 class="mt-4 font-black">Find papers</h3>
+                            <p class="mt-2 text-sm text-slate-300 font-body">Filter A-Level papers fast.</p>
+                        </a>
+                        <a href="/toolkit/paperTracker.html" class="group rounded-lg border border-slate-200 bg-white p-5 text-slate-900 transition-all hover:-translate-y-0.5 hover:border-blue-300">
+                            <i class="fa-solid fa-chart-simple text-teal-700"></i>
+                            <h3 class="mt-4 font-black">Track marks</h3>
+                            <p class="mt-2 text-sm text-slate-600 font-body">Turn scores into progress.</p>
+                        </a>
+                        <a href="/toolkit/index.html" class="group rounded-lg border border-slate-200 bg-white p-5 text-slate-900 transition-all hover:-translate-y-0.5 hover:border-blue-300">
+                            <i class="fa-solid fa-screwdriver-wrench text-violet-700"></i>
+                            <h3 class="mt-4 font-black">Revise gaps</h3>
+                            <p class="mt-2 text-sm text-slate-600 font-body">Use tools after marking.</p>
+                        </a>
+                    </div>
                 </div>
-                <a href="/toolkit/focusRoom.html" class="px-8 py-4 bg-slate-900 text-white font-bold rounded-2xl hover:bg-indigo-600 transition-all shadow-xl shadow-slate-900/20 whitespace-nowrap hover:-translate-y-1">Enter Focus Room</a>
             </div>
         </section>
         `,
-        // Option B: Wellbeing / Mental Health
         `
-        <section class="sb-prefooter sb-prefooter-dark py-24 bg-emerald-900 border-t border-emerald-800 relative overflow-hidden text-white">
-            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 pointer-events-none"></div>
-            <div class="absolute top-0 right-0 p-32 bg-emerald-500/20 rounded-full blur-[100px] pointer-events-none"></div>
-            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
-                <div class="max-w-xl">
-                    <span class="text-emerald-400 font-bold uppercase tracking-widest text-xs mb-3 block"><i class="fa-solid fa-leaf mr-1"></i> Mental Health</span>
-                    <h2 class="text-3xl md:text-4xl font-black mb-4 tracking-tight">A-Levels are stressful.</h2>
-                    <p class="text-emerald-100/80 text-lg font-body leading-relaxed">Don't burn out before the finish line. Explore our wellbeing guides for managing UCAS anxiety and maintaining balance.</p>
+        <section class="sb-prefooter py-20 bg-slate-950 border-t border-slate-900 text-white font-sans relative overflow-hidden">
+            <div class="absolute inset-0 opacity-20 bg-[linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+            <div class="max-w-7xl mx-auto px-6 relative">
+                <div class="grid lg:grid-cols-[1fr_auto] gap-8 items-center">
+                    <div class="max-w-3xl">
+                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/10 border border-white/15 text-white/75 text-[11px] font-black uppercase tracking-[0.18em]">
+                            <i class="fa-solid fa-calendar-check text-[10px]"></i>
+                            ${cycleYear} exam cycle
+                        </span>
+                        <h2 class="mt-5 text-3xl md:text-5xl font-black tracking-tight">Practise, mark, then revise with evidence.</h2>
+                        <p class="mt-4 text-slate-300 text-base md:text-lg font-body leading-relaxed">
+                            ${escapeFooterHtml(brandName)} is built around the paper loop: find the right A-Level paper, attempt it properly, mark it, then use the toolkit to fix the weak spots.
+                        </p>
+                    </div>
+                    <a href="/past_papers/index.html" class="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-7 py-3.5 text-slate-950 font-black hover:bg-blue-50 transition-colors">
+                        Open Past Papers <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </a>
                 </div>
-                <a href="/support/mental-health.html" class="px-8 py-4 bg-emerald-500 text-white font-bold rounded-2xl hover:bg-emerald-400 transition-all shadow-xl shadow-emerald-900/50 whitespace-nowrap hover:-translate-y-1">Visit Wellbeing Support</a>
             </div>
         </section>
         `,
-        // Option C: Resource Upsell
         `
-        <section class="sb-prefooter sb-prefooter-light py-24 bg-slate-50 border-t border-slate-200 relative overflow-hidden">
-            <div class="absolute bottom-0 left-0 w-96 h-96 bg-purple-200 rounded-full blur-[100px] opacity-40 pointer-events-none -ml-20 -mb-20"></div>
-            <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
-                <div class="max-w-xl">
-                    <span class="text-purple-600 font-bold uppercase tracking-widest text-xs mb-3 block"><i class="fa-solid fa-vault mr-1"></i> Resource Vault</span>
-                    <h2 class="text-3xl md:text-4xl font-black mb-4 text-slate-900 tracking-tight">Missing something?</h2>
-                    <p class="text-slate-500 text-lg font-body leading-relaxed">Our database is constantly updated with new 2026 predicted papers, A* exemplar essays, and mark schemes.</p>
+        <section class="sb-prefooter py-20 bg-slate-50 border-t border-slate-200 font-sans">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid lg:grid-cols-[1fr_0.9fr] gap-8 items-center">
+                    <div>
+                        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-violet-50 border border-violet-100 text-violet-700 text-[11px] font-black uppercase tracking-[0.18em]">
+                            <i class="fa-solid fa-database text-[10px]"></i>
+                            Resource database
+                        </span>
+                        <h2 class="mt-5 text-3xl md:text-5xl font-black tracking-tight text-slate-950">Need more than the paper?</h2>
+                        <p class="mt-4 max-w-2xl text-slate-600 text-base md:text-lg font-body leading-relaxed">
+                            The resource database stays available for specifications, notes, links and wider A-Level revision materials.
+                        </p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 lg:justify-end">
+                        <a href="/resource_database/index.html#primary-access" class="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-6 py-3 text-white font-black hover:bg-violet-700 transition-colors">
+                            Browse Resources <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                        <a href="/past_papers/index.html" class="inline-flex items-center justify-center gap-2 rounded-lg bg-white border border-slate-200 px-6 py-3 text-slate-900 font-black hover:border-violet-300 transition-colors">
+                            Find Papers <i class="fa-solid fa-file-lines text-xs"></i>
+                        </a>
+                    </div>
                 </div>
-                <a href="/resource_database/index.html#primary-access" class="px-8 py-4 bg-purple-600 text-white font-bold rounded-2xl hover:bg-purple-700 transition-all shadow-xl shadow-purple-600/20 whitespace-nowrap hover:-translate-y-1">Browse Resource Vault</a>
             </div>
         </section>
         `
     ];
 
-    // 2. Select one at random
-    const randomPreFooter = preFooters[Math.floor(Math.random() * preFooters.length)];
+    let randomPreFooter = "";
+    if (footerConfig.preFooterEnabled !== false) {
+        randomPreFooter = footerConfig.randomizePreFooter === false
+            ? preFooters[0]
+            : preFooters[Math.floor(Math.random() * preFooters.length)];
+    }
 
-    // 3. Define the Main Footer (Removed GCSE, added Toolkit)
     const mainFooterHTML = `
-    <footer class="bg-slate-950 text-slate-400 py-20 border-t border-slate-900 font-sans relative overflow-hidden">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl pointer-events-none">
-            <div class="absolute top-0 right-10 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl"></div>
-        </div>
-        
-        <div class="max-w-7xl mx-auto px-6 relative z-10">
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-10 mb-16">
-                
-                <div class="col-span-2 md:col-span-2 pr-8">
-                    <div class="flex items-center gap-2 mb-6 text-white group">
-                        <img src="/assets/siteIcons/main.ico" alt="Logo" class="w-8 h-8 rounded shadow-sm group-hover:scale-110 transition-transform">
-                        <span class="text-2xl font-black tracking-tighter">StudyBase<span class="text-indigo-500">.site</span></span>
-                    </div>
-                    <p class="text-sm leading-relaxed max-w-sm mb-8 text-slate-500 font-body">
-                        The ultimate open-source revision platform for UK A-Level students. Smart tools, active recall, and university preparation.
+    <footer class="bg-slate-950 text-slate-400 py-16 border-t border-slate-900 font-sans relative overflow-hidden">
+        <div class="absolute inset-0 opacity-[0.14] bg-[linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+        <div class="max-w-7xl mx-auto px-6 relative">
+            <div class="grid grid-cols-1 lg:grid-cols-[1.25fr_2fr] gap-12 mb-12">
+                <div>
+                    <a href="${escapeFooterHtml(homeUrl)}" class="inline-flex items-center gap-3 text-white">
+                        <img src="${escapeFooterHtml(footerIcon)}" alt="${escapeFooterHtml(brandDisplayName)} logo" class="w-9 h-9 rounded-md bg-white shadow-sm">
+                        <span class="text-2xl font-black tracking-tight">${brandTitle}</span>
+                    </a>
+                    <p class="mt-5 text-sm leading-relaxed max-w-md text-slate-500 font-body">
+                        ${escapeFooterHtml(brandTagline)}
                     </p>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold mb-6 text-white uppercase text-xs tracking-widest text-indigo-400">A-Level Portal</h4>
-                    <ul class="space-y-4 text-sm font-medium font-body">
-                        <li><a href="/index.html" class="hover:text-indigo-400 transition-colors">Portal Home</a></li>
-                        <li><a href="/resource_database/index.html#primary-access" class="hover:text-indigo-400 transition-colors">Resource Vault</a></li>
-                        <li><a href="/study_pages/ucasHub.html" class="hover:text-indigo-400 transition-colors">UCAS & Futures</a></li>
-                        <li><a href="/study_pages/aoGuide.html" class="hover:text-indigo-400 transition-colors">Assessment Objectives</a></li>
-                        <li><a href="/blogs/index.html" class="hover:text-indigo-400 transition-colors">Revision Insights</a></li>
-                    </ul>
+                    <div class="mt-6 inline-flex items-center gap-2 rounded-md border border-slate-800 bg-slate-900 px-3 py-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                        <span class="text-[11px] font-black uppercase tracking-[0.16em] text-slate-400">${cycleYear} exam cycle</span>
+                    </div>
                 </div>
 
-                <div>
-                    <h4 class="font-bold mb-6 text-white uppercase text-xs tracking-widest text-purple-400">The Toolkit</h4>
-                    <ul class="space-y-4 text-sm font-medium font-body">
-                        <li><a href="/toolkit/index.html" class="hover:text-purple-400 transition-colors">View All Tools</a></li>
-                        <li><a href="/toolkit/focusRoom.html" class="hover:text-purple-400 transition-colors">The Focus Room</a></li>
-                        <li><a href="/toolkit/flashcards.html" class="hover:text-purple-400 transition-colors">Flashcard Builder</a></li>
-                        <li><a href="/toolkit/timetable.html" class="hover:text-purple-400 transition-colors">Smart Planner</a></li>
-                        <li><a href="/toolkit/ucasCalculator.html" class="hover:text-purple-400 transition-colors">UCAS Calculator</a></li>
-                    </ul>
-                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div>
+                        <h4 class="font-black mb-5 text-white uppercase text-xs tracking-widest">Papers</h4>
+                        <ul class="space-y-3 text-sm font-medium font-body">
+                            <li><a href="/past_papers/index.html" class="hover:text-blue-300 transition-colors">Past Paper Finder</a></li>
+                            <li><a href="/toolkit/paperTracker.html" class="hover:text-blue-300 transition-colors">Paper Tracker</a></li>
+                            <li><a href="/subjects/index.html" class="hover:text-blue-300 transition-colors">Subject Guides</a></li>
+                        </ul>
+                    </div>
 
-                <div>
-                    <h4 class="font-bold mb-6 text-white uppercase text-xs tracking-widest text-slate-300">Platform</h4>
-                    <ul class="space-y-4 text-sm font-medium font-body">
-                        <li><a href="/support/help_center.html" class="hover:text-white transition-colors">Help Center</a></li>
-                        <li><a href="/legal/index.html" class="hover:text-white transition-colors">Privacy & Terms</a></li>
-                        <li><a href="/legal/contributions.html" class="hover:text-white transition-colors">Contributions</a></li>
-                        <li><a href="/contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
-                    </ul>
-                </div>
+                    <div>
+                        <h4 class="font-black mb-5 text-white uppercase text-xs tracking-widest">Toolkit</h4>
+                        <ul class="space-y-3 text-sm font-medium font-body">
+                            <li><a href="/toolkit/index.html" class="hover:text-teal-300 transition-colors">All Tools</a></li>
+                            <li><a href="/toolkit/focusRoom.html" class="hover:text-teal-300 transition-colors">Focus Room</a></li>
+                            <li><a href="/toolkit/flashcards.html" class="hover:text-teal-300 transition-colors">Flashcards</a></li>
+                            <li><a href="/toolkit/timetable.html" class="hover:text-teal-300 transition-colors">Timetable</a></li>
+                        </ul>
+                    </div>
 
+                    <div>
+                        <h4 class="font-black mb-5 text-white uppercase text-xs tracking-widest">Resources</h4>
+                        <ul class="space-y-3 text-sm font-medium font-body">
+                            <li><a href="/resource_database/index.html#primary-access" class="hover:text-violet-300 transition-colors">Database</a></li>
+                            <li><a href="/blogs/index.html" class="hover:text-violet-300 transition-colors">Journal</a></li>
+                            <li><a href="/study_pages/ucasHub.html" class="hover:text-violet-300 transition-colors">UCAS Hub</a></li>
+                            <li><a href="/study_pages/aoGuide.html" class="hover:text-violet-300 transition-colors">Assessment Objectives</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="font-black mb-5 text-white uppercase text-xs tracking-widest">Platform</h4>
+                        <ul class="space-y-3 text-sm font-medium font-body">
+                            <li><a href="/legal/index.html" class="hover:text-white transition-colors">Privacy & Terms</a></li>
+                            <li><a href="/legal/contributions.html" class="hover:text-white transition-colors">Contributions</a></li>
+                            <li><a href="/contact.html" class="hover:text-white transition-colors">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            
-            <div class="pt-8 border-t border-slate-800/50 flex flex-col md:flex-row items-center justify-between text-xs font-bold text-slate-600 uppercase tracking-widest gap-4 font-body">
-                <p>&copy; 2026 StudyBase.site</p>
-                <div class="flex items-center gap-2 bg-slate-900 px-3 py-1.5 rounded-full border border-slate-800">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span>
-                    <span class="text-[10px] text-slate-400">Systems Operational</span>
+
+            <div class="pt-8 border-t border-slate-800/70 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-black uppercase tracking-[0.18em] text-slate-600">
+                <p>&copy; <span data-rb-year>${cycleYear}</span> ${escapeFooterHtml(brandDisplayName)}</p>
+                <div class="flex flex-wrap items-center justify-center gap-4">
+                    <a href="/past_papers/index.html" class="hover:text-blue-300 transition-colors">A-Level Papers</a>
+                    <a href="/toolkit/index.html" class="hover:text-teal-300 transition-colors">Toolkit</a>
+                    <a href="/resource_database/index.html#primary-access" class="hover:text-violet-300 transition-colors">Resources</a>
                 </div>
             </div>
         </div>
     </footer>
     `;
 
-    // Combine them
     const fullInjectedContent = randomPreFooter + mainFooterHTML;
-
-    // 4. Inject into the page
-    const existingFooter = document.querySelector('footer');
+    const existingFooter = document.querySelector("footer");
     if (existingFooter) {
         existingFooter.remove();
-        document.body.insertAdjacentHTML('beforeend', fullInjectedContent);
-    } else {
-        document.body.insertAdjacentHTML('beforeend', fullInjectedContent);
     }
+    document.body.insertAdjacentHTML("beforeend", fullInjectedContent);
+
+    document.querySelectorAll("[data-rb-year]").forEach((el) => {
+        el.textContent = cycleYear;
+    });
 }
 
-// Execute when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', injectGlobalFooter);
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", injectGlobalFooter);
 } else {
     injectGlobalFooter();
 }

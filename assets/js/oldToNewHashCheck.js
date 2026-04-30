@@ -56,9 +56,9 @@ document.addEventListener("DOMContentLoaded", () => {
             <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
           </div>
           <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 mb-4">
-            Welcome to StudyBase!
+            Welcome to RevisionBase!
           </h1>
-          <p class="text-xl text-slate-300">We've officially moved to <strong class="text-white">studybase.site</strong></p>
+          <p class="text-xl text-slate-300">We've officially moved to <strong class="text-white">revisionbase.site</strong></p>
         </div>
 
         <div id="scene-2" class="scene absolute inset-0 flex flex-col items-center justify-center p-8 opacity-0 translate-y-8 pointer-events-none">
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
           
           <div id="button-container" class="w-full max-w-sm opacity-0 scale-95 transition-all duration-500">
             <button id="continue-btn" class="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 transition-all rounded-xl font-bold text-white text-lg shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.6)]">
-              Enter the New StudyBase
+              Enter the New RevisionBase
             </button>
           </div>
         </div>

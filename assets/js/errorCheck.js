@@ -135,7 +135,7 @@
 
     "SEC_008": {
       title: "SEC_008 :: Frame Context Required",
-      message: "This page must be opened inside the StudyBase application frame.",
+      message: "This page must be opened inside the RevisionBase application frame.",
       icon: "🧩"
     },
 
@@ -271,7 +271,7 @@
 
     "ENV_403_OS": {
       title: "Restricted Device Type",
-      message: "StudyBase no longer supports this device type. This helps keep your account secure and gives you the best experience on the site.",
+      message: "RevisionBase no longer supports this device type. This helps keep your account secure and gives you the best experience on the site.",
       icon: "🔒",
       buttonText: "More information",
       buttonUrl: "/support/info/restricted_device_type.html"
@@ -279,7 +279,7 @@
 
     "ENV_403_PX": {
       title: "Restricted Device Type",
-      message: "StudyBase no longer supports this screen size. This helps keep your account secure and gives you the best experience on the site.",
+      message: "RevisionBase no longer supports this screen size. This helps keep your account secure and gives you the best experience on the site.",
       icon: "🔒",
       buttonText: "More information",
       buttonUrl: "/support/info/restricted_device_type.html"
@@ -287,21 +287,21 @@
 
     "ENV_403_LOC": {
       title: "This content is GeoBlocked",
-      message: "Your current location is not supported. This helps keep StudyBase secure and available for supported regions.",
+      message: "Your current location is not supported. This helps keep RevisionBase secure and available for supported regions.",
       icon: "🔒",
       buttonText: "More information",
       buttonUrl: "/support/info/geoblock.html"
     },
     "ENV_403_LOC": {
       title: "Location collection blocked",
-      message: "StudyBase needs a one-time location check to continue. The check happens locally, your location is not sent to our servers, and only a true or false result is stored on your device.",
+      message: "RevisionBase needs a one-time location check to continue. The check happens locally, your location is not sent to our servers, and only a true or false result is stored on your device.",
       icon: "🔒",
       buttonText: "More information",
       buttonUrl: "/support/info/geoblock.html"
     },
     "ENV_403_TIME": {
       title: "Site is being updated overnight",
-      message: "StudyBase is unavailable between 11pm and 4am while updates and maintenance run. Please try again after 4am.",
+      message: "RevisionBase is unavailable between 11pm and 4am while updates and maintenance run. Please try again after 4am.",
       icon: "🔒",
       buttonText: "More information",
       buttonUrl: "/support/info/time.html"
@@ -747,7 +747,7 @@
     }
 
     return {
-      label: "StudyBase notice",
+      label: "RevisionBase notice",
       accent: "#dc2626",
       soft: "rgba(220, 38, 38, 0.12)",
       border: "rgba(220, 38, 38, 0.28)"

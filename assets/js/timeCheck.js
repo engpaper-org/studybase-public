@@ -1,11 +1,65 @@
 // server-monitor.js
 
-(function() {
+(async function() {
     // --- 1. State Variables ---
     window.CurrentScriptVersions = window.CurrentScriptVersions || {};
     window.CurrentScriptVersions['timeCheck'] = '1.0.0';
 
     let warningDismissed = false;
+    let MAINTENANCE_ENABLED = true;
+    let WARNING_START = "23:00";
+    let SHUTDOWN_START = "23:02";
+    let SHUTDOWN_END = "04:00";
+    let CHECK_INTERVAL_MS = 5000;
+    let WARNING_TITLE = "Scheduled Daily Maintenance Imminent";
+    let WARNING_MESSAGE = "To protect infrastructure stability and proactively reduce overnight server load, RevisionBase will initiate its standard automated shutdown at <strong>11:02 PM</strong>.";
+    let RESTORE_MESSAGE = "This is a routine procedure to deploy updates and ensure peak performance for tomorrow. Services will automatically restore at <strong>4:00 AM</strong>. <span class=\"font-semibold text-amber-700\">Please save your current work.</span>";
+    let SHUTDOWN_TITLE = "RevisionBase is currently<br><span class=\"bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600\">offline for servicing</span>";
+    let SHUTDOWN_MESSAGE = "As part of our commitment to providing a fast, secure, and reliable platform, RevisionBase undergoes scheduled daily maintenance between <strong>11:02 PM and 4:00 AM</strong>.";
+    let ACTION_TITLE = "Action Required: Keep this tab open";
+    let ACTION_MESSAGE = "Your active session is safely preserved. There is no need to log out or close your browser. At exactly <strong>4:00 AM</strong>, this system notice will automatically dismiss, and full access will be restored so you can continue seamlessly where you left off.";
+
+    function minutesFromTime(value, fallback) {
+        var parts = String(value || "").split(":").map(Number);
+        if (parts.length !== 2 || parts.some(part => !Number.isFinite(part))) return fallback;
+        return (Math.max(0, Math.min(23, parts[0])) * 60) + Math.max(0, Math.min(59, parts[1]));
+    }
+
+    function escapeText(value) {
+        return String(value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
+    async function applyTimeLimitConfig() {
+        if (!window.SiteConfig?.ready) return;
+
+        try {
+            var config = await window.SiteConfig.ready;
+            var maintenance = config?.timeLimits?.maintenance || {};
+
+            MAINTENANCE_ENABLED = maintenance.enabled !== false;
+            WARNING_START = maintenance.warningStart || WARNING_START;
+            SHUTDOWN_START = maintenance.shutdownStart || SHUTDOWN_START;
+            SHUTDOWN_END = maintenance.shutdownEnd || SHUTDOWN_END;
+            CHECK_INTERVAL_MS = Number(maintenance.checkIntervalMs) || CHECK_INTERVAL_MS;
+            WARNING_TITLE = maintenance.warningTitle || WARNING_TITLE;
+            WARNING_MESSAGE = maintenance.warningMessage || WARNING_MESSAGE;
+            RESTORE_MESSAGE = maintenance.restoreMessage || RESTORE_MESSAGE;
+            SHUTDOWN_TITLE = maintenance.shutdownTitle || SHUTDOWN_TITLE;
+            SHUTDOWN_MESSAGE = maintenance.shutdownMessage || SHUTDOWN_MESSAGE;
+            ACTION_TITLE = maintenance.actionTitle || ACTION_TITLE;
+            ACTION_MESSAGE = maintenance.actionMessage || ACTION_MESSAGE;
+        } catch (error) {
+            console.warn("Using fallback maintenance config:", error);
+        }
+    }
+
+    await applyTimeLimitConfig();
+    if (!MAINTENANCE_ENABLED) return;
 
     // --- 2. Create the UI Elements ---
 
@@ -25,12 +79,12 @@
             ${iconWrench}
         </div>
         <div class="flex-grow pt-1">
-            <h3 class="text-slate-900 font-extrabold text-base mb-2 font-sans tracking-tight">Scheduled Daily Maintenance Imminent</h3>
+            <h3 class="text-slate-900 font-extrabold text-base mb-2 font-sans tracking-tight">${escapeText(WARNING_TITLE)}</h3>
             <p class="text-slate-600 text-sm font-body leading-relaxed mb-2">
-                To protect infrastructure stability and proactively reduce overnight server load, StudyBase will initiate its standard automated shutdown at <strong>11:02 PM</strong>. 
+                ${WARNING_MESSAGE}
             </p>
             <p class="text-slate-600 text-sm font-body leading-relaxed">
-                This is a routine procedure to deploy updates and ensure peak performance for tomorrow. Services will automatically restore at <strong>4:00 AM</strong>. <span class="font-semibold text-amber-700">Please save your current work.</span>
+                ${RESTORE_MESSAGE}
             </p>
         </div>
         <button id="sb-dismiss-warning" class="text-slate-400 hover:text-slate-700 transition-colors pt-1 cursor-pointer bg-transparent border-none outline-none">
@@ -59,13 +113,12 @@
             </div>
             
             <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-[1.1] mb-6 text-slate-900">
-                StudyBase is currently<br>
-                <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600">offline for servicing</span>
+                ${SHUTDOWN_TITLE}
             </h1>
             
             <div class="text-slate-600 mb-8 font-body leading-relaxed text-base max-w-2xl mx-auto space-y-4">
                 <p>
-                    As part of our commitment to providing a fast, secure, and reliable platform, StudyBase undergoes scheduled daily maintenance between <strong>11:02 PM and 4:00 AM</strong>.
+                    ${SHUTDOWN_MESSAGE}
                 </p>
                 <p>
                     During this window, our core servers are safely taken offline. This proactive measure significantly reduces overnight infrastructure load, allows us to process internal database health checks, and guarantees that essential system updates are deployed securely.
@@ -77,9 +130,9 @@
                     ${iconShield}
                 </div>
                 <div>
-                    <h4 class="font-extrabold text-slate-900 text-base mb-1 font-sans">Action Required: Keep this tab open</h4>
+                    <h4 class="font-extrabold text-slate-900 text-base mb-1 font-sans">${escapeText(ACTION_TITLE)}</h4>
                     <p class="text-slate-600 text-sm font-body leading-relaxed">
-                        Your active session is safely preserved. There is no need to log out or close your browser. At exactly <strong>4:00 AM</strong>, this system notice will automatically dismiss, and full access will be restored so you can continue seamlessly where you left off.
+                        ${ACTION_MESSAGE}
                     </p>
                 </div>
             </div>
@@ -97,13 +150,11 @@
 
         var minutesPastMidnight = (hours * 60) + minutes;
         
-        // Boundaries
-        var time11_00PM = (23 * 60);       // 1380
-        var time11_02PM = (23 * 60) + 2;   // 1382
-        var time4_00AM = (4 * 60);         // 240
+        var warningStart = minutesFromTime(WARNING_START, 23 * 60);
+        var shutdownStart = minutesFromTime(SHUTDOWN_START, (23 * 60) + 2);
+        var shutdownEnd = minutesFromTime(SHUTDOWN_END, 4 * 60);
 
-        // Warning phase (11:00 PM to 11:01:59 PM)
-        if (minutesPastMidnight >= time11_00PM && minutesPastMidnight < time11_02PM) {
+        if (minutesPastMidnight >= warningStart && minutesPastMidnight < shutdownStart) {
             if (!warningDismissed) {
                 warningPopup.style.transform = "translate(-50%, 0)";
                 warningPopup.style.opacity = "1";
@@ -112,8 +163,7 @@
             shutdownPopup.style.visibility = "hidden";
             document.body.style.overflow = ''; 
         } 
-        // Shutdown phase (11:02 PM to 3:59:59 AM)
-        else if (minutesPastMidnight >= time11_02PM || minutesPastMidnight < time4_00AM) {
+        else if (minutesPastMidnight >= shutdownStart || minutesPastMidnight < shutdownEnd) {
             warningPopup.style.transform = "translate(-50%, 150%)";
             warningPopup.style.opacity = "0";
             warningDismissed = false; 
@@ -136,6 +186,6 @@
 
     // --- 4. Run the Check ---
     checkServerTime();
-    setInterval(checkServerTime, 5000); 
+    setInterval(checkServerTime, CHECK_INTERVAL_MS); 
 
 })();

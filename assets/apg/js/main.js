@@ -1,11 +1,22 @@
 (function () {
   const ENDPOINT =
     window.SB_APG_ENDPOINT ||
-    "https://alert-api.studybase.site/apg/list";
+    "https://alert-api.revisionbase.site/apg/list";
 
   const REQUEST_PAGE = "/assets/apg/request.html";
 
   let apgItems = [];
+
+  async function getApgEndpoint() {
+    if (window.SB_APG_ENDPOINT) return window.SB_APG_ENDPOINT;
+
+    if (window.SiteConfig && window.SiteConfig.ready) {
+      const config = await window.SiteConfig.ready;
+      return config?.endpoints?.apgList || ENDPOINT;
+    }
+
+    return window.SB_CONFIG?.endpoints?.apgList || ENDPOINT;
+  }
 
   function escapeHtml(value) {
     return String(value ?? "")
@@ -201,6 +212,7 @@ function openApgModal(item) {
   }
 
   async function loadApg() {
+  const endpoint = await getApgEndpoint();
   const deviceCode = getDeviceCode();
 
   if (!deviceCode) {
@@ -211,7 +223,7 @@ function openApgModal(item) {
   }
 
   try {
-    const res = await fetch(ENDPOINT, {
+    const res = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

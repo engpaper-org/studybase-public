@@ -1,8 +1,13 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function() {
     
     // --- CONFIGURATION ---
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6WAa5VWe19UTQhKJ32eTF0gQnV2ZqQMyKlBflyzz9lpQrczB4RKeECsb5oKz7RLK9/exec"; 
+    let GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6WAa5VWe19UTQhKJ32eTF0gQnV2ZqQMyKlBflyzz9lpQrczB4RKeECsb5oKz7RLK9/exec";
     const PARAM_NAME = "material-ID";
+
+    if (window.SiteConfig && window.SiteConfig.ready) {
+        const config = await window.SiteConfig.ready;
+        GOOGLE_SCRIPT_URL = config?.endpoints?.materialAnalytics || GOOGLE_SCRIPT_URL;
+    }
 
     // --- HELPER FUNCTIONS ---
 

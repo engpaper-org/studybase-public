@@ -243,7 +243,8 @@
         '"></i>Quick exit enabled</div>'
       : "";
 
-    document.title = article.title + " | StudyBase Support";
+    document.title =
+      article.title + " | " + (window.SiteConfig?.get("brand.name", "RevisionBase") || "RevisionBase") + " Support";
 
     root.innerHTML = [
       '<header class="relative overflow-hidden pt-32 pb-12 px-6 border-b border-slate-200/80">',

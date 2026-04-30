@@ -585,7 +585,7 @@
       <div class="sb-block-panel" role="dialog" aria-modal="true" aria-labelledby="sb-block-modal-title">
         <div class="sb-block-head">
           <div class="sb-block-head-left">
-            <p class="sb-block-kicker">StudyBase Support</p>
+            <p class="sb-block-kicker">RevisionBase Support</p>
             <h2 class="sb-block-title" id="sb-block-modal-title">Request we block your account</h2>
             <p class="sb-block-sub">
               Fill in this form if you want us to restrict your access to help you stop using this part of the site.
@@ -649,7 +649,7 @@
         <div class="sb-usage-inner">
           <div class="sb-usage-top">
             <div>
-              <div class="sb-usage-pill">StudyBase • Usage Tracker</div>
+              <div class="sb-usage-pill">RevisionBase • Usage Tracker</div>
               <h3 class="sb-usage-title">Your study time, live.</h3>
               <p class="sb-usage-sub">
                 If you are spending alot of time here, please consider taking a break. Over 3 hours a week isn't good.

@@ -1,5 +1,65 @@
 (function () {
-    function initNavbar() {
+    function escapeHtml(value) {
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+    }
+
+    async function getSiteConfig() {
+        if (window.SiteConfig && window.SiteConfig.ready) {
+            return window.SiteConfig.ready;
+        }
+
+        return window.SB_CONFIG || {
+            brand: {
+                name: "RevisionBase",
+                suffix: ".site",
+                displayName: "RevisionBase.site"
+            },
+            icons: {
+                navbar: "/assets/siteIcons/navbar.png"
+            },
+            endpoints: {
+                loginState: "https://api.revisionbase.site/state"
+            }
+        };
+    }
+
+    function getBrandTitleHTML(config) {
+        const brand = config.brand || {};
+        const name = brand.name || brand.shortName || "RevisionBase";
+        let suffix = brand.suffix || "";
+        const displayName = brand.displayName || `${name}${suffix}`;
+
+        if (!suffix && displayName.startsWith(name)) {
+            suffix = displayName.slice(name.length);
+        }
+
+        return `${escapeHtml(name)}${suffix ? `<span>${escapeHtml(suffix)}</span>` : ""}`;
+    }
+
+    async function initNavbar() {
+        const siteConfig = await getSiteConfig();
+        const navConfig = siteConfig.navigation || {};
+        if (navConfig.enabled === false) return;
+
+        const brand = siteConfig.brand || {};
+        const icons = siteConfig.icons || {};
+        const endpoints = siteConfig.endpoints || {};
+        const brandTitle = getBrandTitleHTML(siteConfig);
+        const brandAlt = `${brand.displayName || brand.name || "RevisionBase"} logo`;
+        const homeUrl = (siteConfig.urls && siteConfig.urls.home) || "/index.html";
+        const navbarIcon = icons.navbar || icons.favicon || "/assets/siteIcons/navbar.png";
+        const loginStateEndpoint = endpoints.loginState || "https://api.revisionbase.site/state";
+        const brandSubtitle = navConfig.brandSubtitle || "Past papers, tools, resources";
+        const supportSubtitle = navConfig.supportSubtitle || "Support Centre";
+        const loginCheckIntervalMs = Number(navConfig.loginCheckIntervalMs) || 90000;
+        const accountUrl = navConfig.accountUrl || "/myaccount/account.html";
+        const loginUrl = navConfig.loginUrl || "/myaccount/login.html";
+
         const faHref = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css";
         if (!document.querySelector('link[rel="stylesheet"][href*="font-awesome"]')) {
             const faLink = document.createElement("link");
@@ -455,10 +515,10 @@
         let brandNameHTML = `
             <div class="flex flex-col leading-none min-w-0">
                 <span class="sb-brand-title">
-                    StudyBase<span>.site</span>
+                    ${brandTitle}
                 </span>
                 <span class="sb-brand-subtitle">
-                    Modern learning, refined
+                    ${escapeHtml(brandSubtitle)}
                 </span>
             </div>
         `;
@@ -467,10 +527,10 @@
             brandNameHTML = `
                 <div class="flex flex-col leading-none min-w-0">
                     <span class="sb-brand-title">
-                        StudyBase<span>.site</span>
+                        ${brandTitle}
                     </span>
                     <span class="sb-brand-subtitle">
-                        Support Centre
+                        ${escapeHtml(supportSubtitle)}
                     </span>
                 </div>
             `;
@@ -482,11 +542,11 @@
                 <div class="sb-nav-inner">
                     <div class="sb-nav-panel">
                         <div class="sb-nav-content">
-                            <a href="/index.html" class="sb-brand">
+                            <a href="${escapeHtml(homeUrl)}" class="sb-brand">
                                 <div class="sb-brand-logo-shell">
                                     <img
-                                        src="/assets/siteIcons/navbar.png"
-                                        alt="Logo"
+                                        src="${escapeHtml(navbarIcon)}"
+                                        alt="${escapeHtml(brandAlt)}"
                                         class="sb-brand-logo"
                                     >
                                 </div>
@@ -515,10 +575,10 @@
 
                                     <button
                                         type="button"
-                                        data-dropdown-trigger="support"
+                                        data-dropdown-trigger="past-papers"
                                         class="sb-nav-trigger sb-nav-trigger-slate"
                                     >
-                                        <span>Support</span>
+                                        <span>Past Papers</span>
                                         <i class="fa-solid fa-chevron-down"></i>
                                     </button>
                                 </div>
@@ -589,7 +649,7 @@
                                     <i class="fa-solid fa-book-open text-xs opacity-60"></i>
                                 </a>
                                 <a href="/blogs/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                                    <span>StudyBase Blogs</span>
+                                    <span>${escapeHtml(brand.name || brand.shortName || "RevisionBase")} Blogs</span>
                                     <i class="fa-solid fa-pen-nib text-xs opacity-60"></i>
                                 </a>
                             </div>
@@ -597,21 +657,21 @@
 
                         <div class="sb-mobile-card">
                             <div class="mb-3">
-                                <h4 class="text-sm font-black text-slate-900">Support</h4>
-                                <p class="text-xs text-slate-500 font-medium mt-1">Help, policies and ways to contribute</p>
+                                <h4 class="text-sm font-black text-slate-900">Past Papers</h4>
+                                <p class="text-xs text-slate-500 font-medium mt-1">Find A-Level papers by subject, board and year</p>
                             </div>
                             <div class="space-y-2">
-                                <a href="/legal/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                                    <span>Privacy & Terms</span>
-                                    <i class="fa-solid fa-shield-halved text-xs opacity-60"></i>
+                                <a href="/past_papers/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-slate-900 hover:bg-slate-50 transition-colors">
+                                    <span>Past Paper Finder</span>
+                                    <i class="fa-solid fa-file-lines text-xs opacity-70"></i>
                                 </a>
-                                <a href="/support/help_center.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                                    <span>Help Center</span>
-                                    <i class="fa-solid fa-circle-question text-xs opacity-60"></i>
+                                <a href="/toolkit/paperTracker.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
+                                    <span>Paper Tracker</span>
+                                    <i class="fa-solid fa-chart-simple text-xs opacity-60"></i>
                                 </a>
-                                <a href="/legal/contributions.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                                    <span>Contributions</span>
-                                    <i class="fa-solid fa-hand-holding-heart text-xs opacity-60"></i>
+                                <a href="/resource_database/index.html#primary-access" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
+                                    <span>Resource Database</span>
+                                    <i class="fa-solid fa-database text-xs opacity-60"></i>
                                 </a>
                             </div>
                         </div>
@@ -673,31 +733,31 @@
                         <i class="fa-solid fa-book-open text-xs opacity-60"></i>
                     </a>
                     <a href="/blogs/index.html" class="sb-dropdown-link">
-                        <span>StudyBase Blogs</span>
+                        <span>${escapeHtml(brand.name || brand.shortName || "RevisionBase")} Blogs</span>
                         <i class="fa-solid fa-pen-nib text-xs opacity-60"></i>
                     </a>
                 </div>
             </div>
         </div>
 
-        <div id="sb-dropdown-support" data-dropdown-menu="support" class="sb-floating-menu hidden">
-            <div class="sb-dropdown-card w-[305px]">
+        <div id="sb-dropdown-past-papers" data-dropdown-menu="past-papers" class="sb-floating-menu hidden">
+            <div class="sb-dropdown-card w-[330px]">
                 <div class="sb-dropdown-head">
-                    <p class="sb-dropdown-title">Support</p>
-                    <p class="sb-dropdown-subtitle">Help, policies and ways to contribute</p>
+                    <p class="sb-dropdown-title">Past Papers</p>
+                    <p class="sb-dropdown-subtitle">Filter A-Level papers by subject, board and year</p>
                 </div>
                 <div class="space-y-1">
-                    <a href="/legal/index.html" class="sb-dropdown-link">
-                        <span>Privacy & Terms</span>
-                        <i class="fa-solid fa-shield-halved text-xs opacity-60"></i>
+                    <a href="/past_papers/index.html" class="sb-dropdown-link sb-dropdown-link-primary-indigo">
+                        <span>Past Paper Finder</span>
+                        <i class="fa-solid fa-file-lines text-xs opacity-70"></i>
                     </a>
-                    <a href="/support/help_center.html" class="sb-dropdown-link">
-                        <span>Help Center</span>
-                        <i class="fa-solid fa-circle-question text-xs opacity-60"></i>
+                    <a href="/toolkit/paperTracker.html" class="sb-dropdown-link">
+                        <span>Paper Tracker</span>
+                        <i class="fa-solid fa-chart-simple text-xs opacity-60"></i>
                     </a>
-                    <a href="/legal/contributions.html" class="sb-dropdown-link">
-                        <span>Contributions</span>
-                        <i class="fa-solid fa-hand-holding-heart text-xs opacity-60"></i>
+                    <a href="/resource_database/index.html#primary-access" class="sb-dropdown-link">
+                        <span>Resource Database</span>
+                        <i class="fa-solid fa-database text-xs opacity-60"></i>
                     </a>
                 </div>
             </div>
@@ -743,11 +803,11 @@
             if (!trigger || !menu) return;
 
             const rect = trigger.getBoundingClientRect();
-            const menuWidth = menu.offsetWidth || (id === "support" ? 305 : 330);
+            const menuWidth = menu.offsetWidth || (id === "past-papers" ? 330 : 330);
             const gap = 10;
 
             let left = rect.left;
-            if (id === "support") {
+            if (id === "past-papers") {
                 left = rect.right - menuWidth;
             }
 
@@ -943,7 +1003,7 @@
                             <i class="fa-solid fa-xmark text-lg"></i>
                         </button>
                     </div>
-                    <iframe src="/myaccount/login.html" class="w-full h-full border-0 bg-white" title="Login"></iframe>
+                    <iframe src="${escapeHtml(loginUrl)}" class="w-full h-full border-0 bg-white" title="Login"></iframe>
                 </div>
             </div>
             `;
@@ -1001,7 +1061,7 @@
                     `;
 
                     const iframe = document.createElement("iframe");
-                    iframe.src = "/myaccount/account.html";
+                    iframe.src = accountUrl;
                     iframe.className = "w-full flex-grow border-none bg-slate-50";
 
                     modalContainer.appendChild(modalHeader);
@@ -1092,7 +1152,7 @@
 
         async function checkLoginAvailability() {
             try {
-                const res = await fetch("https://api.studybase.site/state");
+                const res = await fetch(loginStateEndpoint);
                 const data = await res.json();
 
                 if (data.ok && data.shutdown === false) {
@@ -1109,7 +1169,7 @@
         }
 
         checkLoginAvailability();
-        setInterval(checkLoginAvailability, 90000);
+        setInterval(checkLoginAvailability, loginCheckIntervalMs);
 
         window.addEventListener("message", (event) => {
             if (event.data === "login-success") {

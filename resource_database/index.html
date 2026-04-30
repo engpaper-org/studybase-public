@@ -3,7 +3,8 @@
 <head>
     
     <meta charset="UTF-8">
-    <script>
+        <script src="/assets/js/siteConfig.js"></script>
+<script>
         (function () {
             try {
                 const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
@@ -12,7 +13,8 @@
         })();
     </script>
     <link rel="stylesheet" href="/assets/css/dark-mode.css">
-    <title>ALevelHelp | Resource Library</title>
+    <link rel="stylesheet" href="/assets/css/revisionbase-media.css">
+    <title>RevisionBase | Resource Library</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/assets/siteIcons/main.ico">
     <script src="/assets/js/userReplace.js"></script>
@@ -329,6 +331,79 @@
             display: block !important;
         }
 
+        body.resource-idle-active {
+            overflow: hidden;
+        }
+
+        #resource-idle-cover {
+            position: fixed;
+            inset: 0;
+            z-index: 100001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background:
+                radial-gradient(circle at 20% 18%, rgba(168,85,247,0.22), transparent 28%),
+                radial-gradient(circle at 82% 78%, rgba(236,72,153,0.18), transparent 28%),
+                linear-gradient(135deg, rgba(15,23,42,0.97), rgba(30,41,59,0.98));
+            color: white;
+            cursor: pointer;
+        }
+
+        body.resource-idle-active #resource-idle-cover {
+            display: flex;
+        }
+
+        .resource-idle-panel {
+            width: min(100%, 34rem);
+            text-align: center;
+        }
+
+        .resource-idle-icon {
+            width: 5rem;
+            height: 5rem;
+            margin: 0 auto 1.5rem;
+            border-radius: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.16);
+            box-shadow: 0 24px 60px rgba(0,0,0,0.24);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .resource-idle-panel h2 {
+            font-size: clamp(2rem, 5vw, 4.5rem);
+            line-height: 0.98;
+            font-weight: 900;
+            letter-spacing: 0;
+            margin-bottom: 1.25rem;
+        }
+
+        .resource-idle-panel p {
+            color: rgba(255,255,255,0.72);
+            font-weight: 600;
+            line-height: 1.7;
+            margin: 0 auto;
+            max-width: 27rem;
+        }
+
+        .resource-idle-continue {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.65rem;
+            margin-top: 2rem;
+            padding: 0.9rem 1.25rem;
+            border-radius: 999px;
+            background: white;
+            color: #6d28d9;
+            font-weight: 900;
+            box-shadow: 0 18px 45px rgba(0,0,0,0.20);
+        }
+
         .farewell-countdown-shell {
             position: relative;
             overflow: hidden;
@@ -369,6 +444,25 @@
 
 <body class="flex flex-col min-h-screen text-slate-900 bg-[#F6F9FC]">
 
+    <div
+        id="resource-idle-cover"
+        role="button"
+        tabindex="0"
+        aria-label="Resume resource library"
+    >
+        <div class="resource-idle-panel">
+            <div class="resource-idle-icon" aria-hidden="true">
+                <i class="fas fa-leaf text-3xl text-purple-100"></i>
+            </div>
+            <h2>Paused while inactive.</h2>
+            <p>To reduce resource load while you are away, the resource cards have been unloaded.</p>
+            <div class="resource-idle-continue">
+                Click anywhere to continue
+                <i class="fas fa-arrow-right text-sm"></i>
+            </div>
+        </div>
+    </div>
+
     <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
         <div class="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-purple-100/60 rounded-full blur-3xl opacity-60"></div>
         <div class="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-pink-100/60 rounded-full blur-3xl opacity-60"></div>
@@ -401,9 +495,9 @@
                     <div class="absolute w-[520px] h-[520px] border border-purple-100/80 rounded-full animate-[spin_60s_linear_infinite]"></div>
                     <div class="absolute w-[420px] h-[420px] border border-pink-100/70 rounded-full animate-[spin_40s_linear_infinite_reverse]"></div>
                     <div class="relative animate-float">
-                        <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                             alt="A-Level Library"
-                             class="w-[500px] h-auto rounded-[3rem] shadow-[0_30px_80px_rgba(15,23,42,0.18)] rotate-[3deg] border-[12px] border-white z-10 relative">
+                        <div class="rb-image-slot w-[500px] aspect-[5/4] rotate-[3deg] border-[12px] border-white z-10 relative" data-slot-label="Resource vault visual">
+                            <img src="/assets/siteImages/resources-vault.jpg" alt="A-Level resource vault preview" onerror="this.remove(); this.parentElement.classList.add('is-placeholder');">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -417,13 +511,13 @@
                     <div>
                         <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-white/80 text-[10px] font-black uppercase tracking-[0.24em] mb-5">
                             <i class="fas fa-school text-pink-200"></i>
-                            Year 11 final stretch
+                            Year 13 final stretch
                         </div>
                         <h2 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">
-                            Thanks for using StudyBase.
+                            Thanks for using RevisionBase.
                         </h2>
                         <p class="text-white/72 text-sm md:text-base leading-relaxed mt-4 max-w-2xl font-medium">
-                            Counting down to 8 May, when Year 11 closes its last regular chapter. Some of us will scatter into new timetables, new rooms, new lives. This little corner remembers the late revision, the shared panic, and the people who made school feel less huge.
+                            Counting down to the final A-Level stretch. This space is here for the late revision, the shared pressure, and the small wins that make the last run feel manageable.
                         </p>
                     </div>
 
@@ -609,7 +703,55 @@
     </div>
 
     <script>
-  const WORKER = "https://api.studybase.site";
+  let WORKER = "https://api.revisionbase.site";
+  let RESOURCE_LIST_ENDPOINT = `${WORKER}/resources/list`;
+  let TOP_CARDS_ENDPOINT = `${WORKER}/resources/top-cards`;
+  let RESOURCE_DATA_BASE = "/assets/resourceData/alevel";
+  let RESOURCE_MATERIAL_PAGE = "material.html";
+  let RESOURCE_EMBEDDED_HASH = "#primary-access";
+  let RESOURCE_IDLE_ENABLED = true;
+  let RESOURCE_IDLE_TIMEOUT_MS = 120000;
+  let RESOURCE_IDLE_UNLOAD_ON_BLUR = true;
+  let RESOURCE_IDLE_UNLOAD_ON_HIDDEN = true;
+
+  function applyResourcePageConfig(config) {
+    const endpoints = config?.endpoints || {};
+    const resources = config?.resources || {};
+    const idleUnload = resources.idleUnload || {};
+    const previousRootFolder = ROOT_FOLDER;
+
+    WORKER = endpoints.apiBase || WORKER;
+    RESOURCE_LIST_ENDPOINT = endpoints.resourceList || `${WORKER}/resources/list`;
+    TOP_CARDS_ENDPOINT = endpoints.resourceTopCards || `${WORKER}/resources/top-cards`;
+    RESOURCE_DATA_BASE = resources.dataBase || RESOURCE_DATA_BASE;
+    RESOURCE_MATERIAL_PAGE = resources.materialPage || RESOURCE_MATERIAL_PAGE;
+    RESOURCE_EMBEDDED_HASH = resources.embeddedMaterialHash || RESOURCE_EMBEDDED_HASH;
+    RESOURCE_IDLE_ENABLED = idleUnload.enabled !== false;
+    RESOURCE_IDLE_TIMEOUT_MS = Number(idleUnload.afterInactiveMs) || RESOURCE_IDLE_TIMEOUT_MS;
+    RESOURCE_IDLE_UNLOAD_ON_BLUR = idleUnload.unloadOnBlur !== false;
+    RESOURCE_IDLE_UNLOAD_ON_HIDDEN = idleUnload.unloadOnHidden !== false;
+
+    const idleTitle = document.querySelector("#resource-idle-cover h2");
+    const idleMessage = document.querySelector("#resource-idle-cover p");
+    const idleAction = document.querySelector("#resource-idle-cover .resource-idle-continue");
+
+    if (idleTitle && idleUnload.title) idleTitle.textContent = idleUnload.title;
+    if (idleMessage && idleUnload.message) idleMessage.textContent = idleUnload.message;
+    if (idleAction && idleUnload.actionText) {
+      idleAction.childNodes[0].nodeValue = `${idleUnload.actionText} `;
+    }
+
+    if (resources.rootFolder) {
+      ROOT_FOLDER = String(resources.rootFolder);
+      if (currentFolderId === previousRootFolder) currentFolderId = ROOT_FOLDER;
+    }
+  }
+
+  const resourcePageConfigReady = window.SiteConfig && window.SiteConfig.ready
+    ? window.SiteConfig.ready.then(applyResourcePageConfig).catch((error) => {
+        console.warn("Using fallback resource page config:", error);
+      })
+    : Promise.resolve();
 
   let openMode = "public";
   let allResources = [];
@@ -623,6 +765,13 @@
   };
   let topCards = [];
   let schoolCountdownInterval = null;
+  let resourceIdleTimer = null;
+  let latestRenderedResourceItems = [];
+  let resourceIdleState = {
+    active: false,
+    restoreItems: null,
+    restoreScrollY: 0
+  };
   window.SB_RESOURCE_OPEN_MODE = "unknown";
 
   function setBannerResourceMode(mode) {
@@ -641,8 +790,7 @@
     section.classList.toggle("hidden", forceHidden || openMode !== "access_only");
   }
 
-  const RESOURCE_DATA_BASE = "/assets/resourceData/alevel";
-  const ROOT_FOLDER = "000";
+  let ROOT_FOLDER = "000";
 
   let folderSchema = [];
   let resourceMain = [];
@@ -750,6 +898,12 @@
     const grid = document.getElementById("favourites-grid");
 
     if (!section || !grid) return;
+
+    if (resourceIdleState.active) {
+      section.classList.add("hidden");
+      grid.innerHTML = "";
+      return;
+    }
 
     if (openMode !== "access_only") {
       section.classList.add("hidden");
@@ -893,6 +1047,8 @@
   }
 
   async function loadTopCards() {
+    await resourcePageConfigReady;
+
     const section = document.getElementById("top-cards-section");
     const grid = document.getElementById("top-cards-grid");
     const subtitle = document.getElementById("top-cards-subtitle");
@@ -954,6 +1110,12 @@
     const grid = document.getElementById("top-cards-grid");
 
     if (!section || !grid) return;
+
+    if (resourceIdleState.active) {
+      section.classList.add("hidden");
+      grid.innerHTML = "";
+      return;
+    }
 
     const cleanCards = normaliseTopCardList(cards);
 
@@ -1049,12 +1211,14 @@
   }
 
   async function loadResources() {
+    await resourcePageConfigReady;
+
     const u = localStorage.getItem("gh_username");
     const p = localStorage.getItem("gh_password");
     const d = localStorage.getItem("gh_device");
 
     try {
-      const res = await fetch(WORKER + "/resources/list", {
+      const res = await fetch(RESOURCE_LIST_ENDPOINT, {
         method: "POST",
         body: JSON.stringify({ username: u, password: p, deviceCode: d }),
       }).then(r => r.json());
@@ -1089,6 +1253,13 @@
       updateFarewellCountdownVisibility();
       document.getElementById("favourites-section").classList.add("hidden");
       updateRandomResourceVisibility();
+
+      if (resourceIdleState.active) {
+        latestRenderedResourceItems = [];
+        clearResourceListingDom();
+        return;
+      }
+
       document.getElementById("resource-grid").innerHTML = `
         <div class="col-span-full text-center py-20 bg-red-50 rounded-[3rem] border border-red-100">
           <p class="text-red-600 font-bold mb-4">Database Connection Failed</p>
@@ -1119,10 +1290,142 @@
     `;
   }
 
+  function getResourceIdleCover() {
+    return document.getElementById("resource-idle-cover");
+  }
+
+  function hasOpenBodyBlockingModal() {
+    return getBodyBlockingModalIds().some(id => {
+      const el = document.getElementById(id);
+      return el && !el.classList.contains("hidden");
+    });
+  }
+
+  function shouldAllowResourceIdle() {
+    return !embeddedMaterialState.open && !hasOpenBodyBlockingModal();
+  }
+
+  function scheduleResourceIdleTimer() {
+    clearTimeout(resourceIdleTimer);
+    if (!RESOURCE_IDLE_ENABLED) return;
+    if (resourceIdleState.active) return;
+
+    resourceIdleTimer = setTimeout(showResourceIdleCover, RESOURCE_IDLE_TIMEOUT_MS);
+  }
+
+  function showResourceIdleCover(options = {}) {
+    if (!RESOURCE_IDLE_ENABLED) return;
+    if (resourceIdleState.active) return;
+
+    if (!shouldAllowResourceIdle()) {
+      if (!options.force) scheduleResourceIdleTimer();
+      return;
+    }
+
+    clearTimeout(resourceIdleTimer);
+    resourceIdleTimer = null;
+
+    resourceIdleState = {
+      active: true,
+      restoreItems: latestRenderedResourceItems.length
+        ? latestRenderedResourceItems.slice()
+        : (Array.isArray(allResources) ? allResources.slice() : []),
+      restoreScrollY: window.scrollY || 0
+    };
+
+    setResourceListingHidden(true);
+    clearRandomResourceTimer();
+    clearResourceListingDom();
+    document.body.classList.add("overflow-hidden", "resource-idle-active");
+
+    const cover = getResourceIdleCover();
+    if (cover) {
+      try {
+        cover.focus({ preventScroll: true });
+      } catch {
+        cover.focus();
+      }
+    }
+  }
+
+  function resumeResourceListingFromIdle() {
+    if (!resourceIdleState.active) return;
+
+    const restoreItems = Array.isArray(resourceIdleState.restoreItems)
+      ? resourceIdleState.restoreItems.slice()
+      : [];
+    const restoreScrollY = resourceIdleState.restoreScrollY || 0;
+
+    resourceIdleState = {
+      active: false,
+      restoreItems: null,
+      restoreScrollY: 0
+    };
+
+    document.body.classList.remove("overflow-hidden", "resource-idle-active");
+    setResourceListingHidden(false);
+    renderFavourites();
+
+    const searchInput = document.getElementById("searchInput");
+    if (searchInput && searchInput.value.trim()) {
+      filterResources();
+    } else {
+      renderGrid(restoreItems.length ? restoreItems : allResources);
+    }
+
+    if (topCards.length) renderTopCards(topCards);
+    window.scrollTo({ top: restoreScrollY, behavior: "auto" });
+    scheduleResourceIdleTimer();
+  }
+
+  function setupResourceIdleCover() {
+    const cover = getResourceIdleCover();
+    if (!cover) return;
+
+    cover.addEventListener("click", resumeResourceListingFromIdle);
+    cover.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        resumeResourceListingFromIdle();
+      }
+    });
+
+    [
+      "mousemove",
+      "mousedown",
+      "keydown",
+      "touchstart",
+      "scroll",
+      "wheel"
+    ].forEach(eventName => {
+      window.addEventListener(eventName, (event) => {
+        if (resourceIdleState.active) return;
+        if (event.target && event.target.closest?.("#resource-idle-cover")) return;
+        scheduleResourceIdleTimer();
+      }, { passive: true });
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden && RESOURCE_IDLE_UNLOAD_ON_HIDDEN) {
+        showResourceIdleCover({ force: true });
+        return;
+      }
+
+      if (!resourceIdleState.active) scheduleResourceIdleTimer();
+    });
+
+    window.addEventListener("blur", () => {
+      if (RESOURCE_IDLE_UNLOAD_ON_BLUR) showResourceIdleCover({ force: true });
+    });
+
+    scheduleResourceIdleTimer();
+  }
+
   function clearResourceListingDom() {
     const grid = document.getElementById("resource-grid");
     const favouritesGrid = document.getElementById("favourites-grid");
     const randomTrack = document.getElementById("random-resource-track");
+    const topCardsGrid = document.getElementById("top-cards-grid");
 
     if (grid) {
       grid.replaceChildren();
@@ -1130,6 +1433,7 @@
     }
 
     if (favouritesGrid) favouritesGrid.replaceChildren();
+    if (topCardsGrid) topCardsGrid.replaceChildren();
 
     if (randomTrack) {
       randomTrack.style.transition = "none";
@@ -1142,6 +1446,7 @@
     const ids = [
       "farewell-countdown-section",
       "favourites-section",
+      "top-cards-section",
       "resource-tools-section",
       "global-banner-marker"
     ];
@@ -1155,7 +1460,17 @@
         return;
       }
 
-      el.classList.toggle("hidden", hidden || (id === "favourites-section" && !getFavouriteResources().length));
+      if (id === "favourites-section") {
+        el.classList.toggle("hidden", hidden || !getFavouriteResources().length);
+        return;
+      }
+
+      if (id === "top-cards-section") {
+        el.classList.toggle("hidden", hidden || !topCards.length);
+        return;
+      }
+
+      el.classList.toggle("hidden", hidden);
     });
   }
 
@@ -1165,7 +1480,7 @@
     const grid = document.getElementById("resource-grid");
     if (!frame || !section || !grid) return;
 
-    const url = `material.html?material-ID=${encodeURIComponent(encodedMaterialId)}&embedded=1#primary-access`;
+    const url = `${RESOURCE_MATERIAL_PAGE}?material-ID=${encodeURIComponent(encodedMaterialId)}&embedded=1${RESOURCE_EMBEDDED_HASH}`;
     embeddedMaterialState = {
       open: true,
       src: url,
@@ -1221,9 +1536,18 @@
 
   function renderGrid(items) {
     const grid = document.getElementById("resource-grid");
+    latestRenderedResourceItems = Array.isArray(items) ? items.slice() : [];
+
     if (embeddedMaterialState.open) {
       grid.innerHTML = "";
       grid.className = "hidden";
+      return;
+    }
+
+    if (resourceIdleState.active) {
+      grid.innerHTML = "";
+      grid.className = "hidden";
+      resourceIdleState.restoreItems = latestRenderedResourceItems.slice();
       return;
     }
 
@@ -1794,6 +2118,7 @@
   window.closeRandomResourceModal = closeRandomResourceModal;
 
   startSchoolCountdown();
+  setupResourceIdleCover();
   loadResources();
 </script>
 </body>

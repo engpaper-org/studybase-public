@@ -1,5 +1,10 @@
-(function () {
+(async function () {
   var STORAGE_KEY = "siteActiveTime";
+  var TRACKING_ENABLED = true;
+  var TICK_MS = 1000;
+  var REQUIRE_VISIBLE = true;
+  var REQUIRE_FOCUS = true;
+  var WEEK_STARTS_ON = 1;
   window.CurrentScriptVersions = window.CurrentScriptVersions || {};
   window.CurrentScriptVersions['timeRecords'] = '1.0.0';
 
@@ -25,9 +30,10 @@
 
   function getWeekKey(date) {
     var copy = new Date(date);
-    var day = copy.getDay(); // 0 = Sunday, 1 = Monday, ...
-    var diffToMonday = day === 0 ? -6 : 1 - day;
-    copy.setDate(copy.getDate() + diffToMonday);
+    var day = copy.getDay();
+    var diffToWeekStart = day - WEEK_STARTS_ON;
+    if (diffToWeekStart < 0) diffToWeekStart += 7;
+    copy.setDate(copy.getDate() - diffToWeekStart);
 
     var y = copy.getFullYear();
     var m = String(copy.getMonth() + 1).padStart(2, "0");
@@ -102,7 +108,9 @@
   }
 
   function isPageActive() {
-    return document.visibilityState === "visible" && document.hasFocus();
+    if (REQUIRE_VISIBLE && document.visibilityState !== "visible") return false;
+    if (REQUIRE_FOCUS && !document.hasFocus()) return false;
+    return true;
   }
 
   function tick() {
@@ -134,7 +142,7 @@
   function startTracking() {
     if (intervalId) return;
     lastTick = Date.now();
-    intervalId = setInterval(tick, 1000);
+    intervalId = setInterval(tick, TICK_MS);
   }
 
   function stopTracking() {
@@ -146,6 +154,11 @@
   }
 
   function handleStateChange() {
+    if (!TRACKING_ENABLED) {
+      stopTracking();
+      return;
+    }
+
     var data = resetPeriodsIfNeeded(loadData());
     saveData(data);
 
@@ -155,6 +168,29 @@
       stopTracking();
     }
   }
+
+  async function applyUsageTrackingConfig() {
+    if (!window.SiteConfig?.ready) return;
+
+    try {
+      var config = await window.SiteConfig.ready;
+      var tracking = config?.timeLimits?.usageTracking || {};
+
+      TRACKING_ENABLED = tracking.enabled !== false;
+      STORAGE_KEY = tracking.storageKey || STORAGE_KEY;
+      TICK_MS = Number(tracking.tickMs) || TICK_MS;
+      REQUIRE_VISIBLE = tracking.requireVisible !== false;
+      REQUIRE_FOCUS = tracking.requireFocus !== false;
+      WEEK_STARTS_ON = Number.isFinite(Number(tracking.weekStartsOn))
+        ? Math.max(0, Math.min(6, Number(tracking.weekStartsOn)))
+        : WEEK_STARTS_ON;
+    } catch (error) {
+      console.warn("Using fallback usage tracking config:", error);
+    }
+  }
+
+  await applyUsageTrackingConfig();
+  if (!TRACKING_ENABLED) return;
 
   document.addEventListener("visibilitychange", handleStateChange);
   window.addEventListener("focus", handleStateChange);

@@ -1,14 +1,14 @@
 {
   "version": "v2.0",
   "date": "2026.3.14",
-  "title": "StudyBase Unified Legal Policy",
+  "title": "RevisionBase Unified Legal Policy",
   "description": "A combined legal document incorporating Terms of Use, Terms and Conditions, Privacy Policy, Cookie and Local Storage Notice, Moderation Notice, Proxy/Embedded Content Disclaimer, and Account/Access Terms.",
   "clauses": [
     {
       "id": "1",
       "title": "Definitions & Scope",
       "badge": "FOUNDATION",
-      "content": "<strong>\"The Service\"</strong> means the StudyBase platform, including all pages, subdomains, scripts, dashboards, legal notices, account systems, embedded applications, proxy interfaces, APIs, analytics scripts, moderation tools, and associated infrastructure.<br><br><strong>\"The Provider\"</strong> means the operator, maintainer, and legal owner or controller of the Service.<br><br><strong>\"User\"</strong> means any person who accesses, browses, views, interacts with, submits information to, or otherwise uses any part of the Service.<br><br><strong>\"Device Data\"</strong> means information stored on or read from a user's browser or device, including localStorage, sessionStorage, similar browser technologies, scripts, and tags.<br><br>This Unified Legal Policy governs your access to and use of the Service. By using the Service, you agree to be bound by it."
+      "content": "<strong>\"The Service\"</strong> means the RevisionBase platform, including all pages, subdomains, scripts, dashboards, legal notices, account systems, embedded applications, proxy interfaces, APIs, analytics scripts, moderation tools, and associated infrastructure.<br><br><strong>\"The Provider\"</strong> means the operator, maintainer, and legal owner or controller of the Service.<br><br><strong>\"User\"</strong> means any person who accesses, browses, views, interacts with, submits information to, or otherwise uses any part of the Service.<br><br><strong>\"Device Data\"</strong> means information stored on or read from a user's browser or device, including localStorage, sessionStorage, similar browser technologies, scripts, and tags.<br><br>This Unified Legal Policy governs your access to and use of the Service. By using the Service, you agree to be bound by it."
     },
     {
       "id": "2",

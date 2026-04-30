@@ -18,7 +18,7 @@
                 type: 'verified',
                 color: '#2196F3', // Blue
                 title: 'Verified Resource',
-                message: 'This resource has been verified by the StudyBase.site team, meaning limited ad interruptions and a safer service.',
+                message: 'This resource has been verified by the RevisionBase.site team, meaning limited ad interruptions and a safer service.',
                 iconSVG: '<polyline points="20 6 9 17 4 12"></polyline>' // Checkmark
             });
         } else {
@@ -27,7 +27,7 @@
                 type: 'warning',
                 color: '#FF9800', // Amber/Orange
                 title: 'Unverified Resource',
-                message: 'This resource has NOT been verified by the StudyBase.site team. Proceed with caution as checks are incomplete.',
+                message: 'This resource has NOT been verified by the RevisionBase.site team. Proceed with caution as checks are incomplete.',
                 iconSVG: '<line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>' // Exclamation
             });
         }

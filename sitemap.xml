@@ -2,229 +2,232 @@
 <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
     <!-- Main pages -->
     <url>
-        <loc>https://studybase.site/</loc>
+        <loc>https://revisionbase.site/</loc>
     </url>
     <url>
-        <loc>https://studybase.site/faq/</loc>
+        <loc>https://revisionbase.site/faq/</loc>
     </url>
     <url>
-        <loc>https://studybase.site/toolkit/</loc>
+        <loc>https://revisionbase.site/toolkit/</loc>
     </url>
     <url>
-        <loc>https://studybase.site/faq/</loc>
+        <loc>https://revisionbase.site/past_papers/</loc>
     </url>
     <url>
-        <loc>https://studybase.site/support/help_center/</loc>
+        <loc>https://revisionbase.site/faq/</loc>
+    </url>
+    <url>
+        <loc>https://revisionbase.site/support/help_center/</loc>
     </url>
 
     <!-- Toolkit Pages pages -->
 <url>
-    <loc>https://studybase.site/toolkit/blurting.html</loc>
+    <loc>https://revisionbase.site/toolkit/blurting.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/breathing.html</loc>
+    <loc>https://revisionbase.site/toolkit/breathing.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/checklist.html</loc>
+    <loc>https://revisionbase.site/toolkit/checklist.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/cornell.html</loc>
+    <loc>https://revisionbase.site/toolkit/cornell.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/countdown.html</loc>
+    <loc>https://revisionbase.site/toolkit/countdown.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/essayOutliner.html</loc>
+    <loc>https://revisionbase.site/toolkit/essayOutliner.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/feynman.html</loc>
+    <loc>https://revisionbase.site/toolkit/feynman.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/flashcards.html</loc>
+    <loc>https://revisionbase.site/toolkit/flashcards.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/focusRoom.html</loc>
+    <loc>https://revisionbase.site/toolkit/focusRoom.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/hoursLog.html</loc>
+    <loc>https://revisionbase.site/toolkit/hoursLog.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/mindmap.html</loc>
+    <loc>https://revisionbase.site/toolkit/mindmap.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/paperTracker.html</loc>
+    <loc>https://revisionbase.site/toolkit/paperTracker.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/sleepCycle.html</loc>
+    <loc>https://revisionbase.site/toolkit/sleepCycle.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/timer.html</loc>
+    <loc>https://revisionbase.site/toolkit/timer.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/timetable.html</loc>
+    <loc>https://revisionbase.site/toolkit/timetable.html</loc>
 </url>
 <url>
-    <loc>https://studybase.site/toolkit/ucasCalculator.html</loc>
+    <loc>https://revisionbase.site/toolkit/ucasCalculator.html</loc>
 </url>
     
     <!-- Blog pages -->
   <url>
-    <loc>https://studybase.site/blogs/</loc>
+    <loc>https://revisionbase.site/blogs/</loc>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=ucas-personal-statement&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=ucas-personal-statement&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=essay-writing-skills&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=essay-writing-skills&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=stem-revision-tips&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=stem-revision-tips&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=super-curriculars&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=super-curriculars&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=burnout-prevention&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=burnout-prevention&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=using-past-papers&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=using-past-papers&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=alevel-mindset&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=alevel-mindset&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=revision-environment&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=revision-environment&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=day-before-exam&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=day-before-exam&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=holiday-revision-strategy&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=holiday-revision-strategy&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=group-study-guide&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=group-study-guide&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=dealing-with-failure&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=dealing-with-failure&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=cornell-notes&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=cornell-notes&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=oxbridge-interviews&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=oxbridge-interviews&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=brain-nutrition&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=brain-nutrition&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=english-context-guide&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=english-context-guide&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=economics-chains&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=economics-chains&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=uni-campus-vs-city&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=uni-campus-vs-city&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=morning-routine&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=morning-routine&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=psychology-evaluation&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=psychology-evaluation&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=biology-mark-schemes&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=biology-mark-schemes&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=maths-proof-read&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=maths-proof-read&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=personal-statement-hook&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=personal-statement-hook&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=history-historiography&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=history-historiography&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=chemistry-exam-precision&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=chemistry-exam-precision&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=sociology-theories&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=sociology-theories&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=pomodoro-technique&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=pomodoro-technique&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=physics-problem-solving&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=physics-problem-solving&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=mental-health-exam-season&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=mental-health-exam-season&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=politics-synopticity&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=politics-synopticity&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=geography-case-studies&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=geography-case-studies&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=degree-apprenticeships&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=degree-apprenticeships&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=cornell-note-taking&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=cornell-note-taking&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=rs-philosophy-logic&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=rs-philosophy-logic&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=time-management-matrix&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=time-management-matrix&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=physics-maths-bridge&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=physics-maths-bridge&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=gap-year-planning&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=gap-year-planning&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=digital-minimalism&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=digital-minimalism&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
   <url>
-    <loc>https://studybase.site/blogs/blog.html?id=exam-hall-psychology&amp;category=alevel</loc>
+    <loc>https://revisionbase.site/blogs/blog.html?id=exam-hall-psychology&amp;category=alevel</loc>
     <lastmod>2026-04-13</lastmod>
   </url>
 </urlset>

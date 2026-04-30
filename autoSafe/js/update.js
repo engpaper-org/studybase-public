@@ -1,6 +1,6 @@
 (function() {
   // --- 1. CONFIGURATION ---
-  const scriptRegistry = {
+  let scriptRegistry = {
     "deviceCheck": "/assets/js/deviceCheck.js",
     "timeCheck": "/assets/js/timeCheck.js",
     "loginAnimationCheck": "/assets/js/loginAnimationCheck.js",
@@ -15,18 +15,71 @@
   };
 
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  let UPDATER_ENABLED = true;
+  let UPDATE_MODAL_ENABLED = true;
+  let UPDATE_EXEC_ENABLED = true;
+  let UPDATE_VERSION_PATH = "/version";
+  let UPDATE_EXEC_PATH = "/exec";
+  let UPDATE_CHECK_INTERVAL_MS = 1000;
+  let UPDATE_FAILURE_COOLDOWN_MS = 300000;
+  let UPDATE_SUCCESS_STORAGE_KEY = "studybase_last_update_check";
+  let UPDATE_DAILY_CHECK_HOUR = 3;
+  let UPDATE_DAILY_CHECK_MINUTE = 0;
+  let UPDATE_MINIMUM_VISIBLE_STEP_MS = 2000;
+  let UPDATE_PER_MODULE_DELAY_MS = 1000;
   let isUpdating = false;
   let lastFailedAttempt = 0; // Tracks failures to prevent infinite loops
+  let updateEndpoint = "https://update.revisionbase.site";
+
+  async function applyUpdateConfig() {
+    if (!window.SiteConfig?.ready) return;
+
+    try {
+      const config = await window.SiteConfig.ready;
+      const updates = config?.updates || {};
+
+      UPDATER_ENABLED = updates.enabled !== false;
+      UPDATE_MODAL_ENABLED = updates.modalEnabled !== false;
+      UPDATE_EXEC_ENABLED = updates.execEnabled !== false;
+      updateEndpoint = updates.endpoint || config?.endpoints?.update || updateEndpoint;
+      UPDATE_VERSION_PATH = updates.versionPath || UPDATE_VERSION_PATH;
+      UPDATE_EXEC_PATH = updates.execPath || UPDATE_EXEC_PATH;
+      UPDATE_CHECK_INTERVAL_MS = Number(updates.checkIntervalMs) || UPDATE_CHECK_INTERVAL_MS;
+      UPDATE_FAILURE_COOLDOWN_MS = Number(updates.failureCooldownMs) || UPDATE_FAILURE_COOLDOWN_MS;
+      UPDATE_SUCCESS_STORAGE_KEY = updates.successStorageKey || UPDATE_SUCCESS_STORAGE_KEY;
+      UPDATE_DAILY_CHECK_HOUR = Number.isFinite(Number(updates.dailyCheckHour)) ? Number(updates.dailyCheckHour) : UPDATE_DAILY_CHECK_HOUR;
+      UPDATE_DAILY_CHECK_MINUTE = Number.isFinite(Number(updates.dailyCheckMinute)) ? Number(updates.dailyCheckMinute) : UPDATE_DAILY_CHECK_MINUTE;
+      UPDATE_MINIMUM_VISIBLE_STEP_MS = Number(updates.minimumVisibleStepMs) || UPDATE_MINIMUM_VISIBLE_STEP_MS;
+      UPDATE_PER_MODULE_DELAY_MS = Number(updates.perModuleDelayMs) || UPDATE_PER_MODULE_DELAY_MS;
+
+      if (updates.registry && typeof updates.registry === "object" && !Array.isArray(updates.registry)) {
+        scriptRegistry = updates.registry;
+      }
+    } catch (error) {
+      console.warn("Using fallback update config:", error);
+    }
+  }
+
+  async function getUpdateEndpoint(path) {
+    if (window.SiteConfig && window.SiteConfig.ready) {
+      const config = await window.SiteConfig.ready;
+      updateEndpoint = config?.updates?.endpoint || config?.endpoints?.update || updateEndpoint;
+    } else if (window.SB_CONFIG?.endpoints?.update) {
+      updateEndpoint = window.SB_CONFIG.endpoints.update;
+    }
+
+    return `${updateEndpoint.replace(/\/$/, "")}${path}`;
+  }
 
   // --- 2. TIME LOGIC ---
-  function getMostRecent3AM() {
+  function getMostRecentUpdateTime() {
     const now = new Date();
-    const mostRecent3AM = new Date(now);
-    mostRecent3AM.setHours(3, 0, 0, 0); 
-    if (now < mostRecent3AM) {
-      mostRecent3AM.setDate(mostRecent3AM.getDate() - 1);
+    const mostRecentUpdateTime = new Date(now);
+    mostRecentUpdateTime.setHours(UPDATE_DAILY_CHECK_HOUR, UPDATE_DAILY_CHECK_MINUTE, 0, 0); 
+    if (now < mostRecentUpdateTime) {
+      mostRecentUpdateTime.setDate(mostRecentUpdateTime.getDate() - 1);
     }
-    return mostRecent3AM.getTime();
+    return mostRecentUpdateTime.getTime();
   }
 
   // --- 3. INJECT THE COMPLEX TAILWIND MODAL UI ---
@@ -115,9 +168,11 @@
 
   // --- 5. EXECUTE POST-UPDATE SCRIPT ---
   async function runPostUpdateExec() {
+    if (!UPDATE_EXEC_ENABLED) return;
+
     const execStartTime = Date.now();
     try {
-      const response = await fetch('https://update.studybase.site/exec');
+      const response = await fetch(await getUpdateEndpoint(UPDATE_EXEC_PATH));
       if (response.ok) {
         const jsCode = await response.text();
         
@@ -135,15 +190,17 @@
     }
     
     const elapsed = Date.now() - execStartTime;
-    if (elapsed < 2000) {
-      await sleep(2000 - elapsed);
+    if (elapsed < UPDATE_MINIMUM_VISIBLE_STEP_MS) {
+      await sleep(UPDATE_MINIMUM_VISIBLE_STEP_MS - elapsed);
     }
   }
 
   // --- 6. MAIN UPDATE ROUTINE ---
   async function runUpdater() {
+    if (!UPDATER_ENABLED) return;
+
     injectModalUI();
-    showModal();
+    if (UPDATE_MODAL_ENABLED) showModal();
     
     const statusEl = document.getElementById('update-status');
     const subtextEl = document.getElementById('update-subtext');
@@ -165,11 +222,11 @@
     const checkStartTime = Date.now();
 
     try {
-      const response = await fetch('https://update.studybase.site/version');
+      const response = await fetch(await getUpdateEndpoint(UPDATE_VERSION_PATH));
       const remoteVersions = await response.json();
 
       const elapsed = Date.now() - checkStartTime;
-      if (elapsed < 2000) await sleep(2000 - elapsed);
+      if (elapsed < UPDATE_MINIMUM_VISIBLE_STEP_MS) await sleep(UPDATE_MINIMUM_VISIBLE_STEP_MS - elapsed);
 
       const updatesToApply = [];
       window.CurrentScriptVersions = window.CurrentScriptVersions || {};
@@ -198,7 +255,7 @@
           const percentage = ((i + 1) / updatesToApply.length) * 100;
           progressBar.style.width = `${percentage}%`;
           
-          await sleep(1000); 
+          await sleep(UPDATE_PER_MODULE_DELAY_MS); 
         }
       } else {
         statusEl.innerText = 'System optimized';
@@ -220,7 +277,7 @@
 
       // Clear any previous failure cooldowns and log the success
       lastFailedAttempt = 0;
-      localStorage.setItem('studybase_last_update_check', Date.now().toString());
+      localStorage.setItem(UPDATE_SUCCESS_STORAGE_KEY, Date.now().toString());
 
     } catch (error) {
       console.error("Update failed:", error);
@@ -239,15 +296,16 @@
     if (isUpdating) return; 
     if (document.readyState === 'loading') return;
 
-    // If we failed recently, wait 5 minutes (300,000 ms) before trying again
-    if (lastFailedAttempt && (Date.now() - lastFailedAttempt < 300000)) {
+    if (!UPDATER_ENABLED) return;
+
+    if (lastFailedAttempt && (Date.now() - lastFailedAttempt < UPDATE_FAILURE_COOLDOWN_MS)) {
       return; 
     }
 
-    const lastCheck = localStorage.getItem('studybase_last_update_check');
-    const mostRecent3AM = getMostRecent3AM();
+    const lastCheck = localStorage.getItem(UPDATE_SUCCESS_STORAGE_KEY);
+    const mostRecentUpdateTime = getMostRecentUpdateTime();
 
-    if (!lastCheck || parseInt(lastCheck) < mostRecent3AM) {
+    if (!lastCheck || parseInt(lastCheck) < mostRecentUpdateTime) {
       isUpdating = true; 
       runUpdater().finally(() => {
         isUpdating = false; 
@@ -255,6 +313,8 @@
     }
   }
 
-  setInterval(checkSchedule, 1000);
+  applyUpdateConfig().then(() => {
+    if (UPDATER_ENABLED) setInterval(checkSchedule, UPDATE_CHECK_INTERVAL_MS);
+  });
   
 })();

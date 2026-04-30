@@ -8,7 +8,8 @@
 <head>
     
     <meta charset="UTF-8" />
-    <script>
+        <script src="/assets/js/siteConfig.js"></script>
+<script>
         (function () {
             try {
                 const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
@@ -18,7 +19,7 @@
     </script>
     <link rel="stylesheet" href="/assets/css/dark-mode.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Study Base | Alevel Revision Resources</title>
+    <title>Revision Base | Alevel Revision Resources</title>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
 
     <script src="/assets/js/hashtagProto.js"></script>
@@ -273,7 +274,7 @@
                     <span class="text-[10px] font-black tracking-[0.22em] uppercase text-blue-500 mb-2">Security check</span>
                     <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight mb-3">We're confirming you're a human</h2>
                     <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6 max-w-md">
-                        This quick check protects StudyBase resources and keeps the vault available for real students.
+                        This quick check protects RevisionBase resources and keeps the vault available for real students.
                     </p>
 
                     <div id="turnstileWidget" class="flex justify-center min-h-[74px]"></div>
@@ -617,9 +618,32 @@
 </div>
 
 <script>
-const WORKER = "https://api.studybase.site";
-const TURNSTILE_SITE_KEY = "0x4AAAAAACxsClLBNoaHGiZm";
+let WORKER = "https://api.revisionbase.site";
+let RESOURCE_GET_ENDPOINT = `${WORKER}/resource/get`;
+let RESOURCE_STATE_ENDPOINT = `${WORKER}/state`;
+let TURNSTILE_SITE_KEY = window.SB_CONFIG?.security?.turnstileSiteKeys?.resource || "0x4AAAAAACxsClLBNoaHGiZm";
 //const TURNSTILE_SITE_KEY = "1x00000000000000000000AA";
+
+function applyMaterialPageConfig(config) {
+    const endpoints = config?.endpoints || {};
+    const security = config?.security || {};
+    const testMode = config?.environment?.testMode === true;
+
+    WORKER = endpoints.apiBase || WORKER;
+    RESOURCE_GET_ENDPOINT = endpoints.resourceGet || `${WORKER}/resource/get`;
+    RESOURCE_STATE_ENDPOINT = endpoints.resourceState || endpoints.loginState || `${WORKER}/state`;
+    TURNSTILE_SITE_KEY = security.turnstileSiteKeys?.resource || TURNSTILE_SITE_KEY;
+
+    if (testMode && security.useTestTurnstileInTestMode !== false && security.turnstileSiteKeys?.test) {
+        TURNSTILE_SITE_KEY = security.turnstileSiteKeys.test;
+    }
+}
+
+const materialPageConfigReady = window.SiteConfig && window.SiteConfig.ready
+    ? window.SiteConfig.ready.then(applyMaterialPageConfig).catch((error) => {
+        console.warn("Using fallback material page config:", error);
+    })
+    : Promise.resolve();
 
 let turnstileToken = null;
 let turnstileWidgetId = null;
@@ -1043,7 +1067,7 @@ async function nativeShareLink() {
     if (navigator.share) {
         try {
             await navigator.share({
-                title: "Shared StudyBase page",
+                title: "Shared RevisionBase page",
                 text: "Here is a shared page.",
                 url: link
             });
@@ -1148,6 +1172,7 @@ function runTurnstileCheck() {
 
 async function boot() {
     //forcePrimaryAccessHash();
+    await materialPageConfigReady;
     updateFavouriteButton();
 
     try {
@@ -1191,7 +1216,7 @@ async function fetchMaterialUrl() {
     document.getElementById("bootText").textContent = "Checking access…";
 
     try {
-        const res = await fetch(WORKER + "/resource/get", {
+        const res = await fetch(RESOURCE_GET_ENDPOINT, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -1459,7 +1484,7 @@ function proceedToLoad(subjectTitle) {
 
     const onIntroMessage = (event) => {
         if (event.source !== loadingAdFrame.contentWindow) return;
-        if (!event.data || event.data.type !== "STUDYBASE_INTRO_COMPLETE") return;
+        if (!event.data || event.data.type !== "REVISIONBASE_INTRO_COMPLETE") return;
 
         revealResource();
     };
@@ -1493,7 +1518,7 @@ function startStatePolling() {
 
 async function checkStateOnce() {
     try {
-        const res = await fetch(WORKER + "/state");
+        const res = await fetch(RESOURCE_STATE_ENDPOINT);
         const data = await res.json();
         const reason = (data && data.reason) ? String(data.reason) : "";
 
@@ -1547,7 +1572,7 @@ function beginReconnectMode() {
         if (countdown <= 0) {
             countdown = 10;
             try {
-                const res = await fetch(WORKER + "/state");
+                const res = await fetch(RESOURCE_STATE_ENDPOINT);
                 const data = await res.json();
 
                 const reason = (data && data.reason) ? String(data.reason) : "";

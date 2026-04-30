@@ -5,9 +5,9 @@ window.SUPPORT_ARTICLES = {
     eyebrow: "Getting started",
     icon: "fa-play",
     accent: "blue",
-    description: "Learn the basics of StudyBase, where to find resources, and how to settle in quickly.",
+    description: "Learn the basics of RevisionBase, where to find resources, and how to settle in quickly.",
     intro:
-      "If you are new to StudyBase, start here. This page shows you the easiest places to begin, what each section does, and where to go next if something feels confusing.",
+      "If you are new to RevisionBase, start here. This page shows you the easiest places to begin, what each section does, and where to go next if something feels confusing.",
     readTime: "3 min read",
     category: "New users",
     updated: "April 2026",
@@ -247,7 +247,7 @@ window.SUPPORT_ARTICLES = {
     accent: "purple",
     description: "Find materials faster and troubleshoot resource pages that do not open correctly.",
     intro:
-      "Use this page to understand where resources live on StudyBase, what to do if a page or file does not load, and when to report a problem instead of retrying the same route.",
+      "Use this page to understand where resources live on RevisionBase, what to do if a page or file does not load, and when to report a problem instead of retrying the same route.",
     readTime: "4 min read",
     category: "Resource support",
     updated: "April 2026",

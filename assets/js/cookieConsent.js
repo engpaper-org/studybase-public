@@ -1,4 +1,14 @@
-const LOG_URL = 'https://script.google.com/macros/s/AKfycbyW-AQ4JeYOMujbXToocpkXPH_GMYxhJTqViDOkoPyXYrpcaMvFuxnVjtWQx-ot6T3L/exec';
+let LOG_URL = 'https://script.google.com/macros/s/AKfycbyW-AQ4JeYOMujbXToocpkXPH_GMYxhJTqViDOkoPyXYrpcaMvFuxnVjtWQx-ot6T3L/exec';
+let POLICY_URL = 'https://revisionbase.site/legal';
+let GOOGLE_TAG_ID = 'G-N7LHC0S1T1';
+
+if (window.SiteConfig && window.SiteConfig.ready) {
+    window.SiteConfig.ready.then((config) => {
+        LOG_URL = config?.endpoints?.consentLog || LOG_URL;
+        POLICY_URL = config?.urls?.privacy || POLICY_URL;
+        GOOGLE_TAG_ID = config?.analytics?.googleTagId || GOOGLE_TAG_ID;
+    });
+}
 
 async function acceptAll() {
     const btn = document.getElementById('accept-btn');
@@ -19,7 +29,7 @@ async function acceptAll() {
     });
 
     // Refresh Google Config immediately
-    gtag('config', 'G-N7LHC0S1T1', { 'update': true });
+    gtag('config', GOOGLE_TAG_ID, { 'update': true });
 
     localStorage.setItem('site_consent_granted', 'true');
 
@@ -66,7 +76,7 @@ window.addEventListener('load', () => {
                 We use cookies and local storage to maintain security, analyse usage, 
                 and confirm compliance with our full Terms of Use and Privacy Policy.
                 Continued access requires acceptance.
-                <a href="https://studybase.site/legal" target="_blank" class="text-blue-600 font-semibold hover:underline ml-1">
+                <a href="${POLICY_URL}" target="_blank" class="text-blue-600 font-semibold hover:underline ml-1">
                     View Policy
                 </a>
             </div>

@@ -2,7 +2,7 @@
   "version": "v0.0",
   "date": "2026.2.0",
   "clauses": [
-    { "id": "1", "title": "Definitions", "content": "<strong>\"The Service\"</strong> refers to the StudyBase repository, inclusive of static files, dynamic Interactive Resources, and visual simulations.<br><br><strong>\"DCAM\"</strong> (Dynamic Cognitive Assessment Module) refers to the logic-based tools provided for revision and stress testing." },
+    { "id": "1", "title": "Definitions", "content": "<strong>\"The Service\"</strong> refers to the RevisionBase repository, inclusive of static files, dynamic Interactive Resources, and visual simulations.<br><br><strong>\"DCAM\"</strong> (Dynamic Cognitive Assessment Module) refers to the logic-based tools provided for revision and stress testing." },
     { "id": "2", "title": "Data Architecture", "badge": "CRITICAL", "content": "We use a hybrid data model involving plain-text webhooks and cryptographic hashing. By using the Service, you explicitly consent to the email transmission and UCI generation." },
     { "id": "3", "title": "Institutional Use", "badge": "MANDATORY", "isWarning": true, "content": "THE PROVIDER EXPLICITLY DISCLAIMS ANY LIABILITY FOR UNAUTHORIZED USE WITHIN SCHOOLS or WORKPLACES. Accessing Interactive Resources during scheduled lessons is strictly prohibited." },
     { "id": "4", "title": "Educational Intent", "content": "Interactive Resources are supplemental tools aimed at cognitive reflex and logic training. Any recreational enjoyment is purely incidental." },

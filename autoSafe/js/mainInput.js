@@ -1,17 +1,19 @@
 (() => {
   "use strict";
 
-  const DEBUG = false;
-
-  const BAD_WORDS_URL = "/autoSafe/data/badWords.txt";
-  const VIOLATIONS_KEY = "sb_searchguard_violations";
-  const SEARCH_DISABLED_AT = 5;
-  const REVIEW_THRESHOLD = 3;
+  let DEBUG = false;
+  let GUARD_ENABLED = true;
+  let BAD_WORDS_URL = "/autoSafe/data/badWords.txt";
+  let VIOLATIONS_KEY = "sb_searchguard_violations";
+  let SEARCH_DISABLED_AT = 5;
+  let REVIEW_THRESHOLD = 3;
+  let SHOW_MATCHED_HASH = true;
+  let REFILTER_AFTER_BLOCK = true;
 
  
-  const ADMIN_OVERRIDE_HASH = "eb0968a823be2cadfaa169fc305ca6c26332fac07fbcb75c04f37d53764c8be0";
+  let ADMIN_OVERRIDE_HASH = "";
 
-  const SEARCH_INPUT_SELECTORS = [
+  let SEARCH_INPUT_SELECTORS = [
     "#searchInput",
     'input[type="search"]',
     'input[name="q"]',
@@ -23,7 +25,7 @@
     "firstName"
   ];
 
-  const SEARCH_BUTTON_SELECTORS = [
+  let SEARCH_BUTTON_SELECTORS = [
     'button[type="submit"]',
     "[data-search-button]",
     ".search-button"
@@ -44,6 +46,36 @@
 
   function error(...args) {
     if (DEBUG) console.error("[SearchGuard]", ...args);
+  }
+
+  async function applyGuardConfig() {
+    if (!window.SiteConfig?.ready) return;
+
+    try {
+      const config = await window.SiteConfig.ready;
+      const autoSafe = config?.autoSafe || {};
+      const mainInput = autoSafe.mainInput || {};
+
+      GUARD_ENABLED = autoSafe.enabled !== false && mainInput.enabled !== false;
+      DEBUG = Boolean(config?.environment?.showDebugLogs || mainInput.debug);
+      BAD_WORDS_URL = mainInput.badWordsUrl || autoSafe.badWordsUrl || BAD_WORDS_URL;
+      VIOLATIONS_KEY = mainInput.violationsKey || VIOLATIONS_KEY;
+      SEARCH_DISABLED_AT = Number(mainInput.searchDisabledAt) || SEARCH_DISABLED_AT;
+      REVIEW_THRESHOLD = Number(mainInput.reviewThreshold) || REVIEW_THRESHOLD;
+      ADMIN_OVERRIDE_HASH = mainInput.adminOverrideHash || ADMIN_OVERRIDE_HASH;
+      SHOW_MATCHED_HASH = mainInput.showMatchedHash !== false;
+      REFILTER_AFTER_BLOCK = mainInput.refilterAfterBlock !== false;
+
+      if (Array.isArray(mainInput.inputSelectors) && mainInput.inputSelectors.length) {
+        SEARCH_INPUT_SELECTORS = mainInput.inputSelectors;
+      }
+
+      if (Array.isArray(mainInput.buttonSelectors) && mainInput.buttonSelectors.length) {
+        SEARCH_BUTTON_SELECTORS = mainInput.buttonSelectors;
+      }
+    } catch (err) {
+      error("Failed to apply search guard config:", err);
+    }
   }
 
   function findFirst(selectors, root = document) {
@@ -336,7 +368,7 @@
     try {
       const hashed = await sha256Hex(raw);
 
-      if (hashed === ADMIN_OVERRIDE_HASH) {
+      if (ADMIN_OVERRIDE_HASH && hashed === ADMIN_OVERRIDE_HASH) {
         setViolationCount(0);
         input.value = "";
         status.textContent = "Override accepted. Violations have been reset to 0.";
@@ -381,7 +413,7 @@
         "Search has been disabled due to multiple violations. Any further attempts to type into search will continue to be blocked on this device.";
       countEl.textContent = `This is your ${ordinal(count)} warning.`;
       extraEl.textContent =
-        "An admin override code can be entered below for local unlocking. If this were a real system, review by the StudyBase team could result in account action for breach of the MSA.";
+        "An admin override code can be entered below for local unlocking. If this were a real system, review by the RevisionBase team could result in account action for breach of the MSA.";
       okBtn.textContent = "Close";
       overrideBox?.classList.remove("hidden");
     } else {
@@ -393,7 +425,7 @@
 
       if (count >= REVIEW_THRESHOLD) {
         extraEl.textContent =
-          "This violation has been reported to the StudyBase team to review whether it was in breach of our MSA. If it is found to be in breach, your account may be banned for violation of the MSA.";
+          "This violation has been reported to the RevisionBase team to review whether it was in breach of our MSA. If it is found to be in breach, your account may be banned for violation of the MSA.";
       } else {
         extraEl.textContent =
           "Continued misuse may result in action being taken on your account.";
@@ -403,7 +435,7 @@
       overrideBox?.classList.add("hidden");
     }
 
-    if (matchedHash) {
+    if (matchedHash && SHOW_MATCHED_HASH) {
       hashEl.textContent = matchedHash;
       hashBox.classList.remove("hidden");
     } else {
@@ -420,6 +452,8 @@
   }
 
   function safelyRefilter() {
+    if (!REFILTER_AFTER_BLOCK) return;
+
     try {
       if (typeof window.filterResources === "function") {
         window.filterResources();
@@ -540,6 +574,9 @@
   }
 
   async function init() {
+    await applyGuardConfig();
+    if (!GUARD_ENABLED) return;
+
     if (!window.crypto?.subtle) {
       error("Web Crypto API not available.");
       return;

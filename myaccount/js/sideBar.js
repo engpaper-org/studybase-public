@@ -57,7 +57,7 @@
             </span>
             <div class="leading-tight">
               <p class="font-black">Account</p>
-              <p class="text-xs text-slate-500 font-body">StudyBase</p>
+              <p class="text-xs text-slate-500 font-body">RevisionBase</p>
             </div>
           </div>
           <button id="sb-account-open" class="px-3 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold">

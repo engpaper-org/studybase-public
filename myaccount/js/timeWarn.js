@@ -1,4 +1,4 @@
-(function () {
+(async function () {
 
   window.CurrentScriptVersions = window.CurrentScriptVersions || {};
   window.CurrentScriptVersions['timeWarn'] = '1.0.0';
@@ -6,6 +6,11 @@
   var TIME_KEY = "siteActiveTime";
   var ALERT_KEY = "siteActiveBreakAlert";
   var DAILY_LIMIT_SECONDS = 60 * 60;
+  var BREAK_WARNING_ENABLED = true;
+  var SHOW_ONCE_PER_DAY = true;
+  var BREAK_TITLE = "You've spent over 1 hour on the site today.";
+  var BREAK_SUBTITLE = "You're doing well - consider taking a short break for today to reset your focus.";
+  var BREAK_PILL = "RevisionBase Wellbeing";
 
   let hasShownThisLoad = false;
 
@@ -76,8 +81,8 @@
     banner.innerHTML = `
       <div class="sb-break-inner">
         <div class="sb-break-left">
-          <div class="sb-break-pill">StudyBase Wellbeing</div>
-          <div class="sb-break-title">You’ve spent over 1 hour on the site today.</div>
+          <div class="sb-break-pill">${escapeHtml(BREAK_PILL)}</div>
+          <div class="sb-break-title">${escapeHtml(BREAK_TITLE)}</div>
           <div class="sb-break-text">
             Today: <strong>${formatDuration(stats.dailySeconds)}</strong>
             <span class="sb-break-sep">•</span>
@@ -86,7 +91,7 @@
             This month: <strong>${formatDuration(stats.monthlySeconds)}</strong>
           </div>
           <div class="sb-break-subtext">
-            You’re doing well — consider taking a short break for today to reset your focus.
+            ${escapeHtml(BREAK_SUBTITLE)}
           </div>
         </div>
         <div class="sb-break-right">
@@ -255,6 +260,7 @@
   }
 
   function maybeShowBreakBanner() {
+    if (!BREAK_WARNING_ENABLED) return;
     if (hasShownThisLoad) return;
 
     var stats = loadTimeData();
@@ -264,6 +270,8 @@
     var alertData = loadAlertData();
 
     if ((stats.dailySeconds || 0) < DAILY_LIMIT_SECONDS) return;
+
+    if (SHOW_ONCE_PER_DAY && alertData.lastShownDay === todayKey) return;
 
     if (alertData.lastShownDay !== todayKey) {
       alertData.lastShownDay = todayKey;
@@ -287,6 +295,38 @@
       }
     });
   }
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  async function applyBreakConfig() {
+    if (!window.SiteConfig?.ready) return;
+
+    try {
+      var config = await window.SiteConfig.ready;
+      var wellbeing = config?.timeLimits?.wellbeingBreak || {};
+
+      BREAK_WARNING_ENABLED = wellbeing.enabled !== false;
+      TIME_KEY = wellbeing.storageKey || TIME_KEY;
+      ALERT_KEY = wellbeing.alertKey || ALERT_KEY;
+      DAILY_LIMIT_SECONDS = Number(wellbeing.dailyLimitSeconds) || DAILY_LIMIT_SECONDS;
+      SHOW_ONCE_PER_DAY = wellbeing.showOncePerDay !== false;
+      BREAK_TITLE = wellbeing.title || BREAK_TITLE;
+      BREAK_SUBTITLE = wellbeing.subtitle || BREAK_SUBTITLE;
+      BREAK_PILL = wellbeing.pill || BREAK_PILL;
+    } catch (error) {
+      console.warn("Using fallback break warning config:", error);
+    }
+  }
+
+  await applyBreakConfig();
+  if (!BREAK_WARNING_ENABLED) return;
 
   initBreakBanner();
 })();

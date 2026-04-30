@@ -1,0 +1,291 @@
+{
+  "brand": {
+    "name": "StudyBase",
+    "suffix": ".site",
+    "displayName": "StudyBase.site",
+    "shortName": "StudyBase",
+    "securityName": "Revision Base Security Checkpoint",
+    "tagline": "A paper-first A-Level revision service for finding past papers, marking with purpose and using focused tools to improve the next attempt."
+  },
+  "urls": {
+    "site": "https://studybase.site",
+    "eSite": "https://e.studybase.site",
+    "home": "/index.html",
+    "privacy": "/legal/index.html",
+    "terms": "/legal/index.html"
+  },
+  "icons": {
+    "favicon": "/assets/siteIcons/main.ico",
+    "navbar": "/assets/siteIcons/navbar.png",
+    "footer": "/assets/siteIcons/main.ico",
+    "appleTouch": "/assets/siteIcons/navbar.png"
+  },
+  "ui": {
+    "theme": {
+      "defaultDarkMode": false,
+      "darkModeStorageKey": "darkMode",
+      "colorScheme": "light"
+    },
+    "fonts": {
+      "heading": "Plus Jakarta Sans",
+      "body": "Inter",
+      "mono": "JetBrains Mono"
+    },
+    "loading": {
+      "hideBodyUntilConfigReady": true,
+      "bodyReadyClass": "sb-config-ready",
+      "bodyLoadingClass": "sb-config-loading"
+    }
+  },
+  "navigation": {
+    "enabled": true,
+    "brandSubtitle": "Past papers, tools, resources",
+    "supportSubtitle": "Support Centre",
+    "loginCheckIntervalMs": 90000,
+    "accountUrl": "/myaccount/account.html",
+    "loginUrl": "/myaccount/login.html",
+    "settingsUrl": "/myaccount/settings.html",
+    "sections": {
+      "toolkit": true,
+      "resources": true,
+      "pastPapers": true,
+      "blogs": true,
+      "support": true
+    }
+  },
+  "footer": {
+    "enabled": true,
+    "preFooterEnabled": true,
+    "randomizePreFooter": true,
+    "cycleStartMonth": 6,
+    "columns": {
+      "papers": true,
+      "toolkit": true,
+      "resources": true,
+      "platform": true
+    }
+  },
+  "endpoints": {
+    "apiBase": "https://api.studybase.site",
+    "loginState": "https://api.studybase.site/state",
+    "apgList": "https://alert-api.studybase.site/apg/list",
+    "reportProblem": "https://report-problem.studybase.site",
+    "resourceList": "https://api.studybase.site/resources/list",
+    "resourceGet": "https://api.studybase.site/resource/get",
+    "resourceState": "https://api.studybase.site/state",
+    "resourceTopCards": "https://api.studybase.site/resources/top-cards",
+    "consentLog": "https://script.google.com/macros/s/AKfycbyW-AQ4JeYOMujbXToocpkXPH_GMYxhJTqViDOkoPyXYrpcaMvFuxnVjtWQx-ot6T3L/exec",
+    "materialAnalytics": "https://script.google.com/macros/s/AKfycbz6WAa5VWe19UTQhKJ32eTF0gQnV2ZqQMyKlBflyzz9lpQrczB4RKeECsb5oKz7RLK9/exec",
+    "update": "https://update.studybase.site"
+  },
+  "environment": {
+    "testMode": false,
+    "showDebugLogs": false,
+    "configFetchTimeoutMs": 2500
+  },
+  "analytics": {
+    "enabled": true,
+    "googleTagId": "G-N7LHC0S1T1"
+  },
+  "resources": {
+    "dataBase": "/assets/resourceData/alevel",
+    "rootFolder": "000",
+    "materialPage": "/resource_database/material.html",
+    "embeddedMaterialHash": "#primary-access",
+    "idleUnload": {
+      "enabled": true,
+      "afterInactiveMs": 30000,
+      "unloadOnBlur": true,
+      "unloadOnHidden": true,
+      "title": "Paused while inactive.",
+      "message": "To reduce resource load while you are away, the resource cards have been unloaded.",
+      "actionText": "Click anywhere to continue"
+    }
+  },
+  "autoSafe": {
+    "enabled": true,
+    "badWordsUrl": "/autoSafe/data/badWords.txt",
+    "mainInput": {
+      "enabled": true,
+      "debug": false,
+      "violationsKey": "sb_searchguard_violations",
+      "searchDisabledAt": 5,
+      "reviewThreshold": 3,
+      "adminOverrideHash": "eb0968a823be2cadfaa169fc305ca6c26332fac07fbcb75c04f37d53764c8be0",
+      "showMatchedHash": true,
+      "refilterAfterBlock": true,
+      "inputSelectors": [
+        "#searchInput",
+        "input[type=\"search\"]",
+        "input[name=\"q\"]",
+        "input[name=\"search\"]",
+        "#search",
+        "#searchBar",
+        "input[type=\"text\"]",
+        "[data-search-input]",
+        "firstName"
+      ],
+      "buttonSelectors": [
+        "button[type=\"submit\"]",
+        "[data-search-button]",
+        ".search-button"
+      ]
+    },
+    "tts": {
+      "enabled": true,
+      "debug": false,
+      "showMatchedHash": true,
+      "replaceLookalikeSymbols": true,
+      "removePunctuationVariants": true,
+      "collapseSeparatedLetters": true,
+      "cancelSpeechOnBlock": true,
+      "inputSelectors": [
+        "#ttsText",
+        "[data-tts-input]",
+        "textarea[name=\"tts\"]",
+        "textarea[name=\"textToSpeech\"]"
+      ],
+      "buttonSelectors": [
+        "#ttsSpeakBtn",
+        "[data-tts-speak]"
+      ]
+    }
+  },
+  "updates": {
+    "enabled": true,
+    "endpoint": "https://update.studybase.site",
+    "versionPath": "/version",
+    "execPath": "/exec",
+    "execEnabled": true,
+    "modalEnabled": true,
+    "checkIntervalMs": 1000,
+    "failureCooldownMs": 300000,
+    "successStorageKey": "studybase_last_update_check",
+    "dailyCheckHour": 3,
+    "dailyCheckMinute": 0,
+    "minimumVisibleStepMs": 2000,
+    "perModuleDelayMs": 1000,
+    "registry": {
+      "deviceCheck": "/assets/js/deviceCheck.js",
+      "timeCheck": "/assets/js/timeCheck.js",
+      "loginAnimationCheck": "/assets/js/loginAnimationCheck.js",
+      "timeRecords": "/myaccount/js/timeRecords.js",
+      "timeWarn": "/myaccount/js/timeWarn.js",
+      "playHistory": "/assets/js/playHistory.js",
+      "checkVerification": "/assets/js/checkVerification.js",
+      "envCheck": "/assets/js/envCheck.js",
+      "hashtagProto": "/assets/js/hashtagProto.js",
+      "settingsSafetyWarning": "/myaccount/js/settingsSafetyWarning.js",
+      "analytics": "/assets/js/analytics.js"
+    }
+  },
+  "timeLimits": {
+    "maintenance": {
+      "enabled": true,
+      "warningStart": "23:00",
+      "shutdownStart": "23:02",
+      "shutdownEnd": "04:00",
+      "checkIntervalMs": 5000,
+      "warningTitle": "Scheduled Daily Maintenance Imminent",
+      "warningMessage": "To protect infrastructure stability and proactively reduce overnight server load, StudyBase will initiate its standard automated shutdown at 11:02 PM.",
+      "restoreMessage": "Services will automatically restore at 4:00 AM. Please save your current work.",
+      "shutdownTitle": "StudyBase is currently offline for servicing",
+      "shutdownMessage": "StudyBase undergoes scheduled daily maintenance between 11:02 PM and 4:00 AM.",
+      "actionTitle": "Action Required: Keep this tab open",
+      "actionMessage": "Your active session is safely preserved. At exactly 4:00 AM, this notice will automatically dismiss."
+    },
+    "usageTracking": {
+      "enabled": true,
+      "storageKey": "siteActiveTime",
+      "tickMs": 1000,
+      "requireVisible": true,
+      "requireFocus": true,
+      "weekStartsOn": 1
+    },
+    "wellbeingBreak": {
+      "enabled": true,
+      "storageKey": "siteActiveTime",
+      "alertKey": "siteActiveBreakAlert",
+      "dailyLimitSeconds": 3600,
+      "showOncePerDay": true,
+      "title": "You've spent over 1 hour on the site today.",
+      "subtitle": "You're doing well - consider taking a short break for today to reset your focus.",
+      "pill": "StudyBase Wellbeing"
+    }
+  },
+  "settings": {
+    "pageTitle": "Your Settings",
+    "pageDescription": "Control how StudyBase behaves on this device.",
+    "setupTitle": "Quick setup",
+    "setupDescription": "Set your preferences once - you can change them any time.",
+    "setupModeLabel": "Setup mode (from login)",
+    "editingModeLabel": "Editing mode",
+    "setupBrandLabel": "StudyBase setup",
+    "closeMessageTarget": "*",
+    "closeMessage": "animation_complete",
+    "quickLoginCodeLength": 6,
+    "toastDurationMs": 1200,
+    "autoSave": true,
+    "storageKeys": {
+      "firstName": "sb_firstName",
+      "redirect": "sb_redirectFromHistory",
+      "birthdays": "sb_showBirthdays",
+      "announcements": "sb_showAnnouncements",
+      "recent": "sb_saveRecentlyPlayed",
+      "searchHistory": "sb_saveSearchHistory",
+      "contentWarnings": "sb_showContentWarnings",
+      "redirectLogout": "sb_logoutAfterRedirect",
+      "quickLogin": "sb_quickLogin",
+      "quickLoginCodeHash": "sb_quickLoginCodeHash"
+    },
+    "defaults": {
+      "firstName": "",
+      "redirect": true,
+      "redirectLogout": true,
+      "birthdays": true,
+      "announcements": true,
+      "recent": true,
+      "searchHistory": true,
+      "quickLogin": false,
+      "contentWarnings": true
+    },
+    "wizardDefaults": {
+      "quickLoginWhenUnset": true,
+      "firstStep": 0,
+      "skipHistoryStepWhenNameExists": true
+    }
+  },
+  "account": {
+    "authStorageKeys": {
+      "username": "gh_username",
+      "password": "gh_password",
+      "device": "gh_device"
+    },
+    "sessionStorageKeys": {
+      "expiry": "sb_sessionExpiry",
+      "expirySetAt": "sb_sessionExpirySetAt"
+    },
+    "loginSuccessMessage": "login-success",
+    "sessionExpiredParam": "sessionExpired"
+  },
+  "safetyPages": {
+    "contentWarningsEnabledStorageKey": "sb_showContentWarnings",
+    "defaultShowContentWarnings": true,
+    "safetyPageUrl": "/safety.html"
+  },
+  "support": {
+    "url": "/support/help_center.html",
+    "label": "Support Centre",
+    "contactUrl": "/contact.html",
+    "reportUrl": "/report.html"
+  },
+  "security": {
+    "turnstileSiteKeys": {
+      "login": "0x4AAAAAAC9-EW6MUp3spIEP",
+      "adminOverride": "0x4AAAAAAC9-bB7cCm-tLuHn",
+      "resource": "0x4AAAAAACxsClLBNoaHGiZm",
+      "test": "1x00000000000000000000AA"
+    },
+    "useTestTurnstileInTestMode": true
+  }
+}

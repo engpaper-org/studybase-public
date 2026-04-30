@@ -33,8 +33,9 @@
   </script>
 
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StudyBase • Settings</title>
+      <script src="/assets/js/siteConfig.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RevisionBase • Settings</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -188,7 +189,7 @@
           Settings
         </div>
         <h1 id="pageTitle" class="mt-4 text-3xl md:text-4xl font-black tracking-tight">Your Settings</h1>
-        <p id="pageDesc" class="mt-2 text-slate-500 font-body">Control how StudyBase behaves on this device.</p>
+        <p id="pageDesc" class="mt-2 text-slate-500 font-body">Control how RevisionBase behaves on this device.</p>
       </div>
 
       <button id="closeBtn"
@@ -421,7 +422,7 @@
       <div class="wizard-card w-full rounded-[2rem] border border-slate-200 bg-white/95 shadow-2xl shadow-slate-300/30 p-6 md:p-8">
         <div class="flex items-center justify-between gap-4 mb-6">
           <div>
-            <p class="text-xs font-bold uppercase tracking-[0.22em] text-blue-600">StudyBase setup</p>
+            <p class="text-xs font-bold uppercase tracking-[0.22em] text-blue-600">RevisionBase setup</p>
             <h2 id="wizardTitleTop" class="mt-2 text-2xl md:text-3xl font-black tracking-tight">Welcome</h2>
           </div>
           <div id="wizardProgressWrap" class="flex items-center gap-2">
@@ -437,7 +438,7 @@
             <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl border border-blue-100">
               <i class="fa-solid fa-hand-sparkles"></i>
             </div>
-            <h3 class="mt-5 text-2xl font-black">Welcome to StudyBase</h3>
+            <h3 class="mt-5 text-2xl font-black">Welcome to RevisionBase</h3>
             <p class="mt-2 text-slate-500 font-body">
               Let’s quickly set up this device so things feel more personal straight away.
             </p>
@@ -466,7 +467,7 @@
             <div>
               <h3 class="text-2xl font-black">History preferences</h3>
               <p class="mt-2 text-slate-500 font-body">
-                Choose whether StudyBase should save viewed content and search terms on this device.
+                Choose whether RevisionBase should save viewed content and search terms on this device.
               </p>
             </div>
 
@@ -580,7 +581,7 @@
             </div>
             <h3 class="mt-5 text-2xl font-black">Account setup!</h3>
             <p class="mt-2 text-slate-500 font-body">
-              Your StudyBase device settings have been saved and you’re ready to continue.
+              Your RevisionBase device settings have been saved and you’re ready to continue.
             </p>
           </div>
 
@@ -621,7 +622,7 @@
   </div>
 
   <script>
-    const K = {
+    let K = {
       firstName: "sb_firstName",
       redirect: "sb_redirectFromHistory",
       birthdays: "sb_showBirthdays",
@@ -633,6 +634,68 @@
       quickLogin: "sb_quickLogin",
       quickLoginCodeHash: "sb_quickLoginCodeHash"
     };
+
+    let SETTINGS_DEFAULTS = {
+      firstName: "",
+      redirect: true,
+      redirectLogout: true,
+      birthdays: true,
+      announcements: true,
+      recent: true,
+      searchHistory: true,
+      quickLogin: false,
+      contentWarnings: true
+    };
+
+    let SETTINGS_COPY = {
+      pageTitle: "Your Settings",
+      pageDescription: "Control how RevisionBase behaves on this device.",
+      setupTitle: "Quick setup",
+      setupDescription: "Set your preferences once - you can change them any time.",
+      setupModeLabel: "Setup mode (from login)",
+      editingModeLabel: "Editing mode",
+      closeMessage: "animation_complete",
+      closeMessageTarget: "*",
+      quickLoginCodeLength: 6,
+      toastDurationMs: 1200,
+      autoSave: true,
+      quickLoginWhenUnset: true
+    };
+
+    async function applySettingsConfig() {
+      if (!window.SiteConfig?.ready) return;
+
+      try {
+        const config = await window.SiteConfig.ready;
+        const settings = config?.settings || {};
+
+        K = { ...K, ...(settings.storageKeys || {}) };
+        SETTINGS_DEFAULTS = { ...SETTINGS_DEFAULTS, ...(settings.defaults || {}) };
+        SETTINGS_COPY = {
+          ...SETTINGS_COPY,
+          pageTitle: settings.pageTitle || SETTINGS_COPY.pageTitle,
+          pageDescription: settings.pageDescription || SETTINGS_COPY.pageDescription,
+          setupTitle: settings.setupTitle || SETTINGS_COPY.setupTitle,
+          setupDescription: settings.setupDescription || SETTINGS_COPY.setupDescription,
+          setupModeLabel: settings.setupModeLabel || SETTINGS_COPY.setupModeLabel,
+          editingModeLabel: settings.editingModeLabel || SETTINGS_COPY.editingModeLabel,
+          closeMessage: settings.closeMessage || SETTINGS_COPY.closeMessage,
+          closeMessageTarget: settings.closeMessageTarget || SETTINGS_COPY.closeMessageTarget,
+          quickLoginCodeLength: Number(settings.quickLoginCodeLength) || SETTINGS_COPY.quickLoginCodeLength,
+          toastDurationMs: Number(settings.toastDurationMs) || SETTINGS_COPY.toastDurationMs,
+          autoSave: settings.autoSave !== false,
+          quickLoginWhenUnset: settings.wizardDefaults?.quickLoginWhenUnset !== false
+        };
+
+        if (config?.brand?.shortName || config?.brand?.name) {
+          const siteName = config.brand.shortName || config.brand.name;
+          SETTINGS_COPY.pageDescription = settings.pageDescription || `Control how ${siteName} behaves on this device.`;
+          SETTINGS_COPY.setupBrandLabel = settings.setupBrandLabel || `${siteName} setup`;
+        }
+      } catch (error) {
+        console.warn("Using fallback settings config:", error);
+      }
+    }
 
     const qs = new URLSearchParams(location.search);
     const isFromLogin = (qs.get("from") || "").toLowerCase() === "login";
@@ -710,7 +773,7 @@
     }
 
     function digitsOnly(value) {
-      return String(value || "").replace(/\D/g, "").slice(0, 6);
+      return String(value || "").replace(/\D/g, "").slice(0, SETTINGS_COPY.quickLoginCodeLength);
     }
 
     async function sha256(text) {
@@ -723,16 +786,16 @@
 
     function getStored() {
       return {
-        firstName: (localStorage.getItem(K.firstName) || "").trim(),
-        redirect: parseBool(localStorage.getItem(K.redirect), true),
-        redirectLogout: parseBool(localStorage.getItem(K.redirectLogout), true),
-        birthdays: parseBool(localStorage.getItem(K.birthdays), true),
-        announcements: parseBool(localStorage.getItem(K.announcements), true),
-        recent: parseBool(localStorage.getItem(K.recent), true),
-        searchHistory: parseBool(localStorage.getItem(K.searchHistory), true),
-        quickLogin: parseBool(localStorage.getItem(K.quickLogin), false),
+        firstName: (localStorage.getItem(K.firstName) || SETTINGS_DEFAULTS.firstName || "").trim(),
+        redirect: parseBool(localStorage.getItem(K.redirect), SETTINGS_DEFAULTS.redirect),
+        redirectLogout: parseBool(localStorage.getItem(K.redirectLogout), SETTINGS_DEFAULTS.redirectLogout),
+        birthdays: parseBool(localStorage.getItem(K.birthdays), SETTINGS_DEFAULTS.birthdays),
+        announcements: parseBool(localStorage.getItem(K.announcements), SETTINGS_DEFAULTS.announcements),
+        recent: parseBool(localStorage.getItem(K.recent), SETTINGS_DEFAULTS.recent),
+        searchHistory: parseBool(localStorage.getItem(K.searchHistory), SETTINGS_DEFAULTS.searchHistory),
+        quickLogin: parseBool(localStorage.getItem(K.quickLogin), SETTINGS_DEFAULTS.quickLogin),
         quickLoginCodeHash: localStorage.getItem(K.quickLoginCodeHash) || "",
-        contentWarnings: parseBool(localStorage.getItem(K.contentWarnings), true)
+        contentWarnings: parseBool(localStorage.getItem(K.contentWarnings), SETTINGS_DEFAULTS.contentWarnings)
       };
     }
 
@@ -752,11 +815,11 @@
       box.textContent = text;
       els.toast.classList.remove("hidden");
       clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => els.toast.classList.add("hidden"), 1200);
+      showToast._t = setTimeout(() => els.toast.classList.add("hidden"), SETTINGS_COPY.toastDurationMs);
     }
 
     function closeIframe() {
-      window.parent.postMessage("animation_complete", "*");
+      window.parent.postMessage(SETTINGS_COPY.closeMessage, SETTINGS_COPY.closeMessageTarget);
     }
 
     function applyModeUI() {
@@ -769,11 +832,21 @@
         els.saveBtn.classList.add("hidden");
       } else {
         els.pageTitle.textContent = "Your Settings";
-        els.pageDesc.textContent = "Control how StudyBase behaves on this device.";
+        els.pageDesc.textContent = "Control how RevisionBase behaves on this device.";
         els.modeLabel.textContent = "Editing mode";
         els.closeBtn.classList.add("hidden");
         els.resetBtn.classList.remove("hidden");
         els.saveBtn.classList.remove("hidden");
+      }
+
+      if (isFromLogin) {
+        els.pageTitle.textContent = SETTINGS_COPY.setupTitle;
+        els.pageDesc.textContent = SETTINGS_COPY.setupDescription;
+        els.modeLabel.textContent = SETTINGS_COPY.setupModeLabel;
+      } else {
+        els.pageTitle.textContent = SETTINGS_COPY.pageTitle;
+        els.pageDesc.textContent = SETTINGS_COPY.pageDescription;
+        els.modeLabel.textContent = SETTINGS_COPY.editingModeLabel;
       }
     }
 
@@ -808,6 +881,8 @@
 
       els.quickLoginCode.value = "";
       els.quickLoginCodeConfirm.value = "";
+      els.quickLoginCode.maxLength = SETTINGS_COPY.quickLoginCodeLength;
+      els.quickLoginCodeConfirm.maxLength = SETTINGS_COPY.quickLoginCodeLength;
 
       if (els.wizardFirstName) els.wizardFirstName.value = state.firstName;
       if (els.wizardToggleRecent) setSwitch(els.wizardToggleRecent, state.recent);
@@ -816,6 +891,8 @@
 
       if (els.wizardQuickLoginCode) els.wizardQuickLoginCode.value = "";
       if (els.wizardQuickLoginCodeConfirm) els.wizardQuickLoginCodeConfirm.value = "";
+      if (els.wizardQuickLoginCode) els.wizardQuickLoginCode.maxLength = SETTINGS_COPY.quickLoginCodeLength;
+      if (els.wizardQuickLoginCodeConfirm) els.wizardQuickLoginCodeConfirm.maxLength = SETTINGS_COPY.quickLoginCodeLength;
 
       updateQuickLoginUI();
       updateWizardQuickLoginUI();
@@ -835,9 +912,10 @@
 
       const code = digitsOnly(els.quickLoginCode.value);
       const confirm = digitsOnly(els.quickLoginCodeConfirm.value);
+      const codePattern = new RegExp(`^\\d{${SETTINGS_COPY.quickLoginCodeLength}}$`);
 
-      if (!storedQuickLoginHash && (!/^\d{6}$/.test(code) || code !== confirm)) {
-        els.quickLoginHint.textContent = "Enter a matching 6 digit code to use Quick Login.";
+      if (!storedQuickLoginHash && (!codePattern.test(code) || code !== confirm)) {
+        els.quickLoginHint.textContent = `Enter a matching ${SETTINGS_COPY.quickLoginCodeLength} digit code to use Quick Login.`;
         els.quickLoginHint.classList.remove("hidden");
         return null;
       }
@@ -850,8 +928,8 @@
         };
       }
 
-      if (!/^\d{6}$/.test(code) || code !== confirm) {
-        els.quickLoginHint.textContent = "Enter a matching 6 digit code to use Quick Login.";
+      if (!codePattern.test(code) || code !== confirm) {
+        els.quickLoginHint.textContent = `Enter a matching ${SETTINGS_COPY.quickLoginCodeLength} digit code to use Quick Login.`;
         els.quickLoginHint.classList.remove("hidden");
         return null;
       }
@@ -876,9 +954,10 @@
 
       const code = digitsOnly(els.wizardQuickLoginCode.value);
       const confirm = digitsOnly(els.wizardQuickLoginCodeConfirm.value);
+      const codePattern = new RegExp(`^\\d{${SETTINGS_COPY.quickLoginCodeLength}}$`);
 
-      if (!/^\d{6}$/.test(code) || code !== confirm) {
-        els.wizardQuickLoginHint.textContent = "Enter a matching 6 digit code to continue.";
+      if (!codePattern.test(code) || code !== confirm) {
+        els.wizardQuickLoginHint.textContent = `Enter a matching ${SETTINGS_COPY.quickLoginCodeLength} digit code to continue.`;
         els.wizardQuickLoginHint.classList.remove("hidden");
         return null;
       }
@@ -942,6 +1021,7 @@
     }
 
     async function autoSaveFromUI() {
+      if (!SETTINGS_COPY.autoSave) return;
       if (isFromLogin || suppressAutoSave) return;
       await saveFromUI(true);
     }
@@ -1041,7 +1121,7 @@
       setSwitch(els.wizardToggleSearchHistory, stored.searchHistory);
 
       if (localStorage.getItem(K.quickLogin) === null) {
-        setSwitch(els.wizardToggleQuickLogin, true);
+        setSwitch(els.wizardToggleQuickLogin, SETTINGS_COPY.quickLoginWhenUnset);
       } else {
         setSwitch(els.wizardToggleQuickLogin, stored.quickLogin);
       }
@@ -1102,6 +1182,7 @@
       setTimeout(closeIframe, 350);
     }
 
+    function startSettingsPage() {
     applyModeUI();
     loadIntoUI();
 
@@ -1203,6 +1284,9 @@
     if (isFromLogin) {
       openWizard();
     }
+    }
+
+    applySettingsConfig().then(startSettingsPage);
   </script>
 </body>
 </html>

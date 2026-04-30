@@ -3,7 +3,8 @@
 <head>
     
     <meta charset="UTF-8">
-    <script>
+        <script src="/assets/js/siteConfig.js"></script>
+<script>
         (function () {
             try {
                 const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
@@ -12,8 +13,9 @@
         })();
     </script>
     <link rel="stylesheet" href="/assets/css/dark-mode.css">
+    <link rel="stylesheet" href="/assets/css/revisionbase-media.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expert Insights | GCSEHelp Blog</title>
+    <title>Expert Insights | RevisionBase Blog</title>
     <link rel="icon" href="/assets/siteIcons/main.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -159,6 +161,10 @@
                         <div class="chip rounded-2xl px-4 py-2 text-sm font-semibold text-slate-700">
                             <i class="fa-solid fa-lightbulb mr-2 text-blue-600"></i>Practical revision advice
                         </div>
+                    </div>
+
+                    <div class="rb-image-slot mx-auto max-w-4xl aspect-[16/7] mb-8" data-slot-label="Journal visual">
+                        <img src="/assets/siteImages/blog-journal.jpg" alt="A-Level study journal preview" onerror="this.remove(); this.parentElement.classList.add('is-placeholder');">
                     </div>
 
                     <div class="max-w-2xl mx-auto">

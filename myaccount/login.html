@@ -3,7 +3,8 @@
 <head>
     
   <meta charset="UTF-8" />
-    <script>
+        <script src="/assets/js/siteConfig.js"></script>
+<script>
         (function () {
             try {
                 const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
@@ -13,7 +14,7 @@
     </script>
     <link rel="stylesheet" href="/assets/css/dark-mode.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>StudyBase | Login</title>
+  <title>RevisionBase | Login</title>
   <link rel="icon" href="/assets/siteIcons/main.ico">
   <script src="/assets/js/iframeCheck.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -133,7 +134,7 @@
           </svg>
         </div>
         <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Sign in</h2>
-        <p class="text-slate-600 mt-2 text-sm">Use your StudyBase credentials to continue.</p>
+        <p class="text-slate-600 mt-2 text-sm">Use your RevisionBase credentials to continue.</p>
       </div>
 
       <div class="space-y-5">
@@ -165,7 +166,7 @@
 
         <div class="pt-2 flex items-center justify-between text-xs text-slate-500">
           <span>Protected by Cloudflare</span>
-          <span class="font-semibold text-slate-600">Study Base Security Checkpoint</span>
+          <span class="font-semibold text-slate-600">Revision Base Security Checkpoint</span>
         </div>
       </div>
     </div>
@@ -274,7 +275,7 @@
       </div>
       <div class="w-full md:w-1/2 lg:w-7/12 bg-slate-200 relative min-h-[500px] md:min-h-0">
         <div class="absolute inset-0 bg-slate-100 flex items-center justify-center z-0"><span class="text-slate-400 text-sm animate-pulse">Loading Google Form...</span></div>
-        <iframe id="verificationFormFrame" src="about:blank" class="w-full h-full relative z-10 border-0 bg-white" allowtransparency="true" title="StudyBase device verification form"></iframe>
+        <iframe id="verificationFormFrame" src="about:blank" class="w-full h-full relative z-10 border-0 bg-white" allowtransparency="true" title="RevisionBase device verification form"></iframe>
       </div>
     </div>
 
@@ -414,15 +415,16 @@
 
   <script>
   const localTest = false;
-  const WORKER = "https://api.studybase.site";
+  let WORKER = "https://api.revisionbase.site";
+  const configuredTurnstileKeys = window.SB_CONFIG?.security?.turnstileSiteKeys || {};
   const TURNSTILE_SITE_KEYS = localTest
     ? {
-        login: "1x00000000000000000000AA",
-        adminOverride: "1x00000000000000000000AA"
+        login: configuredTurnstileKeys.test || "1x00000000000000000000AA",
+        adminOverride: configuredTurnstileKeys.test || "1x00000000000000000000AA"
       }
     : {
-        login: "0x4AAAAAAC9-EW6MUp3spIEP",
-        adminOverride: "0x4AAAAAAC9-bB7cCm-tLuHn"
+        login: configuredTurnstileKeys.login || "0x4AAAAAAC9-EW6MUp3spIEP",
+        adminOverride: configuredTurnstileKeys.adminOverride || "0x4AAAAAAC9-bB7cCm-tLuHn"
       };
   const DEVICE_CODE_CHARS = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const DEVICE_CODE_LENGTH = 12;
@@ -439,6 +441,17 @@
   let adminTurnstileToken = null;
   let loginTurnstileWidgetId = null;
   let adminTurnstileWidgetId = null;
+
+  if (window.SiteConfig && window.SiteConfig.ready) {
+    window.SiteConfig.ready.then((config) => {
+      WORKER = config?.endpoints?.apiBase || WORKER;
+      if (!localTest) {
+        TURNSTILE_SITE_KEYS.login = config?.security?.turnstileSiteKeys?.login || TURNSTILE_SITE_KEYS.login;
+        TURNSTILE_SITE_KEYS.adminOverride =
+          config?.security?.turnstileSiteKeys?.adminOverride || TURNSTILE_SITE_KEYS.adminOverride;
+      }
+    });
+  }
 
   function setInlineError(msg) {
     const box = document.getElementById("inlineError");

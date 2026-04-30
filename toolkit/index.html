@@ -3,7 +3,8 @@
 <head>
     
     <meta charset="UTF-8">
-    <script>
+        <script src="/assets/js/siteConfig.js"></script>
+<script>
         (function () {
             try {
                 const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
@@ -12,8 +13,9 @@
         })();
     </script>
     <link rel="stylesheet" href="/assets/css/dark-mode.css">
+    <link rel="stylesheet" href="/assets/css/revisionbase-media.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyBase | The Revision Toolkit</title>
+    <title>RevisionBase | The Revision Toolkit</title>
     <link rel="icon" href="/assets/siteIcons/main.ico">
     <script src="/assets/js/sessionManager.js" defer></script>
     <script src="/assets/js/errorCheck.js" defer></script>
@@ -115,9 +117,12 @@
             </h1>
             
             <p class="text-lg md:text-xl text-slate-500 max-w-2xl mx-auto mb-10 leading-relaxed font-body">
-                Stop downloading random PDFs. Use our suite of 15 interactive, static tools designed to optimize your A-Level preparation from day one to exam day.
+                Use focused tools around your A-Level paper practice: plan sessions, build recall, track marks and keep your next task clear.
             </p>
 
+            <div class="rb-image-slot mx-auto max-w-5xl aspect-[16/7]" data-slot-label="Toolkit visual">
+                <img src="/assets/siteImages/toolkit-hero.jpg" alt="RevisionBase toolkit preview" onerror="this.remove(); this.parentElement.classList.add('is-placeholder');">
+            </div>
             
         </div>
     </header>
