@@ -281,12 +281,11 @@
   },
   "security": {
     "turnstileSiteKeys": {
-      "login1": "0x4AAAAAAC9-EW6MUp3spIEP",
-      "login": "1x00000000000000000000AA",
+      "login": "0x4AAAAAAC9-EW6MUp3spIEP",
       "adminOverride": "0x4AAAAAAC9-bB7cCm-tLuHn",
       "resource": "0x4AAAAAACxsClLBNoaHGiZm",
       "test": "1x00000000000000000000AA"
     },
-    "useTestTurnstileInTestMode": true
+    "useTestTurnstileInTestMode": false
   }
 }
