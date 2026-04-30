@@ -260,7 +260,7 @@
           </label>
 
           <div class="flex flex-wrap gap-2 lg:justify-end">
-            <button id="ttsSpeakBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-teal-700 px-4 py-4 text-sm font-extrabold text-white shadow-lg shadow-teal-700/20 transition hover:-translate-y-0.5 hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-45">
+            <button id="ttsSpeakBtn" type="button" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-teal-700 px-4 py-4 text-sm font-extrabold text-white shadow-lg shadow-teal-700/20 transition hover:-translate-y-0.5 hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-45" disabled>
               <i class="fa-solid fa-volume-high"></i>
               Speak
             </button>
@@ -466,6 +466,8 @@
     let ttsVoices = [];
     let ttsProgressTimer = null;
     let ttsProgressValue = 0;
+    let ttsPreparedVoiceURI = '';
+    let ttsVoicePrepareToken = 0;
     let soundLoadingTimer = null;
 
     function escapeHtml(value) {
@@ -580,6 +582,18 @@
       }, 1400);
     }
 
+    function getSelectedTtsVoiceURI() {
+      return ttsVoiceSelect.value || '';
+    }
+
+    function isSelectedTtsVoiceReady() {
+      return Boolean(ttsVoices.length && getSelectedTtsVoiceURI() && ttsPreparedVoiceURI === getSelectedTtsVoiceURI());
+    }
+
+    function updateTtsSpeakAvailability() {
+      ttsSpeakBtn.disabled = !isSelectedTtsVoiceReady();
+    }
+
     function failTtsProgress(detail) {
       stopTtsProgressTimer();
       setTtsProgress(100, 'Voice not ready', detail);
@@ -595,10 +609,18 @@
     function previewSelectedVoiceLoad() {
       if (!ttsVoices.length) return;
       const selectedVoice = getSelectedTtsVoice();
+      const selectedVoiceURI = getSelectedTtsVoiceURI();
+      const prepareToken = ++ttsVoicePrepareToken;
+
+      ttsPreparedVoiceURI = '';
+      updateTtsSpeakAvailability();
+
       const label = selectedVoice ? `Preparing ${selectedVoice.name}` : 'Preparing voice';
       startTtsProgress(label, 'Your browser may need a moment to prepare the selected voice.', 18, 88);
       setTimeout(() => {
-        if (!window.speechSynthesis?.speaking && !window.speechSynthesis?.pending) {
+        if (prepareToken === ttsVoicePrepareToken && selectedVoiceURI === getSelectedTtsVoiceURI() && !window.speechSynthesis?.speaking && !window.speechSynthesis?.pending) {
+          ttsPreparedVoiceURI = selectedVoiceURI;
+          updateTtsSpeakAvailability();
           finishTtsProgress('Voice selected', 'The selected voice is ready to try.');
         }
       }, 1200);
@@ -642,9 +664,8 @@
       });
 
       ttsVoiceSelect.replaceChildren(fragment);
-      ttsSpeakBtn.disabled = false;
       ttsStopBtn.disabled = false;
-      finishTtsProgress('Voices loaded', `${ttsVoices.length} voices are available.`);
+      previewSelectedVoiceLoad();
     }
 
     function speakTtsText() {
@@ -656,6 +677,12 @@
       if (!ttsVoices.length) {
         populateTtsVoices();
         startTtsProgress('Loading voices', 'Your browser is still finding available voices. Try again when this reaches 100%.', Math.max(20, ttsProgressValue), 90);
+        return;
+      }
+
+      if (!isSelectedTtsVoiceReady()) {
+        previewSelectedVoiceLoad();
+        showToast('Wait for the selected voice to finish loading.');
         return;
       }
 
@@ -681,10 +708,11 @@
         ttsStopBtn.disabled = false;
       };
       utterance.onend = () => {
-        ttsSpeakBtn.disabled = false;
+        updateTtsSpeakAvailability();
       };
       utterance.onerror = () => {
-        ttsSpeakBtn.disabled = false;
+        ttsPreparedVoiceURI = '';
+        updateTtsSpeakAvailability();
         failTtsProgress('That voice is still preparing or is unavailable. Try again in a moment, or pick another voice.');
         showToast('That voice is not ready yet.');
       };
@@ -698,7 +726,7 @@
       }
       stopTtsProgressTimer();
       ttsVoiceStatus.classList.add('hidden');
-      ttsSpeakBtn.disabled = false;
+      updateTtsSpeakAvailability();
     }
 
     window.speakSoundboardTts = speakTtsText;
