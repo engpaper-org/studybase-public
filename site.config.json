@@ -17,7 +17,7 @@
   "icons": {
     "favicon": "/assets/siteIcons/main.ico",
     "navbar": "/assets/siteIcons/navbar.png",
-    "footer": "/assets/siteIcons/main.ico",
+    "footer": "/assets/siteIcons/navbar.png",
     "appleTouch": "/assets/siteIcons/navbar.png"
   },
   "ui": {

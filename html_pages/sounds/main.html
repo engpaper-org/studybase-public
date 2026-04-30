@@ -269,6 +269,17 @@
               Stop
             </button>
           </div>
+
+          <div id="ttsVoiceStatus" class="hidden rounded-3xl border border-teal-100 bg-white/70 p-4 lg:col-span-3" aria-live="polite">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <p id="ttsVoiceStatusText" class="text-xs font-extrabold uppercase tracking-[0.16em] text-teal-700">Preparing voice</p>
+              <p id="ttsVoicePercent" class="text-xs font-black text-slate-500">0%</p>
+            </div>
+            <div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-200">
+              <div id="ttsVoiceProgressBar" class="h-full w-0 rounded-full bg-gradient-to-r from-teal-500 via-emerald-400 to-amber-300 transition-all duration-300"></div>
+            </div>
+            <p id="ttsVoiceStatusDetail" class="mt-2 text-xs font-semibold leading-5 text-slate-500">Voice assets are being prepared by your browser.</p>
+          </div>
         </div>
       </section>
 
@@ -380,6 +391,14 @@
     </div>
   </div>
 
+  <div id="soundLoadingOverlay" class="fixed inset-0 z-[70] hidden items-center justify-center bg-slate-950/65 p-4 backdrop-blur-sm" aria-live="polite" aria-busy="true">
+    <div class="rounded-[2rem] border border-white/25 bg-white px-8 py-7 text-center shadow-2xl shadow-slate-950/25">
+      <div class="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-teal-600"></div>
+      <p id="soundLoadingTitle" class="mt-5 text-sm font-extrabold uppercase tracking-[0.18em] text-teal-700">Sound loading</p>
+      <p id="soundLoadingDetail" class="mt-2 max-w-xs text-sm font-semibold leading-6 text-slate-600">Getting the sound ready to play.</p>
+    </div>
+  </div>
+
   <div id="toast" class="toast fixed bottom-5 left-1/2 z-[60] -translate-x-1/2 rounded-2xl bg-slate-950 px-4 py-3 text-sm font-bold text-white shadow-2xl"></div>
 
   <script>
@@ -393,6 +412,11 @@
     const ttsVoiceSelect = document.getElementById('ttsVoiceSelect');
     const ttsSpeakBtn = document.getElementById('ttsSpeakBtn');
     const ttsStopBtn = document.getElementById('ttsStopBtn');
+    const ttsVoiceStatus = document.getElementById('ttsVoiceStatus');
+    const ttsVoiceStatusText = document.getElementById('ttsVoiceStatusText');
+    const ttsVoicePercent = document.getElementById('ttsVoicePercent');
+    const ttsVoiceProgressBar = document.getElementById('ttsVoiceProgressBar');
+    const ttsVoiceStatusDetail = document.getElementById('ttsVoiceStatusDetail');
     const countdownDays = document.getElementById('countdownDays');
     const countdownHours = document.getElementById('countdownHours');
     const countdownMinutes = document.getElementById('countdownMinutes');
@@ -425,6 +449,9 @@
     const copyCodeBtn = document.getElementById('copyCodeBtn');
     const clearCodeBtn = document.getElementById('clearCodeBtn');
     const scheduleCodeStatus = document.getElementById('scheduleCodeStatus');
+    const soundLoadingOverlay = document.getElementById('soundLoadingOverlay');
+    const soundLoadingTitle = document.getElementById('soundLoadingTitle');
+    const soundLoadingDetail = document.getElementById('soundLoadingDetail');
     const toast = document.getElementById('toast');
 
     const SCHEDULE_STORAGE_KEY = 'sb_soundboard_schedule_v2';
@@ -437,6 +464,9 @@
     let soundboardLastUpdate = '';
     let newSoundThreshold = null;
     let ttsVoices = [];
+    let ttsProgressTimer = null;
+    let ttsProgressValue = 0;
+    let soundLoadingTimer = null;
 
     function escapeHtml(value) {
       return String(value ?? '')
@@ -492,6 +522,88 @@
       toastTimer = setTimeout(() => toast.classList.remove('is-visible'), 2400);
     }
 
+    function showSoundLoading(soundName) {
+      clearTimeout(soundLoadingTimer);
+      soundLoadingTitle.textContent = 'Sound loading';
+      soundLoadingDetail.textContent = soundName
+        ? `Getting "${soundName}" ready to play.`
+        : 'Getting the sound ready to play.';
+      soundLoadingOverlay.classList.remove('hidden');
+      soundLoadingOverlay.classList.add('flex');
+    }
+
+    function hideSoundLoading() {
+      clearTimeout(soundLoadingTimer);
+      soundLoadingTimer = setTimeout(() => {
+        soundLoadingOverlay.classList.add('hidden');
+        soundLoadingOverlay.classList.remove('flex');
+      }, 120);
+    }
+
+    function setTtsProgress(value, label, detail = '') {
+      ttsProgressValue = Math.max(0, Math.min(100, Math.round(value)));
+      ttsVoiceStatus.classList.remove('hidden');
+      ttsVoiceStatusText.textContent = label;
+      ttsVoicePercent.textContent = `${ttsProgressValue}%`;
+      ttsVoiceProgressBar.style.width = `${ttsProgressValue}%`;
+      ttsVoiceStatusDetail.textContent = detail;
+    }
+
+    function stopTtsProgressTimer() {
+      if (ttsProgressTimer) {
+        clearInterval(ttsProgressTimer);
+        ttsProgressTimer = null;
+      }
+    }
+
+    function startTtsProgress(label, detail, start = 8, ceiling = 92) {
+      stopTtsProgressTimer();
+      setTtsProgress(start, label, detail);
+
+      ttsProgressTimer = setInterval(() => {
+        const remaining = ceiling - ttsProgressValue;
+        if (remaining <= 0) return;
+        const next = ttsProgressValue + Math.max(1, Math.ceil(remaining * 0.18));
+        setTtsProgress(Math.min(ceiling, next), label, detail);
+      }, 280);
+    }
+
+    function finishTtsProgress(label = 'Voice ready', detail = 'The selected voice is ready to use.') {
+      stopTtsProgressTimer();
+      setTtsProgress(100, label, detail);
+      setTimeout(() => {
+        if (ttsProgressValue === 100) {
+          ttsVoiceStatus.classList.add('hidden');
+          ttsVoiceProgressBar.style.width = '0%';
+          ttsVoicePercent.textContent = '0%';
+        }
+      }, 1400);
+    }
+
+    function failTtsProgress(detail) {
+      stopTtsProgressTimer();
+      setTtsProgress(100, 'Voice not ready', detail);
+      ttsVoiceProgressBar.classList.remove('from-teal-500', 'via-emerald-400', 'to-amber-300');
+      ttsVoiceProgressBar.classList.add('from-rose-500', 'via-orange-400', 'to-amber-300');
+
+      setTimeout(() => {
+        ttsVoiceProgressBar.classList.remove('from-rose-500', 'via-orange-400');
+        ttsVoiceProgressBar.classList.add('from-teal-500', 'via-emerald-400');
+      }, 1800);
+    }
+
+    function previewSelectedVoiceLoad() {
+      if (!ttsVoices.length) return;
+      const selectedVoice = getSelectedTtsVoice();
+      const label = selectedVoice ? `Preparing ${selectedVoice.name}` : 'Preparing voice';
+      startTtsProgress(label, 'Your browser may need a moment to prepare the selected voice.', 18, 88);
+      setTimeout(() => {
+        if (!window.speechSynthesis?.speaking && !window.speechSynthesis?.pending) {
+          finishTtsProgress('Voice selected', 'The selected voice is ready to try.');
+        }
+      }, 1200);
+    }
+
     function getSelectedTtsVoice() {
       if (!ttsVoiceSelect.value) return null;
       return ttsVoices.find((voice) => voice.voiceURI === ttsVoiceSelect.value) || null;
@@ -502,6 +614,7 @@
         ttsVoiceSelect.innerHTML = '<option value="">TTS unavailable</option>';
         ttsSpeakBtn.disabled = true;
         ttsStopBtn.disabled = true;
+        failTtsProgress('Text to speech is not available in this browser.');
         return;
       }
 
@@ -510,6 +623,8 @@
 
       if (!ttsVoices.length) {
         ttsVoiceSelect.innerHTML = '<option value="">Loading voices...</option>';
+        ttsSpeakBtn.disabled = true;
+        startTtsProgress('Loading voices', 'Your browser is finding available text to speech voices.', Math.max(12, ttsProgressValue), 86);
         return;
       }
 
@@ -529,11 +644,18 @@
       ttsVoiceSelect.replaceChildren(fragment);
       ttsSpeakBtn.disabled = false;
       ttsStopBtn.disabled = false;
+      finishTtsProgress('Voices loaded', `${ttsVoices.length} voices are available.`);
     }
 
     function speakTtsText() {
       if (!('speechSynthesis' in window)) {
         showToast('Text to speech is not available in this browser.');
+        return;
+      }
+
+      if (!ttsVoices.length) {
+        populateTtsVoices();
+        startTtsProgress('Loading voices', 'Your browser is still finding available voices. Try again when this reaches 100%.', Math.max(20, ttsProgressValue), 90);
         return;
       }
 
@@ -552,7 +674,9 @@
 
       utterance.rate = 1;
       utterance.pitch = 1;
+      startTtsProgress(selectedVoice ? `Preparing ${selectedVoice.name}` : 'Preparing voice', 'Waiting for the browser to start text to speech.', 24, 94);
       utterance.onstart = () => {
+        finishTtsProgress('Speaking', 'Text to speech has started.');
         ttsSpeakBtn.disabled = true;
         ttsStopBtn.disabled = false;
       };
@@ -561,7 +685,8 @@
       };
       utterance.onerror = () => {
         ttsSpeakBtn.disabled = false;
-        showToast('Could not play text to speech.');
+        failTtsProgress('That voice is still preparing or is unavailable. Try again in a moment, or pick another voice.');
+        showToast('That voice is not ready yet.');
       };
 
       window.speechSynthesis.speak(utterance);
@@ -571,6 +696,8 @@
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
       }
+      stopTtsProgressTimer();
+      ttsVoiceStatus.classList.add('hidden');
       ttsSpeakBtn.disabled = false;
     }
 
@@ -641,6 +768,7 @@
       item.audio.currentTime = 0;
       item.pad.classList.remove('is-playing');
       item.stopButton.hidden = true;
+      hideSoundLoading();
     }
 
     function stopAllSounds(exceptItem = null) {
@@ -657,8 +785,12 @@
       item.audio.currentTime = 0;
       item.pad.classList.add('is-playing');
       item.stopButton.hidden = false;
+      showSoundLoading(item.name);
 
-      item.audio.play().catch((err) => {
+      item.audio.play().then(() => {
+        hideSoundLoading();
+      }).catch((err) => {
+        hideSoundLoading();
         item.pad.classList.remove('is-playing');
         item.stopButton.hidden = true;
         scheduledSoundStatus.textContent = 'Tap needed';
@@ -1065,6 +1197,7 @@
 
     ttsSpeakBtn.addEventListener('click', speakTtsText);
     ttsStopBtn.addEventListener('click', stopTts);
+    ttsVoiceSelect.addEventListener('change', previewSelectedVoiceLoad);
     searchInput.addEventListener('input', filterVisibleSounds);
     openScheduleModalBtn.addEventListener('click', openScheduleModal);
     closeScheduleModalBtn.addEventListener('click', closeScheduleModal);
