@@ -121,6 +121,16 @@
             filter: grayscale(0.2);
         }
 
+        .external-warning-overlay {
+            background: rgba(15, 23, 42, 0.58);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .external-warning-card {
+            box-shadow: 0 30px 90px rgba(15, 23, 42, 0.28);
+        }
+
         .status-pill {
             display: inline-flex;
             align-items: center;
@@ -267,6 +277,31 @@
         </section>
     </main>
 
+    <div id="externalWarningModal" class="external-warning-overlay hidden fixed inset-0 z-[1000] items-center justify-center p-4">
+        <div class="external-warning-card w-full max-w-lg rounded-3xl bg-white border border-slate-200 p-6 md:p-7">
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </div>
+                <div class="min-w-0">
+                    <h2 class="text-2xl font-black text-slate-950 tracking-tight">Open external PDF?</h2>
+                    <p class="mt-2 text-sm leading-6 text-slate-600 font-body">
+                        This paper is hosted on <strong id="externalWarningHost" class="text-slate-950 break-all">an external site</strong>. It will open in a new browser tab.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row gap-3 sm:justify-end">
+                <button id="externalWarningCancel" type="button" class="px-5 py-3 rounded-xl bg-slate-100 text-slate-700 font-black hover:bg-slate-200 transition-colors">
+                    Cancel
+                </button>
+                <button id="externalWarningContinue" type="button" class="px-5 py-3 rounded-xl bg-slate-950 text-white font-black hover:bg-blue-700 transition-colors">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const DATA_URL = "/assets/pastPapers/papers.json";
         const filters = {
@@ -278,10 +313,21 @@
         };
 
         let allPapers = [];
+        let pendingExternalUrl = "";
 
         function uniqueValues(items, key) {
             return [...new Set(items.map((item) => item[key]).filter(Boolean))]
                 .sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true }));
+        }
+
+        function escapeHTML(value) {
+            return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            }[char]));
         }
 
         function fillSelect(select, label, values) {
@@ -322,15 +368,56 @@
             fillSelect(filters.paper, "papers", uniqueValues(getFilteredPapers("paper"), "paper"));
         }
 
-        function resourceButton(label, url, icon, tone, sameTab = false) {
+        function getResourceHostname(url) {
+            try {
+                return new URL(url, window.location.origin).hostname || window.location.hostname;
+            } catch (e) {
+                return "the linked host";
+            }
+        }
+
+        function shouldOpenExternally(paper, resourceValue = null) {
+            if (resourceValue && typeof resourceValue === "object" && resourceValue.openExternally !== undefined) {
+                return resourceValue.openExternally === true;
+            }
+
+            if (paper?.resources?.openExternally !== undefined) return paper.resources.openExternally === true;
+            return paper?.openExternally === true;
+        }
+
+        function resourceUrl(value) {
+            if (!value) return "";
+            if (typeof value === "string") return value;
+            return value.url || value.href || value.pdfUrl || "";
+        }
+
+        function openExternalWarning(url) {
+            pendingExternalUrl = url;
+            document.getElementById("externalWarningHost").textContent = getResourceHostname(url);
+            document.getElementById("externalWarningModal").classList.remove("hidden");
+            document.getElementById("externalWarningModal").classList.add("flex");
+            document.body.classList.add("overflow-hidden");
+        }
+
+        function closeExternalWarning() {
+            pendingExternalUrl = "";
+            document.getElementById("externalWarningModal").classList.add("hidden");
+            document.getElementById("externalWarningModal").classList.remove("flex");
+            document.body.classList.remove("overflow-hidden");
+        }
+
+        function resourceButton(label, url, icon, tone, sameTab = false, externalWarning = false) {
             const disabled = !url;
             const classes = {
                 blue: "bg-blue-50 text-blue-700 border border-blue-100 hover:bg-blue-100",
                 slate: "bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200",
                 violet: "bg-violet-50 text-violet-700 border border-violet-100 hover:bg-violet-100"
             };
+            const warningAttrs = externalWarning
+                ? `data-external-warning="true" data-external-url="${escapeHTML(url || "")}"`
+                : "";
             return `
-                <a href="${url || "#"}" class="resource-link ${classes[tone]} ${disabled ? "is-disabled" : ""}" ${url ? (sameTab ? "" : 'target="_blank" rel="noopener noreferrer"') : 'aria-disabled="true"'}>
+                <a href="${url || "#"}" class="resource-link ${classes[tone]} ${disabled ? "is-disabled" : ""}" ${warningAttrs} ${url ? (sameTab && !externalWarning ? "" : 'target="_blank" rel="noopener noreferrer"') : 'aria-disabled="true"'}>
                     <i class="fa-solid ${icon} text-xs"></i>${label}
                 </a>
             `;
@@ -381,7 +468,14 @@
                             <span class="status-pill">${items.length} resource${items.length === 1 ? "" : "s"}</span>
                         </div>
                         <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-                            ${items.map((paper) => `
+                            ${items.map((paper) => {
+                                const resources = paper.resources || {};
+                                const questionPaperUrl = resourceUrl(resources.paperPdfUrl || resources.pdfUrl || resources.questionPaper);
+                                const markSchemeUrl = resourceUrl(resources.markSchemePdfUrl || resources.markScheme);
+                                const reportUrl = resourceUrl(resources.examinerReportPdfUrl || resources.examinerReport);
+                                const opensExternally = shouldOpenExternally(paper);
+
+                                return `
                                 <article class="paper-card rounded-2xl p-5">
                                     <div class="flex items-start justify-between gap-4 mb-4">
                                         <div>
@@ -392,12 +486,13 @@
                                         <span class="status-pill">${paper.series}</span>
                                     </div>
                                     <div class="flex flex-wrap gap-2">
-                                        ${resourceButton("Question paper", `/past_papers/viewer.html?id=${encodeURIComponent(paper.id)}`, "fa-file-lines", "blue", true)}
-                                        ${resourceButton("Mark scheme", `/past_papers/viewer.html?id=${encodeURIComponent(paper.id)}&tab=markScheme`, "fa-check-double", "slate", true)}
-                                        ${resourceButton("Report", paper.resources.examinerReportPdfUrl || paper.resources.examinerReport, "fa-chart-simple", "violet")}
+                                        ${resourceButton("Question paper", opensExternally ? questionPaperUrl : `/past_papers/viewer.html?id=${encodeURIComponent(paper.id)}`, "fa-file-lines", "blue", true, opensExternally)}
+                                        ${resourceButton("Mark scheme", opensExternally ? markSchemeUrl : `/past_papers/viewer.html?id=${encodeURIComponent(paper.id)}&tab=markScheme`, "fa-check-double", "slate", true, opensExternally)}
+                                        ${resourceButton("Report", reportUrl, "fa-chart-simple", "violet", false, opensExternally && !!reportUrl)}
                                     </div>
                                 </article>
-                            `).join("")}
+                            `;
+                            }).join("")}
                         </div>
                     </section>
                 `;
@@ -435,6 +530,23 @@
 
         document.querySelectorAll("[data-exam-cycle]").forEach((el) => {
             el.textContent = getExamCycleYear();
+        });
+
+        document.addEventListener("click", (event) => {
+            const link = event.target.closest("[data-external-warning='true']");
+            if (!link) return;
+
+            event.preventDefault();
+            openExternalWarning(link.dataset.externalUrl || link.href);
+        });
+
+        document.getElementById("externalWarningCancel").addEventListener("click", closeExternalWarning);
+        document.getElementById("externalWarningModal").addEventListener("click", (event) => {
+            if (event.target.id === "externalWarningModal") closeExternalWarning();
+        });
+        document.getElementById("externalWarningContinue").addEventListener("click", () => {
+            if (pendingExternalUrl) window.open(pendingExternalUrl, "_blank", "noopener,noreferrer");
+            closeExternalWarning();
         });
 
         Object.values(filters).forEach((input) => input.addEventListener("input", updateView));

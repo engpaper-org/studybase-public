@@ -265,6 +265,16 @@
             padding: 2rem;
         }
 
+        .external-warning-overlay {
+            background: rgba(15, 23, 42, 0.58);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .external-warning-card {
+            box-shadow: 0 30px 90px rgba(15, 23, 42, 0.28);
+        }
+
         @media (max-width: 900px) {
             .viewer-app {
                 grid-template-columns: minmax(0, 1fr) minmax(260px, 82vw);
@@ -359,6 +369,31 @@
         </section>
     </main>
 
+    <div id="externalWarningModal" class="external-warning-overlay hidden fixed inset-0 z-[1000] items-center justify-center p-4">
+        <div class="external-warning-card w-full max-w-lg rounded-3xl bg-white border border-slate-200 p-6 md:p-7">
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </div>
+                <div class="min-w-0">
+                    <h2 class="text-2xl font-black text-slate-950 tracking-tight">Open external PDF?</h2>
+                    <p class="mt-2 text-sm leading-6 text-slate-600 font-body">
+                        This paper is hosted on <strong id="externalWarningHost" class="text-slate-950 break-all">an external site</strong>. It will open in a new browser tab.
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row gap-3 sm:justify-end">
+                <button id="externalWarningCancel" type="button" class="px-5 py-3 rounded-xl bg-slate-100 text-slate-700 font-black hover:bg-slate-200 transition-colors">
+                    Cancel
+                </button>
+                <button id="externalWarningContinue" type="button" class="px-5 py-3 rounded-xl bg-slate-950 text-white font-black hover:bg-blue-700 transition-colors">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const DATA_URL = "/assets/pastPapers/papers.json";
         const params = new URLSearchParams(window.location.search);
@@ -366,6 +401,8 @@
         const selectedTab = params.get("tab") || "";
         const app = document.getElementById("viewerApp");
         let activeResources = [];
+        let activeResource = null;
+        let pendingExternalUrl = "";
 
         function escapeHTML(value) {
             return String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -377,26 +414,71 @@
             }[char]));
         }
 
+        function resourceUrl(value) {
+            if (!value) return "";
+            if (typeof value === "string") return value;
+            return value.url || value.href || value.pdfUrl || "";
+        }
+
+        function shouldOpenExternally(paper, resourceValue = null) {
+            if (resourceValue && typeof resourceValue === "object" && resourceValue.openExternally !== undefined) {
+                return resourceValue.openExternally === true;
+            }
+
+            if (paper?.resources?.openExternally !== undefined) return paper.resources.openExternally === true;
+            return paper?.openExternally === true;
+        }
+
+        function getResourceHostname(url) {
+            try {
+                return new URL(url, window.location.origin).hostname || window.location.hostname;
+            } catch (e) {
+                return "the linked host";
+            }
+        }
+
+        function openExternalWarning(url) {
+            pendingExternalUrl = url;
+            document.getElementById("externalWarningHost").textContent = getResourceHostname(url);
+            document.getElementById("externalWarningModal").classList.remove("hidden");
+            document.getElementById("externalWarningModal").classList.add("flex");
+            document.body.classList.add("overflow-hidden");
+        }
+
+        function closeExternalWarning() {
+            pendingExternalUrl = "";
+            document.getElementById("externalWarningModal").classList.add("hidden");
+            document.getElementById("externalWarningModal").classList.remove("flex");
+            document.body.classList.remove("overflow-hidden");
+        }
+
         function resourceList(paper) {
             const resources = paper?.resources || {};
+            const paperResource = resources.paperPdfUrl || resources.pdfUrl || resources.questionPaper;
+            const markSchemeResource = resources.markSchemePdfUrl || resources.markScheme;
+            const examinerReportResource = resources.examinerReportPdfUrl || resources.examinerReport;
+
             return [
                 {
                     key: "questionPaper",
                     label: "Question paper",
                     icon: "fa-file-lines",
-                    url: resources.paperPdfUrl || resources.pdfUrl || resources.questionPaper
+                    url: resourceUrl(paperResource),
+                    openExternally: shouldOpenExternally(paper, paperResource)
                 },
                 {
                     key: "markScheme",
                     label: "Mark scheme",
                     icon: "fa-check-double",
-                    url: resources.markSchemePdfUrl || resources.markScheme
+                    url: resourceUrl(markSchemeResource),
+                    openExternally: shouldOpenExternally(paper, markSchemeResource)
                 },
                 {
                     key: "examinerReport",
                     label: "Examiner report",
                     icon: "fa-chart-simple",
-                    url: resources.examinerReportPdfUrl || resources.examinerReport
+                    url: resourceUrl(examinerReportResource),
+                    openExternally: shouldOpenExternally(paper, examinerReportResource)
                 }
             ].filter((item) => item.url);
         }
@@ -455,6 +537,7 @@
         function selectResource(key) {
             const resource = activeResources.find((item) => item.key === key);
             if (!resource) return;
+            activeResource = resource;
 
             document.querySelectorAll(".resource-tab").forEach((tab) => {
                 tab.classList.toggle("is-active", tab.dataset.resourceKey === key);
@@ -466,6 +549,8 @@
 
             const openLink = document.getElementById("openResource");
             openLink.href = resource.url;
+            openLink.dataset.externalWarning = resource.openExternally ? "true" : "false";
+            openLink.dataset.externalUrl = resource.openExternally ? resource.url : "";
             openLink.classList.remove("pointer-events-none", "opacity-40");
 
             const downloadLink = document.getElementById("downloadResource");
@@ -481,6 +566,26 @@
         function renderFrame(resource) {
             const wrap = document.getElementById("frameWrap");
             wrap.innerHTML = "";
+
+            if (resource.openExternally) {
+                wrap.innerHTML = `
+                    <div class="empty-state">
+                        <div>
+                            <div class="mx-auto w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl mb-4">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </div>
+                            <h1 class="text-2xl font-black">External PDF</h1>
+                            <p class="font-body text-slate-500 mt-2">
+                                This resource is hosted on ${escapeHTML(getResourceHostname(resource.url))}. Use the open button to continue in a new tab.
+                            </p>
+                            <button type="button" data-open-active-external class="mt-5 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-950 text-white font-black hover:bg-blue-700 transition-colors">
+                                Open PDF <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
 
             const iframe = document.createElement("iframe");
             iframe.className = "viewer-frame";
@@ -596,6 +701,30 @@
 
         document.getElementById("toggleSidebar").addEventListener("click", () => {
             app.classList.toggle("sidebar-closed");
+        });
+
+        document.addEventListener("click", (event) => {
+            const externalLink = event.target.closest("[data-external-warning='true']");
+            if (externalLink) {
+                event.preventDefault();
+                openExternalWarning(externalLink.dataset.externalUrl || externalLink.href);
+                return;
+            }
+
+            const activeExternalButton = event.target.closest("[data-open-active-external]");
+            if (activeExternalButton && activeResource?.url) {
+                event.preventDefault();
+                openExternalWarning(activeResource.url);
+            }
+        });
+
+        document.getElementById("externalWarningCancel").addEventListener("click", closeExternalWarning);
+        document.getElementById("externalWarningModal").addEventListener("click", (event) => {
+            if (event.target.id === "externalWarningModal") closeExternalWarning();
+        });
+        document.getElementById("externalWarningContinue").addEventListener("click", () => {
+            if (pendingExternalUrl) window.open(pendingExternalUrl, "_blank", "noopener,noreferrer");
+            closeExternalWarning();
         });
 
         loadViewer();
