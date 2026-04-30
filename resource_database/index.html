@@ -133,129 +133,6 @@
             box-shadow: 0 22px 50px rgba(147,51,234,0.14);
         }
 
-        .random-resource-button {
-            background:
-                radial-gradient(circle at top right, rgba(129, 140, 248, 0.14), transparent 38%),
-                radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.12), transparent 34%),
-                linear-gradient(180deg, rgba(255,255,255,0.94), rgba(248,250,252,0.92));
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(226,232,240,0.95);
-            box-shadow: 0 18px 45px rgba(15,23,42,0.08);
-        }
-
-        .random-resource-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 24px 52px rgba(99, 102, 241, 0.12);
-            border-color: rgba(196,181,253,0.95);
-        }
-
-        .random-reel-shell {
-            position: relative;
-            overflow: hidden;
-            border-radius: 2rem;
-            background:
-                radial-gradient(circle at top right, rgba(165, 180, 252, 0.18), transparent 36%),
-                radial-gradient(circle at bottom left, rgba(244, 114, 182, 0.10), transparent 34%),
-                linear-gradient(180deg, rgba(255,255,255,1), rgba(248,250,252,0.99));
-            border: 1px solid rgba(226,232,240,0.95);
-            box-shadow:
-                inset 0 1px 0 rgba(255,255,255,0.96),
-                0 18px 35px rgba(15,23,42,0.06);
-        }
-
-        .random-reel-viewport {
-            overflow: hidden;
-            padding: 1.25rem 0;
-            background:
-                linear-gradient(180deg, rgba(255,255,255,0.92), rgba(248,250,252,0.86));
-        }
-
-        .random-reel-track {
-            display: flex;
-            align-items: stretch;
-            gap: 1rem;
-            padding: 0 1rem;
-            will-change: transform;
-        }
-
-        .random-reel-card {
-            flex: 0 0 min(18rem, 72vw);
-            min-height: 10.5rem;
-            border-radius: 1.6rem;
-            padding: 1.1rem;
-            border: 1px solid rgba(203,213,225,0.95);
-            background:
-                radial-gradient(circle at top right, rgba(224,231,255,0.92), transparent 42%),
-                linear-gradient(180deg, rgba(255,255,255,1), rgba(248,250,252,0.99));
-            box-shadow: 0 12px 28px rgba(15,23,42,0.07);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transform: scale(0.96);
-            opacity: 0.88;
-            transition: transform 0.28s ease, opacity 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
-        }
-
-        .random-reel-card.is-selected {
-            opacity: 1;
-            transform: scale(1);
-            border-color: rgba(129, 140, 248, 0.95);
-            box-shadow:
-                0 18px 40px rgba(99, 102, 241, 0.18),
-                0 0 0 4px rgba(129, 140, 248, 0.12);
-        }
-
-        .random-reel-card .pick-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.45rem 0.8rem;
-            border-radius: 999px;
-            background: rgba(238, 242, 255, 0.96);
-            color: #4f46e5;
-            border: 1px solid rgba(199,210,254,0.96);
-            font-size: 10px;
-            line-height: 1;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            font-weight: 800;
-        }
-
-        .random-reel-card .pick-name {
-            color: #0f172a;
-            text-shadow: none;
-        }
-
-        .random-reel-marker {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: min(18rem, 72vw);
-            height: calc(100% - 2rem);
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            border-radius: 1.6rem;
-            border: 2px solid rgba(99, 102, 241, 0.55);
-            box-shadow:
-                0 0 0 10px rgba(255,255,255,0.92),
-                inset 0 0 0 1px rgba(255,255,255,0.95);
-            background: rgba(255,255,255,0.08);
-        }
-
-        .random-reel-marker::before,
-        .random-reel-marker::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 14px;
-            height: 14px;
-            border-radius: 999px;
-            background: rgba(99, 102, 241, 0.95);
-            box-shadow: 0 0 0 6px rgba(255,255,255,0.95);
-        }
-
         .embedded-material-shell {
             width: 100vw;
             height: 100vh;
@@ -267,22 +144,6 @@
             height: 100%;
             border: 0;
             background: #f8fafc;
-        }
-
-        .random-reel-marker::before {
-            left: -7px;
-        }
-
-        .random-reel-marker::after {
-            right: -7px;
-        }
-
-        .random-reel-fade {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background:
-                linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 18%, rgba(255,255,255,0) 82%, rgba(255,255,255,1) 100%);
         }
 
         .image-fallback {
@@ -564,31 +425,6 @@
 
     <section id="resource-tools-section" class="relative z-20 px-6 mb-8">
         <div class="max-w-[95rem] mx-auto flex flex-col gap-4">
-            <div id="random-resource-wrap" class="hidden">
-                <button
-                    id="random-resource-btn"
-                    type="button"
-                    class="w-full random-resource-button group rounded-[2rem] px-6 py-5 text-left transition-all"
-                >
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div class="flex items-start gap-4">
-                            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center shadow-sm shrink-0">
-                                <i class="fas fa-dice text-xl"></i>
-                            </div>
-                            <div>
-                                <h2 class="text-2xl font-black text-slate-900 tracking-tight">Random resource</h2>
-                                <p class="text-sm text-slate-600 font-medium mt-1">Spin through your private resources and land on something unexpected.</p>
-                            </div>
-                        </div>
-
-                        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-600 text-white text-sm font-bold shadow-lg shadow-indigo-500/15 group-hover:translate-x-1 transition-transform">
-                            Spin now
-                            <i class="fas fa-arrow-right text-xs"></i>
-                        </div>
-                    </div>
-                </button>
-            </div>
-
             <div class="search-shell rounded-[2rem] p-2">
                 <div class="relative flex items-center">
                     <div class="pl-6 text-slate-400 transition-colors">
@@ -636,59 +472,6 @@
 
         </div>
     </div>
-
-    <div id="random-resource-modal" class="hidden fixed inset-0 bg-slate-950/55 backdrop-blur-md z-[126] flex items-center justify-center p-4">
-        <div class="w-full max-w-5xl rounded-[2rem] border border-slate-200 bg-white shadow-[0_30px_90px_rgba(15,23,42,0.18)] overflow-hidden animate-enter">
-            <div class="flex items-start justify-between gap-4 p-6 md:p-7 border-b border-slate-200 bg-white">
-                <div class="min-w-0">
-                    <h3 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Random resource spin</h3>
-                    <p id="random-resource-status" class="text-sm text-slate-500 font-medium mt-2">Spin the reel to land on something from your private collection.</p>
-                </div>
-
-                <button
-                    type="button"
-                    onclick="closeRandomResourceModal()"
-                    class="w-11 h-11 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors shrink-0"
-                    aria-label="Close random resource picker"
-                >
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <div class="p-5 md:p-7">
-                <div class="random-reel-shell">
-                    <div class="random-reel-viewport" id="random-resource-viewport">
-                        <div id="random-resource-track" class="random-reel-track"></div>
-                    </div>
-                    <div class="random-reel-marker" aria-hidden="true"></div>
-                    <div class="random-reel-fade" aria-hidden="true"></div>
-                </div>
-
-                <div class="mt-5 md:mt-6 rounded-[1.6rem] border border-slate-200 bg-slate-50/80 px-5 py-4">
-                    <p class="text-[11px] uppercase tracking-[0.22em] font-extrabold text-slate-400 mb-2">Selected resource</p>
-                    <p id="random-resource-picked-name" class="text-xl md:text-2xl font-black tracking-tight text-slate-900">Ready to spin.</p>
-                </div>
-
-                <div class="mt-6 flex flex-col sm:flex-row gap-3 sm:justify-end">
-                    <button
-                        type="button"
-                        id="random-resource-respin"
-                        class="px-5 py-3 rounded-full bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        Respin
-                    </button>
-                    <button
-                        type="button"
-                        id="random-resource-open"
-                        class="px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 via-fuchsia-500 to-pink-500 text-white font-black shadow-lg shadow-fuchsia-500/20 hover:scale-[1.01] transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        Open resource
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     <div id="report-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
         <div class="bg-white w-full md:w-1/2 max-w-4xl h-[80vh] rounded-[2rem] shadow-2xl relative overflow-hidden animate-enter flex flex-col">
@@ -909,7 +692,6 @@
     if (openMode !== "access_only") {
       section.classList.add("hidden");
       grid.innerHTML = "";
-      updateRandomResourceVisibility();
       return;
     }
 
@@ -918,13 +700,11 @@
     if (!favourites.length) {
       section.classList.add("hidden");
       grid.innerHTML = "";
-      updateRandomResourceVisibility();
       return;
     }
 
     section.classList.remove("hidden");
     grid.innerHTML = "";
-    updateRandomResourceVisibility();
 
     const fragment = document.createDocumentFragment();
 
@@ -1234,7 +1014,6 @@
         allAccessOnlyResources = [];
         allResources = getVisiblePublicItems(currentFolderId);
         renderFavourites();
-        updateRandomResourceVisibility();
         renderGrid(allResources);
         return;
       }
@@ -1245,7 +1024,6 @@
       allAccessOnlyResources = list.slice();
       allResources = list;
       renderFavourites();
-      updateRandomResourceVisibility();
       renderGrid(allResources);
     } catch (error) {
       console.error(error);
@@ -1253,7 +1031,6 @@
       setBannerResourceMode("public");
       updateFarewellCountdownVisibility();
       document.getElementById("favourites-section").classList.add("hidden");
-      updateRandomResourceVisibility();
 
       if (resourceIdleState.active) {
         latestRenderedResourceItems = [];
@@ -1363,7 +1140,6 @@
     };
 
     setResourceListingHidden(true);
-    clearRandomResourceTimer();
     clearResourceListingDom();
 
     if (mode === "cover") {
@@ -1528,7 +1304,6 @@
   function clearResourceListingDom() {
     const grid = document.getElementById("resource-grid");
     const favouritesGrid = document.getElementById("favourites-grid");
-    const randomTrack = document.getElementById("random-resource-track");
     const topCardsGrid = document.getElementById("top-cards-grid");
 
     if (grid) {
@@ -1538,12 +1313,6 @@
 
     if (favouritesGrid) favouritesGrid.replaceChildren();
     if (topCardsGrid) topCardsGrid.replaceChildren();
-
-    if (randomTrack) {
-      randomTrack.style.transition = "none";
-      randomTrack.style.transform = "translateX(0px)";
-      randomTrack.replaceChildren();
-    }
   }
 
   function setResourceListingHidden(hidden) {
@@ -1594,7 +1363,6 @@
     };
 
     setResourceListingHidden(true);
-    clearRandomResourceTimer();
     clearResourceListingDom();
     document.body.classList.add("overflow-hidden", "embedded-material-active");
 
@@ -1844,17 +1612,10 @@
   const SB_SAVE_SEARCH_HISTORY_TOGGLE = "sb_saveSearchHistory";
   let _sbSearchSaveTimer = null;
 
-  let randomResourceState = {
-    selected: null,
-    spinning: false,
-    revealTimer: null,
-  };
-
   function getBodyBlockingModalIds() {
     return [
       "announcement-modal",
-      "report-modal",
-      "random-resource-modal"
+      "report-modal"
     ];
   }
 
@@ -1872,177 +1633,6 @@
       .replace(/-[A-Za-z]-/g, " ")
       .replace(/\s{2,}/g, " ")
       .trim();
-  }
-
-  function getRandomResourcePool() {
-    if (openMode !== "access_only") return [];
-    return (allAccessOnlyResources || []).filter(item => item && item.name);
-  }
-
-  function updateRandomResourceVisibility() {
-    const wrap = document.getElementById("random-resource-wrap");
-    if (!wrap) return;
-
-    const shouldShow = openMode === "access_only" && getRandomResourcePool().length > 0;
-    wrap.classList.toggle("hidden", !shouldShow);
-  }
-
-  function setRandomResourceStatus(message) {
-    const status = document.getElementById("random-resource-status");
-    if (status) status.textContent = message;
-  }
-
-  function setRandomResourcePickedName(message) {
-    const picked = document.getElementById("random-resource-picked-name");
-    if (picked) picked.textContent = message;
-  }
-
-  function setRandomResourceButtonsDisabled(disabled) {
-    const openBtn = document.getElementById("random-resource-open");
-    const respinBtn = document.getElementById("random-resource-respin");
-    if (openBtn) openBtn.disabled = disabled;
-    if (respinBtn) respinBtn.disabled = disabled;
-  }
-
-  function clearRandomResourceTimer() {
-    if (randomResourceState.revealTimer) {
-      clearTimeout(randomResourceState.revealTimer);
-      randomResourceState.revealTimer = null;
-    }
-  }
-
-  function buildRandomSpinSequence(pool, selectedResource) {
-    const selectedIndex = 10 + Math.floor(Math.random() * 8);
-    const totalCards = selectedIndex + 8 + Math.floor(Math.random() * 6);
-    const sequence = [];
-
-    for (let i = 0; i < totalCards; i += 1) {
-      const randomItem = pool[Math.floor(Math.random() * pool.length)];
-      sequence.push(randomItem);
-    }
-
-    sequence[selectedIndex] = selectedResource;
-    return { sequence, selectedIndex };
-  }
-
-  function renderRandomSpinTrack(sequence, selectedIndex, duration) {
-    const track = document.getElementById("random-resource-track");
-    const viewport = document.getElementById("random-resource-viewport");
-    if (!track || !viewport) return;
-
-    track.style.transition = "none";
-    track.style.transform = "translateX(0px)";
-    track.innerHTML = "";
-
-    const fragment = document.createDocumentFragment();
-
-    sequence.forEach((item, index) => {
-      const card = document.createElement("div");
-      const cleanName = stripResourceDecorators(item.name);
-      card.className = "random-reel-card";
-      card.dataset.index = String(index);
-      card.innerHTML = `
-        <div class="flex items-center gap-2 mb-4">
-          <span class="pick-chip">
-            <i class="fas fa-sparkles text-[10px]"></i>
-            Random pick
-          </span>
-        </div>
-        <div class="flex-grow flex items-end">
-          <p class="pick-name text-lg md:text-xl font-black tracking-tight leading-tight">${escapeHtml(cleanName)}</p>
-        </div>
-      `;
-      if (index === selectedIndex) card.dataset.selected = "true";
-      fragment.appendChild(card);
-    });
-
-    track.appendChild(fragment);
-
-    const cards = [...track.children];
-    const selectedCard = cards[selectedIndex];
-    if (!selectedCard) return;
-
-    const viewportWidth = viewport.clientWidth;
-    const trackStyle = window.getComputedStyle(track);
-    const gap = parseFloat(trackStyle.columnGap || trackStyle.gap || "16") || 16;
-    const selectedOffset = selectedCard.offsetLeft - ((viewportWidth - selectedCard.offsetWidth) / 2);
-
-    requestAnimationFrame(() => {
-      track.style.transition = `transform ${duration}ms cubic-bezier(0.12, 0.88, 0.18, 1)`;
-      track.style.transform = `translateX(-${Math.max(0, selectedOffset)}px)`;
-    });
-
-    clearRandomResourceTimer();
-    randomResourceState.revealTimer = setTimeout(() => {
-      cards.forEach(card => card.classList.remove("is-selected"));
-      selectedCard.classList.add("is-selected");
-    }, Math.max(0, duration - 140));
-  }
-
-  function spinRandomResource() {
-    const pool = getRandomResourcePool();
-    if (!pool.length || randomResourceState.spinning) return;
-
-    randomResourceState.spinning = true;
-    randomResourceState.selected = null;
-    setRandomResourceButtonsDisabled(true);
-    setRandomResourceStatus("Spinning through your private resources...");
-    setRandomResourcePickedName("Spinning...");
-
-    const selectedResource = pool[Math.floor(Math.random() * pool.length)];
-    const { sequence, selectedIndex } = buildRandomSpinSequence(pool, selectedResource);
-    const duration = 2300 + Math.floor(Math.random() * 1300);
-
-    renderRandomSpinTrack(sequence, selectedIndex, duration);
-
-    clearRandomResourceTimer();
-    randomResourceState.revealTimer = setTimeout(() => {
-      randomResourceState.spinning = false;
-      randomResourceState.selected = selectedResource;
-      setRandomResourceButtonsDisabled(false);
-      setRandomResourceStatus("Landed on a random pick. Open it or respin for another one.");
-      setRandomResourcePickedName(stripResourceDecorators(selectedResource.name));
-    }, duration + 100);
-  }
-
-  function openRandomResourceModal() {
-    if (!getRandomResourcePool().length) return;
-
-    const modal = document.getElementById("random-resource-modal");
-    if (!modal) return;
-
-    modal.classList.remove("hidden");
-    updateBodyScrollLock();
-    spinRandomResource();
-  }
-
-  function closeRandomResourceModal() {
-    const modal = document.getElementById("random-resource-modal");
-    const track = document.getElementById("random-resource-track");
-
-    clearRandomResourceTimer();
-    randomResourceState.spinning = false;
-    randomResourceState.selected = null;
-
-    if (track) {
-      track.style.transition = "none";
-      track.style.transform = "translateX(0px)";
-      track.innerHTML = "";
-    }
-
-    setRandomResourceButtonsDisabled(true);
-    setRandomResourceStatus("Spin the reel to land on something from your private collection.");
-    setRandomResourcePickedName("Ready to spin.");
-
-    if (modal) modal.classList.add("hidden");
-    updateBodyScrollLock();
-  }
-
-  function openSelectedRandomResource() {
-    if (!randomResourceState.selected || randomResourceState.spinning) return;
-    const selected = randomResourceState.selected;
-    closeRandomResourceModal();
-    handleClick(selected);
   }
 
   function sbShouldSaveSearchHistory() {
@@ -2167,7 +1757,6 @@
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       closeAnnouncementModal();
-      closeRandomResourceModal();
       closeReportModal();
     }
   });
@@ -2213,13 +1802,6 @@
     clearInterval(schoolCountdownInterval);
     schoolCountdownInterval = setInterval(updateSchoolCountdown, 1000);
   }
-
-
-  document.getElementById("random-resource-btn")?.addEventListener("click", openRandomResourceModal);
-  document.getElementById("random-resource-respin")?.addEventListener("click", spinRandomResource);
-  document.getElementById("random-resource-open")?.addEventListener("click", openSelectedRandomResource);
-
-  window.closeRandomResourceModal = closeRandomResourceModal;
 
   startSchoolCountdown();
   setupResourceIdleCover();
