@@ -769,6 +769,7 @@
   let latestRenderedResourceItems = [];
   let resourceIdleState = {
     active: false,
+    mode: null,
     restoreItems: null,
     restoreScrollY: 0
   };
@@ -1301,8 +1302,40 @@
     });
   }
 
+  function isElementActuallyVisible(el) {
+    if (!el) return false;
+    if (el.classList?.contains("hidden")) return false;
+    return Boolean(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+  }
+
+  function hasOpenExternalUiModal() {
+    const directModalSelectors = [
+      "#gh-login-overlay",
+      "#gh-confirm-popup",
+      "#sb-prohibited-search-modal.flex",
+      "#sb-tts-warning-modal.flex",
+      "#update-modal-overlay.flex"
+    ];
+
+    if (directModalSelectors.some(selector => isElementActuallyVisible(document.querySelector(selector)))) {
+      return true;
+    }
+
+    return [...document.querySelectorAll("iframe")].some(frame => {
+      const src = String(frame.getAttribute("src") || "");
+      if (!/\/myaccount\/(login|account|settings)\.html/.test(src)) return false;
+
+      const fixedAncestor = frame.closest(".fixed, [style*='position: fixed'], [style*='position:fixed']");
+      return isElementActuallyVisible(fixedAncestor || frame);
+    });
+  }
+
+  function hasOpenResourceModal() {
+    return hasOpenBodyBlockingModal() || hasOpenExternalUiModal();
+  }
+
   function shouldAllowResourceIdle() {
-    return !embeddedMaterialState.open && !hasOpenBodyBlockingModal();
+    return !embeddedMaterialState.open && !hasOpenResourceModal();
   }
 
   function scheduleResourceIdleTimer() {
@@ -1313,20 +1346,16 @@
     resourceIdleTimer = setTimeout(showResourceIdleCover, RESOURCE_IDLE_TIMEOUT_MS);
   }
 
-  function showResourceIdleCover(options = {}) {
+  function suspendResourceListing(mode = "cover") {
     if (!RESOURCE_IDLE_ENABLED) return;
     if (resourceIdleState.active) return;
-
-    if (!shouldAllowResourceIdle()) {
-      if (!options.force) scheduleResourceIdleTimer();
-      return;
-    }
 
     clearTimeout(resourceIdleTimer);
     resourceIdleTimer = null;
 
     resourceIdleState = {
       active: true,
+      mode,
       restoreItems: latestRenderedResourceItems.length
         ? latestRenderedResourceItems.slice()
         : (Array.isArray(allResources) ? allResources.slice() : []),
@@ -1336,16 +1365,43 @@
     setResourceListingHidden(true);
     clearRandomResourceTimer();
     clearResourceListingDom();
-    document.body.classList.add("overflow-hidden", "resource-idle-active");
 
-    const cover = getResourceIdleCover();
-    if (cover) {
-      try {
-        cover.focus({ preventScroll: true });
-      } catch {
-        cover.focus();
+    if (mode === "cover") {
+      document.body.classList.add("overflow-hidden", "resource-idle-active");
+
+      const cover = getResourceIdleCover();
+      if (cover) {
+        try {
+          cover.focus({ preventScroll: true });
+        } catch {
+          cover.focus();
+        }
       }
     }
+  }
+
+  function showResourceIdleCover(options = {}) {
+    if (!RESOURCE_IDLE_ENABLED) return;
+    if (resourceIdleState.active) return;
+
+    if (!shouldAllowResourceIdle()) {
+      if (hasOpenResourceModal()) {
+        suspendResourceListing("quiet");
+        return;
+      }
+
+      if (!options.force) scheduleResourceIdleTimer();
+      return;
+    }
+
+    suspendResourceListing("cover");
+  }
+
+  function quietlySuspendResourceListingForModal() {
+    if (!RESOURCE_IDLE_ENABLED) return;
+    if (resourceIdleState.active) return;
+    if (embeddedMaterialState.open) return;
+    suspendResourceListing("quiet");
   }
 
   function resumeResourceListingFromIdle() {
@@ -1358,6 +1414,7 @@
 
     resourceIdleState = {
       active: false,
+      mode: null,
       restoreItems: null,
       restoreScrollY: 0
     };
@@ -1376,6 +1433,12 @@
     if (topCards.length) renderTopCards(topCards);
     window.scrollTo({ top: restoreScrollY, behavior: "auto" });
     scheduleResourceIdleTimer();
+  }
+
+  function maybeResumeQuietResourceListing() {
+    if (!resourceIdleState.active || resourceIdleState.mode !== "quiet") return;
+    if (hasOpenResourceModal() || embeddedMaterialState.open) return;
+    resumeResourceListingFromIdle();
   }
 
   function setupResourceIdleCover() {
@@ -1399,7 +1462,10 @@
       "wheel"
     ].forEach(eventName => {
       window.addEventListener(eventName, (event) => {
-        if (resourceIdleState.active) return;
+        if (resourceIdleState.active) {
+          maybeResumeQuietResourceListing();
+          return;
+        }
         if (event.target && event.target.closest?.("#resource-idle-cover")) return;
         scheduleResourceIdleTimer();
       }, { passive: true });
@@ -1411,12 +1477,50 @@
         return;
       }
 
-      if (!resourceIdleState.active) scheduleResourceIdleTimer();
+      if (resourceIdleState.active) {
+        maybeResumeQuietResourceListing();
+        return;
+      }
+
+      scheduleResourceIdleTimer();
     });
 
     window.addEventListener("blur", () => {
-      if (RESOURCE_IDLE_UNLOAD_ON_BLUR) showResourceIdleCover({ force: true });
+      window.setTimeout(() => {
+        if (!RESOURCE_IDLE_UNLOAD_ON_BLUR) return;
+
+        if (hasOpenResourceModal()) {
+          quietlySuspendResourceListingForModal();
+          return;
+        }
+
+        showResourceIdleCover({ force: true });
+      }, 0);
     });
+
+    window.addEventListener("focus", () => {
+      maybeResumeQuietResourceListing();
+    });
+
+    if (window.MutationObserver) {
+      const modalObserver = new MutationObserver(() => {
+        window.clearTimeout(modalObserver._timer);
+        modalObserver._timer = window.setTimeout(() => {
+          if (hasOpenResourceModal()) {
+            quietlySuspendResourceListingForModal();
+          } else {
+            maybeResumeQuietResourceListing();
+          }
+        }, 40);
+      });
+
+      modalObserver.observe(document.body, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["class", "style", "src"]
+      });
+    }
 
     scheduleResourceIdleTimer();
   }
