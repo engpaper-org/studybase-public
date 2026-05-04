@@ -1099,7 +1099,7 @@
                     ["gh_username", "gh_password", "gh_device"].forEach((k) =>
                         localStorage.removeItem(k)
                     );
-                    window.location.reload();
+                    window.location.href = "/index.html?logout=true";
                 };
 
                 const accountBtn = document.createElement("button");
