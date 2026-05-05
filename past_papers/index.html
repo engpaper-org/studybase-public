@@ -2,12 +2,12 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-        <script src="/assets/js/siteConfig.js"></script>
-<script>
+    <script src="/assets/js/siteConfig.js"></script>
+    <script>
         (function () {
             try {
-                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
-                if (isDark) document.documentElement.classList.add('dark');
+                const isDark = String(localStorage.getItem("darkMode") || "").toLowerCase() === "true";
+                if (isDark) document.documentElement.classList.add("dark");
             } catch (e) {}
         })();
     </script>
@@ -26,8 +26,8 @@
     <script>const PAGE_ID = "past_papers";</script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+        @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap");
+        @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
 
         :root {
             --rb-ink: #0f172a;
@@ -35,20 +35,22 @@
             --rb-line: rgba(203, 213, 225, 0.82);
             --rb-blue: #2563eb;
             --rb-teal: #0f766e;
-            --rb-violet: #7c3aed;
+            --rb-gold: #d97706;
         }
 
         body {
             font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
             background:
-                linear-gradient(180deg, rgba(248,250,252,0.98), rgba(241,245,249,1) 44%, rgba(255,255,255,1));
+                radial-gradient(circle at top left, rgba(59, 130, 246, 0.08), transparent 24%),
+                radial-gradient(circle at top right, rgba(13, 148, 136, 0.08), transparent 28%),
+                linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 1) 44%, rgba(255, 255, 255, 1));
             color: var(--rb-ink);
         }
 
         .font-body { font-family: "Inter", system-ui, -apple-system, sans-serif; }
 
         .paper-shell {
-            background: rgba(255, 255, 255, 0.86);
+            background: rgba(255, 255, 255, 0.88);
             border: 1px solid rgba(226, 232, 240, 0.94);
             box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
             backdrop-filter: blur(18px);
@@ -87,48 +89,32 @@
             box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
         }
 
-        .paper-card {
+        .subject-card {
+            position: relative;
+            overflow: hidden;
             border: 1px solid rgba(226, 232, 240, 0.95);
-            background:
-                linear-gradient(180deg, rgba(255,255,255,1), rgba(248,250,252,0.94));
+            background: linear-gradient(180deg, rgba(255,255,255,1), rgba(248,250,252,0.94));
             transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
         }
 
-        .paper-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(37, 99, 235, 0.36);
+        .subject-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.09), transparent 48%, rgba(13, 148, 136, 0.08));
+            opacity: 0;
+            transition: opacity 0.22s ease;
+            pointer-events: none;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(37, 99, 235, 0.3);
             box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
         }
 
-        .resource-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.48rem;
-            min-height: 2.35rem;
-            border-radius: 0.78rem;
-            padding: 0 0.85rem;
-            font-size: 0.78rem;
-            font-weight: 900;
-            transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
-        }
-
-        .resource-link:hover { transform: translateY(-1px); }
-
-        .resource-link.is-disabled {
-            pointer-events: none;
-            opacity: 0.42;
-            filter: grayscale(0.2);
-        }
-
-        .external-warning-overlay {
-            background: rgba(15, 23, 42, 0.58);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-        }
-
-        .external-warning-card {
-            box-shadow: 0 30px 90px rgba(15, 23, 42, 0.28);
+        .subject-card:hover::before {
+            opacity: 1;
         }
 
         .status-pill {
@@ -147,8 +133,29 @@
             color: #475569;
         }
 
-        .year-band {
-            scroll-margin-top: 7rem;
+        .launch-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.48rem;
+            min-height: 2.7rem;
+            border-radius: 0.9rem;
+            padding: 0 1rem;
+            font-size: 0.84rem;
+            font-weight: 900;
+            transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+        }
+
+        .launch-link:hover { transform: translateY(-1px); }
+
+        .external-warning-overlay {
+            background: rgba(15, 23, 42, 0.58);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .external-warning-card {
+            box-shadow: 0 30px 90px rgba(15, 23, 42, 0.28);
         }
     </style>
 </head>
@@ -161,21 +168,21 @@
                 <div class="grid lg:grid-cols-[1fr_0.82fr] gap-10 items-center">
                     <div>
                         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-black uppercase tracking-widest mb-6">
-                            <i class="fa-solid fa-file-lines"></i>
-                            A-Level past paper finder
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            A-Level past papers
                         </div>
                         <h1 class="text-5xl md:text-7xl font-black tracking-tight leading-[1.02] text-slate-950">
-                            Find the right paper before you start revising.
+                            Browse every Maths Genie subject in one place.
                         </h1>
                         <p class="mt-6 text-lg md:text-xl text-slate-600 font-body leading-relaxed max-w-2xl">
-                            RevisionBase sorts A-Level past papers by subject, exam board, year, paper and resource type so you can move from "what should I practise?" to "open the paper" quickly.
+                            GCSE, IGCSE, AS, A-Level, IAS, IAL and more from Maths Genie are now combined into one searchable subject directory with quick links into each papers page.
                         </p>
                         <div class="mt-8 flex flex-wrap gap-3">
-                            <a href="#paper-finder" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-950 text-white font-black hover:bg-blue-700 transition-colors">
-                                Start filtering <i class="fa-solid fa-arrow-down text-xs"></i>
+                            <a href="#subject-directory" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-950 text-white font-black hover:bg-blue-700 transition-colors">
+                                Browse papers <i class="fa-solid fa-arrow-down text-xs"></i>
                             </a>
-                            <a href="/resource_database/index.html#primary-access" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white border border-slate-200 text-slate-700 font-black hover:border-blue-300 hover:text-blue-700 transition-colors">
-                                Resource database <i class="fa-solid fa-database text-xs"></i>
+                            <a href="https://www.mathsgenie.co.uk/subjects?qual=a-level" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white border border-slate-200 text-slate-700 font-black hover:border-blue-300 hover:text-blue-700 transition-colors">
+                                View source page <i class="fa-solid fa-up-right-from-square text-xs"></i>
                             </a>
                         </div>
                     </div>
@@ -183,95 +190,112 @@
                     <div class="paper-shell rounded-3xl p-6 md:p-7">
                         <div class="flex items-center justify-between gap-4 mb-6">
                             <div>
-                                <p class="text-xs uppercase tracking-widest font-black text-slate-400">A-Level library</p>
-                                <h2 class="text-2xl font-black text-slate-950 mt-1"><span data-exam-cycle>2026</span> exam cycle</h2>
+                                <p class="text-xs uppercase tracking-widest font-black text-slate-400">Maths Genie sync</p>
+                                <h2 class="text-2xl font-black text-slate-950 mt-1">All-subject directory</h2>
                             </div>
                             <img src="/assets/siteIcons/navbar.png" alt="RevisionBase logo" class="w-12 h-12 rounded-2xl border border-slate-200 shadow-sm bg-white object-cover">
                         </div>
                         <div class="space-y-3">
                             <div class="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4">
                                 <div class="flex items-center gap-3">
-                                    <span class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center"><i class="fa-solid fa-magnifying-glass"></i></span>
+                                    <span class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center"><i class="fa-solid fa-list"></i></span>
                                     <div>
-                                        <p class="font-black text-slate-900">Ask for subject and board</p>
-                                        <p class="text-sm text-slate-500 font-body">Start with subject and exam board.</p>
+                                        <p class="font-black text-slate-900">All live subject pages</p>
+                                        <p class="text-sm text-slate-500 font-body">Open the full subject page or jump straight into that subject's papers tab.</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4">
                                 <div class="flex items-center gap-3">
-                                    <span class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center"><i class="fa-solid fa-layer-group"></i></span>
+                                    <span class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center"><i class="fa-solid fa-database"></i></span>
                                     <div>
-                                        <p class="font-black text-slate-900">Group by year and paper</p>
-                                        <p class="text-sm text-slate-500 font-body">Year 12 and 13 students get the exact resource set.</p>
+                                        <p class="font-black text-slate-900">Single local JSON</p>
+                                        <p class="text-sm text-slate-500 font-body">The complete Maths Genie subject catalog now lives in one tidy local file.</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4">
                                 <div class="flex items-center gap-3">
-                                    <span class="w-10 h-10 rounded-xl bg-violet-100 text-violet-700 flex items-center justify-center"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                                    <span class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center"><i class="fa-solid fa-globe"></i></span>
                                     <div>
-                                        <p class="font-black text-slate-900">Open paper, mark scheme, report</p>
-                                        <p class="text-sm text-slate-500 font-body">Blank fields stay disabled until added.</p>
+                                        <p class="font-black text-slate-900">Filters and search restored</p>
+                                        <p class="text-sm text-slate-500 font-body">Search by qualification, subject, board, year or paper name.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="rb-image-slot mt-5 aspect-[16/10]" data-slot-label="Finder visual">
-                            <img src="/assets/siteImages/papers-finder.jpg" alt="A-Level paper finder preview" onerror="this.remove(); this.parentElement.classList.add('is-placeholder');">
+                        <div class="rb-image-slot mt-5 aspect-[16/10]" data-slot-label="Maths Genie subject hub">
+                            <img src="/assets/siteImages/papers-finder.jpg" alt="A-Level paper library preview" onerror="this.remove(); this.parentElement.classList.add('is-placeholder');">
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="paper-finder" class="py-14 bg-slate-50">
+        <section id="subject-directory" class="py-14 bg-slate-50">
             <div class="max-w-7xl mx-auto px-6">
                 <div class="paper-shell rounded-3xl p-5 md:p-7 mb-8">
-                    <div class="flex flex-col lg:flex-row lg:items-end gap-5">
+                    <div class="flex flex-col lg:flex-row lg:items-end gap-5 mb-5">
+                        <div class="filter-field flex-1">
+                            <label for="qualificationFilter">Qualification</label>
+                            <select id="qualificationFilter"></select>
+                        </div>
                         <div class="filter-field flex-1">
                             <label for="subjectFilter">Subject</label>
                             <select id="subjectFilter"></select>
+                        </div>
+                        <div class="filter-field flex-1">
+                            <label for="groupFilter">Subject group</label>
+                            <select id="groupFilter"></select>
                         </div>
                         <div class="filter-field flex-1">
                             <label for="boardFilter">Exam board</label>
                             <select id="boardFilter"></select>
                         </div>
                         <div class="filter-field flex-1">
-                            <label for="yearFilter">Year</label>
-                            <select id="yearFilter"></select>
-                        </div>
-                        <div class="filter-field flex-1">
-                            <label for="paperFilter">Paper</label>
-                            <select id="paperFilter"></select>
+                            <label for="popularFilter">Popular</label>
+                            <select id="popularFilter"></select>
                         </div>
                     </div>
-                    <div class="mt-5 grid lg:grid-cols-[1fr_auto] gap-4 items-end">
+                    <div class="grid lg:grid-cols-[1fr_auto] gap-4 items-end mb-6">
                         <div class="filter-field">
-                            <label for="searchFilter">Search paper or qualification</label>
-                            <input id="searchFilter" type="search" placeholder="Try: Paper 1, Pure Mathematics, A-Level Physics">
+                            <label for="searchFilter">Search subject, board or qualification</label>
+                            <input id="searchFilter" type="search" placeholder="Try: Biology, Physics, Media Studies, OCR, IAL">
                         </div>
                         <button id="resetFilters" class="h-[3.35rem] px-6 rounded-xl bg-white border border-slate-200 text-slate-700 font-black hover:border-blue-300 hover:text-blue-700 transition-colors">
                             <i class="fa-solid fa-rotate-left mr-2 text-xs"></i>Reset
                         </button>
                     </div>
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div>
+                            <p class="text-xs uppercase tracking-widest font-black text-blue-700">Current source</p>
+                            <h2 id="resultsHeading" class="text-3xl font-black text-slate-950 mt-1">Loading subjects...</h2>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="status-pill"><i class="fa-solid fa-layer-group text-blue-500"></i>All Maths Genie</span>
+                            <span class="status-pill"><i class="fa-solid fa-compass text-teal-500"></i>Subject + papers links</span>
+                        </div>
+                    </div>
+                    <p id="resultsSubheading" class="mt-4 text-slate-500 font-body leading-relaxed">
+                        Pulling the live subject catalog.
+                    </p>
                 </div>
 
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
                     <div>
                         <p class="text-xs uppercase tracking-widest font-black text-blue-700">Matching papers</p>
-                        <h2 id="resultsHeading" class="text-3xl font-black text-slate-950 mt-1">Loading papers...</h2>
+                        <h2 id="resultsHeadingSecondary" class="text-3xl font-black text-slate-950 mt-1">Loading subjects...</h2>
                     </div>
                     <div id="activeFilters" class="flex flex-wrap gap-2"></div>
                 </div>
 
-                <div id="results" class="space-y-6"></div>
+                <div id="results" class="space-y-8"></div>
                 <div id="emptyState" class="hidden paper-shell rounded-3xl p-10 text-center">
                     <div class="mx-auto w-14 h-14 rounded-2xl bg-slate-100 text-slate-500 flex items-center justify-center text-xl mb-4">
-                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
                     </div>
-                    <h3 class="text-2xl font-black text-slate-950">No papers matched that combination.</h3>
-                    <p class="text-slate-500 font-body mt-2">Try removing one filter, or check back when more papers have been added.</p>
+                    <h3 class="text-2xl font-black text-slate-950">No subjects matched that combination.</h3>
+                    <p class="text-slate-500 font-body mt-2">Try removing a filter or broadening the search term.</p>
                 </div>
             </div>
         </section>
@@ -284,9 +308,9 @@
                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </div>
                 <div class="min-w-0">
-                    <h2 class="text-2xl font-black text-slate-950 tracking-tight">Open external PDF?</h2>
+                    <h2 class="text-2xl font-black text-slate-950 tracking-tight">Open external page?</h2>
                     <p class="mt-2 text-sm leading-6 text-slate-600 font-body">
-                        This paper is hosted on <strong id="externalWarningHost" class="text-slate-950 break-all">an external site</strong>. It will open in a new browser tab.
+                        This Maths Genie page is hosted on <strong id="externalWarningHost" class="text-slate-950 break-all">an external site</strong>. It will open in a new browser tab.
                     </p>
                 </div>
             </div>
@@ -303,92 +327,35 @@
     </div>
 
     <script>
-        const DATA_URL = "/assets/pastPapers/papers.json";
+        const DATA_URL = "./mathsgenie-all-subjects.json";
         const filters = {
+            qualification: document.getElementById("qualificationFilter"),
             subject: document.getElementById("subjectFilter"),
+            group: document.getElementById("groupFilter"),
             board: document.getElementById("boardFilter"),
-            year: document.getElementById("yearFilter"),
-            paper: document.getElementById("paperFilter"),
+            popular: document.getElementById("popularFilter"),
             search: document.getElementById("searchFilter")
         };
 
-        let allPapers = [];
+        let allSubjects = [];
         let pendingExternalUrl = "";
 
-        function uniqueValues(items, key) {
-            return [...new Set(items.map((item) => item[key]).filter(Boolean))]
-                .sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true }));
-        }
-
         function escapeHTML(value) {
-            return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+            return String(value ?? "").replace(/[&<>\"']/g, (char) => ({
                 "&": "&amp;",
                 "<": "&lt;",
                 ">": "&gt;",
-                '"': "&quot;",
+                "\"": "&quot;",
                 "'": "&#39;"
             }[char]));
         }
 
-        function fillSelect(select, label, values) {
-            const selected = select.value;
-            select.innerHTML = `<option value="">All ${label}</option>`;
-            values.forEach((value) => {
-                const option = document.createElement("option");
-                option.value = value;
-                option.textContent = value;
-                select.appendChild(option);
-            });
-            if (values.map(String).includes(String(selected))) select.value = selected;
-        }
-
-        function getFilteredPapers(skipKey = "") {
-            const query = filters.search.value.trim().toLowerCase();
-            return allPapers.filter((paper) => {
-                const matchesSubject = skipKey === "subject" || !filters.subject.value || paper.subject === filters.subject.value;
-                const matchesBoard = skipKey === "board" || !filters.board.value || paper.examBoard === filters.board.value;
-                const matchesYear = skipKey === "year" || !filters.year.value || String(paper.year) === filters.year.value;
-                const matchesPaper = skipKey === "paper" || !filters.paper.value || paper.paper === filters.paper.value;
-                const searchable = [
-                    paper.qualification,
-                    paper.subject,
-                    paper.examBoard,
-                    paper.paper,
-                    paper.series
-                ].join(" ").toLowerCase();
-                const matchesSearch = !query || searchable.includes(query);
-                return matchesSubject && matchesBoard && matchesYear && matchesPaper && matchesSearch;
-            });
-        }
-
-        function updateOptions() {
-            fillSelect(filters.subject, "subjects", uniqueValues(getFilteredPapers("subject"), "subject"));
-            fillSelect(filters.board, "exam boards", uniqueValues(getFilteredPapers("board"), "examBoard"));
-            fillSelect(filters.year, "years", uniqueValues(getFilteredPapers("year"), "year").sort((a, b) => Number(b) - Number(a)));
-            fillSelect(filters.paper, "papers", uniqueValues(getFilteredPapers("paper"), "paper"));
-        }
-
         function getResourceHostname(url) {
             try {
-                return new URL(url, window.location.origin).hostname || window.location.hostname;
+                return new URL(url, window.location.href).hostname || window.location.hostname;
             } catch (e) {
                 return "the linked host";
             }
-        }
-
-        function shouldOpenExternally(paper, resourceValue = null) {
-            if (resourceValue && typeof resourceValue === "object" && resourceValue.openExternally !== undefined) {
-                return resourceValue.openExternally === true;
-            }
-
-            if (paper?.resources?.openExternally !== undefined) return paper.resources.openExternally === true;
-            return paper?.openExternally === true;
-        }
-
-        function resourceUrl(value) {
-            if (!value) return "";
-            if (typeof value === "string") return value;
-            return value.url || value.href || value.pdfUrl || "";
         }
 
         function openExternalWarning(url) {
@@ -406,96 +373,162 @@
             document.body.classList.remove("overflow-hidden");
         }
 
-        function resourceButton(label, url, icon, tone, sameTab = false, externalWarning = false) {
-            const disabled = !url;
-            const classes = {
-                blue: "bg-blue-50 text-blue-700 border border-blue-100 hover:bg-blue-100",
-                slate: "bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200",
-                violet: "bg-violet-50 text-violet-700 border border-violet-100 hover:bg-violet-100"
-            };
-            const warningAttrs = externalWarning
-                ? `data-external-warning="true" data-external-url="${escapeHTML(url || "")}"`
-                : "";
-            return `
-                <a href="${url || "#"}" class="resource-link ${classes[tone]} ${disabled ? "is-disabled" : ""}" ${warningAttrs} ${url ? (sameTab && !externalWarning ? "" : 'target="_blank" rel="noopener noreferrer"') : 'aria-disabled="true"'}>
-                    <i class="fa-solid ${icon} text-xs"></i>${label}
-                </a>
-            `;
+        function uniqueValues(items, key) {
+            return [...new Set(items.map((item) => item[key]).filter(Boolean))]
+                .sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true }));
+        }
+
+        function fillSelect(select, label, values) {
+            const selected = select.value;
+            select.innerHTML = `<option value="">All ${label}</option>`;
+            values.forEach((value) => {
+                const option = document.createElement("option");
+                option.value = value;
+                option.textContent = value;
+                select.appendChild(option);
+            });
+            if (values.map(String).includes(String(selected))) select.value = selected;
+        }
+
+        function getFilteredSubjects(skipKey = "") {
+            const query = filters.search.value.trim().toLowerCase();
+            return allSubjects.filter((subject) => {
+                const matchesQualification = skipKey === "qualification" || !filters.qualification.value || subject.qualification === filters.qualification.value;
+                const matchesSubject = skipKey === "subject" || !filters.subject.value || subject.subject === filters.subject.value;
+                const matchesGroup = skipKey === "group" || !filters.group.value || subject.group === filters.group.value;
+                const matchesBoard = skipKey === "board" || !filters.board.value || subject.board === filters.board.value;
+                const matchesPopular = skipKey === "popular" || !filters.popular.value || String(subject.isPopular) === filters.popular.value;
+                const searchable = [
+                    subject.qualification,
+                    subject.subject,
+                    subject.group,
+                    subject.board,
+                    subject.subjectSlug
+                ].join(" ").toLowerCase();
+                const matchesSearch = !query || searchable.includes(query);
+                return matchesQualification && matchesSubject && matchesGroup && matchesBoard && matchesPopular && matchesSearch;
+            });
+        }
+
+        function updateOptions() {
+            fillSelect(filters.qualification, "qualifications", uniqueValues(getFilteredSubjects("qualification"), "qualification"));
+            fillSelect(filters.subject, "subjects", uniqueValues(getFilteredSubjects("subject"), "subject"));
+            fillSelect(filters.group, "subject groups", uniqueValues(getFilteredSubjects("group"), "group"));
+            fillSelect(filters.board, "exam boards", uniqueValues(getFilteredSubjects("board"), "board"));
+            const popularSelected = filters.popular.value;
+            filters.popular.innerHTML = `<option value="">All visibility states</option><option value="true">Popular</option><option value="false">Everything else</option>`;
+            if (["true", "false"].includes(popularSelected)) filters.popular.value = popularSelected;
         }
 
         function activeFilterPills() {
             const active = [
+                ["Qualification", filters.qualification.value],
                 ["Subject", filters.subject.value],
+                ["Group", filters.group.value],
                 ["Board", filters.board.value],
-                ["Year", filters.year.value],
-                ["Paper", filters.paper.value],
+                ["Popular", filters.popular.value === "true" ? "Popular only" : filters.popular.value === "false" ? "Non-popular only" : ""],
                 ["Search", filters.search.value.trim()]
             ].filter(([, value]) => value);
 
             document.getElementById("activeFilters").innerHTML = active.length
-                ? active.map(([label, value]) => `<span class="status-pill">${label}: ${value}</span>`).join("")
+                ? active.map(([label, value]) => `<span class="status-pill">${label}: ${escapeHTML(value)}</span>`).join("")
                 : `<span class="status-pill"><i class="fa-solid fa-circle-info text-blue-500"></i>Showing everything</span>`;
         }
 
+        function resourceButton(label, url, tone = "dark") {
+            if (!url) return "";
+            const tones = {
+                dark: "bg-slate-950 text-white hover:bg-blue-700",
+                light: "bg-white border border-slate-200 text-slate-700 hover:border-blue-300 hover:text-blue-700",
+                soft: "bg-blue-50 text-blue-700 border border-blue-100 hover:bg-blue-100"
+            };
+            return `
+                <a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer" data-external-warning="true" data-external-url="${escapeHTML(url)}" class="launch-link ${tones[tone]}">
+                    ${escapeHTML(label)} <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </a>
+            `;
+        }
+
+        function renderSection(groupTitle, groupMeta, items) {
+            return `
+                <section>
+                    <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                        <div>
+                            <p class="text-xs uppercase tracking-widest font-black text-blue-700">${escapeHTML(groupMeta)}</p>
+                            <h3 class="text-2xl font-black text-slate-950 mt-1">${escapeHTML(groupTitle)}</h3>
+                            <p class="text-slate-500 font-body mt-2">Live subject routes extracted from Maths Genie's subject catalog.</p>
+                        </div>
+                        <span class="status-pill">${items.length} subject${items.length === 1 ? "" : "s"}</span>
+                    </div>
+                    <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+                        ${items.map((item) => `
+                            <article class="subject-card rounded-2xl p-5">
+                                <div class="relative">
+                                    <div class="flex items-start justify-between gap-4 mb-4">
+                                        <div>
+                                            <p class="text-xs uppercase tracking-widest font-black text-blue-700">${escapeHTML(item.group || "Subject")} / ${escapeHTML(item.board || "Board")}</p>
+                                            <h4 class="text-lg font-black text-slate-950 mt-1">${escapeHTML(item.title)}</h4>
+                                            <p class="text-sm text-slate-500 font-body mt-1">${escapeHTML(item.description || "")}</p>
+                                        </div>
+                                        <span class="status-pill">${escapeHTML(item.shortLabel || "Open")}</span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 mb-4">
+                                        ${(item.tags || []).map((tag) => `<span class="status-pill">${escapeHTML(tag)}</span>`).join("")}
+                                    </div>
+                                    <div class="pt-1 space-y-3">
+                                        <div class="flex flex-wrap gap-2">
+                                            ${resourceButton("Open papers", item.papersUrl, "dark")}
+                                            ${resourceButton("Open subject page", item.subjectUrl, "light")}
+                                        </div>
+                                        <div class="flex items-center justify-between gap-3">
+                                            <span class="text-xs font-black uppercase tracking-[0.16em] text-slate-400">${escapeHTML(getResourceHostname(item.papersUrl || item.subjectUrl || ""))}</span>
+                                            <a href="${escapeHTML(item.sourcePageUrl || "#")}" target="_blank" rel="noopener noreferrer" class="text-xs font-black uppercase tracking-[0.16em] text-slate-400 hover:text-blue-700">
+                                                Source page
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        `).join("")}
+                    </div>
+                </section>
+            `;
+        }
+
         function renderResults() {
-            const papers = getFilteredPapers().sort((a, b) =>
+            const subjects = getFilteredSubjects().sort((a, b) =>
+                a.qualification.localeCompare(b.qualification) ||
+                a.group.localeCompare(b.group) ||
                 a.subject.localeCompare(b.subject) ||
-                a.examBoard.localeCompare(b.examBoard) ||
-                Number(b.year) - Number(a.year) ||
-                a.paper.localeCompare(b.paper)
+                a.board.localeCompare(b.board)
             );
 
-            document.getElementById("resultsHeading").textContent = `${papers.length} paper${papers.length === 1 ? "" : "s"} found`;
-            document.getElementById("emptyState").classList.toggle("hidden", papers.length !== 0);
+            document.getElementById("resultsHeading").textContent = `${allSubjects.length} total subject${allSubjects.length === 1 ? "" : "s"}`;
+            document.getElementById("resultsHeadingSecondary").textContent = `${subjects.length} subject${subjects.length === 1 ? "" : "s"} found`;
+            document.getElementById("resultsSubheading").textContent = "Live Maths Genie subject routes across qualifications, boards and subject groups.";
+            document.getElementById("emptyState").classList.toggle("hidden", subjects.length !== 0);
             activeFilterPills();
 
-            const grouped = papers.reduce((acc, paper) => {
-                const key = `${paper.subject} | ${paper.examBoard} | ${paper.year}`;
+            const grouped = subjects.reduce((acc, subject) => {
+                const key = `${subject.qualification} | ${subject.group}`;
                 if (!acc[key]) acc[key] = [];
-                acc[key].push(paper);
+                acc[key].push({
+                    title: subject.subject,
+                    description: `${subject.qualification} / ${subject.board}`,
+                    shortLabel: subject.isPopular ? "Popular" : "Listed",
+                    group: subject.group,
+                    board: subject.board,
+                    tags: [subject.qualification, subject.group, subject.board].filter(Boolean),
+                    papersUrl: subject.papersUrl,
+                    subjectUrl: subject.href,
+                    sourcePageUrl: "https://www.mathsgenie.co.uk/subjects"
+                });
                 return acc;
             }, {});
 
             document.getElementById("results").innerHTML = Object.entries(grouped).map(([group, items]) => {
-                const [subject, board, year] = group.split(" | ");
-                return `
-                    <section class="year-band">
-                        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
-                            <div>
-                                <h3 class="text-xl font-black text-slate-950">${subject}</h3>
-                                <p class="text-sm text-slate-500 font-body">${board} / ${year}</p>
-                            </div>
-                            <span class="status-pill">${items.length} resource${items.length === 1 ? "" : "s"}</span>
-                        </div>
-                        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-                            ${items.map((paper) => {
-                                const resources = paper.resources || {};
-                                const questionPaperUrl = resourceUrl(resources.paperPdfUrl || resources.pdfUrl || resources.questionPaper);
-                                const markSchemeUrl = resourceUrl(resources.markSchemePdfUrl || resources.markScheme);
-                                const reportUrl = resourceUrl(resources.examinerReportPdfUrl || resources.examinerReport);
-                                const opensExternally = shouldOpenExternally(paper);
-
-                                return `
-                                <article class="paper-card rounded-2xl p-5">
-                                    <div class="flex items-start justify-between gap-4 mb-4">
-                                        <div>
-                                            <p class="text-xs uppercase tracking-widest font-black text-blue-700">A-Level / ${paper.series}</p>
-                                            <h4 class="text-lg font-black text-slate-950 mt-1">${paper.paper}</h4>
-                                            <p class="text-sm text-slate-500 font-body mt-1">${paper.qualification}</p>
-                                        </div>
-                                        <span class="status-pill">${paper.series}</span>
-                                    </div>
-                                    <div class="flex flex-wrap gap-2">
-                                        ${resourceButton("Question paper", opensExternally ? questionPaperUrl : `/past_papers/viewer.html?id=${encodeURIComponent(paper.id)}`, "fa-file-lines", "blue", true, opensExternally)}
-                                        ${resourceButton("Mark scheme", opensExternally ? markSchemeUrl : `/past_papers/viewer.html?id=${encodeURIComponent(paper.id)}&tab=markScheme`, "fa-check-double", "slate", true, opensExternally)}
-                                        ${resourceButton("Report", reportUrl, "fa-chart-simple", "violet", false, opensExternally && !!reportUrl)}
-                                    </div>
-                                </article>
-                            `;
-                            }).join("")}
-                        </div>
-                    </section>
-                `;
+                const [qualification, subjectGroup] = group.split(" | ");
+                return renderSection(subjectGroup, qualification, items);
             }).join("");
         }
 
@@ -504,33 +537,29 @@
             renderResults();
         }
 
-        async function loadPapers() {
+        async function loadSubjects() {
             try {
                 const response = await fetch(DATA_URL);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
-                allPapers = Array.isArray(data.papers) ? data.papers : [];
+                allSubjects = Array.isArray(data.subjects) ? data.subjects : [];
                 updateView();
             } catch (error) {
-                document.getElementById("resultsHeading").textContent = "Paper data could not load";
-                document.getElementById("results").innerHTML = `
-                    <div class="paper-shell rounded-3xl p-8 text-center">
-                        <h3 class="text-2xl font-black text-slate-950">Paper list could not load</h3>
-                        <p class="text-slate-500 font-body mt-2">Refresh the page or try again through the live site.</p>
-                    </div>
-                `;
                 console.error(error);
+                document.getElementById("resultsHeading").textContent = "Directory unavailable";
+                document.getElementById("resultsHeadingSecondary").textContent = "Directory unavailable";
+                document.getElementById("resultsSubheading").textContent = "The local subject JSON could not be read.";
+                document.getElementById("results").innerHTML = "";
+                document.getElementById("emptyState").innerHTML = `
+                    <div class="mx-auto w-14 h-14 rounded-2xl bg-slate-100 text-slate-500 flex items-center justify-center text-xl mb-4">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-950">Subject directory could not load.</h3>
+                    <p class="text-slate-500 font-body mt-2">Refresh the page or check the local JSON file in this folder.</p>
+                `;
+                document.getElementById("emptyState").classList.remove("hidden");
             }
         }
-
-        function getExamCycleYear(date = new Date()) {
-            const year = date.getFullYear();
-            return date.getMonth() >= 6 ? year + 1 : year;
-        }
-
-        document.querySelectorAll("[data-exam-cycle]").forEach((el) => {
-            el.textContent = getExamCycleYear();
-        });
 
         document.addEventListener("click", (event) => {
             const link = event.target.closest("[data-external-warning='true']");
@@ -555,7 +584,7 @@
             updateView();
         });
 
-        loadPapers();
+        loadSubjects();
     </script>
 </body>
 </html>

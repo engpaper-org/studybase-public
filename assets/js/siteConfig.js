@@ -298,6 +298,14 @@
   const root = document.documentElement;
   root.classList.add("sb-config-loading");
 
+  if (!document.querySelector('script[data-studybase-endpoint-popup="true"]')) {
+    const endpointPopupScript = document.createElement("script");
+    endpointPopupScript.src = "/assets/js/studybaseEndpointPopup.js";
+    endpointPopupScript.async = false;
+    endpointPopupScript.dataset.studybaseEndpointPopup = "true";
+    document.head.appendChild(endpointPopupScript);
+  }
+
   if (!document.getElementById("sb-config-loading-style")) {
     const style = document.createElement("style");
     style.id = "sb-config-loading-style";

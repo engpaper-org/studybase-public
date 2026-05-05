@@ -44,6 +44,7 @@
   let bannedLoaded = false;
   let suppressNextCheck = false;
   let modalOpen = false;
+  let firstTypeWarningShown = false;
 
   function log(...args) {
     if (DEBUG) console.log("[TtsGuard]", ...args);
@@ -423,6 +424,103 @@
     });
   }
 
+  function ensureFirstTypeModal() {
+    if (document.getElementById("sb-tts-first-type-modal")) return;
+
+    const root = document.createElement("div");
+    root.innerHTML = `
+      <div id="sb-tts-first-type-backdrop"
+           class="fixed inset-0 z-[9996] hidden bg-slate-950/70 backdrop-blur-md"></div>
+
+      <div id="sb-tts-first-type-modal"
+           class="fixed inset-0 z-[9997] hidden items-center justify-center p-4">
+        <div role="dialog"
+             aria-modal="true"
+             aria-labelledby="sb-tts-first-type-title"
+             class="w-full max-w-xl overflow-hidden rounded-[2rem] border border-slate-200 bg-white text-slate-950 shadow-2xl shadow-slate-950/20">
+          <div class="h-1.5 bg-gradient-to-r from-sky-500 via-cyan-400 to-emerald-300"></div>
+
+          <div class="p-6 sm:p-7">
+            <div class="flex items-start justify-between gap-5">
+              <div class="flex items-start gap-4">
+                <div class="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-3xl bg-sky-50 ring-1 ring-sky-100">
+                  <div class="absolute inset-1 rounded-[1.25rem] bg-gradient-to-br from-sky-100 to-cyan-50"></div>
+                  <svg class="relative h-9 w-9 text-sky-600 drop-shadow-sm" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                    <path d="M24 6c8.8 0 16 7.2 16 16 0 11.3-14.1 19.1-15.1 19.7a1.9 1.9 0 0 1-1.8 0C22.1 41.1 8 33.3 8 22 8 13.2 15.2 6 24 6Z" fill="currentColor" opacity=".95"/>
+                    <path d="M24 16.5v9" stroke="#eff6ff" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M24 30.5h.01" stroke="#eff6ff" stroke-width="4.5" stroke-linecap="round"/>
+                  </svg>
+                </div>
+
+                <div>
+                  <p class="text-xs font-extrabold uppercase tracking-[0.24em] text-sky-600">
+                    Monitoring notice
+                  </p>
+                  <h2 id="sb-tts-first-type-title" class="mt-2 text-2xl font-black tracking-tight text-slate-950">
+                    Text boxes are monitored
+                  </h2>
+                  <p class="mt-3 text-sm font-semibold leading-6 text-slate-600">
+                    Smoothwall monitors all text boxes on this site. Anything inappropriate may be flagged and you may be punished.
+                  </p>
+                </div>
+              </div>
+
+              <button id="sb-tts-first-type-close"
+                      type="button"
+                      class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 text-xl leading-none text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+                      aria-label="Close">
+                &times;
+              </button>
+            </div>
+
+            <div class="mt-6 rounded-3xl border border-sky-200 bg-sky-50 p-4">
+              <p class="text-sm font-extrabold text-sky-900">
+                Keep your message appropriate before continuing.
+              </p>
+              <p class="mt-1 text-sm font-semibold leading-6 text-sky-900/80">
+                You will only see this reminder once, unless you refresh the page.
+              </p>
+            </div>
+
+            <div class="mt-6 flex justify-end gap-3">
+              <button id="sb-tts-first-type-ok"
+                      type="button"
+                      class="inline-flex items-center justify-center rounded-2xl bg-slate-950 px-5 py-3 text-sm font-extrabold text-white shadow-lg shadow-slate-950/15 transition hover:-translate-y-0.5 hover:bg-sky-700">
+                I understand
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(root);
+
+    const modal = document.getElementById("sb-tts-first-type-modal");
+    const backdrop = document.getElementById("sb-tts-first-type-backdrop");
+    const closeBtn = document.getElementById("sb-tts-first-type-close");
+    const okBtn = document.getElementById("sb-tts-first-type-ok");
+
+    const hide = () => {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      backdrop.classList.add("hidden");
+      document.documentElement.classList.remove("overflow-hidden");
+      document.body.classList.remove("overflow-hidden");
+      modalOpen = false;
+    };
+
+    closeBtn?.addEventListener("click", hide);
+    okBtn?.addEventListener("click", hide);
+    backdrop?.addEventListener("click", hide);
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !modal.classList.contains("hidden")) {
+        hide();
+      }
+    });
+  }
+
   function showWarningModal(match) {
     ensureModal();
 
@@ -457,6 +555,23 @@
         changeBox.classList.add("hidden");
       }
     }
+
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    backdrop.classList.remove("hidden");
+    document.documentElement.classList.add("overflow-hidden");
+    document.body.classList.add("overflow-hidden");
+    modalOpen = true;
+  }
+
+  function showFirstTypeWarning() {
+    if (firstTypeWarningShown) return;
+
+    firstTypeWarningShown = true;
+    ensureFirstTypeModal();
+
+    const modal = document.getElementById("sb-tts-first-type-modal");
+    const backdrop = document.getElementById("sb-tts-first-type-backdrop");
 
     modal.classList.remove("hidden");
     modal.classList.add("flex");
@@ -502,6 +617,7 @@
 
   function attachGuards(input, button) {
     input.addEventListener("input", () => {
+      showFirstTypeWarning();
       checkInput(input);
     }, true);
 
