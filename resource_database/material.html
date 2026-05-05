@@ -855,10 +855,14 @@ const SUBJECTS = Object.entries(SUBJECT_LINKS).map(([title, value]) => ({
 function getIframeUrlWithMainParams(rawUrl) {
     const iframeUrl = new URL(rawUrl, window.location.origin);
     const mainParams = new URLSearchParams(window.location.search);
-
+    const localDeviceCode = (localStorage.getItem("gh_device") || "").trim();
 
     for (const [key, value] of mainParams.entries()) {
         iframeUrl.searchParams.set(key, value);
+    }
+
+    if (!iframeUrl.searchParams.get("deviceCode") && localDeviceCode) {
+        iframeUrl.searchParams.set("deviceCode", localDeviceCode);
     }
 
     return iframeUrl.toString();

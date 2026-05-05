@@ -1353,7 +1353,15 @@
     const grid = document.getElementById("resource-grid");
     if (!frame || !section || !grid) return;
 
-    const url = `${RESOURCE_MATERIAL_PAGE}?material-ID=${encodeURIComponent(encodedMaterialId)}&embedded=1${RESOURCE_EMBEDDED_HASH}`;
+    const deviceCode = (localStorage.getItem("gh_device") || "").trim();
+    const materialUrl = new URL(RESOURCE_MATERIAL_PAGE, window.location.origin);
+    materialUrl.searchParams.set("material-ID", encodedMaterialId);
+    materialUrl.searchParams.set("embedded", "1");
+    if (deviceCode) {
+      materialUrl.searchParams.set("deviceCode", deviceCode);
+    }
+    materialUrl.hash = RESOURCE_EMBEDDED_HASH.replace(/^#/, "");
+    const url = materialUrl.toString();
     embeddedMaterialState = {
       open: true,
       src: url,
