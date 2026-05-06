@@ -709,37 +709,14 @@
     const fragment = document.createDocumentFragment();
 
     favourites.forEach((item, index) => {
-      let displayName = item.name;
-      let verifiedHtml = "";
-      let isPopular = false;
-      let isRising = false;
-      let isBeta = false;
-      let isOriginal = false;
-
-      if (displayName.includes("-v-")) {
-        displayName = displayName.replace("-v-", "");
-        verifiedHtml = ` <i class="fas fa-check-circle text-blue-500 ml-1" title="Verified Resource"></i>`;
-      }
-
-      if (displayName.includes("-p-")) {
-        displayName = displayName.replace("-p-", "");
-        isPopular = true;
-      }
-
-      if (displayName.includes("-r-")) {
-        displayName = displayName.replace("-r-", "");
-        isRising = true;
-      }
-
-      if (displayName.includes("-b-")) {
-        displayName = displayName.replace("-b-", "");
-        isBeta = true;
-      }
-
-      if (displayName.includes("-o-")) {
-        displayName = displayName.replace("-o-", "");
-        isOriginal = true;
-      }
+      const {
+        displayName,
+        verifiedHtml,
+        isPopular,
+        isRising,
+        isBeta,
+        isOriginal
+      } = getResourceDisplayMeta(item.name);
 
       let imageUrl = item.iconurl;
       let tagHtml = `
@@ -1055,6 +1032,54 @@
         </h3>
       </div>
     `;
+  }
+
+  function getResourceDisplayMeta(name) {
+    let displayName = String(name || "");
+    let verifiedHtml = "";
+    let isPopular = false;
+    let isRising = false;
+    let isBeta = false;
+    let isOriginal = false;
+
+    if (displayName.includes("-v-")) {
+      displayName = displayName.replace("-v-", "");
+      verifiedHtml = ` <i class="fas fa-check-circle text-blue-500 ml-1" title="Verified Resource"></i>`;
+    }
+
+    if (displayName.includes("-p-")) {
+      displayName = displayName.replace("-p-", "");
+      isPopular = true;
+    }
+
+    if (displayName.includes("-r-")) {
+      displayName = displayName.replace("-r-", "");
+      isRising = true;
+    }
+
+    if (displayName.includes("-b-")) {
+      displayName = displayName.replace("-b-", "");
+      isBeta = true;
+    }
+
+    if (displayName.includes("-o-")) {
+      displayName = displayName.replace("-o-", "");
+      isOriginal = true;
+    }
+
+    displayName = displayName
+      .replace(/\*/g, "")
+      .replace(/\s{2,}/g, " ")
+      .trim();
+
+    return {
+      displayName,
+      verifiedHtml,
+      isPopular,
+      isRising,
+      isBeta,
+      isOriginal
+    };
   }
 
   function handleImageError(img) {
@@ -1447,37 +1472,14 @@
     const fragment = document.createDocumentFragment();
 
     items.forEach((item, index) => {
-      let displayName = item.name;
-      let verifiedHtml = "";
-      let isPopular = false;
-      let isRising = false;
-      let isBeta = false;
-      let isOriginal = false;
-
-      if (displayName.includes("-v-")) {
-        displayName = displayName.replace("-v-", "");
-        verifiedHtml = ` <i class="fas fa-check-circle text-blue-500 ml-1" title="Verified Resource"></i>`;
-      }
-
-      if (displayName.includes("-p-")) {
-        displayName = displayName.replace("-p-", "");
-        isPopular = true;
-      }
-
-      if (displayName.includes("-r-")) {
-        displayName = displayName.replace("-r-", "");
-        isRising = true;
-      }
-
-      if (displayName.includes("-b-")) {
-        displayName = displayName.replace("-b-", "");
-        isBeta = true;
-      }
-
-      if (displayName.includes("-o-")) {
-        displayName = displayName.replace("-o-", "");
-        isOriginal = true;
-      }
+      const {
+        displayName,
+        verifiedHtml,
+        isPopular,
+        isRising,
+        isBeta,
+        isOriginal
+      } = getResourceDisplayMeta(item.name);
 
       let imageUrl = item.iconurl;
       let tagHtml = "";
@@ -1639,6 +1641,7 @@
   function stripResourceDecorators(name) {
     return String(name || "")
       .replace(/-[A-Za-z]-/g, " ")
+      .replace(/\*/g, " ")
       .replace(/\s{2,}/g, " ")
       .trim();
   }
