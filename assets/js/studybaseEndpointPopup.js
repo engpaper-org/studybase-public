@@ -261,6 +261,35 @@
     }
   }
 
+  async function shouldIgnoreStateShutdownResponse(input, response) {
+    try {
+      const requestUrl =
+        typeof input === "string"
+          ? input
+          : input && typeof input.url === "string"
+            ? input.url
+            : "";
+
+      const parsed = new URL(requestUrl, window.location.origin);
+      if (parsed.hostname !== "api.studybase.site" && parsed.hostname !== "api.revisionbase.site") {
+        return false;
+      }
+
+      if (parsed.pathname !== "/state") return false;
+      if (!response.ok) return false;
+
+      const payload = await response.clone().json();
+      return Boolean(
+        payload &&
+        payload.ok === true &&
+        payload.shutdown === true &&
+        payload.reason === "protoThree"
+      );
+    } catch (error) {
+      return false;
+    }
+  }
+
   function buildEndpointLabel(input) {
     try {
       const requestUrl =
@@ -284,6 +313,10 @@
 
     try {
       const response = await originalFetch(input, init);
+
+      if (await shouldIgnoreStateShutdownResponse(input, response)) {
+        return response;
+      }
 
       if (!response.ok) {
         const details = await getResponseDetails(response);
