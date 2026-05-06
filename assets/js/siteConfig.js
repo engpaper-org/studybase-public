@@ -13,8 +13,8 @@
       site: "https://revisionbase.site",
       eSite: "https://e.revisionbase.site",
       home: "/index.html",
-      privacy: "/legal/index.html",
-      terms: "/legal/index.html"
+      privacy: "/legal/index.html#privacy",
+      terms: "/legal/index.html#terms"
     },
     icons: {
       favicon: "/assets/siteIcons/main.ico",

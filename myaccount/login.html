@@ -2095,9 +2095,12 @@
   }
 
   function openLegal(e) {
-    e.preventDefault();
-    window.open("legal.html", "_blank");
-  }
+      e.preventDefault();
+      const target = e.currentTarget && e.currentTarget.id === "privacyLinkTerms"
+        ? "/legal/index.html#terms"
+        : "/legal/index.html#privacy";
+      window.open(target, "_blank");
+    }
 
   function normalizeDeviceCode(value) {
     return (value || "")

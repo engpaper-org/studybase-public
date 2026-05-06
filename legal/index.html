@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    
     <meta charset="UTF-8">
-        <script src="/assets/js/siteConfig.js"></script>
-<script>
+    <script src="/assets/js/siteConfig.js"></script>
+    <script>
         (function () {
             try {
                 const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
@@ -14,550 +13,658 @@
     </script>
     <link rel="stylesheet" href="/assets/css/dark-mode.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RevisionBase | Master Service Agreement</title>
+    <title>StudyBase | Privacy Policy & Terms and Conditions</title>
     <link rel="icon" href="/assets/siteIcons/main.ico">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="/assets/js/navbar.js" defer></script>
     <script src="/assets/js/footer.js" defer></script>
     <script src="/assets/js/sessionManager.js" defer></script>
 
-    <!--Cookie consent banner and google analytics-->
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
 
-        // 1. Determine current state
         const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
 
-        // 2. Set default based on that state
         gtag('consent', 'default', {
-            'ad_storage': hasConsented ? 'granted' : 'denied',
-            'ad_user_data': hasConsented ? 'granted' : 'denied',
-            'ad_personalization': hasConsented ? 'granted' : 'denied',
-            'analytics_storage': hasConsented ? 'granted' : 'denied'
+            ad_storage: hasConsented ? 'granted' : 'denied',
+            ad_user_data: hasConsented ? 'granted' : 'denied',
+            ad_personalization: hasConsented ? 'granted' : 'denied',
+            analytics_storage: hasConsented ? 'granted' : 'denied'
         });
 
         gtag('js', new Date());
         gtag('config', 'G-N7LHC0S1T1');
     </script>
-
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
 
-    <script src="/assets/js/cookieConsent.js"></script>
-    <!-- End of consent and analytics -->
-
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
 
         :root {
+            --sb-ink: #0f172a;
+            --sb-muted: #475569;
+            --sb-border: #dbe4f0;
+            --sb-surface: rgba(255,255,255,0.88);
             --sb-blue: #2563eb;
-            --sb-slate: #0f172a;
-            --sb-border: #e2e8f0;
-            --sb-muted: #64748b;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 150px;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: "Inter", sans-serif;
+            color: var(--sb-ink);
             background:
-                radial-gradient(circle at top left, rgba(59,130,246,0.10), transparent 28%),
-                radial-gradient(circle at top right, rgba(168,85,247,0.08), transparent 22%),
-                linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 100%);
+                radial-gradient(circle at top left, rgba(59,130,246,0.14), transparent 24%),
+                radial-gradient(circle at top right, rgba(16,185,129,0.10), transparent 20%),
+                linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
         }
 
-        .mono {
-            font-family: 'JetBrains Mono', monospace;
+        .font-display { font-family: "Plus Jakarta Sans", sans-serif; }
+        .font-mono { font-family: "JetBrains Mono", monospace; }
+
+        .glass-panel {
+            background: var(--sb-surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(219,228,240,0.95);
+            box-shadow: 0 18px 60px rgba(15,23,42,0.08);
         }
 
-        .glass {
-            background: rgba(255,255,255,0.78);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
+        .tab-btn {
+            transition: all 0.18s ease;
         }
 
-        .legal-p {
-            margin-bottom: 1.15rem;
-            line-height: 1.85;
-            color: #475569;
-            font-size: 0.965rem;
-            text-align: justify;
+        .tab-btn.active {
+            background: #0f172a;
+            color: white;
+            box-shadow: 0 16px 36px rgba(15,23,42,0.18);
         }
 
-        .clause-card {
-            background: rgba(255,255,255,0.92);
-            border: 1px solid #e2e8f0;
+        .policy-section {
+            scroll-margin-top: 9rem;
+        }
+
+        .policy-card {
+            background: rgba(255,255,255,0.94);
+            border: 1px solid var(--sb-border);
             border-radius: 1.5rem;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
-            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(15,23,42,0.05);
         }
 
-        .clause-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
-            border-color: #cbd5e1;
-        }
-
-        .clause-header {
+        .policy-card h3 {
+            font-family: "Plus Jakarta Sans", sans-serif;
+            font-size: 1.2rem;
+            line-height: 1.2;
             font-weight: 800;
             color: #0f172a;
-            font-size: 1.22rem;
-            display: flex;
-            align-items: center;
-            gap: 0.85rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #f1f5f9;
-            margin-bottom: 1.25rem;
-            flex-wrap: wrap;
+            margin-bottom: 0.9rem;
         }
 
-        .toc-link {
-            border-left: 3px solid transparent;
-            transition: all 0.18s ease;
-            color: #64748b;
-            border-radius: 0 0.75rem 0.75rem 0;
+        .policy-card p,
+        .policy-card li {
+            color: var(--sb-muted);
+            line-height: 1.75;
+            font-size: 0.97rem;
         }
 
-        .toc-link:hover {
-            color: #0f172a;
-            background: rgba(241,245,249,0.9);
+        .policy-card ul {
+            margin-top: 0.9rem;
+            padding-left: 1.15rem;
         }
 
-        .toc-link.active {
-            color: #2563eb;
-            background-color: #eff6ff;
-            border-left: 3px solid #2563eb;
-            font-weight: 700;
+        .policy-card li + li {
+            margin-top: 0.5rem;
         }
 
-        .tech-badge {
-            font-family: 'JetBrains Mono', monospace;
+        .mini-kicker {
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
             font-size: 0.68rem;
-            padding: 4px 8px;
-            border-radius: 999px;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-            border: 1px solid transparent;
-            line-height: 1;
+            font-weight: 800;
         }
 
-        .badge-red { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
-        .badge-blue { background: #eff6ff; color: #2563eb; border-color: #dbeafe; }
-        .badge-amber { background: #fffbeb; color: #d97706; border-color: #fde68a; }
-        .badge-purple { background: #faf5ff; color: #9333ea; border-color: #e9d5ff; }
-        .badge-green { background: #f0fdf4; color: #16a34a; border-color: #bbf7d0; }
-        .badge-slate { background: #f8fafc; color: #334155; border-color: #cbd5e1; }
-
-        .section-warning {
-            border-color: #fecaca !important;
-            box-shadow: 0 8px 30px rgba(220, 38, 38, 0.05);
+        .nav-link.active {
+            color: #0f172a;
+            background: #eff6ff;
+            border-color: #bfdbfe;
         }
 
-        .section-info {
-            border-left: 5px solid #2563eb;
-            background: linear-gradient(to bottom right, rgba(239,246,255,0.55), rgba(255,255,255,0.96));
+        .warning-card {
+            border-color: #fecaca;
+            background: linear-gradient(180deg, rgba(254,242,242,0.78), rgba(255,255,255,0.95));
         }
 
-        .section-mono {
+        .mono-card {
             background: #0f172a;
-            color: #cbd5e1;
-            padding: 1.25rem;
-            border-radius: 1rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.78rem;
-            line-height: 1.8;
-            white-space: normal;
-            text-align: left;
+            border-color: #1e293b;
         }
 
-        .hero-panel {
-            background:
-                linear-gradient(135deg, rgba(255,255,255,0.82), rgba(255,255,255,0.62)),
-                radial-gradient(circle at top right, rgba(37,99,235,0.12), transparent 26%);
-            border: 1px solid rgba(226,232,240,0.95);
-            box-shadow: 0 10px 40px rgba(15,23,42,0.06);
-        }
-
-        .loading-shimmer {
-            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 37%, #f1f5f9 63%);
-            background-size: 400% 100%;
-            animation: shimmer 1.4s ease infinite;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: 100% 0; }
-            100% { background-position: -100% 0; }
-        }
-
-        .modal-shell {
-            box-shadow: 0 30px 100px rgba(0,0,0,0.25);
-        }
-
-        .contact-iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: white;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.22s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+        .mono-card p,
+        .mono-card li,
+        .mono-card h3 {
+            color: #d7e1ef;
+            font-family: "JetBrains Mono", monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.01em;
         }
 
         @media (max-width: 1024px) {
-            .clause-card {
-                padding: 1.4rem;
-            }
-
-            .clause-header {
-                font-size: 1.08rem;
+            .policy-card {
+                padding: 1.2rem;
             }
         }
     </style>
 </head>
+<body class="text-slate-900 antialiased">
+    <div class="fixed inset-x-0 top-0 h-72 pointer-events-none bg-gradient-to-b from-blue-100/60 to-transparent z-0"></div>
 
-<body class="text-slate-800 antialiased">
-    <div class="fixed inset-x-0 top-0 h-72 pointer-events-none bg-gradient-to-b from-blue-100/50 via-transparent to-transparent z-0"></div>
-
-    <header class="relative z-20 pt-32 pb-8">
-    
+    <header class="relative z-10 pt-32 pb-8">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="hero-panel glass rounded-[2rem] p-8 md:p-10">
-                <div class="flex flex-col xl:flex-row justify-between gap-8 xl:items-end">
+            <div class="glass-panel rounded-[2rem] p-8 md:p-10">
+                <div class="flex flex-col xl:flex-row gap-8 xl:items-end xl:justify-between">
                     <div class="max-w-3xl">
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-200 bg-blue-50 text-blue-700 text-xs font-bold mb-5">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 mini-kicker mb-5">
                             <span class="w-2 h-2 rounded-full bg-blue-600"></span>
-                            LEGAL CENTRE
+                            Legal Centre
                         </div>
-
-                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-none mb-5">
-                            Master Service Agreement
+                        <h1 class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-none text-slate-950">
+                            Privacy Policy and Terms & Conditions for StudyBase.
                         </h1>
-
-                        <p class="text-slate-600 text-sm md:text-base leading-relaxed max-w-2xl">
-                            This page contains the current legal terms governing use of RevisionBase, including service terms,
-                            privacy disclosures, storage technology notices, moderation rules, and platform responsibility terms.
+                        <p class="mt-5 max-w-2xl text-slate-600 text-sm md:text-base leading-relaxed">
+                            This legal centre explains how StudyBase handles privacy, browser storage, analytics, reporting,
+                            security checks, account and resource access, third-party content, acceptable use, and liability.
+                            It is the main customer-facing legal notice for the service.
                         </p>
-
-                        <div class="mt-6 flex flex-wrap items-center gap-3">
-                            <div class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700">
-                                <span class="mono text-slate-500">ACTIVE VERSION</span>
-                                <span id="rev-display" class="mono text-slate-900">REV: LOADING...</span>
-                            </div>
-
-                            <div class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/80 border border-slate-200 text-xs font-semibold text-slate-700">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                LIVE DOCUMENT RENDER
-                            </div>
-                        </div>
                     </div>
 
-                    <div class="w-full xl:w-auto flex flex-col sm:flex-row gap-3">
-                        <div class="rounded-2xl bg-white/80 border border-slate-200 shadow-sm px-4 py-3">
-                            <label for="version-selector" class="block text-[11px] uppercase tracking-wide font-bold text-slate-500 mb-2">
-                                Agreement Version
-                            </label>
-                            <select id="version-selector" onchange="loadVersion(this.value)"
-                                class="bg-slate-50 border border-slate-200 text-sm font-semibold rounded-xl px-3 py-2.5 min-w-[280px] text-slate-800 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500">
-                                <option value="msav4">v2.0 (Current - 14 Mar 2026)</option>
-                                <option value="msav3">v1.2 (Archived - 3 Mar 2026)</option>
-                                <option value="msav2">v1.1 (Archived - 1 Mar 2026)</option>
-                                <option value="msav1">v1.0 (Archived - Feb 2026)</option>
-                                <option value="msav0">v0.0 (Archived - Feb 2026)</option>
-                            </select>
-                        </div>
-
-                        <button onclick="openContactModal()"
-                            class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-slate-900 text-white font-semibold text-sm hover:bg-slate-800 transition-all shadow-sm border border-slate-900">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-                            </svg>
-                            Contact Us
-                        </button>
+                    <div class="glass-panel rounded-[1.5rem] p-4 md:p-5 bg-white/80 border border-slate-200 min-w-[18rem]">
+                        <p class="mini-kicker text-slate-500 mb-2">Current version</p>
+                        <p class="font-mono text-sm font-bold text-slate-900">LEGAL-2026.05</p>
+                        <p class="text-sm text-slate-500 mt-2">Last updated: 6 May 2026</p>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="relative z-10 max-w-7xl mx-auto px-6 pb-16 grid grid-cols-1 lg:grid-cols-12 gap-10">
-        <aside class="hidden lg:block lg:col-span-3">
-            <div class="sticky top-36">
-                <div class="glass rounded-[1.5rem] border border-slate-200 p-5 shadow-sm">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-sm font-black text-slate-900 tracking-tight">Contents</h2>
-                        <span class="mono text-[10px] text-slate-400">NAV</span>
+    <main class="relative z-10 max-w-7xl mx-auto px-6 pb-16 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <aside class="lg:col-span-3">
+            <div class="lg:sticky lg:top-32 space-y-4">
+                <div class="glass-panel rounded-[1.5rem] p-4">
+                    <div class="flex gap-2">
+                        <button id="tab-privacy" type="button" class="tab-btn active flex-1 rounded-2xl px-4 py-3 text-sm font-bold border border-slate-200 bg-white text-slate-900">
+                            Privacy Policy
+                        </button>
+                        <button id="tab-terms" type="button" class="tab-btn flex-1 rounded-2xl px-4 py-3 text-sm font-bold border border-slate-200 bg-white text-slate-900">
+                            Terms & Conditions
+                        </button>
                     </div>
-                    <nav id="dynamic-toc" class="space-y-1 border-l border-slate-200 ml-1 pr-1 max-h-[70vh] overflow-auto"></nav>
+                </div>
+
+                <div class="glass-panel rounded-[1.5rem] p-4">
+                    <p class="mini-kicker text-slate-500 mb-3">On this page</p>
+                    <nav id="privacy-nav" class="flex flex-col gap-2 text-sm">
+                        <a href="#privacy" data-nav-target="privacy" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Privacy overview</a>
+                        <a href="#privacy-data" data-nav-target="privacy-data" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Storage and device data</a>
+                        <a href="#privacy-logins" data-nav-target="privacy-logins" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Login and account data</a>
+                        <a href="#privacy-third-parties" data-nav-target="privacy-third-parties" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Third parties</a>
+                        <a href="#privacy-rights" data-nav-target="privacy-rights" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Rights and choices</a>
+                    </nav>
+                    <nav id="terms-nav" class="hidden flex-col gap-2 text-sm">
+                        <a href="#terms" data-nav-target="terms" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Terms overview</a>
+                        <a href="#terms-acceptable-use" data-nav-target="terms-acceptable-use" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Acceptable use</a>
+                        <a href="#terms-third-party-risk" data-nav-target="terms-third-party-risk" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Third-party risk</a>
+                        <a href="#terms-liability" data-nav-target="terms-liability" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Liability</a>
+                        <a href="#terms-law" data-nav-target="terms-law" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Law and jurisdiction</a>
+                    </nav>
                 </div>
             </div>
         </aside>
 
-        <section class="col-span-1 lg:col-span-9">
-            <div id="legal-content" class="min-h-[50vh]"></div>
+        <section class="lg:col-span-9 space-y-8">
+            <section id="privacy" data-tab-panel="privacy" class="policy-section space-y-6">
+                <div class="policy-card">
+                    <p class="mini-kicker text-blue-700 mb-3">Privacy Policy</p>
+                    <h2 class="font-display text-3xl font-extrabold tracking-tight text-slate-950">Overview</h2>
+                    <p class="mt-4">
+                        This Privacy Policy applies to StudyBase as a whole, including its public pages, account areas, legal notices,
+                        support and reporting routes, resource database, embedded resource viewers, revision tools, analytics scripts,
+                        APIs, moderation systems, and connected infrastructure.
+                    </p>
+                    <p>
+                        By visiting, loading, browsing, interacting with, or continuing to use StudyBase, and where shown by pressing Agree
+                        on a consent prompt or continuing through an account or protected-resource flow, you acknowledge the privacy and
+                        data-handling practices described here.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Definitions, scope and age guidance</h3>
+                    <p>
+                        In this policy, "StudyBase", "the service", "we", "us", and "our" mean the StudyBase platform and its operator.
+                        "You" and "user" mean any person accessing or using any part of the service. The service is primarily intended
+                        for students and educational users, including GCSE and A-Level users.
+                    </p>
+                    <p>
+                        Users under 18 should use the service with permission from a parent, guardian, teacher, or other responsible adult.
+                        Users should avoid entering unnecessary personal, confidential, medical, or financial information into any free-text field
+                        unless it is clearly requested for a specific purpose.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Privacy information summary</h3>
+                    <p>
+                        StudyBase may process limited personal data and device-related information for security, access control, abuse prevention,
+                        analytics, feature operation, and user convenience. Depending on how you use the service, this may include browser information,
+                        request metadata, page URLs, material identifiers, browser-storage values, report submissions, consent events, access state,
+                        and session or membership status.
+                    </p>
+                </div>
+
+                <div id="privacy-data" class="policy-card policy-section">
+                    <h3>What StudyBase stores on your device</h3>
+                    <p>
+                        StudyBase uses local storage and, where relevant, session storage to remember consent, appearance settings, account and
+                        device identifiers, session-expiry values, search and usage preferences, saved favourites, recent actions, wellbeing timing,
+                        paper or subject choices, and safety toggles.
+                    </p>
+                    <ul>
+                        <li>Consent records may include `site_consent_granted` and a generated `consent_uid`.</li>
+                        <li>Account-related storage may include username, password-like values, and device values used to request protected resources.</li>
+                        <li>Preference storage may include dark mode, search-history saving, recent-history saving, quick-login, and content-warning settings.</li>
+                        <li>Activity storage may include active time, break reminders, favourites, recent resource behaviour, and idle-unload state.</li>
+                    </ul>
+                    <p>
+                        These values are primarily stored locally on your own device rather than in a single conventional central account database.
+                        They may remain until they expire, are overwritten, are removed by browser behaviour, or are manually cleared by you.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Technical data collected automatically</h3>
+                    <p>
+                        When you access StudyBase, certain technical information may be collected automatically by the service, its hosting or infrastructure
+                        providers, or integrated scripts. This can include IP-related request data, browser type, user agent, approximate device type,
+                        referring page, request timing, viewed page URL, and similar diagnostic or security-related information.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Data you submit directly</h3>
+                    <p>
+                        If StudyBase provides report forms, support inputs, account-related forms, display-name fields, search fields, override inputs,
+                        or similar user-controlled text areas, information you choose to type there may be processed for the purpose of operating that feature.
+                        This can include display names, report reasons, support messages, search terms, manually entered codes, and other content you voluntarily submit.
+                    </p>
+                </div>
+
+                <div id="privacy-logins" class="policy-card policy-section">
+                    <h3>Login, account, webhook and Apps Script data flows</h3>
+                    <p>
+                        StudyBase may transmit login-related data through multiple connected systems in order to operate account access, validate sessions,
+                        record login history, support abuse review, and maintain service administration.
+                    </p>
+                    <ul>
+                        <li>Discord webhooks may be used to transmit login-related data and associated context for operational handling, alerts, logging, or internal review.</li>
+                        <li>Google Apps Script endpoints may be used to transmit login-related data, store login-history records, and store anonymous or pseudonymous resource-usage records.</li>
+                        <li>Where Google Forms are used for contact, report, support, or other submission flows, submitted information may be forwarded into Google Apps Script processing or connected storage flows.</li>
+                    </ul>
+                    <p>
+                        Depending on the feature, this information may include usernames, device identifiers, login timestamps, page context, browser or request metadata,
+                        submitted form content, resource identifiers, and other operational context required for service administration, support, integrity, or review.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>What StudyBase sends to its own services</h3>
+                    <p>
+                        StudyBase pages call platform endpoints for configuration, account or session status, resource listings, protected resource access,
+                        top-card content, state checks, reports, updates, and alerts. Depending on the page and feature used, requests may include your account
+                        username, stored password-like value, device code, requested material identifier, Turnstile token, current page URL, search text,
+                        or similar information needed for that feature to work.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Consent, cookies and similar technologies</h3>
+                    <p>
+                        StudyBase uses browser storage technologies including local storage and similar browser-side access mechanisms. For transparency,
+                        these should be treated in a similar way to cookies where applicable. StudyBase may also use scripts, tags, and consent-controlled
+                        analytics settings to manage functionality, permissions, and service measurement.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Consent status and consent logging</h3>
+                    <p>
+                        StudyBase may store a consent state on your device, including a flag indicating that consent has been granted, together with a locally
+                        generated consent identifier for repeat recognition and compliance logging. When consent is accepted, StudyBase may also transmit limited
+                        consent-related information such as a pseudonymous consent identifier, the current page URL, and browser user-agent information to a
+                        third-party logging endpoint for audit or compliance purposes.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Analytics, consent mode and measurement</h3>
+                    <p>
+                        StudyBase uses Google Analytics with consent mode. Before consent, analytics-related storage is set to denied. After you press Agree,
+                        StudyBase may update Google consent settings, enable analytics storage, and send page and usage data through Google tags.
+                    </p>
+                    <ul>
+                        <li>The consent log may send a generated user ID, a consent marker, the current page URL, and your browser user agent.</li>
+                        <li>Material analytics may send a material identifier from the page query string to a Google Apps Script endpoint.</li>
+                        <li>Google services operate under their own terms and privacy policies as well as this legal notice.</li>
+                    </ul>
+                </div>
+
+                <div id="privacy-third-parties" class="policy-card policy-section">
+                    <h3>Third parties and external services used by StudyBase</h3>
+                    <p>
+                        StudyBase may rely on third-party providers for analytics, logging, CDN delivery, scripts, consent-related functionality,
+                        security checks, hosting, forms, fonts, serverless functions, and access infrastructure.
+                    </p>
+                    <ul>
+                        <li>Google services may be used for analytics, consent logging, resource analytics, and embedded forms.</li>
+                        <li>Google Apps Script may be used for login-related transmission, identifiable login-history storage, consent logging, and anonymous or pseudonymous resource-usage storage.</li>
+                        <li>Google Forms may be used to collect user-submitted information before forwarding or connecting that information to Apps Script processing flows.</li>
+                        <li>Cloudflare Turnstile may be used on protected flows to verify requests and reduce abuse.</li>
+                        <li>Cloudflare and related infrastructure may route, secure, filter, cache, proxy, or otherwise process traffic between you and StudyBase services.</li>
+                        <li>Discord webhooks may be used for internal operational transmission of login-related or abuse-review-related information.</li>
+                        <li>CDN-hosted libraries, fonts, and external assets may receive standard browser request data when loaded.</li>
+                        <li>Embedded or linked third-party resources remain outside StudyBase's direct control.</li>
+                    </ul>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Embedded content, redirects and external destinations</h3>
+                    <p>
+                        Some StudyBase features open external pages in a new tab, redirect you to another domain, or embed a destination inside a viewer frame.
+                        When that happens, the destination site may process your IP address, browser metadata, referrer information, page activity,
+                        and anything you submit there. StudyBase does not control the privacy practices, cookies, account systems, moderation rules,
+                        or security posture of those external services.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Search safety, moderation and automated filtering</h3>
+                    <p>
+                        StudyBase may use automated search-safety and text-filtering systems. In the current implementation, search input may be normalised,
+                        hashed, compared against locally loaded blocked references, and actioned automatically where a match is detected. The service may store
+                        local violation counts, display warnings, disable search after repeated violations, and allow limited local override behaviour in some cases.
+                    </p>
+                    <p>
+                        These systems are automated and may produce false positives or false negatives. They are provided on a best-efforts basis only.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Reports, moderation and anti-abuse processing</h3>
+                    <p>
+                        StudyBase may process report submissions, moderation-related information, timestamps, page context, session or device context,
+                        and technical request data for moderation, anti-spam, abuse prevention, integrity protection, and internal review. Users must not
+                        submit false reports, malicious payloads, exploit strings, or spam through these routes.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Children, school use and institution networks</h3>
+                    <p>
+                        StudyBase may be accessed on school, college, employer, library, home, or otherwise monitored networks. Those institutions or providers
+                        may separately monitor traffic, browsing, DNS requests, filtering events, or device activity. StudyBase is not responsible for third-party
+                        monitoring carried out by your institution, employer, parent, ISP, or device manager.
+                    </p>
+                </div>
+
+                <div id="privacy-rights" class="policy-card policy-section">
+                    <h3>User rights and choices</h3>
+                    <p>
+                        Where applicable under UK data protection law, you may have rights relating to access, correction, erasure, restriction, objection,
+                        and similar privacy rights in relation to personal data processed by or for StudyBase. Because StudyBase uses substantial client-side
+                        storage, many values are directly viewable or removable by you in your own browser settings.
+                    </p>
+                    <p>
+                        If you clear site storage, switch browser, use private browsing, reset the device, or block scripts, some features may stop working or may reset,
+                        including consent state, account state, recent history, personalisation, and access continuity. If you do not agree with this Privacy Policy,
+                        you should not continue to use StudyBase.
+                    </p>
+                </div>
+            </section>
+
+            <section id="terms" data-tab-panel="terms" class="policy-section space-y-6 hidden">
+                <div class="policy-card">
+                    <p class="mini-kicker text-slate-700 mb-3">Terms & Conditions</p>
+                    <h2 class="font-display text-3xl font-extrabold tracking-tight text-slate-950">Overview</h2>
+                    <p class="mt-4">
+                        These Terms & Conditions govern your use of StudyBase, including its public pages, accounts, support and report flows,
+                        resource database, protected resource viewer, paper finder, toolkit features, safety tools, redirects, embedded content,
+                        and any other StudyBase-hosted or StudyBase-linked experience.
+                    </p>
+                    <p>
+                        StudyBase is provided primarily as a revision, study-support, and educational resource platform. Some features may include
+                        interactive media, embedded content, or convenience tools, but educational support remains the main stated purpose of the service.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Acceptance and continued use</h3>
+                    <p>
+                        By accessing, loading, browsing, interacting with, or continuing to use StudyBase, you acknowledge that you have read and accepted
+                        these terms. Where StudyBase presents a consent prompt, overlay, warning, or acceptance mechanism, continued access may be conditional
+                        on affirmative acceptance.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Educational purpose and no academic guarantee</h3>
+                    <p>
+                        StudyBase is designed primarily as a revision, study-support, and educational resource service. It does not promise or guarantee grades,
+                        exam performance, educational outcomes, admissions, or career results.
+                    </p>
+                </div>
+
+                <div id="terms-acceptable-use" class="policy-card policy-section">
+                    <h3>Acceptable use</h3>
+                    <ul>
+                        <li>You must not reverse engineer the service, scrape it at scale, overload it, test exploits against it, or send malicious payloads.</li>
+                        <li>You must not tamper with client-side logic to bypass restrictions or interfere with analytics, consent, security, or moderation systems.</li>
+                        <li>You must not attempt unauthorised access to restricted resources or use the service to facilitate harassment, abuse, or unlawful conduct.</li>
+                        <li>You remain responsible for complying with school, college, employer, library, or network rules where you access the service.</li>
+                    </ul>
+                    <p>
+                        StudyBase may take technical or administrative action where misuse is detected or reasonably suspected, including restricting, suspending,
+                        reviewing, or permanently blocking access.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Accounts, protected resources and security checks</h3>
+                    <p>
+                        Certain materials and routes depend on stored credentials, device identifiers, local session values, access flags, redirect logic,
+                        server-side validation, and anti-bot verification. StudyBase may deny or interrupt access where credentials are missing, invalid,
+                        expired, flagged, or blocked by safety or infrastructure checks.
+                    </p>
+                </div>
+
+                <div class="policy-card warning-card">
+                    <h3>Institutional, school and workplace responsibility</h3>
+                    <p>
+                        You are solely responsible for making sure your use of StudyBase is permitted under the policies of your school, college, university,
+                        workplace, library, or any other institution or network you use. StudyBase does not represent that every institution will regard the
+                        service, embedded resources, or linked destinations as permitted, educational, or compliant with their rules.
+                    </p>
+                </div>
+
+                <div id="terms-third-party-risk" class="policy-card">
+                    <h3>Third-party content, linked resources and external materials</h3>
+                    <p>
+                        StudyBase may embed, frame, link to, or provide access to third-party applications, resources, media, websites, papers, and software
+                        that are owned, hosted, or controlled by other parties. StudyBase does not guarantee the safety, legality, quality, availability,
+                        privacy practices, or technical behaviour of third-party content.
+                    </p>
+                </div>
+
+                <div class="policy-card warning-card">
+                    <h3>Proxy-style access, embedded destinations and concealment features</h3>
+                    <p>
+                        If StudyBase offers embedded browsing, framed content, redirects, or proxy-style access, any destination reached through those features
+                        remains a third-party service. Third parties may set their own cookies, use their own analytics, store their own data, and display their
+                        own content independently of StudyBase.
+                    </p>
+                    <p>
+                        Any ghost modes, cloaks, panic buttons, alternate branding views, or similar concealment-style features are convenience tools only and
+                        are not guaranteed to evade or defeat school, employer, parental, or institutional monitoring systems.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Intellectual property and takedown position</h3>
+                    <p>
+                        Except for third-party content and third-party marks, StudyBase's own code, branding, layout, original graphics, text, and platform
+                        architecture remain the property of StudyBase or its licensors. StudyBase may also act as an index, portal, or access point to third-party
+                        resources and does not claim ownership of third-party trademarks, titles, or materials that appear through linked or embedded content.
+                    </p>
+                </div>
+
+                <div class="policy-card mono-card">
+                    <h3>No warranty, service availability and security disclaimer</h3>
+                    <p>
+                        The service is provided "as is" and "as available" without guarantees of uptime, continuity, performance,
+                        fitness for a particular purpose, non-infringement, or security.
+                    </p>
+                    <p>
+                        StudyBase does not guarantee that the service will be free from bugs, interruptions, data loss, moderation
+                        errors, filter failures, vulnerabilities, third-party outages, misconfiguration, or tracking by external sites.
+                    </p>
+                </div>
+
+                <div id="terms-liability" class="policy-card mono-card policy-section">
+                    <h3>Limitation of liability</h3>
+                    <p>
+                        To the maximum extent permitted by law, StudyBase and its operators shall not be liable for any indirect,
+                        incidental, special, consequential, exemplary, disciplinary, educational, network, or reputational loss
+                        arising from or related to use of the service.
+                    </p>
+                    <p>
+                        This includes loss arising from third-party content, institutional sanctions, session loss, client-side
+                        data loss, filter failure, moderation action, access restriction, stale links, removed resources, external
+                        tracking, network blocks, and use of the service in breach of local rules or monitoring policies.
+                    </p>
+                    <p>
+                        To the maximum extent permitted by law, StudyBase's total liability shall not exceed GBP 0.00.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Force majeure and events outside our control</h3>
+                    <p>
+                        StudyBase is not responsible for failure or delay caused by events outside reasonable control, including infrastructure outages,
+                        CDN failures, DNS issues, upstream service failures, webhook failures, browser changes, institutional filtering, regulatory action,
+                        cyber incidents, or wider network restrictions.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Changes, suspension and service updates</h3>
+                    <p>
+                        StudyBase may change, suspend, restrict, or discontinue any part of the service, and may update legal wording, scripts,
+                        flows, endpoints, resource listings, and features at any time. Continued use after an update means you accept the revised version then in force.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Severability and survival</h3>
+                    <p>
+                        If any part of these terms is found unenforceable, the remaining parts continue in full force to the maximum extent permitted by law.
+                        Clauses concerning privacy, storage technologies, acceptable use, liability, moderation, institutional responsibility,
+                        third-party content, and dispute-related matters are intended to survive suspension or discontinuation of access where applicable.
+                    </p>
+                </div>
+
+                <div id="terms-law" class="policy-card">
+                    <h3>Governing law and jurisdiction</h3>
+                    <p>
+                        These terms and the related privacy policy are intended to be governed by the laws of England and Wales. Subject to any mandatory
+                        consumer rights that cannot lawfully be excluded, the courts of England and Wales shall have exclusive jurisdiction.
+                    </p>
+                </div>
+            </section>
         </section>
     </main>
 
-    <!-- Contact Modal -->
-    <div id="contact-modal"
-         class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[999] p-3 md:p-6">
-        <div class="modal-shell fade-in relative w-[98vw] md:w-[96vw] h-[92vh] bg-white rounded-[1.75rem] shadow-2xl border border-slate-200 overflow-hidden">
-
-            <div class="h-16 border-b border-slate-200 bg-white/90 backdrop-blur-md flex items-center justify-between px-4 md:px-6">
-                <div class="flex items-center gap-3 min-w-0">
-                    <div class="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M8 10h8M8 14h5m-9 7h16a2 2 0 002-2V7a2 2 0 00-2-2h-3.172a2 2 0 01-1.414-.586l-.828-.828A2 2 0 0013.172 3h-2.344a2 2 0 00-1.414.586l-.828.828A2 2 0 017.828 5H4a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <div class="min-w-0">
-                        <h3 class="text-base md:text-lg font-black text-slate-900 truncate">RevisionBase Contact Portal</h3>
-                        <p class="text-xs md:text-sm text-slate-500 truncate">Official Google Form to contact our team</p>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-2">
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSftQIYIEKhIga3Qe7U900Qcy7HxIolvqhKe7uzTPe0-k2IZ_Q/viewform?embedded=true"
-                       target="_blank" rel="noopener"
-                       class="hidden sm:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 text-sm font-semibold hover:bg-slate-100 transition">
-                        Open in new tab
-                    </a>
-
-                    <button onclick="closeContactModal()"
-                        class="inline-flex items-center gap-2 rounded-xl bg-slate-900 text-white px-4 py-2 text-sm font-semibold hover:bg-slate-800 transition">
-                        ✕ Close
-                    </button>
-                </div>
-            </div>
-
-            <div class="relative h-[calc(92vh-4rem)] bg-slate-100">
-                <div id="contact-loading" class="absolute inset-0 flex items-center justify-center bg-white z-10">
-                    <div class="text-center px-6">
-                        <div class="w-12 h-12 mx-auto rounded-2xl border-4 border-slate-200 border-t-slate-900 animate-spin mb-4"></div>
-                        <h4 class="text-lg font-black text-slate-900">Loading contact form…</h4>
-                        <p class="text-sm text-slate-500 mt-2">If it does not appear, use “Open in new tab”.</p>
-                    </div>
-                </div>
-
-                <iframe
-                    id="contact-iframe"
-                    class="contact-iframe"
-                    src="https://docs.google.com/forms/d/e/1FAIpQLSftQIYIEKhIga3Qe7U900Qcy7HxIolvqhKe7uzTPe0-k2IZ_Q/viewform?usp=header"
-                    title="RevisionBase Contact Form"
-                    loading="lazy"
-                    referrerpolicy="strict-origin-when-cross-origin">
-                </iframe>
-            </div>
-        </div>
-    </div>
-
     <script>
-        const newest = "msav4";
+        const tabs = {
+            privacy: document.getElementById('tab-privacy'),
+            terms: document.getElementById('tab-terms')
+        };
 
-        function escapeHtml(text) {
-            return String(text ?? "")
-                .replaceAll("&", "&amp;")
-                .replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;")
-                .replaceAll('"', "&quot;")
-                .replaceAll("'", "&#039;");
+        const panels = {
+            privacy: document.querySelector('[data-tab-panel="privacy"]'),
+            terms: document.querySelector('[data-tab-panel="terms"]')
+        };
+
+        const sideNavs = {
+            privacy: document.getElementById('privacy-nav'),
+            terms: document.getElementById('terms-nav')
+        };
+
+        const navLinks = Array.from(document.querySelectorAll('[data-nav-target]'));
+
+        function setActiveNav(targetId) {
+            navLinks.forEach((link) => {
+                link.classList.toggle('active', link.dataset.navTarget === targetId);
+            });
         }
 
-        function getBadgeClass(badge) {
-            const redBadges = ["MANDATORY", "FINAL WARNING", "HIGH RISK", "ABUSE"];
-            const amberBadges = ["COMPLIANCE", "DISCLAIMER", "WARNING", "CONSENT"];
-            const purpleBadges = ["PRIVACY", "CHILDREN", "GOOGLE", "DMCA"];
-            const greenBadges = ["EDUCATION", "LIVE", "ACTIVE"];
-            const slateBadges = ["SYSTEM", "GENERAL", "FOUNDATION", "FINAL", "LEGAL"];
+        function setTab(tabName, pushHash = true) {
+            const isPrivacy = tabName !== 'terms';
 
-            if (redBadges.includes(badge)) return "badge-red";
-            if (amberBadges.includes(badge)) return "badge-amber";
-            if (purpleBadges.includes(badge)) return "badge-purple";
-            if (greenBadges.includes(badge)) return "badge-green";
-            if (slateBadges.includes(badge)) return "badge-slate";
-            return "badge-blue";
-        }
+            tabs.privacy.classList.toggle('active', isPrivacy);
+            tabs.terms.classList.toggle('active', !isPrivacy);
+            panels.privacy.classList.toggle('hidden', !isPrivacy);
+            panels.terms.classList.toggle('hidden', isPrivacy);
+            sideNavs.privacy.classList.toggle('hidden', !isPrivacy);
+            sideNavs.privacy.classList.toggle('flex', isPrivacy);
+            sideNavs.terms.classList.toggle('hidden', isPrivacy);
+            sideNavs.terms.classList.toggle('flex', !isPrivacy);
 
-        function renderLoadingState() {
-            const toc = document.getElementById('dynamic-toc');
-            const content = document.getElementById('legal-content');
+            const newHash = isPrivacy ? '#privacy' : '#terms';
+            setActiveNav(isPrivacy ? 'privacy' : 'terms');
 
-            toc.innerHTML = `
-                <div class="space-y-2">
-                    <div class="loading-shimmer h-8 rounded-xl"></div>
-                    <div class="loading-shimmer h-8 rounded-xl"></div>
-                    <div class="loading-shimmer h-8 rounded-xl"></div>
-                    <div class="loading-shimmer h-8 rounded-xl"></div>
-                    <div class="loading-shimmer h-8 rounded-xl"></div>
-                </div>
-            `;
-
-            content.innerHTML = `
-                <div class="space-y-6">
-                    <div class="clause-card">
-                        <div class="loading-shimmer h-8 rounded-xl mb-5"></div>
-                        <div class="loading-shimmer h-4 rounded mb-3"></div>
-                        <div class="loading-shimmer h-4 rounded mb-3"></div>
-                        <div class="loading-shimmer h-4 rounded mb-3"></div>
-                        <div class="loading-shimmer h-4 rounded w-3/4"></div>
-                    </div>
-                    <div class="clause-card">
-                        <div class="loading-shimmer h-8 rounded-xl mb-5"></div>
-                        <div class="loading-shimmer h-4 rounded mb-3"></div>
-                        <div class="loading-shimmer h-4 rounded mb-3"></div>
-                        <div class="loading-shimmer h-4 rounded w-5/6"></div>
-                    </div>
-                </div>
-            `;
-        }
-
-        async function loadVersion(v) {
-            renderLoadingState();
-
-            try {
-                const res = await fetch(`/assets/agreements/${v}.json`, { cache: "no-store" });
-                if (!res.ok) throw new Error(`Failed to load version: ${res.status}`);
-
-                const data = await res.json();
-
-                document.getElementById('rev-display').innerText = `REV: ${data.date} (${data.version})`;
-
-                let tocHtml = '';
-                let contentHtml = '';
-
-                data.clauses.forEach(c => {
-                    tocHtml += `
-                        <a href="#clause-${escapeHtml(c.id)}"
-                           class="toc-link block py-2.5 pl-4 pr-3 text-xs font-medium leading-relaxed">
-                           ${escapeHtml(c.title)}
-                        </a>
-                    `;
-
-                    const cardClasses = [
-                        "clause-card",
-                        c.isWarning ? "section-warning" : "",
-                        c.isLogging ? "section-info" : ""
-                    ].join(" ").trim();
-
-                    const bodyClass = c.isMonospace ? "section-mono" : "legal-p";
-                    const badgeHtml = c.badge
-                        ? `<span class="tech-badge ${getBadgeClass(c.badge)}">${escapeHtml(c.badge)}</span>`
-                        : "";
-
-                    contentHtml += `
-                        <section id="clause-${escapeHtml(c.id)}" class="${cardClasses}">
-                            <h2 class="clause-header">
-                                <span class="mono text-slate-300">${String(c.id).padStart(2, '0')}</span>
-                                <span>${escapeHtml(c.title)}</span>
-                                ${badgeHtml}
-                            </h2>
-                            <div class="${bodyClass}">${c.content ?? ""}</div>
-                        </section>
-                    `;
-                });
-
-                document.getElementById('dynamic-toc').innerHTML = tocHtml;
-                document.getElementById('legal-content').innerHTML = contentHtml;
-
-                initScrollSpy();
-                window.scrollTo({ top: 0, behavior: "smooth" });
-            } catch (err) {
-                document.getElementById('dynamic-toc').innerHTML = `
-                    <div class="rounded-2xl border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm font-medium">
-                        Failed to load contents.
-                    </div>
-                `;
-
-                document.getElementById('legal-content').innerHTML = `
-                    <div class="clause-card section-warning">
-                        <h2 class="clause-header">
-                            <span class="mono text-red-200">ERR</span>
-                            Agreement Load Error
-                            <span class="tech-badge badge-red">ERROR</span>
-                        </h2>
-                        <div class="legal-p">
-                            The agreement version could not be loaded at this time.
-                            Please try again later or choose another archived version.
-                            <br><br>
-                            <span class="mono text-xs text-slate-500">${escapeHtml(err.message)}</span>
-                        </div>
-                    </div>
-                `;
+            if (pushHash) {
+                history.replaceState(null, '', newHash);
             }
         }
 
-        function initScrollSpy() {
-            const links = document.querySelectorAll('.toc-link');
-            const sections = document.querySelectorAll('section[id^="clause-"]');
+        function syncTabFromHash() {
+            const hash = (window.location.hash || '#privacy').replace('#', '');
+            if (hash.startsWith('terms')) {
+                setTab('terms', false);
+                setActiveNav(document.getElementById(hash) ? hash : 'terms');
+            } else {
+                setTab('privacy', false);
+                setActiveNav(document.getElementById(hash) ? hash : 'privacy');
+            }
+        }
 
-            if (!links.length || !sections.length) return;
+        tabs.privacy.addEventListener('click', () => setTab('privacy'));
+        tabs.terms.addEventListener('click', () => setTab('terms'));
 
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const currentId = entry.target.id;
-                        links.forEach(link => {
-                            link.classList.toggle('active', link.getAttribute('href') === `#${currentId}`);
-                        });
-                    }
-                });
-            }, {
-                rootMargin: "-30% 0px -55% 0px",
-                threshold: 0.01
+        navLinks.forEach((link) => {
+            link.addEventListener('click', () => {
+                const target = link.dataset.navTarget || 'privacy';
+                if (target.startsWith('terms')) {
+                    setTab('terms', false);
+                } else {
+                    setTab('privacy', false);
+                }
+                setActiveNav(target);
             });
-
-            sections.forEach(section => observer.observe(section));
-        }
-
-        function openContactModal() {
-            const modal = document.getElementById('contact-modal');
-            const iframe = document.getElementById('contact-iframe');
-            const loading = document.getElementById('contact-loading');
-
-            loading.classList.remove('hidden');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            document.body.classList.add('overflow-hidden');
-
-            // Reload iframe each open in case the user wants a fresh form
-            iframe.src = "https://docs.google.com/forms/d/e/1FAIpQLSftQIYIEKhIga3Qe7U900Qcy7HxIolvqhKe7uzTPe0-k2IZ_Q/viewform?embedded=true";
-        }
-
-        function closeContactModal() {
-            const modal = document.getElementById('contact-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            document.body.classList.remove('overflow-hidden');
-        }
-
-        document.getElementById('contact-iframe').addEventListener('load', function() {
-            document.getElementById('contact-loading').classList.add('hidden');
         });
 
-        document.addEventListener('click', function(e) {
-            const modal = document.getElementById('contact-modal');
-            if (e.target === modal) closeContactModal();
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') closeContactModal();
-        });
-
-        loadVersion(newest);
+        window.addEventListener('hashchange', syncTabFromHash);
+        syncTabFromHash();
     </script>
 </body>
 </html>
-
-
