@@ -205,6 +205,19 @@
     }
 
     if ([
+      "limited_hours",
+      "time_limited",
+      "school_hours_only",
+      "compute_limited"
+    ].includes(code)) {
+      return {
+        ...themes.unavailable,
+        title: "This resource is limited right now",
+        message: "This starred resource is only available between 8:20 AM and 3:10 PM. Outside these hours, access is limited to help save compute."
+      };
+    }
+
+    if ([
       "update",
       "resource_update",
       "updating",
@@ -254,6 +267,16 @@
     openErrorModal(config);
     applyTextColors();
   }
+
+  window.showResourceErrorModal = function showResourceErrorModal(errorCodeOrConfig) {
+    const config = typeof errorCodeOrConfig === "string"
+      ? getErrorConfig(errorCodeOrConfig)
+      : errorCodeOrConfig;
+
+    if (!config) return;
+    openErrorModal(config);
+    applyTextColors();
+  };
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initResourceErrorHandler);

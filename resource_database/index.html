@@ -1643,6 +1643,27 @@
       .trim();
   }
 
+  function isSchoolHoursLimitedResource(item) {
+    return String(item?.name || "").includes("*");
+  }
+
+  function isWithinSchoolAccessWindow() {
+    const now = new Date();
+    const minutesPastMidday = (now.getHours() * 60) + now.getMinutes();
+    const windowStart = (8 * 60) + 20;
+    const windowEnd = (15 * 60) + 10;
+    return minutesPastMidday >= windowStart && minutesPastMidday <= windowEnd;
+  }
+
+  function showLimitedHoursError() {
+    if (typeof window.showResourceErrorModal === "function") {
+      window.showResourceErrorModal("limited_hours");
+      return;
+    }
+
+    window.alert("This starred resource is only available between 8:20 AM and 3:10 PM. Outside these hours, access is limited to help save compute.");
+  }
+
   function sbShouldSaveSearchHistory() {
     const v = (localStorage.getItem(SB_SAVE_SEARCH_HISTORY_TOGGLE) || "").toLowerCase().trim();
     if (v === "false") return false;
@@ -1717,6 +1738,11 @@
   }
 
   function handleClick(item) {
+    if (isSchoolHoursLimitedResource(item) && !isWithinSchoolAccessWindow()) {
+      showLimitedHoursError();
+      return;
+    }
+
     if (openMode === "public") {
       if (item.__type === "back") {
         const prev = folderHistory.pop();
