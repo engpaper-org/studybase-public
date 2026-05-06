@@ -1617,6 +1617,40 @@
         padding: 1.5rem !important;
       }
     }
+
+    /* Keep the live login form reachable when the viewport is short or zoomed. */
+    html,
+    body {
+      height: auto !important;
+      min-height: 100% !important;
+      overflow-y: auto !important;
+    }
+
+    .auth-shell {
+      height: auto !important;
+      min-height: 100dvh !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #section-login:not(.hidden) {
+      position: relative !important;
+      inset: auto !important;
+      height: auto !important;
+      min-height: 100dvh !important;
+      overflow: visible !important;
+      align-items: stretch !important;
+    }
+
+    .login-panel {
+      min-height: 100dvh;
+      overflow-y: visible !important;
+    }
+
+    .login-panel input,
+    .login-panel button {
+      scroll-margin-block: 1rem;
+    }
   </style>
 </head>
 <body class="relative text-slate-800">

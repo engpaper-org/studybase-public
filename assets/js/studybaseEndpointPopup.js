@@ -290,6 +290,23 @@
     }
   }
 
+  function shouldIgnoreEndpoint(input) {
+    try {
+      const requestUrl =
+        typeof input === "string"
+          ? input
+          : input && typeof input.url === "string"
+            ? input.url
+            : "";
+
+      const parsed = new URL(requestUrl, window.location.origin);
+      if (parsed.pathname === "/auth/check") return true;
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
+
   function buildEndpointLabel(input) {
     try {
       const requestUrl =
@@ -308,6 +325,10 @@
 
   window.fetch = async function (input, init) {
     if (!shouldInspect(input)) {
+      return originalFetch(input, init);
+    }
+
+    if (shouldIgnoreEndpoint(input)) {
       return originalFetch(input, init);
     }
 
