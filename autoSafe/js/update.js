@@ -31,6 +31,15 @@
   let lastFailedAttempt = 0; // Tracks failures to prevent infinite loops
   let updateEndpoint = "https://update.revisionbase.site";
 
+  function formatModuleName(key) {
+    return String(key || "")
+      .replace(/([a-z])([A-Z])/g, "$1 $2")
+      .replace(/[_-]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+
   async function applyUpdateConfig() {
     if (!window.SiteConfig?.ready) return;
 
@@ -87,27 +96,49 @@
     if (document.getElementById('update-modal-overlay')) return;
 
     const modalHTML = `
-      <div id="update-modal-overlay" class="hidden fixed inset-0 z-[9999] bg-slate-900/40 backdrop-blur-md items-center justify-center transition-opacity duration-300 opacity-0 font-sans">
-        <div id="update-modal-box" class="bg-white rounded-2xl shadow-2xl w-[400px] overflow-hidden transform scale-95 transition-transform duration-300">
-          <div class="h-2 w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
-          <div class="p-8 text-center relative">
-            
-            <div class="relative w-16 h-16 mx-auto mb-5 flex items-center justify-center bg-blue-50 rounded-full">
-              <div id="update-spinner" class="absolute inset-0 border-[3px] border-blue-100 border-t-blue-600 rounded-full animate-spin"></div>
-              <svg id="update-success-icon" class="hidden w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-              </svg>
+      <div id="update-modal-overlay" class="hidden fixed inset-0 z-[9999] bg-slate-950/48 backdrop-blur-xl items-center justify-center transition-opacity duration-300 opacity-0 font-sans p-4">
+        <div id="update-modal-box" class="relative w-full max-w-[34rem] overflow-hidden rounded-[2rem] border border-white/65 bg-white/82 shadow-[0_40px_120px_-24px_rgba(15,23,42,0.45)] backdrop-blur-2xl transform scale-95 transition-transform duration-300">
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(96,165,250,0.18),transparent_30%),radial-gradient(circle_at_85%_20%,rgba(129,140,248,0.12),transparent_24%),linear-gradient(135deg,rgba(255,255,255,0.94),rgba(248,250,252,0.88))] pointer-events-none"></div>
+          <div class="absolute -top-20 right-[-2rem] h-56 w-56 rounded-full bg-blue-300/35 blur-3xl pointer-events-none"></div>
+          <div class="absolute -bottom-20 left-[-2rem] h-56 w-56 rounded-full bg-indigo-300/25 blur-3xl pointer-events-none"></div>
+
+          <div class="relative p-6 md:p-8">
+            <div class="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/76 px-3.5 py-2 text-[11px] font-black uppercase tracking-[0.22em] text-slate-700 shadow-sm backdrop-blur-xl">
+              <span class="inline-flex h-2.5 w-2.5 rounded-full bg-blue-500 shadow-[0_0_0_4px_rgba(255,255,255,0.55)]"></span>
+              AutoSafe Update
             </div>
 
-            <h3 id="update-status" class="text-[1.35rem] font-extrabold text-slate-900 tracking-tight mb-2">Checking system state</h3>
-            <p id="update-subtext" class="text-sm font-medium text-slate-500 mb-6 h-10 flex items-center justify-center leading-relaxed">Connecting to update servers...</p>
-            
-            <div id="update-progress-container" class="hidden w-full bg-slate-100 rounded-full h-2 mb-6 overflow-hidden shadow-inner">
-              <div id="update-progress-bar" class="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out w-0"></div>
+            <div class="mt-5 flex items-start gap-4">
+              <div class="relative flex h-16 w-16 shrink-0 items-center justify-center rounded-[1.4rem] border border-white/80 bg-white/90 shadow-lg shadow-slate-900/5">
+                <div id="update-spinner" class="absolute inset-[6px] rounded-full border-[3px] border-slate-200 border-t-blue-600 animate-spin"></div>
+                <svg id="update-success-icon" class="hidden w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+
+              <div class="min-w-0 flex-1 pt-1">
+                <h3 id="update-status" class="text-[1.8rem] font-black tracking-[-0.04em] leading-none text-slate-950">Checking for updates</h3>
+                <p id="update-subtext" class="mt-3 min-h-[3rem] max-w-xl text-sm leading-6 text-slate-600 md:text-[15px]">Connecting to the update service and reviewing installed modules.</p>
+              </div>
             </div>
 
-            <button id="update-close-btn" class="hidden w-full py-3.5 px-6 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold text-sm tracking-wide transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0">
-              Return to Resource
+            <div id="update-progress-container" class="hidden mt-6">
+              <div class="flex items-center justify-between text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">
+                <span>Progress</span>
+                <span id="update-progress-label">0%</span>
+              </div>
+              <div class="mt-3 h-2.5 overflow-hidden rounded-full bg-slate-200/80 shadow-[inset_0_1px_2px_rgba(15,23,42,0.08)]">
+                <div id="update-progress-bar" class="h-full w-0 rounded-full bg-gradient-to-r from-blue-600 via-sky-500 to-indigo-500 transition-all duration-300 ease-out"></div>
+              </div>
+            </div>
+
+            <div class="mt-6 rounded-[1.4rem] border border-white/80 bg-white/72 px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)] backdrop-blur-xl">
+              <p class="text-[11px] font-black uppercase tracking-[0.2em] text-slate-500">What this does</p>
+              <p class="mt-2 text-sm leading-6 text-slate-600">AutoSafe checks whether any client-side modules need to be refreshed, applies them quietly, and then restores the page when everything is ready.</p>
+            </div>
+
+            <button id="update-close-btn" class="hidden mt-6 w-full rounded-2xl bg-slate-950 px-6 py-3.5 text-sm font-extrabold tracking-tight text-white shadow-[0_18px_38px_-20px_rgba(15,23,42,0.95)] transition-all hover:-translate-y-0.5 hover:bg-slate-900 active:translate-y-0">
+              Continue
             </button>
           </div>
         </div>
@@ -208,6 +239,7 @@
     const successIcon = document.getElementById('update-success-icon');
     const progressContainer = document.getElementById('update-progress-container');
     const progressBar = document.getElementById('update-progress-bar');
+    const progressLabel = document.getElementById('update-progress-label');
     const closeBtn = document.getElementById('update-close-btn');
 
     // Reset UI state for subsequent runs
@@ -216,8 +248,9 @@
     progressContainer.classList.add('hidden');
     closeBtn.classList.add('hidden');
     progressBar.style.width = '0%';
-    statusEl.innerText = 'Checking system state';
-    subtextEl.innerText = 'Connecting to update servers...';
+    if (progressLabel) progressLabel.innerText = '0%';
+    statusEl.innerText = 'Checking for updates';
+    subtextEl.innerText = 'Connecting to the update service and reviewing installed modules.';
 
     const checkStartTime = Date.now();
 
@@ -241,38 +274,39 @@
       }
 
       if (updatesToApply.length > 0) {
-        statusEl.innerText = 'Installing updates';
+        statusEl.innerText = 'Applying updates';
         progressContainer.classList.remove('hidden'); 
         await sleep(500);
 
         for (let i = 0; i < updatesToApply.length; i++) {
           const update = updatesToApply[i];
-          subtextEl.innerText = `Updating module: ${update.key}...`;
+          subtextEl.innerText = `Refreshing ${formatModuleName(update.key)}.`;
           
           await injectScript(update.url, update.version);
           window.CurrentScriptVersions[update.key] = update.version;
           
           const percentage = ((i + 1) / updatesToApply.length) * 100;
           progressBar.style.width = `${percentage}%`;
+          if (progressLabel) progressLabel.innerText = `${Math.round(percentage)}%`;
           
           await sleep(UPDATE_PER_MODULE_DELAY_MS); 
         }
       } else {
-        statusEl.innerText = 'System optimized';
-        subtextEl.innerText = 'All resources are on the latest version.';
+        statusEl.innerText = 'Everything is up to date';
+        subtextEl.innerText = 'No changes were needed for this session.';
         await sleep(1000);
       }
 
       progressContainer.classList.add('hidden'); 
-      statusEl.innerText = 'Finalizing configuration';
-      subtextEl.innerText = 'Applying final settings. Please wait...';
+      statusEl.innerText = 'Finalizing';
+      subtextEl.innerText = 'Applying the last configuration steps.';
       
       await runPostUpdateExec();
 
       spinner.classList.add('hidden');
       successIcon.classList.remove('hidden');
-      statusEl.innerText = 'Updates complete';
-      subtextEl.innerText = 'Your session is ready to continue.';
+      statusEl.innerText = 'Update complete';
+      subtextEl.innerText = 'This page is ready to continue.';
       closeBtn.classList.remove('hidden');
 
       // Clear any previous failure cooldowns and log the success
@@ -282,8 +316,8 @@
     } catch (error) {
       console.error("Update failed:", error);
       spinner.classList.add('hidden');
-      statusEl.innerText = 'Network Error';
-      subtextEl.innerText = 'Could not verify updates. Will retry later.';
+      statusEl.innerText = 'Update check unavailable';
+      subtextEl.innerText = 'We could not reach the update service just now. The page will retry later.';
       closeBtn.classList.remove('hidden');
       
       // Crucial Fix: Set a cooldown so we don't spam the user every 1 second

@@ -657,86 +657,23 @@ let pendingSubject = null;
 let pendingBoard = null;
 
 const SUBJECT_LINKS = {
-    "Biology": {
-        icon: "fa-dna",
+    "Maths": {
+        icon: "fa-square-root-variable",
         boards: [
             {
                 name: "AQA",
-                pastPaper: "https://www.aqa.org.uk/subjects/biology/a-level/biology-7402/assessment-resources",
-                spec: "https://www.aqa.org.uk/subjects/biology/a-level/biology-7402/specification/specification-at-a-glance"
+                pastPaper: "https://www.aqa.org.uk/subjects/mathematics/as-and-a-level/mathematics-7357/assessment-resources",
+                spec: "https://www.aqa.org.uk/subjects/mathematics/a-level/mathematics-7357/specification"
             },
             {
                 name: "Edexcel",
-                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A-Level/Biology/2015/Exam-materials/9bn0-01-que-20220610.pdf",
-                spec: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/biology-a/2015/specification-and-sample-assessment-materials/9781446930885-gce2015-a-bioa-spec.pdf"
+                pastPaper: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/mathematics-2017.html",
+                spec: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/mathematics-2017.html"
             },
             {
                 name: "OCR",
-                pastPaper: "https://www.ocr.org.uk/Images/726690-question-paper-biological-processes.pdf",
-                spec: "https://www.ocr.org.uk/Images/171736-specification-accredited-a-level-gce-biology-a-h420.pdf"
-            }
-        ]
-    },
-
-    "Geography": {
-        icon: "fa-globe-europe",
-        boards: [
-            {
-                name: "AQA",
-                pastPaper: "https://www.aqa.org.uk/subjects/geography/a-level/geography-7037/assessment-resources",
-                spec: "https://www.aqa.org.uk/subjects/geography/a-level/geography-7037/specification"
-            },
-            {
-                name: "Edexcel",
-                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A-Level/Geography/2016/Exam-materials/9ge0-01-que-20240517.pdf",
-                spec: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Geography/2016/specification-and-sample-assessments/pearson-edexcel-a-level-geography-issue-6.pdf"
-            },
-            {
-                name: "OCR",
-                pastPaper: "https://www.ocr.org.uk/Images/703819-question-paper-physical-systems.pdf",
-                spec: "https://www.ocr.org.uk/images/223012-specification-accredited-a-level-gce-geography-h481.pdf"
-            }
-        ]
-    },
-
-    "History": {
-        icon: "fa-landmark",
-        boards: [
-            {
-                name: "AQA",
-                pastPaper: "https://www.aqa.org.uk/subjects/history/a-level/history-7042/assessment-resources",
-                spec: "https://www.aqa.org.uk/subjects/history/a-level/history-7042/specification"
-            },
-            {
-                name: "Edexcel",
-                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A-Level/History/2015/Exam-materials/9hi0-1e-que-20240524.pdf",
-                spec: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/history-2015.html"
-            },
-            {
-                name: "OCR",
-                pastPaper: "https://www.ocr.org.uk/qualifications/as-and-a-level/history-a-h105-h505-from-2015/assessment/",
-                spec: "https://www.ocr.org.uk/Images/170128-specification-accredited-a-level-gce-history-a-h505.pdf"
-            }
-        ]
-    },
-
-    "Computer Science": {
-        icon: "fa-code",
-        boards: [
-            {
-                name: "AQA",
-                pastPaper: "https://www.aqa.org.uk/subjects/computer-science/a-level/computer-science-7517/assessment-resources",
-                spec: "https://www.aqa.org.uk/subjects/computer-science/a-level/computer-science-7517/specification/specification-at-a-glance"
-            },
-            {
-                name: "Edexcel",
-                pastPaper: "",
-                spec: ""
-            },
-            {
-                name: "OCR",
-                pastPaper: "https://www.ocr.org.uk/Images/726572-question-paper-algorithms-and-programming.pdf",
-                spec: "https://www.ocr.org.uk/images/170844-specification-accredited-a-level-gce-computer-science-h446.pdf"
+                pastPaper: "https://www.ocr.org.uk/qualifications/as-and-a-level/mathematics-a-h230-h240-from-2017/assessment/",
+                spec: "https://www.ocr.org.uk/qualifications/as-and-a-level/mathematics-a-h230-h240-from-2017/"
             }
         ]
     },
@@ -751,55 +688,76 @@ const SUBJECT_LINKS = {
             },
             {
                 name: "Edexcel",
-                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A-Level/English-Literature/2015/Exam-materials/9et0-01-que-20240525.pdf",
-                spec: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/English%20Literature/2015/Specification%20and%20sample%20assessments/gce2015-a-level-eng-lit-spec.pdf"
+                pastPaper: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/english-literature-2015.html",
+                spec: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/english-literature-2015.html"
             },
             {
                 name: "OCR",
                 pastPaper: "https://www.ocr.org.uk/qualifications/as-and-a-level/english-literature-h072-h472-from-2015/assessment/",
-                spec: "https://www.ocr.org.uk/images/171200-specification-accredited-a-level-gce-english-literature-h472.pdf"
+                spec: "https://www.ocr.org.uk/qualifications/as-and-a-level/english-literature-h072-h472-from-2015/"
             }
         ]
     },
 
-    "Further Maths": {
-        icon: "fa-infinity",
+    "Physics": {
+        icon: "fa-atom",
         boards: [
             {
                 name: "AQA",
-                pastPaper: "https://www.aqa.org.uk/subjects/mathematics/a-level/mathematics-7367/assessment-resources",
-                spec: "https://www.aqa.org.uk/subjects/mathematics/a-level/mathematics-7367/specification"
+                pastPaper: "https://www.aqa.org.uk/subjects/physics/a-level/physics-7408/assessment-resources",
+                spec: "https://www.aqa.org.uk/subjects/physics/a-level/physics-7408/specification/specification-at-a-glance"
             },
             {
                 name: "Edexcel",
-                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A-Level/Mathematics/2017/Exam-materials/9fm0-4a-que-20220628.pdf",
-                spec: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Mathematics/2017/specification-and-sample-assesment/a-level-l3-further-mathematics-specification.pdf"
+                pastPaper: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/physics-2015.html",
+                spec: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/physics-2015.html"
             },
             {
                 name: "OCR",
-                pastPaper: "https://www.ocr.org.uk/qualifications/as-and-a-level/further-mathematics-a-h235-h245-from-2017/assessment/",
-                spec: "https://www.ocr.org.uk/Images/308752-specification-accredited-a-level-gce-further-mathematics-a-h245.pdf"
+                pastPaper: "https://www.ocr.org.uk/qualifications/as-and-a-level/physics-a-h156-h556-from-2015/assessment/",
+                spec: "https://www.ocr.org.uk/qualifications/as-and-a-level/physics-a-h156-h556-from-2015/"
             }
         ]
     },
 
-    "Psychology": {
-        icon: "fa-brain",
+    "Biology": {
+        icon: "fa-dna",
         boards: [
             {
                 name: "AQA",
-                pastPaper: "https://www.aqa.org.uk/subjects/psychology/a-level/psychology-7182/assessment-resources",
-                spec: "https://www.aqa.org.uk/subjects/psychology/a-level/psychology-7182/specification/specification-at-a-glance"
+                pastPaper: "https://www.aqa.org.uk/subjects/biology/a-level/biology-7402/assessment-resources",
+                spec: "https://www.aqa.org.uk/subjects/biology/a-level/biology-7402/specification/specification-at-a-glance"
             },
             {
                 name: "Edexcel",
-                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A-Level/Psychology/2015/Exam-materials/9ps0-02-que-20220609.pdf",
-                spec: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Psychology/2015/specification-and-sample-assessments/al-specification-psychology.pdf"
+                pastPaper: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/biology-a-2015.html",
+                spec: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/biology-a-2015.html"
             },
             {
                 name: "OCR",
-                pastPaper: "https://www.ocr.org.uk/Images/726678-question-paper-research-methods.pdf",
-                spec: "https://www.ocr.org.uk/Images/171732-specification-accredited-a-level-gce-psychology-h567.pdf"
+                pastPaper: "https://www.ocr.org.uk/qualifications/as-and-a-level/biology-a-h020-h420-from-2015/assessment/",
+                spec: "https://www.ocr.org.uk/qualifications/as-and-a-level/biology-a-h020-h420-from-2015/"
+            }
+        ]
+    },
+
+    "Chemistry": {
+        icon: "fa-flask-vial",
+        boards: [
+            {
+                name: "AQA",
+                pastPaper: "https://www.aqa.org.uk/subjects/chemistry/a-level/chemistry-7405/assessment-resources",
+                spec: "https://www.aqa.org.uk/subjects/chemistry/a-level/chemistry-7405/specification/specification-at-a-glance"
+            },
+            {
+                name: "Edexcel",
+                pastPaper: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/chemistry-2015.html",
+                spec: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/chemistry-2015.html"
+            },
+            {
+                name: "OCR",
+                pastPaper: "https://www.ocr.org.uk/qualifications/as-and-a-level/chemistry-a-h032-h432-from-2015/assessment/",
+                spec: "https://www.ocr.org.uk/qualifications/as-and-a-level/chemistry-a-h032-h432-from-2015/"
             }
         ]
     },
@@ -814,34 +772,139 @@ const SUBJECT_LINKS = {
             },
             {
                 name: "Edexcel",
-                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A-Level/Economics/2015/Exam-materials/9ec0-03-que-20220614.pdf",
+                pastPaper: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/economics-a-2015.html",
                 spec: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/economics-a-2015.html"
             },
             {
                 name: "OCR",
-                pastPaper: "https://www.ocr.org.uk/Images/726592-question-paper-macroeconomics.pdf",
-                spec: "https://www.ocr.org.uk/Images/536455-specification-accredited-a-level-gce-economics-h460.pdf"
+                pastPaper: "https://www.ocr.org.uk/qualifications/as-and-a-level/economics-h060-h460-from-2015/assessment/",
+                spec: "https://www.ocr.org.uk/qualifications/as-and-a-level/economics-h060-h460-from-2015/"
             }
         ]
     },
 
-    "Business": {
-        icon: "fa-briefcase",
+    "Geography": {
+        icon: "fa-globe-europe",
         boards: [
             {
                 name: "AQA",
-                pastPaper: "https://www.aqa.org.uk/subjects/business/a-level/business-7132/assessment-resources",
-                spec: "https://www.aqa.org.uk/subjects/business/a-level/business-7132/specification"
+                pastPaper: "https://www.aqa.org.uk/subjects/geography/a-level/geography-7037/assessment-resources",
+                spec: "https://www.aqa.org.uk/subjects/geography/a-level/geography-7037/specification"
             },
             {
                 name: "Edexcel",
-                pastPaper: "https://qualifications.pearson.com/content/dam/pdf/A-Level/Business/2015/Exam-materials/9bs0-01-que-20240515.pdf",
-                spec: "https://qualifications.pearson.com/content/dam/pdf/A%20Level/Business%20Studies/2015/specification-and-sample-assessment-materials/9781446914694-gce2015-a-bus-web.pdf"
+                pastPaper: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/geography-2016.html",
+                spec: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/geography-2016.html"
             },
             {
                 name: "OCR",
-                pastPaper: "https://www.ocr.org.uk/Images/726551-question-paper-operating-in-a-local-business-environment.pdf",
-                spec: "https://www.ocr.org.uk/Images/170837-specification-accredited-a-level-gce-business-h431.pdf"
+                pastPaper: "https://www.ocr.org.uk/qualifications/as-and-a-level/geography-h081-h481-from-2016/assessment/",
+                spec: "https://www.ocr.org.uk/qualifications/as-and-a-level/geography-h081-h481-from-2016/"
+            }
+        ]
+    },
+
+    "History": {
+        icon: "fa-landmark",
+        boards: [
+            {
+                name: "AQA",
+                pastPaper: "https://www.aqa.org.uk/subjects/history/a-level/history-7042/assessment-resources",
+                spec: "https://www.aqa.org.uk/subjects/history/a-level/history-7042/specification"
+            },
+            {
+                name: "Edexcel",
+                pastPaper: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/history-2015.html",
+                spec: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/history-2015.html"
+            },
+            {
+                name: "OCR",
+                pastPaper: "https://www.ocr.org.uk/qualifications/as-and-a-level/history-a-h105-h505-from-2015/assessment/",
+                spec: "https://www.ocr.org.uk/qualifications/as-and-a-level/history-a-h105-h505-from-2015/"
+            }
+        ]
+    },
+
+    "DT": {
+        icon: "fa-ruler-combined",
+        boards: [
+            {
+                name: "AQA",
+                pastPaper: "https://www.aqa.org.uk/subjects/design-and-technology/a-level/design-and-technology-product-design-7552/assessment-resources",
+                spec: "https://www.aqa.org.uk/subjects/design-and-technology/a-level/design-and-technology-product-design-7552/specification"
+            },
+            {
+                name: "Edexcel",
+                pastPaper: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/design-and-technology-product-design-2017.html",
+                spec: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/design-and-technology-product-design-2017.html"
+            },
+            {
+                name: "OCR",
+                pastPaper: "",
+                spec: ""
+            }
+        ]
+    },
+
+    "French": {
+        icon: "fa-language",
+        boards: [
+            {
+                name: "AQA",
+                pastPaper: "https://www.aqa.org.uk/subjects/languages/as-and-a-level/french-7652/assessment-resources",
+                spec: "https://www.aqa.org.uk/subjects/languages/as-and-a-level/french-7652/specification"
+            },
+            {
+                name: "Edexcel",
+                pastPaper: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/french-2016.html",
+                spec: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/french-2016.html"
+            },
+            {
+                name: "OCR",
+                pastPaper: "https://www.ocr.org.uk/qualifications/as-and-a-level/french-h075-h475-from-2016/assessment/",
+                spec: "https://www.ocr.org.uk/qualifications/as-and-a-level/french-h075-h475-from-2016/"
+            }
+        ]
+    },
+
+    "Spannish": {
+        icon: "fa-language",
+        boards: [
+            {
+                name: "AQA",
+                pastPaper: "https://www.aqa.org.uk/subjects/languages/as-and-a-level/spanish-7692/assessment-resources",
+                spec: "https://www.aqa.org.uk/subjects/languages/as-and-a-level/spanish-7692/specification"
+            },
+            {
+                name: "Edexcel",
+                pastPaper: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/spanish-2016.html",
+                spec: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/spanish-2016.html"
+            },
+            {
+                name: "OCR",
+                pastPaper: "https://www.ocr.org.uk/qualifications/as-and-a-level/spanish-h074-h474-from-2016/assessment/",
+                spec: "https://www.ocr.org.uk/qualifications/as-and-a-level/spanish-h074-h474-from-2016/"
+            }
+        ]
+    },
+
+    "Computing": {
+        icon: "fa-code",
+        boards: [
+            {
+                name: "AQA",
+                pastPaper: "https://www.aqa.org.uk/subjects/computer-science/a-level/computer-science-7517/assessment-resources",
+                spec: "https://www.aqa.org.uk/subjects/computer-science/a-level/computer-science-7517/specification/specification-at-a-glance"
+            },
+            {
+                name: "Edexcel",
+                pastPaper: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/computer-science-2015.html",
+                spec: "https://qualifications.pearson.com/en/qualifications/edexcel-a-levels/computer-science-2015.html"
+            },
+            {
+                name: "OCR",
+                pastPaper: "https://www.ocr.org.uk/qualifications/as-and-a-level/computer-science-h046-h446-from-2015/assessment/",
+                spec: "https://www.ocr.org.uk/qualifications/as-and-a-level/computer-science-h046-h446-from-2015/"
             }
         ]
     }

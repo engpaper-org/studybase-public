@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="/assets/js/iframeCheck.js"></script>
-
+    <!-- <script src="/assets/js/iframeCheck.js"></script> -->
     <meta charset="UTF-8">
-        <script src="/assets/js/siteConfig.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/assets/js/siteConfig.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RevisionBase Intro</title>
 
     <style>
+        @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Space+Grotesk:wght@500;700&display=swap");
+
         :root {
-            --deep: #020617;
-            --white: #f8fafc;
+            --bg-1: #020617;
+            --bg-2: #081120;
+            --panel: rgba(7, 16, 30, 0.7);
+            --panel-border: rgba(191, 219, 254, 0.16);
+            --text: #f8fafc;
+            --muted: rgba(226, 232, 240, 0.72);
+            --line: rgba(148, 163, 184, 0.16);
             --blue: #60a5fa;
+            --cyan: #67e8f9;
+            --violet: #818cf8;
+            --shadow: 0 36px 90px rgba(2, 6, 23, 0.55);
         }
 
         * {
@@ -25,11 +34,12 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: var(--deep);
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg-1);
+            color: var(--text);
         }
 
         body {
+            font-family: "Plus Jakarta Sans", system-ui, sans-serif;
             opacity: 1;
             transition: opacity 420ms ease;
         }
@@ -39,242 +49,579 @@
             inset: 0;
             display: grid;
             place-items: center;
-            isolation: isolate;
             padding: 24px;
+            isolation: isolate;
             background:
-                radial-gradient(circle at 50% 43%, rgba(59, 130, 246, 0.27), transparent 26%),
-                radial-gradient(circle at 50% 108%, rgba(56, 189, 248, 0.18), transparent 42%),
-                radial-gradient(circle at 14% 18%, rgba(29, 78, 216, 0.32), transparent 34%),
-                radial-gradient(circle at 86% 18%, rgba(14, 165, 233, 0.18), transparent 30%),
-                linear-gradient(135deg, #020617 0%, #071426 42%, #020617 100%);
+                radial-gradient(circle at 15% 20%, rgba(14, 165, 233, 0.14), transparent 28%),
+                radial-gradient(circle at 85% 15%, rgba(99, 102, 241, 0.16), transparent 30%),
+                radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.2), transparent 34%),
+                linear-gradient(140deg, var(--bg-1) 0%, var(--bg-2) 45%, #01040c 100%);
+        }
+
+        .boot::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+            background-size: 54px 54px;
+            opacity: 0.16;
+            mask-image: radial-gradient(circle at center, black 26%, transparent 90%);
+            pointer-events: none;
+        }
+
+        .aurora,
+        .aurora::before,
+        .aurora::after {
+            position: absolute;
+            inset: auto;
+            content: "";
+            display: block;
+            border-radius: 999px;
+            filter: blur(36px);
         }
 
         .aurora {
-            position: absolute;
-            inset: -20%;
-            z-index: 1;
-            filter: blur(34px);
-            opacity: 0.72;
-            background:
-                conic-gradient(
-                    from 180deg at 50% 50%,
-                    transparent,
-                    rgba(59, 130, 246, 0.2),
-                    transparent,
-                    rgba(14, 165, 233, 0.24),
-                    transparent,
-                    rgba(79, 70, 229, 0.16),
-                    transparent
-                );
-            animation: auroraMove 4.5s ease-in-out infinite alternate;
+            width: 58vw;
+            height: 58vw;
+            min-width: 420px;
+            min-height: 420px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.16), transparent 66%);
+            animation: floatField 5s ease-in-out infinite alternate;
+        }
+
+        .aurora::before {
+            width: 30vw;
+            height: 30vw;
+            top: 8%;
+            left: 10%;
+            background: radial-gradient(circle, rgba(103, 232, 249, 0.18), transparent 64%);
+            animation: pulseField 3.6s ease-in-out infinite;
+        }
+
+        .aurora::after {
+            width: 22vw;
+            height: 22vw;
+            right: 8%;
+            bottom: 4%;
+            background: radial-gradient(circle, rgba(129, 140, 248, 0.18), transparent 64%);
+            animation: pulseField 4.4s ease-in-out infinite reverse;
         }
 
         .grid-floor {
             position: absolute;
-            left: -10%;
-            right: -10%;
-            bottom: -24%;
-            height: 58%;
-            z-index: 2;
+            left: -12%;
+            right: -12%;
+            bottom: -22%;
+            height: 56%;
             opacity: 0.28;
-            transform: perspective(620px) rotateX(67deg);
+            transform: perspective(740px) rotateX(71deg);
             transform-origin: bottom center;
             background-image:
-                linear-gradient(rgba(96, 165, 250, 0.24) 1px, transparent 1px),
+                linear-gradient(rgba(103, 232, 249, 0.22) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(96, 165, 250, 0.18) 1px, transparent 1px);
-            background-size: 70px 70px;
-            mask-image: linear-gradient(to top, black 12%, transparent 86%);
-            animation: gridMove 1.7s linear infinite;
+            background-size: 74px 74px;
+            mask-image: linear-gradient(to top, black 14%, transparent 84%);
+            animation: gridMove 1.9s linear infinite;
         }
 
         .particles {
             position: absolute;
             inset: 0;
-            z-index: 3;
             overflow: hidden;
             pointer-events: none;
         }
 
         .particle {
             position: absolute;
-            width: 2px;
-            height: 2px;
             border-radius: 999px;
-            background: rgba(191, 219, 254, 0.95);
+            background: rgba(224, 242, 254, 0.94);
             box-shadow:
-                0 0 10px rgba(96, 165, 250, 0.95),
-                0 0 24px rgba(56, 189, 248, 0.42);
+                0 0 12px rgba(103, 232, 249, 0.8),
+                0 0 28px rgba(59, 130, 246, 0.26);
             animation: particleRise linear infinite;
         }
 
-        .orbit {
-            position: absolute;
-            width: min(64vw, 620px);
-            aspect-ratio: 1;
-            border-radius: 999px;
-            z-index: 4;
-            opacity: 0;
-            transform: scale(0.72);
-            animation: orbitReveal 2.15s cubic-bezier(.16,.9,.2,1) forwards;
-        }
-
-        .orbit::before,
-        .orbit::after {
-            content: "";
+        .ring-cluster {
             position: absolute;
             inset: 0;
-            border-radius: inherit;
-            border: 1px solid rgba(147, 197, 253, 0.16);
-            box-shadow:
-                0 0 60px rgba(37, 99, 235, 0.24),
-                inset 0 0 65px rgba(59, 130, 246, 0.09);
+            display: grid;
+            place-items: center;
+            pointer-events: none;
         }
 
-        .orbit::after {
-            inset: 10%;
-            border-top-color: rgba(125, 211, 252, 0.92);
+        .ring,
+        .ring::before,
+        .ring::after {
+            position: absolute;
+            border-radius: 999px;
+        }
+
+        .ring {
+            width: min(70vw, 700px);
+            aspect-ratio: 1;
+            opacity: 0;
+            transform: scale(0.74) rotate(-8deg);
+            animation: ringReveal 2.4s cubic-bezier(.16, .9, .2, 1) forwards;
+        }
+
+        .ring::before,
+        .ring::after {
+            content: "";
+            inset: 0;
+            border: 1px solid rgba(147, 197, 253, 0.16);
+            box-shadow: inset 0 0 80px rgba(59, 130, 246, 0.06);
+        }
+
+        .ring::after {
+            inset: 11%;
+            border-top-color: rgba(103, 232, 249, 0.92);
             border-right-color: rgba(96, 165, 250, 0.42);
-            border-bottom-color: rgba(147, 197, 253, 0.1);
-            border-left-color: rgba(147, 197, 253, 0.1);
-            animation: orbitSpin 3.2s linear infinite;
+            border-bottom-color: rgba(148, 163, 184, 0.06);
+            border-left-color: rgba(148, 163, 184, 0.06);
+            animation: spin 3.2s linear infinite;
         }
 
         .light-sweep {
             position: absolute;
-            inset: -40%;
-            z-index: 8;
+            inset: -36%;
             background:
                 linear-gradient(
                     110deg,
-                    transparent 38%,
-                    rgba(255,255,255,0.08) 45%,
-                    rgba(147,197,253,0.42) 50%,
-                    rgba(255,255,255,0.08) 55%,
+                    transparent 37%,
+                    rgba(255, 255, 255, 0.04) 43%,
+                    rgba(125, 211, 252, 0.34) 50%,
+                    rgba(255, 255, 255, 0.06) 56%,
                     transparent 62%
                 );
-            transform: translateX(-85%) rotate(8deg);
-            animation: cinematicSweep 2.25s cubic-bezier(.18,.85,.18,1) forwards;
+            transform: translateX(-90%) rotate(8deg);
+            animation: cinematicSweep 2.4s cubic-bezier(.18, .85, .18, 1) forwards;
             pointer-events: none;
         }
 
-        .boot-panel {
+        .panel-shell {
             position: relative;
-            z-index: 6;
-            width: min(94vw, 980px);
-            text-align: center;
+            z-index: 5;
+            width: min(92vw, 980px);
             opacity: 0;
             transform: translateY(18px) scale(0.965);
             animation:
-                panelIn 850ms cubic-bezier(.16,1,.2,1) 180ms forwards,
-                panelExit 540ms ease 2.55s forwards;
+                shellIn 900ms cubic-bezier(.16, 1, .2, 1) 170ms forwards,
+                shellOut 540ms ease 2.78s forwards;
         }
 
-        .message-glow {
+        .panel {
+            position: relative;
+            overflow: hidden;
+            padding: clamp(1.2rem, 3vw, 2rem);
+            border: 1px solid var(--panel-border);
+            border-radius: 28px;
+            background:
+                linear-gradient(180deg, rgba(15, 23, 42, 0.76), rgba(4, 10, 24, 0.92)),
+                var(--panel);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: var(--shadow);
+        }
+
+        .panel::before {
+            content: "";
             position: absolute;
-            left: 50%;
-            top: 50%;
-            width: min(560px, 80vw);
-            height: 150px;
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            background: radial-gradient(circle, rgba(96, 165, 250, 0.2), transparent 70%);
-            opacity: 0;
-            animation: glowIn 800ms ease 580ms forwards;
+            inset: 0;
+            background:
+                radial-gradient(circle at top left, rgba(255, 255, 255, 0.08), transparent 34%),
+                linear-gradient(130deg, rgba(255, 255, 255, 0.04), transparent 32%);
             pointer-events: none;
         }
 
-        .presented {
-            margin: 0;
+        .panel::after {
+            content: "";
+            position: absolute;
+            inset: 1px;
+            border-radius: 27px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            pointer-events: none;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brandline {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 0.42em;
-            color: rgba(248, 250, 252, 0.92);
-            font-size: clamp(1.65rem, 4.8vw, 3.5rem);
-            line-height: 1.16;
-            font-weight: 720;
-            letter-spacing: -0.045em;
-            opacity: 0;
-            transform: translateY(16px);
-            filter: blur(10px);
-            animation: messageIn 850ms cubic-bezier(.16,1,.2,1) 560ms forwards;
-            text-shadow:
-                0 0 24px rgba(15, 23, 42, 0.72),
-                0 0 52px rgba(37, 99, 235, 0.24);
+            gap: 0.8rem;
+            min-width: 0;
         }
 
-        .presented .muted {
-            color: rgba(226, 232, 240, 0.78);
-            font-weight: 560;
+        .brand-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            flex: 0 0 auto;
+            font-family: "Space Grotesk", system-ui, sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.06em;
+            color: white;
+            background:
+                linear-gradient(145deg, rgba(96, 165, 250, 0.95), rgba(34, 211, 238, 0.82));
+            box-shadow:
+                0 14px 36px rgba(59, 130, 246, 0.34),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18);
         }
 
-        .presented .name {
-            background: linear-gradient(135deg, #ffffff 0%, #bfdbfe 32%, #60a5fa 68%, #38bdf8 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-weight: 850;
-            text-shadow: none;
+        .eyebrow {
+            margin: 0 0 0.2rem;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(191, 219, 254, 0.86);
+        }
+
+        .top-title {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: rgba(248, 250, 252, 0.96);
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.66rem 0.9rem;
+            border-radius: 999px;
+            border: 1px solid rgba(134, 239, 172, 0.16);
+            background: rgba(6, 78, 59, 0.34);
+            color: rgba(209, 250, 229, 0.96);
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
             white-space: nowrap;
         }
 
-        .noise {
-            position: absolute;
-            inset: 0;
-            z-index: 9;
-            opacity: 0.055;
-            pointer-events: none;
-            background-image:
-                repeating-radial-gradient(circle at 17% 31%, rgba(255,255,255,0.7) 0 1px, transparent 1px 4px);
-            mix-blend-mode: screen;
-            animation: noiseShift 600ms steps(2) infinite;
+        .status-pill::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #86efac;
+            box-shadow: 0 0 14px rgba(134, 239, 172, 0.78);
+            animation: statusPulse 1.4s ease-in-out infinite;
         }
 
-        .scanlines {
-            position: absolute;
-            inset: 0;
-            z-index: 10;
-            pointer-events: none;
-            opacity: 0.13;
+        .content {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(250px, 0.85fr);
+            gap: clamp(1.2rem, 3vw, 2rem);
+            padding-top: 1.25rem;
+            align-items: center;
+        }
+
+        .copy {
+            position: relative;
+        }
+
+        .kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.45rem 0.8rem;
+            margin-bottom: 1rem;
+            border-radius: 999px;
+            border: 1px solid rgba(191, 219, 254, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(226, 232, 240, 0.88);
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+
+        .kicker::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--cyan), var(--blue));
+            box-shadow: 0 0 14px rgba(103, 232, 249, 0.52);
+        }
+
+        .headline {
+            margin: 0;
+            max-width: 11ch;
+            font-size: clamp(2rem, 5vw, 4.45rem);
+            line-height: 0.94;
+            font-weight: 800;
+            letter-spacing: -0.06em;
+            opacity: 0;
+            transform: translateY(16px);
+            filter: blur(10px);
+            animation: messageIn 850ms cubic-bezier(.16, 1, .2, 1) 520ms forwards;
+            text-wrap: balance;
+        }
+
+        .headline .gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #bfdbfe 30%, #60a5fa 62%, #67e8f9 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subcopy {
+            margin: 1rem 0 0;
+            max-width: 50ch;
+            color: var(--muted);
+            font-size: clamp(0.96rem, 2vw, 1.08rem);
+            line-height: 1.72;
+            opacity: 0;
+            transform: translateY(14px);
+            animation: fadeUp 760ms ease 820ms forwards;
+        }
+
+        .metrics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.9rem;
+            margin-top: 1.35rem;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: fadeUp 760ms ease 980ms forwards;
+        }
+
+        .metric {
+            min-width: 140px;
+            padding: 0.9rem 1rem;
+            border-radius: 18px;
+            border: 1px solid rgba(191, 219, 254, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .metric strong,
+        .metric span {
+            display: block;
+        }
+
+        .metric strong {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+        }
+
+        .metric span {
+            margin-top: 0.24rem;
+            color: rgba(203, 213, 225, 0.72);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .console {
+            position: relative;
+            padding: 1rem;
+            border-radius: 22px;
+            border: 1px solid rgba(191, 219, 254, 0.12);
             background:
-                linear-gradient(to bottom, rgba(255,255,255,0.18) 1px, transparent 1px);
-            background-size: 100% 5px;
-            mask-image: radial-gradient(circle at center, black, transparent 78%);
+                linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            opacity: 0;
+            transform: translateY(16px);
+            animation: fadeUp 760ms ease 700ms forwards;
         }
 
-        .vignette {
+        .console-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 0.95rem;
+        }
+
+        .console-dots {
+            display: flex;
+            gap: 0.38rem;
+        }
+
+        .console-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.28);
+        }
+
+        .console-label {
+            color: rgba(226, 232, 240, 0.7);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .command-line {
+            display: flex;
+            align-items: center;
+            gap: 0.72rem;
+            padding: 0.88rem 0.95rem;
+            margin-bottom: 0.9rem;
+            border-radius: 16px;
+            background: rgba(2, 6, 23, 0.52);
+            border: 1px solid rgba(148, 163, 184, 0.14);
+        }
+
+        .prompt {
+            color: var(--cyan);
+            font-family: "Space Grotesk", system-ui, sans-serif;
+            font-weight: 700;
+        }
+
+        .typed {
+            color: rgba(248, 250, 252, 0.95);
+            font-size: 0.94rem;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 1px solid rgba(255, 255, 255, 0.7);
+            animation:
+                typing 1.3s steps(19, end) 920ms forwards,
+                caret 600ms step-end infinite;
+            width: 0;
+        }
+
+        .console-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+
+        .console-card {
+            padding: 0.88rem 0.92rem;
+            border-radius: 16px;
+            border: 1px solid rgba(191, 219, 254, 0.08);
+            background: rgba(255, 255, 255, 0.045);
+        }
+
+        .console-card span,
+        .console-card strong {
+            display: block;
+        }
+
+        .console-card span {
+            color: rgba(191, 219, 254, 0.64);
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .console-card strong {
+            margin-top: 0.34rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: rgba(248, 250, 252, 0.97);
+        }
+
+        .progress {
+            margin-top: 0.9rem;
+            padding: 0.92rem 0.95rem;
+            border-radius: 16px;
+            border: 1px solid rgba(191, 219, 254, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .progress-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            color: rgba(226, 232, 240, 0.86);
+            font-size: 0.79rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+
+        .bar {
+            position: relative;
+            height: 9px;
+            margin-top: 0.7rem;
+            overflow: hidden;
+            border-radius: 999px;
+            background: rgba(30, 41, 59, 0.95);
+        }
+
+        .bar span {
             position: absolute;
-            inset: 0;
-            z-index: 11;
-            pointer-events: none;
-            background:
-                radial-gradient(circle at center, transparent 38%, rgba(2, 6, 23, 0.42) 72%, rgba(2, 6, 23, 0.92) 100%);
+            inset: 0 auto 0 0;
+            width: 0;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--blue), var(--cyan), var(--violet));
+            box-shadow: 0 0 20px rgba(103, 232, 249, 0.3);
+            animation: loadBar 1.6s cubic-bezier(.2, .9, .24, 1) 900ms forwards;
         }
 
+        .glow {
+            position: absolute;
+            left: 18%;
+            right: 18%;
+            bottom: -10%;
+            height: 130px;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.22), transparent 70%);
+            filter: blur(18px);
+            opacity: 0;
+            animation: glowIn 900ms ease 620ms forwards;
+            pointer-events: none;
+        }
+
+        .noise,
+        .vignette,
         .wipe {
             position: absolute;
             inset: 0;
-            z-index: 20;
             pointer-events: none;
-            background:
-                linear-gradient(115deg, #ffffff 0%, #dbeafe 42%, #60a5fa 52%, #ffffff 100%);
-            transform: translateY(105%) skewY(-5deg);
-            transform-origin: bottom left;
-            animation: finalWipe 760ms cubic-bezier(.76,0,.18,1) 2.82s forwards;
         }
 
-        @keyframes panelIn {
+        .noise {
+            opacity: 0.05;
+            background-image: repeating-radial-gradient(circle at 18% 32%, rgba(255, 255, 255, 0.66) 0 1px, transparent 1px 4px);
+            mix-blend-mode: screen;
+            animation: noiseShift 700ms steps(2) infinite;
+        }
+
+        .vignette {
+            background: radial-gradient(circle at center, transparent 38%, rgba(2, 6, 23, 0.38) 72%, rgba(2, 6, 23, 0.92) 100%);
+        }
+
+        .wipe {
+            z-index: 10;
+            background: linear-gradient(112deg, #ffffff 0%, #dbeafe 45%, #67e8f9 54%, #ffffff 100%);
+            transform: translateY(106%) skewY(-5deg);
+            transform-origin: bottom left;
+            animation: finalWipe 760ms cubic-bezier(.76, 0, .18, 1) 2.92s forwards;
+        }
+
+        @keyframes shellIn {
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
             }
         }
 
-        @keyframes panelExit {
+        @keyframes shellOut {
             to {
                 opacity: 0;
-                transform: translateY(-14px) scale(1.025);
-                filter: blur(10px);
+                transform: translateY(-16px) scale(1.02);
+                filter: blur(8px);
             }
         }
 
@@ -286,19 +633,39 @@
             }
         }
 
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         @keyframes glowIn {
             to {
                 opacity: 1;
             }
         }
 
-        @keyframes auroraMove {
+        @keyframes pulseField {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.92;
+            }
+
+            50% {
+                transform: scale(1.08);
+                opacity: 0.74;
+            }
+        }
+
+        @keyframes floatField {
             from {
-                transform: translate3d(-2%, -1%, 0) rotate(0deg) scale(1);
+                transform: translate3d(-3%, -2%, 0) rotate(0deg);
             }
 
             to {
-                transform: translate3d(2%, 1%, 0) rotate(12deg) scale(1.06);
+                transform: translate3d(3%, 2%, 0) rotate(8deg);
             }
         }
 
@@ -318,25 +685,25 @@
             }
         }
 
-        @keyframes orbitReveal {
+        @keyframes ringReveal {
             0% {
                 opacity: 0;
-                transform: scale(0.66) rotate(-10deg);
+                transform: scale(0.68) rotate(-10deg);
                 filter: blur(18px);
             }
 
-            36% {
+            34% {
                 opacity: 1;
             }
 
             100% {
                 opacity: 0;
-                transform: scale(1.24) rotate(14deg);
+                transform: scale(1.22) rotate(14deg);
                 filter: blur(3px);
             }
         }
 
-        @keyframes orbitSpin {
+        @keyframes spin {
             to {
                 transform: rotate(360deg);
             }
@@ -344,22 +711,22 @@
 
         @keyframes gridMove {
             to {
-                background-position: 0 70px, 70px 0;
+                background-position: 0 74px, 74px 0;
             }
         }
 
         @keyframes particleRise {
             0% {
-                transform: translate3d(0, 110vh, 0) scale(0.7);
+                transform: translate3d(0, 110vh, 0) scale(0.72);
                 opacity: 0;
             }
 
-            18% {
+            16% {
                 opacity: 1;
             }
 
             100% {
-                transform: translate3d(var(--x), -12vh, 0) scale(1.15);
+                transform: translate3d(var(--x), -12vh, 0) scale(1.14);
                 opacity: 0;
             }
         }
@@ -374,9 +741,40 @@
             }
         }
 
+        @keyframes loadBar {
+            to {
+                width: 82%;
+            }
+        }
+
+        @keyframes typing {
+            to {
+                width: 18ch;
+            }
+        }
+
+        @keyframes caret {
+            50% {
+                border-color: transparent;
+            }
+        }
+
+        @keyframes statusPulse {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(0.84);
+                opacity: 0.72;
+            }
+        }
+
         @keyframes finalWipe {
             0% {
-                transform: translateY(105%) skewY(-5deg);
+                transform: translateY(106%) skewY(-5deg);
             }
 
             48% {
@@ -388,23 +786,67 @@
             }
         }
 
-        @media (max-width: 760px) {
-            .presented {
-                font-size: clamp(1.35rem, 6vw, 2.4rem);
+        @media (max-width: 900px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .headline {
+                max-width: none;
             }
         }
 
-        @media (max-width: 430px) {
+        @media (max-width: 640px) {
             .boot {
                 padding: 16px;
             }
 
-            .presented {
-                flex-wrap: wrap;
-                row-gap: 0.12em;
-                column-gap: 0.34em;
-                font-size: clamp(1.2rem, 7vw, 1.75rem);
-                letter-spacing: -0.03em;
+            .panel {
+                padding: 1rem;
+                border-radius: 24px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .status-pill {
+                font-size: 0.68rem;
+                letter-spacing: 0.12em;
+            }
+
+            .console-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metric {
+                min-width: calc(50% - 0.45rem);
+            }
+
+            .headline {
+                font-size: clamp(1.82rem, 11vw, 3rem);
+            }
+
+            .subcopy {
+                font-size: 0.94rem;
+                line-height: 1.62;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .metric {
+                min-width: 100%;
+            }
+
+            .brandline {
+                gap: 0.65rem;
+            }
+
+            .brand-badge {
+                width: 40px;
+                height: 40px;
+                border-radius: 12px;
             }
         }
 
@@ -425,20 +867,101 @@
         <div class="aurora"></div>
         <div class="grid-floor"></div>
         <div class="particles" id="particles"></div>
-        <div class="orbit"></div>
+
+        <div class="ring-cluster" aria-hidden="true">
+            <div class="ring"></div>
+        </div>
+
         <div class="light-sweep"></div>
 
-        <main class="boot-panel">
-            <div class="message-glow"></div>
+        <main class="panel-shell">
+            <section class="panel">
+                <div class="topbar">
+                    <div class="brandline">
+                        <div class="brand-badge">RB</div>
+                        <div>
+                            <p class="eyebrow">Study Smarter</p>
+                            <p class="top-title">RevisionBase launch sequence</p>
+                        </div>
+                    </div>
 
-            <p class="presented">
-                <span class="muted">Brought to you by</span>
-                <span class="name">RevisionBase</span>
-            </p>
+                    <div class="status-pill">System Ready</div>
+                </div>
+
+                <div class="content">
+                    <div class="copy">
+                        <div class="kicker">Focused paper practice starts here</div>
+                        <h1 class="headline">
+                            Brought to you by
+                            <span class="gradient">RevisionBase</span>
+                        </h1>
+                        <p class="subcopy">
+                            Past papers, tracking tools and structured revision flow together in one sharper workspace built to help students move with confidence.
+                        </p>
+
+                        <div class="metrics" aria-hidden="true">
+                            <div class="metric">
+                                <strong>Past Papers</strong>
+                                <span>Ready to open</span>
+                            </div>
+                            <div class="metric">
+                                <strong>Track Progress</strong>
+                                <span>Clear next steps</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <aside class="console" aria-hidden="true">
+                        <div class="console-header">
+                            <div class="console-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="console-label">Revision Console</div>
+                        </div>
+
+                        <div class="command-line">
+                            <span class="prompt">RB&gt;</span>
+                            <span class="typed">launch workspace</span>
+                        </div>
+
+                        <div class="console-grid">
+                            <div class="console-card">
+                                <span>Mode</span>
+                                <strong>Paper Focus</strong>
+                            </div>
+                            <div class="console-card">
+                                <span>Status</span>
+                                <strong>Online</strong>
+                            </div>
+                            <div class="console-card">
+                                <span>Resources</span>
+                                <strong>Loaded</strong>
+                            </div>
+                            <div class="console-card">
+                                <span>Session</span>
+                                <strong>Starting</strong>
+                            </div>
+                        </div>
+
+                        <div class="progress">
+                            <div class="progress-row">
+                                <span>Opening interface</span>
+                                <span>82%</span>
+                            </div>
+                            <div class="bar">
+                                <span></span>
+                            </div>
+                        </div>
+                    </aside>
+                </div>
+
+                <div class="glow"></div>
+            </section>
         </main>
 
         <div class="noise"></div>
-        <div class="scanlines"></div>
         <div class="vignette"></div>
         <div class="wipe"></div>
     </section>
@@ -446,18 +969,18 @@
     <script>
         const particles = document.getElementById("particles");
 
-        for (let i = 0; i < 96; i++) {
+        for (let i = 0; i < 104; i++) {
             const particle = document.createElement("span");
             particle.className = "particle";
 
-            const size = Math.random() * 2.4 + 1;
+            const size = Math.random() * 2.2 + 0.9;
             particle.style.width = `${size}px`;
             particle.style.height = `${size}px`;
             particle.style.left = `${Math.random() * 100}vw`;
             particle.style.setProperty("--x", `${Math.random() * 120 - 60}px`);
-            particle.style.animationDelay = `${Math.random() * -2.8}s`;
-            particle.style.animationDuration = `${Math.random() * 1.8 + 1.6}s`;
-            particle.style.opacity = `${Math.random() * 0.75 + 0.25}`;
+            particle.style.animationDelay = `${Math.random() * -3.2}s`;
+            particle.style.animationDuration = `${Math.random() * 1.9 + 1.8}s`;
+            particle.style.opacity = `${Math.random() * 0.72 + 0.22}`;
 
             particles.appendChild(particle);
         }
@@ -474,7 +997,7 @@
             document.body.style.opacity = "0";
         }
 
-        setTimeout(finishIntro, 3500);
+        setTimeout(finishIntro, 3600);
     </script>
 </body>
 </html>
