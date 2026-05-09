@@ -2,32 +2,23 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-        <script src="/assets/js/siteConfig.js"></script>
-<script>
-        (function () {
-            try {
-                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
-                if (isDark) document.documentElement.classList.add('dark');
-            } catch (e) {}
-        })();
-    </script>
-    <link rel="stylesheet" href="/assets/css/dark-mode.css">
-    <link rel="stylesheet" href="/assets/css/revisionbase-media.css">
+        <script src="/assets/js/config/siteConfig.js"></script>
+    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RevisionBase | A-Level Past Papers</title>
-    <link rel="icon" href="/assets/siteIcons/main.ico">
-    <script src="/assets/js/sessionManager.js" defer></script>
-    <script src="/assets/js/logoutPopup.js" defer></script>
-    <script src="/assets/js/errorCheck.js" defer></script>
+    <link rel="icon" href="/assets/images/site-icons/main.ico">
+    <script src="/assets/js/core/sessionManager.js" defer></script>
+    <script src="/assets/js/auth/logoutPopup.js" defer></script>
+    <script src="/assets/js/monitoring/errorCheck.js" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="/assets/js/navbar.js" defer></script>
-    <script src="/assets/js/footer.js" defer></script>
-    <script src="/assets/js/adminUi.js" defer></script>
-    <script src="/assets/js/services.js"></script>
-    <script src="/assets/js/loginAnimationCheck.js" defer></script>
+    <script src="/assets/js/layout/navbar.js" defer></script>
+    <script src="/assets/js/layout/footer.js" defer></script>
+    <script src="/assets/js/core/adminUi.js" defer></script>
+    <script src="/assets/js/core/services.js"></script>
+    <script src="/assets/js/auth/loginAnimationCheck.js" defer></script>
     <script>const PAGE_ID = "alevel_landing";</script>
-    <script src="/assets/js/checkCookieConsent.js"></script>
+    <script src="/assets/js/privacy/checkCookieConsent.js"></script>
 
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -47,7 +38,7 @@
     </script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
-    <script src="/assets/js/cookieConsent.js"></script>
+    <script src="/assets/js/privacy/cookieConsent.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
@@ -285,7 +276,7 @@
     <main>
         <header class="relative min-h-[88vh] flex items-center overflow-hidden border-b border-slate-900 bg-slate-950 text-white">
             <div class="hero-bg" data-hero-bg>
-                <img src="/assets/siteImages/home-hero.jpg" alt="A-Level student working through past papers" onerror="this.remove(); this.parentElement.classList.add('is-placeholder');">
+                <img src="/assets/images/site/home-dashboard.jpg" alt="A-Level student working through past papers" onerror="const p=this.parentElement; this.remove(); if(p) p.classList.add('is-placeholder');">
             </div>
 
             <div class="relative z-10 w-full">
@@ -462,7 +453,7 @@
                 <div class="grid md:grid-cols-3 gap-5 items-start">
                     <article class="image-gallery-card">
                         <div class="image-slot" data-slot-label="Paper workflow">
-                            <img src="/assets/siteImages/home-workflow.jpg" alt="RevisionBase paper workflow visual" onerror="this.remove(); this.parentElement.classList.add('is-placeholder');">
+                            <img src="/assets/images/site/home-workflow.jpg" alt="RevisionBase paper workflow visual" onerror="const p=this.parentElement; this.remove(); if(p) p.classList.add('is-placeholder');">
                         </div>
                         <div class="image-gallery-meta">
                             <h3>Choose the right paper</h3>
@@ -471,7 +462,7 @@
                     </article>
                     <article class="image-gallery-card">
                         <div class="image-slot" data-slot-label="Score dashboard">
-                            <img src="/assets/siteImages/home-dashboard.jpg" alt="RevisionBase dashboard visual" onerror="this.remove(); this.parentElement.classList.add('is-placeholder');">
+                            <img src="/assets/images/site/home-dashboard.jpg" alt="RevisionBase dashboard visual" onerror="const p=this.parentElement; this.remove(); if(p) p.classList.add('is-placeholder');">
                         </div>
                         <div class="image-gallery-meta">
                             <h3>Track marks clearly</h3>
@@ -480,7 +471,7 @@
                     </article>
                     <article class="image-gallery-card">
                         <div class="image-slot" data-slot-label="Paper card">
-                            <img src="/assets/siteImages/home-paper-card.jpg" alt="Past paper card visual" onerror="this.remove(); this.parentElement.classList.add('is-placeholder');">
+                            <img src="/assets/images/site/home-paper-card.jpg" alt="Past paper card visual" onerror="const p=this.parentElement; this.remove(); if(p) p.classList.add('is-placeholder');">
                         </div>
                         <div class="image-gallery-meta">
                             <h3>Turn gaps into tasks</h3>

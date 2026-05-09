@@ -3,19 +3,10 @@
 <head>
     
   <meta charset="UTF-8" />
-        <script src="/assets/js/siteConfig.js"></script>
-<script>
-        (function () {
-            try {
-                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
-                if (isDark) document.documentElement.classList.add('dark');
-            } catch (e) {}
-        })();
-    </script>
-    <link rel="stylesheet" href="/assets/css/dark-mode.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RevisionBase • History</title>
-  <script src="/assets/js/iframeCheck.js"></script>
+  <script src="/assets/js/auth/iframeCheck.js"></script>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -132,8 +123,8 @@
     </section>
   </main>
 
-  <script src="/myaccount/js/sideBar.js"></script>
-  <script src="/myaccount/js/checkLoggedIn.js"></script>
+  <script src="/assets/js/account/sidebar.js"></script>
+  <script src="/assets/js/account/checkLoggedIn.js"></script>
 
   <script>
     // Auth gate

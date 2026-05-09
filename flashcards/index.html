@@ -3,27 +3,18 @@
 <head>
     
     <meta charset="UTF-8" />
-        <script src="/assets/js/siteConfig.js"></script>
-<script>
-        (function () {
-            try {
-                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
-                if (isDark) document.documentElement.classList.add('dark');
-            } catch (e) {}
-        })();
-    </script>
-    <link rel="stylesheet" href="/assets/css/dark-mode.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RevisionBase | Flashcard Revision</title>
-    <link rel="icon" href="/assets/siteIcons/main.ico" />
+    <link rel="icon" href="/assets/images/site-icons/main.ico" />
 
-    <script src="/assets/js/sessionManager.js" defer></script>
-    <script src="/assets/js/errorCheck.js" defer></script>
-    <script src="/assets/js/navbar.js" defer></script>
-    <script src="/assets/js/footer.js" defer></script>
-    <script src="/assets/js/adminUi.js" defer></script>
-    <script src="/assets/js/services.js"></script>
-    <script src="/assets/js/cookieConsent.js"></script>
+    <script src="/assets/js/core/sessionManager.js" defer></script>
+    <script src="/assets/js/monitoring/errorCheck.js" defer></script>
+    <script src="/assets/js/layout/navbar.js" defer></script>
+    <script src="/assets/js/layout/footer.js" defer></script>
+    <script src="/assets/js/core/adminUi.js" defer></script>
+    <script src="/assets/js/core/services.js"></script>
+    <script src="/assets/js/privacy/cookieConsent.js"></script>
 
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -170,7 +161,7 @@
                         <div>
                             <div class="text-xs font-black uppercase tracking-[0.22em] text-indigo-600 mb-2">Flashcard setup</div>
                             <h2 class="text-2xl md:text-3xl font-black tracking-tight text-slate-950">Create your revision session</h2>
-                            <p class="text-slate-500 font-body mt-2 max-w-2xl">This entire flow runs from one JSON index at <code class="bg-slate-100 text-slate-700 px-2 py-1 rounded-lg text-sm">/flashcards/assets/json/index/index.json</code>.</p>
+                            <p class="text-slate-500 font-body mt-2 max-w-2xl">This entire flow runs from one JSON index at <code class="bg-slate-100 text-slate-700 px-2 py-1 rounded-lg text-sm">/assets/data/flashcards/index.json</code>.</p>
                         </div>
                         <div class="flex flex-wrap items-center gap-3">
                             <button id="backButton" type="button" class="hidden items-center gap-2 rounded-2xl border border-slate-200 px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition-colors">
@@ -321,7 +312,7 @@
     <div id="footer-placeholder"></div>
 
     <script>
-        const JSON_PATH = '/flashcards/assets/json/index/index.json';
+        const JSON_PATH = '/assets/data/flashcards/index.json';
 
         const state = {
             currentStep: 1,

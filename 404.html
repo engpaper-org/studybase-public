@@ -3,23 +3,14 @@
 <head>
     
     <meta charset="UTF-8">
-        <script src="/assets/js/siteConfig.js"></script>
-<script>
-        (function () {
-            try {
-                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
-                if (isDark) document.documentElement.classList.add('dark');
-            } catch (e) {}
-        })();
-    </script>
-    <link rel="stylesheet" href="/assets/css/dark-mode.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 | Page Not Found</title>
-    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <link rel="icon" href="/assets/images/site-icons/main.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="/assets/js/loginAnimationCheck.js" defer></script>
-    <script src="/assets/js/sessionManager.js" defer></script>
+    <script src="/assets/js/auth/loginAnimationCheck.js" defer></script>
+    <script src="/assets/js/core/sessionManager.js" defer></script>
     <script>const PAGE_ID = "404";</script>
 
     <!-- Cookie consent banner and Google Analytics -->
@@ -40,7 +31,7 @@
         gtag('config', 'G-N7LHC0S1T1');
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
-    <script src="/assets/js/cookieConsent.js"></script>
+    <script src="/assets/js/privacy/cookieConsent.js"></script>
     <!-- End of consent and analytics -->
 
     <script>
@@ -58,8 +49,8 @@
 
             if (!window.__SB_IS_IFRAME__) {
                 const sharedScripts = [
-                    '/assets/js/navbar.js',
-                    '/assets/js/footer.js'
+                    '/assets/js/layout/navbar.js',
+                    '/assets/js/layout/footer.js'
                 ];
 
                 sharedScripts.forEach((src) => {

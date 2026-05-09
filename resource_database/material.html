@@ -8,37 +8,28 @@
 <head>
     
     <meta charset="UTF-8" />
-        <script src="/assets/js/siteConfig.js"></script>
-<script>
-        (function () {
-            try {
-                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
-                if (isDark) document.documentElement.classList.add('dark');
-            } catch (e) {}
-        })();
-    </script>
-    <link rel="stylesheet" href="/assets/css/dark-mode.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Revision Base | Alevel Revision Resources</title>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
 
-    <script src="/assets/js/hashtagProto.js"></script>
+    <script src="/assets/js/resources/hashtagProto.js"></script>
 
-    <link rel="icon" href="/assets/siteIcons/main.ico">
-    <link rel="prefetch" href="/aS/open.html" as="document">
+    <link rel="icon" href="/assets/images/site-icons/main.ico">
+    <link rel="prefetch" href="/internal/iframes/resource-intro.html" as="document">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/assets/js/loginAnimationCheck.js" defer></script>
-    <script src="/myaccount/js/timeRecords.js" defer></script>
+    <script src="/assets/js/auth/loginAnimationCheck.js" defer></script>
+    <script src="/assets/js/account/timeRecords.js" defer></script>
     <script>
         window.securityCheckedScriptLoader = {
             loaded: false,
             promise: null,
             scripts: [
-                { src: "/autoSafe/js/update.js", defer: true },
-                { src: "/myaccount/js/settingsSafetyWarning.js" },
-                { src: "/myaccount/js/timeWarn.js", defer: true },
-                { src: "/assets/js/playHistory.js", defer: true },
-                { src: "/assets/js/checkVerification.js", defer: true }
+                { src: "/assets/js/safety/update.js", defer: true },
+                { src: "/assets/js/account/settingsSafetyWarning.js" },
+                { src: "/assets/js/account/timeWarn.js", defer: true },
+                { src: "/assets/js/monitoring/playHistory.js", defer: true },
+                { src: "/assets/js/auth/checkVerification.js", defer: true }
             ]
         };
 
@@ -77,15 +68,15 @@
             return loader.promise;
         }
     </script>
-    <script src="/assets/js/envCheck.js"></script>
-    <script src="/assets/js/analytics.js" defer></script>
+    <script src="/assets/js/monitoring/envCheck.js"></script>
+    <script src="/assets/js/monitoring/analytics.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="/assets/js/adminUi.js" defer></script>
+    <script src="/assets/js/core/adminUi.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="/assets/js/deviceCheck.js" defer></script>
-    <script src="/assets/js/timeCheck.js" defer></script>
+    <script src="/assets/js/monitoring/deviceCheck.js" defer></script>
+    <script src="/assets/js/monitoring/timeCheck.js" defer></script>
 
-    <script src="/assets/js/checkCookieConsent.js"></script>
+    <script src="/assets/js/privacy/checkCookieConsent.js"></script>
 
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -105,7 +96,7 @@
     </script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
-    <script src="/assets/js/cookieConsent.js"></script>
+    <script src="/assets/js/privacy/cookieConsent.js"></script>
 
     <style>
         body {
@@ -274,7 +265,7 @@
                     <span class="text-[10px] font-black tracking-[0.22em] uppercase text-blue-500 mb-2">Security check</span>
                     <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight mb-3">We're confirming you're a human</h2>
                     <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6 max-w-md">
-                        This quick check protects RevisionBase resources and keeps the vault available for real students.
+                        This quick check protects StudyBase resources and keeps the vault available for real students.
                     </p>
 
                     <div id="turnstileWidget" class="flex justify-center min-h-[74px]"></div>
@@ -1134,7 +1125,7 @@ async function nativeShareLink() {
     if (navigator.share) {
         try {
             await navigator.share({
-                title: "Shared RevisionBase page",
+                title: "Shared StudyBase page",
                 text: "Here is a shared page.",
                 url: link
             });
@@ -1194,7 +1185,7 @@ function runTurnstileCheck() {
 
                 turnstileWidgetId = turnstile.render("#turnstileWidget", {
                     sitekey: TURNSTILE_SITE_KEY,
-                    theme: "light",
+                    theme: document.documentElement.classList.contains("dark") ? "dark" : "light",
                     callback: function(token) {
                         turnstileToken = token;
                         screenEl.classList.add("hidden");
@@ -1525,7 +1516,7 @@ function proceedToLoad(subjectTitle) {
     frame.classList.add("hidden");
 
     try { frame.src = "about:blank"; } catch (e) {}
-    try { loadingAdFrame.src = "/aS/display.html"; } catch (e) {}
+    try { loadingAdFrame.src = "/internal/iframes/safety-loading.html"; } catch (e) {}
 
     loading.classList.remove("hidden");
 
@@ -1551,7 +1542,7 @@ function proceedToLoad(subjectTitle) {
 
     const onIntroMessage = (event) => {
         if (event.source !== loadingAdFrame.contentWindow) return;
-        if (!event.data || event.data.type !== "REVISIONBASE_INTRO_COMPLETE") return;
+        if (!event.data || !["STUDYBASE_INTRO_COMPLETE", "REVISIONBASE_INTRO_COMPLETE"].includes(event.data.type)) return;
 
         revealResource();
     };
@@ -1564,7 +1555,7 @@ function proceedToLoad(subjectTitle) {
             materialFinished = true;
 
             window.addEventListener("message", onIntroMessage);
-            try { loadingAdFrame.src = "/aS/open.html"; } catch (e) {}
+            try { loadingAdFrame.src = "/internal/iframes/resource-intro.html"; } catch (e) {}
             revealTimer = setTimeout(revealResource, 4300);
         };
 
@@ -1589,13 +1580,19 @@ async function checkStateOnce() {
         const data = await res.json();
         const reason = (data && data.reason) ? String(data.reason) : "";
 
-        if (reason === "protoOne" || reason === "protoTwo" || reason === "protoThree") {
+        if (PROTO_NOTICE_PAGES[reason]) {
             showProto(reason);
         }
     } catch (err) {
         beginReconnectMode();
     }
 }
+
+const PROTO_NOTICE_PAGES = {
+    protoOne: "/internal/system/proto-one.html",
+    protoTwo: "/internal/system/proto-two.html",
+    protoThree: "/internal/system/proto-three.html"
+};
 
 function showProto(reason) {
     clearInterval(stateInterval);
@@ -1615,7 +1612,7 @@ function showProto(reason) {
 
     const overlay = document.getElementById("protoOverlay");
     const protoFrame = document.getElementById("protoFrame");
-    protoFrame.src = "/html_pages/e/" + reason + ".html";
+    protoFrame.src = PROTO_NOTICE_PAGES[reason] || PROTO_NOTICE_PAGES.protoOne;
     overlay.classList.remove("hidden");
 }
 
@@ -1643,7 +1640,7 @@ function beginReconnectMode() {
                 const data = await res.json();
 
                 const reason = (data && data.reason) ? String(data.reason) : "";
-                if (reason === "protoOne" || reason === "protoTwo" || reason === "protoThree") {
+                if (PROTO_NOTICE_PAGES[reason]) {
                     clearInterval(reconnectInterval);
                     inReconnectMode = false;
                     document.getElementById("networkModal").classList.add("hidden");
@@ -1688,5 +1685,4 @@ boot();
 
 </body>
 </html>
-
 

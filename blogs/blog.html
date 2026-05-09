@@ -3,19 +3,10 @@
 <head>
     
     <meta charset="UTF-8">
-        <script src="/assets/js/siteConfig.js"></script>
-<script>
-        (function () {
-            try {
-                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
-                if (isDark) document.documentElement.classList.add('dark');
-            } catch (e) {}
-        })();
-    </script>
-    <link rel="stylesheet" href="/assets/css/dark-mode.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loading Article... | RevisionBase</title>
-    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <link rel="icon" href="/assets/images/site-icons/main.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!--Cookie consent banner and google analytics-->
@@ -41,11 +32,11 @@
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
 
-    <script src="/assets/js/cookieConsent.js"></script>
+    <script src="/assets/js/privacy/cookieConsent.js"></script>
     <!-- End of consent and analytics -->
-    <script src="/assets/js/navbar.js" defer></script>
-    <script src="/assets/js/footer.js" defer></script>
-    <script src="/assets/js/loginAnimationCheck.js" defer></script>
+    <script src="/assets/js/layout/navbar.js" defer></script>
+    <script src="/assets/js/layout/footer.js" defer></script>
+    <script src="/assets/js/auth/loginAnimationCheck.js" defer></script>
   
     <script>const PAGE_ID = "blog_viewer";</script>
   
@@ -156,14 +147,14 @@
             let sources = [];
             
             if (category === 'gcse') {
-                sources = ['/assets/blogs/gcse.json'];
+                sources = ['/assets/data/blogs/gcse.json'];
                 updateBreadcrumbs('GCSE', '/blogs/index.html?category=gcse');
             } else if (category === 'alevel') {
-                sources = ['/assets/blogs/alevel.json'];
+                sources = ['/assets/data/blogs/alevel.json'];
                 updateBreadcrumbs('A-Level', '/blogs/index.html?category=alevel');
             } else {
                 // Fallback: No category provided, check both
-                sources = ['/assets/blogs/gcse.json', '/assets/blogs/alevel.json'];
+                sources = ['/assets/data/blogs/gcse.json', '/assets/data/blogs/alevel.json'];
                 updateBreadcrumbs('General', '/blogs/index.html');
             }
 
@@ -209,7 +200,7 @@
 
             // Images
             const hero = document.getElementById('heroImage');
-            hero.src = blog.heroImage || '/assets/defaults/blog-placeholder.jpg';
+            hero.src = blog.heroImage || '/assets/images/site/home-workflow.jpg';
             hero.onerror = () => hero.src = 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1000'; // Fallback
 
             if (blog.image2) {

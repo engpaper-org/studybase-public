@@ -3,40 +3,30 @@
 <head>
     
     <meta charset="UTF-8">
-        <script src="/assets/js/siteConfig.js"></script>
-<script>
-        (function () {
-            try {
-                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
-                if (isDark) document.documentElement.classList.add('dark');
-            } catch (e) {}
-        })();
-    </script>
-    <link rel="stylesheet" href="/assets/css/dark-mode.css">
-    <link rel="stylesheet" href="/assets/css/revisionbase-media.css">
+        <script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
     <title>RevisionBase | Resource Library</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/assets/siteIcons/main.ico">
-    <script src="/assets/js/userReplace.js"></script>
+    <link rel="icon" href="/assets/images/site-icons/main.ico">
+    <script src="/assets/js/ui/userReplace.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="/assets/js/hashtagProto.js" defer></script>
-    <script src="/assets/js/navbar.js" defer></script>
-    <script src="/assets/js/envCheck.js"></script>
-    <script src="/assets/js/footer.js" defer></script>
+    <script src="/assets/js/resources/hashtagProto.js" defer></script>
+    <script src="/assets/js/layout/navbar.js" defer></script>
+    <script src="/assets/js/monitoring/envCheck.js"></script>
+    <script src="/assets/js/layout/footer.js" defer></script>
     <script>const PAGE_ID = "alevel_resources";</script>
-    <script src="/assets/js/sessionManager.js" defer></script>
-    <script src="/assets/js/resourceErrorPopup.js" defer></script>
-    <script src="/autoSafe/js/mainInput.js" defer></script>
-    <script src="/assets/js/deviceCheck.js" defer></script>
-    <script src="/assets/js/timeCheck.js" defer></script>
-    <script src="/myaccount/js/timeRecords.js" defer></script>
-    <script src="/assets/js/services.js"></script>
-    <script src="/assets/js/checkForLoggedInHash_Resources.js"></script>
+    <script src="/assets/js/core/sessionManager.js" defer></script>
+    <script src="/assets/js/resources/resourceErrorPopup.js" defer></script>
+    <script src="/assets/js/safety/mainInput.js" defer></script>
+    <script src="/assets/js/monitoring/deviceCheck.js" defer></script>
+    <script src="/assets/js/monitoring/timeCheck.js" defer></script>
+    <script src="/assets/js/account/timeRecords.js" defer></script>
+    <script src="/assets/js/core/services.js"></script>
+    <script src="/assets/js/resources/checkForLoggedInHash.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 
-    <script src="/assets/js/checkCookieConsent.js"></script>
+    <script src="/assets/js/privacy/checkCookieConsent.js"></script>
 
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -56,7 +46,7 @@
     </script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
-    <script src="/assets/js/cookieConsent.js"></script>
+    <script src="/assets/js/privacy/cookieConsent.js"></script>
 
     <style>
         body {
@@ -357,7 +347,7 @@
                     <div class="absolute w-[420px] h-[420px] border border-pink-100/70 rounded-full animate-[spin_40s_linear_infinite_reverse]"></div>
                     <div class="relative animate-float">
                         <div class="rb-image-slot w-[500px] aspect-[5/4] rotate-[3deg] border-[12px] border-white z-10 relative" data-slot-label="Resource vault visual">
-                            <img src="/assets/siteImages/resources-vault.jpg" alt="A-Level resource vault preview" onerror="this.remove(); this.parentElement.classList.add('is-placeholder');">
+                            <img src="/assets/images/site/home-workflow.jpg" alt="A-Level resource vault preview" onerror="const p=this.parentElement; this.remove(); if(p) p.classList.add('is-placeholder');">
                         </div>
                     </div>
                 </div>
@@ -489,7 +479,7 @@
   let WORKER = "https://api.revisionbase.site";
   let RESOURCE_LIST_ENDPOINT = `${WORKER}/resources/list`;
   let TOP_CARDS_ENDPOINT = `${WORKER}/resources/top-cards`;
-  let RESOURCE_DATA_BASE = "/assets/resourceData/alevel";
+  let RESOURCE_DATA_BASE = "/assets/data/resources/alevel";
   let RESOURCE_MATERIAL_PAGE = "material.html";
   let RESOURCE_EMBEDDED_HASH = "#primary-access";
   let RESOURCE_IDLE_ENABLED = true;
@@ -725,13 +715,13 @@
         </div>`;
 
       if (isBeta) {
-        if (imageUrl === "pass") imageUrl = "/assets/g-icons/beta.jpg";
+        if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
       } else if (isPopular) {
-        if (imageUrl === "pass") imageUrl = "/assets/g-icons/popular.jpg";
+        if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
       } else if (isOriginal) {
-        if (imageUrl === "pass") imageUrl = "/assets/g-icons/original.jpg";
+        if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
       } else if (isRising) {
-        if (imageUrl === "pass") imageUrl = "/assets/g-icons/rising.jpg";
+        if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/rising.jpg";
       }
 
       const card = document.createElement("div");
@@ -1489,18 +1479,18 @@
           <div class="absolute top-2 left-2 z-30 bg-purple-600/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-purple-500/40">
             <i class="fas fa-folder"></i> Folder
           </div>`;
-        if (imageUrl === "pass") imageUrl = "/assets/g-icons/folder.jpg";
+        if (imageUrl === "pass") imageUrl = "/assets/images/app-icons/folder-papers.png";
 
       } else if (openMode === "public" && item.__type === "back") {
         tagHtml = `
           <div class="absolute top-2 left-2 z-30 bg-slate-900/90 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-white/10">
             <i class="fas fa-arrow-left"></i> Back
           </div>`;
-        if (imageUrl === "pass") imageUrl = "/assets/siteIcons/back.png";
+        if (imageUrl === "pass") imageUrl = "/assets/images/site-icons/back.png";
 
       } else {
         if (isBeta) {
-          if (imageUrl === "pass") imageUrl = "/assets/g-icons/beta.jpg";
+          if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
           tagHtml = `
             <div class="absolute top-2 left-2 z-30 bg-purple-600/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-purple-500/50">
               <i class="fas fa-lock"></i> Beta
@@ -1508,7 +1498,7 @@
         }
 
         else if (isPopular) {
-          if (imageUrl === "pass") imageUrl = "/assets/g-icons/popular.jpg";
+          if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
           tagHtml = `
             <div class="absolute top-2 left-2 z-30 bg-orange-500/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-orange-400/50">
               <i class="fas fa-fire animate-pulse"></i> Popular
@@ -1516,7 +1506,7 @@
         }
 
         else if (isOriginal) {
-          if (imageUrl === "pass") imageUrl = "/assets/g-icons/original.jpg";
+          if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
           tagHtml = `
             <div class="absolute top-2 left-2 z-30 bg-emerald-600/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-emerald-500/50">
               <i class="fas fa-star"></i> Site Original
@@ -1524,7 +1514,7 @@
         }
 
         else if (isRising) {
-          if (imageUrl === "pass") imageUrl = "/assets/g-icons/rising.jpg";
+          if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/rising.jpg";
           tagHtml = `
             <div class="absolute top-2 left-2 z-30 bg-blue-500/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-blue-400/50">
               <i class="fas fa-arrow-trend-up"></i> Rising

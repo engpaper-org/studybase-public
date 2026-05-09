@@ -2,23 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="/assets/js/siteConfig.js"></script>
-    <script>
-        (function () {
-            try {
-                const isDark = String(localStorage.getItem("darkMode") || "").toLowerCase() === "true";
-                if (isDark) document.documentElement.classList.add("dark");
-            } catch (e) {}
-        })();
-    </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/assets/js/config/siteConfig.js"></script>
+    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RevisionBase | Past Papers Redirect</title>
-    <link rel="icon" href="/assets/siteIcons/main.ico">
+    <link rel="icon" href="/assets/images/site-icons/main.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="/assets/js/sessionManager.js" defer></script>
-    <script src="/assets/js/errorCheck.js" defer></script>
-    <script src="/assets/js/services.js"></script>
+    <script src="/assets/js/core/sessionManager.js" defer></script>
+    <script src="/assets/js/monitoring/errorCheck.js" defer></script>
+    <script src="/assets/js/core/services.js"></script>
     <script>const PAGE_ID = "past_paper_viewer";</script>
 
     <style>

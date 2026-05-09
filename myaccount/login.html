@@ -3,25 +3,16 @@
 <head>
     
   <meta charset="UTF-8" />
-        <script src="/assets/js/siteConfig.js"></script>
-<script>
-        (function () {
-            try {
-                const isDark = String(localStorage.getItem('darkMode') || '').toLowerCase() === 'true';
-                if (isDark) document.documentElement.classList.add('dark');
-            } catch (e) {}
-        })();
-    </script>
-    <link rel="stylesheet" href="/assets/css/dark-mode.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RevisionBase | Login</title>
-  <link rel="icon" href="/assets/siteIcons/main.ico">
-  <script src="/assets/js/iframeCheck.js"></script>
+        <script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyBase | Login</title>
+  <link rel="icon" href="/assets/images/site-icons/main.ico">
+  <script src="/assets/js/auth/iframeCheck.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script>const SHOW_CONSENT_BANNER = false;</script>
-  <script src="/assets/js/checkCookieConsent.js"></script>
+  <script src="/assets/js/privacy/checkCookieConsent.js"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -36,7 +27,7 @@
     gtag('config', 'G-N7LHC0S1T1');
   </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
-  <script src="/assets/js/cookieConsent.js"></script>
+  <script src="/assets/js/privacy/cookieConsent.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
   <style>
@@ -109,7 +100,7 @@
     }
 
     #section-login::before {
-      content: "RevisionBase\A Account access\A\A Secure sign in with device verification built in.";
+      content: "StudyBase\A Account access\A\A Secure sign in with device verification built in.";
       white-space: pre-line;
       min-height: 100%;
       display: flex;
@@ -372,7 +363,7 @@
         grid-template-columns: minmax(240px, 0.68fr) minmax(330px, 0.92fr);
       }
       #section-login::before {
-        content: "RevisionBase\A Account access";
+        content: "StudyBase\A Account access";
         padding: 1.5rem;
         font-size: 1.55rem;
       }
@@ -393,7 +384,7 @@
       .animate-pulse, .animate-bounce { animation: none !important; }
     }
 
-    /* Full-screen RevisionBase auth redesign */
+    /* Full-screen StudyBase auth redesign */
     body {
       overflow: hidden;
       background: #ffffff;
@@ -644,7 +635,7 @@
     #modal-confirm::before,
     #modal-admin::before,
     #modal-ban::before {
-      content: "RevisionBase";
+      content: "StudyBase";
       display: flex;
       align-items: flex-end;
       padding: clamp(1.5rem, 4vw, 3.5rem);
@@ -784,7 +775,7 @@
       }
     }
 
-    /* RevisionBase full-page auth redesign */
+    /* StudyBase full-page auth redesign */
     :root {
       --auth-bg: #f5f7fb;
       --auth-ink: #111827;
@@ -1130,7 +1121,7 @@
     #modal-confirm::before,
     #modal-admin::before,
     #modal-ban::before {
-      content: "RevisionBase";
+      content: "StudyBase";
       display: flex;
       align-items: flex-end;
       min-width: 0;
@@ -1683,7 +1674,7 @@
           Secure account access
         </div>
         <div>
-          <h1>RevisionBase login</h1>
+          <h1>StudyBase login</h1>
           <p class="mt-6">Sign in, verify this device, and continue into your account without leaving the embedded flow.</p>
         </div>
         <div class="login-hero-strip">
@@ -1700,7 +1691,7 @@
           </svg>
         </div>
         <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Sign in</h2>
-        <p class="text-slate-600 mt-2 text-sm font-semibold leading-6">Use your RevisionBase credentials to continue.</p>
+        <p class="text-slate-600 mt-2 text-sm font-semibold leading-6">Use your StudyBase credentials to continue.</p>
       </div>
 
       <div class="space-y-5">
@@ -1742,7 +1733,7 @@
 
         <div class="login-meta pt-1 text-xs text-slate-500">
           <span>Protected by Cloudflare</span>
-          <span class="font-semibold text-slate-600">Revision Base Security Checkpoint</span>
+          <span class="font-semibold text-slate-600">StudyBase Security Checkpoint</span>
         </div>
       </div>
       </div>
@@ -1852,7 +1843,7 @@
       </div>
       <div class="w-full md:w-1/2 bg-slate-200 relative min-h-[500px] md:min-h-0">
         <div class="absolute inset-0 bg-slate-100 flex items-center justify-center z-0"><span class="text-slate-400 text-sm animate-pulse">Loading Google Form...</span></div>
-        <iframe id="verificationFormFrame" src="about:blank" class="w-full h-full relative z-10 border-0 bg-white" allowtransparency="true" title="RevisionBase device verification form"></iframe>
+        <iframe id="verificationFormFrame" src="about:blank" class="w-full h-full relative z-10 border-0 bg-white" allowtransparency="true" title="StudyBase device verification form"></iframe>
       </div>
     </div>
 
@@ -1997,17 +1988,12 @@
 
   <script>
   const localTest = false;
-  let WORKER = "https://api.revisionbase.site";
+  let WORKER = "https://api.studybase.site";
   const configuredTurnstileKeys = window.SB_CONFIG?.security?.turnstileSiteKeys || {};
-  const TURNSTILE_SITE_KEYS = localTest
-    ? {
-        login: configuredTurnstileKeys.test || "1x00000000000000000000AA",
-        adminOverride: configuredTurnstileKeys.test || "1x00000000000000000000AA"
-      }
-    : {
-        login: configuredTurnstileKeys.login || "0x4AAAAAAC9-EW6MUp3spIEP",
-        adminOverride: configuredTurnstileKeys.adminOverride || "0x4AAAAAAC9-bB7cCm-tLuHn"
-      };
+  const TURNSTILE_SITE_KEYS = {
+    login: configuredTurnstileKeys.login || "0x4AAAAAAC9-EW6MUp3spIEP",
+    adminOverride: configuredTurnstileKeys.adminOverride || "0x4AAAAAAC9-bB7cCm-tLuHn"
+  };
   const DEVICE_CODE_CHARS = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const DEVICE_CODE_LENGTH = 12;
   const CHECK_MIN_MS = 2000;
@@ -2024,16 +2010,45 @@
   let loginTurnstileWidgetId = null;
   let adminTurnstileWidgetId = null;
 
-  if (window.SiteConfig && window.SiteConfig.ready) {
-    window.SiteConfig.ready.then((config) => {
-      WORKER = config?.endpoints?.apiBase || WORKER;
-      if (!localTest) {
-        TURNSTILE_SITE_KEYS.login = config?.security?.turnstileSiteKeys?.login || TURNSTILE_SITE_KEYS.login;
-        TURNSTILE_SITE_KEYS.adminOverride =
-          config?.security?.turnstileSiteKeys?.adminOverride || TURNSTILE_SITE_KEYS.adminOverride;
-      }
-    });
+  function applyLoginPageConfig(config) {
+    WORKER = config?.endpoints?.apiBase || WORKER;
+
+    const brand = config?.brand || {};
+    const brandName = brand.shortName || brand.name || "StudyBase";
+    const securityName = brand.securityName || `${brandName} Security Checkpoint`;
+    document.title = `${brandName} | Login`;
+    const heroTitle = document.querySelector(".login-hero h1");
+    const loginIntro = document.querySelector(".login-heading p");
+    const securityLabel = document.querySelector(".login-meta span:last-child");
+    const verificationFrame = document.getElementById("verificationFormFrame");
+    if (heroTitle) heroTitle.textContent = `${brandName} login`;
+    if (loginIntro) loginIntro.textContent = `Use your ${brandName} credentials to continue.`;
+    if (securityLabel) securityLabel.textContent = securityName;
+    if (verificationFrame) verificationFrame.title = `${brandName} device verification form`;
+
+    const security = config?.security || {};
+    const keys = security.turnstileSiteKeys || {};
+    const useTestTurnstile =
+      localTest ||
+      (
+        config?.environment?.testMode === true &&
+        security.useTestTurnstileInTestMode !== false &&
+        keys.test
+      );
+
+    TURNSTILE_SITE_KEYS.login = useTestTurnstile
+      ? keys.test || "1x00000000000000000000AA"
+      : keys.login || TURNSTILE_SITE_KEYS.login;
+    TURNSTILE_SITE_KEYS.adminOverride = useTestTurnstile
+      ? keys.test || "1x00000000000000000000AA"
+      : keys.adminOverride || TURNSTILE_SITE_KEYS.adminOverride;
   }
+
+  const loginPageConfigReady = window.SiteConfig && window.SiteConfig.ready
+    ? window.SiteConfig.ready.then(applyLoginPageConfig).catch((error) => {
+        console.warn("Using fallback login config:", error);
+      })
+    : Promise.resolve();
 
   function setInlineError(msg) {
     const box = document.getElementById("inlineError");
@@ -2210,7 +2225,7 @@
     if (document.getElementById("loginTurnstile") && loginTurnstileWidgetId === null) {
       loginTurnstileWidgetId = turnstile.render("#loginTurnstile", {
         sitekey: TURNSTILE_SITE_KEYS.login,
-        theme: "light",
+        theme: document.documentElement.classList.contains("dark") ? "dark" : "light",
         callback: function(token) {
           loginTurnstileToken = token;
           setTurnstileError("login", "");
@@ -2229,7 +2244,7 @@
     if (document.getElementById("adminTurnstile") && adminTurnstileWidgetId === null) {
       adminTurnstileWidgetId = turnstile.render("#adminTurnstile", {
         sitekey: TURNSTILE_SITE_KEYS.adminOverride,
-        theme: "light",
+        theme: document.documentElement.classList.contains("dark") ? "dark" : "light",
         callback: function(token) {
           adminTurnstileToken = token;
           setTurnstileError("admin", "");
@@ -2870,8 +2885,7 @@ document.getElementById("quickLoginForgotBtn").onclick = () => {
   showSection("section-login");
   setStepper(1);
   document.getElementById("inputUsername").focus();
-  waitForTurnstileAndRender();
+  loginPageConfigReady.finally(waitForTurnstileAndRender);
 </script>
 </body>
 </html>
-

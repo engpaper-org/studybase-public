@@ -2,19 +2,10 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-      <script src="/assets/js/siteConfig.js"></script>
-<script>
-    (function () {
-      try {
-        const isDark = String(localStorage.getItem("darkMode") || "").toLowerCase() === "true";
-        if (isDark) document.documentElement.classList.add("dark");
-      } catch (e) {}
-    })();
-  </script>
-  <link rel="stylesheet" href="/assets/css/dark-mode.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RevisionBase - Flags</title>
-  <script src="/assets/js/iframeCheck.js"></script>
+  <script src="/assets/js/auth/iframeCheck.js"></script>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -125,10 +116,10 @@
           <div>
             <p class="font-extrabold">Dark mode</p>
             <p class="text-sm text-slate-500 font-body mt-1">
-              Use the dark theme across RevisionBase. Default: light mode.
+              Use the dark theme across StudyBase. Default: your system setting.
             </p>
             <p id="darkModeStatus" class="mt-2 text-xs font-bold uppercase tracking-widest text-slate-500">
-              Off (default)
+              System default
             </p>
           </div>
 
@@ -151,8 +142,8 @@
     </section>
   </main>
 
-  <script src="/myaccount/js/sideBar.js"></script>
-  <script src="/myaccount/js/checkLoggedIn.js"></script>
+  <script src="/assets/js/account/sidebar.js"></script>
+  <script src="/assets/js/account/checkLoggedIn.js"></script>
 
   <script>
     if (!window.AccountAuth?.requireAuth?.()) {
@@ -163,7 +154,9 @@
     const status = document.getElementById("darkModeStatus");
 
     function readDark() {
-      return String(localStorage.getItem("darkMode") || "").toLowerCase() === "true";
+      return window.SiteTheme
+        ? window.SiteTheme.mode === "dark"
+        : document.documentElement.classList.contains("dark");
     }
 
     function setSwitch(on) {
@@ -173,29 +166,36 @@
     }
 
     function applyDark(on) {
-      if (on) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
+      if (window.SiteTheme) {
+        window.SiteTheme.set(on ? "dark" : "light");
+        return;
       }
+
+      document.documentElement.classList.toggle("dark", on);
     }
 
     function updateStatus(on) {
       if (!status) return;
-      status.textContent = on ? "On" : "Off (default)";
+      status.textContent = on ? "On" : "Off";
     }
 
-    function updateUI(on) {
+    function updateUI(on, shouldApply = true) {
       setSwitch(on);
-      applyDark(on);
+      if (shouldApply) applyDark(on);
       updateStatus(on);
     }
 
-    updateUI(readDark());
+    const syncFromTheme = () => updateUI(readDark(), false);
+    if (window.SiteConfig?.ready) {
+      window.SiteConfig.ready.finally(syncFromTheme);
+    } else {
+      syncFromTheme();
+    }
+
+    window.addEventListener("site-theme-change", syncFromTheme);
 
     toggle?.addEventListener("click", () => {
       const next = !(toggle.dataset.on === "true");
-      localStorage.setItem("darkMode", next ? "true" : "false");
       updateUI(next);
     });
 

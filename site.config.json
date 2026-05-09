@@ -15,16 +15,17 @@
     "terms": "/legal/index.html#terms"
   },
   "icons": {
-    "favicon": "/assets/siteIcons/main.ico",
-    "navbar": "/assets/siteIcons/navbar.png",
-    "footer": "/assets/siteIcons/navbar.png",
-    "appleTouch": "/assets/siteIcons/navbar.png"
+    "favicon": "/assets/images/site-icons/main.ico",
+    "navbar": "/assets/images/site-icons/navbar.png",
+    "footer": "/assets/images/site-icons/navbar.png",
+    "appleTouch": "/assets/images/site-icons/navbar.png"
   },
   "ui": {
     "theme": {
+      "defaultMode": "system",
       "defaultDarkMode": false,
       "darkModeStorageKey": "darkMode",
-      "colorScheme": "light"
+      "colorScheme": "light dark"
     },
     "fonts": {
       "heading": "Plus Jakarta Sans",
@@ -88,7 +89,7 @@
     "googleTagId": "G-N7LHC0S1T1"
   },
   "resources": {
-    "dataBase": "/assets/resourceData/alevel",
+    "dataBase": "/assets/data/resources/alevel",
     "rootFolder": "000",
     "materialPage": "/resource_database/material.html",
     "embeddedMaterialHash": "#primary-access",
@@ -104,7 +105,7 @@
   },
   "autoSafe": {
     "enabled": true,
-    "badWordsUrl": "/autoSafe/data/badWords.txt",
+    "badWordsUrl": "/assets/data/safety/bad-words.txt",
     "mainInput": {
       "enabled": true,
       "debug": false,
@@ -166,17 +167,17 @@
     "minimumVisibleStepMs": 2000,
     "perModuleDelayMs": 1000,
     "registry": {
-      "deviceCheck": "/assets/js/deviceCheck.js",
-      "timeCheck": "/assets/js/timeCheck.js",
-      "loginAnimationCheck": "/assets/js/loginAnimationCheck.js",
-      "timeRecords": "/myaccount/js/timeRecords.js",
-      "timeWarn": "/myaccount/js/timeWarn.js",
-      "playHistory": "/assets/js/playHistory.js",
-      "checkVerification": "/assets/js/checkVerification.js",
-      "envCheck": "/assets/js/envCheck.js",
-      "hashtagProto": "/assets/js/hashtagProto.js",
-      "settingsSafetyWarning": "/myaccount/js/settingsSafetyWarning.js",
-      "analytics": "/assets/js/analytics.js"
+      "deviceCheck": "/assets/js/monitoring/deviceCheck.js",
+      "timeCheck": "/assets/js/monitoring/timeCheck.js",
+      "loginAnimationCheck": "/assets/js/auth/loginAnimationCheck.js",
+      "timeRecords": "/assets/js/account/timeRecords.js",
+      "timeWarn": "/assets/js/account/timeWarn.js",
+      "playHistory": "/assets/js/monitoring/playHistory.js",
+      "checkVerification": "/assets/js/auth/checkVerification.js",
+      "envCheck": "/assets/js/monitoring/envCheck.js",
+      "hashtagProto": "/assets/js/resources/hashtagProto.js",
+      "settingsSafetyWarning": "/assets/js/account/settingsSafetyWarning.js",
+      "analytics": "/assets/js/monitoring/analytics.js"
     }
   },
   "timeLimits": {

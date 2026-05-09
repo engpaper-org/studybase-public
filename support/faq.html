@@ -2,32 +2,22 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-      <script src="/assets/js/siteConfig.js"></script>
-<script>
-    (function () {
-      try {
-        const isDark = String(localStorage.getItem("darkMode") || "").toLowerCase() === "true";
-        if (isDark) document.documentElement.classList.add("dark");
-      } catch (error) {}
-    })();
-  </script>
-  <link rel="stylesheet" href="/assets/css/dark-mode.css">
-  <link rel="stylesheet" href="/assets/css/support-center.css">
+      <script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Support FAQs | RevisionBase Support</title>
-  <link rel="icon" href="/assets/siteIcons/main.ico" />
+  <link rel="icon" href="/assets/images/site-icons/main.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="/assets/js/navbar.js" defer></script>
-  <script src="/assets/js/footer.js" defer></script>
-  <script src="/assets/js/loginAnimationCheck.js" defer></script>
-  <script src="/assets/js/supportArticleContent.js" defer></script>
-  <script src="/assets/js/sensitivePageSafety.js" defer></script>
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <script src="/assets/js/layout/footer.js" defer></script>
+  <script src="/assets/js/auth/loginAnimationCheck.js" defer></script>
+  <script src="/assets/js/support/articleContent.js" defer></script>
+  <script src="/assets/js/privacy/sensitivePageSafety.js" defer></script>
   <script>window.SUPPORT_ARTICLE_KEY = "faq";</script>
-  <script src="/assets/js/supportArticlePage.js" defer></script>
+  <script src="/assets/js/support/articlePage.js" defer></script>
 </head>
 <body class="support-page-body flex flex-col min-h-screen text-slate-900">
   <main id="support-article-app" class="flex-grow"></main>
