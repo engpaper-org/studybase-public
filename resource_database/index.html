@@ -789,7 +789,8 @@
         isPopular,
         isRising,
         isBeta,
-        isOriginal
+        isOriginal,
+        isComingSoon
       } = getResourceDisplayMeta(item.name);
 
       let imageUrl = item.iconurl;
@@ -797,6 +798,13 @@
         <div class="absolute top-2 left-2 z-30 bg-amber-500/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-amber-400/50">
           <i class="fas fa-star"></i> Favourite
         </div>`;
+
+      if (isComingSoon) {
+        tagHtml = `
+        <div class="absolute top-2 left-2 z-30 bg-slate-900/90 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-white/10">
+          <i class="fas fa-clock"></i> Coming soon
+        </div>`;
+      }
 
       if (isBeta) {
         if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
@@ -1119,6 +1127,7 @@
     let isRising = false;
     let isBeta = false;
     let isOriginal = false;
+    let isComingSoon = false;
 
     if (displayName.includes("-v-")) {
       displayName = displayName.replace("-v-", "");
@@ -1145,6 +1154,11 @@
       isOriginal = true;
     }
 
+    if (displayName.includes("-c-")) {
+      displayName = displayName.replace("-c-", "");
+      isComingSoon = true;
+    }
+
     displayName = displayName
       .replace(/\*/g, "")
       .replace(/\s{2,}/g, " ")
@@ -1156,7 +1170,8 @@
       isPopular,
       isRising,
       isBeta,
-      isOriginal
+      isOriginal,
+      isComingSoon
     };
   }
 
@@ -1194,7 +1209,8 @@
       "#gh-confirm-popup",
       "#sb-prohibited-search-modal.flex",
       "#sb-tts-warning-modal.flex",
-      "#update-modal-overlay.flex"
+      "#update-modal-overlay.flex",
+      "#resource-error-host.flex"
     ];
 
     if (directModalSelectors.some(selector => isElementActuallyVisible(document.querySelector(selector)))) {
@@ -1556,7 +1572,8 @@
         isPopular,
         isRising,
         isBeta,
-        isOriginal
+        isOriginal,
+        isComingSoon
       } = getResourceDisplayMeta(item.name);
 
       let imageUrl = item.iconurl;
@@ -1577,7 +1594,14 @@
         if (imageUrl === "pass") imageUrl = "/assets/images/site-icons/back.png";
 
       } else {
-        if (isBeta) {
+        if (isComingSoon) {
+          tagHtml = `
+            <div class="absolute top-2 left-2 z-30 bg-slate-900/90 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-white/10">
+              <i class="fas fa-clock"></i> Coming soon
+            </div>`;
+        }
+
+        else if (isBeta) {
           if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
           tagHtml = `
             <div class="absolute top-2 left-2 z-30 bg-purple-600/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-purple-500/50">
@@ -1729,6 +1753,11 @@
     return String(item?.name || "").includes("*");
   }
 
+  function isComingSoonResource(item) {
+    if (!item || item.__type === "back" || item.__type === "folder") return false;
+    return String(item.name || "").includes("-c-");
+  }
+
   function isWithinSchoolAccessWindow() {
     const now = new Date();
     const minutesPastMidday = (now.getHours() * 60) + now.getMinutes();
@@ -1744,6 +1773,36 @@
     }
 
     window.alert("This starred resource is only available between 8:20 AM and 3:10 PM. Outside these hours, access is limited to help save compute.");
+  }
+
+  function showComingSoonResourcePopup(item) {
+    const { displayName } = getResourceDisplayMeta(item?.name || "");
+    const safeName = escapeHtml(displayName || "This resource");
+    const iconUrl = String(item?.iconurl || "").trim();
+
+    if (typeof window.showResourceErrorModal === "function") {
+      window.showResourceErrorModal({
+        badgeText: "Coming soon",
+        badgeDot: "bg-violet-400",
+        emoji: "&#9203;",
+        sideLabel: "Availability",
+        sideMessage: "This resource is already listed, but it is not ready to open yet.",
+        windowText: "Coming soon",
+        surfaceGlow: "bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.22),transparent_30%),radial-gradient(circle_at_88%_20%,rgba(20,184,166,0.14),transparent_28%),linear-gradient(135deg,rgba(255,255,255,0.94),rgba(245,243,255,0.9))]",
+        panelGlow: "bg-[radial-gradient(circle_at_top,rgba(139,92,246,0.16),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.24),rgba(245,243,255,0.1))]",
+        orbA: "bg-violet-300/55",
+        orbB: "bg-teal-300/40",
+        title: "Coming soon",
+        message: `${safeName} is not available just yet. Check back later when it has been released.`,
+        resourcePreview: {
+          name: displayName || "Resource",
+          imageUrl: iconUrl && iconUrl !== "pass" ? iconUrl : ""
+        }
+      });
+      return;
+    }
+
+    window.alert("Coming soon. This resource is not available yet.");
   }
 
   function sbShouldSaveSearchHistory() {
@@ -1820,6 +1879,11 @@
   }
 
   function handleClick(item) {
+    if (isComingSoonResource(item)) {
+      showComingSoonResourcePopup(item);
+      return;
+    }
+
     if (isSchoolHoursLimitedResource(item) && !isWithinSchoolAccessWindow()) {
       showLimitedHoursError();
       return;

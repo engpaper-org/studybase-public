@@ -34,6 +34,39 @@
     `;
   }
 
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function buildResourcePreview(preview) {
+    if (!preview || typeof preview !== "object") return "";
+
+    const name = escapeHtml(preview.name || "Resource");
+    const imageUrl = String(preview.imageUrl || "").trim();
+    const iconHtml = imageUrl && imageUrl !== "pass"
+      ? `<img src="${escapeHtml(imageUrl)}" alt="" class="h-full w-full object-cover" loading="lazy" onerror="this.closest('[data-resource-preview-icon]').innerHTML='<i class=&quot;fa-solid fa-file-lines text-slate-500&quot;></i>';">`
+      : `<i class="fa-solid fa-file-lines text-slate-500"></i>`;
+
+    return `
+      <div class="mt-5 rounded-[1.35rem] border border-white/80 bg-white/76 p-3 shadow-sm">
+        <div class="flex items-center gap-3">
+          <div data-resource-preview-icon class="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 text-xl shadow-sm">
+            ${iconHtml}
+          </div>
+          <div class="min-w-0">
+            <p class="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">Resource</p>
+            <p class="mt-1 text-sm font-extrabold leading-snug text-slate-800 break-words">${name}</p>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   function openErrorModal(config) {
     const host = ensureErrorHost();
     const codeBlockHtml = config.code
@@ -44,6 +77,7 @@
         </div>
       `
       : "";
+    const resourcePreviewHtml = buildResourcePreview(config.resourcePreview);
 
     host.innerHTML = `
       <div class="relative w-full max-w-3xl overflow-hidden rounded-[2rem] border border-white/65 bg-white/80 shadow-[0_40px_120px_-24px_rgba(15,23,42,0.45)] backdrop-blur-2xl">
@@ -110,6 +144,8 @@
                   <p class="mt-3 text-sm leading-6 text-slate-600">
                     ${config.sideMessage}
                   </p>
+
+                  ${resourcePreviewHtml}
                 </div>
 
                 <div class="mt-5 rounded-[1.35rem] border border-white/80 bg-white/72 px-4 py-3 shadow-sm">
