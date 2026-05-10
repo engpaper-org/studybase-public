@@ -116,7 +116,7 @@
           <div>
             <p class="font-extrabold">Dark mode</p>
             <p class="text-sm text-slate-500 font-body mt-1">
-              Use the dark theme across StudyBase. Default: your system setting.
+              Use the dark theme across StudyBase. Default: light mode.
             </p>
             <p id="darkModeStatus" class="mt-2 text-xs font-bold uppercase tracking-widest text-slate-500">
               System default
@@ -196,6 +196,10 @@
 
     toggle?.addEventListener("click", () => {
       const next = !(toggle.dataset.on === "true");
+      if (next) {
+        const proceed = window.confirm("Dark mode is experimental and there may be some visibility issues. Switch anyway?");
+        if (!proceed) return;
+      }
       updateUI(next);
     });
 

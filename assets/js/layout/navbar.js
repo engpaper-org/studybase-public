@@ -807,6 +807,17 @@
 
         document.querySelectorAll("[data-sb-theme-toggle]").forEach((button) => {
             button.addEventListener("click", () => {
+                const isDark = window.SiteTheme
+                    ? window.SiteTheme.mode === "dark"
+                    : document.documentElement.classList.contains("dark");
+
+                if (!isDark) {
+                    const proceed = window.confirm(
+                        "Dark mode is experimental and there may be some visibility issues. Switch anyway?"
+                    );
+                    if (!proceed) return;
+                }
+
                 if (window.SiteTheme && typeof window.SiteTheme.toggle === "function") {
                     window.SiteTheme.toggle();
                 } else {

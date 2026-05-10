@@ -172,8 +172,8 @@
 
                     <div class="glass-panel rounded-[1.5rem] p-4 md:p-5 bg-white/80 border border-slate-200 min-w-[18rem]">
                         <p class="mini-kicker text-slate-500 mb-2">Current version</p>
-                        <p class="font-mono text-sm font-bold text-slate-900">LEGAL-2026.05</p>
-                        <p class="text-sm text-slate-500 mt-2">Last updated: 6 May 2026</p>
+                        <p class="font-mono text-sm font-bold text-slate-900">LEGAL-2026.05.10</p>
+                        <p class="text-sm text-slate-500 mt-2">Last updated: 10 May 2026</p>
                     </div>
                 </div>
             </div>
@@ -251,7 +251,7 @@
                         StudyBase may process limited personal data and device-related information for security, access control, abuse prevention,
                         analytics, feature operation, and user convenience. Depending on how you use the service, this may include browser information,
                         request metadata, page URLs, material identifiers, browser-storage values, report submissions, consent events, access state,
-                        and session or membership status.
+                        account email, token balance, product-code redemption state, Quick Login recovery state, and session or membership status.
                     </p>
                 </div>
 
@@ -260,17 +260,18 @@
                     <p>
                         StudyBase uses local storage and, where relevant, session storage to remember consent, appearance settings, account and
                         device identifiers, session-expiry values, search and usage preferences, saved favourites, recent actions, wellbeing timing,
-                        paper or subject choices, and safety toggles.
+                        paper or subject choices, daily device-rotation state, and safety toggles.
                     </p>
                     <ul>
                         <li>Consent records may include `site_consent_granted` and a generated `consent_uid`.</li>
-                        <li>Account-related storage may include username, password-like values, and device values used to request protected resources.</li>
+                        <li>Account-related storage may include username, password-like values, account email, and device values used to request protected resources.</li>
                         <li>Preference storage may include dark mode, search-history saving, recent-history saving, quick-login, and content-warning settings.</li>
                         <li>Activity storage may include active time, break reminders, favourites, recent resource behaviour, and idle-unload state.</li>
                     </ul>
                     <p>
-                        These values are primarily stored locally on your own device rather than in a single conventional central account database.
-                        They may remain until they expire, are overwritten, are removed by browser behaviour, or are manually cleared by you.
+                        Search history, recent history, favourites, and most device preferences remain local to your browser. Account profile values,
+                        token balance, one-time code redemption state, current or previous device codes, and Quick Login recovery hashes may also be
+                        stored by StudyBase services so they can be linked to your account email.
                     </p>
                 </div>
 
@@ -288,7 +289,8 @@
                     <p>
                         If StudyBase provides report forms, support inputs, account-related forms, display-name fields, search fields, override inputs,
                         or similar user-controlled text areas, information you choose to type there may be processed for the purpose of operating that feature.
-                        This can include display names, report reasons, support messages, search terms, manually entered codes, and other content you voluntarily submit.
+                        This can include display names, report reasons, support messages, search terms, manually entered product or override codes,
+                        Quick Login setup values, and other content you voluntarily submit.
                     </p>
                 </div>
 
@@ -306,6 +308,13 @@
                     <p>
                         Depending on the feature, this information may include usernames, device identifiers, login timestamps, page context, browser or request metadata,
                         submitted form content, resource identifiers, and other operational context required for service administration, support, integrity, or review.
+                        Account records may be keyed by your email address in plain text, rather than by a hashed email, so account data can be assigned and recovered.
+                    </p>
+                    <p>
+                        StudyBase may store server-side account data including email address, first name, token balance, one-time product-key redemption records,
+                        Quick Login recovery hash, current and previous device codes, and timestamps for profile sync, redemption, login, and rotation events.
+                        Device-session keys are separate from persistent account data and may be cleared during shutdowns or weekly Friday maintenance without
+                        deleting the linked account record.
                     </p>
                 </div>
 
@@ -315,7 +324,7 @@
                         StudyBase pages call platform endpoints for configuration, account or session status, resource listings, protected resource access,
                         top-card content, state checks, reports, updates, and alerts. Depending on the page and feature used, requests may include your account
                         username, stored password-like value, device code, requested material identifier, Turnstile token, current page URL, search text,
-                        or similar information needed for that feature to work.
+                        product-code redemption value, token request, Quick Login code, or similar information needed for that feature to work.
                     </p>
                 </div>
 
@@ -421,6 +430,10 @@
                         including consent state, account state, recent history, personalisation, and access continuity. If you do not agree with this Privacy Policy,
                         you should not continue to use StudyBase.
                     </p>
+                    <p>
+                        Account deletion is handled by request to the site administrator. Clearing local browser storage removes local copies but does not automatically
+                        delete server-side account records, token balances, or redemption logs.
+                    </p>
                 </div>
             </section>
 
@@ -476,6 +489,24 @@
                         Certain materials and routes depend on stored credentials, device identifiers, local session values, access flags, redirect logic,
                         server-side validation, and anti-bot verification. StudyBase may deny or interrupt access where credentials are missing, invalid,
                         expired, flagged, or blocked by safety or infrastructure checks.
+                    </p>
+                    <p>
+                        Account access may use a rotating device code. StudyBase may replace the current device code after the daily rotation point, invalidate the
+                        previous short-lived session key, and issue a new code for the same account. Weekly maintenance or admin shutdowns may clear device-session
+                        keys while keeping persistent account data.
+                    </p>
+                </div>
+
+                <div class="policy-card">
+                    <h3>Tokens, product keys and Quick Login</h3>
+                    <p>
+                        Tokens are an account-linked balance used by StudyBase features as they are introduced. Admin-generated product keys are one-time 8 digit
+                        codes that add the assigned token amount to the redeeming account. Codes may be refused if invalid, already used, expired, blocked, or
+                        suspected of misuse.
+                    </p>
+                    <p>
+                        Quick Login is a convenience recovery flow for existing accounts. If enabled, StudyBase stores only a hash of the 6 digit code and may use
+                        that code, together with saved credentials and account/device state, to issue a new device code after weekly session cleanup.
                     </p>
                 </div>
 

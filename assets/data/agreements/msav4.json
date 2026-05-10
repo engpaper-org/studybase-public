@@ -1,6 +1,6 @@
 {
-  "version": "v2.0",
-  "date": "2026.3.14",
+  "version": "v2.1",
+  "date": "2026.5.10",
   "title": "RevisionBase Unified Legal Policy",
   "description": "A combined legal document incorporating Terms of Use, Terms and Conditions, Privacy Policy, Cookie and Local Storage Notice, Moderation Notice, Proxy/Embedded Content Disclaimer, and Account/Access Terms.",
   "clauses": [
@@ -44,7 +44,7 @@
       "id": "7",
       "title": "Privacy Information Summary",
       "badge": "PRIVACY",
-      "content": "The Service may process limited personal data and device-related information for security, access control, abuse prevention, analytics, feature operation, and user convenience.<br><br>Depending on how you use the Service, this may include browser information, IP-related request data, page URLs, material identifiers, device/browser storage values, report submissions, consent events, access state, and session or membership status."
+      "content": "The Service may process limited personal data and device-related information for security, access control, abuse prevention, analytics, feature operation, and user convenience.<br><br>Depending on how you use the Service, this may include browser information, IP-related request data, page URLs, material identifiers, device/browser storage values, report submissions, consent events, access state, account email, token balance, product-key redemption state, Quick Login recovery state, and session or membership status."
     },
     {
       "id": "8",
@@ -80,13 +80,13 @@
       "id": "13",
       "title": "Data Stored Locally on Your Device",
       "badge": "DEVICE DATA",
-      "content": "The Service may store or read the following categories of information locally on your browser or device: consent flags; pseudonymous consent identifiers; device identifiers; login-related state; stored usernames; stored passwords or password-like values; session expiry timestamps; local feature toggles; play or view history; recently accessed resources; content preference flags; first-name or display-name personalisation values; search safety violation counts; and short-term anti-loop or anti-refresh state values.<br><br>This information is primarily stored client-side rather than in a conventional central user database."
+      "content": "The Service may store or read the following categories of information locally on your browser or device: consent flags; pseudonymous consent identifiers; device identifiers; login-related state; stored usernames; stored passwords or password-like values; session expiry timestamps; local feature toggles; play or view history; recently accessed resources; content preference flags; first-name or display-name personalisation values; search safety violation counts; daily device-rotation state; and short-term anti-loop or anti-refresh state values.<br><br>Search history, recent history, favourites, and most device preferences are generally stored client-side. Account email, first name, token balance, one-time product-key redemption state, current or previous device codes, and Quick Login recovery hashes may also be stored server-side by the Service."
     },
     {
       "id": "14",
       "title": "Locally Stored Keys & Current Implementation Examples",
       "badge": "IMPLEMENTATION",
-      "content": "Examples of client-side values currently used by the Service may include keys such as <strong>site_consent_granted</strong>, <strong>consent_uid</strong>, <strong>gh_device</strong>, <strong>gh_username</strong>, <strong>gh_password</strong>, <strong>gh_session_expiry</strong>, <strong>gh_session_expiry_set_at</strong>, <strong>sb_recentlyPlayed</strong>, <strong>sb_saveRecentlyPlayed</strong>, <strong>sb_firstName</strong>, <strong>sb_searchguard_violations</strong>, and similar operational keys.<br><br>These examples are included for transparency and may change over time as the Service evolves."
+      "content": "Examples of client-side values currently used by the Service may include keys such as <strong>site_consent_granted</strong>, <strong>consent_uid</strong>, <strong>gh_device</strong>, <strong>gh_device_b64</strong>, <strong>gh_username</strong>, <strong>gh_password</strong>, <strong>gh_session_expiry</strong>, <strong>gh_session_expiry_set_at</strong>, <strong>sb_accountEmail</strong>, <strong>sb_deviceRotationKey</strong>, <strong>sb_recentlyPlayed</strong>, <strong>sb_saveRecentlyPlayed</strong>, <strong>sb_firstName</strong>, <strong>sb_quickLogin</strong>, <strong>sb_quickLoginCodeHash</strong>, <strong>sb_searchguard_violations</strong>, and similar operational keys.<br><br>These examples are included for transparency and may change over time as the Service evolves."
     },
     {
       "id": "15",
@@ -98,7 +98,7 @@
       "id": "16",
       "title": "Deletion, Reset & User Responsibility for Local Data",
       "badge": "USER CONTROL",
-      "content": "You are responsible for managing, deleting, exporting, or preserving any browser-side data stored by the Service on your device.<br><br>If you clear localStorage, sessionStorage, browser cache, or related site data, some or all local functionality may reset, including consent status, personalisation, login state, recent history, or premium-related display state.<br><br>The Provider may be unable to restore such data."
+      "content": "You are responsible for managing, deleting, exporting, or preserving any browser-side data stored by the Service on your device.<br><br>If you clear localStorage, sessionStorage, browser cache, or related site data, some or all local functionality may reset, including consent status, personalisation, login state, recent history, or account/token-related display state.<br><br>The Provider may be unable to restore such local data."
     },
     {
       "id": "17",
@@ -116,7 +116,7 @@
       "id": "19",
       "title": "User Rights & Privacy Requests",
       "badge": "RIGHTS",
-      "content": "Where applicable under UK data protection law, users may have rights relating to access, correction, erasure, restriction, objection, and similar privacy rights in relation to personal data processed by or for the Service.<br><br>Because the Service uses significant client-side storage, many values may be directly viewable or deletable by the user through their own browser settings.<br><br>For server-side or third-party transmitted data, requests should be made using the contact route specified by the Provider on the Service."
+      "content": "Where applicable under UK data protection law, users may have rights relating to access, correction, erasure, restriction, objection, and similar privacy rights in relation to personal data processed by or for the Service.<br><br>Because the Service uses significant client-side storage, many values may be directly viewable or deletable by the user through their own browser settings. Clearing local storage does not automatically delete server-side account records, token balances, or redemption logs.<br><br>For server-side account deletion, correction, or third-party transmitted data requests, requests should be made using the contact route specified by the Provider or site administrator on the Service."
     },
     {
       "id": "20",
@@ -153,19 +153,19 @@
       "id": "25",
       "title": "Account Architecture & Client-Side Access State",
       "badge": "ACCOUNTS",
-      "content": "The Service may use a hybrid access architecture involving browser-stored identifiers, local session values, access flags, redirect logic, server-side validation, and resource-mode checks rather than a conventional always-centralised user-account system.<br><br>As a result, certain account-like experiences on the Service may depend partly or substantially on local browser state existing on the correct device and browser."
+      "content": "The Service may use a hybrid access architecture involving browser-stored identifiers, local session values, access flags, redirect logic, server-side validation, persistent email-linked account records, and resource-mode checks.<br><br>Account records may be keyed by plain email address rather than hashed email address so that user data such as profile values, token balance, Quick Login recovery state, and device-code state can be assigned and recovered. Certain account-like experiences may still depend partly on local browser state existing on the correct device and browser."
     },
     {
       "id": "26",
-      "title": "Login State, Membership Checks & Premium Status",
+      "title": "Login State, Tokens & Account Status",
       "badge": "MEMBERSHIP",
-      "content": "The Service may read locally stored login-related values such as a device identifier, username, and password-like credential values in order to determine whether the user appears signed in, whether membership status should be queried, and whether premium or Diamond membership banners, plan controls, or upgrade prompts should be shown.<br><br>The Service may query a remote membership endpoint and may periodically re-check membership status while the user is in a restricted or private-resource access mode."
+      "content": "The Service may read locally stored login-related values such as a device identifier, username, and password-like credential values in order to determine whether the user appears signed in, whether account status should be queried, and whether account-linked token balances or controls should be shown.<br><br>The Service may query remote account endpoints and may periodically re-check account status while the user is in a restricted or private-resource access mode."
     },
     {
       "id": "27",
       "title": "Session Expiry, Device State & Automatic Logout",
       "badge": "SESSION",
-      "content": "The Service may store session-expiry timestamps locally and may automatically require re-authentication once a locally tracked session has expired.<br><br>The current implementation may clear stored login-related values and redirect the user after expiry. The timing rules used by the Service may change over time and are not guaranteed to remain constant."
+      "content": "The Service may store session-expiry timestamps locally and may automatically require re-authentication once a locally tracked session has expired.<br><br>The current implementation may clear or refresh short-lived device-session keys during shutdown or weekly Friday maintenance. If Quick Login is enabled, the Service may use a stored recovery hash and saved account/device state to issue a new device code without a full verification flow. Timing rules may change over time and are not guaranteed to remain constant."
     },
     {
       "id": "28",
@@ -177,7 +177,7 @@
       "id": "29",
       "title": "Recently Viewed / Recently Played History",
       "badge": "HISTORY",
-      "content": "The Service may locally store a list of recently accessed materials, resources, or play/view history on the user's device to improve convenience and continuity. In the current implementation, a recently played list may store titles and URLs and may keep only a limited number of entries.<br><br>This history is generally stored locally on the device and may be disabled, overwritten, or deleted through browser storage changes."
+      "content": "The Service may locally store a list of recently accessed materials, resources, or play/view history on the user's device to improve convenience and continuity. In the current implementation, a recently played list may store titles and URLs and may keep only a limited number of entries.<br><br>This history is generally stored locally on the device, is not intended to be synced to the server account record, and may be disabled, overwritten, or deleted through browser storage changes."
     },
     {
       "id": "30",
@@ -238,9 +238,9 @@
     },
     {
       "id": "39",
-      "title": "Premium Plans, Pricing & Upgrade Features",
+      "title": "Tokens, Product Keys & Future Top Ups",
       "badge": "PLANS",
-      "content": "The Service may present upgrade offers, premium plans, membership prompts, or Diamond-tier access language. Prices, features, durations, and plan naming may change at any time unless prohibited by applicable law.<br><br>Displayed membership state may depend on device-linked or browser-linked status and may not transfer cleanly between devices or cleared browsers."
+      "content": "The Service may present token balances, product-key redemption controls, future top-up prompts, or account-credit language. Admin-generated product keys are one-time codes that add the assigned token amount to the redeeming account. Codes may be refused if invalid, already used, expired, blocked, or suspected of misuse.<br><br>Displayed token or account state may depend on both server-side account records and browser/device-linked session state."
     },
     {
       "id": "40",

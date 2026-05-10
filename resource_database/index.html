@@ -284,12 +284,6 @@
             -webkit-backdrop-filter: blur(14px);
         }
 
-        .farewell-countdown-value {
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: -0.06em;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.24);
-        }
-
     </style>
 </head>
 
@@ -358,36 +352,46 @@
     <section id="farewell-countdown-section" class="hidden relative z-20 px-6 mb-8">
         <div class="max-w-[95rem] mx-auto">
             <div class="farewell-countdown-shell rounded-[2rem] p-6 md:p-8">
-                <div class="relative z-10 grid lg:grid-cols-[0.95fr_1.05fr] gap-7 lg:gap-10 items-center">
+                <div class="relative z-10 grid lg:grid-cols-[1fr_0.8fr] gap-7 lg:gap-10 items-center">
                     <div>
                         <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-white/80 text-[10px] font-black uppercase tracking-[0.24em] mb-5">
-                            <i class="fas fa-school text-pink-200"></i>
-                            Year 13 final stretch
+                            <i class="fas fa-coins text-amber-200"></i>
+                            Account tokens
                         </div>
                         <h2 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">
-                            Thanks for using RevisionBase.
+                            <span id="resourceTokenBalance">-</span> tokens available.
                         </h2>
-                        <p class="text-white/72 text-sm md:text-base leading-relaxed mt-4 max-w-2xl font-medium">
-                            Counting down to the final A-Level stretch. This space is here for the late revision, the shared pressure, and the small wins that make the last run feel manageable.
+                        <p id="resourceTokenEmail" class="text-white/72 text-sm md:text-base leading-relaxed mt-4 max-w-2xl font-medium">
+                            Your token balance is synced with your StudyBase account.
                         </p>
+
+                        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                            <button id="resourceTokenRefresh" type="button" class="inline-flex items-center justify-center gap-2 rounded-full bg-white text-slate-900 px-5 py-3 text-sm font-black shadow-lg hover:bg-slate-50 transition">
+                                <i class="fas fa-rotate"></i>
+                                Refresh balance
+                            </button>
+                            <button id="openTopUpModal" type="button" class="inline-flex items-center justify-center gap-2 rounded-full bg-amber-400 text-slate-950 px-5 py-3 text-sm font-black shadow-lg hover:bg-amber-300 transition">
+                                <i class="fas fa-plus"></i>
+                                Top up tokens
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4">
-                        <div class="farewell-countdown-card rounded-2xl p-4 md:p-5 text-center">
-                            <p id="school-days" class="farewell-countdown-value text-4xl md:text-5xl font-black">00</p>
-                            <p class="text-white/62 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] mt-2">Days</p>
-                        </div>
-                        <div class="farewell-countdown-card rounded-2xl p-4 md:p-5 text-center">
-                            <p id="school-hours" class="farewell-countdown-value text-4xl md:text-5xl font-black">00</p>
-                            <p class="text-white/62 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] mt-2">Hours</p>
-                        </div>
-                        <div class="farewell-countdown-card rounded-2xl p-4 md:p-5 text-center">
-                            <p id="school-minutes" class="farewell-countdown-value text-4xl md:text-5xl font-black">00</p>
-                            <p class="text-white/62 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] mt-2">Mins</p>
-                        </div>
-                        <div class="farewell-countdown-card rounded-2xl p-4 md:p-5 text-center">
-                            <p id="school-seconds" class="farewell-countdown-value text-4xl md:text-5xl font-black">00</p>
-                            <p class="text-white/62 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] mt-2">Secs</p>
+                    <div class="farewell-countdown-card rounded-2xl p-5 md:p-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center">
+                                <i class="fas fa-ticket text-2xl text-amber-200"></i>
+                            </div>
+                            <div>
+                                <p class="text-lg font-black">Redeem product keys from My Account</p>
+                                <p class="mt-2 text-white/68 text-sm leading-relaxed font-medium">
+                                    Use one-time 8 digit codes on the account page to add tokens to this balance.
+                                </p>
+                                <a href="/myaccount/account.html#redeem" class="mt-4 inline-flex items-center gap-2 text-sm font-black text-amber-200 hover:text-white transition">
+                                    Redeem a code
+                                    <i class="fas fa-arrow-right text-xs"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -475,6 +479,27 @@
         </div>
     </div>
 
+    <div id="top-up-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-[2rem] shadow-2xl relative overflow-hidden animate-enter">
+            <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3 class="font-black text-slate-900 text-lg">Top up tokens</h3>
+                </div>
+                <button id="closeTopUpModal" type="button" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <p class="text-slate-600 font-medium leading-relaxed">
+                    Online top-ups are coming soon.
+                </p>
+            </div>
+        </div>
+    </div>
+
     <script>
   let WORKER = "https://api.revisionbase.site";
   let RESOURCE_LIST_ENDPOINT = `${WORKER}/resources/list`;
@@ -537,7 +562,6 @@
     restoreScrollY: 0
   };
   let topCards = [];
-  let schoolCountdownInterval = null;
   let resourceIdleTimer = null;
   let latestRenderedResourceItems = [];
   let resourceIdleState = {
@@ -562,6 +586,55 @@
     if (!section) return;
 
     section.classList.toggle("hidden", forceHidden || openMode !== "access_only");
+  }
+
+  function renderResourceTokenSummary(account) {
+    const balance = document.getElementById("resourceTokenBalance");
+    const email = document.getElementById("resourceTokenEmail");
+    if (!balance || !email) return;
+
+    if (!account) {
+      balance.textContent = "-";
+      email.textContent = "Your token balance is synced with your StudyBase account.";
+      return;
+    }
+
+    balance.textContent = String(Number(account.tokens) || 0);
+    email.textContent = account.email
+      ? `Signed in as ${account.email}`
+      : "Your token balance is synced with your StudyBase account.";
+  }
+
+  async function loadResourceTokenSummary(preloadedAccount = null) {
+    if (preloadedAccount) renderResourceTokenSummary(preloadedAccount);
+    if (openMode !== "access_only" || !window.StudyBaseServices?.accountMe) return;
+
+    try {
+      await window.StudyBaseServices.rotateDeviceIfNeeded?.();
+      const result = await window.StudyBaseServices.accountMe();
+      if (result?.ok && result.account) {
+        renderResourceTokenSummary(result.account);
+        return;
+      }
+
+      const tokenResult = await window.StudyBaseServices.tokens?.();
+      if (tokenResult?.ok) {
+        renderResourceTokenSummary({
+          email: tokenResult.email || localStorage.getItem("sb_accountEmail") || "",
+          tokens: tokenResult.tokens
+        });
+      }
+    } catch (_) {}
+  }
+
+  function openTopUpModal() {
+    document.getElementById("top-up-modal")?.classList.remove("hidden");
+    updateBodyScrollLock();
+  }
+
+  function closeTopUpModal() {
+    document.getElementById("top-up-modal")?.classList.add("hidden");
+    updateBodyScrollLock();
   }
 
   let ROOT_FOLDER = "000";
@@ -976,6 +1049,7 @@
       if (list.length > 0 && list[0].name === "DATA_Public") {
         openMode = "public";
         setBannerResourceMode("public");
+        renderResourceTokenSummary(null);
         updateFarewellCountdownVisibility();
         await loadPublicResourceData();
         allAccessOnlyResources = [];
@@ -987,15 +1061,18 @@
 
       openMode = "access_only";
       setBannerResourceMode("access_only");
+      renderResourceTokenSummary(res.account || null);
       updateFarewellCountdownVisibility();
       allAccessOnlyResources = list.slice();
       allResources = list;
+      loadResourceTokenSummary(res.account || null);
       renderFavourites();
       renderGrid(allResources);
     } catch (error) {
       console.error(error);
       openMode = "public";
       setBannerResourceMode("public");
+      renderResourceTokenSummary(null);
       updateFarewellCountdownVisibility();
       document.getElementById("favourites-section").classList.add("hidden");
 
@@ -1615,7 +1692,8 @@
   function getBodyBlockingModalIds() {
     return [
       "announcement-modal",
-      "report-modal"
+      "report-modal",
+      "top-up-modal"
     ];
   }
 
@@ -1785,7 +1863,15 @@
     if (event.key === "Escape") {
       closeAnnouncementModal();
       closeReportModal();
+      closeTopUpModal();
     }
+  });
+
+  document.getElementById("openTopUpModal")?.addEventListener("click", openTopUpModal);
+  document.getElementById("closeTopUpModal")?.addEventListener("click", closeTopUpModal);
+  document.getElementById("resourceTokenRefresh")?.addEventListener("click", () => loadResourceTokenSummary());
+  document.getElementById("top-up-modal")?.addEventListener("click", (event) => {
+    if (event.target === event.currentTarget) closeTopUpModal();
   });
 
   window.addEventListener("storage", (event) => {
@@ -1794,47 +1880,8 @@
     }
   });
 
-  function padCountdownUnit(value) {
-    return String(value).padStart(2, "0");
-  }
-
-  function updateSchoolCountdown() {
-    const target = new Date("2026-05-08T15:30:00+01:00").getTime();
-    const remaining = Math.max(0, target - Date.now());
-    const days = Math.floor(remaining / 86400000);
-    const hours = Math.floor((remaining % 86400000) / 3600000);
-    const minutes = Math.floor((remaining % 3600000) / 60000);
-    const seconds = Math.floor((remaining % 60000) / 1000);
-
-    const values = {
-      "school-days": String(days),
-      "school-hours": padCountdownUnit(hours),
-      "school-minutes": padCountdownUnit(minutes),
-      "school-seconds": padCountdownUnit(seconds)
-    };
-
-    Object.entries(values).forEach(([id, value]) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = value;
-    });
-
-    if (remaining <= 0 && schoolCountdownInterval) {
-      clearInterval(schoolCountdownInterval);
-      schoolCountdownInterval = null;
-    }
-  }
-
-  function startSchoolCountdown() {
-    updateSchoolCountdown();
-    clearInterval(schoolCountdownInterval);
-    schoolCountdownInterval = setInterval(updateSchoolCountdown, 1000);
-  }
-
-  startSchoolCountdown();
   setupResourceIdleCover();
   loadResources();
 </script>
 </body>
 </html>
-
-

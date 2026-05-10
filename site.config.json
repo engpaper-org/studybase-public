@@ -22,10 +22,10 @@
   },
   "ui": {
     "theme": {
-      "defaultMode": "system",
+      "defaultMode": "light",
       "defaultDarkMode": false,
       "darkModeStorageKey": "darkMode",
-      "colorScheme": "light dark"
+      "colorScheme": "light"
     },
     "fonts": {
       "heading": "Plus Jakarta Sans",

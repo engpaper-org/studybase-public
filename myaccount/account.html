@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RevisionBase • Account</title>
   <script src="/assets/js/auth/iframeCheck.js"></script>
+  <script src="/assets/js/core/services.js"></script>
 
   
   <script src="https://cdn.tailwindcss.com"></script>
@@ -58,7 +59,7 @@
         </h1>
 
         <p class="mt-2 text-slate-500 font-body">
-          Manage your settings and device history.
+          Manage your profile, tokens, and local device settings.
         </p>
       </div>
 
@@ -75,13 +76,13 @@
           </div>
           <div>
             <p class="font-extrabold leading-tight">Account overview</p>
-            <p class="text-xs text-slate-500 font-body">This device</p>
+          <p id="accountSyncStatus" class="text-xs text-slate-500 font-body">Syncing with StudyBase</p>
           </div>
         </div>
 
         <button id="wipeBtn"
           class="px-4 py-2 rounded-xl bg-white border border-red-200 text-red-600 font-extrabold hover:bg-red-50 transition">
-          <i class="fa-solid fa-trash-can mr-2"></i>Delete all local data
+          <i class="fa-solid fa-broom mr-2"></i>Clear local data
         </button>
       </div>
 
@@ -129,6 +130,64 @@
                 </div>
               </div>
             </button>
+
+            <button id="deleteAccountBtn"
+              class="group rounded-2xl border border-red-100 bg-white hover:bg-red-50 shadow-sm hover:shadow-md transition-all p-5 text-left">
+              <div class="flex items-start gap-4">
+                <div class="w-11 h-11 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition-colors">
+                  <i class="fa-solid fa-user-xmark"></i>
+                </div>
+                <div class="min-w-0">
+                  <p class="font-extrabold">Delete account</p>
+                  <p class="text-sm text-slate-500 font-body mt-1">Request account removal.</p>
+                </div>
+              </div>
+            </button>
+          </div>
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] gap-4">
+          <div class="rounded-2xl border border-slate-200 bg-white p-6">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Token balance</p>
+                <div class="mt-3 flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100">
+                    <i class="fa-solid fa-coins"></i>
+                  </div>
+                  <p id="tokenBalance" class="text-4xl font-black text-slate-900">-</p>
+                </div>
+                <p class="mt-3 text-sm text-slate-500 font-body">Tokens are stored with your StudyBase account.</p>
+              </div>
+              <button id="refreshAccountBtn"
+                class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition">
+                <i class="fa-solid fa-rotate mr-2"></i>Refresh
+              </button>
+            </div>
+          </div>
+
+          <div id="redeem" class="rounded-2xl border border-slate-200 bg-white p-6 scroll-mt-24">
+            <div class="flex items-start gap-4">
+              <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
+                <i class="fa-solid fa-ticket"></i>
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="font-extrabold">Redeem a code</p>
+                <p class="text-sm text-slate-500 font-body mt-1">Enter an 8 digit one-time product code.</p>
+                <div class="mt-4 flex flex-col sm:flex-row gap-3">
+                  <input id="redeemCode"
+                    inputmode="numeric"
+                    maxlength="8"
+                    placeholder="12345678"
+                    class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 font-body tracking-[0.18em] outline-none focus:ring-4 focus:ring-emerald-100 focus:border-emerald-300" />
+                  <button id="redeemBtn"
+                    class="px-5 py-3 rounded-2xl bg-slate-900 text-white font-black hover:opacity-90 transition">
+                    Redeem
+                  </button>
+                </div>
+                <p id="redeemMessage" class="mt-3 text-sm text-slate-500 font-body"></p>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -171,6 +230,23 @@
     </div>
   </div>
 
+  <div id="deleteAccountModal" class="fixed inset-0 z-[1000] hidden">
+    <div class="absolute inset-0 bg-black/40"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-6">
+      <div class="w-full max-w-md bg-white rounded-2xl border border-slate-200 shadow-2xl p-6">
+        <h3 class="text-lg font-black text-slate-900">Account deletion</h3>
+        <p class="mt-2 text-sm text-slate-600 font-body">
+          reach out to site admin to request deletion of account.
+        </p>
+        <div class="mt-6 flex justify-end">
+          <button id="deleteAccountClose" class="px-4 py-2 rounded-xl bg-slate-900 text-white font-extrabold">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Auth + Sidebar -->
   <script src="/assets/js/account/sidebar.js"></script>
   <script src="/assets/js/account/checkLoggedIn.js"></script>
@@ -184,11 +260,104 @@
       const safe = name || "there";
       document.getElementById("nameSlot").textContent = safe;
       document.getElementById("nameDetail").textContent = name || "Not set";
+      syncAccount();
+    }
+
+    function setMessage(id, text, tone = "neutral") {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = text || "";
+      el.className = "mt-3 text-sm font-body " + (
+        tone === "error" ? "text-red-600" :
+        tone === "success" ? "text-emerald-600" :
+        "text-slate-500"
+      );
+    }
+
+    function renderAccount(account) {
+      if (!account) return;
+
+      const firstName = (account.profile?.firstName || localStorage.getItem("sb_firstName") || "").trim();
+      const email = account.email || localStorage.getItem("sb_accountEmail") || "";
+
+      document.getElementById("tokenBalance").textContent = String(Number(account.tokens) || 0);
+      document.getElementById("nameSlot").textContent = firstName || "there";
+      document.getElementById("nameDetail").textContent = firstName || "Not set";
+      document.getElementById("accountSyncStatus").textContent = email ? `Signed in as ${email}` : "Synced";
+
+      if (!document.getElementById("emailDetail")) {
+        const nameEl = document.getElementById("nameDetail");
+        const p = document.createElement("p");
+        p.className = "text-sm text-slate-500 font-body mt-1";
+        p.innerHTML = 'Email: <span id="emailDetail" class="font-bold text-slate-900 break-all"></span>';
+        nameEl?.closest("p")?.insertAdjacentElement("afterend", p);
+      }
+
+      const emailDetail = document.getElementById("emailDetail");
+      if (emailDetail) emailDetail.textContent = email || "Not available";
+    }
+
+    async function syncAccount() {
+      const status = document.getElementById("accountSyncStatus");
+      if (status) status.textContent = "Syncing with StudyBase";
+
+      try {
+        await window.StudyBaseServices?.rotateDeviceIfNeeded?.();
+        const result = await window.StudyBaseServices?.accountMe?.();
+
+        if (result?.ok && result.account) {
+          renderAccount(result.account);
+          if (status) status.textContent = "Synced with StudyBase";
+          return;
+        }
+
+        if (status) status.textContent = result?.error || "Could not sync account";
+      } catch (_) {
+        if (status) status.textContent = "Could not sync account";
+      }
     }
 
     // Logout
     document.getElementById("logoutBtn")?.addEventListener("click", () => {
       window.AccountAuth?.logout?.();
+    });
+
+    document.getElementById("refreshAccountBtn")?.addEventListener("click", syncAccount);
+
+    document.getElementById("redeemCode")?.addEventListener("input", (event) => {
+      event.target.value = String(event.target.value || "").replace(/\D/g, "").slice(0, 8);
+      setMessage("redeemMessage", "");
+    });
+
+    document.getElementById("redeemBtn")?.addEventListener("click", async () => {
+      const input = document.getElementById("redeemCode");
+      const code = (input?.value || "").replace(/\D/g, "");
+
+      if (!/^\d{8}$/.test(code)) {
+        setMessage("redeemMessage", "Enter an 8 digit code.", "error");
+        return;
+      }
+
+      setMessage("redeemMessage", "Redeeming...");
+      const result = await window.StudyBaseServices?.redeem?.(code);
+
+      if (!result?.ok) {
+        setMessage("redeemMessage", result?.error || "Code could not be redeemed.", "error");
+        return;
+      }
+
+      if (input) input.value = "";
+      setMessage("redeemMessage", `Added ${result.addedTokens} token(s).`, "success");
+      if (result.account) renderAccount(result.account);
+    });
+
+    const deleteModal = document.getElementById("deleteAccountModal");
+    const openDeleteModal = () => deleteModal.classList.remove("hidden");
+    const closeDeleteModal = () => deleteModal.classList.add("hidden");
+    document.getElementById("deleteAccountBtn")?.addEventListener("click", openDeleteModal);
+    document.getElementById("deleteAccountClose")?.addEventListener("click", closeDeleteModal);
+    deleteModal?.addEventListener("click", (e) => {
+      if (e.target === deleteModal.firstElementChild) closeDeleteModal();
     });
 
     // Wipe all local data
@@ -222,5 +391,3 @@
   </script>
 </body>
 </html>
-
-

@@ -2,6 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head><script src="/assets/js/auth/iframeCheck.js"></script>
   <script src="/assets/js/safety/mainInput.js" defer></script>
+  <script src="/assets/js/core/services.js"></script>
 
   <script>
     (function () {
@@ -362,7 +363,7 @@
               </p>
 
               <p id="quickLoginSavedHint" class="hidden text-xs text-slate-500 font-body">
-                Your actual code is not stored directly — only a secure hash is saved locally on this device.
+                Your actual code is not stored directly. Only a secure hash is saved for account recovery.
               </p>
             </div>
 
@@ -388,7 +389,7 @@
             <div class="min-w-0">
               <p class="font-extrabold">Where this is saved</p>
               <p class="text-sm text-slate-600 font-body mt-1">
-                These preferences are stored in <span class="font-bold">localStorage</span>, so they apply on this browser/device.
+                History and device preferences stay in <span class="font-bold">localStorage</span>. Your first name and Quick Login recovery hash are also synced to your StudyBase account.
               </p>
             </div>
           </div>
@@ -501,7 +502,7 @@
                 Quick Login is enabled by default on this device. This means that in future, you would only need your username, password, and the 6 digit code you set now — instead of doing full device verification again.
               </p>
               <p class="mt-3 text-slate-500 font-body">
-                We ask for a code so this device still has an extra layer of protection. Your code itself is not stored directly — only a secure hash is saved locally.
+                We ask for a code so this device still has an extra layer of protection. Your code itself is not stored directly. Only a secure hash is saved for account recovery.
               </p>
             </div>
 
@@ -984,20 +985,57 @@
       storedQuickLoginHash = state.quickLoginCodeHash || "";
     }
 
+    async function syncProfileToServer(state) {
+      if (!window.StudyBaseServices?.updateProfile) return { ok: true, skipped: true };
+      if (!window.StudyBaseServices.isLoggedIn?.()) return { ok: true, skipped: true };
+
+      try {
+        return await window.StudyBaseServices.updateProfile({
+          firstName: state.firstName,
+          quickLogin: state.quickLogin,
+          quickLoginCodeHash: state.quickLoginCodeHash || ""
+        });
+      } catch (error) {
+        return { ok: false, error: "Could not sync settings" };
+      }
+    }
+
+    async function hydrateProfileFromServer() {
+      if (!window.StudyBaseServices?.accountMe) return;
+      if (!window.StudyBaseServices.isLoggedIn?.()) return;
+
+      try {
+        await window.StudyBaseServices.rotateDeviceIfNeeded?.();
+        const result = await window.StudyBaseServices.accountMe();
+        const firstName = (result?.account?.profile?.firstName || "").trim();
+        if (!result?.ok || !firstName) return;
+
+        const localName = (localStorage.getItem(K.firstName) || "").trim();
+        if (!localName) {
+          localStorage.setItem(K.firstName, firstName);
+          if (els.firstName) els.firstName.value = firstName;
+          if (els.wizardFirstName) els.wizardFirstName.value = firstName;
+        }
+      } catch (_) {}
+    }
+
     async function saveFromUI(showSavedToast = true) {
       const base = getUIStateBase();
       const quickLoginPayload = await buildQuickLoginPayloadFromMain();
       if (!quickLoginPayload) return false;
 
-      saveState({
+      const state = {
         ...base,
         ...quickLoginPayload
-      });
+      };
+
+      saveState(state);
+      const syncResult = await syncProfileToServer(state);
 
       els.quickLoginCode.value = "";
       els.quickLoginCodeConfirm.value = "";
 
-      if (showSavedToast) showToast("Saved");
+      if (showSavedToast) showToast(syncResult?.ok === false ? "Saved locally" : "Saved");
       return true;
     }
 
@@ -1152,6 +1190,12 @@
         ...quickLoginPayload
       });
 
+      await syncProfileToServer({
+        ...base,
+        firstName,
+        ...quickLoginPayload
+      });
+
       const hasQuickLoginDecision = localStorage.getItem(K.quickLogin) !== null;
       const quickLoginEnabled = parseBool(localStorage.getItem(K.quickLogin), false);
       const hasQuickLoginCode = !!(localStorage.getItem(K.quickLoginCodeHash) || "").trim();
@@ -1166,6 +1210,7 @@
     function startSettingsPage() {
     applyModeUI();
     loadIntoUI();
+    hydrateProfileFromServer();
 
     wireSwitch(els.tRedirect, autoSaveFromUI);
     wireSwitch(els.tRedirectLogout, autoSaveFromUI);
@@ -1271,4 +1316,3 @@
   </script>
 </body>
 </html>
-

@@ -5,12 +5,20 @@
     device: "gh_device",
     expiry: "gh_session_expiry",
     expirySetAt: "gh_session_expiry_set_at",
+    deviceB64: "gh_device_b64",
+    accountEmail: "sb_accountEmail",
+    quickLogin: "sb_quickLogin",
+    quickLoginHash: "sb_quickLoginCodeHash",
+    deviceRotationCheckedAt: "sb_deviceRotationCheckedAt",
+    deviceRotationKey: "sb_deviceRotationKey",
   };
 
   const CHECK_EVERY_MS = 10_000;
+  const DEVICE_ROTATION_CHECK_EVERY_MS = 30 * 60 * 1000;
 
   let modalShown = false;
   let timerId = null;
+  let rotationInFlight = false;
 
   // ---------------------------
   // Helpers
@@ -23,6 +31,21 @@
 
   function anyCredentialPresent() {
     return !!(getStr(KEYS.user) || getStr(KEYS.pass) || getStr(KEYS.device));
+  }
+
+  function normaliseDeviceCode(value) {
+    return String(value || "")
+      .trim()
+      .toUpperCase()
+      .replace(/[^1-9A-Z]/g, "");
+  }
+
+  function getCreds() {
+    return {
+      username: getStr(KEYS.user),
+      password: getStr(KEYS.pass),
+      deviceCode: normaliseDeviceCode(getStr(KEYS.device))
+    };
   }
 
   function parseExpiryMs() {
@@ -39,23 +62,23 @@
   }
 
   /**
-   * Returns the next occurrence of Friday 20:00 (8:00pm) in the user's local timezone.
-   * If it's already Friday and >= 20:00, returns next week's Friday 20:00.
+   * Returns the next occurrence of Friday 12:00 in the user's local timezone.
+   * If it's already Friday and >= 12:00, returns next week's Friday 12:00.
    */
-  function nextFridayAt8pmMs(now = new Date()) {
+  function nextFridayAtNoonMs(now = new Date()) {
     const d = new Date(now);
 
     // JS: 0=Sun ... 5=Fri
     const day = d.getDay();
     const daysUntilFriday = (5 - day + 7) % 7;
 
-    d.setHours(20, 0, 0, 0);
+    d.setHours(12, 0, 0, 0);
     d.setDate(d.getDate() + daysUntilFriday);
 
-    // If it's Friday and time is already past 20:00, move to next Friday
+    // If it's Friday and time is already past noon, move to next Friday
     if (d.getTime() <= now.getTime()) {
       d.setDate(d.getDate() + 7);
-      d.setHours(20, 0, 0, 0);
+      d.setHours(12, 0, 0, 0);
     }
 
     return d.getTime();
@@ -64,12 +87,120 @@
   function setExpiryIfNeeded() {
     if (!anyCredentialPresent()) return;
 
-    // Only set if not already set
-    if (parseExpiryMs() != null) return;
+    const currentExpiry = parseExpiryMs();
+    const nextNoonExpiry = nextFridayAtNoonMs(new Date());
+    if (currentExpiry != null && currentExpiry <= nextNoonExpiry) return;
 
-    const expiryMs = nextFridayAt8pmMs(new Date());
+    setNextSessionExpiry();
+  }
+
+  function setNextSessionExpiry() {
+    const expiryMs = nextFridayAtNoonMs(new Date());
     localStorage.setItem(KEYS.expiry, String(expiryMs));
     localStorage.setItem(KEYS.expirySetAt, new Date().toISOString());
+  }
+
+  function setDeviceCode(deviceCode) {
+    const next = normaliseDeviceCode(deviceCode);
+    if (!next) return "";
+
+    localStorage.setItem(KEYS.device, next);
+
+    try {
+      localStorage.setItem(KEYS.deviceB64, btoa(next));
+    } catch (_) {}
+
+    return next;
+  }
+
+  function rememberAccount(account) {
+    if (!account || typeof account !== "object") return;
+
+    if (account.email) localStorage.setItem(KEYS.accountEmail, account.email);
+    if (account.profile?.firstName) localStorage.setItem("sb_firstName", account.profile.firstName);
+    if (account.deviceRotationKey) localStorage.setItem(KEYS.deviceRotationKey, account.deviceRotationKey);
+  }
+
+  async function apiBase() {
+    if (window.StudyBaseServices?.apiBase) {
+      return window.StudyBaseServices.apiBase();
+    }
+
+    try {
+      const config = window.SiteConfig?.ready ? await window.SiteConfig.ready : window.SB_CONFIG;
+      return config?.endpoints?.apiBase || "https://api.studybase.site";
+    } catch (_) {
+      return "https://api.studybase.site";
+    }
+  }
+
+  async function postAccount(path, payload) {
+    if (window.StudyBaseServices?.post) {
+      return window.StudyBaseServices.post(path, payload);
+    }
+
+    const base = (await apiBase()).replace(/\/+$/, "");
+    const res = await fetch(`${base}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload || {})
+    });
+
+    let data = null;
+    try {
+      data = await res.json();
+    } catch (_) {
+      data = { ok: false, error: res.statusText || "Request failed" };
+    }
+
+    if (data?.deviceCode) setDeviceCode(data.deviceCode);
+    if (data?.account) rememberAccount(data.account);
+    return data;
+  }
+
+  async function rotateDeviceIfNeeded() {
+    const creds = getCreds();
+    if (!creds.username || !creds.password || !creds.deviceCode || modalShown || rotationInFlight) return;
+
+    const lastCheck = Number(localStorage.getItem(KEYS.deviceRotationCheckedAt) || 0);
+    if (Number.isFinite(lastCheck) && Date.now() - lastCheck < DEVICE_ROTATION_CHECK_EVERY_MS) return;
+
+    rotationInFlight = true;
+    localStorage.setItem(KEYS.deviceRotationCheckedAt, String(Date.now()));
+
+    try {
+      if (window.StudyBaseServices?.rotateDeviceIfNeeded) {
+        const result = await window.StudyBaseServices.rotateDeviceIfNeeded();
+        if (result?.account) rememberAccount(result.account);
+        return;
+      }
+
+      await postAccount("/account/device/rotate", creds);
+    } catch (_) {
+      localStorage.removeItem(KEYS.deviceRotationCheckedAt);
+    } finally {
+      rotationInFlight = false;
+    }
+  }
+
+  function canUseQuickLogin() {
+    const creds = getCreds();
+    return Boolean(
+      creds.username &&
+      creds.password &&
+      creds.deviceCode &&
+      localStorage.getItem(KEYS.quickLogin) === "true" &&
+      getStr(KEYS.quickLoginHash)
+    );
+  }
+
+  async function runQuickLogin(code) {
+    const creds = getCreds();
+    return postAccount("/account/quick-login", {
+      ...creds,
+      email: getStr(KEYS.accountEmail),
+      quickLoginCode: String(code || "").replace(/\D/g, "")
+    });
   }
 
   function clearCredsAndRedirect() {
@@ -98,6 +229,7 @@
     modalShown = true;
 
     ensureTailwind();
+    const quickLoginReady = canUseQuickLogin();
 
     const overlay = document.createElement("div");
     overlay.id = "gh-expired-overlay";
@@ -117,10 +249,31 @@
             <div class="flex-1">
               <h3 class="text-lg font-black text-slate-900">Session expired</h3>
               <p class="mt-1 text-sm text-slate-500 leading-relaxed">
-                To continue to use the site, please login again.
+                Your weekly device session needs refreshing. Use Quick Login to get a new device code, or sign in again.
               </p>
             </div>
           </div>
+
+          ${quickLoginReady ? `
+          <div class="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+            <label for="gh-quick-login-code" class="text-xs font-black uppercase tracking-widest text-slate-500">
+              Quick Login code
+            </label>
+            <input
+              id="gh-quick-login-code"
+              inputmode="numeric"
+              maxlength="6"
+              autocomplete="one-time-code"
+              class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-center text-lg font-black tracking-[0.24em] outline-none focus:ring-4 focus:ring-blue-100"
+              placeholder="123456"
+            >
+            <p id="gh-quick-login-error" class="mt-2 hidden text-sm font-semibold text-red-600"></p>
+            <button id="gh-quick-login-confirm"
+              class="mt-3 w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 transition active:scale-[0.99]">
+              Continue with Quick Login
+            </button>
+          </div>
+          ` : ""}
 
           <div class="mt-5 flex gap-3">
             <button id="gh-expired-confirm"
@@ -136,6 +289,54 @@
 
     const confirmBtn = overlay.querySelector("#gh-expired-confirm");
     confirmBtn.addEventListener("click", clearCredsAndRedirect, { once: true });
+
+    const quickBtn = overlay.querySelector("#gh-quick-login-confirm");
+    const quickInput = overlay.querySelector("#gh-quick-login-code");
+    const quickError = overlay.querySelector("#gh-quick-login-error");
+
+    quickInput?.addEventListener("input", () => {
+      quickInput.value = String(quickInput.value || "").replace(/\D/g, "").slice(0, 6);
+      if (quickError) quickError.classList.add("hidden");
+    });
+
+    quickBtn?.addEventListener("click", async () => {
+      const code = String(quickInput?.value || "").replace(/\D/g, "");
+
+      if (!/^\d{6}$/.test(code)) {
+        if (quickError) {
+          quickError.textContent = "Enter your full 6 digit Quick Login code.";
+          quickError.classList.remove("hidden");
+        }
+        return;
+      }
+
+      quickBtn.disabled = true;
+      quickBtn.textContent = "Checking...";
+
+      try {
+        const result = await runQuickLogin(code);
+
+        if (!result?.ok) {
+          throw new Error(result?.error || "Quick Login failed.");
+        }
+
+        if (result.deviceCode) setDeviceCode(result.deviceCode);
+        if (result.account) rememberAccount(result.account);
+
+        setNextSessionExpiry();
+        modalShown = false;
+        overlay.remove();
+      } catch (error) {
+        if (quickError) {
+          quickError.textContent = error?.message || "Quick Login failed.";
+          quickError.classList.remove("hidden");
+        }
+        quickBtn.disabled = false;
+        quickBtn.textContent = "Continue with Quick Login";
+      }
+    });
+
+    setTimeout(() => quickInput?.focus(), 50);
 
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) {
@@ -156,7 +357,10 @@
 
     if (Date.now() >= expiryMs) {
       showExpiredModal();
+      return;
     }
+
+    rotateDeviceIfNeeded();
   }
 
   function start() {

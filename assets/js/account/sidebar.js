@@ -3,9 +3,8 @@
   const LINKS = [
     { href: "/myaccount/account.html", label: "Overview", icon: "fa-solid fa-house" },
     { href: "/myaccount/settings.html", label: "Settings", icon: "fa-solid fa-sliders" },
-    { href: "/myaccount/flags.html", label: "Flags", icon: "fa-solid fa-flag" },
     { href: "/myaccount/history.html", label: "History", icon: "fa-solid fa-clock-rotate-left" },
-    { href: "/myaccount/plan.html", label: "Upgrade", icon: "fa-solid fa-crown" }, // <-- Added Upgrade Plan here
+    { href: "/myaccount/account.html#redeem", label: "Redeem code", icon: "fa-solid fa-ticket" },
   ];
 
   function samePath(a, b) {
@@ -31,8 +30,6 @@
 
     const navLinks = LINKS.map(l => {
       const active = l.href === activeHref;
-      // Add a special text color for the upgrade button if you want it to stand out, 
-      // or keep it standard. It currently matches the rest of the nav.
       return `
         <a href="${l.href}"
            class="group flex items-center gap-3 px-3 py-2 rounded-2xl border transition-all
@@ -74,7 +71,7 @@
           <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
             <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Signed in as</p>
             <p id="sb-account-name" class="mt-1 font-extrabold text-slate-900">—</p>
-            <p class="text-xs text-slate-500 font-body mt-1">This device</p>
+            <p id="sb-account-email" class="text-xs text-slate-500 font-body mt-1 break-all">This device</p>
           </div>
 
           <nav class="flex flex-col gap-2">
@@ -124,10 +121,26 @@
 
     // Fill name from your settings key
     const name = (localStorage.getItem("sb_firstName") || "").trim() || "User";
+    const email = (localStorage.getItem("sb_accountEmail") || "").trim();
     const a = document.getElementById("sb-account-name");
     const b = document.getElementById("sb-account-name-m");
+    const emailEl = document.getElementById("sb-account-email");
     if (a) a.textContent = name;
     if (b) b.textContent = name;
+    if (emailEl && email) emailEl.textContent = email;
+
+    if (window.StudyBaseServices?.rotateDeviceIfNeeded) {
+      window.StudyBaseServices.rotateDeviceIfNeeded()
+        .then((result) => {
+          if (!result?.account) return;
+          const nextName = result.account.profile?.firstName || name;
+          const nextEmail = result.account.email || email;
+          if (a) a.textContent = nextName || "User";
+          if (b) b.textContent = nextName || "User";
+          if (emailEl && nextEmail) emailEl.textContent = nextEmail;
+        })
+        .catch(() => {});
+    }
 
     // Drawer controls
     const drawer = document.getElementById("sb-account-drawer");

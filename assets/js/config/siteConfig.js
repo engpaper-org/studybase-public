@@ -24,10 +24,10 @@
     },
     ui: {
       theme: {
-        defaultMode: "system",
+        defaultMode: "light",
         defaultDarkMode: false,
         darkModeStorageKey: "darkMode",
-        colorScheme: "light dark"
+        colorScheme: "light"
       },
       fonts: {
         heading: "Plus Jakarta Sans",
@@ -378,7 +378,7 @@
       document.head.appendChild(meta);
     }
 
-    meta.content = isDark ? "dark light" : "light dark";
+    meta.content = isDark ? "dark light" : "light";
   }
 
   function applyThemePreference(preference, config, options = {}) {
@@ -394,7 +394,7 @@
     root.classList.toggle("dark", resolvedDark);
     root.dataset.theme = resolvedDark ? "dark" : "light";
     root.dataset.themePreference = normalizedPreference;
-    root.style.colorScheme = resolvedDark ? "dark light" : "light dark";
+    root.style.colorScheme = resolvedDark ? "dark light" : "light";
     setColorSchemeMeta(resolvedDark);
 
     if (options.persist) {
