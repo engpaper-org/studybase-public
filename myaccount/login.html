@@ -2605,8 +2605,12 @@
 
       if (result && result.ok) {
         stopVerifyPolling();
-        const verifiedDeviceCode = rememberAccountResult(result) || deviceCode;
+        const serverDeviceCode = normalizeDeviceCode(result.deviceCode || "");
+        const verifiedDeviceCode = rememberAccountResult(result) || serverDeviceCode || deviceCode;
         persistDeviceCode(verifiedDeviceCode);
+        document.getElementById("deviceCodeText").innerText = verifiedDeviceCode;
+        document.getElementById("checkingCodePreview").textContent = `Device code: ${verifiedDeviceCode}`;
+        document.getElementById("deviceStatusCode").textContent = `Device code: ${verifiedDeviceCode}`;
         completeLoginSuccess();
       }
     }, 5000);
