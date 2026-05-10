@@ -1104,8 +1104,14 @@
             const isLoggedIn = u && p && d;
 
             if (isLoggedIn) {
-                const openAccountModal = (e) => {
-                    e.preventDefault();
+                const openAccountModal = (target) => {
+                    if (target && typeof target.preventDefault === "function") {
+                        target.preventDefault();
+                    }
+
+                    const iframeUrl = typeof target === "string" && target.trim()
+                        ? target.trim()
+                        : accountUrl;
 
                     const modalBackdrop = document.createElement("div");
                     modalBackdrop.className =
@@ -1119,14 +1125,14 @@
                     modalHeader.className =
                         "flex justify-between items-center px-6 py-4 bg-white/95 backdrop-blur-xl border-b border-slate-200 z-10";
                     modalHeader.innerHTML = `
-                        <span class="font-black text-slate-900 text-lg tracking-tight">My Settings</span>
+                        <span class="font-black text-slate-900 text-lg tracking-tight">My Account</span>
                         <button id="close-settings-modal" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
                     `;
 
                     const iframe = document.createElement("iframe");
-                    iframe.src = accountUrl;
+                    iframe.src = iframeUrl;
                     iframe.className = "w-full flex-grow border-none bg-slate-50";
 
                     modalContainer.appendChild(modalHeader);
@@ -1159,6 +1165,8 @@
                         if (e.target === modalBackdrop) closeModal();
                     });
                 };
+
+                window.openStudyBaseAccountModal = openAccountModal;
 
                 const handleLogout = () => {
                     ["gh_username", "gh_password", "gh_device"].forEach((k) =>

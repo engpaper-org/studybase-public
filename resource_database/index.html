@@ -385,9 +385,9 @@
                             <div>
                                 <p class="text-lg font-black">Redeem product keys from My Account</p>
                                 <p class="mt-2 text-white/68 text-sm leading-relaxed font-medium">
-                                    Use one-time 8 digit codes on the account page to add tokens to this balance.
+                                    Use one-time 8 digit codes on the redeem page to add tokens to this balance.
                                 </p>
-                                <a href="/myaccount/account.html#redeem" class="mt-4 inline-flex items-center gap-2 text-sm font-black text-amber-200 hover:text-white transition">
+                                <a href="/myaccount/redeem.html" class="mt-4 inline-flex items-center gap-2 text-sm font-black text-amber-200 hover:text-white transition">
                                     Redeem a code
                                     <i class="fas fa-arrow-right text-xs"></i>
                                 </a>
@@ -476,27 +476,6 @@
                 </button>
             </div>
             <iframe id="report-iframe" class="flex-grow w-full border-none bg-slate-50" src=""></iframe>
-        </div>
-    </div>
-
-    <div id="top-up-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-[2rem] shadow-2xl relative overflow-hidden animate-enter">
-            <div class="p-6 border-b border-slate-100 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                    <h3 class="font-black text-slate-900 text-lg">Top up tokens</h3>
-                </div>
-                <button id="closeTopUpModal" type="button" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="p-6">
-                <p class="text-slate-600 font-medium leading-relaxed">
-                    Online top-ups are coming soon.
-                </p>
-            </div>
         </div>
     </div>
 
@@ -628,12 +607,44 @@
   }
 
   function openTopUpModal() {
-    document.getElementById("top-up-modal")?.classList.remove("hidden");
+    if (typeof window.openStudyBaseAccountModal === "function") {
+      window.openStudyBaseAccountModal("/myaccount/redeem.html");
+      return;
+    }
+
+    if (document.getElementById("sb-account-redeem-modal")) return;
+
+    const modal = document.createElement("div");
+    modal.id = "sb-account-redeem-modal";
+    modal.className = "fixed inset-0 z-[9999] bg-slate-950/55 backdrop-blur-lg flex items-center justify-center p-4";
+    modal.innerHTML = `
+      <div class="relative w-full max-w-6xl h-[92vh] bg-slate-50 rounded-[2rem] shadow-2xl overflow-hidden flex flex-col border border-white/20">
+        <div class="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200">
+          <span class="font-black text-slate-900 text-lg tracking-tight">My Account</span>
+          <button id="close-account-redeem-modal" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <iframe src="/myaccount/redeem.html" class="w-full flex-grow border-none bg-slate-50" title="Redeem token code"></iframe>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
     updateBodyScrollLock();
+
+    const closeModal = () => {
+      modal.remove();
+      updateBodyScrollLock();
+    };
+
+    modal.querySelector("#close-account-redeem-modal")?.addEventListener("click", closeModal);
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) closeModal();
+    });
   }
 
   function closeTopUpModal() {
-    document.getElementById("top-up-modal")?.classList.add("hidden");
+    document.getElementById("sb-account-redeem-modal")?.remove();
     updateBodyScrollLock();
   }
 
@@ -1192,7 +1203,7 @@
 
     return [...document.querySelectorAll("iframe")].some(frame => {
       const src = String(frame.getAttribute("src") || "");
-      if (!/\/myaccount\/(login|account|settings)\.html/.test(src)) return false;
+      if (!/\/myaccount\/(login|account|settings|redeem)\.html/.test(src)) return false;
 
       const fixedAncestor = frame.closest(".fixed, [style*='position: fixed'], [style*='position:fixed']");
       return isElementActuallyVisible(fixedAncestor || frame);
@@ -1693,7 +1704,7 @@
     return [
       "announcement-modal",
       "report-modal",
-      "top-up-modal"
+      "sb-account-redeem-modal"
     ];
   }
 
@@ -1868,11 +1879,7 @@
   });
 
   document.getElementById("openTopUpModal")?.addEventListener("click", openTopUpModal);
-  document.getElementById("closeTopUpModal")?.addEventListener("click", closeTopUpModal);
   document.getElementById("resourceTokenRefresh")?.addEventListener("click", () => loadResourceTokenSummary());
-  document.getElementById("top-up-modal")?.addEventListener("click", (event) => {
-    if (event.target === event.currentTarget) closeTopUpModal();
-  });
 
   window.addEventListener("storage", (event) => {
     if (event.key === "sb_fav") {

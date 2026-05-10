@@ -8,7 +8,7 @@
     return String(value || "")
       .trim()
       .toUpperCase()
-      .replace(/[^1-9A-Z]/g, "");
+      .replace(/[^0-9A-Z]/g, "");
   }
 
   async function getConfig() {

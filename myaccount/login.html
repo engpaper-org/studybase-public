@@ -1827,7 +1827,7 @@
           <div class="bg-white border border-slate-200 p-6 rounded-2xl shadow-sm mb-4 relative group hover:border-blue-300 transition-colors">
             <p class="text-xs font-extrabold text-slate-400 uppercase tracking-wider mb-2 text-center">Your unique device code</p>
             <button id="deviceCodeBox" type="button" class="w-full bg-slate-900 rounded-xl p-4 text-center cursor-pointer group-hover:shadow-lg transition-shadow">
-              <span id="deviceCodeText" class="font-mono text-2xl text-green-400 tracking-[0.2em] font-extrabold drop-shadow-md">LOADING...</span>
+              <span id="deviceCodeText" class="block break-all font-mono text-sm sm:text-base text-green-400 tracking-[0.16em] font-extrabold drop-shadow-md">LOADING...</span>
             </button>
           </div>
           <div class="flex gap-3 mb-6">
@@ -2005,6 +2005,7 @@
 
   let verifyPoll = null;
   let pendingQuickLoginDecodedDevice = "";
+  let pendingQuickLoginAuthResult = null;
   let loginTurnstileToken = null;
   let adminTurnstileToken = null;
   let loginTurnstileWidgetId = null;
@@ -2101,6 +2102,7 @@
     stopVerifyPolling();
     setVerificationFormUrl("");
     pendingQuickLoginDecodedDevice = "";
+    pendingQuickLoginAuthResult = null;
     clearQuickLoginInputs();
     showSection("section-login");
     setInlineError("");
@@ -2121,7 +2123,7 @@
     return (value || "")
       .toString()
       .toUpperCase()
-      .replace(/[^1-9A-Z]/g, "");
+      .replace(/[^0-9A-Z]/g, "");
   }
 
   function generateCode(length = DEVICE_CODE_LENGTH) {
@@ -2173,6 +2175,21 @@
     if (!normalized) return;
     localStorage.setItem("gh_device", normalized);
     localStorage.setItem(QUICK_LOGIN_KEYS.deviceB64, encodeDeviceCodeToB64(normalized));
+  }
+
+  function rememberAccountResult(result) {
+    if (!result || typeof result !== "object") return "";
+
+    const nextDeviceCode = normalizeDeviceCode(result.deviceCode || "");
+    if (nextDeviceCode) persistDeviceCode(nextDeviceCode);
+
+    const account = result.account && typeof result.account === "object" ? result.account : null;
+    if (result.email) localStorage.setItem("sb_accountEmail", result.email);
+    if (account?.email) localStorage.setItem("sb_accountEmail", account.email);
+    if (account?.profile?.firstName) localStorage.setItem("sb_firstName", account.profile.firstName);
+    if (account?.deviceRotationKey) localStorage.setItem("sb_deviceRotationKey", account.deviceRotationKey);
+
+    return nextDeviceCode;
   }
 
   async function sha256(text) {
@@ -2456,6 +2473,8 @@
     }
 
     persistDeviceCode(pendingQuickLoginDecodedDevice);
+    rememberAccountResult(pendingQuickLoginAuthResult);
+    pendingQuickLoginAuthResult = null;
     completeLoginSuccess();
   }
 
@@ -2495,7 +2514,9 @@
     }
 
     if (result && result.ok) {
-      return { usable: true, decodedDevice };
+      const rotatedDevice = normalizeDeviceCode(result.deviceCode || "");
+      pendingQuickLoginAuthResult = result;
+      return { usable: true, decodedDevice: rotatedDevice || decodedDevice };
     }
 
     return { usable: false, decodedDevice };
@@ -2524,8 +2545,9 @@
     }
 
     if (result && result.ok) {
+      const verifiedDeviceCode = rememberAccountResult(result) || deviceCode;
       showSection("section-device-status");
-      updateDeviceStatus(true, deviceCode);
+      updateDeviceStatus(true, verifiedDeviceCode);
       setStepper(3);
       return true;
     }
@@ -2583,7 +2605,8 @@
 
       if (result && result.ok) {
         stopVerifyPolling();
-        persistDeviceCode(deviceCode);
+        const verifiedDeviceCode = rememberAccountResult(result) || deviceCode;
+        persistDeviceCode(verifiedDeviceCode);
         completeLoginSuccess();
       }
     }, 5000);
@@ -2797,6 +2820,7 @@
 
   function startForgotCodeRecoveryFlow() {
   pendingQuickLoginDecodedDevice = "";
+  pendingQuickLoginAuthResult = null;
 
   const newCode = generateCode();
   persistDeviceCode(newCode);
