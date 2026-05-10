@@ -464,7 +464,7 @@
 
   if (!document.querySelector('script[data-studybase-endpoint-popup="true"]')) {
     const endpointPopupScript = document.createElement("script");
-    endpointPopupScript.src = "/assets/js/monitoring/endpointPopup.js?v=20260509-maintenance";
+    endpointPopupScript.src = "/assets/js/monitoring/endpointPopup.js?v=20260510-expected-results";
     endpointPopupScript.async = false;
     endpointPopupScript.dataset.studybaseEndpointPopup = "true";
     document.head.appendChild(endpointPopupScript);

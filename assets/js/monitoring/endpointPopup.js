@@ -317,6 +317,57 @@
     }
   }
 
+  async function getResponsePayload(response) {
+    try {
+      const clone = response.clone();
+      const contentType = clone.headers.get("content-type") || "";
+
+      if (contentType.indexOf("application/json") !== -1) {
+        const json = await clone.json();
+        return {
+          isJson: true,
+          json: json,
+          details: normaliseDetails(JSON.stringify(json, null, 2))
+        };
+      }
+
+      return {
+        isJson: false,
+        json: null,
+        details: normaliseDetails(await clone.text())
+      };
+    } catch (error) {
+      return {
+        isJson: false,
+        json: null,
+        details: ""
+      };
+    }
+  }
+
+  function isHandledApplicationResponse(response, payload) {
+    if (!response || response.status >= 500) return false;
+    if (!payload || !payload.isJson || !payload.json || typeof payload.json !== "object") return false;
+
+    const data = payload.json;
+    const error = typeof data.error === "string" ? data.error : "";
+
+    if (error === MAINTENANCE_CODE || error === "Unknown endpoint") {
+      return false;
+    }
+
+    return Boolean(
+      data.ok === false &&
+      (
+        error ||
+        typeof data.message === "string" ||
+        typeof data.reason === "string" ||
+        data.banned === true ||
+        Object.prototype.hasOwnProperty.call(data, "retryAfter")
+      )
+    );
+  }
+
   async function shouldIgnoreStateShutdownResponse(input, response) {
     try {
       const requestUrl =
@@ -429,11 +480,15 @@
       }
 
       if (!response.ok) {
-        const details = await getResponseDetails(response);
+        const payload = await getResponsePayload(response);
+        if (isHandledApplicationResponse(response, payload)) {
+          return response;
+        }
+
         openPopup({
           code: String(response.status),
           endpoint: buildEndpointLabel(input),
-          details: details || response.statusText || "The endpoint returned an error response."
+          details: payload.details || response.statusText || "The endpoint returned an error response."
         });
       }
 
