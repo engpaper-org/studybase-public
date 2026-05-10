@@ -2,9 +2,9 @@
 (function () {
   const LINKS = [
     { href: "/myaccount/account.html", label: "Overview", icon: "fa-solid fa-house" },
-    { href: "/myaccount/settings.html", label: "Settings", icon: "fa-solid fa-sliders" },
-    { href: "/myaccount/history.html", label: "History", icon: "fa-solid fa-clock-rotate-left" },
     { href: "/myaccount/redeem.html", label: "Redeem code", icon: "fa-solid fa-ticket" },
+    { href: "/myaccount/settings.html", label: "Settings", icon: "fa-solid fa-sliders" },
+    { href: "/myaccount/history.html", label: "History", icon: "fa-solid fa-clock-rotate-left" }
   ];
 
   function samePath(a, b) {
@@ -32,6 +32,7 @@
       const active = l.href === activeHref;
       return `
         <a href="${l.href}"
+           ${active ? 'aria-current="page"' : ""}
            class="group flex items-center gap-3 px-3 py-2 rounded-2xl border transition-all
            ${active
              ? "bg-slate-900 text-white border-slate-900 shadow-sm"
@@ -54,7 +55,7 @@
             </span>
             <div class="leading-tight">
               <p class="font-black">Account</p>
-              <p class="text-xs text-slate-500 font-body">RevisionBase</p>
+              <p class="text-xs text-slate-500 font-body">StudyBase</p>
             </div>
           </div>
           <button id="sb-account-open" class="px-3 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold">
@@ -125,9 +126,18 @@
     const a = document.getElementById("sb-account-name");
     const b = document.getElementById("sb-account-name-m");
     const emailEl = document.getElementById("sb-account-email");
+    let emailElM = document.getElementById("sb-account-email-m");
+    if (b && !emailElM) {
+      emailElM = document.createElement("p");
+      emailElM.id = "sb-account-email-m";
+      emailElM.className = "text-[11px] text-slate-400 font-body break-all max-w-48";
+      emailElM.textContent = "This device";
+      b.insertAdjacentElement("afterend", emailElM);
+    }
     if (a) a.textContent = name;
     if (b) b.textContent = name;
     if (emailEl && email) emailEl.textContent = email;
+    if (emailElM && email) emailElM.textContent = email;
 
     if (window.StudyBaseServices?.rotateDeviceIfNeeded) {
       window.StudyBaseServices.rotateDeviceIfNeeded()
@@ -138,6 +148,7 @@
           if (a) a.textContent = nextName || "User";
           if (b) b.textContent = nextName || "User";
           if (emailEl && nextEmail) emailEl.textContent = nextEmail;
+          if (emailElM && nextEmail) emailElM.textContent = nextEmail;
         })
         .catch(() => {});
     }
@@ -152,6 +163,9 @@
 
     openBtn?.addEventListener("click", openDrawer);
     closeBtn?.addEventListener("click", closeDrawer);
+    drawer?.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeDrawer);
+    });
     drawer?.addEventListener("click", (e) => {
       if (e.target === drawer.firstElementChild) closeDrawer();
     });
