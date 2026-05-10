@@ -105,9 +105,22 @@
   // Only clears auth keys (logout). Does NOT touch grace timer.
   function clearAuthData() {
     try {
-      localStorage.removeItem("gh_device");
-      localStorage.removeItem("gh_password");
-      localStorage.removeItem("gh_username");
+      [
+        "studybase_device",
+        "studybase_password",
+        "studybase_username",
+        "studybase_device_b64",
+        "studybase_session_expiry",
+        "studybase_session_expiry_set_at",
+        "gh_device",
+        "gh_password",
+        "gh_username",
+        "gh_device_b64",
+        "gh_session_expiry",
+        "gh_session_expiry_set_at"
+      ].forEach(function (key) {
+        localStorage.removeItem(key);
+      });
     } catch (e) {}
   }
 

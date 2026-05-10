@@ -906,10 +906,30 @@ const SUBJECTS = Object.entries(SUBJECT_LINKS).map(([title, value]) => ({
     icon: value.icon || "fa-book-open"
 }));
 
+function readAuthKey(primaryKey, legacyKey) {
+    const primary = (localStorage.getItem(primaryKey) || "").trim();
+    if (primary) return primary;
+
+    const legacy = (localStorage.getItem(legacyKey) || "").trim();
+    if (legacy) {
+        localStorage.setItem(primaryKey, legacy);
+        localStorage.removeItem(legacyKey);
+    }
+    return legacy;
+}
+
+function getStoredAuth() {
+    return {
+        username: readAuthKey("studybase_username", "gh_username"),
+        password: readAuthKey("studybase_password", "gh_password"),
+        deviceCode: readAuthKey("studybase_device", "gh_device")
+    };
+}
+
 function getIframeUrlWithMainParams(rawUrl) {
     const iframeUrl = new URL(rawUrl, window.location.origin);
     const mainParams = new URLSearchParams(window.location.search);
-    const localDeviceCode = (localStorage.getItem("gh_device") || "").trim();
+    const localDeviceCode = getStoredAuth().deviceCode;
 
     for (const [key, value] of mainParams.entries()) {
         iframeUrl.searchParams.set(key, value);
@@ -1059,9 +1079,20 @@ function goBack() {
 }
 
 function logoutUser() {
-    localStorage.removeItem("gh_username");
-    localStorage.removeItem("gh_password");
-    localStorage.removeItem("gh_device");
+    [
+        "studybase_username",
+        "studybase_password",
+        "studybase_device",
+        "studybase_device_b64",
+        "studybase_session_expiry",
+        "studybase_session_expiry_set_at",
+        "gh_username",
+        "gh_password",
+        "gh_device",
+        "gh_device_b64",
+        "gh_session_expiry",
+        "gh_session_expiry_set_at"
+    ].forEach((key) => localStorage.removeItem(key));
     window.location.href = "/resource_database/index.html";
 }
 
@@ -1264,9 +1295,7 @@ async function fetchMaterialUrl() {
     const encoded = params.get("material-ID");
     if (!encoded) return false;
 
-    const username = localStorage.getItem("gh_username");
-    const password = localStorage.getItem("gh_password");
-    const deviceCode = localStorage.getItem("gh_device");
+    const { username, password, deviceCode } = getStoredAuth();
     if (!username || !password || !deviceCode) return false;
 
     if (!turnstileToken) return false;
@@ -1685,4 +1714,3 @@ boot();
 
 </body>
 </html>
-

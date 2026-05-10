@@ -258,13 +258,13 @@
   },
   "account": {
     "authStorageKeys": {
-      "username": "gh_username",
-      "password": "gh_password",
-      "device": "gh_device"
+      "username": "studybase_username",
+      "password": "studybase_password",
+      "device": "studybase_device"
     },
     "sessionStorageKeys": {
-      "expiry": "sb_sessionExpiry",
-      "expirySetAt": "sb_sessionExpirySetAt"
+      "expiry": "studybase_session_expiry",
+      "expirySetAt": "studybase_session_expiry_set_at"
     },
     "loginSuccessMessage": "login-success",
     "sessionExpiredParam": "sessionExpired"

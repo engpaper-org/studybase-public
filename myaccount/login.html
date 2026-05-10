@@ -2000,7 +2000,16 @@
   const QUICK_LOGIN_KEYS = {
     enabled: "sb_quickLogin",
     hash: "sb_quickLoginCodeHash",
-    deviceB64: "gh_device_b64"
+    deviceB64: "studybase_device_b64",
+    legacyDeviceB64: "gh_device_b64"
+  };
+  const AUTH_KEYS = {
+    username: "studybase_username",
+    password: "studybase_password",
+    device: "studybase_device",
+    legacyUsername: "gh_username",
+    legacyPassword: "gh_password",
+    legacyDevice: "gh_device"
   };
 
   let verifyPoll = null;
@@ -2126,6 +2135,25 @@
       .replace(/[^0-9A-Z]/g, "");
   }
 
+  function readMigratedKey(primaryKey, legacyKey) {
+    const primary = (localStorage.getItem(primaryKey) || "").trim();
+    if (primary) return primary;
+
+    const legacy = (localStorage.getItem(legacyKey) || "").trim();
+    if (legacy) {
+      localStorage.setItem(primaryKey, legacy);
+      localStorage.removeItem(legacyKey);
+    }
+    return legacy;
+  }
+
+  function migrateAccountStorage() {
+    readMigratedKey(AUTH_KEYS.username, AUTH_KEYS.legacyUsername);
+    readMigratedKey(AUTH_KEYS.password, AUTH_KEYS.legacyPassword);
+    readMigratedKey(AUTH_KEYS.device, AUTH_KEYS.legacyDevice);
+    readMigratedKey(QUICK_LOGIN_KEYS.deviceB64, QUICK_LOGIN_KEYS.legacyDeviceB64);
+  }
+
   function generateCode(length = DEVICE_CODE_LENGTH) {
     let code = "";
     for (let i = 0; i < length; i++) {
@@ -2135,10 +2163,12 @@
   }
 
   function getStoredCreds() {
+    migrateAccountStorage();
+
     return {
-      username: (localStorage.getItem("gh_username") || "").trim(),
-      password: (localStorage.getItem("gh_password") || "").trim(),
-      deviceCode: normalizeDeviceCode(localStorage.getItem("gh_device") || "")
+      username: (localStorage.getItem(AUTH_KEYS.username) || "").trim(),
+      password: (localStorage.getItem(AUTH_KEYS.password) || "").trim(),
+      deviceCode: normalizeDeviceCode(localStorage.getItem(AUTH_KEYS.device) || "")
     };
   }
 
@@ -2151,6 +2181,7 @@
   }
 
   function getStoredDeviceB64() {
+    migrateAccountStorage();
     return (localStorage.getItem(QUICK_LOGIN_KEYS.deviceB64) || "").trim();
   }
 
@@ -2173,8 +2204,10 @@
   function persistDeviceCode(code) {
     const normalized = normalizeDeviceCode(code);
     if (!normalized) return;
-    localStorage.setItem("gh_device", normalized);
+    localStorage.setItem(AUTH_KEYS.device, normalized);
+    localStorage.removeItem(AUTH_KEYS.legacyDevice);
     localStorage.setItem(QUICK_LOGIN_KEYS.deviceB64, encodeDeviceCodeToB64(normalized));
+    localStorage.removeItem(QUICK_LOGIN_KEYS.legacyDeviceB64);
   }
 
   function rememberAccountResult(result) {
@@ -2782,10 +2815,13 @@
   }
   if (result.adminBypass === true) {
     if (result.adminSessionToken) {
-      localStorage.setItem("gh_device", result.adminSessionToken);
+      localStorage.setItem(AUTH_KEYS.device, result.adminSessionToken);
+      localStorage.removeItem(AUTH_KEYS.legacyDevice);
     }
-    localStorage.removeItem("gh_username");
-    localStorage.removeItem("gh_password");
+    localStorage.removeItem(AUTH_KEYS.username);
+    localStorage.removeItem(AUTH_KEYS.password);
+    localStorage.removeItem(AUTH_KEYS.legacyUsername);
+    localStorage.removeItem(AUTH_KEYS.legacyPassword);
     completeLoginSuccess();
     return;
   }
@@ -2796,8 +2832,10 @@
   }
 
   setVerificationFormUrl(result.formUrl);
-  localStorage.setItem("gh_username", hashedUsername);
-  localStorage.setItem("gh_password", hashedPassword);
+  localStorage.setItem(AUTH_KEYS.username, hashedUsername);
+  localStorage.setItem(AUTH_KEYS.password, hashedPassword);
+  localStorage.removeItem(AUTH_KEYS.legacyUsername);
+  localStorage.removeItem(AUTH_KEYS.legacyPassword);
   setLoginLoading(false);
 
   const quickLoginCheck = await checkSavedQuickLoginDevice(hashedUsername, hashedPassword);
@@ -2808,7 +2846,7 @@
     return;
   }
 
-  const existingDevice = normalizeDeviceCode(localStorage.getItem("gh_device") || "");
+  const existingDevice = normalizeDeviceCode(readMigratedKey(AUTH_KEYS.device, AUTH_KEYS.legacyDevice) || "");
   if (existingDevice) {
     persistDeviceCode(existingDevice);
     await checkExistingDeviceVerification({
@@ -2857,7 +2895,7 @@ document.getElementById("quickLoginForgotBtn").onclick = () => {
     adminError.classList.add("hidden");
     setTurnstileError("admin", "");
     resetTurnstile("admin");
-    adminUsername.value = localStorage.getItem("gh_username") || "";
+    adminUsername.value = readMigratedKey(AUTH_KEYS.username, AUTH_KEYS.legacyUsername) || "";
     adminPhrase.value = "";
     showSection("modal-admin");
     setStepper(2);
@@ -2868,7 +2906,7 @@ document.getElementById("quickLoginForgotBtn").onclick = () => {
 
     const username = adminUsername.value.trim();
     const phrase = adminPhrase.value.trim();
-    const deviceCode = normalizeDeviceCode(localStorage.getItem("gh_device") || "");
+    const deviceCode = normalizeDeviceCode(readMigratedKey(AUTH_KEYS.device, AUTH_KEYS.legacyDevice) || "");
 
     if (!username || !phrase || !deviceCode) {
       adminError.textContent = "Missing fields or device code.";

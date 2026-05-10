@@ -1,5 +1,18 @@
 (function () {
-  const DEVICE_B64_KEY = "gh_device_b64";
+  const AUTH_KEYS = {
+    username: "studybase_username",
+    password: "studybase_password",
+    device: "studybase_device",
+    deviceB64: "studybase_device_b64",
+    expiry: "studybase_session_expiry",
+    expirySetAt: "studybase_session_expiry_set_at",
+    legacyUsername: "gh_username",
+    legacyPassword: "gh_password",
+    legacyDevice: "gh_device",
+    legacyDeviceB64: "gh_device_b64",
+    legacyExpiry: "gh_session_expiry",
+    legacyExpirySetAt: "gh_session_expiry_set_at"
+  };
   const ACCOUNT_EMAIL_KEY = "sb_accountEmail";
 
   let cachedConfig = null;
@@ -35,11 +48,66 @@
     return `${base}${path}`;
   }
 
+  function readMigratedKey(primaryKey, legacyKey) {
+    const primary = (localStorage.getItem(primaryKey) || "").trim();
+    if (primary) return primary;
+
+    const legacy = (localStorage.getItem(legacyKey) || "").trim();
+    if (legacy) {
+      localStorage.setItem(primaryKey, legacy);
+      localStorage.removeItem(legacyKey);
+    }
+    return legacy;
+  }
+
+  function migrateAccountStorage() {
+    readMigratedKey(AUTH_KEYS.username, AUTH_KEYS.legacyUsername);
+    readMigratedKey(AUTH_KEYS.password, AUTH_KEYS.legacyPassword);
+    readMigratedKey(AUTH_KEYS.device, AUTH_KEYS.legacyDevice);
+    readMigratedKey(AUTH_KEYS.deviceB64, AUTH_KEYS.legacyDeviceB64);
+    readMigratedKey(AUTH_KEYS.expiry, AUTH_KEYS.legacyExpiry);
+    readMigratedKey(AUTH_KEYS.expirySetAt, AUTH_KEYS.legacyExpirySetAt);
+  }
+
+  function clearAccountSession() {
+    [
+      AUTH_KEYS.username,
+      AUTH_KEYS.password,
+      AUTH_KEYS.device,
+      AUTH_KEYS.deviceB64,
+      AUTH_KEYS.expiry,
+      AUTH_KEYS.expirySetAt,
+      AUTH_KEYS.legacyUsername,
+      AUTH_KEYS.legacyPassword,
+      AUTH_KEYS.legacyDevice,
+      AUTH_KEYS.legacyDeviceB64,
+      AUTH_KEYS.legacyExpiry,
+      AUTH_KEYS.legacyExpirySetAt,
+      ACCOUNT_EMAIL_KEY,
+      "sb_deviceRotationCheckedAt",
+      "sb_deviceRotationKey"
+    ].forEach((key) => localStorage.removeItem(key));
+
+    window.dispatchEvent(new CustomEvent("studybase:account-session-cleared", {
+      detail: { reason: "device_not_authorised" }
+    }));
+  }
+
+  function isDeviceNotAuthorised(data) {
+    return Boolean(
+      data &&
+      data.ok === false &&
+      String(data.error || "").toLowerCase() === "device not authorised"
+    );
+  }
+
   function credentials() {
+    migrateAccountStorage();
+
     return {
-      username: (localStorage.getItem("gh_username") || "").trim(),
-      password: (localStorage.getItem("gh_password") || "").trim(),
-      deviceCode: normaliseDeviceCode(localStorage.getItem("gh_device") || "")
+      username: (localStorage.getItem(AUTH_KEYS.username) || "").trim(),
+      password: (localStorage.getItem(AUTH_KEYS.password) || "").trim(),
+      deviceCode: normaliseDeviceCode(localStorage.getItem(AUTH_KEYS.device) || "")
     };
   }
 
@@ -52,10 +120,12 @@
     const next = normaliseDeviceCode(deviceCode);
     if (!next) return "";
 
-    localStorage.setItem("gh_device", next);
+    localStorage.setItem(AUTH_KEYS.device, next);
+    localStorage.removeItem(AUTH_KEYS.legacyDevice);
 
     try {
-      localStorage.setItem(DEVICE_B64_KEY, btoa(next));
+      localStorage.setItem(AUTH_KEYS.deviceB64, btoa(next));
+      localStorage.removeItem(AUTH_KEYS.legacyDeviceB64);
     } catch (_) {}
 
     return next;
@@ -100,6 +170,7 @@
 
     if (data?.account) rememberAccount(data.account);
     if (data?.deviceCode) setDeviceCode(data.deviceCode);
+    if (isDeviceNotAuthorised(data)) clearAccountSession();
 
     return data;
   }
@@ -153,6 +224,8 @@
     });
   }
 
+  migrateAccountStorage();
+
   window.StudyBaseServices = {
     getConfig,
     apiBase,
@@ -161,6 +234,8 @@
     credentials,
     isLoggedIn,
     setDeviceCode,
+    migrateAccountStorage,
+    clearAccountSession,
     rememberAccount,
     accountMe,
     tokens,

@@ -28,7 +28,15 @@
   }
 
   function getDeviceCode() {
-    return (localStorage.getItem("gh_device") || "").trim();
+    const primary = (localStorage.getItem("studybase_device") || "").trim();
+    if (primary) return primary;
+
+    const legacy = (localStorage.getItem("gh_device") || "").trim();
+    if (legacy) {
+      localStorage.setItem("studybase_device", legacy);
+      localStorage.removeItem("gh_device");
+    }
+    return legacy;
   }
 
   function getInitials(name) {
@@ -285,7 +293,7 @@ function openApgModal(item) {
   });
 
   window.addEventListener("storage", function (event) {
-    if (event.key === "gh_device") {
+    if (event.key === "studybase_device" || event.key === "gh_device") {
       loadApg();
     }
   });

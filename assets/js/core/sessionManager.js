@@ -1,11 +1,17 @@
 (function () {
   const KEYS = {
-    user: "gh_username",
-    pass: "gh_password",
-    device: "gh_device",
-    expiry: "gh_session_expiry",
-    expirySetAt: "gh_session_expiry_set_at",
-    deviceB64: "gh_device_b64",
+    user: "studybase_username",
+    pass: "studybase_password",
+    device: "studybase_device",
+    expiry: "studybase_session_expiry",
+    expirySetAt: "studybase_session_expiry_set_at",
+    deviceB64: "studybase_device_b64",
+    legacyUser: "gh_username",
+    legacyPass: "gh_password",
+    legacyDevice: "gh_device",
+    legacyExpiry: "gh_session_expiry",
+    legacyExpirySetAt: "gh_session_expiry_set_at",
+    legacyDeviceB64: "gh_device_b64",
     accountEmail: "sb_accountEmail",
     quickLogin: "sb_quickLogin",
     quickLoginHash: "sb_quickLoginCodeHash",
@@ -27,6 +33,32 @@
   function getStr(key) {
     const v = localStorage.getItem(key);
     return (v ?? "").toString().trim();
+  }
+
+  function readMigratedKey(primaryKey, legacyKey) {
+    const primary = getStr(primaryKey);
+    if (primary) return primary;
+
+    const legacy = getStr(legacyKey);
+    if (legacy) {
+      localStorage.setItem(primaryKey, legacy);
+      localStorage.removeItem(legacyKey);
+    }
+    return legacy;
+  }
+
+  function migrateAccountStorage() {
+    if (window.StudyBaseServices?.migrateAccountStorage) {
+      window.StudyBaseServices.migrateAccountStorage();
+      return;
+    }
+
+    readMigratedKey(KEYS.user, KEYS.legacyUser);
+    readMigratedKey(KEYS.pass, KEYS.legacyPass);
+    readMigratedKey(KEYS.device, KEYS.legacyDevice);
+    readMigratedKey(KEYS.expiry, KEYS.legacyExpiry);
+    readMigratedKey(KEYS.expirySetAt, KEYS.legacyExpirySetAt);
+    readMigratedKey(KEYS.deviceB64, KEYS.legacyDeviceB64);
   }
 
   function anyCredentialPresent() {
@@ -105,9 +137,11 @@
     if (!next) return "";
 
     localStorage.setItem(KEYS.device, next);
+    localStorage.removeItem(KEYS.legacyDevice);
 
     try {
       localStorage.setItem(KEYS.deviceB64, btoa(next));
+      localStorage.removeItem(KEYS.legacyDeviceB64);
     } catch (_) {}
 
     return next;
@@ -209,6 +243,13 @@
     localStorage.removeItem(KEYS.device);
     localStorage.removeItem(KEYS.expiry);
     localStorage.removeItem(KEYS.expirySetAt);
+    localStorage.removeItem(KEYS.deviceB64);
+    localStorage.removeItem(KEYS.legacyUser);
+    localStorage.removeItem(KEYS.legacyPass);
+    localStorage.removeItem(KEYS.legacyDevice);
+    localStorage.removeItem(KEYS.legacyExpiry);
+    localStorage.removeItem(KEYS.legacyExpirySetAt);
+    localStorage.removeItem(KEYS.legacyDeviceB64);
 
     // Redirect
     window.location.href = "/index.html?sessionExpired=true";
@@ -350,6 +391,7 @@
   // ---------------------------
 
   function checkExpiryAndAct() {
+    migrateAccountStorage();
     setExpiryIfNeeded();
 
     const expiryMs = parseExpiryMs();
@@ -364,6 +406,7 @@
   }
 
   function start() {
+    migrateAccountStorage();
     // run once immediately
     checkExpiryAndAct();
 
@@ -386,7 +429,7 @@
     localStorage.setItem(KEYS.expiry, String(Date.now()));
     localStorage.setItem(KEYS.expirySetAt, new Date().toISOString());
     checkExpiryAndAct();
-    return "Set gh_session_expiry to now (manual test).";
+    return "Set studybase_session_expiry to now (manual test).";
   };
 
   // Start when DOM is ready (safe even if placed in <head>)

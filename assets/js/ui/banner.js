@@ -1,7 +1,10 @@
 (() => {
-  const DEVICE_KEY = "gh_device";
-  const USER_KEY = "gh_username";
-  const PASS_KEY = "gh_password";
+  const DEVICE_KEY = "studybase_device";
+  const USER_KEY = "studybase_username";
+  const PASS_KEY = "studybase_password";
+  const LEGACY_DEVICE_KEY = "gh_device";
+  const LEGACY_USER_KEY = "gh_username";
+  const LEGACY_PASS_KEY = "gh_password";
   const TIME_KEY = "siteActiveTime";
 
   const BLOCK_REQUEST_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSe8Zez4T6HS93vLmEBYPzfHg4hTnA_fILHzTSHqDZU1vAX-kw/viewform?usp=publish-editor";
@@ -18,16 +21,28 @@
   const qsa = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const safeStr = (v) => (v ?? "").toString().trim();
 
+  function readMigratedKey(primaryKey, legacyKey) {
+    const primary = safeStr(localStorage.getItem(primaryKey));
+    if (primary) return primary;
+
+    const legacy = safeStr(localStorage.getItem(legacyKey));
+    if (legacy) {
+      localStorage.setItem(primaryKey, legacy);
+      localStorage.removeItem(legacyKey);
+    }
+    return legacy;
+  }
+
   function getDevice() {
-    return safeStr(localStorage.getItem(DEVICE_KEY));
+    return readMigratedKey(DEVICE_KEY, LEGACY_DEVICE_KEY);
   }
 
   function getUsername() {
-    return safeStr(localStorage.getItem(USER_KEY));
+    return readMigratedKey(USER_KEY, LEGACY_USER_KEY);
   }
 
   function getPassword() {
-    return safeStr(localStorage.getItem(PASS_KEY));
+    return readMigratedKey(PASS_KEY, LEGACY_PASS_KEY);
   }
 
   function looksLoggedIn() {
@@ -811,7 +826,7 @@
     });
 
     window.addEventListener("storage", (e) => {
-      if (![DEVICE_KEY, USER_KEY, PASS_KEY, TIME_KEY].includes(e.key)) return;
+      if (![DEVICE_KEY, USER_KEY, PASS_KEY, LEGACY_DEVICE_KEY, LEGACY_USER_KEY, LEGACY_PASS_KEY, TIME_KEY].includes(e.key)) return;
       rerender(mounts.mount);
     });
 

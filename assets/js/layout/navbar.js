@@ -1098,9 +1098,21 @@
             desktopContainer.innerHTML = "";
             if (mobileContainer) mobileContainer.innerHTML = "";
 
-            const u = localStorage.getItem("gh_username");
-            const p = localStorage.getItem("gh_password");
-            const d = localStorage.getItem("gh_device");
+            const readAuthKey = (primaryKey, legacyKey) => {
+                const primary = localStorage.getItem(primaryKey);
+                if (primary) return primary;
+
+                const legacy = localStorage.getItem(legacyKey);
+                if (legacy) {
+                    localStorage.setItem(primaryKey, legacy);
+                    localStorage.removeItem(legacyKey);
+                }
+                return legacy;
+            };
+
+            const u = readAuthKey("studybase_username", "gh_username");
+            const p = readAuthKey("studybase_password", "gh_password");
+            const d = readAuthKey("studybase_device", "gh_device");
             const isLoggedIn = u && p && d;
 
             if (isLoggedIn) {
@@ -1169,7 +1181,20 @@
                 window.openStudyBaseAccountModal = openAccountModal;
 
                 const handleLogout = () => {
-                    ["gh_username", "gh_password", "gh_device"].forEach((k) =>
+                    [
+                        "studybase_username",
+                        "studybase_password",
+                        "studybase_device",
+                        "studybase_device_b64",
+                        "studybase_session_expiry",
+                        "studybase_session_expiry_set_at",
+                        "gh_username",
+                        "gh_password",
+                        "gh_device",
+                        "gh_device_b64",
+                        "gh_session_expiry",
+                        "gh_session_expiry_set_at"
+                    ].forEach((k) =>
                         localStorage.removeItem(k)
                     );
                     window.location.href = "/index.html?logout=true";

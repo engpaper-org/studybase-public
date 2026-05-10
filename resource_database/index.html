@@ -664,6 +664,26 @@
       .replace(/'/g, "&#39;");
   }
 
+  function readAuthKey(primaryKey, legacyKey) {
+    const primary = (localStorage.getItem(primaryKey) || "").trim();
+    if (primary) return primary;
+
+    const legacy = (localStorage.getItem(legacyKey) || "").trim();
+    if (legacy) {
+      localStorage.setItem(primaryKey, legacy);
+      localStorage.removeItem(legacyKey);
+    }
+    return legacy;
+  }
+
+  function getStoredAuth() {
+    return {
+      username: readAuthKey("studybase_username", "gh_username"),
+      password: readAuthKey("studybase_password", "gh_password"),
+      deviceCode: readAuthKey("studybase_device", "gh_device")
+    };
+  }
+
   async function loadPublicResourceData() {
     const [schemaRes, mainRes] = await Promise.all([
       fetch(`${RESOURCE_DATA_BASE}/schema.json`, { cache: "no-store" }),
@@ -900,7 +920,7 @@
     subtitle.textContent = "Important updates and featured notices.";
 
     try {
-      const deviceCode = (localStorage.getItem("gh_device") || "").trim();
+      const deviceCode = getStoredAuth().deviceCode;
 
       const res = await fetch(TOP_CARDS_ENDPOINT, {
         method: "POST",
@@ -1053,9 +1073,7 @@
   async function loadResources() {
     await resourcePageConfigReady;
 
-    const u = localStorage.getItem("gh_username");
-    const p = localStorage.getItem("gh_password");
-    const d = localStorage.getItem("gh_device");
+    const { username: u, password: p, deviceCode: d } = getStoredAuth();
 
     try {
       const res = await fetch(RESOURCE_LIST_ENDPOINT, {
@@ -1472,7 +1490,7 @@
     const grid = document.getElementById("resource-grid");
     if (!frame || !section || !grid) return;
 
-    const deviceCode = (localStorage.getItem("gh_device") || "").trim();
+    const deviceCode = getStoredAuth().deviceCode;
     const materialUrl = new URL(RESOURCE_MATERIAL_PAGE, window.location.origin);
     materialUrl.searchParams.set("material-ID", encodedMaterialId);
     materialUrl.searchParams.set("embedded", "1");

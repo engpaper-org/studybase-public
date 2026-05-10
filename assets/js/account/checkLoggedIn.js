@@ -1,13 +1,40 @@
 
 
 (function () {
-  const AUTH_KEYS = ["gh_username", "gh_password", "gh_device"];
+  const AUTH_KEYS = [
+    "studybase_username",
+    "studybase_password",
+    "studybase_device",
+    "studybase_device_b64",
+    "studybase_session_expiry",
+    "studybase_session_expiry_set_at"
+  ];
+  const LEGACY_AUTH_KEYS = [
+    "gh_username",
+    "gh_password",
+    "gh_device",
+    "gh_device_b64",
+    "gh_session_expiry",
+    "gh_session_expiry_set_at"
+  ];
+
+  function readMigratedKey(primaryKey, legacyKey) {
+    const primary = localStorage.getItem(primaryKey);
+    if (primary) return primary;
+
+    const legacy = localStorage.getItem(legacyKey);
+    if (legacy) {
+      localStorage.setItem(primaryKey, legacy);
+      localStorage.removeItem(legacyKey);
+    }
+    return legacy;
+  }
 
   function isLoggedIn() {
     try {
-      const u = localStorage.getItem("gh_username");
-      const p = localStorage.getItem("gh_password");
-      const d = localStorage.getItem("gh_device");
+      const u = readMigratedKey("studybase_username", "gh_username");
+      const p = readMigratedKey("studybase_password", "gh_password");
+      const d = readMigratedKey("studybase_device", "gh_device");
       return !!(u && p && d);
     } catch (_) {
       return false;
@@ -25,6 +52,7 @@
   function logout() {
   try {
     AUTH_KEYS.forEach((k) => localStorage.removeItem(k));
+    LEGACY_AUTH_KEYS.forEach((k) => localStorage.removeItem(k));
   } catch (_) {}
 
   const target = "/index.html?error=AUTH_001";
@@ -44,4 +72,10 @@
 
   // Expose tiny API globally
   window.AccountAuth = { isLoggedIn, requireAuth, logout };
+
+  window.addEventListener("studybase:account-session-cleared", () => {
+    if (!isLoggedIn()) {
+      window.location.replace("/index.html?error=AUTH_001");
+    }
+  });
 })();
