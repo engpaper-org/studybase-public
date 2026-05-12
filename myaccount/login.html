@@ -3,7 +3,8 @@
 <head>
     
   <meta charset="UTF-8" />
-        <script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
+        <script src="/assets/js/config/siteConfig.js"></script>
+    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>StudyBase | Login</title>
   <link rel="icon" href="/assets/images/site-icons/main.ico">
@@ -2000,19 +2001,20 @@
   const QUICK_LOGIN_KEYS = {
     enabled: "sb_quickLogin",
     hash: "sb_quickLoginCodeHash",
-    deviceB64: "studybase_device_b64",
-    legacyDeviceB64: "gh_device_b64"
+    deviceB64: "studybase_device_b64"
   };
   const AUTH_KEYS = {
     username: "studybase_username",
     password: "studybase_password",
-    device: "studybase_device",
-    legacyUsername: "gh_username",
-    legacyPassword: "gh_password",
-    legacyDevice: "gh_device"
+    device: "studybase_device"
   };
 
   let verifyPoll = null;
+  let pendingLoginCredentials = {
+    username: "",
+    password: "",
+    deviceCode: ""
+  };
   let pendingQuickLoginDecodedDevice = "";
   let pendingQuickLoginAuthResult = null;
   let loginTurnstileToken = null;
@@ -2154,6 +2156,31 @@
     readMigratedKey(QUICK_LOGIN_KEYS.deviceB64, QUICK_LOGIN_KEYS.legacyDeviceB64);
   }
 
+  function setPendingCredentials(username, password) {
+    pendingLoginCredentials.username = (username || "").trim();
+    pendingLoginCredentials.password = (password || "").trim();
+  }
+
+  function setPendingDeviceCode(deviceCode) {
+    const normalized = normalizeDeviceCode(deviceCode);
+    if (normalized) pendingLoginCredentials.deviceCode = normalized;
+    return normalized;
+  }
+
+  function commitPendingCredentials() {
+    const username = (pendingLoginCredentials.username || "").trim();
+    const password = (pendingLoginCredentials.password || "").trim();
+    const deviceCode = normalizeDeviceCode(pendingLoginCredentials.deviceCode || "");
+
+    if (username) localStorage.setItem(AUTH_KEYS.username, username);
+    if (password) localStorage.setItem(AUTH_KEYS.password, password);
+    if (deviceCode) persistDeviceCode(deviceCode);
+
+    localStorage.removeItem(AUTH_KEYS.legacyUsername);
+    localStorage.removeItem(AUTH_KEYS.legacyPassword);
+    localStorage.removeItem(AUTH_KEYS.legacyDevice);
+  }
+
   function generateCode(length = DEVICE_CODE_LENGTH) {
     let code = "";
     for (let i = 0; i < length; i++) {
@@ -2166,9 +2193,9 @@
     migrateAccountStorage();
 
     return {
-      username: (localStorage.getItem(AUTH_KEYS.username) || "").trim(),
-      password: (localStorage.getItem(AUTH_KEYS.password) || "").trim(),
-      deviceCode: normalizeDeviceCode(localStorage.getItem(AUTH_KEYS.device) || "")
+      username: pendingLoginCredentials.username || (localStorage.getItem(AUTH_KEYS.username) || "").trim(),
+      password: pendingLoginCredentials.password || (localStorage.getItem(AUTH_KEYS.password) || "").trim(),
+      deviceCode: normalizeDeviceCode(pendingLoginCredentials.deviceCode || localStorage.getItem(AUTH_KEYS.device) || "")
     };
   }
 
@@ -2204,6 +2231,7 @@
   function persistDeviceCode(code) {
     const normalized = normalizeDeviceCode(code);
     if (!normalized) return;
+    setPendingDeviceCode(normalized);
     localStorage.setItem(AUTH_KEYS.device, normalized);
     localStorage.removeItem(AUTH_KEYS.legacyDevice);
     localStorage.setItem(QUICK_LOGIN_KEYS.deviceB64, encodeDeviceCodeToB64(normalized));
@@ -2375,6 +2403,8 @@
   }
 
   function completeLoginSuccess() {
+    commitPendingCredentials();
+
     if (window.parent && window.parent !== window) {
       window.parent.postMessage("login-success", "*");
     }
@@ -2815,8 +2845,8 @@
   }
   if (result.adminBypass === true) {
     if (result.adminSessionToken) {
-      localStorage.setItem(AUTH_KEYS.device, result.adminSessionToken);
-      localStorage.removeItem(AUTH_KEYS.legacyDevice);
+      setPendingDeviceCode(result.adminSessionToken);
+      persistDeviceCode(result.adminSessionToken);
     }
     localStorage.removeItem(AUTH_KEYS.username);
     localStorage.removeItem(AUTH_KEYS.password);
@@ -2831,11 +2861,8 @@
     return showError("Login succeeded, but no verification form URL was returned.");
   }
 
+  setPendingCredentials(hashedUsername, hashedPassword);
   setVerificationFormUrl(result.formUrl);
-  localStorage.setItem(AUTH_KEYS.username, hashedUsername);
-  localStorage.setItem(AUTH_KEYS.password, hashedPassword);
-  localStorage.removeItem(AUTH_KEYS.legacyUsername);
-  localStorage.removeItem(AUTH_KEYS.legacyPassword);
   setLoginLoading(false);
 
   const quickLoginCheck = await checkSavedQuickLoginDevice(hashedUsername, hashedPassword);
@@ -2846,7 +2873,7 @@
     return;
   }
 
-  const existingDevice = normalizeDeviceCode(readMigratedKey(AUTH_KEYS.device, AUTH_KEYS.legacyDevice) || "");
+  const existingDevice = normalizeDeviceCode(pendingLoginCredentials.deviceCode || readMigratedKey(AUTH_KEYS.device, AUTH_KEYS.legacyDevice) || "");
   if (existingDevice) {
     persistDeviceCode(existingDevice);
     await checkExistingDeviceVerification({
@@ -2895,7 +2922,15 @@ document.getElementById("quickLoginForgotBtn").onclick = () => {
     adminError.classList.add("hidden");
     setTurnstileError("admin", "");
     resetTurnstile("admin");
-    adminUsername.value = readMigratedKey(AUTH_KEYS.username, AUTH_KEYS.legacyUsername) || "";
+    const creds = getStoredCreds();
+    if (!creds.deviceCode) {
+      const newCode = generateCode();
+      persistDeviceCode(newCode);
+      document.getElementById("deviceCodeText").innerText = newCode;
+      document.getElementById("checkingCodePreview").textContent = `Device code: ${newCode}`;
+      document.getElementById("deviceStatusCode").textContent = `Device code: ${newCode}`;
+    }
+    adminUsername.value = creds.username || "";
     adminPhrase.value = "";
     showSection("modal-admin");
     setStepper(2);
@@ -2904,9 +2939,10 @@ document.getElementById("quickLoginForgotBtn").onclick = () => {
   adminSubmit.onclick = async () => {
     if (adminCooldown) return;
 
-    const username = adminUsername.value.trim();
+    const creds = getStoredCreds();
+    const username = adminUsername.value.trim() || creds.username;
     const phrase = adminPhrase.value.trim();
-    const deviceCode = normalizeDeviceCode(readMigratedKey(AUTH_KEYS.device, AUTH_KEYS.legacyDevice) || "");
+    const deviceCode = normalizeDeviceCode(creds.deviceCode || pendingLoginCredentials.deviceCode || "");
 
     if (!username || !phrase || !deviceCode) {
       adminError.textContent = "Missing fields or device code.";

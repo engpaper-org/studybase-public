@@ -3,6 +3,7 @@
   const LINKS = [
     { href: "/myaccount/account.html", label: "Overview", icon: "fa-solid fa-house" },
     { href: "/myaccount/redeem.html", label: "Redeem code", icon: "fa-solid fa-ticket" },
+    { href: "/myaccount/pricing.html", label: "Pricing", icon: "fa-solid fa-coins" },
     { href: "/myaccount/settings.html", label: "Settings", icon: "fa-solid fa-sliders" },
     { href: "/myaccount/history.html", label: "History", icon: "fa-solid fa-clock-rotate-left" }
   ];
