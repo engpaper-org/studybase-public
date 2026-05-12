@@ -9,8 +9,8 @@
   const originalFetch = window.fetch ? window.fetch.bind(window) : null;
   const settings = {
     errorIcon: "/assets/images/site-icons/endpoint-error.png",
-    tiktokQrImage: "/assets/tokens/tiktok-qr.png",
-    tiktokUrl: "https://www.tiktok.com/@studybase"
+    tiktokQrImage: "/assets/qrcodes/tiktok.png",
+    tiktokUrl: "https://www.tiktok.com/@project.fin.support"
   };
 
   if (!originalFetch) return;
@@ -22,23 +22,24 @@
     style.id = STYLE_ID;
     style.textContent = [
       "#" + POPUP_ID + "{position:fixed;inset:0;z-index:2147483647;display:none;background:#f8fafc;color:#0f172a;font-family:Arial,sans-serif;overflow:auto;}",
+      "html.sb-endpoint-error-open,html.sb-endpoint-error-open body{overflow:hidden;}",
       "#" + POPUP_ID + ".is-open{display:block;}",
       "#" + POPUP_ID + " .sb-endpoint-page{min-height:100vh;display:flex;flex-direction:column;}",
-      "#" + POPUP_ID + " .sb-endpoint-shell{width:min(860px,calc(100vw - 32px));margin:0 auto;padding:42px 0 28px;display:flex;flex:1;flex-direction:column;}",
-      "#" + POPUP_ID + " .sb-endpoint-main{display:flex;flex:1;align-items:center;justify-content:center;}",
+      "#" + POPUP_ID + " .sb-endpoint-shell{width:min(860px,calc(100vw - 32px));margin:0 auto;padding:32px 0 28px;display:flex;flex:1;flex-direction:column;}",
+      "#" + POPUP_ID + " .sb-endpoint-main{min-height:calc(100vh - 150px);display:flex;align-items:center;justify-content:center;}",
       "#" + POPUP_ID + " .sb-endpoint-card{width:100%;text-align:center;}",
-      "#" + POPUP_ID + " .sb-endpoint-icon-wrap{width:116px;height:116px;margin:0 auto 24px;border-radius:28px;background:#fff;border:1px solid #e2e8f0;box-shadow:0 18px 48px rgba(15,23,42,.12);display:flex;align-items:center;justify-content:center;overflow:hidden;}",
-      "#" + POPUP_ID + " .sb-endpoint-icon-wrap img{width:100%;height:100%;object-fit:cover;display:block;}",
-      "#" + POPUP_ID + " .sb-endpoint-icon-fallback{width:72px;height:72px;border-radius:20px;background:#fee2e2;color:#b91c1c;display:none;align-items:center;justify-content:center;font-size:44px;font-weight:900;}",
-      "#" + POPUP_ID + " h1{margin:0;font-size:clamp(34px,5vw,58px);line-height:1.02;letter-spacing:0;font-weight:900;color:#0f172a;}",
+      "#" + POPUP_ID + " .sb-endpoint-icon-wrap{width:clamp(180px,28vw,260px);height:clamp(180px,28vw,260px);margin:0 auto 26px;display:flex;align-items:center;justify-content:center;overflow:visible;}",
+      "#" + POPUP_ID + " .sb-endpoint-icon-wrap img{width:100%;height:100%;object-fit:contain;display:block;}",
+      "#" + POPUP_ID + " .sb-endpoint-icon-fallback{width:clamp(150px,22vw,210px);height:clamp(150px,22vw,210px);border-radius:42px;background:#fee2e2;color:#b91c1c;display:none;align-items:center;justify-content:center;font-size:92px;font-weight:900;}",
+      "#" + POPUP_ID + " h1{margin:0;font-size:clamp(32px,4vw,48px);line-height:1.08;letter-spacing:0;font-weight:900;color:#0f172a;}",
       "#" + POPUP_ID + " h2{margin:0;font-size:28px;line-height:1.15;font-weight:900;color:#0f172a;}",
       "#" + POPUP_ID + " p{margin:0;color:#475569;font-size:15px;line-height:1.65;}",
-      "#" + POPUP_ID + " .sb-endpoint-summary{max-width:640px;margin:18px auto 0;font-size:17px;}",
+      "#" + POPUP_ID + " .sb-endpoint-summary{max-width:560px;margin:14px auto 0;font-size:17px;}",
       "#" + POPUP_ID + " .sb-endpoint-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:28px;}",
       "#" + POPUP_ID + " button,#" + POPUP_ID + " a.sb-endpoint-button{appearance:none;border:none;text-decoration:none;cursor:pointer;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px;}",
       "#" + POPUP_ID + " .sb-endpoint-primary{background:#0f172a;color:#fff;}",
       "#" + POPUP_ID + " .sb-endpoint-secondary{background:#fff;color:#334155;border:1px solid #cbd5e1;}",
-      "#" + POPUP_ID + " .sb-endpoint-footer{margin-top:auto;padding-top:28px;text-align:center;color:#64748b;font-size:14px;}",
+      "#" + POPUP_ID + " .sb-endpoint-footer{margin-top:auto;padding-top:18px;text-align:center;color:#64748b;font-size:14px;}",
       "#" + POPUP_ID + " .sb-endpoint-footer button{padding:0;border-radius:0;background:transparent;color:#0f172a;text-decoration:underline;font:inherit;font-weight:900;}",
       "#" + POPUP_ID + " .sb-endpoint-view{display:none;}",
       "#" + POPUP_ID + "[data-view='summary'] .sb-endpoint-summary-view{display:block;}",
@@ -53,7 +54,7 @@
       "#" + POPUP_ID + " .sb-endpoint-qr-fallback{display:none;width:100%;aspect-ratio:1;border-radius:20px;border:1px dashed #cbd5e1;background:#f8fafc;color:#64748b;align-items:center;justify-content:center;text-align:center;padding:18px;font-size:13px;line-height:1.4;}",
       "#" + POPUP_ID + " .sb-endpoint-topline{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;}",
       "#" + POPUP_ID + " .sb-endpoint-chip{display:inline-flex;align-items:center;border-radius:999px;background:#fee2e2;color:#991b1b;padding:7px 11px;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;}",
-      "@media (max-width:760px){#" + POPUP_ID + " .sb-endpoint-shell{padding-top:26px;}#" + POPUP_ID + " .sb-endpoint-detail-layout{grid-template-columns:1fr;}#" + POPUP_ID + " .sb-endpoint-topline{align-items:flex-start;flex-direction:column;}#" + POPUP_ID + " .sb-endpoint-icon-wrap{width:96px;height:96px;border-radius:24px;}#" + POPUP_ID + " .sb-endpoint-actions{flex-direction:column;}#" + POPUP_ID + " button,#" + POPUP_ID + " a.sb-endpoint-button{width:100%;}}"
+      "@media (max-width:760px){#" + POPUP_ID + " .sb-endpoint-shell{padding-top:22px;}#" + POPUP_ID + " .sb-endpoint-main{min-height:calc(100vh - 135px);}#" + POPUP_ID + " .sb-endpoint-detail-layout{grid-template-columns:1fr;}#" + POPUP_ID + " .sb-endpoint-topline{align-items:flex-start;flex-direction:column;}#" + POPUP_ID + " .sb-endpoint-actions{flex-direction:column;}#" + POPUP_ID + " button,#" + POPUP_ID + " a.sb-endpoint-button{width:100%;}}"
     ].join("");
     document.head.appendChild(style);
   }
@@ -117,9 +118,8 @@
       '        <aside class="sb-endpoint-panel">',
       '          <p class="sb-endpoint-label">TikTok support</p>',
       '          <img data-field="qr-image" class="sb-endpoint-qr" alt="TikTok QR code" />',
-      '          <div class="sb-endpoint-qr-fallback" data-field="qr-fallback">Upload the TikTok QR image to /assets/tokens/tiktok-qr.png</div>',
+      '          <div class="sb-endpoint-qr-fallback" data-field="qr-fallback">QR Code not found</div>',
       '          <p class="sb-endpoint-value" style="margin-top:12px;">Reach out to us on TikTok and send a photo of this page.</p>',
-      '          <a data-field="tiktok-link" class="sb-endpoint-button sb-endpoint-primary" style="margin-top:14px;width:100%;" href="https://www.tiktok.com/@studybase" target="_blank" rel="noopener">Open TikTok</a>',
       "        </aside>",
       "      </div>",
       '      <div class="sb-endpoint-actions">',
@@ -190,8 +190,6 @@
       settings.tiktokQrImage
     );
 
-    const link = popup.querySelector('[data-field="tiktok-link"]');
-    if (link) link.href = settings.tiktokUrl;
   }
 
   function closePopup() {

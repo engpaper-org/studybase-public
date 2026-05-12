@@ -81,11 +81,10 @@
           </div>
         </div>
 
-        <a id="pricingTikTokLink" href="https://www.tiktok.com/@studybase" target="_blank" rel="noopener"
-          class="inline-flex items-center gap-2 rounded-2xl bg-slate-900 text-white px-4 py-3 text-sm font-black hover:opacity-90 transition">
-          <i class="fa-brands fa-tiktok"></i>
-          TikTok
-        </a>
+        <div class="inline-flex items-center gap-2 rounded-2xl bg-white border border-slate-200 px-4 py-3 text-sm font-black text-slate-700">
+          <i class="fa-solid fa-qrcode"></i>
+          Scan QR code
+        </div>
       </div>
 
       <div class="p-8 grid grid-cols-1 lg:grid-cols-[1fr_0.75fr] gap-6">
@@ -108,17 +107,19 @@
 
           <div class="mt-6 rounded-3xl border border-slate-200 bg-slate-50 p-4 text-center">
             <img id="pricingQrImage"
-              src="/assets/tokens/tiktok-qr.png"
+              src="/assets/qrcodes/tiktok-qr.png"
               alt="TikTok QR code"
               class="mx-auto aspect-square w-full max-w-56 rounded-2xl bg-white object-contain border border-slate-200"
               onerror="this.classList.add('hidden'); document.getElementById('pricingQrFallback')?.classList.remove('hidden');" />
             <div id="pricingQrFallback" class="hidden mx-auto aspect-square w-full max-w-56 rounded-2xl bg-white border border-dashed border-slate-300 p-5 text-sm text-slate-500 font-body flex items-center justify-center">
-              Upload your TikTok QR image to /assets/tokens/tiktok-qr.png
+              Upload your TikTok QR image to /assets/qrcodes/tiktok-qr.png
             </div>
           </div>
 
           <p class="mt-4 text-xs text-slate-500 font-body">
             Send your account email and the token option you want.
+            Credit purchases and use are covered by the
+            <a href="/legal/credits.html" target="_blank" rel="noopener" class="font-black text-slate-900 underline decoration-slate-300 underline-offset-4 hover:decoration-slate-900">StudyBase Credits rules</a>.
           </p>
         </aside>
       </div>
@@ -138,7 +139,7 @@
       contact: {
         handle: "@studybase",
         url: "https://www.tiktok.com/@studybase",
-        qrImage: "/assets/tokens/tiktok-qr.png",
+        qrImage: "/assets/qrcodes/tiktok-qr.png",
         message: "Reach out to us on TikTok to add tokens to your account."
       }
     };
@@ -187,11 +188,9 @@
 
       const contactMessage = document.getElementById("pricingContactMessage");
       const qr = document.getElementById("pricingQrImage");
-      const link = document.getElementById("pricingTikTokLink");
 
       if (contactMessage) contactMessage.textContent = contact.message || DEFAULT_TOKEN_CONFIG.contact.message;
       if (qr && contact.qrImage) qr.src = contact.qrImage;
-      if (link && contact.url) link.href = contact.url;
     }
 
     async function loadPricing() {

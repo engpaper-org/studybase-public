@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <script src="/assets/js/config/siteConfig.js"></script>
+  <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyBase | Credit Rules & Usage Terms</title>
+  <link rel="icon" href="/assets/images/site-icons/main.ico">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <script src="/assets/js/layout/footer.js" defer></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+
+    :root {
+      --sb-ink: #0f172a;
+      --sb-muted: #475569;
+      --sb-border: #dbe4f0;
+      --sb-surface: rgba(255,255,255,0.9);
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      color: var(--sb-ink);
+      background:
+        radial-gradient(circle at top left, rgba(245,158,11,0.14), transparent 24%),
+        radial-gradient(circle at top right, rgba(59,130,246,0.11), transparent 20%),
+        linear-gradient(180deg, #f8fbff 0%, #eef4fb 100%);
+    }
+
+    .font-display { font-family: "Plus Jakarta Sans", sans-serif; }
+    .font-mono { font-family: "JetBrains Mono", monospace; }
+
+    .glass-panel {
+      background: var(--sb-surface);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(219,228,240,0.95);
+      box-shadow: 0 18px 60px rgba(15,23,42,0.08);
+    }
+
+    .credit-card {
+      background: rgba(255,255,255,0.94);
+      border: 1px solid var(--sb-border);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.05);
+      scroll-margin-top: 9rem;
+    }
+
+    .credit-card h2,
+    .credit-card h3 {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .credit-card h2 {
+      font-size: 1.65rem;
+      line-height: 1.15;
+      margin-bottom: 0.9rem;
+    }
+
+    .credit-card h3 {
+      font-size: 1.16rem;
+      line-height: 1.25;
+      margin-bottom: 0.8rem;
+    }
+
+    .credit-card p,
+    .credit-card li {
+      color: var(--sb-muted);
+      line-height: 1.75;
+      font-size: 0.97rem;
+    }
+
+    .credit-card ul {
+      margin-top: 0.8rem;
+      padding-left: 1.15rem;
+    }
+
+    .credit-card li + li,
+    .credit-card p + p {
+      margin-top: 0.55rem;
+    }
+
+    .mini-kicker {
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      font-weight: 800;
+    }
+
+    .nav-link.active {
+      color: #0f172a;
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+  </style>
+</head>
+
+<body class="text-slate-900 antialiased">
+  <div class="fixed inset-x-0 top-0 h-72 pointer-events-none bg-gradient-to-b from-amber-100/70 to-transparent z-0"></div>
+
+  <header class="relative z-10 pt-32 pb-8">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="glass-panel rounded-[2rem] p-8 md:p-10">
+        <div class="flex flex-col xl:flex-row gap-8 xl:items-end xl:justify-between">
+          <div class="max-w-3xl">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-100 text-amber-700 mini-kicker mb-5">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+              Credit Rules
+            </div>
+            <h1 class="font-display text-4xl md:text-6xl font-extrabold tracking-tight leading-none text-slate-950">
+              StudyBase Credits rules and usage terms.
+            </h1>
+            <p class="mt-5 max-w-2xl text-slate-600 text-sm md:text-base leading-relaxed">
+              These terms explain how StudyBase Credits work, including pricing, spending, refunds, expiry, misuse, account balances,
+              product codes, manual services, and changes to supported paid features. The website may also call Credits "tokens".
+            </p>
+          </div>
+
+          <div class="glass-panel rounded-[1.5rem] p-4 md:p-5 bg-white/80 border border-slate-200 min-w-[18rem]">
+            <p class="mini-kicker text-slate-500 mb-2">Current version</p>
+            <p class="font-mono text-sm font-bold text-slate-900">CREDITS-2026.05.12</p>
+            <p class="text-sm text-slate-500 mt-2">Last updated: 12 May 2026</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10 max-w-7xl mx-auto px-6 pb-16 grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <aside class="lg:col-span-3">
+      <div class="lg:sticky lg:top-32 space-y-4">
+        <div class="glass-panel rounded-[1.5rem] p-4">
+          <p class="mini-kicker text-slate-500 mb-3">Legal pages</p>
+          <nav class="flex flex-col gap-2 text-sm">
+            <a href="/legal/index.html#terms" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Main terms</a>
+            <a href="/legal/index.html#privacy" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Privacy policy</a>
+            <a href="/legal/credits.html" class="nav-link active rounded-xl border px-3 py-2 transition">Credit rules</a>
+          </nav>
+        </div>
+
+        <div class="glass-panel rounded-[1.5rem] p-4">
+          <p class="mini-kicker text-slate-500 mb-3">On this page</p>
+          <nav class="flex flex-col gap-2 text-sm">
+            <a href="#overview" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Overview</a>
+            <a href="#value" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Value and pricing</a>
+            <a href="#spending" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Service costs</a>
+            <a href="#refunds" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Failed requests</a>
+            <a href="#misuse" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Misuse</a>
+            <a href="#changes" class="nav-link rounded-xl border border-transparent px-3 py-2 text-slate-600 transition">Updates</a>
+          </nav>
+        </div>
+      </div>
+    </aside>
+
+    <section class="lg:col-span-9 space-y-6">
+      <section id="overview" class="credit-card">
+        <p class="mini-kicker text-amber-700 mb-3">Overview</p>
+        <h2>1. What StudyBase Credits are</h2>
+        <p>
+          StudyBase Credits are a digital account balance used to access selected StudyBase tools, services, requests, resource features,
+          premium features, or other paid functionality made available from time to time.
+        </p>
+        <p>
+          The StudyBase interface may use the words "Credits", "tokens", "token balance", or similar wording. Unless a page says otherwise,
+          those words refer to the same account-linked digital balance.
+        </p>
+        <p>
+          Credits are linked to the StudyBase account email that receives or redeems them. Credits are not linked to a particular device code,
+          and ordinary device-session deletion or weekly device cleanup should not by itself delete the account credit balance.
+        </p>
+      </section>
+
+      <section id="using-credits" class="credit-card">
+        <h2>2. How Credits can be used</h2>
+        <p>
+          Credits can be used across supported StudyBase services, including but not limited to AI tools, humanising tools, homework support tools,
+          cloud gaming, enhanced resource access, processing tasks, manual support features, and other premium features.
+        </p>
+        <p>
+          Not every feature will use Credits, and not every Credit-supported feature will be available at all times. StudyBase may decide which
+          features require Credits, which features are free, and which features are unavailable.
+        </p>
+        <p>
+          Before using a paid feature, StudyBase may show an estimated Credit cost. By continuing with that feature or request, you agree that
+          the stated or calculated amount may be deducted from your balance.
+        </p>
+      </section>
+
+      <section id="value" class="credit-card">
+        <h2>3. No fixed cash value</h2>
+        <p>
+          Credits are not money, currency, cryptocurrency, electronic money, a bank balance, a stored-value payment account, or a cash-equivalent
+          balance. They are a limited digital permission to use eligible StudyBase services while those services are available.
+        </p>
+        <p>
+          Credits cannot be withdrawn, transferred, sold to another user, exchanged for cash, converted back into money, used outside StudyBase,
+          or treated as having a guaranteed future value unless StudyBase explicitly agrees in writing.
+        </p>
+        <p>
+          Any price shown for a Credit pack only refers to the purchase price or top-up price at the time that pack is offered. It does not
+          guarantee that Credits will always have the same future value, purchasing power, usage rate, or service availability.
+        </p>
+      </section>
+
+      <section id="pricing" class="credit-card">
+        <h2>4. Prices and usage rates may change</h2>
+        <p>
+          The value, price, usage rate, and spending rules for StudyBase Credits may change at any time. This includes changes to:
+        </p>
+        <ul>
+          <li>the number of Credits required for each service or request type;</li>
+          <li>the price of Credit packs or manual top-ups;</li>
+          <li>minimum charges, rounding rules, or per-request fees;</li>
+          <li>bonus Credits, promotional Credits, trial Credits, or pack sizes;</li>
+          <li>service-specific pricing rules, limits, discounts, or availability;</li>
+          <li>the real-world cost comparison between Credits and money.</li>
+        </ul>
+        <p>
+          StudyBase may update Credit pricing or usage rates without prior notice, especially where AI costs, server costs, third-party service
+          costs, moderation costs, manual workload, availability, demand, abuse prevention, or operational requirements change.
+        </p>
+      </section>
+
+      <section id="spending" class="credit-card">
+        <h2>5. Service costs and estimates</h2>
+        <p>
+          Different services may cost different amounts of Credits. A service may be priced per AI message, word count, task, file, image,
+          completed request, predicted time, minute, processing step, manual review, or any other pricing method StudyBase reasonably applies.
+        </p>
+        <p>
+          Some services may have a minimum Credit charge. Some requests may have a variable charge depending on length, complexity, required
+          processing, service availability, third-party restrictions, or the time required to complete the request.
+        </p>
+        <p>
+          Any estimate shown before a request is an estimate only unless the page clearly says that it is a fixed final price. Final pricing may
+          be adjusted where a task is longer, more complex, unclear, unavailable, manually reviewed, or more expensive to process than expected.
+        </p>
+      </section>
+
+      <section id="manual-services" class="credit-card">
+        <h2>6. Manual and time-based services</h2>
+        <p>
+          Some services may be priced using predicted completion time, estimated task length, queue pressure, manual review, or a direct quote
+          from StudyBase. For example, a homework support or completion-style service may be priced using the predicted completion time shown by
+          the platform or separately estimated by StudyBase.
+        </p>
+        <p>
+          StudyBase may refuse, cancel, pause, manually quote, or re-price any request where the automatic price is not suitable, the request is
+          unclear, the request is not possible, the service is unavailable, the requested work appears to break rules, or the request would take
+          more time or cost than expected.
+        </p>
+      </section>
+
+      <section id="product-codes" class="credit-card">
+        <h2>7. Product codes and top-ups</h2>
+        <p>
+          Credits may be added by an admin-issued product code, manual account adjustment, support-assisted top-up, promotional grant, or any
+          other method StudyBase chooses to support. Product codes are usually one-time codes and may add a fixed number of Credits to the
+          account that redeems them.
+        </p>
+        <p>
+          A code may be refused, cancelled, blocked, or reversed if it is invalid, already used, expired, incorrectly issued, obtained without
+          permission, connected with suspected fraud or abuse, or affected by a technical or administrative error.
+        </p>
+        <p>
+          Users are responsible for entering the correct account email, sending the correct details to StudyBase when requesting a top-up, and
+          keeping product codes private until redeemed.
+        </p>
+      </section>
+
+      <section id="refunds" class="credit-card">
+        <h2>8. Failed, cancelled, or disputed requests</h2>
+        <p>
+          If a request fails because of a technical issue on StudyBase's side, Credits may be refunded or re-credited at StudyBase's discretion.
+          Refunds are reviewed case by case and are not guaranteed.
+        </p>
+        <p>Credits may not be refunded where:</p>
+        <ul>
+          <li>the user submits incorrect, incomplete, unclear, or misleading information;</li>
+          <li>the user cancels after processing has started;</li>
+          <li>the user loses connection, closes the page, or cannot receive the result;</li>
+          <li>the user provides invalid login details or invalid third-party information;</li>
+          <li>a third-party website blocks access, changes its rules, or becomes unavailable;</li>
+          <li>the user breaks StudyBase rules, acceptable-use rules, or service-specific instructions;</li>
+          <li>the request has already started, been partly processed, or been completed;</li>
+          <li>StudyBase reasonably suspects misuse, automation abuse, fraud, chargeback risk, or exploitation.</li>
+        </ul>
+        <p>
+          Where real-money payment has been made for Credits, any statutory consumer rights that cannot lawfully be excluded still apply.
+          Nothing in these rules is intended to remove mandatory rights that apply by law.
+        </p>
+      </section>
+
+      <section id="expiry" class="credit-card">
+        <h2>9. Expiry, inactivity, and account balance</h2>
+        <p>
+          Credits may expire after a period of inactivity or after a stated expiry date if StudyBase introduces expiry rules. Promotional,
+          trial, bonus, gifted, refunded, or manually granted Credits may have different expiry or removal rules from paid Credits.
+        </p>
+        <p>
+          StudyBase may remove, freeze, reverse, or adjust Credits from accounts involved in misuse, abuse, fraud, chargebacks, unauthorised
+          access, product-code sharing, attempts to exploit the platform, or administrative mistakes.
+        </p>
+        <p>
+          If an account is suspended, blocked, deleted, inaccessible, or no longer supported, the associated Credit balance may become unusable
+          unless StudyBase decides otherwise or the law requires a different result.
+        </p>
+      </section>
+
+      <section id="availability" class="credit-card">
+        <h2>10. Availability of Credit services</h2>
+        <p>
+          Buying, receiving, or holding Credits does not guarantee that every StudyBase service will always be available. Services may be paused,
+          changed, rate-limited, restricted, removed, or made unavailable due to maintenance, cost changes, abuse prevention, third-party
+          restrictions, legal concerns, moderation, staff availability, or technical issues.
+        </p>
+        <p>
+          StudyBase may also limit the maximum number of Credits that can be used in a period, require manual approval before a high-cost request,
+          decline a request, or temporarily prevent new Credit spending where needed to protect the service.
+        </p>
+      </section>
+
+      <section id="misuse" class="credit-card">
+        <h2>11. Misuse and prohibited conduct</h2>
+        <p>
+          Credits must not be used to abuse, overload, exploit, bypass, attack, reverse engineer, scrape, interfere with, or test unauthorised
+          access against StudyBase or any connected service.
+        </p>
+        <p>Users must not:</p>
+        <ul>
+          <li>attempt to duplicate, guess, sell, share, steal, or automate product codes;</li>
+          <li>attempt to manipulate balances, requests, device codes, or Credit costs;</li>
+          <li>use chargebacks, payment disputes, or false reports to obtain free Credits;</li>
+          <li>submit requests intended to break laws, school rules, platform rules, or third-party terms;</li>
+          <li>use Credits for harassment, abuse, harmful content, or unauthorised access.</li>
+        </ul>
+        <p>
+          StudyBase may suspend accounts, cancel requests, remove Credits, block product codes, restrict devices, or refuse support where misuse
+          is suspected.
+        </p>
+      </section>
+
+      <section id="minors" class="credit-card">
+        <h2>12. Younger users and permission</h2>
+        <p>
+          StudyBase is commonly used by students. If you are under 18, you should only purchase, request, redeem, or use Credits with permission
+          from a parent, guardian, teacher, or other responsible adult where required.
+        </p>
+        <p>
+          StudyBase may refuse or reverse Credit activity where it reasonably believes a payment, top-up, request, or account action was not
+          authorised by the account holder or a responsible adult.
+        </p>
+      </section>
+
+      <section id="records" class="credit-card">
+        <h2>13. Records, support, and account data</h2>
+        <p>
+          StudyBase may keep records of Credit balances, redemptions, product-code status, manual adjustments, support requests, request costs,
+          fraud checks, and account identifiers needed to operate the Credit system. This is separate from local browser history, which may stay
+          on the user's device unless a feature explicitly syncs it.
+        </p>
+        <p>
+          Credit records may be used to investigate errors, support requests, abuse, disputes, chargebacks, account deletion requests, or legal
+          compliance. More information about data handling is available in the main Privacy Policy.
+        </p>
+      </section>
+
+      <section id="liability" class="credit-card">
+        <h2>14. Liability and service risk</h2>
+        <p>
+          To the maximum extent permitted by law, StudyBase is not responsible for indirect, consequential, educational, reputational, network,
+          disciplinary, third-party, or opportunity losses connected with Credits or Credit-supported services.
+        </p>
+        <p>
+          StudyBase does not guarantee that Credits will provide any particular educational outcome, grade improvement, account result, service
+          result, or availability of a third-party destination.
+        </p>
+      </section>
+
+      <section id="changes" class="credit-card">
+        <h2>15. Updates to these rules</h2>
+        <p>
+          StudyBase may update these Credit rules at any time. Updated rules may be published on this page, linked from account pages, shown in
+          a notice, or incorporated into the main StudyBase terms.
+        </p>
+        <p>
+          Continued use, redemption, purchase, or spending of StudyBase Credits after changes are made means you accept the updated rules.
+          If you do not accept the updated rules, you should stop using Credit-supported features and contact StudyBase support where needed.
+        </p>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
