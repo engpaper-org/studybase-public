@@ -1293,11 +1293,19 @@ function reloadResource() {
     closeReloadConfirm();
 
     const frame = document.getElementById("materialFrame");
-    if (!frame || !materialFinalUrl) return;
+    if (!frame) return;
+
+    const currentFrameUrl = (frame.getAttribute("src") || "").trim();
+    const reloadUrl = currentFrameUrl && currentFrameUrl !== "about:blank"
+        ? currentFrameUrl
+        : (materialFinalUrl ? getIframeUrlWithMainParams(materialFinalUrl) : "");
+
+    if (!reloadUrl) return;
 
     frame.src = "about:blank";
     setTimeout(() => {
-        frame.src = getIframeUrlWithMainParams(materialFinalUrl);
+        frame.src = reloadUrl;
+        frame.classList.remove("hidden");
     }, 30);
 }
 
@@ -1917,6 +1925,13 @@ window.addEventListener("keydown", (event) => {
         closeShareModal();
         closeReloadConfirm();
         closeReportModal();
+    }
+});
+
+window.addEventListener("message", (event) => {
+    if (event.origin !== window.location.origin) return;
+    if (event.data && event.data.type === "sb-material-reload-resource") {
+        reloadResource();
     }
 });
 
