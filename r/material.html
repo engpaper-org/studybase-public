@@ -662,6 +662,7 @@ let stateInterval = null;
 let reconnectInterval = null;
 let inReconnectMode = false;
 let bootCancelled = false;
+let turnstileFailed = false;
 let turnstileLoadTimer = null;
 let turnstileRenderTimer = null;
 let turnstileWaitInterval = null;
@@ -1324,6 +1325,7 @@ function runTurnstileCheck() {
         const widgetEl = document.getElementById("turnstileWidget");
 
         function showTurnstileError(message) {
+            turnstileFailed = true;
             const loadingLabel = document.getElementById("turnstileLoadingLabel");
             const loadingDots = document.getElementById("turnstileLoadingDots");
 
@@ -1367,6 +1369,7 @@ function runTurnstileCheck() {
                 }
 
                 clearTurnstileTimers();
+                turnstileFailed = false;
                 widgetEl.innerHTML = "";
                 if (errorEl) errorEl.classList.add("hidden");
                 if (helpEl) helpEl.classList.add("hidden");
@@ -1378,9 +1381,11 @@ function runTurnstileCheck() {
                     theme: document.documentElement.classList.contains("dark") ? "dark" : "light",
                     callback: function(token) {
                         clearTurnstileTimers();
-                        if (bootCancelled) return;
+                        if (bootCancelled || turnstileFailed) return;
                         turnstileToken = token;
-                        screenEl.classList.add("hidden");
+                        widgetEl.innerHTML = '<div class="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-extrabold text-emerald-700">Verified. Opening...</div>';
+                        document.getElementById("turnstileLoadingLabel")?.replaceChildren(document.createTextNode("Opening"));
+                        document.getElementById("turnstileLoadingDots")?.classList.remove("hidden");
                         resolve(token);
                     },
                     "error-callback": function() {
@@ -1395,12 +1400,12 @@ function runTurnstileCheck() {
                 });
 
                 turnstileRenderTimer = setTimeout(() => {
+                    turnstileRenderTimer = null;
                     if (!turnstileToken && widgetEl && !widgetEl.querySelector("iframe")) {
-                        showTurnstileError("The human check did not appear.");
-                        turnstileRenderTimer = null;
+                        showTurnstileError("The human check is taking too long to appear.");
                         reject(new Error("Turnstile widget did not render"));
                     }
-                }, 5000);
+                }, 45000);
             } catch (err) {
                 clearTurnstileTimers();
                 showTurnstileError("The human check could not load.");
@@ -1430,7 +1435,7 @@ function runTurnstileCheck() {
                 showTurnstileError("The human check did not load.");
                 reject(new Error("Turnstile failed to load"));
             }
-        }, 10000);
+        }, 30000);
     });
 }
 
@@ -1460,6 +1465,9 @@ async function boot() {
 
     if (bootCancelled) return;
 
+    document.getElementById("turnstileLoadingLabel")?.replaceChildren(document.createTextNode("Checking access"));
+    document.getElementById("turnstileLoadingDots")?.classList.remove("hidden");
+
     const result = await fetchMaterialUrl();
     if (result === "redirected") return;
     if (result === "verification_failed") return;
@@ -1468,6 +1476,7 @@ async function boot() {
         return;
     }
 
+    document.getElementById("turnstileScreen")?.classList.add("hidden");
     document.getElementById("bootScreen").classList.add("hidden");
     renderSubjectPicker();
     document.getElementById("subjectPicker").classList.remove("hidden");
