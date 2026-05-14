@@ -3,7 +3,17 @@
 <head>
     
     <meta charset="UTF-8">
-        <script src="/assets/js/config/siteConfig.js"></script>
+            <meta name="description" content="StudyBase provides educational revision resources, A-Level and GCSE study tools, past papers, subject guides, wellbeing support, and learning materials for students." data-studybase-education-meta="true">
+    <meta name="classification" content="Education" data-studybase-education-meta="true">
+    <meta name="category" content="Education" data-studybase-education-meta="true">
+    <meta name="subject" content="A-Level and GCSE revision, study resources, educational tools" data-studybase-education-meta="true">
+    <meta name="audience" content="Students, teachers, and learners" data-studybase-education-meta="true">
+    <meta name="educational-use" content="Revision, exam preparation, independent study" data-studybase-education-meta="true">
+    <meta name="learning-resource-type" content="Revision resource" data-studybase-education-meta="true">
+    <meta property="og:site_name" content="StudyBase" data-studybase-education-meta="true">
+    <meta property="og:type" content="website" data-studybase-education-meta="true">
+    <meta property="og:locale" content="en_GB" data-studybase-education-meta="true">
+<script src="/assets/js/config/siteConfig.js"></script>
     <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
     <title>RevisionBase | Resource Library</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -452,10 +462,10 @@
                                 <p class="mt-2 text-white/68 text-sm leading-relaxed font-medium">
                                     Use one-time 8 digit codes on the redeem page to add tokens to this balance.
                                 </p>
-                                <a href="/myaccount/redeem.html" class="mt-4 inline-flex items-center gap-2 text-sm font-black text-amber-200 hover:text-white transition">
+                                <button id="openRedeemModal" type="button" class="mt-4 inline-flex items-center gap-2 text-sm font-black text-amber-200 hover:text-white transition">
                                     Redeem a code
                                     <i class="fas fa-arrow-right text-xs"></i>
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -722,26 +732,26 @@
     } catch (_) {}
   }
 
-  function openTopUpModal() {
+  function openAccountPageModal(pageUrl, titleText = "My Account", fallbackId = "sb-account-page-modal") {
     if (typeof window.openStudyBaseAccountModal === "function") {
-      window.openStudyBaseAccountModal("/myaccount/pricing.html");
+      window.openStudyBaseAccountModal(pageUrl);
       return;
     }
 
-    if (document.getElementById("sb-account-pricing-modal")) return;
+    if (document.getElementById(fallbackId)) return;
 
     const modal = document.createElement("div");
-    modal.id = "sb-account-pricing-modal";
+    modal.id = fallbackId;
     modal.className = "fixed inset-0 z-[9999] bg-slate-950/55 backdrop-blur-lg flex items-center justify-center p-4";
     modal.innerHTML = `
       <div class="relative w-full max-w-6xl h-[92vh] bg-slate-50 rounded-[2rem] shadow-2xl overflow-hidden flex flex-col border border-white/20">
         <div class="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200">
-          <span class="font-black text-slate-900 text-lg tracking-tight">Token pricing</span>
-          <button id="close-account-pricing-modal" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
+          <span class="font-black text-slate-900 text-lg tracking-tight">${escapeHtml(titleText)}</span>
+          <button id="close-account-page-modal" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
             <i class="fas fa-times"></i>
           </button>
         </div>
-        <iframe src="/myaccount/pricing.html" class="w-full flex-grow border-none bg-slate-50" title="Token pricing"></iframe>
+        <iframe src="${escapeHtml(pageUrl)}" class="w-full flex-grow border-none bg-slate-50" title="${escapeHtml(titleText)}"></iframe>
       </div>
     `;
 
@@ -753,14 +763,23 @@
       updateBodyScrollLock();
     };
 
-    modal.querySelector("#close-account-pricing-modal")?.addEventListener("click", closeModal);
+    modal.querySelector("#close-account-page-modal")?.addEventListener("click", closeModal);
     modal.addEventListener("click", (event) => {
       if (event.target === modal) closeModal();
     });
   }
 
+  function openTopUpModal() {
+    openAccountPageModal("/myaccount/pricing.html", "Token pricing", "sb-account-pricing-modal");
+  }
+
+  function openRedeemModal() {
+    openAccountPageModal("/myaccount/redeem.html", "Redeem code", "sb-account-redeem-modal");
+  }
+
   function closeTopUpModal() {
     document.getElementById("sb-account-pricing-modal")?.remove();
+    document.getElementById("sb-account-redeem-modal")?.remove();
     updateBodyScrollLock();
   }
 
@@ -1863,7 +1882,8 @@
       "announcement-modal",
       "report-modal",
       "weekly-feedback-modal",
-      "sb-account-pricing-modal"
+      "sb-account-pricing-modal",
+      "sb-account-redeem-modal"
     ];
   }
 
@@ -2015,16 +2035,34 @@
     }
 
     const notes = skipNotes ? "" : (notesEl?.value || "").trim();
+    const week = weeklyFeedbackWeekId || getWeeklyFeedbackWeekId();
+
+    if (!notes) {
+      markWeeklyFeedbackCompleted(week);
+      setWeeklyFeedbackView("success");
+      setTimeout(hideWeeklyFeedbackModal, 1650);
+      weeklyFeedbackSubmitting = false;
+      if (submit) {
+        submit.disabled = false;
+        submit.innerHTML = previousSubmitHtml;
+      }
+      if (skip) {
+        skip.disabled = false;
+        skip.textContent = previousSkipText;
+      }
+      return;
+    }
+
     const account = getWeeklyFeedbackAccountSummary();
     const payload = {
       url: window.location.href,
       type: "other",
       notes: [
         "StudyBaze weekly feedback",
-        `Week: ${weeklyFeedbackWeekId || getWeeklyFeedbackWeekId()}`,
+        `Week: ${week}`,
         `Rating: ${weeklyFeedbackRating}/5`,
-        `Feedback skipped: ${skipNotes ? "yes" : "no"}`,
-        `Feedback: ${notes || "(none)"}`,
+        "Feedback skipped: no",
+        `Feedback: ${notes}`,
         account.username ? `Username: ${account.username}` : "",
         account.email ? `Email: ${account.email}` : "",
         account.firstName ? `First name: ${account.firstName}` : ""
@@ -2032,7 +2070,7 @@
       timestamp: new Date().toISOString(),
       source: "resource_database_weekly_feedback",
       rating: weeklyFeedbackRating,
-      week: weeklyFeedbackWeekId || getWeeklyFeedbackWeekId()
+      week
     };
 
     try {
@@ -2283,6 +2321,7 @@
   });
 
   document.getElementById("openTopUpModal")?.addEventListener("click", openTopUpModal);
+  document.getElementById("openRedeemModal")?.addEventListener("click", openRedeemModal);
   document.getElementById("resourceTokenRefresh")?.addEventListener("click", () => loadResourceTokenSummary());
 
   window.addEventListener("storage", (event) => {

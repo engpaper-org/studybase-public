@@ -8,7 +8,17 @@
 <head>
     
     <meta charset="UTF-8" />
-        <script src="/assets/js/config/siteConfig.js"></script>
+            <meta name="description" content="StudyBase provides educational revision resources, A-Level and GCSE study tools, past papers, subject guides, wellbeing support, and learning materials for students." data-studybase-education-meta="true">
+    <meta name="classification" content="Education" data-studybase-education-meta="true">
+    <meta name="category" content="Education" data-studybase-education-meta="true">
+    <meta name="subject" content="A-Level and GCSE revision, study resources, educational tools" data-studybase-education-meta="true">
+    <meta name="audience" content="Students, teachers, and learners" data-studybase-education-meta="true">
+    <meta name="educational-use" content="Revision, exam preparation, independent study" data-studybase-education-meta="true">
+    <meta name="learning-resource-type" content="Revision resource" data-studybase-education-meta="true">
+    <meta property="og:site_name" content="StudyBase" data-studybase-education-meta="true">
+    <meta property="og:type" content="website" data-studybase-education-meta="true">
+    <meta property="og:locale" content="en_GB" data-studybase-education-meta="true">
+<script src="/assets/js/config/siteConfig.js"></script>
     <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Revision Base | Alevel Revision Resources</title>
@@ -274,13 +284,21 @@
                     <p id="turnstileError" class="hidden mt-4 text-sm text-red-600 font-semibold">
                         Verification failed. Please try again.
                     </p>
+                    <p id="turnstileHelp" class="hidden mt-2 max-w-md text-xs font-semibold leading-relaxed text-slate-500">
+                        If the widget does not appear, your browser, network, or an extension may be blocking Cloudflare Turnstile.
+                    </p>
+
+                    <button id="turnstileCancelBtn" type="button" onclick="cancelMaterialLoad()" class="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-slate-100 px-5 py-3 text-sm font-extrabold text-slate-700 transition-colors hover:bg-slate-200 hover:text-slate-950">
+                        <i class="fas fa-arrow-left"></i>
+                        Cancel and go back
+                    </button>
                 </div>
             </div>
         </div>
 
         <div class="flex flex-col items-center mt-8">
-            <h1 class="text-sm font-black tracking-[0.45em] text-white uppercase drop-shadow-md">Loading</h1>
-            <div class="flex gap-1 mt-3">
+            <h1 id="turnstileLoadingLabel" class="text-sm font-black tracking-[0.45em] text-white uppercase drop-shadow-md">Loading</h1>
+            <div id="turnstileLoadingDots" class="flex gap-1 mt-3">
                 <div class="w-2 h-2 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></div>
                 <div class="w-2 h-2 bg-white rounded-full animate-bounce [animation-delay:-0.15s]"></div>
                 <div class="w-2 h-2 bg-white rounded-full animate-bounce"></div>
@@ -643,6 +661,11 @@ let turnstileWidgetId = null;
 let stateInterval = null;
 let reconnectInterval = null;
 let inReconnectMode = false;
+let bootCancelled = false;
+let turnstileLoadTimer = null;
+let turnstileRenderTimer = null;
+let turnstileWaitInterval = null;
+let materialFetchController = null;
 
 let materialFinalUrl = null;
 let pendingSubject = null;
@@ -1075,8 +1098,51 @@ function goBack() {
         window.parent.postMessage({ type: "sb-material-close" }, window.location.origin);
         return;
     }
-/r/
-    window.location.href = "/resource_database/index.html#client-preflight";
+
+    window.location.href = "/r/index.html#client-preflight";
+}
+
+function cancelMaterialLoad() {
+    bootCancelled = true;
+    turnstileToken = null;
+
+    if (turnstileLoadTimer) {
+        clearTimeout(turnstileLoadTimer);
+        turnstileLoadTimer = null;
+    }
+
+    if (turnstileRenderTimer) {
+        clearTimeout(turnstileRenderTimer);
+        turnstileRenderTimer = null;
+    }
+
+    if (turnstileWaitInterval) {
+        clearInterval(turnstileWaitInterval);
+        turnstileWaitInterval = null;
+    }
+
+    clearInterval(stateInterval);
+    clearInterval(reconnectInterval);
+
+    if (materialFetchController) {
+        materialFetchController.abort();
+        materialFetchController = null;
+    }
+
+    try {
+        if (window.turnstile && turnstileWidgetId !== null) {
+            window.turnstile.remove(turnstileWidgetId);
+        }
+    } catch (_) {}
+
+    ["materialFrame", "loadingAdFrame", "protoFrame", "reportFrame"].forEach((id) => {
+        const frame = document.getElementById(id);
+        if (frame) {
+            try { frame.src = "about:blank"; } catch (_) {}
+        }
+    });
+
+    goBack();
 }
 
 function logoutUser() {
@@ -1093,8 +1159,8 @@ function logoutUser() {
         "gh_device_b64",
         "gh_session_expiry",
         "gh_session_expiry_set_at"
-    ].forEach((key) => local/r/key));
-    window.location.href = "/resource_database/index.html";
+    ].forEach((key) => localStorage.removeItem(key));
+    window.location.href = "/r/index.html";
 }
 
 function openMenu() {
@@ -1205,36 +1271,99 @@ function reloadResource() {
 
 function runTurnstileCheck() {
     return new Promise((resolve, reject) => {
+        if (bootCancelled) {
+            reject(new Error("Material load cancelled"));
+            return;
+        }
+
         createSecurityBubbles();
 
         const errorEl = document.getElementById("turnstileError");
+        const helpEl = document.getElementById("turnstileHelp");
         const screenEl = document.getElementById("turnstileScreen");
         const widgetEl = document.getElementById("turnstileWidget");
 
+        function showTurnstileError(message) {
+            const loadingLabel = document.getElementById("turnstileLoadingLabel");
+            const loadingDots = document.getElementById("turnstileLoadingDots");
+
+            if (loadingLabel) loadingLabel.textContent = "Action needed";
+            if (loadingDots) loadingDots.classList.add("hidden");
+
+            if (errorEl) {
+                errorEl.textContent = message;
+                errorEl.classList.remove("hidden");
+            }
+
+            if (helpEl) helpEl.classList.remove("hidden");
+        }
+
+        function clearTurnstileTimers() {
+            if (turnstileLoadTimer) {
+                clearTimeout(turnstileLoadTimer);
+                turnstileLoadTimer = null;
+            }
+
+            if (turnstileRenderTimer) {
+                clearTimeout(turnstileRenderTimer);
+                turnstileRenderTimer = null;
+            }
+
+            if (turnstileWaitInterval) {
+                clearInterval(turnstileWaitInterval);
+                turnstileWaitInterval = null;
+            }
+        }
+
         function renderWidget() {
             try {
-                widgetEl.innerHTML = "";
+                if (bootCancelled) {
+                    reject(new Error("Material load cancelled"));
+                    return;
+                }
 
-                turnstileWidgetId = turnstile.render("#turnstileWidget", {
+                if (!window.turnstile || !widgetEl) {
+                    throw new Error("Turnstile unavailable");
+                }
+
+                clearTurnstileTimers();
+                widgetEl.innerHTML = "";
+                if (errorEl) errorEl.classList.add("hidden");
+                if (helpEl) helpEl.classList.add("hidden");
+                document.getElementById("turnstileLoadingLabel")?.replaceChildren(document.createTextNode("Loading"));
+                document.getElementById("turnstileLoadingDots")?.classList.remove("hidden");
+
+                turnstileWidgetId = window.turnstile.render(widgetEl, {
                     sitekey: TURNSTILE_SITE_KEY,
                     theme: document.documentElement.classList.contains("dark") ? "dark" : "light",
                     callback: function(token) {
+                        clearTurnstileTimers();
+                        if (bootCancelled) return;
                         turnstileToken = token;
                         screenEl.classList.add("hidden");
                         resolve(token);
                     },
                     "error-callback": function() {
-                        errorEl.textContent = "Verification failed. Please try again.";
-                        errorEl.classList.remove("hidden");
+                        clearTurnstileTimers();
+                        showTurnstileError("Verification failed. Please try again or cancel and go back.");
                         reject(new Error("Turnstile error"));
                     },
                     "expired-callback": function() {
                         turnstileToken = null;
-                        errorEl.textContent = "Verification expired. Please refresh and try again.";
-                        errorEl.classList.remove("hidden");
+                        showTurnstileError("Verification expired. Please refresh, or cancel and go back.");
                     }
                 });
+
+                turnstileRenderTimer = setTimeout(() => {
+                    if (!turnstileToken && widgetEl && !widgetEl.querySelector("iframe")) {
+                        showTurnstileError("The human check did not appear.");
+                        turnstileRenderTimer = null;
+                        reject(new Error("Turnstile widget did not render"));
+                    }
+                }, 5000);
             } catch (err) {
+                clearTurnstileTimers();
+                showTurnstileError("The human check could not load.");
                 reject(err);
             }
         }
@@ -1244,16 +1373,21 @@ function runTurnstileCheck() {
             return;
         }
 
-        const wait = setInterval(() => {
+        turnstileWaitInterval = setInterval(() => {
             if (window.turnstile) {
-                clearInterval(wait);
+                clearTurnstileTimers();
                 renderWidget();
             }
         }, 100);
 
-        setTimeout(() => {
-            clearInterval(wait);
+        turnstileLoadTimer = setTimeout(() => {
+            if (turnstileWaitInterval) {
+                clearInterval(turnstileWaitInterval);
+                turnstileWaitInterval = null;
+            }
+
             if (!window.turnstile) {
+                showTurnstileError("The human check did not load.");
                 reject(new Error("Turnstile failed to load"));
             }
         }, 10000);
@@ -1277,10 +1411,14 @@ async function boot() {
 
     try {
         await runTurnstileCheck();
+        if (bootCancelled) return;
         await loadProtectedScripts();
     } catch (e) {
-        return goBack();
+        console.warn("Security check did not complete:", e);
+        return;
     }
+
+    if (bootCancelled) return;
 
     const result = await fetchMaterialUrl();
     if (result === "redirected") return;
@@ -1292,6 +1430,8 @@ async function boot() {
 }
 
 async function fetchMaterialUrl() {
+    if (bootCancelled) return false;
+
     const params = new URLSearchParams(window.location.search);
     const encoded = params.get("material-ID");
     if (!encoded) return false;
@@ -1304,9 +1444,11 @@ async function fetchMaterialUrl() {
     document.getElementById("bootText").textContent = "Checking access…";
 
     try {
+        materialFetchController = new AbortController();
         const res = await fetch(RESOURCE_GET_ENDPOINT, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            signal: materialFetchController.signal,
             body: JSON.stringify({
                 username,
                 password,
@@ -1315,6 +1457,9 @@ async function fetchMaterialUrl() {
                 turnstileToken
             })
         });
+
+        materialFetchController = null;
+        if (bootCancelled) return false;
 
         const raw = (await res.text()).trim();
         let finalValue = raw;
@@ -1337,14 +1482,14 @@ async function fetchMaterialUrl() {
 
         const errorMatch = finalValue.match(/\/error-([^/?#\s]+)/i);
         if (errorMatch) {
-            const errorCode = errorMa/r/
-            window.location.replace(`/resource_database/index.html?error=${encodeURIComponent(errorCode)}#client-preflight`);
+            const errorCode = errorMatch[1];
+            window.location.replace(`/r/index.html?error=${encodeURIComponent(errorCode)}#client-preflight`);
             return "redirected";
         }
 
         if (/^error-([^/?#\s]+)$/i.test(finalValue)) {
-            const errorCode = finalVa/r/-/i, "");
-            window.location.replace(`/resource_database/index.html?error=${encodeURIComponent(errorCode)}#client-preflight`);
+            const errorCode = finalValue.replace(/^error-/i, "");
+            window.location.replace(`/r/index.html?error=${encodeURIComponent(errorCode)}#client-preflight`);
             return "redirected";
         }
 
@@ -1359,6 +1504,8 @@ async function fetchMaterialUrl() {
 
         return false;
     } catch (e) {
+        materialFetchController = null;
+        if (e && e.name === "AbortError") return false;
         return false;
     }
 }
@@ -1535,6 +1682,8 @@ function submitCustomUrl() {
 }
 
 function proceedToLoad(subjectTitle) {
+    if (bootCancelled) return;
+
     const loading = document.getElementById("loadingScreen");
     const loadingAdFrame = document.getElementById("loadingAdFrame");
     const frame = document.getElementById("materialFrame");
@@ -1553,6 +1702,7 @@ function proceedToLoad(subjectTitle) {
     const finalUrl = getIframeUrlWithMainParams(materialFinalUrl);
 
     const revealResource = () => {
+        if (bootCancelled) return;
         if (!materialFinished) return;
 
         if (revealTimer) {
@@ -1571,6 +1721,7 @@ function proceedToLoad(subjectTitle) {
     };
 
     const onIntroMessage = (event) => {
+        if (bootCancelled) return;
         if (event.source !== loadingAdFrame.contentWindow) return;
         if (!event.data || !["STUDYBASE_INTRO_COMPLETE", "REVISIONBASE_INTRO_COMPLETE"].includes(event.data.type)) return;
 
@@ -1579,6 +1730,7 @@ function proceedToLoad(subjectTitle) {
 
     const startIframeLoad = () => {
         const onLoad = () => {
+            if (bootCancelled) return;
             frame.removeEventListener("load", onLoad);
 
             frame.classList.remove("hidden");
