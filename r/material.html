@@ -1145,6 +1145,38 @@ function cancelMaterialLoad() {
     goBack();
 }
 
+function showMaterialSecurityError(message) {
+    const screenEl = document.getElementById("turnstileScreen");
+    const errorEl = document.getElementById("turnstileError");
+    const helpEl = document.getElementById("turnstileHelp");
+    const loadingLabel = document.getElementById("turnstileLoadingLabel");
+    const loadingDots = document.getElementById("turnstileLoadingDots");
+    const widgetEl = document.getElementById("turnstileWidget");
+
+    document.getElementById("bootScreen")?.classList.add("hidden");
+    document.getElementById("loadingScreen")?.classList.add("hidden");
+    document.getElementById("subjectPicker")?.classList.add("hidden");
+    document.getElementById("typePicker")?.classList.add("hidden");
+    document.getElementById("overlayButtons")?.classList.add("hidden");
+    document.getElementById("materialFrame")?.classList.add("hidden");
+
+    if (widgetEl) widgetEl.innerHTML = "";
+    if (loadingLabel) loadingLabel.textContent = "Action needed";
+    if (loadingDots) loadingDots.classList.add("hidden");
+
+    if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.classList.remove("hidden");
+    }
+
+    if (helpEl) {
+        helpEl.textContent = "The resource was not opened because StudyBase could not confirm this request was made by a human. Please go back and try again.";
+        helpEl.classList.remove("hidden");
+    }
+
+    if (screenEl) screenEl.classList.remove("hidden");
+}
+
 function logoutUser() {
     [
         "studybase_username",
@@ -1422,7 +1454,11 @@ async function boot() {
 
     const result = await fetchMaterialUrl();
     if (result === "redirected") return;
-    if (!result) return goBack();
+    if (result === "verification_failed") return;
+    if (!result) {
+        showMaterialSecurityError("We couldn't verify you as a human, so the resource was not opened.");
+        return;
+    }
 
     document.getElementById("bootScreen").classList.add("hidden");
     renderSubjectPicker();
@@ -1439,7 +1475,10 @@ async function fetchMaterialUrl() {
     const { username, password, deviceCode } = getStoredAuth();
     if (!username || !password || !deviceCode) return false;
 
-    if (!turnstileToken) return false;
+    if (!turnstileToken) {
+        showMaterialSecurityError("Human verification did not complete, so the resource was not opened.");
+        return "verification_failed";
+    }
 
     document.getElementById("bootText").textContent = "Checking access…";
 
@@ -1464,11 +1503,30 @@ async function fetchMaterialUrl() {
         const raw = (await res.text()).trim();
         let finalValue = raw;
 
+        if (raw === "J") {
+            showMaterialSecurityError("Human verification failed. Please go back and try opening the resource again.");
+            return "verification_failed";
+        }
+
+        if (!res.ok) {
+            if (res.status === 401 || res.status === 403) {
+                showMaterialSecurityError("Human verification failed. Please go back and try opening the resource again.");
+                return "verification_failed";
+            }
+
+            return false;
+        }
+
         if (raw.startsWith("{") || raw.startsWith("[")) {
             try {
                 const json = JSON.parse(raw);
 
                 if (json && json.ok === false) {
+                    const errorText = String(json.error || json.reason || "").toLowerCase();
+                    if (errorText.includes("turnstile") || errorText.includes("human") || errorText.includes("verify")) {
+                        showMaterialSecurityError("Human verification failed. Please go back and try opening the resource again.");
+                        return "verification_failed";
+                    }
                     return false;
                 }
 
