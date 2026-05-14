@@ -91,8 +91,8 @@
   "resources": {
     "dataBase": "/assets/data/resources/alevel",
     "rootFolder": "000",
-    "materialPage": "/resource_database/material.html",
-    "embeddedMaterialHash": "#primary-access",
+    "materialPage": "/r/material.html",
+    "embeddedMaterialHash": "#client-preflight",
     "idleUnload": {
       "enabled": true,
       "afterInactiveMs": 30000,

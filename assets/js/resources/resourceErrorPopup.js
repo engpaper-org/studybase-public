@@ -173,7 +173,7 @@
     document.getElementById("resource-error-dismiss")?.addEventListener("click", close);
     document.getElementById("resource-error-back")?.addEventListener("click", () => {
       close();
-      window.location.hash = "primary-access";
+      window.location.hash = "client-preflight";
     });
 
     host.addEventListener("click", (event) => {

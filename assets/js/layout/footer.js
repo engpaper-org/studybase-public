@@ -141,7 +141,7 @@ async function injectGlobalFooter() {
                         </p>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3 lg:justify-end">
-                        <a href="/resource_database/index.html#primary-access" class="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-6 py-3 text-white font-black hover:bg-violet-700 transition-colors">
+                        <a href="/r/index.html#client-preflight" class="inline-flex items-center justify-center gap-2 rounded-lg bg-slate-950 px-6 py-3 text-white font-black hover:bg-violet-700 transition-colors">
                             Browse Resources <i class="fa-solid fa-arrow-right text-xs"></i>
                         </a>
                         <a href="/past_papers/index.html" class="inline-flex items-center justify-center gap-2 rounded-lg bg-white border border-slate-200 px-6 py-3 text-slate-900 font-black hover:border-violet-300 transition-colors">
@@ -203,7 +203,7 @@ async function injectGlobalFooter() {
                     <div>
                         <h4 class="font-black mb-5 text-white uppercase text-xs tracking-widest">Resources</h4>
                         <ul class="space-y-3 text-sm font-medium font-body">
-                            <li><a href="/resource_database/index.html#primary-access" class="hover:text-violet-300 transition-colors">Database</a></li>
+                            <li><a href="/r/index.html#client-preflight" class="hover:text-violet-300 transition-colors">Database</a></li>
                             <li><a href="/blogs/index.html" class="hover:text-violet-300 transition-colors">Journal</a></li>
                             <li><a href="/study_pages/ucasHub.html" class="hover:text-violet-300 transition-colors">UCAS Hub</a></li>
                             <li><a href="/study_pages/aoGuide.html" class="hover:text-violet-300 transition-colors">Assessment Objectives</a></li>
@@ -227,7 +227,7 @@ async function injectGlobalFooter() {
                 <div class="flex flex-wrap items-center justify-center gap-4">
                     <a href="/past_papers/index.html" class="hover:text-blue-300 transition-colors">A-Level Papers</a>
                     <a href="/toolkit/index.html" class="hover:text-teal-300 transition-colors">Toolkit</a>
-                    <a href="/resource_database/index.html#primary-access" class="hover:text-violet-300 transition-colors">Resources</a>
+                    <a href="/r/index.html#client-preflight" class="hover:text-violet-300 transition-colors">Resources</a>
                 </div>
             </div>
         </div>

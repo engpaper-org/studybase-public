@@ -663,7 +663,7 @@
                                 <p class="text-xs text-slate-500 font-medium mt-1">Explore revision materials and guides</p>
                             </div>
                             <div class="space-y-2">
-                                <a href="/resource_database/index.html#primary-access" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-indigo-600 hover:bg-indigo-50 transition-colors">
+                                <a href="/r/index.html#client-preflight" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-indigo-600 hover:bg-indigo-50 transition-colors">
                                     <span>Full Resource Database</span>
                                     <i class="fa-solid fa-database text-xs opacity-70"></i>
                                 </a>
@@ -692,7 +692,7 @@
                                     <span>Paper Tracker</span>
                                     <i class="fa-solid fa-chart-simple text-xs opacity-60"></i>
                                 </a>
-                                <a href="/resource_database/index.html#primary-access" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
+                                <a href="/r/index.html#client-preflight" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
                                     <span>Resource Database</span>
                                     <i class="fa-solid fa-database text-xs opacity-60"></i>
                                 </a>
@@ -747,7 +747,7 @@
                     <p class="sb-dropdown-subtitle">Explore revision materials and guides</p>
                 </div>
                 <div class="space-y-1">
-                    <a href="/resource_database/index.html#primary-access" class="sb-dropdown-link sb-dropdown-link-primary-indigo">
+                    <a href="/r/index.html#client-preflight" class="sb-dropdown-link sb-dropdown-link-primary-indigo">
                         <span>Full Resource Database</span>
                         <i class="fa-solid fa-database text-xs opacity-70"></i>
                     </a>
@@ -778,7 +778,7 @@
                         <span>Paper Tracker</span>
                         <i class="fa-solid fa-chart-simple text-xs opacity-60"></i>
                     </a>
-                    <a href="/resource_database/index.html#primary-access" class="sb-dropdown-link">
+                    <a href="/r/index.html#client-preflight" class="sb-dropdown-link">
                         <span>Resource Database</span>
                         <i class="fa-solid fa-database text-xs opacity-60"></i>
                     </a>

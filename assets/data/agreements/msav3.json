@@ -33,7 +33,7 @@
     {
       "id": "6",
       "title": "Session State & Redirect Logic",
-      "content": "The Service utilises hash-based state validation (e.g., primary-access markers), grace period enforcement, and redirect logic to maintain structural integrity.<br><br>Users may configure certain redirect behaviours via Settings; however, core validation mechanisms remain active and cannot be disabled.<br><br>Temporary session timestamps may be stored to determine whether access originated from an authorised flow."
+      "content": "The Service utilises hash-based state validation (e.g., client-preflight markers), grace period enforcement, and redirect logic to maintain structural integrity.<br><br>Users may configure certain redirect behaviours via Settings; however, core validation mechanisms remain active and cannot be disabled.<br><br>Temporary session timestamps may be stored to determine whether access originated from an authorised flow."
     },
     {
       "id": "7",

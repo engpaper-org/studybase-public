@@ -285,6 +285,70 @@
             -webkit-backdrop-filter: blur(14px);
         }
 
+        .weekly-feedback-modal {
+            background:
+                radial-gradient(circle at 18% 16%, rgba(14, 165, 233, 0.18), transparent 26%),
+                radial-gradient(circle at 82% 20%, rgba(244, 114, 182, 0.16), transparent 28%),
+                linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.96));
+        }
+
+        .weekly-feedback-view {
+            display: none;
+        }
+
+        .weekly-feedback-view.active {
+            display: block;
+            animation: weeklyFeedbackSlide 0.34s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes weeklyFeedbackSlide {
+            from { opacity: 0; transform: translateY(12px) scale(0.985); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .weekly-feedback-star {
+            width: clamp(2.75rem, 13vw, 4rem);
+            height: clamp(2.75rem, 13vw, 4rem);
+            border-radius: 1.25rem;
+            color: #cbd5e1;
+            background: rgba(255,255,255,0.82);
+            border: 1px solid rgba(226,232,240,0.92);
+            box-shadow: 0 14px 30px rgba(15,23,42,0.08);
+            transition: transform 0.18s ease, color 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+        }
+
+        .weekly-feedback-star:hover,
+        .weekly-feedback-star.active {
+            color: #f59e0b;
+            background: #fffbeb;
+            border-color: #fde68a;
+            transform: translateY(-4px);
+        }
+
+        .weekly-feedback-star.active {
+            box-shadow: 0 18px 36px rgba(245,158,11,0.20);
+        }
+
+        .weekly-feedback-check {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: weeklyFeedbackCheck 0.7s 0.18s ease forwards;
+        }
+
+        @keyframes weeklyFeedbackCheck {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .weekly-feedback-success-ring {
+            animation: weeklyFeedbackPop 0.52s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes weeklyFeedbackPop {
+            0% { opacity: 0; transform: scale(0.72); }
+            75% { opacity: 1; transform: scale(1.06); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
     </style>
 </head>
 
@@ -480,13 +544,64 @@
         </div>
     </div>
 
+    <div id="weekly-feedback-modal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-md z-[100002] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="weeklyFeedbackTitle">
+        <div class="weekly-feedback-modal w-full max-w-lg rounded-[2rem] shadow-2xl border border-white/70 overflow-hidden">
+            <div class="p-7 md:p-9">
+                <div id="weekly-feedback-rating-view" class="weekly-feedback-view active text-center">
+                    <div class="w-14 h-14 rounded-2xl bg-sky-50 text-sky-500 border border-sky-100 flex items-center justify-center mx-auto mb-5 shadow-sm">
+                        <i class="fas fa-comment-dots text-xl"></i>
+                    </div>
+                    <h2 id="weeklyFeedbackTitle" class="text-2xl md:text-3xl font-black text-slate-950 tracking-tight">How are you finding StudyBaze this week?</h2>
+                    <p class="mt-3 text-sm md:text-base text-slate-500 font-semibold leading-7">Pick a rating to help us understand how the site is feeling right now.</p>
+                    <div id="weekly-feedback-stars" class="flex items-center justify-center gap-2 md:gap-3 mt-7" aria-label="Choose a rating out of five">
+                        <button type="button" class="weekly-feedback-star flex items-center justify-center text-2xl md:text-3xl" data-rating="1" aria-label="1 star"><i class="fas fa-star"></i></button>
+                        <button type="button" class="weekly-feedback-star flex items-center justify-center text-2xl md:text-3xl" data-rating="2" aria-label="2 stars"><i class="fas fa-star"></i></button>
+                        <button type="button" class="weekly-feedback-star flex items-center justify-center text-2xl md:text-3xl" data-rating="3" aria-label="3 stars"><i class="fas fa-star"></i></button>
+                        <button type="button" class="weekly-feedback-star flex items-center justify-center text-2xl md:text-3xl" data-rating="4" aria-label="4 stars"><i class="fas fa-star"></i></button>
+                        <button type="button" class="weekly-feedback-star flex items-center justify-center text-2xl md:text-3xl" data-rating="5" aria-label="5 stars"><i class="fas fa-star"></i></button>
+                    </div>
+                </div>
+
+                <div id="weekly-feedback-notes-view" class="weekly-feedback-view">
+                    <div class="mb-6">
+                        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 text-amber-700 text-xs font-black uppercase tracking-widest border border-amber-100">
+                            <i class="fas fa-star"></i>
+                            <span id="weekly-feedback-rating-label">5 stars</span>
+                        </span>
+                        <h2 class="text-2xl md:text-3xl font-black text-slate-950 tracking-tight mt-4">Any feedback?</h2>
+                        <p class="mt-3 text-sm md:text-base text-slate-500 font-semibold leading-7">Tell us what worked, what felt off, or what would make StudyBaze better.</p>
+                    </div>
+                    <textarea id="weekly-feedback-notes" rows="5" class="w-full bg-white/85 border border-slate-200 text-slate-800 text-sm rounded-2xl p-4 focus:outline-none focus:ring-4 focus:ring-sky-500/15 focus:border-sky-400 transition-all font-medium resize-none placeholder-slate-400" placeholder="Write anything you want us to know..."></textarea>
+                    <p id="weekly-feedback-error" class="hidden mt-4 text-sm font-bold text-red-600 bg-red-50 border border-red-100 rounded-2xl px-4 py-3">Could not send that yet. Please try again.</p>
+                    <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                        <button id="weekly-feedback-submit" type="button" class="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl bg-slate-950 text-white font-black py-4 hover:bg-slate-800 transition-all shadow-lg active:scale-[0.98]">
+                            <i class="fas fa-paper-plane"></i>
+                            Send feedback
+                        </button>
+                        <button id="weekly-feedback-skip" type="button" class="sm:w-32 inline-flex items-center justify-center rounded-2xl bg-slate-100 text-slate-600 font-black py-4 hover:bg-slate-200 transition-all active:scale-[0.98]">Skip</button>
+                    </div>
+                </div>
+
+                <div id="weekly-feedback-success-view" class="weekly-feedback-view text-center py-4">
+                    <div class="weekly-feedback-success-ring w-24 h-24 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-500 flex items-center justify-center mx-auto mb-6 shadow-sm">
+                        <svg width="54" height="54" viewBox="0 0 54 54" fill="none" aria-hidden="true">
+                            <path class="weekly-feedback-check" d="M15 28.5L23.2 36.5L39.5 18.5" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-black text-slate-950 tracking-tight">Thanks for your feedback</h2>
+                    <p class="mt-3 text-sm md:text-base text-slate-500 font-semibold leading-7">That helps us keep StudyBaze moving in the right direction.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
   let WORKER = "https://api.revisionbase.site";
   let RESOURCE_LIST_ENDPOINT = `${WORKER}/resources/list`;
   let TOP_CARDS_ENDPOINT = `${WORKER}/resources/top-cards`;
   let RESOURCE_DATA_BASE = "/assets/data/resources/alevel";
   let RESOURCE_MATERIAL_PAGE = "material.html";
-  let RESOURCE_EMBEDDED_HASH = "#primary-access";
+  let RESOURCE_EMBEDDED_HASH = "#client-preflight";
   let RESOURCE_IDLE_ENABLED = true;
   let RESOURCE_IDLE_TIMEOUT_MS = 120000;
   let RESOURCE_IDLE_UNLOAD_ON_BLUR = true;
@@ -1747,6 +1862,7 @@
     return [
       "announcement-modal",
       "report-modal",
+      "weekly-feedback-modal",
       "sb-account-pricing-modal"
     ];
   }
@@ -1758,6 +1874,211 @@
     });
 
     document.body.classList.toggle("overflow-hidden", shouldLock);
+  }
+
+  const WEEKLY_FEEDBACK_COMPLETED_PREFIX = "sb_weekly_feedback_completed_";
+  let weeklyFeedbackRating = 0;
+  let weeklyFeedbackWeekId = "";
+  let weeklyFeedbackSubmitting = false;
+  let WEEKLY_FEEDBACK_REPORT_URL = "https://report-problem.revisionbase.site";
+
+  async function getWeeklyFeedbackReportEndpoint() {
+    if (window.SiteConfig && window.SiteConfig.ready) {
+      const config = await window.SiteConfig.ready;
+      WEEKLY_FEEDBACK_REPORT_URL = config?.endpoints?.reportProblem || WEEKLY_FEEDBACK_REPORT_URL;
+    } else if (window.SB_CONFIG?.endpoints?.reportProblem) {
+      WEEKLY_FEEDBACK_REPORT_URL = window.SB_CONFIG.endpoints.reportProblem;
+    }
+
+    return WEEKLY_FEEDBACK_REPORT_URL;
+  }
+
+  function getWeeklyFeedbackWeekId(date = new Date()) {
+    const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const day = utcDate.getUTCDay() || 7;
+    utcDate.setUTCDate(utcDate.getUTCDate() + 4 - day);
+    const yearStart = new Date(Date.UTC(utcDate.getUTCFullYear(), 0, 1));
+    const week = Math.ceil((((utcDate - yearStart) / 86400000) + 1) / 7);
+    return `${utcDate.getUTCFullYear()}-W${String(week).padStart(2, "0")}`;
+  }
+
+  function hasCompletedWeeklyFeedback(weekId) {
+    try {
+      return localStorage.getItem(`${WEEKLY_FEEDBACK_COMPLETED_PREFIX}${weekId}`) === "true";
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function markWeeklyFeedbackCompleted(weekId) {
+    try {
+      localStorage.setItem(`${WEEKLY_FEEDBACK_COMPLETED_PREFIX}${weekId}`, "true");
+    } catch (_) {}
+  }
+
+  function isResourceUserLoggedIn() {
+    try {
+      if (window.StudyBaseServices?.isLoggedIn) return window.StudyBaseServices.isLoggedIn();
+      if (window.AccountAuth?.isLoggedIn) return window.AccountAuth.isLoggedIn();
+    } catch (_) {}
+
+    const username = (localStorage.getItem("studybase_username") || localStorage.getItem("gh_username") || "").trim();
+    const password = (localStorage.getItem("studybase_password") || localStorage.getItem("gh_password") || "").trim();
+    const device = (localStorage.getItem("studybase_device") || localStorage.getItem("gh_device") || "").trim();
+    return Boolean(username && password && device);
+  }
+
+  function setWeeklyFeedbackView(viewName) {
+    ["rating", "notes", "success"].forEach((name) => {
+      document
+        .getElementById(`weekly-feedback-${name}-view`)
+        ?.classList.toggle("active", name === viewName);
+    });
+  }
+
+  function updateWeeklyFeedbackStars(rating) {
+    document.querySelectorAll("#weekly-feedback-stars [data-rating]").forEach((button) => {
+      const value = Number(button.dataset.rating || 0);
+      button.classList.toggle("active", value <= rating);
+    });
+  }
+
+  function showWeeklyFeedbackModal() {
+    const modal = document.getElementById("weekly-feedback-modal");
+    if (!modal || !isResourceUserLoggedIn()) return;
+
+    weeklyFeedbackWeekId = getWeeklyFeedbackWeekId();
+    if (hasCompletedWeeklyFeedback(weeklyFeedbackWeekId)) return;
+
+    weeklyFeedbackRating = 0;
+    weeklyFeedbackSubmitting = false;
+    updateWeeklyFeedbackStars(0);
+    setWeeklyFeedbackView("rating");
+    document.getElementById("weekly-feedback-notes").value = "";
+    document.getElementById("weekly-feedback-error")?.classList.add("hidden");
+    modal.classList.remove("hidden");
+    updateBodyScrollLock();
+    setTimeout(() => {
+      document.querySelector("#weekly-feedback-stars [data-rating]")?.focus();
+    }, 80);
+  }
+
+  function hideWeeklyFeedbackModal() {
+    document.getElementById("weekly-feedback-modal")?.classList.add("hidden");
+    updateBodyScrollLock();
+  }
+
+  function chooseWeeklyFeedbackRating(rating) {
+    weeklyFeedbackRating = rating;
+    updateWeeklyFeedbackStars(rating);
+
+    const ratingLabel = document.getElementById("weekly-feedback-rating-label");
+    if (ratingLabel) ratingLabel.textContent = `${rating} star${rating === 1 ? "" : "s"}`;
+
+    setTimeout(() => {
+      setWeeklyFeedbackView("notes");
+      document.getElementById("weekly-feedback-notes")?.focus();
+    }, 180);
+  }
+
+  function getWeeklyFeedbackAccountSummary() {
+    try {
+      return {
+        username: (localStorage.getItem("studybase_username") || localStorage.getItem("gh_username") || "").trim(),
+        email: (localStorage.getItem("sb_accountEmail") || "").trim(),
+        firstName: (localStorage.getItem("sb_firstName") || "").trim()
+      };
+    } catch (_) {
+      return { username: "", email: "", firstName: "" };
+    }
+  }
+
+  async function submitWeeklyFeedback(skipNotes = false) {
+    if (!weeklyFeedbackRating || weeklyFeedbackSubmitting) return;
+
+    weeklyFeedbackSubmitting = true;
+    const submit = document.getElementById("weekly-feedback-submit");
+    const skip = document.getElementById("weekly-feedback-skip");
+    const error = document.getElementById("weekly-feedback-error");
+    const notesEl = document.getElementById("weekly-feedback-notes");
+    const previousSubmitHtml = submit?.innerHTML;
+    const previousSkipText = skip?.textContent;
+
+    if (error) error.classList.add("hidden");
+    if (submit) {
+      submit.disabled = true;
+      submit.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Sending';
+    }
+    if (skip) {
+      skip.disabled = true;
+      skip.textContent = "Sending";
+    }
+
+    const notes = skipNotes ? "" : (notesEl?.value || "").trim();
+    const account = getWeeklyFeedbackAccountSummary();
+    const payload = {
+      url: window.location.href,
+      type: "other",
+      notes: [
+        "StudyBaze weekly feedback",
+        `Week: ${weeklyFeedbackWeekId || getWeeklyFeedbackWeekId()}`,
+        `Rating: ${weeklyFeedbackRating}/5`,
+        `Feedback skipped: ${skipNotes ? "yes" : "no"}`,
+        `Feedback: ${notes || "(none)"}`,
+        account.username ? `Username: ${account.username}` : "",
+        account.email ? `Email: ${account.email}` : "",
+        account.firstName ? `First name: ${account.firstName}` : ""
+      ].filter(Boolean).join("\n"),
+      timestamp: new Date().toISOString(),
+      source: "resource_database_weekly_feedback",
+      rating: weeklyFeedbackRating,
+      week: weeklyFeedbackWeekId || getWeeklyFeedbackWeekId()
+    };
+
+    try {
+      const response = await fetch(await getWeeklyFeedbackReportEndpoint(), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) throw new Error("Report worker returned an error");
+
+      markWeeklyFeedbackCompleted(payload.week);
+      setWeeklyFeedbackView("success");
+      setTimeout(hideWeeklyFeedbackModal, 1650);
+    } catch (err) {
+      console.error(err);
+      if (error) error.classList.remove("hidden");
+    } finally {
+      weeklyFeedbackSubmitting = false;
+      if (submit) {
+        submit.disabled = false;
+        submit.innerHTML = previousSubmitHtml;
+      }
+      if (skip) {
+        skip.disabled = false;
+        skip.textContent = previousSkipText;
+      }
+    }
+  }
+
+  function setupWeeklyFeedbackPrompt() {
+    document.querySelectorAll("#weekly-feedback-stars [data-rating]").forEach((button) => {
+      const rating = Number(button.dataset.rating || 0);
+      button.addEventListener("mouseenter", () => updateWeeklyFeedbackStars(rating));
+      button.addEventListener("focus", () => updateWeeklyFeedbackStars(rating));
+      button.addEventListener("click", () => chooseWeeklyFeedbackRating(rating));
+    });
+
+    document.getElementById("weekly-feedback-stars")?.addEventListener("mouseleave", () => {
+      updateWeeklyFeedbackStars(weeklyFeedbackRating);
+    });
+    document.getElementById("weekly-feedback-submit")?.addEventListener("click", () => submitWeeklyFeedback(false));
+    document.getElementById("weekly-feedback-skip")?.addEventListener("click", () => submitWeeklyFeedback(true));
+
+    window.addEventListener("studybase:account-session-cleared", hideWeeklyFeedbackModal);
+    setTimeout(showWeeklyFeedbackModal, 900);
   }
 
   function stripResourceDecorators(name) {
@@ -1971,6 +2292,7 @@
   });
 
   setupResourceIdleCover();
+  setupWeeklyFeedbackPrompt();
   loadResources();
 </script>
 </body>

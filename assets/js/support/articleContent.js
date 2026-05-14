@@ -22,7 +22,7 @@ window.SUPPORT_ARTICLES = {
             title: "Resource vault",
             body: "Browse subjects, revision materials, and study content from the main database.",
             icon: "fa-book-open",
-            href: "/resource_database/index.html",
+            href: "/r/index.html",
             label: "Open resource vault",
           },
           {
@@ -46,7 +46,7 @@ window.SUPPORT_ARTICLES = {
         id: "first-five-minutes",
         title: "Your first five minutes",
         orderedList: [
-          "Open the <a href='/resource_database/index.html'>resource vault</a> or <a href='/subjects/index.html'>subject pages</a> and pick one subject.",
+          "Open the <a href='/r/index.html'>resource vault</a> or <a href='/subjects/index.html'>subject pages</a> and pick one subject.",
           "Open the <a href='/toolkit/index.html'>toolkit</a> only when you want extra structure, not because you feel you have to use every tool.",
           "If you want saved settings or account features, sign in through <a href='/myaccount/login.html'>the login page</a>.",
           "Bookmark the <a href='/support/help_center.html'>help centre</a> so you have a clear fallback if a page is confusing or not loading.",
@@ -67,14 +67,14 @@ window.SUPPORT_ARTICLES = {
       eyebrow: "Good next step",
       title: "Start simple",
       body: "Choose one subject page or one tool. You can always come back later for the rest.",
-      href: "/resource_database/index.html",
+      href: "/r/index.html",
       label: "Browse resources",
     },
     cta: {
       title: "Ready to explore?",
       body: "Start with the areas most students use first.",
       buttons: [
-        { label: "Browse resources", href: "/resource_database/index.html", primary: true },
+        { label: "Browse resources", href: "/r/index.html", primary: true },
         { label: "Open toolkit", href: "/toolkit/index.html" },
       ],
     },
@@ -262,7 +262,7 @@ window.SUPPORT_ARTICLES = {
             title: "Resource vault",
             body: "The main database is the quickest way to browse structured materials.",
             icon: "fa-database",
-            href: "/resource_database/index.html",
+            href: "/r/index.html",
             label: "Open vault",
           },
           {
@@ -287,7 +287,7 @@ window.SUPPORT_ARTICLES = {
         title: "If a resource will not load",
         orderedList: [
           "Refresh the page once and confirm that the route is correct.",
-          "Try opening the same item from the nearest index page, such as <a href='/resource_database/index.html'>the resource vault</a> or <a href='/subjects/index.html'>subject pages</a>.",
+          "Try opening the same item from the nearest index page, such as <a href='/r/index.html'>the resource vault</a> or <a href='/subjects/index.html'>subject pages</a>.",
           "Check whether the problem only happens in one browser or one device.",
           "If the issue is a specific missing file, 404, or broken control, report it through <a href='/report.html'>the issue report form</a>.",
         ],
@@ -315,7 +315,7 @@ window.SUPPORT_ARTICLES = {
       title: "Use the right resource route",
       body: "Start from an index page when possible, then report anything that still looks broken.",
       buttons: [
-        { label: "Open resource vault", href: "/resource_database/index.html", primary: true },
+        { label: "Open resource vault", href: "/r/index.html", primary: true },
         { label: "Report an issue", href: "/report.html" },
       ],
     },

@@ -3,9 +3,9 @@
   window.CurrentScriptVersions = window.CurrentScriptVersions || {};
   window.CurrentScriptVersions['hashtagProto'] = '1.0.0';
   // Configuration
-  var REQUIRED_HASH = "#primary-access";
+  var REQUIRED_HASH = "#client-preflight";
   var LOGIN_HASH = "#logged-in";
-  var SECONDARY_HASH = "#secondary-access";
+  var SECONDARY_HASH = "#trusted-session";
   var ANIMATION_PAGE = "/myaccount/settings.html?from=login";
   var GRACE_MS = 5000;
   var STORAGE_KEY = "gcsehelpLastPrimaryAccess";

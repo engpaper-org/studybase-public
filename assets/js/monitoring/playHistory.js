@@ -34,8 +34,8 @@
   function getNormalisedUrl() {
     var url = new URL(window.location.href);
 
-    // Force hash to exactly #primary-access
-    url.hash = "primary-access";
+    // Force hash to exactly #client-preflight
+    url.hash = "client-preflight";
 
     return url.toString();
   }

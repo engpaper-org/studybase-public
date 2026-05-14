@@ -8,7 +8,8 @@
 <head>
     
     <meta charset="UTF-8" />
-        <script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
+        <script src="/assets/js/config/siteConfig.js"></script>
+    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Revision Base | Alevel Revision Resources</title>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
@@ -945,8 +946,8 @@ function getIframeUrlWithMainParams(rawUrl) {
 function forcePrimaryAccessHash() {
     const url = new URL(window.location.href);
 
-    if (url.hash !== "#primary-access") {
-        url.hash = "primary-access";
+    if (url.hash !== "#client-preflight") {
+        url.hash = "client-preflight";
     }
 
     return url.toString();
@@ -1065,7 +1066,7 @@ function generateShareLink(name, resourceName, resourceUrl, timeCreated) {
 
 function getMainPageUrlForShare() {
     const url = new URL(forcePrimaryAccessHash());
-    url.hash = "primary-access";
+    url.hash = "client-preflight";
     return url.toString();
 }
 
@@ -1074,8 +1075,8 @@ function goBack() {
         window.parent.postMessage({ type: "sb-material-close" }, window.location.origin);
         return;
     }
-
-    window.location.href = "/resource_database/index.html#primary-access";
+/r/
+    window.location.href = "/resource_database/index.html#client-preflight";
 }
 
 function logoutUser() {
@@ -1092,7 +1093,7 @@ function logoutUser() {
         "gh_device_b64",
         "gh_session_expiry",
         "gh_session_expiry_set_at"
-    ].forEach((key) => localStorage.removeItem(key));
+    ].forEach((key) => local/r/key));
     window.location.href = "/resource_database/index.html";
 }
 
@@ -1336,14 +1337,14 @@ async function fetchMaterialUrl() {
 
         const errorMatch = finalValue.match(/\/error-([^/?#\s]+)/i);
         if (errorMatch) {
-            const errorCode = errorMatch[1];
-            window.location.replace(`/resource_database/index.html?error=${encodeURIComponent(errorCode)}#primary-access`);
+            const errorCode = errorMa/r/
+            window.location.replace(`/resource_database/index.html?error=${encodeURIComponent(errorCode)}#client-preflight`);
             return "redirected";
         }
 
         if (/^error-([^/?#\s]+)$/i.test(finalValue)) {
-            const errorCode = finalValue.replace(/^error-/i, "");
-            window.location.replace(`/resource_database/index.html?error=${encodeURIComponent(errorCode)}#primary-access`);
+            const errorCode = finalVa/r/-/i, "");
+            window.location.replace(`/resource_database/index.html?error=${encodeURIComponent(errorCode)}#client-preflight`);
             return "redirected";
         }
 
