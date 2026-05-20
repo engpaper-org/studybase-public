@@ -213,8 +213,10 @@ async function injectGlobalFooter() {
                     <div>
                         <h4 class="font-black mb-5 text-white uppercase text-xs tracking-widest">Platform</h4>
                         <ul class="space-y-3 text-sm font-medium font-body">
-                            <li><a href="/legal/index.html#privacy" class="hover:text-white transition-colors">Privacy Policy</a></li>
-                            <li><a href="/legal/index.html#terms" class="hover:text-white transition-colors">Terms & Conditions</a></li>
+                            <li><a href="/legal/privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                            <li><a href="/legal/tos.html" class="hover:text-white transition-colors">Terms & Conditions</a></li>
+                            <li><a href="/legal/token.html" class="hover:text-white transition-colors">Token Policy</a></li>
+                            <li><a href="/legal/disclaimer.html" class="hover:text-white transition-colors">Disclaimer</a></li>
                             <li><a href="/legal/contributions.html" class="hover:text-white transition-colors">Contributions</a></li>
                             <li><a href="/contact.html" class="hover:text-white transition-colors">Contact</a></li>
                         </ul>

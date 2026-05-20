@@ -13,8 +13,8 @@
       site: "https://studybase.site",
       eSite: "https://e.studybase.site",
       home: "/index.html",
-      privacy: "/legal/index.html#privacy",
-      terms: "/legal/index.html#terms"
+      privacy: "/legal/privacy.html",
+      terms: "/legal/tos.html"
     },
     icons: {
       favicon: "/assets/images/site-icons/main.ico",

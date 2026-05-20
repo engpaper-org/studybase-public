@@ -1,6 +1,6 @@
 let LOG_URL = 'https://script.google.com/macros/s/AKfycbyW-AQ4JeYOMujbXToocpkXPH_GMYxhJTqViDOkoPyXYrpcaMvFuxnVjtWQx-ot6T3L/exec';
-let PRIVACY_URL = '/legal/index.html#privacy';
-let TERMS_URL = '/legal/index.html#terms';
+let PRIVACY_URL = '/legal/privacy.html';
+let TERMS_URL = '/legal/tos.html';
 let GOOGLE_TAG_ID = 'G-N7LHC0S1T1';
 
 if (window.SiteConfig && window.SiteConfig.ready) {

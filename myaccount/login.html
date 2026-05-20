@@ -2135,8 +2135,8 @@
   function openLegal(e) {
       e.preventDefault();
       const target = e.currentTarget && e.currentTarget.id === "privacyLinkTerms"
-        ? "/legal/index.html#terms"
-        : "/legal/index.html#privacy";
+        ? "/legal/tos.html"
+        : "/legal/privacy.html";
       window.open(target, "_blank");
     }
 
