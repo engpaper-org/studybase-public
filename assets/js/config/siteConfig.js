@@ -74,6 +74,7 @@
       apgList: "https://alert-api.studybase.site/apg/list",
       reportProblem: "https://report-problem.studybase.site",
       resourceList: "https://api.studybase.site/resources/list",
+      resourceLoginCodeVerify: "https://api.studybase.site/resources/login-code/verify",
       resourceGet: "https://api.studybase.site/resource/get",
       resourceState: "https://api.studybase.site/state",
       resourceTopCards: "https://api.studybase.site/resources/top-cards",
