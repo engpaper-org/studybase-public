@@ -671,11 +671,13 @@
   let topCards = [];
   let resourceIdleTimer = null;
   let latestRenderedResourceItems = [];
+  let firstRunLoginCodeGateVisible = false;
   let resourceIdleState = {
     active: false,
     mode: null,
     restoreItems: null,
-    restoreScrollY: 0
+    restoreScrollY: 0,
+    restoreFirstRunLoginCodeGate: false
   };
   window.SB_RESOURCE_OPEN_MODE = "unknown";
 
@@ -1338,6 +1340,8 @@
   }
 
   function renderFirstRunLoginCodeGate(response) {
+    firstRunLoginCodeGateVisible = true;
+    latestRenderedResourceItems = [];
     openMode = "access_only";
     setBannerResourceMode("access_only");
     renderResourceTokenSummary(response?.account || null);
@@ -1351,6 +1355,7 @@
     const grid = document.getElementById("resource-grid");
     if (!grid) return;
 
+    grid.className = "grid grid-cols-1 gap-6";
     grid.innerHTML = `
       <div class="col-span-full w-full">
         <div class="bg-white/92 border border-slate-200 rounded-[2rem] shadow-xl shadow-slate-200/70 overflow-hidden">
@@ -1433,6 +1438,7 @@
         return;
       }
 
+      firstRunLoginCodeGateVisible = false;
       let list = res.resources || [];
 
       if (list.length > 0 && list[0].name === "DATA_Public") {
@@ -1625,7 +1631,8 @@
       restoreItems: latestRenderedResourceItems.length
         ? latestRenderedResourceItems.slice()
         : (Array.isArray(allResources) ? allResources.slice() : []),
-      restoreScrollY: window.scrollY || 0
+      restoreScrollY: window.scrollY || 0,
+      restoreFirstRunLoginCodeGate: firstRunLoginCodeGateVisible
     };
 
     setResourceListingHidden(true);
@@ -1676,13 +1683,15 @@
       ? resourceIdleState.restoreItems.slice()
       : [];
     const restoreScrollY = resourceIdleState.restoreScrollY || 0;
-    const shouldReloadResources = openMode === "access_only" && !restoreItems.length && !allResources.length;
+    const shouldReloadResources = resourceIdleState.restoreFirstRunLoginCodeGate ||
+      (openMode === "access_only" && !restoreItems.length && !allResources.length);
 
     resourceIdleState = {
       active: false,
       mode: null,
       restoreItems: null,
-      restoreScrollY: 0
+      restoreScrollY: 0,
+      restoreFirstRunLoginCodeGate: false
     };
 
     document.body.classList.remove("overflow-hidden", "resource-idle-active");
