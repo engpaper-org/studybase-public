@@ -1352,41 +1352,63 @@
     if (!grid) return;
 
     grid.innerHTML = `
-      <div class="col-span-full max-w-2xl mx-auto w-full">
-        <div class="bg-white/90 border border-slate-200 rounded-[2rem] shadow-xl shadow-slate-200/70 p-6 md:p-8 text-center">
-          <div class="w-16 h-16 mx-auto mb-5 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-            <i class="fas fa-key text-2xl"></i>
-          </div>
-          <p class="text-xs font-black uppercase tracking-[0.24em] text-indigo-500 mb-3">First login check</p>
-          <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight mb-3">Enter your one-time login code</h2>
-          <p class="text-sm md:text-base text-slate-500 font-semibold leading-relaxed max-w-xl mx-auto mb-6">
-            Use the code given by an admin. You will only need to do this once for this account.
-          </p>
+      <div class="col-span-full w-full">
+        <div class="bg-white/92 border border-slate-200 rounded-[2rem] shadow-xl shadow-slate-200/70 overflow-hidden">
+          <div class="grid lg:grid-cols-[1fr_0.9fr] gap-0">
+            <div class="p-6 md:p-9 lg:p-10 text-left">
+              <div class="w-16 h-16 mb-6 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                <i class="fas fa-key text-2xl"></i>
+              </div>
+              <p class="text-xs font-black uppercase tracking-[0.24em] text-indigo-500 mb-3">First login check</p>
+              <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-tight mb-4">Unlock your Resource Vault access</h2>
+              <p class="text-sm md:text-base text-slate-500 font-semibold leading-7 max-w-2xl mb-6">
+                Your email has passed the normal verification check. Before private resource cards appear for the first time, enter the one-time code given by an admin. Once accepted, this is saved to your StudyBase account permanently, so shutdowns, refreshes, or device-session cleanup will not ask you again.
+              </p>
+              <div class="grid sm:grid-cols-3 gap-3 text-sm font-bold text-slate-600">
+                <div class="rounded-2xl bg-slate-50 border border-slate-100 p-4">
+                  <i class="fas fa-envelope-circle-check text-indigo-500 mb-2"></i>
+                  <p>Email verified</p>
+                </div>
+                <div class="rounded-2xl bg-slate-50 border border-slate-100 p-4">
+                  <i class="fas fa-ticket text-indigo-500 mb-2"></i>
+                  <p>One-time code</p>
+                </div>
+                <div class="rounded-2xl bg-slate-50 border border-slate-100 p-4">
+                  <i class="fas fa-lock-open text-indigo-500 mb-2"></i>
+                  <p>Saved forever</p>
+                </div>
+              </div>
+            </div>
 
-          <div class="flex items-center justify-center gap-2 md:gap-3 mb-5" aria-label="One-time login code">
-            ${[0, 1, 2, 3, 4].map((index) => `
-              ${index === 2 ? '<span class="text-2xl md:text-3xl font-black text-slate-300 px-1" aria-hidden="true">-</span>' : ''}
-              <input
-                data-first-run-code-index="${index}"
-                inputmode="${index < 2 ? 'text' : 'numeric'}"
-                autocomplete="one-time-code"
-                maxlength="1"
-                class="w-12 h-14 md:w-14 md:h-16 rounded-2xl border border-slate-200 bg-slate-50 text-center text-xl md:text-2xl font-black font-mono text-slate-900 focus:outline-none focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 uppercase"
-                aria-label="Code character ${index + 1}"
+            <div class="bg-slate-50/80 border-t lg:border-t-0 lg:border-l border-slate-200 p-6 md:p-9 lg:p-10 flex flex-col justify-center text-center">
+              <p class="text-sm font-black text-slate-600 mb-4">Enter code format</p>
+              <div class="flex items-center justify-center gap-2 md:gap-3 mb-5" aria-label="One-time login code">
+                ${[0, 1, 2, 3, 4].map((index) => `
+                  ${index === 2 ? '<span class="text-2xl md:text-3xl font-black text-slate-300 px-1" aria-hidden="true">-</span>' : ''}
+                  <input
+                    data-first-run-code-index="${index}"
+                    inputmode="${index < 2 ? 'text' : 'numeric'}"
+                    autocomplete="one-time-code"
+                    maxlength="1"
+                    class="w-12 h-14 md:w-14 md:h-16 rounded-2xl border border-slate-200 bg-white text-center text-xl md:text-2xl font-black font-mono text-slate-900 focus:outline-none focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 uppercase"
+                    aria-label="Code character ${index + 1}"
+                  >
+                `).join("")}
+              </div>
+
+              <p class="text-xs font-bold text-slate-400 mb-4">Two letters, then three numbers. The dash is added automatically.</p>
+              <p id="firstRunLoginCodeError" class="hidden text-sm font-bold text-red-600 mb-4" role="alert"></p>
+
+              <button
+                id="firstRunLoginCodeSubmit"
+                type="button"
+                class="inline-flex items-center justify-center gap-2 rounded-full bg-indigo-600 text-white px-6 py-3 text-sm font-black shadow-lg shadow-indigo-200 hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition"
               >
-            `).join("")}
+                <i class="fas fa-unlock"></i>
+                Unlock resources
+              </button>
+            </div>
           </div>
-
-          <p id="firstRunLoginCodeError" class="hidden text-sm font-bold text-red-600 mb-4" role="alert"></p>
-
-          <button
-            id="firstRunLoginCodeSubmit"
-            type="button"
-            class="inline-flex items-center justify-center gap-2 rounded-full bg-indigo-600 text-white px-6 py-3 text-sm font-black shadow-lg shadow-indigo-200 hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition"
-          >
-            <i class="fas fa-unlock"></i>
-            Unlock resources
-          </button>
         </div>
       </div>
     `;
@@ -1654,6 +1676,7 @@
       ? resourceIdleState.restoreItems.slice()
       : [];
     const restoreScrollY = resourceIdleState.restoreScrollY || 0;
+    const shouldReloadResources = openMode === "access_only" && !restoreItems.length && !allResources.length;
 
     resourceIdleState = {
       active: false,
@@ -1664,6 +1687,15 @@
 
     document.body.classList.remove("overflow-hidden", "resource-idle-active");
     setResourceListingHidden(false);
+
+    if (shouldReloadResources) {
+      loadResources().finally(() => {
+        window.scrollTo({ top: restoreScrollY, behavior: "auto" });
+        scheduleResourceIdleTimer();
+      });
+      return;
+    }
+
     renderFavourites();
 
     const searchInput = document.getElementById("searchInput");
@@ -1721,7 +1753,7 @@
       }
 
       if (resourceIdleState.active) {
-        maybeResumeQuietResourceListing();
+        resumeResourceListingFromIdle();
         return;
       }
 
@@ -1742,7 +1774,12 @@
     });
 
     window.addEventListener("focus", () => {
-      maybeResumeQuietResourceListing();
+      if (resourceIdleState.active) {
+        resumeResourceListingFromIdle();
+        return;
+      }
+
+      scheduleResourceIdleTimer();
     });
 
     if (window.MutationObserver) {
