@@ -1,1297 +1,220 @@
 (function () {
-    function escapeHtml(value) {
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#39;");
+  const navGroups = [
+    {
+      label: "Resource Database",
+      href: "/r/index.html#client-preflight",
+      featured: true,
+      links: [
+        ["Open database", "/r/index.html#client-preflight"],
+        ["Subjects", "/subjects/index.html"],
+        ["Revision guides", "/blogs/index.html"]
+      ]
+    },
+    {
+      label: "Papers",
+      href: "/past_papers/index.html",
+      links: [
+        ["Past paper finder", "/past_papers/index.html"],
+        ["Paper tracker", "/paper-tracker.html"],
+        ["Mistake log", "/mistake-log.html"]
+      ]
+    },
+    {
+      label: "Study Tools",
+      href: "/study-tools.html",
+      links: [
+        ["Study tools home", "/study-tools.html"],
+        ["Exam planner", "/exam-planner.html"],
+        ["Focus timer", "/focus-timer.html"],
+        ["Recall builder", "/recall-builder.html"],
+        ["Revision checklist", "/revision-checklist.html"]
+      ]
+    },
+    {
+      label: "Support",
+      href: "/support/help_center.html",
+      links: [
+        ["Help centre", "/support/help_center.html"],
+        ["FAQ", "/faq.html"],
+        ["Contact", "/contact.html"],
+        ["Report issue", "/report.html"]
+      ]
     }
+  ];
 
-    async function getSiteConfig() {
-        if (window.SiteConfig && window.SiteConfig.ready) {
-            return window.SiteConfig.ready;
-        }
+  function normalPath(value) {
+    return String(value || "").split("#")[0].replace(/\/+$/, "") || "/index.html";
+  }
 
-        return window.SB_CONFIG || {
-            brand: {
-                name: "StudyBase",
-                suffix: ".site",
-                displayName: "StudyBase.site"
-            },
-            icons: {
-                navbar: "/assets/images/site-icons/navbar.png"
-            },
-            endpoints: {
-                loginState: "https://api.studybase.site/state"
-            }
-        };
+  function isActive(href) {
+    const path = normalPath(window.location.pathname);
+    const target = normalPath(href);
+    if (path === target) return true;
+    if (target.endsWith("/index.html")) {
+      return path.startsWith(target.replace(/\/index\.html$/, ""));
     }
-
-    function getBrandTitleHTML(config) {
-        const brand = config.brand || {};
-        const name = brand.name || brand.shortName || "StudyBase";
-        let suffix = brand.suffix || "";
-        const displayName = brand.displayName || `${name}${suffix}`;
-
-        if (!suffix && displayName.startsWith(name)) {
-            suffix = displayName.slice(name.length);
-        }
-
-        return `${escapeHtml(name)}${suffix ? `<span>${escapeHtml(suffix)}</span>` : ""}`;
-    }
-
-    async function initNavbar() {
-        const siteConfig = await getSiteConfig();
-        const navConfig = siteConfig.navigation || {};
-        if (navConfig.enabled === false) return;
-
-        const brand = siteConfig.brand || {};
-        const icons = siteConfig.icons || {};
-        const endpoints = siteConfig.endpoints || {};
-        const brandTitle = getBrandTitleHTML(siteConfig);
-        const brandAlt = `${brand.displayName || brand.name || "StudyBase"} logo`;
-        const homeUrl = (siteConfig.urls && siteConfig.urls.home) || "/index.html";
-        const navbarIcon = icons.navbar || icons.favicon || "/assets/images/site-icons/navbar.png";
-        const loginStateEndpoint = endpoints.loginState || "https://api.studybase.site/state";
-        const brandSubtitle = navConfig.brandSubtitle || "Past papers, tools, resources";
-        const supportSubtitle = navConfig.supportSubtitle || "Support Centre";
-        const loginCheckIntervalMs = Number(navConfig.loginCheckIntervalMs) || 90000;
-        const accountUrl = navConfig.accountUrl || "/myaccount/account.html";
-        const loginUrl = navConfig.loginUrl || "/myaccount/login.html";
-
-        const faHref = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css";
-        if (!document.querySelector('link[rel="stylesheet"][href*="font-awesome"]')) {
-            const faLink = document.createElement("link");
-            faLink.rel = "stylesheet";
-            faLink.href = faHref;
-            document.head.appendChild(faLink);
-        }
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const categoryParam = urlParams.get("category");
-        const isSupport =
-            window.location.pathname.includes("support") ||
-            categoryParam === "support";
-
-        const navStyles = `
-    <style id="sb-navbar-enhanced-styles">
-        .sb-nav-wrap {
-            position: relative !important;
-            z-index: 90 !important;
-            width: 100% !important;
-            display: block;
-            isolation: isolate;
-            border-bottom: 1px solid rgba(226,232,240,0.75) !important;
-            background:
-                radial-gradient(circle at top center, rgba(99,102,241,0.08), transparent 42%),
-                linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92)) !important;
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            box-shadow: 0 8px 24px rgba(15,23,42,0.04);
-        }
-
-        #sb-nav-shell {
-            position: relative;
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            font-family: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
-        }
-
-        #sb-nav-shell,
-        #sb-nav-shell * {
-            box-sizing: border-box;
-        }
-
-        .sb-nav-inner {
-            max-width: 84rem;
-            margin: 0 auto;
-            padding-left: 1rem;
-            padding-right: 1rem;
-        }
-
-        @media (min-width: 640px) {
-            .sb-nav-inner {
-                padding-left: 1.5rem;
-                padding-right: 1.5rem;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .sb-nav-inner {
-                padding-left: 2rem;
-                padding-right: 2rem;
-            }
-        }
-
-        .sb-nav-panel {
-            min-height: 78px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        }
-
-        .sb-nav-content {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            padding: 0.85rem 0;
-        }
-
-        .sb-nav-desktop {
-            display: none !important;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .sb-nav-mobile-toggle {
-            display: flex !important;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .sb-mobile-menu-inner {
-            padding: 0.75rem 1rem 1.25rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .sb-mobile-card h4 {
-            font-size: 0.875rem;
-            font-weight: 800;
-            color: #0f172a;
-        }
-
-        .sb-mobile-card p {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #64748b;
-            margin-top: 0.25rem;
-            line-height: 1.4;
-        }
-
-        .sb-mobile-card .space-y-2 > * + * {
-            margin-top: 0.5rem;
-        }
-
-        .sb-mobile-card a {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.8rem;
-            border-radius: 1rem;
-            padding: 0.85rem 1rem;
-            font-size: 0.875rem;
-            font-weight: 700;
-            color: #334155;
-            transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
-        }
-
-        .sb-mobile-card a:hover {
-            background: rgba(248,250,252,0.95);
-            color: #0f172a;
-            transform: translateX(2px);
-        }
-
-        @media (min-width: 768px) {
-            .sb-nav-desktop {
-                display: flex !important;
-            }
-
-            .sb-nav-mobile-toggle {
-                display: none !important;
-            }
-        }
-
-        .sb-brand {
-            display: flex;
-            align-items: center;
-            gap: 0.85rem;
-            min-width: 0;
-            border-radius: 1rem;
-            padding: 0.3rem 0;
-            transition: opacity 0.2s ease, transform 0.2s ease;
-        }
-
-        .sb-brand:hover {
-            opacity: 0.92;
-        }
-
-        .sb-brand-logo-shell {
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .sb-brand-logo-shell::before {
-            content: "";
-            position: absolute;
-            inset: -6px;
-            border-radius: 1.3rem;
-            background: radial-gradient(circle, rgba(99,102,241,0.14), transparent 70%);
-            pointer-events: none;
-        }
-
-        .sb-brand-logo {
-            position: relative;
-            width: 2.65rem;
-            height: 2.65rem;
-            border-radius: 1rem;
-            object-fit: cover;
-            background: white;
-            border: 1px solid rgba(226,232,240,0.9);
-            box-shadow:
-                0 8px 22px rgba(15,23,42,0.08),
-                inset 0 1px 0 rgba(255,255,255,0.9);
-        }
-
-        .sb-brand-title {
-            font-weight: 900;
-            font-size: 1.08rem;
-            line-height: 1;
-            letter-spacing: -0.03em;
-            color: #0f172a;
-            white-space: nowrap;
-        }
-
-        .sb-brand-title span {
-            background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 55%, #4f46e5 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .sb-brand-subtitle {
-            margin-top: 0.32rem;
-            font-size: 11px;
-            line-height: 1;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: #94a3b8;
-            white-space: nowrap;
-        }
-
-        .sb-nav-links {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            padding: 0.2rem;
-            border-radius: 1rem;
-            background: transparent;
-            border: none;
-            box-shadow: none;
-        }
-
-        .sb-nav-trigger {
-            height: 2.75rem;
-            padding: 0 1rem;
-            border-radius: 0.95rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.55rem;
-            font-size: 0.875rem;
-            font-weight: 800;
-            color: #475569;
-            transition:
-                background-color 0.18s ease,
-                color 0.18s ease,
-                transform 0.18s ease,
-                box-shadow 0.18s ease;
-            outline: none;
-        }
-
-        .sb-nav-trigger:hover {
-            transform: translateY(-1px);
-            background: rgba(255,255,255,0.78);
-            box-shadow: 0 8px 18px rgba(15,23,42,0.05);
-        }
-
-        .sb-nav-trigger i {
-            font-size: 10px;
-            transition: transform 0.2s ease;
-        }
-
-        .sb-nav-trigger-purple:hover {
-            color: #7c3aed;
-        }
-
-        .sb-nav-trigger-indigo:hover {
-            color: #4f46e5;
-        }
-
-        .sb-nav-trigger-slate:hover {
-            color: #0f172a;
-        }
-
-        .sb-mobile-icon-btn {
-            width: 2.75rem;
-            height: 2.75rem;
-            border-radius: 0.95rem;
-            border: 1px solid rgba(226,232,240,0.9);
-            background: rgba(255,255,255,0.84);
-            color: #334155;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 20px rgba(15,23,42,0.05);
-            transition: all 0.18s ease;
-        }
-
-        .sb-mobile-icon-btn:hover {
-            color: #4f46e5;
-            border-color: rgba(165,180,252,0.9);
-            background: white;
-        }
-
-        .sb-floating-menu {
-            position: fixed;
-            z-index: 80;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.16s ease, transform 0.16s ease;
-            transform: translateY(6px);
-        }
-
-        .sb-floating-menu.sb-menu-open {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0);
-        }
-
-        .sb-dropdown-card {
-            border-radius: 1.35rem;
-            border: 1px solid rgba(226,232,240,0.85);
-            background:
-                radial-gradient(circle at top left, rgba(99,102,241,0.06), transparent 32%),
-                linear-gradient(180deg, rgba(255,255,255,0.97), rgba(255,255,255,0.94));
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            box-shadow:
-                0 24px 60px rgba(15,23,42,0.12),
-                inset 0 1px 0 rgba(255,255,255,0.8);
-            padding: 0.8rem;
-        }
-
-        .sb-dropdown-head {
-            padding: 0.45rem 0.7rem 0.75rem;
-        }
-
-        .sb-dropdown-title {
-            font-size: 0.95rem;
-            font-weight: 900;
-            color: #0f172a;
-            letter-spacing: -0.02em;
-        }
-
-        .sb-dropdown-subtitle {
-            margin-top: 0.2rem;
-            font-size: 0.76rem;
-            font-weight: 600;
-            color: #64748b;
-            line-height: 1.4;
-        }
-
-        .sb-dropdown-link {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.8rem;
-            border-radius: 1rem;
-            padding: 0.9rem 1rem;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #334155;
-            transition:
-                background-color 0.18s ease,
-                color 0.18s ease,
-                transform 0.18s ease;
-        }
-
-        .sb-dropdown-link:hover {
-            background: rgba(248,250,252,0.95);
-            color: #0f172a;
-            transform: translateX(2px);
-        }
-
-        .sb-dropdown-link-primary-purple {
-            color: #7c3aed;
-            background: rgba(245,243,255,0.78);
-        }
-
-        .sb-dropdown-link-primary-purple:hover {
-            background: rgba(243,232,255,0.95);
-            color: #6d28d9;
-        }
-
-        .sb-dropdown-link-primary-indigo {
-            color: #4f46e5;
-            background: rgba(238,242,255,0.8);
-        }
-
-        .sb-dropdown-link-primary-indigo:hover {
-            background: rgba(224,231,255,0.95);
-            color: #4338ca;
-        }
-
-        .sb-mobile-menu-shell {
-            border-top: 1px solid rgba(226,232,240,0.75);
-            background:
-                linear-gradient(180deg, rgba(255,255,255,0.95), rgba(248,250,252,0.94));
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-        }
-
-        .sb-mobile-card {
-            border-radius: 1.2rem;
-            border: 1px solid rgba(226,232,240,0.75);
-            background: rgba(255,255,255,0.82);
-            box-shadow:
-                0 10px 30px rgba(15,23,42,0.06),
-                inset 0 1px 0 rgba(255,255,255,0.8);
-            padding: 1rem;
-        }
-
-        .sb-login-primary {
-            height: 2.75rem;
-            padding: 0 1.3rem;
-            border-radius: 0.95rem;
-            background: linear-gradient(135deg, #111827 0%, #312e81 100%);
-            color: white;
-            font-weight: 800;
-            font-size: 0.875rem;
-            box-shadow: 0 12px 24px rgba(79,70,229,0.20);
-            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
-        }
-
-        .sb-login-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 14px 28px rgba(79,70,229,0.28);
-            background: linear-gradient(135deg, #111827 0%, #4338ca 100%);
-        }
-
-        .sb-account-primary {
-            height: 2.75rem;
-            padding: 0 1.2rem;
-            border-radius: 0.95rem;
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-            color: white;
-            font-weight: 800;
-            font-size: 0.875rem;
-            box-shadow: 0 12px 24px rgba(99,102,241,0.24);
-            transition: transform 0.18s ease, box-shadow 0.18s ease;
-        }
-
-        .sb-account-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 14px 30px rgba(99,102,241,0.3);
-        }
-
-        .sb-logout-btn {
-            width: 2.75rem;
-            height: 2.75rem;
-            border-radius: 0.95rem;
-            border: 1px solid rgba(226,232,240,0.9);
-            background: rgba(255,255,255,0.84);
-            color: #64748b;
-            transition: all 0.18s ease;
-        }
-
-        .sb-logout-btn:hover {
-            color: #dc2626;
-            border-color: rgba(254,202,202,0.9);
-            background: rgba(254,242,242,0.95);
-        }
-    </style>
-`;
-
-        const hasSharedStudyBaseCss = Boolean(
-            document.querySelector('link[rel="stylesheet"][href*="/assets/css/main/studybase.css"]')
-        );
-
-        if (!hasSharedStudyBaseCss && !document.getElementById("sb-navbar-enhanced-styles")) {
-            document.head.insertAdjacentHTML("beforeend", navStyles);
-        }
-
-        let brandNameHTML = `
-            <div class="flex flex-col leading-none min-w-0">
-                <span class="sb-brand-title">
-                    ${brandTitle}
-                </span>
-                <span class="sb-brand-subtitle">
-                    ${escapeHtml(brandSubtitle)}
-                </span>
-            </div>
-        `;
-
-        if (isSupport) {
-            brandNameHTML = `
-                <div class="flex flex-col leading-none min-w-0">
-                    <span class="sb-brand-title">
-                        ${brandTitle}
-                    </span>
-                    <span class="sb-brand-subtitle">
-                        ${escapeHtml(supportSubtitle)}
-                    </span>
-                </div>
-            `;
-        }
-
-        const navHTML = `
-        <div class="sb-nav-wrap" role="banner">
-            <div id="sb-nav-shell" class="sb-nav-shell relative w-full font-sans" role="navigation">
-                <div class="sb-nav-inner">
-                    <div class="sb-nav-panel">
-                        <div class="sb-nav-content">
-                            <a href="${escapeHtml(homeUrl)}" class="sb-brand">
-                                <div class="sb-brand-logo-shell">
-                                    <img
-                                        src="${escapeHtml(navbarIcon)}"
-                                        alt="${escapeHtml(brandAlt)}"
-                                        class="sb-brand-logo"
-                                    >
-                                </div>
-                                ${brandNameHTML}
-                            </a>
-
-                            <div class="sb-nav-desktop hidden md:flex items-center gap-4">
-                                <div class="sb-nav-links">
-                                    <button
-                                        type="button"
-                                        data-dropdown-trigger="student-tools"
-                                        class="sb-nav-trigger sb-nav-trigger-purple"
-                                    >
-                                        <span>Toolkit</span>
-                                        <i class="fa-solid fa-chevron-down"></i>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        data-dropdown-trigger="resources"
-                                        class="sb-nav-trigger sb-nav-trigger-indigo"
-                                    >
-                                        <span>Resources</span>
-                                        <i class="fa-solid fa-chevron-down"></i>
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        data-dropdown-trigger="past-papers"
-                                        class="sb-nav-trigger sb-nav-trigger-slate"
-                                    >
-                                        <span>Past Papers</span>
-                                        <i class="fa-solid fa-chevron-down"></i>
-                                    </button>
-                                </div>
-
-                                <button
-                                    type="button"
-                                    class="sb-theme-toggle"
-                                    data-sb-theme-toggle
-                                    aria-label="Toggle dark mode"
-                                    title="Toggle dark mode"
-                                >
-                                    <i class="fa-solid fa-moon" aria-hidden="true"></i>
-                                </button>
-
-                                <div id="loginBtnContainer" class="flex items-center gap-2"></div>
-                            </div>
-
-                            <div class="sb-nav-mobile-toggle md:hidden flex items-center gap-2">
-                                <button
-                                    type="button"
-                                    class="sb-theme-toggle"
-                                    data-sb-theme-toggle
-                                    aria-label="Toggle dark mode"
-                                    title="Toggle dark mode"
-                                >
-                                    <i class="fa-solid fa-moon" aria-hidden="true"></i>
-                                </button>
-                                <button id="mobile-menu-btn" class="sb-mobile-icon-btn" aria-label="Open menu">
-                                    <i class="fa-solid fa-bars text-lg"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="mobile-menu" class="hidden md:hidden sb-mobile-menu-shell">
-                    <div class="sb-nav-inner sb-mobile-menu-inner px-4 pb-5 pt-3 space-y-4">
-                        <div class="sb-mobile-card">
-                            <div class="mb-3">
-                                <h4 class="text-sm font-black text-slate-900">Toolkit</h4>
-                                <p class="text-xs text-slate-500 font-medium mt-1">Open focused revision tools</p>
-                            </div>
-                            <div class="space-y-2">
-                                <a href="/toolkit/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-purple-600 hover:bg-purple-50 transition-colors">
-                                    <span>Toolkit Home</span>
-                                    <i class="fa-solid fa-arrow-right text-xs"></i>
-                                </a>
-                                <a href="/toolkit/focusRoom.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                                    <span>The Focus Room</span>
-                                    <i class="fa-solid fa-bullseye text-xs opacity-60"></i>
-                                </a>
-                                <a href="/toolkit/timetable.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                                    <span>Timetable Generator</span>
-                                    <i class="fa-solid fa-calendar-days text-xs opacity-60"></i>
-                                </a>
-                                <a href="/toolkit/flashcards.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                                    <span>Flashcard Builder</span>
-                                    <i class="fa-solid fa-layer-group text-xs opacity-60"></i>
-                                </a>
-                                <a href="/toolkit/paperTracker.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                                    <span>Past Paper Tracker</span>
-                                    <i class="fa-solid fa-file-contract text-xs opacity-60"></i>
-                                </a>
-                                <a href="/toolkit/countdown.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                                    <span>Countdowns</span>
-                                    <i class="fa-solid fa-hourglass-half text-xs opacity-60"></i>
-                                </a>
-                                <a href="/toolkit/mindmap.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                                    <span>Mindmaps</span>
-                                    <i class="fa-solid fa-diagram-project text-xs opacity-60"></i>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="sb-mobile-card">
-                            <div class="mb-3">
-                                <h4 class="text-sm font-black text-slate-900">Resources</h4>
-                                <p class="text-xs text-slate-500 font-medium mt-1">Explore revision materials and guides</p>
-                            </div>
-                            <div class="space-y-2">
-                                <a href="/r/index.html#client-preflight" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-indigo-600 hover:bg-indigo-50 transition-colors">
-                                    <span>Full Resource Database</span>
-                                    <i class="fa-solid fa-database text-xs opacity-70"></i>
-                                </a>
-                                <a href="/subjects/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                                    <span>Subject Specific Resources</span>
-                                    <i class="fa-solid fa-book-open text-xs opacity-60"></i>
-                                </a>
-                                <a href="/blogs/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                                    <span>${escapeHtml(brand.name || brand.shortName || "StudyBase")} Blogs</span>
-                                    <i class="fa-solid fa-pen-nib text-xs opacity-60"></i>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="sb-mobile-card">
-                            <div class="mb-3">
-                                <h4 class="text-sm font-black text-slate-900">Past Papers</h4>
-                                <p class="text-xs text-slate-500 font-medium mt-1">Find A-Level papers by subject, board and year</p>
-                            </div>
-                            <div class="space-y-2">
-                                <a href="/past_papers/index.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-black text-slate-900 hover:bg-slate-50 transition-colors">
-                                    <span>Past Paper Finder</span>
-                                    <i class="fa-solid fa-file-lines text-xs opacity-70"></i>
-                                </a>
-                                <a href="/toolkit/paperTracker.html" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                                    <span>Paper Tracker</span>
-                                    <i class="fa-solid fa-chart-simple text-xs opacity-60"></i>
-                                </a>
-                                <a href="/r/index.html#client-preflight" class="flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                                    <span>Resource Database</span>
-                                    <i class="fa-solid fa-database text-xs opacity-60"></i>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div id="mobileLoginBtnContainer" class="pt-1"></div>
-                    </div>
-                </div>
-            </div>
+    return false;
+  }
+
+  function groupMarkup(group) {
+    const dropdown = group.links.map(([label, href]) => `
+      <a class="sbx-nav-dropdown-link" href="${href}">
+        <span>${label}</span>
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    `).join("");
+
+    return `
+      <div class="sbx-nav-group ${group.featured ? "is-featured" : ""} ${isActive(group.href) ? "is-active" : ""}">
+        <button class="sbx-nav-link sbx-nav-dropdown-trigger" type="button" aria-label="Open ${group.label} menu" aria-expanded="false">
+          <span>${group.label}</span>
+          <span class="sbx-nav-caret" aria-hidden="true"></span>
+        </button>
+        <div class="sbx-nav-dropdown">
+          <div class="sbx-nav-dropdown-head">
+            <strong>${group.label}</strong>
+            <small>StudyBase remastered</small>
+          </div>
+          <a class="sbx-nav-dropdown-link is-primary" href="${group.href}">
+            <span>Open ${group.label}</span>
+            <span aria-hidden="true">&rarr;</span>
+          </a>
+          ${dropdown}
         </div>
+      </div>
+    `;
+  }
 
-        <div id="sb-dropdown-student-tools" data-dropdown-menu="student-tools" class="sb-floating-menu hidden">
-            <div class="sb-dropdown-card w-[350px]">
-                <div class="sb-dropdown-head">
-                    <p class="sb-dropdown-title">Toolkit</p>
-                    <p class="sb-dropdown-subtitle">Open focused revision tools</p>
-                </div>
-                <div class="space-y-1">
-                    <a href="/toolkit/index.html" class="sb-dropdown-link sb-dropdown-link-primary-purple">
-                        <span>Toolkit Home</span>
-                        <i class="fa-solid fa-arrow-right text-xs"></i>
-                    </a>
-                    <a href="/toolkit/focusRoom.html" class="sb-dropdown-link">
-                        <span>Focus Room</span>
-                        <i class="fa-solid fa-bullseye text-xs opacity-60"></i>
-                    </a>
-                    <a href="/toolkit/timetable.html" class="sb-dropdown-link">
-                        <span>Timetable Generator</span>
-                        <i class="fa-solid fa-calendar-days text-xs opacity-60"></i>
-                    </a>
-                    <a href="/toolkit/flashcards.html" class="sb-dropdown-link">
-                        <span>Flashcard Builder</span>
-                        <i class="fa-solid fa-layer-group text-xs opacity-60"></i>
-                    </a>
-                    <a href="/toolkit/paperTracker.html" class="sb-dropdown-link">
-                        <span>Past Paper Tracker</span>
-                        <i class="fa-solid fa-file-contract text-xs opacity-60"></i>
-                    </a>
-                    <a href="/toolkit/ucasCalculator.html" class="sb-dropdown-link">
-                        <span>UCAS Calculator</span>
-                        <i class="fa-solid fa-calculator text-xs opacity-60"></i>
-                    </a>
-                </div>
-            </div>
+  function mobileMarkup() {
+    return navGroups.map((group) => `
+      <details class="sbx-mobile-group">
+        <summary>${group.label}</summary>
+        <a href="${group.href}">Open ${group.label}</a>
+        ${group.links.map(([label, href]) => `<a href="${href}">${label}</a>`).join("")}
+      </details>
+    `).join("");
+  }
+
+  function render() {
+    if (document.getElementById("sbx-navbar")) return;
+
+    const currentPath = normalPath(window.location.pathname);
+    const isResourceDatabasePage = currentPath === "/r/index.html" || currentPath === "/r";
+    const nav = document.createElement("header");
+    nav.id = "sbx-navbar";
+    nav.className = `sbx-navbar ${isResourceDatabasePage ? "is-resource-database" : ""}`;
+    nav.innerHTML = `
+      <div class="sbx-nav-inner">
+        <a class="sbx-nav-brand" href="/index.html" aria-label="StudyBase home">
+          <img src="/assets/images/site-icons/navbar.png" alt="StudyBase logo">
+          <span>
+            <strong>StudyBase</strong>
+            <small>A-Level paper ops</small>
+          </span>
+        </a>
+        <nav class="sbx-nav-links" aria-label="Primary navigation">
+          <a class="sbx-nav-link ${isActive("/alevel.html") ? "is-active" : ""}" href="/alevel.html">A-Level Route</a>
+          ${navGroups.map(groupMarkup).join("")}
+        </nav>
+        ${isResourceDatabasePage ? "" : `<a class="sbx-nav-access" href="/myaccount/login.html" data-sbx-login>Login</a>`}
+        <button class="sbx-nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <nav class="sbx-mobile-menu" aria-label="Mobile navigation" hidden>
+        <a class="sbx-mobile-link" href="/alevel.html">A-Level Route</a>
+        ${mobileMarkup()}
+        ${isResourceDatabasePage ? "" : `<a class="sbx-nav-access" href="/myaccount/login.html" data-sbx-login>Login</a>`}
+      </nav>
+    `;
+
+    document.body.insertAdjacentElement("afterbegin", nav);
+
+    function ensureLoginModal() {
+      let modal = document.getElementById("sbx-login-modal");
+      if (modal) return modal;
+
+      modal = document.createElement("div");
+      modal.id = "sbx-login-modal";
+      modal.className = "sbx-login-modal";
+      modal.setAttribute("role", "dialog");
+      modal.setAttribute("aria-modal", "true");
+      modal.setAttribute("aria-label", "StudyBase login");
+      modal.innerHTML = `
+        <div class="sbx-login-dialog">
+          <button class="sbx-login-close" type="button" aria-label="Close login">&times;</button>
+          <iframe class="sbx-login-frame" title="StudyBase login" src="about:blank"></iframe>
         </div>
+      `;
+      document.body.appendChild(modal);
 
-        <div id="sb-dropdown-resources" data-dropdown-menu="resources" class="sb-floating-menu hidden">
-            <div class="sb-dropdown-card w-[330px]">
-                <div class="sb-dropdown-head">
-                    <p class="sb-dropdown-title">Resources</p>
-                    <p class="sb-dropdown-subtitle">Explore revision materials and guides</p>
-                </div>
-                <div class="space-y-1">
-                    <a href="/r/index.html#client-preflight" class="sb-dropdown-link sb-dropdown-link-primary-indigo">
-                        <span>Full Resource Database</span>
-                        <i class="fa-solid fa-database text-xs opacity-70"></i>
-                    </a>
-                    <a href="/subjects/index.html" class="sb-dropdown-link">
-                        <span>Subject Specific Resources</span>
-                        <i class="fa-solid fa-book-open text-xs opacity-60"></i>
-                    </a>
-                    <a href="/blogs/index.html" class="sb-dropdown-link">
-                        <span>${escapeHtml(brand.name || brand.shortName || "StudyBase")} Blogs</span>
-                        <i class="fa-solid fa-pen-nib text-xs opacity-60"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
+      const frame = modal.querySelector(".sbx-login-frame");
+      const close = () => {
+        modal.classList.remove("is-open");
+        document.body.classList.remove("sbx-modal-lock");
+      };
 
-        <div id="sb-dropdown-past-papers" data-dropdown-menu="past-papers" class="sb-floating-menu hidden">
-            <div class="sb-dropdown-card w-[330px]">
-                <div class="sb-dropdown-head">
-                    <p class="sb-dropdown-title">Past Papers</p>
-                    <p class="sb-dropdown-subtitle">Filter A-Level papers by subject, board and year</p>
-                </div>
-                <div class="space-y-1">
-                    <a href="/past_papers/index.html" class="sb-dropdown-link sb-dropdown-link-primary-indigo">
-                        <span>Past Paper Finder</span>
-                        <i class="fa-solid fa-file-lines text-xs opacity-70"></i>
-                    </a>
-                    <a href="/toolkit/paperTracker.html" class="sb-dropdown-link">
-                        <span>Paper Tracker</span>
-                        <i class="fa-solid fa-chart-simple text-xs opacity-60"></i>
-                    </a>
-                    <a href="/r/index.html#client-preflight" class="sb-dropdown-link">
-                        <span>Resource Database</span>
-                        <i class="fa-solid fa-database text-xs opacity-60"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        `;
+      modal.querySelector(".sbx-login-close").addEventListener("click", close);
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) close();
+      });
 
-        document.body.insertAdjacentHTML("afterbegin", navHTML);
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && modal.classList.contains("is-open")) close();
+      });
 
-        function updateThemeToggleIcons(event) {
-            const isDark = event && event.detail
-                ? event.detail.isDark
-                : document.documentElement.classList.contains("dark");
-
-            document.querySelectorAll("[data-sb-theme-toggle]").forEach((button) => {
-                const icon = button.querySelector("i");
-                if (!icon) return;
-
-                icon.classList.toggle("fa-sun", isDark);
-                icon.classList.toggle("fa-moon", !isDark);
-                button.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
-                button.setAttribute("title", isDark ? "Switch to light mode" : "Switch to dark mode");
-            });
+      modal.openLogin = () => {
+        if (!frame.getAttribute("src") || frame.getAttribute("src") === "about:blank") {
+          frame.setAttribute("src", "/myaccount/login.html");
         }
-
-        document.querySelectorAll("[data-sb-theme-toggle]").forEach((button) => {
-            button.addEventListener("click", () => {
-                const isDark = window.SiteTheme
-                    ? window.SiteTheme.mode === "dark"
-                    : document.documentElement.classList.contains("dark");
-
-                if (!isDark) {
-                    const proceed = window.confirm(
-                        "Dark mode is experimental and there may be some visibility issues. Switch anyway?"
-                    );
-                    if (!proceed) return;
-                }
-
-                if (window.SiteTheme && typeof window.SiteTheme.toggle === "function") {
-                    window.SiteTheme.toggle();
-                } else {
-                    document.documentElement.classList.toggle("dark");
-                }
-
-                updateThemeToggleIcons();
-            });
-        });
-
-        updateThemeToggleIcons();
-        window.addEventListener("site-theme-change", updateThemeToggleIcons);
-
-        const mobileBtn = document.getElementById("mobile-menu-btn");
-        const mobileMenu = document.getElementById("mobile-menu");
-
-        if (mobileBtn && mobileMenu) {
-            mobileBtn.addEventListener("click", () => {
-                mobileMenu.classList.toggle("hidden");
-
-                const icon = mobileBtn.querySelector("i");
-                if (mobileMenu.classList.contains("hidden")) {
-                    icon.classList.remove("fa-xmark");
-                    icon.classList.add("fa-bars");
-                } else {
-                    icon.classList.remove("fa-bars");
-                    icon.classList.add("fa-xmark");
-                }
-            });
-        }
-
-        const triggers = [...document.querySelectorAll("[data-dropdown-trigger]")];
-        const menus = [...document.querySelectorAll("[data-dropdown-menu]")];
-        let activeId = null;
-        let closeTimer = null;
-
-        function getMenu(id) {
-            return document.querySelector(`[data-dropdown-menu="${id}"]`);
-        }
-
-        function getTrigger(id) {
-            return document.querySelector(`[data-dropdown-trigger="${id}"]`);
-        }
-
-        function positionMenu(id) {
-            const trigger = getTrigger(id);
-            const menu = getMenu(id);
-            if (!trigger || !menu) return;
-
-            const rect = trigger.getBoundingClientRect();
-            const menuWidth = menu.offsetWidth || (id === "past-papers" ? 330 : 330);
-            const gap = 10;
-
-            let left = rect.left;
-            if (id === "past-papers") {
-                left = rect.right - menuWidth;
-            }
-
-            const maxLeft = window.innerWidth - menuWidth - 12;
-            left = Math.max(12, Math.min(left, maxLeft));
-
-            menu.style.left = `${left}px`;
-            menu.style.top = `${rect.bottom + gap}px`;
-        }
-
-        function hideAllMenus() {
-            menus.forEach((menu) => {
-                menu.classList.add("hidden");
-                menu.classList.remove("sb-menu-open");
-            });
-
-            triggers.forEach((trigger) => {
-                trigger.classList.remove("bg-white", "text-slate-900", "text-indigo-600", "text-purple-600", "shadow-sm");
-                const icon = trigger.querySelector("i");
-                if (icon) icon.style.transform = "";
-            });
-
-            activeId = null;
-        }
-
-        function styleActiveTrigger(id) {
-            triggers.forEach((trigger) => {
-                const triggerId = trigger.getAttribute("data-dropdown-trigger");
-                const icon = trigger.querySelector("i");
-
-                trigger.classList.remove("bg-white", "text-slate-900", "text-indigo-600", "text-purple-600", "shadow-sm");
-                if (icon) icon.style.transform = "";
-
-                if (triggerId === id) {
-                    trigger.classList.add("bg-white", "shadow-sm");
-
-                    if (id === "student-tools") {
-                        trigger.classList.add("text-purple-600");
-                    } else if (id === "resources") {
-                        trigger.classList.add("text-indigo-600");
-                    } else {
-                        trigger.classList.add("text-slate-900");
-                    }
-
-                    if (icon) icon.style.transform = "rotate(180deg)";
-                }
-            });
-        }
-
-        function openMenu(id) {
-            clearTimeout(closeTimer);
-
-            if (activeId === id) {
-                positionMenu(id);
-                return;
-            }
-
-            hideAllMenus();
-
-            const menu = getMenu(id);
-            if (!menu) return;
-
-            menu.classList.remove("hidden");
-            positionMenu(id);
-
-            requestAnimationFrame(() => {
-                menu.classList.add("sb-menu-open");
-            });
-
-            styleActiveTrigger(id);
-            activeId = id;
-        }
-
-        function scheduleClose() {
-            clearTimeout(closeTimer);
-            closeTimer = setTimeout(() => {
-                hideAllMenus();
-            }, 180);
-        }
-
-        function cancelClose() {
-            clearTimeout(closeTimer);
-        }
-
-        triggers.forEach((trigger) => {
-            const id = trigger.getAttribute("data-dropdown-trigger");
-
-            trigger.addEventListener("mouseenter", () => openMenu(id));
-            trigger.addEventListener("mouseleave", scheduleClose);
-            trigger.addEventListener("focus", () => openMenu(id));
-
-            trigger.addEventListener("click", (e) => {
-                e.preventDefault();
-                if (activeId === id) {
-                    hideAllMenus();
-                } else {
-                    openMenu(id);
-                }
-            });
-        });
-
-        menus.forEach((menu) => {
-            menu.addEventListener("mouseenter", cancelClose);
-            menu.addEventListener("mouseleave", scheduleClose);
-        });
-
-        window.addEventListener("scroll", () => {
-            if (activeId) positionMenu(activeId);
-        }, { passive: true });
-
-        window.addEventListener("resize", () => {
-            if (activeId) positionMenu(activeId);
-        });
-
-        document.addEventListener("click", (e) => {
-            const insideTrigger = e.target.closest("[data-dropdown-trigger]");
-            const insideMenu = e.target.closest("[data-dropdown-menu]");
-            if (!insideTrigger && !insideMenu) hideAllMenus();
-        });
-
-        function closeLoginOverlay() {
-            const overlay = document.getElementById("gh-login-overlay");
-            if (overlay) {
-                overlay.classList.remove("opacity-100");
-                overlay.classList.add("opacity-0");
-
-                setTimeout(() => {
-                    overlay.remove();
-                    checkLoginAvailability();
-                }, 300);
-            }
-        }
-
-        function askToClose() {
-            if (document.getElementById("gh-confirm-popup")) return;
-
-            const confirmHTML = `
-            <div id="gh-confirm-popup" class="fixed inset-0 z-[110] flex items-center justify-center bg-slate-900/45 backdrop-blur-md opacity-0 transition-opacity duration-200">
-                <div class="bg-white p-8 rounded-[2rem] shadow-[0_20px_60px_rgba(15,23,42,0.18)] border border-slate-200 w-[22rem] max-w-[92vw] transform scale-95 transition-all duration-200" id="gh-confirm-box">
-                    <div class="mx-auto mb-4 w-14 h-14 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center">
-                        <i class="fa-solid fa-xmark text-xl"></i>
-                    </div>
-                    <h3 class="text-xl font-black text-slate-900 mb-2 text-center tracking-tight">Stop logging in?</h3>
-                    <p class="text-slate-500 text-sm text-center mb-8 font-medium">Are you sure you want to close the login window?</p>
-                    <div class="flex flex-col space-y-3">
-                        <button id="gh-confirm-stay" class="w-full py-3 bg-slate-100 text-slate-700 rounded-2xl font-bold hover:bg-slate-200 transition-colors text-sm">No, stay here</button>
-                        <button id="gh-confirm-close-btn" class="w-full py-3 bg-red-500 text-white rounded-2xl font-bold hover:bg-red-600 shadow-md transition-colors text-sm">Yes, close it</button>
-                    </div>
-                </div>
-            </div>
-            `;
-
-            document.body.insertAdjacentHTML("beforeend", confirmHTML);
-
-            requestAnimationFrame(() => {
-                const popup = document.getElementById("gh-confirm-popup");
-                const box = document.getElementById("gh-confirm-box");
-                if (popup && box) {
-                    popup.classList.remove("opacity-0");
-                    box.classList.remove("scale-95");
-                    box.classList.add("scale-100");
-                }
-            });
-
-            document.getElementById("gh-confirm-stay").onclick = removeConfirmPopup;
-            document.getElementById("gh-confirm-close-btn").onclick = () => {
-                removeConfirmPopup();
-                closeLoginOverlay();
-            };
-
-            document.getElementById("gh-confirm-popup").onclick = (e) => {
-                if (e.target.id === "gh-confirm-popup") removeConfirmPopup();
-            };
-        }
-
-        function removeConfirmPopup() {
-            const popup = document.getElementById("gh-confirm-popup");
-            if (popup) {
-                popup.classList.add("opacity-0");
-                setTimeout(() => popup.remove(), 200);
-            }
-        }
-
-        function createLoginOverlay() {
-            if (document.getElementById("gh-login-overlay")) return;
-
-            const overlayHTML = `
-            <div id="gh-login-overlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/55 backdrop-blur-lg transition-opacity duration-300 opacity-0">
-                <div class="relative w-[94%] md:w-[88%] h-[92%] md:h-[88%] bg-slate-50 rounded-[2rem] shadow-[0_24px_80px_rgba(15,23,42,0.28)] flex flex-col overflow-hidden border border-white/20 transform transition-all scale-100">
-                    <div class="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-white/60 to-transparent pointer-events-none z-[1]"></div>
-                    <div class="absolute top-4 right-4 z-10">
-                        <button id="gh-close-overlay" class="bg-white/95 hover:bg-red-50 text-slate-500 hover:text-red-500 rounded-2xl w-11 h-11 flex items-center justify-center shadow-md border border-slate-200 transition-all duration-200">
-                            <i class="fa-solid fa-xmark text-lg"></i>
-                        </button>
-                    </div>
-                    <iframe src="${escapeHtml(loginUrl)}" class="w-full h-full border-0 bg-white" title="Login"></iframe>
-                </div>
-            </div>
-            `;
-
-            document.body.insertAdjacentHTML("beforeend", overlayHTML);
-
-            requestAnimationFrame(() => {
-                const overlay = document.getElementById("gh-login-overlay");
-                if (overlay) {
-                    overlay.classList.remove("opacity-0");
-                    overlay.classList.add("opacity-100");
-                }
-            });
-
-            document.getElementById("gh-close-overlay").onclick = askToClose;
-            document.getElementById("gh-login-overlay").addEventListener("click", (e) => {
-                if (e.target.id === "gh-login-overlay") askToClose();
-            });
-        }
-
-        function createLoginButton() {
-            const desktopContainer = document.getElementById("loginBtnContainer");
-            const mobileContainer = document.getElementById("mobileLoginBtnContainer");
-
-            if (!desktopContainer) return;
-
-            desktopContainer.innerHTML = "";
-            if (mobileContainer) mobileContainer.innerHTML = "";
-
-            const readAuthKey = (primaryKey, legacyKey) => {
-                const primary = localStorage.getItem(primaryKey);
-                if (primary) return primary;
-
-                const legacy = localStorage.getItem(legacyKey);
-                if (legacy) {
-                    localStorage.setItem(primaryKey, legacy);
-                    localStorage.removeItem(legacyKey);
-                }
-                return legacy;
-            };
-
-            const u = readAuthKey("studybase_username", "gh_username");
-            const p = readAuthKey("studybase_password", "gh_password");
-            const d = readAuthKey("studybase_device", "gh_device");
-            const isLoggedIn = u && p && d;
-
-            if (isLoggedIn) {
-                const openAccountModal = (target) => {
-                    if (target && typeof target.preventDefault === "function") {
-                        target.preventDefault();
-                    }
-
-                    const iframeUrl = typeof target === "string" && target.trim()
-                        ? target.trim()
-                        : accountUrl;
-
-                    const modalBackdrop = document.createElement("div");
-                    modalBackdrop.className =
-                        "fixed inset-0 z-[9999] bg-slate-950/55 backdrop-blur-lg flex items-center justify-center opacity-0 transition-opacity duration-300";
-
-                    const modalContainer = document.createElement("div");
-                    modalContainer.className =
-                        "relative w-[96%] md:w-[90%] h-[95%] md:h-[90%] bg-slate-50 rounded-[2rem] shadow-[0_24px_80px_rgba(15,23,42,0.28)] flex flex-col overflow-hidden scale-95 transition-transform duration-300 border border-white/20";
-
-                    const modalHeader = document.createElement("div");
-                    modalHeader.className =
-                        "flex justify-between items-center px-6 py-4 bg-white/95 backdrop-blur-xl border-b border-slate-200 z-10";
-                    modalHeader.innerHTML = `
-                        <span class="font-black text-slate-900 text-lg tracking-tight">My Account</span>
-                        <button id="close-settings-modal" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
-                    `;
-
-                    const iframe = document.createElement("iframe");
-                    iframe.src = iframeUrl;
-                    iframe.className = "w-full flex-grow border-none bg-slate-50";
-
-                    modalContainer.appendChild(modalHeader);
-                    modalContainer.appendChild(iframe);
-                    modalBackdrop.appendChild(modalContainer);
-                    document.body.appendChild(modalBackdrop);
-
-                    document.body.style.overflow = "hidden";
-
-                    setTimeout(() => {
-                        modalBackdrop.classList.remove("opacity-0");
-                        modalContainer.classList.remove("scale-95");
-                    }, 10);
-
-                    const closeModal = () => {
-                        modalBackdrop.classList.add("opacity-0");
-                        modalContainer.classList.add("scale-95");
-
-                        setTimeout(() => {
-                            modalBackdrop.remove();
-                            document.body.style.overflow = "";
-                        }, 300);
-                    };
-
-                    modalHeader
-                        .querySelector("#close-settings-modal")
-                        .addEventListener("click", closeModal);
-
-                    modalBackdrop.addEventListener("click", (e) => {
-                        if (e.target === modalBackdrop) closeModal();
-                    });
-                };
-
-                window.openStudyBaseAccountModal = openAccountModal;
-
-                const handleLogout = () => {
-                    [
-                        "studybase_username",
-                        "studybase_password",
-                        "studybase_device",
-                        "studybase_device_b64",
-                        "studybase_session_expiry",
-                        "studybase_session_expiry_set_at",
-                        "gh_username",
-                        "gh_password",
-                        "gh_device",
-                        "gh_device_b64",
-                        "gh_session_expiry",
-                        "gh_session_expiry_set_at"
-                    ].forEach((k) =>
-                        localStorage.removeItem(k)
-                    );
-                    window.location.href = "/index.html?logout=true";
-                };
-
-                const accountBtn = document.createElement("button");
-                accountBtn.innerHTML = `<i class="fa-solid fa-user mr-2"></i> Account`;
-                accountBtn.className = "sb-account-primary";
-                accountBtn.addEventListener("click", openAccountModal);
-
-                const logoutBtn = document.createElement("button");
-                logoutBtn.innerHTML = `<i class="fa-solid fa-arrow-right-from-bracket"></i>`;
-                logoutBtn.className = "sb-logout-btn";
-                logoutBtn.onclick = handleLogout;
-
-                desktopContainer.classList.add("flex", "items-center", "gap-2");
-                desktopContainer.appendChild(accountBtn);
-                desktopContainer.appendChild(logoutBtn);
-
-                if (mobileContainer) {
-                    const mobAccountBtn = document.createElement("button");
-                    mobAccountBtn.innerHTML = `<i class="fa-solid fa-user mr-2"></i> My Account`;
-                    mobAccountBtn.className =
-                        "w-full bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-4 py-3.5 rounded-2xl font-bold text-sm shadow-md";
-                    mobAccountBtn.addEventListener("click", openAccountModal);
-
-                    const mobLogoutBtn = document.createElement("button");
-                    mobLogoutBtn.innerHTML = `<i class="fa-solid fa-arrow-right-from-bracket mr-2"></i> Log out`;
-                    mobLogoutBtn.className =
-                        "w-full mt-3 border border-slate-200 bg-white text-slate-600 px-4 py-3.5 rounded-2xl font-bold text-sm";
-                    mobLogoutBtn.onclick = handleLogout;
-
-                    mobileContainer.appendChild(mobAccountBtn);
-                    mobileContainer.appendChild(mobLogoutBtn);
-                }
-            } else {
-                const btn = document.createElement("button");
-                btn.innerHTML = `Log in <i class="fa-solid fa-arrow-right ml-1"></i>`;
-                btn.className = "sb-login-primary";
-                btn.onclick = createLoginOverlay;
-                desktopContainer.appendChild(btn);
-
-                if (mobileContainer) {
-                    const mobBtn = document.createElement("button");
-                    mobBtn.innerHTML = `<i class="fa-solid fa-arrow-right-to-bracket mr-2"></i> Log in`;
-                    mobBtn.className =
-                        "w-full bg-gradient-to-r from-slate-900 to-indigo-700 text-white px-4 py-3.5 rounded-2xl font-bold text-sm shadow-md";
-                    mobBtn.onclick = createLoginOverlay;
-                    mobileContainer.appendChild(mobBtn);
-                }
-            }
-        }
-
-        async function checkLoginAvailability() {
-            try {
-                const res = await fetch(loginStateEndpoint);
-                const data = await res.json();
-
-                if (data.ok && data.shutdown === false) {
-                    createLoginButton();
-                } else {
-                    const desktopContainer = document.getElementById("loginBtnContainer");
-                    const mobileContainer = document.getElementById("mobileLoginBtnContainer");
-                    if (desktopContainer) desktopContainer.innerHTML = "";
-                    if (mobileContainer) mobileContainer.innerHTML = "";
-                }
-            } catch (err) {
-                console.error("Failed to fetch login state:", err);
-            }
-        }
-
-        checkLoginAvailability();
-        setInterval(checkLoginAvailability, loginCheckIntervalMs);
-
-        window.addEventListener("message", (event) => {
-            if (event.data === "login-success") {
-                closeLoginOverlay();
-                window.location.href =
-                    window.location.pathname + window.location.search + "#logged-in";
-            }
-        });
-
-        const params = new URLSearchParams(window.location.search);
-        if (params.get("sessionExpired") === "true") {
-            createLoginOverlay();
-            params.delete("sessionExpired");
-            const newUrl =
-                window.location.pathname +
-                (params.toString() ? "?" + params.toString() : "") +
-                window.location.hash;
-            window.history.replaceState({}, "", newUrl);
-        }
+        modal.classList.add("is-open");
+        document.body.classList.add("sbx-modal-lock");
+        modal.querySelector(".sbx-login-close").focus();
+      };
+
+      return modal;
     }
 
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initNavbar);
-    } else {
-        initNavbar();
-    }
+    nav.querySelectorAll("[data-sbx-login]").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        ensureLoginModal().openLogin();
+      });
+    });
+
+    const toggle = nav.querySelector(".sbx-nav-toggle");
+    const menu = nav.querySelector(".sbx-mobile-menu");
+    toggle.addEventListener("click", () => {
+      const open = nav.classList.toggle("is-open");
+      toggle.setAttribute("aria-expanded", String(open));
+      if (menu) menu.hidden = !open;
+    });
+
+    nav.querySelectorAll(".sbx-nav-dropdown-trigger").forEach((button) => {
+      button.addEventListener("click", () => {
+        const group = button.closest(".sbx-nav-group");
+        const open = !group.classList.contains("is-open");
+        nav.querySelectorAll(".sbx-nav-group.is-open").forEach((item) => {
+          item.classList.remove("is-open");
+          item.querySelector(".sbx-nav-dropdown-trigger")?.setAttribute("aria-expanded", "false");
+        });
+        group.classList.toggle("is-open", open);
+        button.setAttribute("aria-expanded", String(open));
+      });
+    });
+
+    document.addEventListener("click", (event) => {
+      if (nav.contains(event.target)) return;
+      nav.querySelectorAll(".sbx-nav-group.is-open").forEach((item) => {
+        item.classList.remove("is-open");
+        item.querySelector(".sbx-nav-dropdown-trigger")?.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", render);
+  } else {
+    render();
+  }
 })();

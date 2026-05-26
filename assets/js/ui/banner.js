@@ -660,30 +660,18 @@
 
   function renderBanner(mount) {
     mount.innerHTML = `
-      <div id="sb-usage-banner">
-        <div class="sb-usage-inner">
-          <div class="sb-usage-top">
-            <div>
-              <div class="sb-usage-pill">RevisionBase • Usage Tracker</div>
-              <h3 class="sb-usage-title">Your study time, live.</h3>
-              <p class="sb-usage-sub">
-                If you are spending alot of time here, please consider taking a break. Over 3 hours a week isn't good.
-              </p>
-            </div>
+      <div id="sb-usage-banner" class="sb-remastered-banner">
+        <div class="sb-remastered-banner-inner">
+          <div>
+            <small>StudyBase Remastered</small>
+            <h3>Welcome to StudyBase Remastered.</h3>
+            <p>
+              A cleaner A-Level workspace for past papers, focused tools, subject routes and smarter revision decisions.
+            </p>
           </div>
-
-          <div class="sb-usage-grid">
-            ${cardMarkup("today", "Today", "Daily")}
-            ${cardMarkup("week", "This Week", "Weekly")}
-            ${cardMarkup("month", "This Month", "Monthly")}
-          </div>
-
-          <div class="sb-usage-actions">
-            <button type="button" class="sb-usage-btn sb-usage-btn-primary" id="sb-open-block-form-btn">
-              Can't focus at school? Click to request we block your account
-            </button>
-            
-          </div>
+          <button type="button" class="sbx-btn" id="sb-open-block-form-btn">
+            Access support
+          </button>
         </div>
       </div>
     `;

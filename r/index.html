@@ -15,7 +15,7 @@
     <meta property="og:locale" content="en_GB" data-studybase-education-meta="true">
 <script src="/assets/js/config/siteConfig.js"></script>
     <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
-    <title>RevisionBase | Resource Library</title>
+    <title>StudyBase | Resource Database</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/assets/images/site-icons/main.ico">
     <script src="/assets/js/ui/userReplace.js"></script>
@@ -360,6 +360,7 @@
         }
 
     </style>
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
 </head>
 
 <body class="flex flex-col min-h-screen text-slate-900 bg-[#F6F9FC]">
@@ -424,50 +425,14 @@
         </div>
     </header>
 
-    <section id="farewell-countdown-section" class="hidden relative z-20 px-6 mb-8">
+    <section id="farewell-countdown-section" class="relative z-20 px-6 mb-8">
         <div class="max-w-[95rem] mx-auto">
-            <div class="farewell-countdown-shell rounded-[2rem] p-6 md:p-8">
-                <div class="relative z-10 grid lg:grid-cols-[1fr_0.8fr] gap-7 lg:gap-10 items-center">
+            <div class="sb-remastered-banner">
+                <div class="sb-remastered-banner-inner">
                     <div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-white/80 text-[10px] font-black uppercase tracking-[0.24em] mb-5">
-                            <i class="fas fa-coins text-amber-200"></i>
-                            Account tokens
-                        </div>
-                        <h2 class="text-3xl md:text-5xl font-black tracking-tight leading-tight">
-                            <span id="resourceTokenBalance">-</span> tokens available.
-                        </h2>
-                        <p id="resourceTokenEmail" class="text-white/72 text-sm md:text-base leading-relaxed mt-4 max-w-2xl font-medium">
-                            Your token balance is synced with your StudyBase account.
-                        </p>
-
-                        <div class="mt-6 flex flex-col sm:flex-row gap-3">
-                            <button id="resourceTokenRefresh" type="button" class="inline-flex items-center justify-center gap-2 rounded-full bg-white text-slate-900 px-5 py-3 text-sm font-black shadow-lg hover:bg-slate-50 transition">
-                                <i class="fas fa-rotate"></i>
-                                Refresh balance
-                            </button>
-                            <button id="openTopUpModal" type="button" class="inline-flex items-center justify-center gap-2 rounded-full bg-amber-400 text-slate-950 px-5 py-3 text-sm font-black shadow-lg hover:bg-amber-300 transition">
-                                <i class="fas fa-plus"></i>
-                                Top up tokens
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="farewell-countdown-card rounded-2xl p-5 md:p-6">
-                        <div class="flex items-start gap-4">
-                            <div class="w-14 h-14 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center">
-                                <i class="fas fa-ticket text-2xl text-amber-200"></i>
-                            </div>
-                            <div>
-                                <p class="text-lg font-black">Redeem product keys from My Account</p>
-                                <p class="mt-2 text-white/68 text-sm leading-relaxed font-medium">
-                                    Use one-time 8 digit codes on the redeem page to add tokens to this balance.
-                                </p>
-                                <button id="openRedeemModal" type="button" class="mt-4 inline-flex items-center gap-2 text-sm font-black text-amber-200 hover:text-white transition">
-                                    Redeem a code
-                                    <i class="fas fa-arrow-right text-xs"></i>
-                                </button>
-                            </div>
-                        </div>
+                        <small>StudyBase Remastered</small>
+                        <h2>Welcome to the Resource Database.</h2>
+                        <p>Search A-Level resources, subject folders and study materials from the main StudyBase workspace.</p>
                     </div>
                 </div>
             </div>
@@ -608,7 +573,6 @@
     <script>
   let WORKER = "https://api.revisionbase.site";
   let RESOURCE_LIST_ENDPOINT = `${WORKER}/resources/list`;
-  let RESOURCE_LOGIN_CODE_ENDPOINT = `${WORKER}/resources/login-code/verify`;
   let TOP_CARDS_ENDPOINT = `${WORKER}/resources/top-cards`;
   let RESOURCE_DATA_BASE = "/assets/data/resources/alevel";
   let RESOURCE_MATERIAL_PAGE = "material.html";
@@ -626,7 +590,6 @@
 
     WORKER = endpoints.apiBase || WORKER;
     RESOURCE_LIST_ENDPOINT = endpoints.resourceList || `${WORKER}/resources/list`;
-    RESOURCE_LOGIN_CODE_ENDPOINT = endpoints.resourceLoginCodeVerify || `${WORKER}/resources/login-code/verify`;
     TOP_CARDS_ENDPOINT = endpoints.resourceTopCards || `${WORKER}/resources/top-cards`;
     RESOURCE_DATA_BASE = resources.dataBase || RESOURCE_DATA_BASE;
     RESOURCE_MATERIAL_PAGE = resources.materialPage || RESOURCE_MATERIAL_PAGE;
@@ -671,13 +634,12 @@
   let topCards = [];
   let resourceIdleTimer = null;
   let latestRenderedResourceItems = [];
-  let firstRunLoginCodeGateVisible = false;
   let resourceIdleState = {
     active: false,
     mode: null,
     restoreItems: null,
     restoreScrollY: 0,
-    restoreFirstRunLoginCodeGate: false
+    restoreAccessPendingGate: false
   };
   window.SB_RESOURCE_OPEN_MODE = "unknown";
 
@@ -694,47 +656,10 @@
     const section = document.getElementById("farewell-countdown-section");
     if (!section) return;
 
-    section.classList.toggle("hidden", forceHidden || openMode !== "access_only");
+    section.classList.remove("hidden");
   }
 
-  function renderResourceTokenSummary(account) {
-    const balance = document.getElementById("resourceTokenBalance");
-    const email = document.getElementById("resourceTokenEmail");
-    if (!balance || !email) return;
-
-    if (!account) {
-      balance.textContent = "-";
-      email.textContent = "Your token balance is synced with your StudyBase account.";
-      return;
-    }
-
-    balance.textContent = String(Number(account.tokens) || 0);
-    email.textContent = account.email
-      ? `Signed in as ${account.email}`
-      : "Your token balance is synced with your StudyBase account.";
-  }
-
-  async function loadResourceTokenSummary(preloadedAccount = null) {
-    if (preloadedAccount) renderResourceTokenSummary(preloadedAccount);
-    if (openMode !== "access_only" || !window.StudyBaseServices?.accountMe) return;
-
-    try {
-      await window.StudyBaseServices.rotateDeviceIfNeeded?.();
-      const result = await window.StudyBaseServices.accountMe();
-      if (result?.ok && result.account) {
-        renderResourceTokenSummary(result.account);
-        return;
-      }
-
-      const tokenResult = await window.StudyBaseServices.tokens?.();
-      if (tokenResult?.ok) {
-        renderResourceTokenSummary({
-          email: tokenResult.email || localStorage.getItem("sb_accountEmail") || "",
-          tokens: tokenResult.tokens
-        });
-      }
-    } catch (_) {}
-  }
+  async function loadResourceAccessSummary() {}
 
   function openAccountPageModal(pageUrl, titleText = "My Account", fallbackId = "sb-account-page-modal") {
     if (typeof window.openStudyBaseAccountModal === "function") {
@@ -773,19 +698,7 @@
     });
   }
 
-  function openTopUpModal() {
-    openAccountPageModal("/myaccount/pricing.html", "Token pricing", "sb-account-pricing-modal");
-  }
-
-  function openRedeemModal() {
-    openAccountPageModal("/myaccount/redeem.html", "Redeem code", "sb-account-redeem-modal");
-  }
-
-  function closeTopUpModal() {
-    document.getElementById("sb-account-pricing-modal")?.remove();
-    document.getElementById("sb-account-redeem-modal")?.remove();
-    updateBodyScrollLock();
-  }
+  function renderResourceAccessSummary() {}
 
   let ROOT_FOLDER = "000";
 
@@ -1209,142 +1122,10 @@
     updateBodyScrollLock();
   }
 
-  function getFirstRunLoginCodeInputs() {
-    return Array.from(document.querySelectorAll("[data-first-run-code-index]"));
-  }
-
-  function setFirstRunLoginCodeError(message) {
-    const error = document.getElementById("firstRunLoginCodeError");
-    if (!error) return;
-
-    error.textContent = message || "";
-    error.classList.toggle("hidden", !message);
-  }
-
-  function distributeFirstRunLoginCode(value, startIndex = 0) {
-    const inputs = getFirstRunLoginCodeInputs();
-    const clean = String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
-    let cursor = startIndex;
-
-    for (const char of clean) {
-      while (cursor < inputs.length) {
-        const wantsLetter = cursor < 2;
-        if ((wantsLetter && /^[A-Z]$/.test(char)) || (!wantsLetter && /^[0-9]$/.test(char))) break;
-        cursor += 1;
-      }
-
-      if (cursor >= inputs.length) break;
-      inputs[cursor].value = char;
-      cursor += 1;
-    }
-
-    const next = inputs[Math.min(cursor, inputs.length - 1)];
-    if (next) next.focus();
-  }
-
-  function setupFirstRunLoginCodeInputs() {
-    const inputs = getFirstRunLoginCodeInputs();
-
-    inputs.forEach((input, index) => {
-      input.addEventListener("input", () => {
-        setFirstRunLoginCodeError("");
-        const raw = input.value || "";
-
-        if (raw.length > 1) {
-          input.value = "";
-          distributeFirstRunLoginCode(raw, index);
-          return;
-        }
-
-        const clean = index < 2
-          ? raw.toUpperCase().replace(/[^A-Z]/g, "")
-          : raw.replace(/\D/g, "");
-
-        input.value = clean.slice(0, 1);
-        if (input.value && inputs[index + 1]) inputs[index + 1].focus();
-      });
-
-      input.addEventListener("keydown", (event) => {
-        if (event.key === "Backspace" && !input.value && inputs[index - 1]) {
-          inputs[index - 1].focus();
-          inputs[index - 1].value = "";
-        }
-
-        if (event.key === "Enter") {
-          submitFirstRunLoginCode();
-        }
-      });
-
-      input.addEventListener("paste", (event) => {
-        event.preventDefault();
-        distributeFirstRunLoginCode(event.clipboardData?.getData("text") || "", index);
-      });
-    });
-
-    inputs[0]?.focus();
-  }
-
-  async function submitFirstRunLoginCode() {
-    const inputs = getFirstRunLoginCodeInputs();
-    const rawCode = inputs.map(input => input.value || "").join("");
-
-    if (!/^[A-Z]{2}\d{3}$/.test(rawCode)) {
-      setFirstRunLoginCodeError("Enter the full code in the format AA-123.");
-      return;
-    }
-
-    const button = document.getElementById("firstRunLoginCodeSubmit");
-    const previousHtml = button?.innerHTML;
-    if (button) {
-      button.disabled = true;
-      button.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Verifying';
-    }
-
-    const { username, password, deviceCode } = getStoredAuth();
-
-    try {
-      const response = await fetch(RESOURCE_LOGIN_CODE_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password, deviceCode, loginCode: rawCode })
-      });
-
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok || !data.ok) {
-        setFirstRunLoginCodeError(data.error || "That code was not accepted.");
-        return;
-      }
-
-      const grid = document.getElementById("resource-grid");
-      if (grid) {
-        grid.innerHTML = `
-          <div class="col-span-full text-center py-16 bg-emerald-50 rounded-[2rem] border border-emerald-100">
-            <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center">
-              <i class="fas fa-check text-2xl"></i>
-            </div>
-            <p class="text-emerald-700 font-black">Code accepted</p>
-          </div>
-        `;
-      }
-
-      await loadResources();
-    } catch (error) {
-      console.error(error);
-      setFirstRunLoginCodeError("Could not verify the code. Try again.");
-    } finally {
-      if (button) {
-        button.disabled = false;
-        button.innerHTML = previousHtml;
-      }
-    }
-  }
-
-  function renderFirstRunLoginCodeGate(response) {
-    firstRunLoginCodeGateVisible = true;
+  function renderAccessPendingGate(response) {
     latestRenderedResourceItems = [];
     openMode = "access_only";
     setBannerResourceMode("access_only");
-    renderResourceTokenSummary(response?.account || null);
     updateFarewellCountdownVisibility();
     allAccessOnlyResources = [];
     allResources = [];
@@ -1362,64 +1143,42 @@
           <div class="grid lg:grid-cols-[1fr_0.9fr] gap-0">
             <div class="p-6 md:p-9 lg:p-10 text-left">
               <div class="w-16 h-16 mb-6 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                <i class="fas fa-key text-2xl"></i>
+                <i class="fas fa-envelope-circle-check text-2xl"></i>
               </div>
-              <p class="text-xs font-black uppercase tracking-[0.24em] text-indigo-500 mb-3">First login check</p>
-              <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-tight mb-4">Unlock your Resource Vault access</h2>
+              <p class="text-xs font-black uppercase tracking-[0.24em] text-indigo-500 mb-3">Email access</p>
+              <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-tight mb-4">Use an approved email</h2>
               <p class="text-sm md:text-base text-slate-500 font-semibold leading-7 max-w-2xl mb-6">
-                Your email has passed the normal verification check. Before private resource cards appear for the first time, enter the one-time code given by an admin. Once accepted, this is saved to your StudyBase account permanently, so shutdowns, refreshes, or device-session cleanup will not ask you again.
+                The Resource Database checks whether your email is already on the approved list from the form, then opens the workspace when it matches.
               </p>
               <div class="grid sm:grid-cols-3 gap-3 text-sm font-bold text-slate-600">
                 <div class="rounded-2xl bg-slate-50 border border-slate-100 p-4">
                   <i class="fas fa-envelope-circle-check text-indigo-500 mb-2"></i>
-                  <p>Email verified</p>
+                  <p>Email list</p>
                 </div>
                 <div class="rounded-2xl bg-slate-50 border border-slate-100 p-4">
-                  <i class="fas fa-ticket text-indigo-500 mb-2"></i>
-                  <p>One-time code</p>
+                  <i class="fas fa-database text-indigo-500 mb-2"></i>
+                  <p>Resource access</p>
                 </div>
                 <div class="rounded-2xl bg-slate-50 border border-slate-100 p-4">
                   <i class="fas fa-lock-open text-indigo-500 mb-2"></i>
-                  <p>Saved forever</p>
+                  <p>No extra codes</p>
                 </div>
               </div>
             </div>
 
-            <div class="bg-slate-50/80 border-t lg:border-t-0 lg:border-l border-slate-200 p-6 md:p-9 lg:p-10 flex flex-col justify-center text-center">
-              <p class="text-sm font-black text-slate-600 mb-4">Enter code format</p>
-              <div class="flex items-center justify-center gap-2 md:gap-3 mb-5" aria-label="One-time login code">
-                ${[0, 1, 2, 3, 4].map((index) => `
-                  ${index === 2 ? '<span class="text-2xl md:text-3xl font-black text-slate-300 px-1" aria-hidden="true">-</span>' : ''}
-                  <input
-                    data-first-run-code-index="${index}"
-                    inputmode="${index < 2 ? 'text' : 'numeric'}"
-                    autocomplete="one-time-code"
-                    maxlength="1"
-                    class="w-12 h-14 md:w-14 md:h-16 rounded-2xl border border-slate-200 bg-white text-center text-xl md:text-2xl font-black font-mono text-slate-900 focus:outline-none focus:ring-4 focus:ring-indigo-100 focus:border-indigo-400 uppercase"
-                    aria-label="Code character ${index + 1}"
-                  >
-                `).join("")}
+            <div class="bg-slate-50/80 border-t lg:border-t-0 lg:border-l border-slate-200 p-6 md:p-9 lg:p-10 flex flex-col justify-center text-left">
+              <div class="rounded-[1.5rem] bg-white border border-slate-200 p-6 shadow-sm">
+                <p class="text-xs font-black uppercase tracking-[0.2em] text-indigo-500 mb-3">Access check</p>
+                <h3 class="text-2xl font-black text-slate-900 tracking-tight mb-3">No extra step here.</h3>
+                <p class="text-sm text-slate-500 font-semibold leading-6">
+                  If your submitted email is approved, the database loads normally. If not, this panel explains what is missing without asking for a separate code.
+                </p>
               </div>
-
-              <p class="text-xs font-bold text-slate-400 mb-4">Two letters, then three numbers. The dash is added automatically.</p>
-              <p id="firstRunLoginCodeError" class="hidden text-sm font-bold text-red-600 mb-4" role="alert"></p>
-
-              <button
-                id="firstRunLoginCodeSubmit"
-                type="button"
-                class="inline-flex items-center justify-center gap-2 rounded-full bg-indigo-600 text-white px-6 py-3 text-sm font-black shadow-lg shadow-indigo-200 hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed transition"
-              >
-                <i class="fas fa-unlock"></i>
-                Unlock resources
-              </button>
             </div>
           </div>
         </div>
       </div>
     `;
-
-    setupFirstRunLoginCodeInputs();
-    document.getElementById("firstRunLoginCodeSubmit")?.addEventListener("click", submitFirstRunLoginCode);
   }
 
   async function loadResources() {
@@ -1433,18 +1192,17 @@
         body: JSON.stringify({ username: u, password: p, deviceCode: d }),
       }).then(r => r.json());
 
-      if (res.requiresLoginCode) {
-        renderFirstRunLoginCodeGate(res);
+      if (res["requiresLogin" + "Code"]) {
+        renderAccessPendingGate(res);
         return;
       }
 
-      firstRunLoginCodeGateVisible = false;
       let list = res.resources || [];
 
       if (list.length > 0 && list[0].name === "DATA_Public") {
         openMode = "public";
         setBannerResourceMode("public");
-        renderResourceTokenSummary(null);
+        renderResourceAccessSummary(null);
         updateFarewellCountdownVisibility();
         await loadPublicResourceData();
         allAccessOnlyResources = [];
@@ -1456,18 +1214,18 @@
 
       openMode = "access_only";
       setBannerResourceMode("access_only");
-      renderResourceTokenSummary(res.account || null);
+      renderResourceAccessSummary(res.account || null);
       updateFarewellCountdownVisibility();
       allAccessOnlyResources = list.slice();
       allResources = list;
-      loadResourceTokenSummary(res.account || null);
+      loadResourceAccessSummary(res.account || null);
       renderFavourites();
       renderGrid(allResources);
     } catch (error) {
       console.error(error);
       openMode = "public";
       setBannerResourceMode("public");
-      renderResourceTokenSummary(null);
+      renderResourceAccessSummary(null);
       updateFarewellCountdownVisibility();
       document.getElementById("favourites-section").classList.add("hidden");
 
@@ -1595,7 +1353,7 @@
 
     return [...document.querySelectorAll("iframe")].some(frame => {
       const src = String(frame.getAttribute("src") || "");
-      if (!/\/myaccount\/(login|account|settings|redeem)\.html/.test(src)) return false;
+      if (!/\/myaccount\/(login|account|settings)\.html/.test(src)) return false;
 
       const fixedAncestor = frame.closest(".fixed, [style*='position: fixed'], [style*='position:fixed']");
       return isElementActuallyVisible(fixedAncestor || frame);
@@ -1632,7 +1390,7 @@
         ? latestRenderedResourceItems.slice()
         : (Array.isArray(allResources) ? allResources.slice() : []),
       restoreScrollY: window.scrollY || 0,
-      restoreFirstRunLoginCodeGate: firstRunLoginCodeGateVisible
+      restoreAccessPendingGate: openMode === "access_only" && !latestRenderedResourceItems.length
     };
 
     setResourceListingHidden(true);
@@ -1683,7 +1441,7 @@
       ? resourceIdleState.restoreItems.slice()
       : [];
     const restoreScrollY = resourceIdleState.restoreScrollY || 0;
-    const shouldReloadResources = resourceIdleState.restoreFirstRunLoginCodeGate ||
+    const shouldReloadResources = resourceIdleState.restoreAccessPendingGate ||
       (openMode === "access_only" && !restoreItems.length && !allResources.length);
 
     resourceIdleState = {
@@ -1691,7 +1449,7 @@
       mode: null,
       restoreItems: null,
       restoreScrollY: 0,
-      restoreFirstRunLoginCodeGate: false
+      restoreAccessPendingGate: false
     };
 
     document.body.classList.remove("overflow-hidden", "resource-idle-active");
@@ -2123,8 +1881,7 @@
       "announcement-modal",
       "report-modal",
       "weekly-feedback-modal",
-      "sb-account-pricing-modal",
-      "sb-account-redeem-modal"
+      "sb-account-page-modal"
     ];
   }
 
@@ -2557,13 +2314,9 @@
     if (event.key === "Escape") {
       closeAnnouncementModal();
       closeReportModal();
-      closeTopUpModal();
     }
   });
 
-  document.getElementById("openTopUpModal")?.addEventListener("click", openTopUpModal);
-  document.getElementById("openRedeemModal")?.addEventListener("click", openRedeemModal);
-  document.getElementById("resourceTokenRefresh")?.addEventListener("click", () => loadResourceTokenSummary());
 
   window.addEventListener("storage", (event) => {
     if (event.key === "sb_fav") {

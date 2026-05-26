@@ -5,6 +5,7 @@
       suffix: ".site",
       displayName: "StudyBase.site",
       shortName: "StudyBase",
+      serviceAlias: "studybase.site",
       securityName: "StudyBase Security Checkpoint",
       tagline:
         "A paper-first A-Level revision service for finding past papers, marking with purpose and using focused tools to improve the next attempt."
@@ -49,7 +50,7 @@
       loginUrl: "/myaccount/login.html",
       settingsUrl: "/myaccount/settings.html",
       sections: {
-        toolkit: true,
+        studyTools: true,
         resources: true,
         pastPapers: true,
         blogs: true,
@@ -63,7 +64,7 @@
       cycleStartMonth: 6,
       columns: {
         papers: true,
-        toolkit: true,
+        studyTools: true,
         resources: true,
         platform: true
       }
@@ -74,7 +75,7 @@
       apgList: "https://alert-api.studybase.site/apg/list",
       reportProblem: "https://report-problem.studybase.site",
       resourceList: "https://api.studybase.site/resources/list",
-      resourceLoginCodeVerify: "https://api.studybase.site/resources/login-code/verify",
+      approvedEmailAccess: "https://api.studybase.site/resources/access/check",
       resourceGet: "https://api.studybase.site/resource/get",
       resourceState: "https://api.studybase.site/state",
       resourceTopCards: "https://api.studybase.site/resources/top-cards",

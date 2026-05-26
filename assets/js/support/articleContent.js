@@ -12,7 +12,7 @@ window.SUPPORT_ARTICLES = {
     category: "New users",
     updated: "April 2026",
     summary:
-      "Start with the resource vault, toolkit, and support pages. You do not need to use everything at once.",
+      "Start with the resource vault, study tools, and support pages. You do not need to use everything at once.",
     sections: [
       {
         id: "start-here",
@@ -22,15 +22,15 @@ window.SUPPORT_ARTICLES = {
             title: "Resource vault",
             body: "Browse subjects, revision materials, and study content from the main database.",
             icon: "fa-book-open",
-            href: "/r/index.html",
+            href: "/r/index.html#client-preflight",
             label: "Open resource vault",
           },
           {
-            title: "Study toolkit",
+            title: "Study study tools",
             body: "Use timers, planners, breathing tools, and study methods when you need structure.",
             icon: "fa-toolbox",
-            href: "/toolkit/index.html",
-            label: "Open toolkit",
+            href: "/study-tools.html",
+            label: "Open study tools",
           },
           {
             title: "My account",
@@ -46,8 +46,8 @@ window.SUPPORT_ARTICLES = {
         id: "first-five-minutes",
         title: "Your first five minutes",
         orderedList: [
-          "Open the <a href='/r/index.html'>resource vault</a> or <a href='/subjects/index.html'>subject pages</a> and pick one subject.",
-          "Open the <a href='/toolkit/index.html'>toolkit</a> only when you want extra structure, not because you feel you have to use every tool.",
+          "Open the <a href='/r/index.html#client-preflight'>resource vault</a> or <a href='/subjects/index.html'>subject pages</a> and pick one subject.",
+          "Open the <a href='/study-tools.html'>study tools</a> only when you want extra structure, not because you feel you have to use every tool.",
           "If you want saved settings or account features, sign in through <a href='/myaccount/login.html'>the login page</a>.",
           "Bookmark the <a href='/support/help_center.html'>help centre</a> so you have a clear fallback if a page is confusing or not loading.",
         ],
@@ -67,15 +67,15 @@ window.SUPPORT_ARTICLES = {
       eyebrow: "Good next step",
       title: "Start simple",
       body: "Choose one subject page or one tool. You can always come back later for the rest.",
-      href: "/r/index.html",
+      href: "/r/index.html#client-preflight",
       label: "Browse resources",
     },
     cta: {
       title: "Ready to explore?",
       body: "Start with the areas most students use first.",
       buttons: [
-        { label: "Browse resources", href: "/r/index.html", primary: true },
-        { label: "Open toolkit", href: "/toolkit/index.html" },
+        { label: "Browse resources", href: "/r/index.html#client-preflight", primary: true },
+        { label: "Open study tools", href: "/study-tools.html" },
       ],
     },
   },
@@ -262,7 +262,7 @@ window.SUPPORT_ARTICLES = {
             title: "Resource vault",
             body: "The main database is the quickest way to browse structured materials.",
             icon: "fa-database",
-            href: "/r/index.html",
+            href: "/r/index.html#client-preflight",
             label: "Open vault",
           },
           {
@@ -287,7 +287,7 @@ window.SUPPORT_ARTICLES = {
         title: "If a resource will not load",
         orderedList: [
           "Refresh the page once and confirm that the route is correct.",
-          "Try opening the same item from the nearest index page, such as <a href='/r/index.html'>the resource vault</a> or <a href='/subjects/index.html'>subject pages</a>.",
+          "Try opening the same item from the nearest index page, such as <a href='/r/index.html#client-preflight'>the resource vault</a> or <a href='/subjects/index.html'>subject pages</a>.",
           "Check whether the problem only happens in one browser or one device.",
           "If the issue is a specific missing file, 404, or broken control, report it through <a href='/report.html'>the issue report form</a>.",
         ],
@@ -315,7 +315,7 @@ window.SUPPORT_ARTICLES = {
       title: "Use the right resource route",
       body: "Start from an index page when possible, then report anything that still looks broken.",
       buttons: [
-        { label: "Open resource vault", href: "/r/index.html", primary: true },
+        { label: "Open resource vault", href: "/r/index.html#client-preflight", primary: true },
         { label: "Report an issue", href: "/report.html" },
       ],
     },
@@ -601,7 +601,7 @@ window.SUPPORT_ARTICLES = {
         title: "What to do right now",
         orderedList: [
           "Put the work down for five minutes. You are allowed to pause before trying to solve anything.",
-          "Take slower breaths or open the <a href='/toolkit/breathing.html'>breathing tool</a> for a guided reset.",
+          "Take slower breaths or open the <a href='/study tools/breathing.html'>breathing tool</a> for a guided reset.",
           "Get a glass of water, move to a different room, or sit nearer to another person if being alone feels heavier right now.",
           "Tell one trusted person today that things feel like too much. You do not need a polished explanation.",
         ],
@@ -662,14 +662,14 @@ window.SUPPORT_ARTICLES = {
       eyebrow: "Quick exit",
       title: "Need to leave fast?",
       body: "Press Esc three times at any point to switch away from this page quickly.",
-      href: "/toolkit/breathing.html",
+      href: "/study tools/breathing.html",
       label: "Open breathing tool",
     },
     cta: {
       title: "Choose a safer next step",
       body: "You do not need to figure everything out at once.",
       buttons: [
-        { label: "Open breathing tool", href: "/toolkit/breathing.html", primary: true },
+        { label: "Open breathing tool", href: "/study tools/breathing.html", primary: true },
         { label: "You are not alone", href: "/support/youre-not-alone.html" },
       ],
     },
@@ -750,7 +750,7 @@ window.SUPPORT_ARTICLES = {
       "mental-health",
       {
         title: "Breathing tool",
-        path: "/toolkit/breathing.html",
+        path: "/study tools/breathing.html",
         description: "A simple breathing page if you need a slower moment.",
       },
       "contact",
@@ -759,14 +759,14 @@ window.SUPPORT_ARTICLES = {
       eyebrow: "Stay with support",
       title: "Tell one person now",
       body: "You do not need the perfect words. One clear sentence is enough to start.",
-      href: "/toolkit/breathing.html",
+      href: "/study tools/breathing.html",
       label: "Open breathing tool",
     },
     cta: {
       title: "Choose the next safe move",
       body: "Use a calming tool or return to the wider wellbeing guidance.",
       buttons: [
-        { label: "Open breathing tool", href: "/toolkit/breathing.html", primary: true },
+        { label: "Open breathing tool", href: "/study tools/breathing.html", primary: true },
         { label: "Visit wellbeing hub", href: "/study_pages/wellbeingHub.html" },
       ],
     },

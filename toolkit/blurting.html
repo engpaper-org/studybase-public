@@ -1,152 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    <meta charset="UTF-8">
-            <meta name="description" content="StudyBase provides educational revision resources, A-Level and GCSE study tools, past papers, subject guides, wellbeing support, and learning materials for students." data-studybase-education-meta="true">
-    <meta name="classification" content="Education" data-studybase-education-meta="true">
-    <meta name="category" content="Education" data-studybase-education-meta="true">
-    <meta name="subject" content="A-Level and GCSE revision, study resources, educational tools" data-studybase-education-meta="true">
-    <meta name="audience" content="Students, teachers, and learners" data-studybase-education-meta="true">
-    <meta name="educational-use" content="Revision, exam preparation, independent study" data-studybase-education-meta="true">
-    <meta name="learning-resource-type" content="Revision resource" data-studybase-education-meta="true">
-    <meta property="og:site_name" content="StudyBase" data-studybase-education-meta="true">
-    <meta property="og:type" content="website" data-studybase-education-meta="true">
-    <meta property="og:locale" content="en_GB" data-studybase-education-meta="true">
-<script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Blurting Canvas | RevisionBase</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" href="/assets/images/site-icons/main.ico">
-  <script src="/assets/js/layout/navbar.js" defer></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="0; url=/recall-builder.html">
+  <title>StudyBase | Recall Builder</title>
+  <link rel="canonical" href="/recall-builder.html">
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
 </head>
-<body class="bg-slate-900 text-slate-200 h-screen flex flex-col overflow-hidden selection:bg-pink-500 selection:text-white">
-
-    <div class="h-16 border-b border-slate-800 flex items-center justify-between px-6 bg-slate-900 z-10">
-        <a href="/toolkit/index.html" class="text-pink-500 hover:text-pink-400 font-bold text-sm flex items-center transition-colors">
-            <i class="fa-solid fa-arrow-left mr-2"></i> Toolkit
-        </a>
-        
-        <div class="flex items-center gap-4">
-            <span id="timer-display" class="font-mono text-2xl font-bold text-white tracking-widest">05:00</span>
-            <button id="start-btn" onclick="toggleTimer()" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-1.5 px-6 rounded-full transition-colors text-sm shadow-[0_0_15px_rgba(219,39,119,0.3)]">
-                Start Blurting
-            </button>
-        </div>
-        
-        <button onclick="clearCanvas()" class="text-slate-400 hover:text-white text-sm font-bold transition-colors">
-            <i class="fa-solid fa-trash mr-1"></i> Clear
-        </button>
-    </div>
-
-    <div class="flex-1 flex p-6 gap-6 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-slate-900">
-        
-        <div class="flex-1 flex flex-col relative">
-            <div class="absolute top-4 left-4 z-10 flex gap-2">
-                <span class="bg-slate-800 text-slate-400 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-widest border border-slate-700">Memory Dump Area</span>
-            </div>
-            <textarea id="blurt-area" placeholder="Type everything you can remember about the topic here..." class="w-full h-full bg-white/5 border border-slate-700 rounded-2xl p-8 pt-16 text-lg text-slate-100 outline-none focus:border-pink-500 focus:bg-white/10 transition-all resize-none shadow-inner" disabled></textarea>
-        </div>
-
-        <div id="reference-panel" class="w-1/3 flex flex-col opacity-50 grayscale pointer-events-none transition-all duration-500">
-            <div class="flex justify-between items-center mb-4">
-                <span class="text-sm font-bold text-slate-400 uppercase tracking-widest">Source Notes</span>
-                <button id="reveal-btn" onclick="toggleNotes()" class="text-pink-500 text-xs font-bold border border-pink-500 px-3 py-1 rounded-full hover:bg-pink-500 hover:text-white transition-colors pointer-events-auto" disabled>
-                    Unlock
-                </button>
-            </div>
-            <textarea placeholder="Paste your actual notes here before starting. They will lock while you blurt." class="w-full h-full bg-slate-800 border border-slate-700 rounded-2xl p-6 text-sm text-slate-300 outline-none resize-none"></textarea>
-        </div>
-
-    </div>
-
-    <script>
-        let timeLeft = 300; // 5 mins
-        let timer;
-        let isRunning = false;
-        let isRevealed = false;
-
-        const display = document.getElementById('timer-display');
-        const startBtn = document.getElementById('start-btn');
-        const blurtArea = document.getElementById('blurt-area');
-        const refPanel = document.getElementById('reference-panel');
-        const revealBtn = document.getElementById('reveal-btn');
-
-        function updateDisplay() {
-            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-            const s = (timeLeft % 60).toString().padStart(2, '0');
-            display.innerText = `${m}:${s}`;
-        }
-
-        function toggleTimer() {
-            if(isRunning) return; // Prevent multiple starts
-            
-            isRunning = true;
-            startBtn.innerText = "Blurting...";
-            startBtn.classList.replace('bg-pink-600', 'bg-slate-700');
-            startBtn.classList.remove('hover:bg-pink-700');
-            startBtn.disabled = true;
-            
-            blurtArea.disabled = false;
-            blurtArea.focus();
-            
-            // Lock notes
-            refPanel.classList.add('opacity-10', 'grayscale', 'pointer-events-none');
-            revealBtn.disabled = true;
-
-            timer = setInterval(() => {
-                timeLeft--;
-                updateDisplay();
-                
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    endSession();
-                }
-            }, 1000);
-        }
-
-        function endSession() {
-            blurtArea.disabled = true;
-            display.innerText = "00:00";
-            display.classList.add('text-pink-500');
-            revealBtn.disabled = false;
-            revealBtn.innerText = "Review & Compare";
-            alert("Time's up! Check your blurting against your notes.");
-        }
-
-        function toggleNotes() {
-            if(!isRevealed) {
-                refPanel.classList.remove('opacity-10', 'opacity-50', 'grayscale', 'pointer-events-none');
-                revealBtn.innerText = "Hide Notes";
-                isRevealed = true;
-            } else {
-                refPanel.classList.add('opacity-50', 'grayscale', 'pointer-events-none');
-                revealBtn.innerText = "Review & Compare";
-                isRevealed = false;
-            }
-        }
-
-        function clearCanvas() {
-            if(confirm("Clear your blurt canvas?")) {
-                blurtArea.value = '';
-                clearInterval(timer);
-                timeLeft = 300;
-                isRunning = false;
-                updateDisplay();
-                startBtn.innerText = "Start Blurting";
-                startBtn.disabled = false;
-                startBtn.classList.replace('bg-slate-700', 'bg-pink-600');
-                display.classList.remove('text-pink-500');
-                blurtArea.disabled = true;
-            }
-        }
-    </script>
+<body>
+  <script>window.location.replace("/recall-builder.html");</script>
+  <a href="/recall-builder.html">Open Recall Builder</a>
 </body>
 </html>
-
-

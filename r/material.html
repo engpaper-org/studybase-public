@@ -258,6 +258,7 @@
             border-radius: 2rem;
         }
     </style>
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
 </head>
 
 <body class="bg-slate-100">
@@ -632,17 +633,23 @@ let WORKER = "https://api.revisionbase.site";
 let RESOURCE_GET_ENDPOINT = `${WORKER}/resource/get`;
 let RESOURCE_STATE_ENDPOINT = `${WORKER}/state`;
 let TURNSTILE_SITE_KEY = window.SB_CONFIG?.security?.turnstileSiteKeys?.resource || "0x4AAAAAACxsClLBNoaHGiZm";
+let SERVICE_ALIAS = "";
 //const TURNSTILE_SITE_KEY = "1x00000000000000000000AA";
 
 function applyMaterialPageConfig(config) {
     const endpoints = config?.endpoints || {};
     const security = config?.security || {};
     const testMode = config?.environment?.testMode === true;
+    const configuredServiceAlias =
+        config?.brand?.serviceAlias ||
+        config?.resources?.serviceAlias ||
+        config?.serviceAlias;
 
     WORKER = endpoints.apiBase || WORKER;
     RESOURCE_GET_ENDPOINT = endpoints.resourceGet || `${WORKER}/resource/get`;
     RESOURCE_STATE_ENDPOINT = endpoints.resourceState || endpoints.loginState || `${WORKER}/state`;
     TURNSTILE_SITE_KEY = security.turnstileSiteKeys?.resource || TURNSTILE_SITE_KEY;
+    SERVICE_ALIAS = String(configuredServiceAlias || "").trim();
 
     if (testMode && security.useTestTurnstileInTestMode !== false && security.turnstileSiteKeys?.test) {
         TURNSTILE_SITE_KEY = security.turnstileSiteKeys.test;
@@ -955,6 +962,7 @@ function getIframeUrlWithMainParams(rawUrl) {
     const iframeUrl = new URL(rawUrl, window.location.origin);
     const mainParams = new URLSearchParams(window.location.search);
     const localDeviceCode = getStoredAuth().deviceCode;
+    const serviceAlias = SERVICE_ALIAS.trim();
 
     for (const [key, value] of mainParams.entries()) {
         iframeUrl.searchParams.set(key, value);
@@ -962,6 +970,10 @@ function getIframeUrlWithMainParams(rawUrl) {
 
     if (!iframeUrl.searchParams.get("deviceCode") && localDeviceCode) {
         iframeUrl.searchParams.set("deviceCode", localDeviceCode);
+    }
+
+    if (serviceAlias) {
+        iframeUrl.searchParams.set("serviceAlias", serviceAlias);
     }
 
     return iframeUrl.toString();
@@ -1193,7 +1205,7 @@ function logoutUser() {
         "gh_session_expiry",
         "gh_session_expiry_set_at"
     ].forEach((key) => localStorage.removeItem(key));
-    window.location.href = "/r/index.html";
+    window.location.href = "/r/index.html#client-preflight";
 }
 
 function openMenu() {

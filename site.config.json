@@ -4,6 +4,7 @@
     "suffix": ".site",
     "displayName": "StudyBase.site",
     "shortName": "StudyBase",
+    "serviceAlias": "studybase",
     "securityName": "Revision Base Security Checkpoint",
     "tagline": "A paper-first A-Level revision service for finding past papers, marking with purpose and using focused tools to improve the next attempt."
   },

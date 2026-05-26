@@ -1,111 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
-    <meta charset="UTF-8">
-            <meta name="description" content="StudyBase provides educational revision resources, A-Level and GCSE study tools, past papers, subject guides, wellbeing support, and learning materials for students." data-studybase-education-meta="true">
-    <meta name="classification" content="Education" data-studybase-education-meta="true">
-    <meta name="category" content="Education" data-studybase-education-meta="true">
-    <meta name="subject" content="A-Level and GCSE revision, study resources, educational tools" data-studybase-education-meta="true">
-    <meta name="audience" content="Students, teachers, and learners" data-studybase-education-meta="true">
-    <meta name="educational-use" content="Revision, exam preparation, independent study" data-studybase-education-meta="true">
-    <meta name="learning-resource-type" content="Revision resource" data-studybase-education-meta="true">
-    <meta property="og:site_name" content="StudyBase" data-studybase-education-meta="true">
-    <meta property="og:type" content="website" data-studybase-education-meta="true">
-    <meta property="og:locale" content="en_GB" data-studybase-education-meta="true">
-<script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Past Paper Tracker | RevisionBase</title>
-    <link rel="icon" href="/assets/images/site-icons/main.ico">
-  <script src="/assets/js/layout/navbar.js" defer></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .bg-grid-slate { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23f1f5f9'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e"); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="0; url=/paper-tracker.html">
+  <title>StudyBase | Paper Tracker</title>
+  <link rel="canonical" href="/paper-tracker.html">
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
 </head>
-<body class="bg-[#f4f7f9] text-slate-800 min-h-screen relative">
-    <div class="absolute inset-0 bg-grid-slate pointer-events-none -z-10"></div>
-
-    <div class="max-w-6xl mx-auto px-6 py-12">
-        <div class="flex justify-between items-end mb-8">
-            <div>
-                <a href="/toolkit/index.html" class="text-teal-500 font-bold text-sm flex items-center mb-4 hover:text-teal-600 transition-colors">
-                    <i class="fa-solid fa-arrow-left mr-2"></i> Back to Toolkit
-                </a>
-                <h1 class="text-3xl font-black text-slate-900">Past Paper Tracker</h1>
-                <p class="text-slate-500 mt-1">Log your completed papers and monitor your grade progression.</p>
-            </div>
-            <button onclick="addPaperRow()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-6 rounded-lg shadow-sm transition-colors flex items-center">
-                <i class="fa-solid fa-plus mr-2"></i> Log Paper
-            </button>
-        </div>
-
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-widest text-slate-400 font-bold">
-                            <th class="p-4 pl-6">Subject</th>
-                            <th class="p-4">Year/Series</th>
-                            <th class="p-4">Paper No.</th>
-                            <th class="p-4">Score (%)</th>
-                            <th class="p-4">Status</th>
-                            <th class="p-4">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tracker-body" class="divide-y divide-slate-100">
-                        </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function addPaperRow() {
-            const tbody = document.getElementById('tracker-body');
-            const tr = document.createElement('tr');
-            tr.className = "hover:bg-slate-50 transition-colors group";
-            
-            tr.innerHTML = `
-                <td class="p-4 pl-6">
-                    <input type="text" placeholder="e.g. AQA Biology" class="w-full bg-transparent outline-none font-bold text-slate-700 placeholder-slate-300">
-                </td>
-                <td class="p-4">
-                    <input type="text" placeholder="e.g. June 2022" class="w-full bg-transparent outline-none text-slate-600 text-sm placeholder-slate-300">
-                </td>
-                <td class="p-4">
-                    <select class="bg-transparent outline-none text-slate-600 text-sm cursor-pointer">
-                        <option>Paper 1</option><option>Paper 2</option><option>Paper 3</option>
-                    </select>
-                </td>
-                <td class="p-4">
-                    <div class="flex items-center">
-                        <input type="number" placeholder="85" min="0" max="100" class="w-16 bg-slate-100 rounded px-2 py-1 outline-none focus:border-teal-500 border border-transparent font-mono text-sm">
-                        <span class="ml-1 text-slate-400">%</span>
-                    </div>
-                </td>
-                <td class="p-4">
-                    <select class="bg-teal-50 text-teal-700 border border-teal-200 rounded-lg px-2 py-1 outline-none text-xs font-bold cursor-pointer">
-                        <option>Completed</option>
-                        <option class="text-orange-600">To Review</option>
-                    </select>
-                </td>
-                <td class="p-4">
-                    <button onclick="this.closest('tr').remove()" class="text-slate-300 hover:text-red-500 transition-colors">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </td>
-            `;
-            tbody.prepend(tr);
-        }
-
-        // Add 3 default rows on load
-        addPaperRow(); addPaperRow(); addPaperRow();
-    </script>
+<body>
+  <script>window.location.replace("/paper-tracker.html");</script>
+  <a href="/paper-tracker.html">Open Paper Tracker</a>
 </body>
 </html>
-
-
