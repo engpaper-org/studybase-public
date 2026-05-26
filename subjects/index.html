@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Browse StudyBase A-Level subject routes for past papers, revision tools and exam preparation.">
+  <meta name="description" content="StudyBase A-Level subject routes for papers, revision tools and topic repair.">
   <title>StudyBase | A-Level Subjects</title>
   <link rel="icon" href="/assets/images/site-icons/main.ico">
-  <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
   <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
   <script src="/assets/js/config/siteConfig.js"></script>
   <script src="/assets/js/layout/navbar.js" defer></script>
@@ -14,23 +13,31 @@
 </head>
 <body>
   <main>
-    <section class="sbx-section">
-      <div class="sbx-shell">
-        <span class="sbx-kicker">A-Level Subjects</span>
-        <h1 class="sbx-h1">Pick the course. Build the paper loop.</h1>
-        <p class="sbx-lede">Each subject route is designed to connect papers, mark schemes, weak topics and tools without making you rebuild your revision setup from scratch.</p>
+    <section class="sbx-hero">
+      <div class="sbx-shell sbx-hero-grid">
+        <div>
+          <span class="sbx-kicker">A-Level Subjects</span>
+          <h1 class="sbx-h1">Choose the route for your next paper.</h1>
+          <p class="sbx-lede">Each subject page points you toward the paper types, common weak spots and tools that fit that course.</p>
+          <div class="sbx-actions">
+            <a class="sbx-btn sbx-btn-primary" href="/past_papers/index.html">Past papers</a>
+            <a class="sbx-btn" href="/r/index.html#client-preflight">Resource Database</a>
+          </div>
+        </div>
+        <div class="sbx-visual">
+          <img src="/assets/images/site/home-paper-card.jpg" alt="A-Level paper route preview">
+          <div class="sbx-console"><small>Subject route</small><strong>Paper, topic, repair</strong><p>Move from the course you take to the next practical task.</p></div>
+        </div>
       </div>
     </section>
-    <section class="sbx-section sbx-band">
-      <div class="sbx-shell">
-        <div class="sbx-card-grid">
-          <a class="sbx-card sbx-link-card" href="/subjects/maths/index.html"><h3>Maths</h3><p>Pure, mechanics and statistics practice.</p></a>
-          <a class="sbx-card sbx-link-card" href="/subjects/physics/index.html"><h3>Physics</h3><p>Equations, explanations and practical questions.</p></a>
-          <a class="sbx-card sbx-link-card" href="/subjects/chemistry/index.html"><h3>Chemistry</h3><p>Calculations, mechanisms and required practicals.</p></a>
-          <a class="sbx-card sbx-link-card" href="/subjects/biology/index.html"><h3>Biology</h3><p>Application questions and precise mark-scheme wording.</p></a>
-          <a class="sbx-card sbx-link-card" href="/subjects/psychology/index.html"><h3>Psychology</h3><p>AO1, AO3 and essay timing routes.</p></a>
-          <a class="sbx-card sbx-link-card" href="/subjects/economics/index.html"><h3>Economics</h3><p>Data response, diagrams and evaluative essays.</p></a>
-        </div>
+    <section class="sbx-section">
+      <div class="sbx-shell sbx-card-grid">
+        <a class="sbx-card sbx-link-card" href="/subjects/maths/index.html"><span class="sbx-icon">M</span><h3>Maths</h3><p>Pure, statistics and mechanics practice routes.</p></a>
+        <a class="sbx-card sbx-link-card" href="/subjects/physics/index.html"><span class="sbx-icon">P</span><h3>Physics</h3><p>Calculations, practical skills and explanation questions.</p></a>
+        <a class="sbx-card sbx-link-card" href="/subjects/chemistry/index.html"><span class="sbx-icon">C</span><h3>Chemistry</h3><p>Physical, organic and inorganic repair blocks.</p></a>
+        <a class="sbx-card sbx-link-card" href="/subjects/biology/index.html"><span class="sbx-icon">B</span><h3>Biology</h3><p>Application questions and mark-scheme precision.</p></a>
+        <a class="sbx-card sbx-link-card" href="/subjects/psychology/index.html"><span class="sbx-icon">Ps</span><h3>Psychology</h3><p>Essay plans, evaluation and research methods.</p></a>
+        <a class="sbx-card sbx-link-card" href="/subjects/economics/index.html"><span class="sbx-icon">E</span><h3>Economics</h3><p>Diagrams, data response and essay judgement.</p></a>
       </div>
     </section>
   </main>

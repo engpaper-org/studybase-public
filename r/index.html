@@ -21,7 +21,6 @@
     <script src="/assets/js/ui/userReplace.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="/assets/js/resources/hashtagProto.js" defer></script>
     <script src="/assets/js/layout/navbar.js" defer></script>
     <script src="/assets/js/monitoring/envCheck.js"></script>
     <script src="/assets/js/layout/footer.js" defer></script>
@@ -359,6 +358,563 @@
             100% { opacity: 1; transform: scale(1); }
         }
 
+        :root {
+            --rgenie-ink: #121826;
+            --rgenie-muted: #657089;
+            --rgenie-blue: #2f6df6;
+            --rgenie-cyan: #12b9d6;
+            --rgenie-lime: #b7ec3b;
+            --rgenie-yellow: #ffe66f;
+            --rgenie-pink: #ff76bd;
+            --rgenie-line: rgba(18, 24, 38, 0.10);
+            --rgenie-shadow: 0 24px 70px rgba(45, 65, 108, 0.16);
+        }
+
+        body {
+            background:
+                linear-gradient(180deg, #f7fbff 0%, #ffffff 38%, #f3f8ff 100%);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                linear-gradient(rgba(55, 83, 122, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(55, 83, 122, 0.045) 1px, transparent 1px);
+            background-size: 36px 36px;
+            mask-image: linear-gradient(180deg, rgba(0,0,0,0.95), rgba(0,0,0,0.35) 52%, transparent);
+        }
+
+        .rgenie-shell {
+            position: relative;
+            z-index: 1;
+            padding-top: 7rem;
+        }
+
+        .rgenie-container {
+            width: min(1180px, calc(100% - 2rem));
+            margin: 0 auto;
+        }
+
+        .rgenie-hero {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.88);
+            border-radius: 42px;
+            background:
+                radial-gradient(circle at 72% 18%, rgba(255, 230, 111, 0.92), transparent 14rem),
+                radial-gradient(circle at 88% 78%, rgba(18, 185, 214, 0.35), transparent 20rem),
+                linear-gradient(135deg, #ffffff 0%, #eff8ff 54%, #e9fff9 100%);
+            box-shadow: var(--rgenie-shadow);
+        }
+
+        .rgenie-hero::after {
+            content: "";
+            position: absolute;
+            inset: auto -8% -36% 48%;
+            height: 24rem;
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(47,109,246,0.16), rgba(255,118,189,0.22));
+            filter: blur(12px);
+            transform: rotate(-8deg);
+            pointer-events: none;
+        }
+
+        .rgenie-hero-inner {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.85fr);
+            gap: clamp(2rem, 5vw, 4.5rem);
+            align-items: center;
+            min-height: 620px;
+            padding: clamp(1.5rem, 4vw, 4rem);
+        }
+
+        .rgenie-kicker,
+        .rgenie-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            width: fit-content;
+            border-radius: 999px;
+            border: 1px solid rgba(47, 109, 246, 0.16);
+            background: rgba(255,255,255,0.78);
+            color: #2251bb;
+            box-shadow: 0 12px 28px rgba(47,109,246,0.08);
+            font-size: 0.76rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.55rem 0.85rem;
+        }
+
+        .rgenie-dot {
+            width: 0.55rem;
+            height: 0.55rem;
+            border-radius: 999px;
+            background: var(--rgenie-lime);
+            box-shadow: 0 0 0 5px rgba(183,236,59,0.22);
+        }
+
+        .rgenie-title {
+            margin: 1.25rem 0 1.1rem;
+            color: var(--rgenie-ink);
+            font-size: clamp(3.35rem, 8.5vw, 7.8rem);
+            line-height: 0.88;
+            letter-spacing: 0;
+            font-weight: 900;
+            max-width: 9ch;
+        }
+
+        .rgenie-title span {
+            color: var(--rgenie-blue);
+        }
+
+        .rgenie-copy {
+            max-width: 42rem;
+            color: var(--rgenie-muted);
+            font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+            font-weight: 700;
+            line-height: 1.72;
+        }
+
+        .rgenie-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.85rem;
+            margin-top: 2rem;
+        }
+
+        .rgenie-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.65rem;
+            min-height: 3.25rem;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            padding: 0 1.25rem;
+            font-weight: 900;
+            text-decoration: none;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+        }
+
+        .rgenie-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .rgenie-button.primary {
+            color: white;
+            background: linear-gradient(135deg, #245ef2, #13bad7);
+            box-shadow: 0 18px 38px rgba(47,109,246,0.28);
+        }
+
+        .rgenie-button.secondary {
+            color: var(--rgenie-ink);
+            background: rgba(255,255,255,0.88);
+            border-color: rgba(18,24,38,0.12);
+            box-shadow: 0 12px 28px rgba(18,24,38,0.08);
+        }
+
+        .rgenie-visual {
+            position: relative;
+            min-height: 520px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rgenie-mascot-card {
+            position: absolute;
+            top: 1rem;
+            right: 0;
+            width: min(86%, 420px);
+            aspect-ratio: 1;
+            border-radius: 48px;
+            background:
+                radial-gradient(circle at 35% 22%, rgba(255,255,255,0.9), transparent 8rem),
+                linear-gradient(135deg, #ffef7a, #53daf0 58%, #6977ff);
+            box-shadow: 0 32px 80px rgba(47, 109, 246, 0.28);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(3deg);
+            overflow: hidden;
+        }
+
+        .rgenie-mascot-card img {
+            width: 92%;
+            height: 92%;
+            object-fit: contain;
+            filter: drop-shadow(0 22px 24px rgba(27, 43, 86, 0.18));
+        }
+
+        .rgenie-mascot-fallback {
+            width: 78%;
+            aspect-ratio: 1;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.46);
+            display: grid;
+            place-items: center;
+            color: #245ef2;
+            font-size: 7rem;
+        }
+
+        .rgenie-work-card {
+            position: absolute;
+            left: 0;
+            bottom: 1.5rem;
+            width: min(92%, 430px);
+            border: 1px solid rgba(18, 24, 38, 0.10);
+            border-radius: 30px;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 26px 70px rgba(18, 24, 38, 0.16);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            overflow: hidden;
+        }
+
+        .rgenie-work-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.25rem 1.25rem 1rem;
+            border-bottom: 1px solid rgba(18, 24, 38, 0.08);
+        }
+
+        .rgenie-work-head strong {
+            display: block;
+            color: var(--rgenie-ink);
+            font-weight: 900;
+            line-height: 1.1;
+        }
+
+        .rgenie-work-head small {
+            display: block;
+            margin-top: 0.2rem;
+            color: var(--rgenie-muted);
+            font-weight: 800;
+        }
+
+        .rgenie-work-body {
+            display: grid;
+            gap: 0.75rem;
+            padding: 1rem 1.25rem 1.25rem;
+        }
+
+        .rgenie-work-row {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 0.75rem;
+            border-radius: 18px;
+            background: #f7fbff;
+            border: 1px solid rgba(18, 24, 38, 0.08);
+            padding: 0.9rem;
+            font-size: 0.9rem;
+            font-weight: 900;
+            color: var(--rgenie-ink);
+        }
+
+        .rgenie-work-row i {
+            color: var(--rgenie-blue);
+        }
+
+        .rgenie-command-grid {
+            display: grid;
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0 2rem;
+        }
+
+        .rgenie-command-card {
+            grid-column: span 2;
+            min-height: 10rem;
+            border: 1px solid var(--rgenie-line);
+            border-radius: 28px;
+            background: rgba(255,255,255,0.88);
+            box-shadow: 0 18px 48px rgba(18,24,38,0.08);
+            padding: 1.25rem;
+            text-decoration: none;
+            color: var(--rgenie-ink);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        }
+
+        .rgenie-command-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(47,109,246,0.3);
+            box-shadow: 0 24px 60px rgba(47,109,246,0.14);
+        }
+
+        .rgenie-command-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 18px;
+            display: grid;
+            place-items: center;
+            color: white;
+            background: linear-gradient(135deg, #245ef2, #13bad7);
+            margin-bottom: 1rem;
+        }
+
+        .rgenie-command-card h3 {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 900;
+        }
+
+        .rgenie-command-card p {
+            margin: 0.45rem 0 0;
+            color: var(--rgenie-muted);
+            font-size: 0.9rem;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .rgenie-panel {
+            border: 1px solid var(--rgenie-line);
+            border-radius: 34px;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 18px 52px rgba(18,24,38,0.08);
+            padding: clamp(1rem, 2.5vw, 1.5rem);
+        }
+
+        .rgenie-panel-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .rgenie-panel-head h2 {
+            margin: 0;
+            color: var(--rgenie-ink);
+            font-size: clamp(1.65rem, 3vw, 2.5rem);
+            font-weight: 900;
+            letter-spacing: 0;
+        }
+
+        .rgenie-panel-head p {
+            margin: 0.35rem 0 0;
+            color: var(--rgenie-muted);
+            font-weight: 700;
+            line-height: 1.55;
+        }
+
+        .rgenie-filter-grid {
+            display: grid;
+            grid-template-columns: minmax(220px, 1.35fr) repeat(3, minmax(160px, 0.7fr));
+            gap: 0.75rem;
+            align-items: stretch;
+        }
+
+        .rgenie-field {
+            display: grid;
+            gap: 0.35rem;
+            min-width: 0;
+        }
+
+        .rgenie-field label {
+            color: #45607f;
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .rgenie-input,
+        .rgenie-select {
+            width: 100%;
+            min-height: 3.25rem;
+            border: 1px solid rgba(18,24,38,0.12);
+            border-radius: 18px;
+            background: #f8fbff;
+            color: var(--rgenie-ink);
+            font-weight: 800;
+            padding: 0 1rem;
+            outline: none;
+            transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+        }
+
+        .rgenie-input:focus,
+        .rgenie-select:focus {
+            border-color: rgba(47,109,246,0.55);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(47,109,246,0.12);
+        }
+
+        .rgenie-chip-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .rgenie-chip {
+            border: 1px solid rgba(18,24,38,0.10);
+            border-radius: 999px;
+            background: #ffffff;
+            color: #41546f;
+            font-weight: 900;
+            padding: 0.65rem 0.9rem;
+            cursor: pointer;
+            transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+        }
+
+        .rgenie-chip:hover,
+        .rgenie-chip.is-active {
+            transform: translateY(-2px);
+            color: #ffffff;
+            background: #121826;
+        }
+
+        .rgenie-paper-finder {
+            display: none;
+            margin: 1.5rem 0 2rem;
+            border-radius: 34px;
+            border: 1px solid rgba(47,109,246,0.16);
+            background:
+                radial-gradient(circle at 92% 18%, rgba(255,230,111,0.42), transparent 12rem),
+                linear-gradient(135deg, #ffffff, #f0f8ff);
+            box-shadow: 0 22px 60px rgba(47,109,246,0.13);
+            padding: clamp(1.25rem, 3vw, 2rem);
+        }
+
+        .rgenie-paper-finder.is-open {
+            display: block;
+        }
+
+        body.rgenie-private-resources .rgenie-panel-head,
+        body.rgenie-private-resources #contentTypeFilter,
+        body.rgenie-private-resources label[for="contentTypeFilter"],
+        body.rgenie-private-resources #subjectFilter,
+        body.rgenie-private-resources label[for="subjectFilter"],
+        body.rgenie-private-resources #examBoardFilter,
+        body.rgenie-private-resources label[for="examBoardFilter"],
+        body.rgenie-private-resources #subjectChipRow,
+        body.rgenie-private-resources #paper-finder-section {
+            display: none !important;
+        }
+
+        body.rgenie-private-resources .rgenie-filter-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .rgenie-paper-finder h2 {
+            color: var(--rgenie-ink);
+            font-size: clamp(1.8rem, 4vw, 3.2rem);
+            line-height: 1;
+            font-weight: 900;
+            margin: 0 0 0.6rem;
+        }
+
+        .rgenie-paper-finder p {
+            color: var(--rgenie-muted);
+            font-weight: 700;
+            line-height: 1.65;
+            margin: 0 0 1.2rem;
+        }
+
+        .rgenie-paper-card {
+            grid-column: span 1;
+        }
+
+        .rgenie-paper-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.55rem;
+            margin-top: auto;
+        }
+
+        .rgenie-paper-actions a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 2.6rem;
+            border-radius: 14px;
+            font-weight: 900;
+            text-decoration: none;
+        }
+
+        .rgenie-paper-actions a:first-child {
+            background: #121826;
+            color: white;
+        }
+
+        .rgenie-paper-actions a:last-child {
+            background: #eaf3ff;
+            color: #245ef2;
+        }
+
+        .resource-card {
+            border-radius: 28px !important;
+            border-color: rgba(18,24,38,0.10) !important;
+            background: rgba(255,255,255,0.92) !important;
+            box-shadow: 0 18px 44px rgba(18,24,38,0.08) !important;
+        }
+
+        @media (max-width: 980px) {
+            .rgenie-hero-inner {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .rgenie-visual {
+                min-height: 420px;
+            }
+
+            .rgenie-command-card {
+                grid-column: span 3;
+            }
+
+            .rgenie-filter-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .rgenie-shell {
+                padding-top: 5.8rem;
+            }
+
+            .rgenie-hero {
+                border-radius: 28px;
+            }
+
+            .rgenie-visual {
+                min-height: 360px;
+            }
+
+            .rgenie-mascot-card {
+                width: 82%;
+                right: 0.75rem;
+            }
+
+            .rgenie-work-card {
+                left: 0.75rem;
+                width: calc(100% - 1.5rem);
+            }
+
+            .rgenie-command-grid,
+            .rgenie-filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rgenie-command-card {
+                grid-column: span 1;
+            }
+
+            .rgenie-panel-head {
+                display: block;
+            }
+        }
+
     </style>
   <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
 </head>
@@ -384,55 +940,107 @@
         </div>
     </div>
 
-    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div class="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-purple-100/60 rounded-full blur-3xl opacity-60"></div>
-        <div class="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-pink-100/60 rounded-full blur-3xl opacity-60"></div>
-    </div>
-
-    <header class="relative pt-32 pb-14 overflow-visible z-10">
-    
-        <div class="hero-glow"></div>
-
-        <div class="max-w-[90rem] mx-auto px-6">
-            <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
-                <div class="w-full animate-enter z-20">
-                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-100 shadow-sm text-purple-700 text-xs font-bold uppercase tracking-widest mb-8">
-                        <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
-                        A-Level & UCAS Archive
+    <main class="rgenie-shell">
+        <div class="rgenie-container">
+            <section class="rgenie-hero" aria-labelledby="commandCenterTitle">
+                <div class="rgenie-hero-inner">
+                    <div class="animate-enter">
+                        <div class="rgenie-kicker">
+                            <span class="rgenie-dot"></span>
+                            A-Level command center
+                        </div>
+                        <h1 id="commandCenterTitle" class="rgenie-title">Find your next <span>paper.</span></h1>
+                        <p class="rgenie-copy">
+                            Search past papers, mark schemes, specifications, revision sites and focused tools from one calm workspace built for Year 12 and Year 13.
+                        </p>
+                        <div class="rgenie-actions">
+                            <a class="rgenie-button primary" href="/r/index.html?showSearchFor=pastpapers" data-show-pastpapers>
+                                <i class="fas fa-file-lines"></i>
+                                Find past papers
+                            </a>
+                            <a class="rgenie-button secondary" href="#resource-tools-section">
+                                <i class="fas fa-magnifying-glass"></i>
+                                Search everything
+                            </a>
+                        </div>
                     </div>
 
-                    <h1 class="text-5xl md:text-7xl font-black text-slate-900 mb-6 tracking-tight leading-[1.02] max-w-4xl">
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-fuchsia-500 to-pink-600">
-                            Welcome to the Resource Vault.
-                        </span>
-                    </h1>
-
-                    <p class="text-lg text-slate-500 mb-10 max-w-xl leading-relaxed font-medium">
-                        Advanced materials for Year 12 & 13. Access A* exemplar essays, deep-dive revision notes, and university application guides.
-                    </p>
-                </div>
-
-                <div class="hidden lg:flex justify-center items-center relative animate-enter z-10" style="animation-delay: 0.2s;">
-                    <div class="absolute w-[520px] h-[520px] border border-purple-100/80 rounded-full animate-[spin_60s_linear_infinite]"></div>
-                    <div class="absolute w-[420px] h-[420px] border border-pink-100/70 rounded-full animate-[spin_40s_linear_infinite_reverse]"></div>
-                    <div class="relative animate-float">
-                        <div class="rb-image-slot w-[500px] aspect-[5/4] rotate-[3deg] border-[12px] border-white z-10 relative" data-slot-label="Resource vault visual">
-                            <img src="/assets/images/site/resource_vault.png" alt="A-Level resource vault preview" onerror="const p=this.parentElement; this.remove(); if(p) p.classList.add('is-placeholder');">
+                    <div class="rgenie-visual animate-enter" style="animation-delay: 0.15s;">
+                        <div class="rgenie-mascot-card" aria-hidden="true">
+                            <img src="/assets/images/site/genie-mascot.svg" alt="" onerror="this.remove(); this.parentElement.insertAdjacentHTML('beforeend','<div class=&quot;rgenie-mascot-fallback&quot;><i class=&quot;fas fa-wand-magic-sparkles&quot;></i></div>');">
+                        </div>
+                        <div class="rgenie-work-card">
+                            <div class="rgenie-work-head">
+                                <div>
+                                    <strong>Today&apos;s route</strong>
+                                    <small>Pick the useful next task</small>
+                                </div>
+                                <span class="rgenie-pill">Ready</span>
+                            </div>
+                            <div class="rgenie-work-body">
+                                <div class="rgenie-work-row">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Search by subject and exam board</span>
+                                    <small>1</small>
+                                </div>
+                                <div class="rgenie-work-row">
+                                    <i class="fas fa-file-lines"></i>
+                                    <span>Open the paper or mark scheme</span>
+                                    <small>2</small>
+                                </div>
+                                <div class="rgenie-work-row">
+                                    <i class="fas fa-bolt"></i>
+                                    <span>Move weak topics into practice</span>
+                                    <small>3</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </header>
+            </section>
 
-    <section id="farewell-countdown-section" class="relative z-20 px-6 mb-8">
-        <div class="max-w-[95rem] mx-auto">
+            <section class="rgenie-command-grid" aria-label="StudyBase quick routes">
+                <a class="rgenie-command-card" href="/r/index.html?showSearchFor=pastpapers" data-show-pastpapers>
+                    <span class="rgenie-command-icon"><i class="fas fa-file-lines"></i></span>
+                    <h3>Past Papers</h3>
+                    <p>Filter by subject, exam board and paper type.</p>
+                </a>
+                <a class="rgenie-command-card" href="#resource-tools-section">
+                    <span class="rgenie-command-icon"><i class="fas fa-database"></i></span>
+                    <h3>Resource Database</h3>
+                    <p>Search the full A-Level resource workspace.</p>
+                </a>
+                <a class="rgenie-command-card" href="/study-tools.html">
+                    <span class="rgenie-command-icon"><i class="fas fa-toolbox"></i></span>
+                    <h3>Study Tools</h3>
+                    <p>Plan, revise, recall and track weak spots.</p>
+                </a>
+                <a class="rgenie-command-card" href="/subjects/index.html">
+                    <span class="rgenie-command-icon"><i class="fas fa-layer-group"></i></span>
+                    <h3>Subject Guides</h3>
+                    <p>Jump into routes for your A-Level subjects.</p>
+                </a>
+                <a class="rgenie-command-card" href="/exam-planner.html">
+                    <span class="rgenie-command-icon"><i class="fas fa-calendar-check"></i></span>
+                    <h3>Planner</h3>
+                    <p>Turn exam dates into weekly revision moves.</p>
+                </a>
+                <a class="rgenie-command-card" href="/support/help_center.html">
+                    <span class="rgenie-command-icon"><i class="fas fa-circle-question"></i></span>
+                    <h3>Support</h3>
+                    <p>Get help, report an issue, or find guidance.</p>
+                </a>
+            </section>
+        </div>
+
+    <section id="farewell-countdown-section" class="relative z-20 px-4 mb-8">
+        <div class="rgenie-container">
             <div class="sb-remastered-banner">
                 <div class="sb-remastered-banner-inner">
                     <div>
                         <small>StudyBase Remastered</small>
-                        <h2>Welcome to the Resource Database.</h2>
-                        <p>Search A-Level resources, subject folders and study materials from the main StudyBase workspace.</p>
+                        <h2>Welcome to StudyBase Remastered.</h2>
+                        <p>Your A-Level command center for papers, specifications, revision routes and focused study tools.</p>
                     </div>
                 </div>
             </div>
@@ -457,24 +1065,80 @@
         </div>
     </section>
 
-    <section id="resource-tools-section" class="relative z-20 px-6 mb-8">
-        <div class="max-w-[95rem] mx-auto flex flex-col gap-4">
-            <div class="search-shell rounded-[2rem] p-2">
-                <div class="relative flex items-center">
-                    <div class="pl-6 text-slate-400 transition-colors">
-                        <i class="fas fa-search text-xl"></i>
+    <section id="paper-finder-section" class="rgenie-paper-finder rgenie-container" aria-labelledby="paperFinderTitle">
+        <h2 id="paperFinderTitle">Past paper finder</h2>
+        <p>Choose a subject and exam board. StudyBase will filter the command center to the matching paper cards.</p>
+        <div class="rgenie-filter-grid">
+            <div class="rgenie-field">
+                <label for="paperFinderSubject">Subject</label>
+                <select id="paperFinderSubject" class="rgenie-select"></select>
+            </div>
+            <div class="rgenie-field">
+                <label for="paperFinderBoard">Exam board</label>
+                <select id="paperFinderBoard" class="rgenie-select"></select>
+            </div>
+            <div class="rgenie-field">
+                <label for="paperFinderYear">Year</label>
+                <select id="paperFinderYear" class="rgenie-select"></select>
+            </div>
+            <div class="rgenie-field">
+                <label>&nbsp;</label>
+                <button type="button" id="paperFinderApply" class="rgenie-button primary w-full">
+                    <i class="fas fa-filter"></i>
+                    Show papers
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="resource-tools-section" class="relative z-20 px-4 mb-8">
+        <div class="rgenie-container">
+            <div class="rgenie-panel">
+                <div class="rgenie-panel-head">
+                    <div>
+                        <h2>Find what you need</h2>
+                        <p>Filter resources, paper links and revision routes without digging through folders.</p>
                     </div>
-                    <input
-                        type="text"
-                        id="searchInput"
-                        onkeyup="filterResources()"
-                        class="w-full bg-transparent border-none px-6 py-4 text-lg text-slate-800 placeholder-slate-400 focus:ring-0 outline-none font-medium"
-                        placeholder="Search 'Psychology AQA', 'Mechanics', or 'UCAS'..."
-                    >
-                    <button type="button" class="hidden md:block mr-2 bg-purple-600 text-white px-8 py-3 rounded-full font-bold hover:bg-purple-700 transition-all shadow-lg shadow-purple-500/20">
-                        Search
-                    </button>
+                    <span class="rgenie-pill"><i class="fas fa-wand-magic-sparkles"></i> Command search</span>
                 </div>
+
+                <div class="rgenie-filter-grid">
+                    <div class="rgenie-field">
+                        <label for="searchInput">Search</label>
+                        <input
+                            type="text"
+                            id="searchInput"
+                            onkeyup="filterResources()"
+                            class="rgenie-input"
+                            placeholder="Try Biology AQA, mechanics, mark scheme..."
+                        >
+                    </div>
+                    <div class="rgenie-field">
+                        <label for="contentTypeFilter">Content type</label>
+                        <select id="contentTypeFilter" class="rgenie-select">
+                            <option value="all">All</option>
+                            <option value="past papers">Past papers</option>
+                            <option value="specifications">Specifications</option>
+                            <option value="revision sites">Revision sites</option>
+                            <option value="videos">Videos</option>
+                            <option value="tools">Tools</option>
+                        </select>
+                    </div>
+                    <div class="rgenie-field">
+                        <label for="subjectFilter">Subject</label>
+                        <select id="subjectFilter" class="rgenie-select">
+                            <option value="all">All subjects</option>
+                        </select>
+                    </div>
+                    <div class="rgenie-field">
+                        <label for="examBoardFilter">Exam board</label>
+                        <select id="examBoardFilter" class="rgenie-select">
+                            <option value="all">All boards</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="subjectChipRow" class="rgenie-chip-row" aria-label="Popular subjects"></div>
             </div>
         </div>
     </section>
@@ -499,13 +1163,14 @@
 
             <div id="resource-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 <div class="col-span-full flex flex-col items-center justify-center py-24">
-                    <div class="w-16 h-16 border-4 border-slate-200 border-t-purple-600 rounded-full animate-spin mb-6"></div>
-                    <p class="text-slate-400 font-bold uppercase tracking-widest text-xs animate-pulse">Loading Advanced Content...</p>
+                    <div class="w-16 h-16 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-6"></div>
+                    <p class="text-slate-500 font-black uppercase tracking-widest text-xs animate-pulse">Checking StudyBase resources...</p>
                 </div>
             </div>
 
         </div>
     </div>
+    </main>
 
     <div id="report-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
         <div class="bg-white w-full md:w-1/2 max-w-4xl h-[80vh] rounded-[2rem] shadow-2xl relative overflow-hidden animate-enter flex flex-col">
@@ -704,6 +1369,8 @@
 
   let folderSchema = [];
   let resourceMain = [];
+  let pastPaperItems = [];
+  let privatePreflightPromise = null;
   let folderHistory = [];
   let currentFolderId = ROOT_FOLDER;
 
@@ -736,30 +1403,414 @@
     };
   }
 
+  function normaliseFilterValue(value) {
+    return String(value || "").trim().toLowerCase();
+  }
+
+  function titleFromSlug(value) {
+    return String(value || "")
+      .replace(/[_-]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .replace(/\b\w/g, letter => letter.toUpperCase());
+  }
+
+  function getQueryParams() {
+    try {
+      return new URLSearchParams(window.location.search);
+    } catch (_) {
+      return new URLSearchParams();
+    }
+  }
+
+  function inferExamBoard(text) {
+    const value = String(text || "").toLowerCase();
+    const boards = [
+      ["edexcel", "Edexcel"],
+      ["pearson", "Edexcel"],
+      ["aqa", "AQA"],
+      ["ocr mei", "OCR MEI"],
+      ["ocr-mei", "OCR MEI"],
+      ["ocr", "OCR"],
+      ["wjec", "WJEC"],
+      ["eduqas", "Eduqas"],
+      ["cie", "CIE"],
+      ["caie", "CAIE"]
+    ];
+    const match = boards.find(([needle]) => value.includes(needle));
+    return match ? match[1] : "";
+  }
+
+  function inferContentType(text, fallback = "Resource") {
+    const value = String(text || "").toLowerCase();
+    if (value.includes("past paper") || value.includes("paper")) return "Past papers";
+    if (value.includes("specification") || value.includes("spec")) return "Specifications";
+    if (value.includes("video") || value.includes("youtube")) return "Videos";
+    if (value.includes("tool") || value.includes("planner") || value.includes("timer") || value.includes("tracker")) return "Tools";
+    if (value.includes("revision") || value.includes("site")) return "Revision sites";
+    return fallback;
+  }
+
+  function buildFolderLookup() {
+    const lookup = new Map();
+    folderSchema.forEach(folder => lookup.set(String(folder.folderId), folder));
+    return lookup;
+  }
+
+  function getFolderPathNames(folderId) {
+    const lookup = buildFolderLookup();
+    const names = [];
+    let cursor = String(folderId || ROOT_FOLDER);
+    const seen = new Set();
+
+    while (cursor && cursor !== ROOT_FOLDER && !seen.has(cursor)) {
+      seen.add(cursor);
+      const folder = lookup.get(cursor);
+      if (!folder) break;
+      names.unshift(folder.name);
+      cursor = String(folder.folder || ROOT_FOLDER);
+    }
+
+    return names;
+  }
+
+  function getPublicResourceMeta(resource) {
+    const pathNames = getFolderPathNames(resource.folderLoc);
+    const subject = pathNames[0] || "";
+    const typeName = pathNames[1] || "";
+    const source = [resource.name, subject, typeName].filter(Boolean).join(" ");
+
+    return {
+      subject,
+      examBoard: resource.examBoard || inferExamBoard(source),
+      contentType: resource.contentType || inferContentType(typeName || resource.name, "Resource")
+    };
+  }
+
+  function getDisplayItemText(item) {
+    return [
+      item.name,
+      item.title,
+      item.subject,
+      item.examBoard,
+      item.year,
+      item.paper,
+      item.type,
+      item.contentType
+    ].filter(Boolean).join(" ");
+  }
+
+  function getSubjectOptions() {
+    const values = new Set();
+    pastPaperItems.forEach(item => item.subject && values.add(item.subject));
+    allAccessOnlyResources.forEach(item => {
+      const text = getDisplayItemText(item);
+      ["Mathematics", "Further Mathematics", "Physics", "Chemistry", "Biology", "Computer Science", "Economics", "Psychology"].forEach(subject => {
+        if (text.toLowerCase().includes(subject.toLowerCase())) values.add(subject);
+      });
+    });
+    return Array.from(values).sort((a, b) => a.localeCompare(b));
+  }
+
+  function getExamBoardOptions() {
+    const values = new Set();
+    pastPaperItems.forEach(item => item.examBoard && values.add(item.examBoard));
+    allAccessOnlyResources.forEach(item => {
+      const board = inferExamBoard(getDisplayItemText(item));
+      if (board) values.add(board);
+    });
+    return Array.from(values).sort((a, b) => a.localeCompare(b));
+  }
+
+  function getPaperYearOptions() {
+    const values = new Set();
+    pastPaperItems.forEach(item => item.year && values.add(String(item.year)));
+    return Array.from(values).sort((a, b) => b.localeCompare(a));
+  }
+
+  function populateSelect(select, values, allLabel, preferredValue = "") {
+    if (!select) return;
+    const current = preferredValue || select.value || "all";
+    select.innerHTML = `<option value="all">${escapeHtml(allLabel)}</option>` +
+      values.map(value => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("");
+
+    const found = Array.from(select.options).some(option => normaliseFilterValue(option.value) === normaliseFilterValue(current));
+    if (found) {
+      const option = Array.from(select.options).find(item => normaliseFilterValue(item.value) === normaliseFilterValue(current));
+      select.value = option.value;
+    }
+  }
+
+  function refreshCommandFilters(preferred = {}) {
+    populateSelect(document.getElementById("subjectFilter"), getSubjectOptions(), "All subjects", preferred.subject);
+    populateSelect(document.getElementById("examBoardFilter"), getExamBoardOptions(), "All boards", preferred.examBoard);
+    populateSelect(document.getElementById("paperFinderSubject"), getSubjectOptions(), "Choose subject", preferred.subject);
+    populateSelect(document.getElementById("paperFinderBoard"), getExamBoardOptions(), "Choose board", preferred.examBoard);
+    populateSelect(document.getElementById("paperFinderYear"), getPaperYearOptions(), "Any year", preferred.year);
+
+    const chipRow = document.getElementById("subjectChipRow");
+    if (chipRow) {
+      chipRow.innerHTML = getSubjectOptions().slice(0, 8).map(subject => `
+        <button type="button" class="rgenie-chip" data-subject-chip="${escapeHtml(subject)}">${escapeHtml(subject)}</button>
+      `).join("");
+
+      chipRow.querySelectorAll("[data-subject-chip]").forEach(button => {
+        button.addEventListener("click", () => {
+          const select = document.getElementById("subjectFilter");
+          if (select) select.value = button.dataset.subjectChip || "all";
+          filterResources();
+        });
+      });
+    }
+  }
+
+  function getActiveFilters() {
+    return {
+      query: normaliseFilterValue(document.getElementById("searchInput")?.value || ""),
+      contentType: normaliseFilterValue(document.getElementById("contentTypeFilter")?.value || "all"),
+      subject: normaliseFilterValue(document.getElementById("subjectFilter")?.value || "all"),
+      examBoard: normaliseFilterValue(document.getElementById("examBoardFilter")?.value || "all")
+    };
+  }
+
+  function itemMatchesFilters(item, filters) {
+    const text = normaliseFilterValue(getDisplayItemText(item));
+    if (filters.query && !text.includes(filters.query)) return false;
+    if (filters.subject !== "all" && normaliseFilterValue(item.subject) !== filters.subject) return false;
+    if (filters.examBoard !== "all" && normaliseFilterValue(item.examBoard) !== filters.examBoard) return false;
+    if (filters.contentType !== "all") {
+      const type = normaliseFilterValue(item.contentType || item.type || inferContentType(getDisplayItemText(item)));
+      if (type !== filters.contentType) return false;
+    }
+    return true;
+  }
+
+  function getCuratedPublicItems() {
+    const curated = [
+      {
+        __type: "resource",
+        name: "Study Tools",
+        contentType: "Tools",
+        iconurl: "/assets/images/app-icons/website.png",
+        url: "/study-tools.html",
+        openInNewTab: false
+      },
+      {
+        __type: "resource",
+        name: "Exam Planner",
+        contentType: "Tools",
+        iconurl: "/assets/images/app-icons/folder-spec.png",
+        url: "/exam-planner.html",
+        openInNewTab: false
+      },
+      {
+        __type: "resource",
+        name: "Focus Timer",
+        contentType: "Tools",
+        iconurl: "/assets/images/app-icons/folder-videos.png",
+        url: "/focus-timer.html",
+        openInNewTab: false
+      },
+      {
+        __type: "resource",
+        name: "Mistake Log",
+        contentType: "Tools",
+        iconurl: "/assets/images/app-icons/folder-papers.png",
+        url: "/mistake-log.html",
+        openInNewTab: false
+      },
+      {
+        __type: "resource",
+        name: "Subject Guides",
+        contentType: "Revision sites",
+        iconurl: "/assets/images/app-icons/folder-spec.png",
+        url: "/subjects/index.html",
+        openInNewTab: false
+      },
+      {
+        __type: "resource",
+        name: "Revision Checklist",
+        contentType: "Tools",
+        iconurl: "/assets/images/app-icons/folder-papers.png",
+        url: "/revision-checklist.html",
+        openInNewTab: false
+      },
+      {
+        __type: "resource",
+        name: "Recall Builder",
+        contentType: "Tools",
+        iconurl: "/assets/images/app-icons/folder-videos.png",
+        url: "/recall-builder.html",
+        openInNewTab: false
+      },
+      {
+        __type: "resource",
+        name: "Help Centre",
+        contentType: "Revision sites",
+        iconurl: "/assets/images/app-icons/website.png",
+        url: "/support/help_center.html",
+        openInNewTab: false
+      }
+    ];
+
+    return pastPaperItems.concat(curated);
+  }
+
+  function getAllPublicCommandItems() {
+    return getCuratedPublicItems();
+  }
+
+  async function loadPastPaperData() {
+    try {
+      const response = await fetch(`${RESOURCE_DATA_BASE}/past-papers.json`, { cache: "no-store" });
+      if (!response.ok) throw new Error(`Past papers request failed with ${response.status}`);
+      const data = await response.json();
+      pastPaperItems = (Array.isArray(data) ? data : []).map(item => ({
+        __type: "paper",
+        name: String(item.title || item.name || "Past paper").trim(),
+        title: String(item.title || item.name || "Past paper").trim(),
+        subject: String(item.subject || "").trim(),
+        examBoard: String(item.examBoard || "").trim(),
+        year: String(item.year || "").trim(),
+        paper: String(item.paper || "").trim(),
+        type: String(item.type || "Past paper").trim(),
+        contentType: "Past papers",
+        paperUrl: String(item.paperUrl || item.url || "#").trim(),
+        markSchemeUrl: String(item.markSchemeUrl || "#").trim(),
+        iconurl: String(item.iconurl || "/assets/images/app-icons/folder-papers.png").trim(),
+        openInNewTab: true
+      })).filter(item => item.title);
+    } catch (error) {
+      console.warn("Past paper data unavailable:", error);
+      pastPaperItems = [];
+    }
+  }
+
+  function loadPrivatePreflight() {
+    if (window.CurrentScriptVersions?.hashtagProto) return Promise.resolve();
+    if (privatePreflightPromise) return privatePreflightPromise;
+
+    privatePreflightPromise = new Promise((resolve, reject) => {
+      const existing = document.querySelector('script[data-resource-preflight="true"]');
+      if (existing) {
+        existing.addEventListener("load", () => setTimeout(resolve, 80), { once: true });
+        existing.addEventListener("error", reject, { once: true });
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = "/assets/js/resources/hashtagProto.js";
+      script.defer = false;
+      script.dataset.resourcePreflight = "true";
+      script.onload = () => setTimeout(resolve, 120);
+      script.onerror = () => reject(new Error("Could not load resource preflight script"));
+      document.head.appendChild(script);
+    });
+
+    return privatePreflightPromise;
+  }
+
+  function setupCommandCenterControls() {
+    ["contentTypeFilter", "subjectFilter", "examBoardFilter"].forEach(id => {
+      document.getElementById(id)?.addEventListener("change", filterResources);
+    });
+
+    document.querySelectorAll("[data-show-pastpapers]").forEach(link => {
+      link.addEventListener("click", event => {
+        if (openMode !== "public") return;
+        event.preventDefault();
+        const section = document.getElementById("paper-finder-section");
+        const contentType = document.getElementById("contentTypeFilter");
+        section?.classList.add("is-open");
+        if (contentType) contentType.value = "past papers";
+        filterResources();
+        section?.scrollIntoView({ behavior: "smooth", block: "start" });
+        try {
+          const url = new URL(window.location.href);
+          url.searchParams.set("showSearchFor", "pastpapers");
+          history.replaceState(null, "", url.toString());
+        } catch (_) {}
+      });
+    });
+
+    document.getElementById("paperFinderApply")?.addEventListener("click", () => {
+      const subject = document.getElementById("paperFinderSubject")?.value || "all";
+      const board = document.getElementById("paperFinderBoard")?.value || "all";
+      const year = document.getElementById("paperFinderYear")?.value || "all";
+      const contentType = document.getElementById("contentTypeFilter");
+      const subjectFilter = document.getElementById("subjectFilter");
+      const boardFilter = document.getElementById("examBoardFilter");
+      const search = document.getElementById("searchInput");
+
+      if (contentType) contentType.value = "past papers";
+      if (subjectFilter) subjectFilter.value = subject;
+      if (boardFilter) boardFilter.value = board;
+      if (search) search.value = year === "all" ? "" : year;
+      filterResources();
+      document.getElementById("resource-tools-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  function setCommandCenterMode(mode) {
+    const isPrivate = mode === "access_only";
+    document.body.classList.toggle("rgenie-private-resources", isPrivate);
+
+    const title = document.querySelector(".rgenie-panel-head h2");
+    const search = document.getElementById("searchInput");
+    if (isPrivate) {
+      ["contentTypeFilter", "subjectFilter", "examBoardFilter"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "all";
+      });
+      document.getElementById("paper-finder-section")?.classList.remove("is-open");
+    }
+    if (title) title.textContent = isPrivate ? "Search your resources" : "Find what you need";
+    if (search) {
+      search.placeholder = isPrivate
+        ? "Search your resources..."
+        : "Try Biology AQA, mechanics, mark scheme...";
+    }
+  }
+
+  function applySpecialOpeners() {
+    const params = getQueryParams();
+    const searchFor = normaliseFilterValue(params.get("showSearchFor"));
+    if (searchFor !== "pastpapers") return;
+
+    const section = document.getElementById("paper-finder-section");
+    section?.classList.add("is-open");
+
+    const subject = params.get("subject") || "";
+    const examBoard = params.get("examBoard") || params.get("board") || "";
+    const year = params.get("year") || "";
+    refreshCommandFilters({ subject, examBoard, year });
+
+    const contentType = document.getElementById("contentTypeFilter");
+    const subjectFilter = document.getElementById("subjectFilter");
+    const boardFilter = document.getElementById("examBoardFilter");
+    const paperSubject = document.getElementById("paperFinderSubject");
+    const paperBoard = document.getElementById("paperFinderBoard");
+    const paperYear = document.getElementById("paperFinderYear");
+    const search = document.getElementById("searchInput");
+
+    if (contentType) contentType.value = "past papers";
+    if (subject && subjectFilter) subjectFilter.value = Array.from(subjectFilter.options).find(o => normaliseFilterValue(o.value) === normaliseFilterValue(subject))?.value || "all";
+    if (examBoard && boardFilter) boardFilter.value = Array.from(boardFilter.options).find(o => normaliseFilterValue(o.value) === normaliseFilterValue(examBoard))?.value || "all";
+    if (subject && paperSubject) paperSubject.value = subjectFilter?.value || "all";
+    if (examBoard && paperBoard) paperBoard.value = boardFilter?.value || "all";
+    if (year && paperYear) paperYear.value = Array.from(paperYear.options).find(o => normaliseFilterValue(o.value) === normaliseFilterValue(year))?.value || "all";
+    if (year && search) search.value = year;
+    setTimeout(() => section?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+  }
+
   async function loadPublicResourceData() {
-    const [schemaRes, mainRes] = await Promise.all([
-      fetch(`${RESOURCE_DATA_BASE}/schema.json`, { cache: "no-store" }),
-      fetch(`${RESOURCE_DATA_BASE}/main.json`, { cache: "no-store" }),
-    ]);
-
-    folderSchema = await schemaRes.json();
-    resourceMain = await mainRes.json();
-
-    folderSchema = (folderSchema || []).map(f => ({
-      ...f,
-      folderId: String(f.folderId),
-      folder: String(f.folder ?? ROOT_FOLDER),
-      iconurl: f.iconurl || f.icon || "pass",
-    }));
-
-    resourceMain = (resourceMain || []).map(r => ({
-      ...r,
-      folderLoc: String(r.folderLoc ?? ROOT_FOLDER),
-      openInNewTab: !!r.openInNewTab,
-    }));
-
+    folderSchema = [];
+    resourceMain = [];
     currentFolderId = ROOT_FOLDER;
     folderHistory = [];
+    await loadPastPaperData();
+    refreshCommandFilters();
+    applySpecialOpeners();
   }
 
   function getVisiblePublicItems(folderId) {
@@ -775,18 +1826,26 @@
         __type: "folder",
         folderId: f.folderId,
         name: f.name,
+        subject: f.folder === ROOT_FOLDER ? f.name : (getFolderPathNames(f.folderId)[0] || ""),
+        contentType: inferContentType(f.name, "Resource"),
         iconurl: f.iconurl || "pass",
       }));
 
     const resourcesHere = resourceMain
       .filter(r => r.folderLoc === fid)
-      .map(r => ({
-        __type: "resource",
-        name: r.name,
-        iconurl: r.iconurl || "pass",
-        url: r.url,
-        openInNewTab: !!r.openInNewTab,
-      }));
+      .map(r => {
+        const meta = getPublicResourceMeta(r);
+        return {
+          __type: "resource",
+          name: r.name,
+          subject: meta.subject,
+          examBoard: meta.examBoard,
+          contentType: meta.contentType,
+          iconurl: r.iconurl || "pass",
+          url: r.url,
+          openInNewTab: !!r.openInNewTab,
+        };
+      });
 
     return backItem.concat(foldersHere, resourcesHere);
   }
@@ -1161,7 +2220,7 @@
                 </div>
                 <div class="rounded-2xl bg-slate-50 border border-slate-100 p-4">
                   <i class="fas fa-lock-open text-indigo-500 mb-2"></i>
-                  <p>No extra codes</p>
+                  <p>Ready when matched</p>
                 </div>
               </div>
             </div>
@@ -1171,7 +2230,7 @@
                 <p class="text-xs font-black uppercase tracking-[0.2em] text-indigo-500 mb-3">Access check</p>
                 <h3 class="text-2xl font-black text-slate-900 tracking-tight mb-3">No extra step here.</h3>
                 <p class="text-sm text-slate-500 font-semibold leading-6">
-                  If your submitted email is approved, the database loads normally. If not, this panel explains what is missing without asking for a separate code.
+                  If your submitted email is approved, the database loads normally. If not, this panel explains what is missing.
                 </p>
               </div>
             </div>
@@ -1202,25 +2261,42 @@
       if (list.length > 0 && list[0].name === "DATA_Public") {
         openMode = "public";
         setBannerResourceMode("public");
+        setCommandCenterMode("public");
         renderResourceAccessSummary(null);
         updateFarewellCountdownVisibility();
         await loadPublicResourceData();
         allAccessOnlyResources = [];
-        allResources = getVisiblePublicItems(currentFolderId);
+        allResources = getAllPublicCommandItems();
         renderFavourites();
-        renderGrid(allResources);
+        filterResources();
         return;
       }
 
       openMode = "access_only";
       setBannerResourceMode("access_only");
+      setCommandCenterMode("access_only");
       renderResourceAccessSummary(res.account || null);
       updateFarewellCountdownVisibility();
       allAccessOnlyResources = list.slice();
       allResources = list;
+      const grid = document.getElementById("resource-grid");
+      if (grid) {
+        grid.className = "grid grid-cols-1 gap-6";
+        grid.innerHTML = `
+          <div class="col-span-full text-center py-20 bg-white rounded-[2rem] border border-slate-200 shadow-sm">
+            <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
+              <i class="fas fa-shield-halved text-xl"></i>
+            </div>
+            <p class="text-slate-900 font-black text-xl mb-2">Preparing your workspace</p>
+            <p class="text-slate-500 font-bold">Checking the trusted session before loading saved resources.</p>
+          </div>
+        `;
+      }
+      await loadPrivatePreflight();
       loadResourceAccessSummary(res.account || null);
+      refreshCommandFilters();
       renderFavourites();
-      renderGrid(allResources);
+      filterResources();
     } catch (error) {
       console.error(error);
       openMode = "public";
@@ -1591,6 +2667,7 @@
       "farewell-countdown-section",
       "favourites-section",
       "top-cards-section",
+      "paper-finder-section",
       "resource-tools-section",
       "global-banner-marker"
     ];
@@ -1718,6 +2795,38 @@
     const fragment = document.createDocumentFragment();
 
     items.forEach((item, index) => {
+      if (item.__type === "paper") {
+        const card = document.createElement("div");
+        card.className = "resource-card rgenie-paper-card flex flex-col gap-4 bg-white border border-slate-200 rounded-[1.75rem] p-5 shadow-sm animate-enter";
+        card.style.animationDelay = `${Math.min(index, 24) * 35}ms`;
+        const paperUrl = item.paperUrl && item.paperUrl !== "#" ? item.paperUrl : "";
+        const markSchemeUrl = item.markSchemeUrl && item.markSchemeUrl !== "#" ? item.markSchemeUrl : "";
+        card.innerHTML = `
+          <div class="flex items-start gap-4">
+            <div class="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0 overflow-hidden">
+              ${item.iconurl && item.iconurl !== "pass"
+                ? `<img src="${escapeHtml(item.iconurl)}" alt="" class="w-full h-full object-cover" loading="lazy" onerror="this.remove();">`
+                : `<i class="fas fa-file-lines text-blue-600 text-xl"></i>`}
+            </div>
+            <div class="min-w-0">
+              <p class="text-[0.68rem] font-black uppercase tracking-[0.16em] text-blue-600 mb-1">${escapeHtml(item.examBoard || "Exam board")} ${escapeHtml(item.year || "")}</p>
+              <h3 class="text-slate-950 text-base font-black leading-tight">${escapeHtml(item.title || item.name)}</h3>
+              <p class="text-slate-500 text-sm font-bold mt-2">${escapeHtml([item.subject, item.paper].filter(Boolean).join(" · "))}</p>
+            </div>
+          </div>
+          <div class="rgenie-paper-actions">
+            <a href="${escapeHtml(paperUrl || "#")}" target="_blank" rel="noopener" aria-disabled="${paperUrl ? "false" : "true"}">Open paper</a>
+            <a href="${escapeHtml(markSchemeUrl || "#")}" target="_blank" rel="noopener" aria-disabled="${markSchemeUrl ? "false" : "true"}">Mark scheme</a>
+          </div>
+        `;
+        card.querySelectorAll("a[aria-disabled='true']").forEach(link => {
+          link.addEventListener("click", event => event.preventDefault());
+          link.classList.add("opacity-50", "cursor-not-allowed");
+        });
+        fragment.appendChild(card);
+        return;
+      }
+
       const {
         displayName,
         verifiedHtml,
@@ -2224,13 +3333,19 @@
   function filterResources() {
     const raw = (document.getElementById("searchInput").value || "").trim();
     const query = raw.toLowerCase();
+    const filters = getActiveFilters();
 
     sbQueueSaveSearchTerm(raw);
 
     if (openMode === "public") {
-      const baseItems = getVisiblePublicItems(currentFolderId);
+      const hasStructuredFilter =
+        filters.contentType !== "all" ||
+        filters.subject !== "all" ||
+        filters.examBoard !== "all";
 
-      if (!query) {
+      const baseItems = getAllPublicCommandItems();
+
+      if (!query && !hasStructuredFilter) {
         allResources = baseItems;
         renderGrid(allResources);
         renderFavourites();
@@ -2238,8 +3353,8 @@
       }
 
       const filtered = baseItems.filter(it => {
-        if (it.__type === "back") return true;
-        return (it.name || "").toLowerCase().includes(query);
+        if (it.__type === "back") return !hasStructuredFilter;
+        return itemMatchesFilters(it, filters);
       });
 
       renderGrid(filtered);
@@ -2247,9 +3362,15 @@
       return;
     }
 
-    const filtered = (allResources || []).filter(item =>
-      (item.name || "").toLowerCase().includes(query)
-    );
+    const filtered = (allResources || []).filter(item => {
+      const enriched = {
+        ...item,
+        subject: item.subject || "",
+        examBoard: item.examBoard || inferExamBoard(getDisplayItemText(item)),
+        contentType: item.contentType || inferContentType(getDisplayItemText(item))
+      };
+      return itemMatchesFilters(enriched, filters);
+    });
     renderGrid(filtered);
     renderFavourites();
   }
@@ -2326,6 +3447,8 @@
 
   setupResourceIdleCover();
   setupWeeklyFeedbackPrompt();
+  setupCommandCenterControls();
+  refreshCommandFilters();
   loadResources();
 </script>
 </body>

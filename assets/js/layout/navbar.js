@@ -106,8 +106,8 @@
     nav.innerHTML = `
       <div class="sbx-nav-inner">
         <a class="sbx-nav-brand" href="/index.html" aria-label="StudyBase home">
-          <img src="/assets/images/site-icons/navbar.png" alt="StudyBase logo">
-          <span>
+          <img class="sbx-nav-brand-lockup" src="/assets/images/site-icons/navbar-lockup.svg" alt="StudyBase" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">
+          <span class="sbx-nav-brand-fallback">
             <strong>StudyBase</strong>
             <small>A-Level paper ops</small>
           </span>
@@ -116,7 +116,7 @@
           <a class="sbx-nav-link ${isActive("/alevel.html") ? "is-active" : ""}" href="/alevel.html">A-Level Route</a>
           ${navGroups.map(groupMarkup).join("")}
         </nav>
-        ${isResourceDatabasePage ? "" : `<a class="sbx-nav-access" href="/myaccount/login.html" data-sbx-login>Login</a>`}
+        <a class="sbx-nav-access" href="/myaccount/login.html" data-sbx-login>Login</a>
         <button class="sbx-nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -124,7 +124,7 @@
       <nav class="sbx-mobile-menu" aria-label="Mobile navigation" hidden>
         <a class="sbx-mobile-link" href="/alevel.html">A-Level Route</a>
         ${mobileMarkup()}
-        ${isResourceDatabasePage ? "" : `<a class="sbx-nav-access" href="/myaccount/login.html" data-sbx-login>Login</a>`}
+        <a class="sbx-nav-access" href="/myaccount/login.html" data-sbx-login>Login</a>
       </nav>
     `;
 
@@ -200,6 +200,23 @@
         });
         group.classList.toggle("is-open", open);
         button.setAttribute("aria-expanded", String(open));
+      });
+    });
+
+    nav.querySelectorAll(".sbx-mobile-group").forEach((details) => {
+      details.addEventListener("toggle", () => {
+        if (!details.open) return;
+        nav.querySelectorAll(".sbx-mobile-group[open]").forEach((item) => {
+          if (item !== details) item.open = false;
+        });
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      nav.querySelectorAll(".sbx-nav-group.is-open").forEach((item) => {
+        item.classList.remove("is-open");
+        item.querySelector(".sbx-nav-dropdown-trigger")?.setAttribute("aria-expanded", "false");
       });
     });
 
