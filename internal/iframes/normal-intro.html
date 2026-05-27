@@ -1,328 +1,491 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <script src="/assets/js/auth/iframeCheck.js"></script>
-    <meta name="description" content="StudyBase provides educational revision resources, A-Level and GCSE study tools, past papers, subject guides, wellbeing support, and learning materials for students." data-studybase-education-meta="true">
-    <meta name="classification" content="Education" data-studybase-education-meta="true">
-    <meta name="category" content="Education" data-studybase-education-meta="true">
-    <meta name="subject" content="A-Level and GCSE revision, study resources, educational tools" data-studybase-education-meta="true">
-    <meta name="audience" content="Students, teachers, and learners" data-studybase-education-meta="true">
-    <meta name="educational-use" content="Revision, exam preparation, independent study" data-studybase-education-meta="true">
-    <meta name="learning-resource-type" content="Revision resource" data-studybase-education-meta="true">
-    <meta property="og:site_name" content="StudyBase" data-studybase-education-meta="true">
-    <meta property="og:type" content="website" data-studybase-education-meta="true">
-    <meta property="og:locale" content="en_GB" data-studybase-education-meta="true">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyBase | Study Time</title>
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap");
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="/assets/js/auth/iframeCheck.js"></script>
+  <title>StudyBase Intro</title>
 
-        :root {
-            --bg: #050816;
-            --ink: #f8fafc;
-            --muted: #94a3b8;
-            --blue: #38bdf8;
-            --pink: #f472b6;
-            --lime: #a3e635;
-            --violet: #8b5cf6;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        * {
-            box-sizing: border-box;
-        }
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #ffffff;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            overflow: hidden;
-            display: grid;
-            place-items: center;
-            background:
-                radial-gradient(circle at 18% 18%, rgba(56, 189, 248, 0.24), transparent 28%),
-                radial-gradient(circle at 82% 74%, rgba(244, 114, 182, 0.18), transparent 30%),
-                linear-gradient(135deg, #020617 0%, #09111f 46%, #111827 100%);
-            color: var(--ink);
-            font-family: "Plus Jakarta Sans", system-ui, sans-serif;
-        }
+    .intro {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 48%, rgba(24, 151, 255, 0.18), transparent 34%),
+        radial-gradient(circle at 18% 18%, rgba(78, 221, 255, 0.24), transparent 28%),
+        radial-gradient(circle at 82% 78%, rgba(0, 114, 255, 0.14), transparent 32%),
+        #ffffff;
+      animation: finalFade 0.35s ease forwards;
+      animation-delay: 2.78s;
+    }
 
-        .stage {
-            position: relative;
-            width: min(92vw, 780px);
-            padding: clamp(28px, 6vw, 56px);
-            text-align: center;
-            isolation: isolate;
-            animation: arrive 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
-        }
+    .grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 0, 0, 0.032) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.032) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
+      opacity: 0;
+      animation: fadeIn 0.7s ease forwards;
+    }
 
-        .stage::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: -1;
-            border-radius: 32px;
-            background: rgba(15, 23, 42, 0.66);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            box-shadow: 0 28px 90px rgba(0, 0, 0, 0.34);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-        }
+    .bg-ring {
+      position: absolute;
+      width: min(84vw, 720px);
+      height: min(84vw, 720px);
+      border-radius: 50%;
+      border: 1px solid rgba(24, 151, 255, 0.18);
+      box-shadow:
+        0 0 80px rgba(24, 151, 255, 0.12),
+        inset 0 0 70px rgba(24, 151, 255, 0.08);
+      opacity: 0;
+      transform: scale(0.65);
+      animation: ringIn 1.1s cubic-bezier(.16, 1, .3, 1) forwards;
+    }
 
-        .stage::after {
-            content: "";
-            position: absolute;
-            inset: -2px;
-            z-index: -2;
-            border-radius: 34px;
-            background: conic-gradient(from 120deg, var(--blue), var(--pink), var(--lime), var(--violet), var(--blue));
-            opacity: 0.72;
-            filter: blur(16px);
-            animation: halo 2.6s linear infinite;
-        }
+    .bg-ring::before,
+    .bg-ring::after {
+      content: "";
+      position: absolute;
+      inset: 42px;
+      border-radius: inherit;
+      border: 1px dashed rgba(24, 151, 255, 0.22);
+      animation: spin 7s linear infinite;
+    }
 
-        .badge {
-            width: 84px;
-            height: 84px;
-            margin: 0 auto 26px;
-            display: grid;
-            place-items: center;
-            border-radius: 26px;
-            background:
-                linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05)),
-                #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 18px 42px rgba(0, 0, 0, 0.28);
-            transform: rotate(-6deg);
-            animation: badge-pop 780ms 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
-        }
+    .bg-ring::after {
+      inset: 92px;
+      animation-direction: reverse;
+      opacity: 0.55;
+    }
 
-        .badge svg {
-            width: 46px;
-            height: 46px;
-            color: var(--blue);
-            filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.42));
-        }
+    .stage {
+      position: relative;
+      z-index: 5;
+      width: min(88vw, 980px);
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+      animation: stagePunch 0.32s cubic-bezier(.2, 1.2, .4, 1) forwards;
+      animation-delay: 2.24s;
+    }
 
-        .eyebrow {
-            margin: 0 0 14px;
-            color: var(--muted);
-            font-size: 12px;
-            font-weight: 900;
-            letter-spacing: 0.28em;
-            text-transform: uppercase;
-        }
+    .logo-wrap {
+      position: relative;
+      width: 100%;
+      display: grid;
+      place-items: center;
+      transform: scale(0.78);
+      opacity: 0;
+      filter: blur(12px);
+      animation:
+        logoReveal 0.9s cubic-bezier(.16, 1, .3, 1) forwards,
+        logoFloat 1.8s ease-in-out infinite;
+      animation-delay: 0.16s, 1s;
+    }
 
-        h1 {
-            margin: 0;
-            font-size: clamp(3.1rem, 12vw, 7.4rem);
-            line-height: 0.88;
-            letter-spacing: 0;
-            font-weight: 900;
-        }
+    .logo {
+      width: min(88vw, 980px);
+      max-height: 34vh;
+      object-fit: contain;
+      filter: drop-shadow(0 28px 48px rgba(0, 0, 0, 0.09));
+    }
 
-        .line {
-            display: block;
-        }
+    .shine {
+      position: absolute;
+      inset: -90%;
+      background: linear-gradient(
+        105deg,
+        transparent 42%,
+        rgba(255, 255, 255, 0.96) 50%,
+        transparent 58%
+      );
+      opacity: 0;
+      transform: translateX(-70%);
+      animation: shine 1.45s ease forwards;
+      animation-delay: 0.8s;
+      pointer-events: none;
+    }
 
-        .study {
-            display: inline-block;
-            position: relative;
-            margin-top: 10px;
-            padding: 0 0.08em;
-            font-family: "JetBrains Mono", ui-monospace, monospace;
-            color: var(--lime);
-            text-shadow:
-                0 0 22px rgba(163, 230, 53, 0.34),
-                2px 0 rgba(244, 114, 182, 0.75),
-                -2px 0 rgba(56, 189, 248, 0.75);
-            animation: study-glitch 820ms steps(2, end) infinite;
-        }
+    .spark {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: #1597ff;
+      box-shadow: 0 0 22px rgba(24, 151, 255, 0.65);
+      opacity: 0;
+      animation: sparkFloat 2s ease-in-out infinite;
+    }
 
-        .study::before,
-        .study::after {
-            content: attr(data-text);
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            opacity: 0.55;
-        }
+    .spark:nth-of-type(1) {
+      left: 16%;
+      top: 35%;
+      animation-delay: 0.1s;
+    }
 
-        .study::before {
-            color: var(--pink);
-            transform: translate(3px, -2px);
-            clip-path: inset(0 0 54% 0);
-        }
+    .spark:nth-of-type(2) {
+      left: 26%;
+      top: 67%;
+      animation-delay: 0.35s;
+    }
 
-        .study::after {
-            color: var(--blue);
-            transform: translate(-3px, 2px);
-            clip-path: inset(54% 0 0 0);
-        }
+    .spark:nth-of-type(3) {
+      right: 18%;
+      top: 32%;
+      animation-delay: 0.6s;
+    }
 
-        .wink {
-            display: inline-block;
-            margin-left: 0.12em;
-            transform-origin: center;
-            animation: wink-pop 1.4s 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
-        }
+    .spark:nth-of-type(4) {
+      right: 28%;
+      top: 68%;
+      animation-delay: 0.85s;
+    }
 
-        .subtitle {
-            max-width: 520px;
-            margin: 24px auto 0;
-            color: var(--muted);
-            font-size: clamp(0.95rem, 2vw, 1.08rem);
-            font-weight: 700;
-            line-height: 1.65;
-            animation: fade-up 520ms 900ms ease both;
-        }
+    .spark:nth-of-type(5) {
+      left: 50%;
+      top: 22%;
+      animation-delay: 1.05s;
+    }
 
-        .progress {
-            position: relative;
-            width: min(360px, 72vw);
-            height: 8px;
-            margin: 34px auto 0;
-            overflow: hidden;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.10);
-            animation: fade-up 520ms 1.05s ease both;
-        }
+    .spark:nth-of-type(6) {
+      left: 45%;
+      bottom: 20%;
+      animation-delay: 1.3s;
+    }
 
-        .progress span {
-            position: absolute;
-            inset: 0 auto 0 0;
-            width: 100%;
-            border-radius: inherit;
-            background: linear-gradient(90deg, var(--blue), var(--lime), var(--pink));
-            transform-origin: left;
-            animation: load-bar 2.65s 250ms cubic-bezier(0.16, 1, 0.3, 1) both;
-        }
+    .burst {
+      position: absolute;
+      z-index: 10;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #1597ff;
+      box-shadow:
+        0 0 20px rgba(24, 151, 255, 0.7),
+        0 0 80px rgba(24, 151, 255, 0.42),
+        0 0 160px rgba(24, 151, 255, 0.24);
+      transform: scale(0);
+      opacity: 0;
+      animation: burstCore 0.62s cubic-bezier(.1, .8, .2, 1) forwards;
+      animation-delay: 2.32s;
+    }
 
-        .spark {
-            position: absolute;
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: white;
-            opacity: 0;
-            animation: spark 2.8s ease-in-out infinite;
-        }
+    .burst-ring {
+      position: absolute;
+      z-index: 9;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid rgba(24, 151, 255, 0.85);
+      transform: scale(0);
+      opacity: 0;
+      animation: burstRing 0.72s cubic-bezier(.1, .8, .2, 1) forwards;
+      animation-delay: 2.28s;
+    }
 
-        .spark:nth-child(1) { left: 12%; top: 12%; animation-delay: 0.1s; }
-        .spark:nth-child(2) { left: 86%; top: 18%; animation-delay: 0.7s; }
-        .spark:nth-child(3) { left: 76%; top: 82%; animation-delay: 1.2s; }
-        .spark:nth-child(4) { left: 18%; top: 78%; animation-delay: 1.7s; }
+    .rays {
+      position: absolute;
+      z-index: 8;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+    }
 
-        .leaving {
-            animation: exit 640ms cubic-bezier(0.7, 0, 0.84, 0) forwards;
-        }
+    .ray {
+      position: absolute;
+      width: 14px;
+      height: 170px;
+      border-radius: 999px;
+      background: linear-gradient(
+        to top,
+        rgba(24, 151, 255, 0),
+        rgba(24, 151, 255, 0.9),
+        rgba(24, 151, 255, 0)
+      );
+      opacity: 0;
+      transform-origin: 50% 100%;
+      animation: rayBurst 0.58s cubic-bezier(.1, .8, .2, 1) forwards;
+      animation-delay: 2.3s;
+    }
 
-        @keyframes arrive {
-            from { opacity: 0; transform: translateY(18px) scale(0.96); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+    .flash {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      background: radial-gradient(
+        circle at center,
+        rgba(255, 255, 255, 1),
+        rgba(24, 151, 255, 0.34),
+        transparent 68%
+      );
+      opacity: 0;
+      pointer-events: none;
+      animation: flashOut 0.5s ease forwards;
+      animation-delay: 2.42s;
+    }
 
-        @keyframes badge-pop {
-            from { opacity: 0; transform: translateY(16px) rotate(-14deg) scale(0.72); }
-            to { opacity: 1; transform: translateY(0) rotate(-6deg) scale(1); }
-        }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
 
-        @keyframes halo {
-            to { transform: rotate(360deg); }
-        }
+    @keyframes ringIn {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
 
-        @keyframes study-glitch {
-            0%, 100% { transform: translate(0, 0); }
-            35% { transform: translate(1px, -1px); }
-            70% { transform: translate(-1px, 1px); }
-        }
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
 
-        @keyframes wink-pop {
-            0% { opacity: 0; transform: translateY(10px) rotate(-18deg) scale(0.5); }
-            55% { opacity: 1; transform: translateY(-4px) rotate(8deg) scale(1.18); }
-            100% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
-        }
+    @keyframes logoReveal {
+      0% {
+        transform: scale(0.78);
+        opacity: 0;
+        filter: blur(12px);
+      }
 
-        @keyframes fade-up {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+      70% {
+        transform: scale(1.025);
+        opacity: 1;
+        filter: blur(0);
+      }
 
-        @keyframes load-bar {
-            from { transform: scaleX(0); }
-            to { transform: scaleX(1); }
-        }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
 
-        @keyframes spark {
-            0%, 100% { opacity: 0; transform: translateY(12px) scale(0.5); }
-            35% { opacity: 0.75; transform: translateY(0) scale(1); }
-            70% { opacity: 0; transform: translateY(-14px) scale(0.7); }
-        }
+    @keyframes logoFloat {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+      }
 
-        @keyframes exit {
-            to {
-                opacity: 0;
-                transform: scale(1.18);
-                filter: blur(18px);
-            }
-        }
+      50% {
+        transform: translateY(-5px) scale(1.006);
+      }
+    }
 
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 1ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 1ms !important;
-            }
-        }
-    </style>
-  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
+    @keyframes shine {
+      0% {
+        opacity: 0;
+        transform: translateX(-70%);
+      }
+
+      25% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateX(70%);
+      }
+    }
+
+    @keyframes sparkFloat {
+      0% {
+        transform: translateY(18px) scale(0.7);
+        opacity: 0;
+      }
+
+      28% {
+        opacity: 0.8;
+      }
+
+      100% {
+        transform: translateY(-26px) scale(1.15);
+        opacity: 0;
+      }
+    }
+
+    @keyframes stagePunch {
+      0% {
+        transform: scale(1);
+        filter: blur(0);
+      }
+
+      70% {
+        transform: scale(1.08);
+        filter: blur(1px);
+      }
+
+      100% {
+        transform: scale(1.13);
+        filter: blur(8px);
+        opacity: 0;
+      }
+    }
+
+    @keyframes burstCore {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      30% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(52);
+        opacity: 1;
+      }
+    }
+
+    @keyframes burstRing {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      25% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(8);
+        opacity: 0;
+      }
+    }
+
+    @keyframes rayBurst {
+      0% {
+        opacity: 0;
+        transform: rotate(var(--r)) translateY(-72px) scaleY(0);
+      }
+
+      35% {
+        opacity: 0.85;
+      }
+
+      100% {
+        opacity: 0;
+        transform: rotate(var(--r)) translateY(-230px) scaleY(1);
+      }
+    }
+
+    @keyframes flashOut {
+      0% {
+        opacity: 0;
+      }
+
+      25% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes finalFade {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .stage {
+        width: 94vw;
+      }
+
+      .logo {
+        width: 94vw;
+        max-height: 23vh;
+      }
+
+      .bg-ring {
+        width: 96vw;
+        height: 96vw;
+      }
+
+      .ray {
+        height: 120px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <span class="spark"></span>
-    <span class="spark"></span>
-    <span class="spark"></span>
-    <span class="spark"></span>
+  <main class="intro">
+    <div class="grid"></div>
+    <div class="bg-ring"></div>
 
-    <main id="main-container" class="stage" aria-live="polite">
-        <div class="badge" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2.5" y="6.5" width="19" height="11" rx="2.5"></rect>
-                <path d="M7 12h4"></path>
-                <path d="M9 10v4"></path>
-                <path d="M15.5 11.5h.01"></path>
-                <path d="M18.5 13.5h.01"></path>
-            </svg>
-        </div>
+    <div class="spark"></div>
+    <div class="spark"></div>
+    <div class="spark"></div>
+    <div class="spark"></div>
+    <div class="spark"></div>
+    <div class="spark"></div>
 
-        <h1>
-            <span class="line">It's time to</span>
-            <span class="line"><span class="study" data-text="&quot;study&quot;">"study"</span><span class="wink">😉</span></span>
-        </h1>
+    <section class="stage" aria-label="StudyBase opening transition">
+      <div class="logo-wrap">
+        <img
+          class="logo"
+          src="https://studybase.site/assets/images/site-icons/navbar-lockup.svg"
+          alt="StudyBase"
+        />
+        <div class="shine"></div>
+      </div>
+    </section>
 
-        <div class="progress" aria-hidden="true"><span></span></div>
-    </main>
+    <div class="burst-ring"></div>
 
-    <script>
-        const container = document.getElementById("main-container");
+    <div class="rays">
+      <div class="ray" style="--r: 0deg;"></div>
+      <div class="ray" style="--r: 45deg;"></div>
+      <div class="ray" style="--r: 90deg;"></div>
+      <div class="ray" style="--r: 135deg;"></div>
+      <div class="ray" style="--r: 180deg;"></div>
+      <div class="ray" style="--r: 225deg;"></div>
+      <div class="ray" style="--r: 270deg;"></div>
+      <div class="ray" style="--r: 315deg;"></div>
+    </div>
 
-        function launch() {
-            container.classList.add("leaving");
+    <div class="burst"></div>
+    <div class="flash"></div>
+  </main>
 
-            try {
-                window.parent.postMessage({
-                    type: "STUDYBASE_INTRO_COMPLETE",
-                    source: "studybase-opening-transition",
-                    completed: true
-                }, "*");
-            } catch (e) {}
+  <script>
+    const INTRO_LENGTH = 3000;
 
-            setTimeout(() => {
-                document.body.style.opacity = "0";
-            }, 520);
-        }
-
-        setTimeout(launch, 3000);
-    </script>
+    setTimeout(() => {
+      window.parent.postMessage({
+        type: "STUDYBASE_INTRO_COMPLETE",
+        source: "studybase-opening-transition",
+        completed: true
+      }, "*");
+    }, INTRO_LENGTH);
+  </script>
 </body>
 </html>
