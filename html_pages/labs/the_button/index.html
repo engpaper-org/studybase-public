@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <script src="/assets/js/auth/iframeCheck.js"></script>
   <title>The Button — StudyBase</title>
   <style>
     :root{
@@ -1186,9 +1187,11 @@
     decoys.push(btn);
   }
 
-  function moveMain(x=None, y=None){
-    const rx = x ?? (Math.random()*.78-.39);
-    const ry = y ?? (Math.random()*.48-.24);
+  function moveMain(x, y){
+    const randomX = (Math.random() * 0.78) - 0.39;
+    const randomY = (Math.random() * 0.48) - 0.24;
+    const rx = (typeof x === "number") ? x : randomX;
+    const ry = (typeof y === "number") ? y : randomY;
     const rect = els.stage.getBoundingClientRect();
     els.main.style.setProperty("--x", `${rx * rect.width}px`);
     els.main.style.setProperty("--y", `${ry * rect.height}px`);
