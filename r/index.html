@@ -33,6 +33,7 @@
     <script src="/assets/js/account/timeRecords.js" defer></script>
     <script src="/assets/js/core/services.js"></script>
     <script src="/assets/js/resources/checkForLoggedInHash.js"></script>
+    <script src="/assets/js/support/support-handler.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 
@@ -179,6 +180,24 @@
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255,255,255,0.72);
             box-shadow: 0 18px 45px rgba(15,23,42,0.08);
+        }
+
+        .rgenie-support-banner {
+            margin-bottom: 1rem;
+            padding: 0.7rem;
+            border-radius: 28px;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.86), rgba(255,255,255,0.68)),
+                radial-gradient(circle at 12% 18%, rgba(34,211,238,0.18), transparent 28%),
+                radial-gradient(circle at 82% 30%, rgba(147,51,234,0.16), transparent 26%);
+            border: 1px solid rgba(255,255,255,0.74);
+            box-shadow: 0 24px 60px rgba(15,23,42,0.10);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .rgenie-support-banner [data-support-slot] {
+            margin-inline: auto;
         }
 
         .announcement-bottom-overlay {
@@ -1210,6 +1229,16 @@
 
     <section id="resource-tools-section" class="relative z-20 px-4 mb-8">
         <div class="rgenie-container">
+            <div class="rgenie-support-banner" aria-label="StudyBase supported message">
+                <div
+                    data-support-slot="resource-command-top"
+                    data-support-ratio="leaderboard"
+                    data-support-max-width="970px"
+                    data-support-label="Supported"
+                    data-support-title="StudyBase supported message">
+                </div>
+            </div>
+
             <div class="rgenie-panel">
                 <div class="rgenie-panel-head">
                     <div>
