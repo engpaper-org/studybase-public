@@ -13,6 +13,16 @@
       padding: 0;
     }
 
+    img,
+    svg {
+      -webkit-user-drag: none;
+      user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
     :root {
       --sb-blue: #1597ff;
       --sb-cyan: #35d9ff;
@@ -459,6 +469,7 @@
 
     <section class="content">
       <img
+        draggable="false"
         class="logo"
         src="https://studybase.site/assets/images/site-icons/navbar-lockup.svg"
         alt="StudyBase"
@@ -496,5 +507,14 @@
       </div>
     </section>
   </main>
+
+  <script>
+    document.addEventListener('dragstart', (event) => {
+      if (event.target && event.target.closest('img, svg')) {
+        event.preventDefault();
+      }
+    });
+  </script>
+
 </body>
 </html>
