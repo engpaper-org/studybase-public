@@ -27,7 +27,8 @@
     <script src="/assets/js/resources/hashtagProto.js"></script>
 
     <link rel="icon" href="/assets/images/site-icons/main.ico">
-    <link rel="prefetch" href="/internal/iframes/resource-intro.html" as="document">
+    <link rel="prefetch" href="/internal/iframes/normal-intro.html" as="document">
+    <link rel="prefetch" href="/internal/iframes/labs-intro.html" as="document">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/assets/js/auth/loginAnimationCheck.js" defer></script>
     <script src="/assets/js/account/timeRecords.js" defer></script>
@@ -1016,6 +1017,13 @@ function getDecodedMaterialName() {
     return decodeBase64Unicode(encoded) || "Untitled resource";
 }
 
+function getIntroFrameUrl() {
+    const decodedMaterialId = getDecodedMaterialName();
+    return decodedMaterialId.includes("-o-")
+        ? "/internal/iframes/labs-intro.html"
+        : "/internal/iframes/normal-intro.html";
+}
+
 function createSecurityBubbles() {
     const container = document.getElementById("securityBubbles");
     if (!container || container.dataset.ready === "true") return;
@@ -1824,7 +1832,7 @@ function proceedToLoad(subjectTitle) {
             materialFinished = true;
 
             window.addEventListener("message", onIntroMessage);
-            try { loadingAdFrame.src = "/internal/iframes/resource-intro.html"; } catch (e) {}
+            try { loadingAdFrame.src = getIntroFrameUrl(); } catch (e) {}
             revealTimer = setTimeout(revealResource, 4300);
         };
 
