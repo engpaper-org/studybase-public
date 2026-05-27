@@ -1,10 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap");
 
 :root {
-  --legal-ink: #0f172a;
-  --legal-muted: #56657a;
-  --legal-border: #dbe4ef;
-  --legal-soft: #f8fafc;
+  --legal-ink: #101827;
+  --legal-muted: #5a6a82;
+  --legal-border: rgba(16, 24, 39, 0.10);
+  --legal-soft: #f7fbff;
+  --legal-blue: #2f6df6;
+  --legal-teal: #10a7a0;
+  --legal-lime: #b7ec3b;
+  --legal-rose: #f05279;
 }
 
 * {
@@ -17,9 +21,9 @@ body.legal-body {
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--legal-ink);
   background:
-    linear-gradient(120deg, rgba(37, 99, 235, 0.10), transparent 34%),
-    linear-gradient(240deg, rgba(20, 184, 166, 0.10), transparent 30%),
-    linear-gradient(180deg, #ffffff 0%, #eef4fb 100%);
+    radial-gradient(circle at 14% 8%, rgba(47, 109, 246, 0.16), transparent 28rem),
+    radial-gradient(circle at 86% 12%, rgba(183, 236, 59, 0.18), transparent 24rem),
+    linear-gradient(180deg, #ffffff 0%, #f7fbff 48%, #eef7fb 100%);
 }
 
 .legal-body a {
@@ -32,15 +36,17 @@ body.legal-body {
 }
 
 .legal-hero {
-  padding: 128px 0 44px;
+  padding: 132px 0 46px;
 }
 
 .legal-shell {
-  border: 1px solid rgba(219, 228, 239, 0.95);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.90);
-  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
-  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.82);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 88% 16%, rgba(183,236,59,0.20), transparent 14rem),
+    rgba(255, 255, 255, 0.88);
+  box-shadow: 0 28px 90px rgba(16, 24, 39, 0.12);
+  backdrop-filter: blur(22px);
   overflow: hidden;
 }
 
@@ -69,8 +75,8 @@ body.legal-body {
   width: 9px;
   height: 9px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #2563eb, #14b8a6);
-  box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.10);
+  background: linear-gradient(135deg, var(--legal-blue), var(--legal-lime));
+  box-shadow: 0 0 0 5px rgba(47, 109, 246, 0.10);
 }
 
 .legal-title {
@@ -79,7 +85,7 @@ body.legal-body {
   font-family: "Plus Jakarta Sans", "Inter", sans-serif;
   font-size: clamp(38px, 6vw, 78px);
   line-height: 0.96;
-  letter-spacing: -0.04em;
+  letter-spacing: 0;
   font-weight: 900;
 }
 
@@ -94,7 +100,7 @@ body.legal-body {
 .legal-version {
   min-width: 236px;
   border: 1px solid var(--legal-border);
-  border-radius: 8px;
+  border-radius: 18px;
   background: #ffffff;
   padding: 18px;
 }
@@ -121,7 +127,7 @@ body.legal-body {
 
 .legal-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -132,7 +138,7 @@ body.legal-body {
   flex-direction: column;
   justify-content: space-between;
   padding: 22px;
-  border-radius: 8px;
+  border-radius: 24px;
   color: #ffffff;
   text-decoration: none;
   overflow: hidden;
@@ -169,10 +175,9 @@ body.legal-body {
   z-index: 1;
 }
 
-.tile-terms { background: linear-gradient(135deg, #2563eb 0%, #4f46e5 58%, #312e81 100%); }
-.tile-privacy { background: linear-gradient(135deg, #059669 0%, #14b8a6 58%, #0f766e 100%); }
-.tile-token { background: linear-gradient(135deg, #f59e0b 0%, #eab308 54%, #b45309 100%); }
-.tile-disclaimer { background: linear-gradient(135deg, #dc2626 0%, #f43f5e 56%, #9f1239 100%); }
+.tile-terms { background: linear-gradient(135deg, #245ef2 0%, #13bad7 100%); }
+.tile-privacy { background: linear-gradient(135deg, #0f766e 0%, #14b8a6 58%, #b7ec3b 130%); }
+.tile-disclaimer { background: linear-gradient(135deg, #101827 0%, #334155 58%, #f05279 140%); }
 .tile-muted { background: linear-gradient(135deg, #334155 0%, #64748b 100%); min-height: 150px; }
 
 .tile-icon {
@@ -180,14 +185,9 @@ body.legal-body {
   height: 44px;
   display: grid;
   place-items: center;
-  border-radius: 8px;
+  border-radius: 16px;
   background: rgba(255,255,255,0.20);
   border: 1px solid rgba(255,255,255,0.28);
-}
-
-.tile-token .tile-icon {
-  background: rgba(255,255,255,0.32);
-  border-color: rgba(255,255,255,0.45);
 }
 
 .legal-tile h2,
@@ -228,9 +228,9 @@ body.legal-body {
 .doc-section,
 .doc-sidebar {
   border: 1px solid var(--legal-border);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 44px rgba(16, 24, 39, 0.07);
 }
 
 .legal-panel {

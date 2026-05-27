@@ -632,6 +632,59 @@
             margin: 1.5rem 0 2rem;
         }
 
+        .rgenie-proof-strip {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.75rem;
+            margin: 1rem 0 1.5rem;
+        }
+
+        .rgenie-proof-strip article {
+            border: 1px solid rgba(18,24,38,0.08);
+            border-radius: 24px;
+            background: rgba(255,255,255,0.86);
+            box-shadow: 0 16px 42px rgba(18,24,38,0.07);
+            padding: 1.05rem;
+        }
+
+        .rgenie-proof-strip strong {
+            display: block;
+            color: var(--rgenie-ink);
+            font-size: 1.35rem;
+            font-weight: 900;
+            letter-spacing: 0;
+        }
+
+        .rgenie-proof-strip span {
+            display: block;
+            margin-top: 0.2rem;
+            color: var(--rgenie-muted);
+            font-size: 0.82rem;
+            font-weight: 800;
+            line-height: 1.4;
+        }
+
+        .rgenie-board-strip {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.65rem;
+            margin: 0 0 2rem;
+        }
+
+        .rgenie-board-strip span {
+            display: inline-flex;
+            align-items: center;
+            min-height: 2.45rem;
+            border-radius: 999px;
+            border: 1px solid rgba(18,24,38,0.08);
+            background: #ffffff;
+            color: #3d4f69;
+            font-weight: 900;
+            padding: 0 0.95rem;
+            box-shadow: 0 10px 24px rgba(18,24,38,0.06);
+        }
+
         .rgenie-command-card {
             grid-column: span 2;
             min-height: 10rem;
@@ -802,6 +855,28 @@
             display: none !important;
         }
 
+        body.rgenie-private-resources .rgenie-hero,
+        body.rgenie-private-resources .rgenie-proof-strip,
+        body.rgenie-private-resources .rgenie-board-strip,
+        body.rgenie-private-resources .rgenie-command-grid,
+        body.rgenie-private-resources #farewell-countdown-section,
+        body.rgenie-private-resources #favourites-section {
+            display: none !important;
+        }
+
+        body.rgenie-private-resources .rgenie-shell {
+            padding-top: 7rem;
+        }
+
+        body.rgenie-private-resources #resource-tools-section {
+            margin-bottom: 1rem;
+        }
+
+        body.rgenie-private-resources .rgenie-panel {
+            padding: 0.75rem;
+            border-radius: 24px;
+        }
+
         body.rgenie-private-resources .rgenie-filter-grid {
             grid-template-columns: 1fr;
         }
@@ -873,6 +948,10 @@
                 grid-column: span 3;
             }
 
+            .rgenie-proof-strip {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
             .rgenie-filter-grid {
                 grid-template-columns: 1fr 1fr;
             }
@@ -902,6 +981,7 @@
             }
 
             .rgenie-command-grid,
+            .rgenie-proof-strip,
             .rgenie-filter-grid {
                 grid-template-columns: 1fr;
             }
@@ -998,6 +1078,34 @@
                     </div>
                 </div>
             </section>
+
+            <section class="rgenie-proof-strip" aria-label="Command center highlights">
+                <article>
+                    <strong>One search</strong>
+                    <span>Papers, mark schemes, tools and study routes in one place.</span>
+                </article>
+                <article>
+                    <strong>A-Level first</strong>
+                    <span>Built around Year 12 and Year 13 exam-board revision.</span>
+                </article>
+                <article>
+                    <strong>Paper ready</strong>
+                    <span>Jump from subject choice to the exact paper cards.</span>
+                </article>
+                <article>
+                    <strong>Focused next</strong>
+                    <span>Move from weak topics into repair tools quickly.</span>
+                </article>
+            </section>
+
+            <div class="rgenie-board-strip" aria-label="Supported exam boards">
+                <span>AQA</span>
+                <span>Edexcel</span>
+                <span>OCR</span>
+                <span>OCR MEI</span>
+                <span>WJEC</span>
+                <span>Eduqas</span>
+            </div>
 
             <section class="rgenie-command-grid" aria-label="StudyBase quick routes">
                 <a class="rgenie-command-card" href="/r/index.html?showSearchFor=pastpapers" data-show-pastpapers>

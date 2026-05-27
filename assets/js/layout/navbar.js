@@ -95,6 +95,79 @@
     `).join("");
   }
 
+  function readAuthKey(primaryKey, legacyKey) {
+    try {
+      const primary = (localStorage.getItem(primaryKey) || "").trim();
+      if (primary) return primary;
+
+      const legacy = (localStorage.getItem(legacyKey) || "").trim();
+      if (legacy) {
+        localStorage.setItem(primaryKey, legacy);
+        localStorage.removeItem(legacyKey);
+      }
+      return legacy;
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function isLoggedIn() {
+    try {
+      if (window.StudyBaseServices?.isLoggedIn) return window.StudyBaseServices.isLoggedIn();
+      if (window.AccountAuth?.isLoggedIn) return window.AccountAuth.isLoggedIn();
+    } catch (_) {}
+
+    return Boolean(
+      readAuthKey("studybase_username", "gh_username") &&
+      readAuthKey("studybase_password", "gh_password") &&
+      readAuthKey("studybase_device", "gh_device")
+    );
+  }
+
+  function clearAuthSession() {
+    try {
+      if (window.StudyBaseServices?.clearAccountSession) {
+        window.StudyBaseServices.clearAccountSession();
+      }
+    } catch (_) {}
+
+    [
+      "studybase_username",
+      "studybase_password",
+      "studybase_device",
+      "studybase_device_b64",
+      "studybase_session_expiry",
+      "studybase_session_expiry_set_at",
+      "gh_username",
+      "gh_password",
+      "gh_device",
+      "gh_device_b64",
+      "gh_session_expiry",
+      "gh_session_expiry_set_at"
+    ].forEach((key) => {
+      try { localStorage.removeItem(key); } catch (_) {}
+    });
+
+    window.dispatchEvent(new CustomEvent("studybase:account-session-cleared"));
+  }
+
+  function authMarkup() {
+    if (isLoggedIn()) {
+      return `
+        <div class="sbx-nav-auth" data-sbx-auth>
+          <a class="sbx-nav-access sbx-nav-account" href="/myaccount/account.html" data-sbx-account>My account</a>
+          <button class="sbx-nav-access sbx-nav-signout" type="button" data-sbx-signout>Sign out</button>
+        </div>
+      `;
+    }
+
+    return `
+      <div class="sbx-nav-auth" data-sbx-auth>
+        <a class="sbx-nav-access" href="/myaccount/login.html" data-sbx-login>Login</a>
+      </div>
+    `;
+  }
+
   function render() {
     if (document.getElementById("sbx-navbar")) return;
 
@@ -116,7 +189,7 @@
           <a class="sbx-nav-link ${isActive("/alevel.html") ? "is-active" : ""}" href="/alevel.html">A-Level Route</a>
           ${navGroups.map(groupMarkup).join("")}
         </nav>
-        <a class="sbx-nav-access" href="/myaccount/login.html" data-sbx-login>Login</a>
+        ${authMarkup()}
         <button class="sbx-nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
@@ -124,13 +197,19 @@
       <nav class="sbx-mobile-menu" aria-label="Mobile navigation" hidden>
         <a class="sbx-mobile-link" href="/alevel.html">A-Level Route</a>
         ${mobileMarkup()}
-        <a class="sbx-nav-access" href="/myaccount/login.html" data-sbx-login>Login</a>
+        ${authMarkup()}
       </nav>
     `;
 
     document.body.insertAdjacentElement("afterbegin", nav);
 
-    function ensureLoginModal() {
+    function updateAuthState() {
+      nav.querySelectorAll("[data-sbx-auth]").forEach((container) => {
+        container.outerHTML = authMarkup();
+      });
+    }
+
+    function ensureAccountModal() {
       let modal = document.getElementById("sbx-login-modal");
       if (modal) return modal;
 
@@ -139,11 +218,11 @@
       modal.className = "sbx-login-modal";
       modal.setAttribute("role", "dialog");
       modal.setAttribute("aria-modal", "true");
-      modal.setAttribute("aria-label", "StudyBase login");
+      modal.setAttribute("aria-label", "StudyBase account");
       modal.innerHTML = `
         <div class="sbx-login-dialog">
-          <button class="sbx-login-close" type="button" aria-label="Close login">&times;</button>
-          <iframe class="sbx-login-frame" title="StudyBase login" src="about:blank"></iframe>
+          <button class="sbx-login-close" type="button" aria-label="Close account window">&times;</button>
+          <iframe class="sbx-login-frame" title="StudyBase account" src="about:blank"></iframe>
         </div>
       `;
       document.body.appendChild(modal);
@@ -152,6 +231,7 @@
       const close = () => {
         modal.classList.remove("is-open");
         document.body.classList.remove("sbx-modal-lock");
+        setTimeout(updateAuthState, 120);
       };
 
       modal.querySelector(".sbx-login-close").addEventListener("click", close);
@@ -163,10 +243,9 @@
         if (event.key === "Escape" && modal.classList.contains("is-open")) close();
       });
 
-      modal.openLogin = () => {
-        if (!frame.getAttribute("src") || frame.getAttribute("src") === "about:blank") {
-          frame.setAttribute("src", "/myaccount/login.html");
-        }
+      modal.openPage = (pageUrl, titleText = "StudyBase account") => {
+        frame.setAttribute("title", titleText);
+        frame.setAttribute("src", pageUrl);
         modal.classList.add("is-open");
         document.body.classList.add("sbx-modal-lock");
         modal.querySelector(".sbx-login-close").focus();
@@ -175,11 +254,26 @@
       return modal;
     }
 
-    nav.querySelectorAll("[data-sbx-login]").forEach((link) => {
-      link.addEventListener("click", (event) => {
+    nav.addEventListener("click", (event) => {
+      const login = event.target.closest("[data-sbx-login]");
+      const account = event.target.closest("[data-sbx-account]");
+      const signout = event.target.closest("[data-sbx-signout]");
+
+      if (login) {
         event.preventDefault();
-        ensureLoginModal().openLogin();
-      });
+        ensureAccountModal().openPage("/myaccount/login.html", "StudyBase login");
+      }
+
+      if (account) {
+        event.preventDefault();
+        ensureAccountModal().openPage("/myaccount/account.html", "My account");
+      }
+
+      if (signout) {
+        event.preventDefault();
+        clearAuthSession();
+        updateAuthState();
+      }
     });
 
     const toggle = nav.querySelector(".sbx-nav-toggle");
@@ -227,6 +321,10 @@
         item.querySelector(".sbx-nav-dropdown-trigger")?.setAttribute("aria-expanded", "false");
       });
     });
+
+    window.addEventListener("storage", updateAuthState);
+    window.addEventListener("focus", updateAuthState);
+    window.addEventListener("studybase:account-session-cleared", updateAuthState);
   }
 
   if (document.readyState === "loading") {

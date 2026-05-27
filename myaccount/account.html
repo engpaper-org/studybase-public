@@ -70,7 +70,7 @@
         </h1>
 
         <p class="mt-2 text-slate-500 font-body">
-          Manage your profile, tokens, and local device settings.
+          Manage your profile and local device settings.
         </p>
       </div>
 
@@ -129,32 +129,6 @@
               </div>
             </a>
 
-            <a href="/myaccount/redeem.html"
-              class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 shadow-sm hover:shadow-md transition-all p-5 text-left">
-              <div class="flex items-start gap-4">
-                <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                  <i class="fa-solid fa-ticket"></i>
-                </div>
-                <div class="min-w-0">
-                  <p class="font-extrabold">Redeem code</p>
-                  <p class="text-sm text-slate-500 font-body mt-1">Add tokens with a product code.</p>
-                </div>
-              </div>
-            </a>
-
-            <a href="/myaccount/pricing.html"
-              class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 shadow-sm hover:shadow-md transition-all p-5 text-left">
-              <div class="flex items-start gap-4">
-                <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                  <i class="fa-solid fa-coins"></i>
-                </div>
-                <div class="min-w-0">
-                  <p class="font-extrabold">Pricing</p>
-                  <p class="text-sm text-slate-500 font-body mt-1">View current token costs.</p>
-                </div>
-              </div>
-            </a>
-
             <button id="logoutBtn"
               class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 shadow-sm hover:shadow-md transition-all p-5 text-left">
               <div class="flex items-start gap-4">
@@ -183,18 +157,18 @@
           </div>
         </section>
 
-        <section class="grid grid-cols-1 lg:grid-cols-[0.95fr_1.05fr] gap-4">
+        <section class="grid grid-cols-1 gap-4">
           <div class="rounded-2xl border border-slate-200 bg-white p-6">
             <div class="flex items-start justify-between gap-4">
               <div>
-                <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Token balance</p>
+                <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Account status</p>
                 <div class="mt-3 flex items-center gap-3">
-                  <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100">
-                    <i class="fa-solid fa-coins"></i>
+                  <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
+                    <i class="fa-solid fa-user-check"></i>
                   </div>
-                  <p id="tokenBalance" class="text-4xl font-black text-slate-900">-</p>
+                  <p class="text-3xl font-black text-slate-900">Signed in</p>
                 </div>
-                <p class="mt-3 text-sm text-slate-500 font-body">Tokens are stored with your StudyBase account.</p>
+                <p class="mt-3 text-sm text-slate-500 font-body">Your StudyBase account is active on this device.</p>
               </div>
               <button id="refreshAccountBtn"
                 class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition">
@@ -202,21 +176,6 @@
               </button>
             </div>
           </div>
-
-          <a href="/myaccount/redeem.html" class="rounded-2xl border border-slate-200 bg-white p-6 hover:bg-slate-50 transition block">
-            <div class="flex items-start gap-4">
-              <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-100">
-                <i class="fa-solid fa-ticket"></i>
-              </div>
-              <div class="min-w-0 flex-1">
-                <p class="font-extrabold">Redeem token codes</p>
-                <p class="text-sm text-slate-500 font-body mt-1">Use a one-time 8 digit product code on the dedicated redeem page.</p>
-                <span class="mt-4 inline-flex items-center gap-2 text-sm font-black text-emerald-700">
-                  Open redeem page <i class="fa-solid fa-arrow-right text-xs"></i>
-                </span>
-              </div>
-            </div>
-          </a>
         </section>
 
         <section class="rounded-2xl border border-slate-200 bg-white p-6">
@@ -308,7 +267,6 @@
       const firstName = (account.profile?.firstName || localStorage.getItem("sb_firstName") || "").trim();
       const email = account.email || localStorage.getItem("sb_accountEmail") || "";
 
-      document.getElementById("tokenBalance").textContent = String(Number(account.tokens) || 0);
       document.getElementById("nameSlot").textContent = firstName || "there";
       document.getElementById("nameDetail").textContent = firstName || "Not set";
       document.getElementById("accountSyncStatus").textContent = email ? `Signed in as ${email}` : "Synced";
@@ -351,33 +309,6 @@
     });
 
     document.getElementById("refreshAccountBtn")?.addEventListener("click", syncAccount);
-
-    document.getElementById("redeemCode")?.addEventListener("input", (event) => {
-      event.target.value = String(event.target.value || "").replace(/\D/g, "").slice(0, 8);
-      setMessage("redeemMessage", "");
-    });
-
-    document.getElementById("redeemBtn")?.addEventListener("click", async () => {
-      const input = document.getElementById("redeemCode");
-      const code = (input?.value || "").replace(/\D/g, "");
-
-      if (!/^\d{8}$/.test(code)) {
-        setMessage("redeemMessage", "Enter an 8 digit code.", "error");
-        return;
-      }
-
-      setMessage("redeemMessage", "Redeeming...");
-      const result = await window.StudyBaseServices?.redeem?.(code);
-
-      if (!result?.ok) {
-        setMessage("redeemMessage", result?.error || "Code could not be redeemed.", "error");
-        return;
-      }
-
-      if (input) input.value = "";
-      setMessage("redeemMessage", `Added ${result.addedTokens} token(s).`, "success");
-      if (result.account) renderAccount(result.account);
-    });
 
     const deleteModal = document.getElementById("deleteAccountModal");
     const openDeleteModal = () => deleteModal.classList.remove("hidden");
