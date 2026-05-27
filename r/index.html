@@ -184,7 +184,16 @@
         .announcement-bottom-overlay {
             background: linear-gradient(to top, rgba(15,23,42,0.92), rgba(15,23,42,0.42), rgba(15,23,42,0));
         }
-        body.embedded-material-active > :not(#embedded-material-section) {
+        body.embedded-material-active > :not(main):not(#embedded-material-section) {
+            display: none !important;
+        }
+
+        body.embedded-material-active main {
+            display: block !important;
+        }
+
+        body.embedded-material-active main > :not(#embedded-material-section),
+        body.embedded-material-active #embedded-material-section.hidden {
             display: none !important;
         }
 
@@ -2810,7 +2819,7 @@
     if (!frame || !section || !grid) return;
 
     const deviceCode = getStoredAuth().deviceCode;
-    const materialUrl = new URL(RESOURCE_MATERIAL_PAGE, window.location.origin);
+    const materialUrl = new URL(RESOURCE_MATERIAL_PAGE, window.location.href);
     materialUrl.searchParams.set("material-ID", encodedMaterialId);
     materialUrl.searchParams.set("embedded", "1");
     if (deviceCode) {

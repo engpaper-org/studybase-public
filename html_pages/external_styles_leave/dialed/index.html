@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="/assets/js/auth/iframeCheck.js"></script>
+  <title>Dialed by StudyBase</title>
+  
+  <style>
+    :root{
+      --ink:#111;
+      --muted:#777;
+      --line:rgba(0,0,0,.1);
+      --card:#fff;
+      --soft:#f7f7f7;
+      --cyan:#00d9cc;
+      --purple:#8a35ff;
+      --orange:#ff8a32;
+      --red:#ff4b55;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 24% 18%, rgba(0,217,204,.12), transparent 26%),
+        radial-gradient(circle at 72% 12%, rgba(138,53,255,.1), transparent 25%),
+        #fff;
+      color:var(--ink);
+    }
+
+    .topbar{
+      height:68px;
+      padding:0 22px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .brand img{height:31px;width:auto;display:block}
+    .badge{
+      font-size:12px;
+      font-weight:900;
+      color:#777;
+      background:#f4f4f4;
+      border:1px solid var(--line);
+      padding:7px 10px;
+      border-radius:999px;
+    }
+
+    main{
+      min-height:calc(100vh - 68px);
+      display:grid;
+      place-items:center;
+      padding:28px 18px 50px;
+    }
+
+    .wrap{
+      width:min(880px, 100%);
+      text-align:center;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(58px, 13vw, 128px);
+      line-height:.78;
+      letter-spacing:-.1em;
+      font-weight:950;
+    }
+
+    .lead{
+      max-width:540px;
+      margin:22px auto 38px;
+      color:#555;
+      line-height:1.45;
+      font-size:17px;
+      font-weight:750;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:14px;
+      text-align:left;
+    }
+
+    .tile{
+      min-height:210px;
+      border-radius:28px;
+      background:#fff;
+      border:1px solid var(--line);
+      box-shadow:0 18px 55px rgba(0,0,0,.08);
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      color:inherit;
+      text-decoration:none;
+      overflow:hidden;
+      position:relative;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+
+    .tile:hover{
+      transform:translateY(-5px);
+      box-shadow:0 28px 70px rgba(0,0,0,.12);
+    }
+
+    .tile:before{
+      content:"";
+      position:absolute;
+      inset:auto -40px -58px -40px;
+      height:120px;
+      filter:blur(4px);
+      opacity:.62;
+      background:var(--glow);
+      transform:rotate(-9deg);
+    }
+
+    .icon{
+      width:48px;
+      height:48px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      background:#111;
+      color:white;
+      margin-bottom:auto;
+      position:relative;
+      z-index:1;
+    }
+
+    .name{
+      position:relative;
+      z-index:1;
+      font-size:28px;
+      letter-spacing:-.07em;
+      font-weight:950;
+      margin-top:44px;
+    }
+
+    .desc{
+      position:relative;
+      z-index:1;
+      color:#666;
+      font-size:13px;
+      line-height:1.32;
+      font-weight:800;
+      margin-top:7px;
+    }
+
+    .sound{--glow:linear-gradient(90deg,var(--cyan),var(--purple))}
+    .time{--glow:linear-gradient(90deg,#111,#cfcfcf)}
+    .shape{--glow:linear-gradient(90deg,var(--orange),var(--red))}
+    .colour{--glow:linear-gradient(90deg,#50e36d,#00b7ff,var(--purple))}
+
+    .tile.coming-soon{
+      cursor:not-allowed;
+      pointer-events:none;
+      filter:saturate(.25);
+    }
+
+    .tile.coming-soon:after{
+      content:"Coming soon";
+      position:absolute;
+      inset:0;
+      z-index:5;
+      display:grid;
+      place-items:center;
+      border-radius:28px;
+      background:rgba(255,255,255,.72);
+      backdrop-filter:blur(10px);
+      color:#111;
+      font-size:14px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-weight:950;
+    }
+
+    .tile.coming-soon .icon,
+    .tile.coming-soon .name,
+    .tile.coming-soon .desc{
+      opacity:.42;
+    }
+
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      pointer-events:auto;
+    }
+
+    .nav-link{
+      position:relative;
+      color:#111;
+      text-decoration:none;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:-.02em;
+      padding:7px 8px;
+      border-radius:999px;
+      opacity:.62;
+      transition:opacity .15s ease, background .15s ease;
+    }
+
+    .nav-link:hover{
+      opacity:1;
+      background:#f3f3f3;
+    }
+
+    .nav-link.active{
+      opacity:1;
+    }
+
+    .nav-link.active:after{
+      content:"";
+      position:absolute;
+      left:8px;
+      right:8px;
+      bottom:3px;
+      height:2px;
+      border-radius:999px;
+      background:#111;
+    }
+
+    .nav-link.disabled{
+      opacity:.32;
+      cursor:not-allowed;
+      pointer-events:none;
+    }
+
+    @media(max-width:760px){
+      .grid{grid-template-columns:1fr 1fr}
+      .tile{min-height:185px}
+    }
+
+    @media(max-width:460px){
+      .topbar{height:60px;padding:0 15px}
+      .brand img{height:27px}
+      .nav-links{gap:2px;overflow-x:auto;max-width:calc(100vw - 120px)}
+      .nav-link{font-size:11px;padding:7px 6px;white-space:nowrap}
+      .badge{font-size:11px}
+      main{place-items:start center;padding-top:36px}
+      .grid{grid-template-columns:1fr}
+      h1{text-align:left}
+      .lead{text-align:left;margin-left:0}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="https://studybase.site/assets/images/site-icons/navbar-labs.svg" alt="StudyBase">
+      <nav class="nav-links" aria-label="Dialed modes">
+        <a class="nav-link active" href="index.html" target="_self">Home</a>
+        <a class="nav-link" href="sounds.html" target="_self">Sound</a>
+        <a class="nav-link" href="colour.html" target="_self">Colour</a>
+        <a class="nav-link disabled" href="#" aria-disabled="true">Time</a>
+        <a class="nav-link disabled" href="#" aria-disabled="true">Shape</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="wrap">
+      <h1>dialed</h1>
+      <p class="lead">Pick a mode and test how accurately you can remember tiny details. Built to work cleanly inside an iframe, with no external navigation.</p>
+
+      <div class="grid">
+        <a class="tile sound" href="sounds.html">
+          <div class="icon">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+          </div>
+          <div class="name">sound</div>
+          <div class="desc">Recreate the exact tone from memory.</div>
+        </a>
+
+        <a class="tile time coming-soon" href="#" aria-disabled="true">
+          <div class="icon">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </div>
+          <div class="name">time</div>
+          <div class="desc">Estimate timing with no timer.</div>
+        </a>
+
+        <a class="tile shape coming-soon" href="#" aria-disabled="true">
+          <div class="icon">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="M3 16l9 5 9-5"/><path d="M3 12l9 5 9-5"/></svg>
+          </div>
+          <div class="name">shape</div>
+          <div class="desc">Match the shape after it disappears.</div>
+        </a>
+
+        <a class="tile colour" href="colour.html">
+          <div class="icon">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-5-7-13-7-13S5 10 5 15a7 7 0 0 0 7 7Z"/></svg>
+          </div>
+          <div class="name">colour</div>
+          <div class="desc">Recreate the colour you were shown.</div>
+        </a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

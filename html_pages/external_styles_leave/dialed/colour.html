@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="/assets/js/auth/iframeCheck.js"></script>
+  <title>Dialed by StudyBase — Colour</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --ink:#111111;
+      --muted:#8d8d8d;
+      --card:#050505;
+      --shadow:0 28px 70px rgba(0,0,0,.22);
+      --cyan:#00e5d4;
+      --purple:#8a35ff;
+      --red:#ff4b55;
+      --orange:#ff8a32;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:#fff;
+      color:var(--ink);
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow:hidden;
+      user-select:none;
+      -webkit-user-select:none;
+    }
+
+    .topbar{
+      position:fixed;
+      top:18px;
+      left:22px;
+      right:22px;
+      height:36px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      z-index:10;
+      pointer-events:none;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      pointer-events:auto;
+    }
+
+    .brand img{
+      height:30px;
+      width:auto;
+      display:block;
+    }
+
+    .brand span{
+      font-size:13px;
+      color:#6f6f6f;
+      font-weight:800;
+      letter-spacing:-.02em;
+      padding-top:1px;
+    }
+
+    .mode-link{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      height:30px;
+      padding:0 10px 0 8px;
+      border:1px solid rgba(0,0,0,.1);
+      border-radius:999px;
+      background:#f7f7f7;
+      color:#111;
+      text-decoration:none;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:-.02em;
+      transition:background .15s ease, transform .15s ease;
+    }
+
+    .mode-link:hover{
+      background:#eeeeee;
+      transform:translateY(-1px);
+    }
+
+    .top-actions{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      pointer-events:auto;
+    }
+
+    .icon-btn{
+      width:34px;
+      height:34px;
+      border:0;
+      background:transparent;
+      color:#111;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      opacity:.86;
+      padding:0;
+      border-radius:999px;
+    }
+
+    .icon-btn:hover{background:#f3f3f3}
+
+    .center{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:76px 16px 44px;
+    }
+
+    .shell{
+      width:min(390px, 92vw);
+      height:min(520px, calc(100vh - 126px));
+      min-height:480px;
+      border-radius:17px;
+      background:var(--card);
+      color:white;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+      isolation:isolate;
+      touch-action:none;
+    }
+
+    .shell:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 45% 22%, rgba(255,255,255,.08), transparent 16%),
+        radial-gradient(circle at 65% 64%, rgba(255,255,255,.07), transparent 22%),
+        linear-gradient(90deg, rgba(255,255,255,.045), transparent 18%, transparent 82%, rgba(255,255,255,.045));
+      opacity:.9;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .colour-bg{
+      position:absolute;
+      inset:-30%;
+      z-index:1;
+      opacity:.78;
+      background:
+        radial-gradient(circle at 50% 50%, hsl(var(--h, 210), var(--s, 80%), var(--l, 55%)), transparent 18%),
+        conic-gradient(from var(--spin, 0deg), #ff004c, #ffb000, #48ff00, #00e5ff, #7b2cff, #ff004c);
+      filter:blur(32px) saturate(1.2);
+      animation:slowSpin 7s linear infinite;
+    }
+
+    @keyframes slowSpin{
+      to{transform:rotate(360deg)}
+    }
+
+    .screen{
+      position:absolute;
+      inset:0;
+      z-index:2;
+      padding:28px 24px;
+      display:flex;
+      flex-direction:column;
+      transition:opacity .24s ease, transform .24s ease;
+    }
+
+    .hidden{
+      opacity:0;
+      transform:scale(.985);
+      pointer-events:none;
+    }
+
+    .intro-title{
+      margin:22px 0 12px;
+      font-size:60px;
+      letter-spacing:-.09em;
+      line-height:.82;
+      font-weight:950;
+    }
+
+    .copy{
+      width:230px;
+      color:rgba(255,255,255,.78);
+      font-size:13px;
+      font-weight:750;
+      line-height:1.22;
+      margin:0 0 14px;
+    }
+
+    .spacer{flex:1}
+
+    .choice-title{
+      font-weight:900;
+      font-size:15px;
+      letter-spacing:-.035em;
+      margin-bottom:13px;
+    }
+
+    .start-row{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .circle{
+      position:relative;
+      z-index:8;
+      width:54px;
+      height:54px;
+      border-radius:50%;
+      border:0;
+      background:#fff;
+      color:#0b0b0b;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      box-shadow:0 8px 22px rgba(0,0,0,.16);
+      transition:transform .16s ease, filter .16s ease;
+    }
+
+    .circle:hover{transform:translateY(-2px)}
+    .circle:active{transform:scale(.96)}
+
+    .selected-ring{position:relative}
+    .selected-ring:after{
+      content:"";
+      position:absolute;
+      inset:-5px;
+      border-radius:50%;
+      background:conic-gradient(#ff004c, #ffb000, #48ff00, #00e5ff, #7b2cff, #ff004c);
+      z-index:-1;
+    }
+
+    .card-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      font-size:12px;
+      font-weight:950;
+      letter-spacing:-.02em;
+      color:white;
+    }
+
+    .phase-big{
+      margin-left:auto;
+      text-align:right;
+      font-size:78px;
+      line-height:.8;
+      font-weight:950;
+      letter-spacing:-.08em;
+      color:rgba(255,255,255,.68);
+      font-variant-numeric:tabular-nums;
+    }
+
+    .phase-label{
+      margin-left:auto;
+      text-align:right;
+      font-size:11px;
+      font-weight:950;
+      margin-top:9px;
+      color:white;
+    }
+
+    .target-swatch{
+      width:168px;
+      height:168px;
+      border-radius:50%;
+      margin:auto;
+      background:hsl(var(--target-h, 220), var(--target-s, 80%), var(--target-l, 55%));
+      box-shadow:
+        0 0 0 18px rgba(255,255,255,.055),
+        0 0 70px hsla(var(--target-h, 220), var(--target-s, 80%), var(--target-l, 55%), .9);
+      animation:swatchPulse 1.35s ease-in-out infinite alternate;
+    }
+
+    @keyframes swatchPulse{
+      from{transform:scale(.96)}
+      to{transform:scale(1.04)}
+    }
+
+    .picker-wrap{
+      margin-top:auto;
+      display:grid;
+      gap:13px;
+      padding-bottom:4px;
+    }
+
+    .selected-preview{
+      height:128px;
+      border-radius:26px;
+      background:hsl(var(--h, 210), var(--s, 80%), var(--l, 55%));
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.08),
+        0 18px 60px hsla(var(--h, 210), var(--s, 80%), var(--l, 55%), .28);
+    }
+
+    .slider-row{
+      display:grid;
+      grid-template-columns:46px 1fr;
+      gap:10px;
+      align-items:center;
+    }
+
+    .slider-row label{
+      font-size:11px;
+      font-weight:950;
+      letter-spacing:.12em;
+      color:rgba(255,255,255,.55);
+      text-transform:uppercase;
+    }
+
+    input[type=range]{
+      width:100%;
+      appearance:none;
+      height:14px;
+      border-radius:999px;
+      outline:none;
+      background:#fff;
+    }
+
+    #hue{background:linear-gradient(90deg, #ff004c, #ffb000, #48ff00, #00e5ff, #7b2cff, #ff004c)}
+    #sat{background:linear-gradient(90deg, #8b8b8b, hsl(var(--h), 100%, 55%))}
+    #light{background:linear-gradient(90deg, #050505, hsl(var(--h), var(--s), 50%), #fff)}
+
+    input[type=range]::-webkit-slider-thumb{
+      appearance:none;
+      width:26px;
+      height:26px;
+      border-radius:50%;
+      background:white;
+      border:5px solid #101010;
+      box-shadow:0 6px 14px rgba(0,0,0,.25);
+      cursor:pointer;
+    }
+
+    input[type=range]::-moz-range-thumb{
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      background:white;
+      border:5px solid #101010;
+      box-shadow:0 6px 14px rgba(0,0,0,.25);
+      cursor:pointer;
+    }
+
+    .arrow{
+      position:relative;
+      z-index:8;
+      width:43px;
+      height:43px;
+      border-radius:50%;
+      border:0;
+      background:#fff;
+      color:#111;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      flex:0 0 auto;
+      transition:transform .16s ease;
+    }
+
+    .arrow:hover{transform:translateX(2px)}
+
+    .submit-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      margin-top:2px;
+    }
+
+    .colour-values{
+      color:rgba(255,255,255,.56);
+      font-size:12px;
+      font-weight:900;
+      font-variant-numeric:tabular-nums;
+    }
+
+    .compare-overlay{
+      position:absolute;
+      inset:0;
+      z-index:20;
+      display:grid;
+      place-items:center;
+      background:rgba(0,0,0,.72);
+      backdrop-filter:blur(6px);
+      transition:opacity .28s ease;
+      pointer-events:none;
+    }
+
+    .compare-overlay.hidden{
+      opacity:0;
+      pointer-events:none;
+    }
+
+    .compare-card{
+      width:260px;
+      height:260px;
+      border-radius:34px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      position:relative;
+      overflow:hidden;
+      animation:comparePop .38s cubic-bezier(.2,.95,.2,1) both;
+      display:grid;
+      place-items:center;
+    }
+
+    .compare-card:before{
+      content:"";
+      position:absolute;
+      inset:-55%;
+      background:conic-gradient(from 120deg, transparent, var(--target-col), transparent, var(--guess-col), transparent);
+      animation:spinGlow .9s linear infinite;
+      opacity:.65;
+    }
+
+    .compare-label{
+      position:absolute;
+      top:23px;
+      left:0;
+      right:0;
+      text-align:center;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-size:10px;
+      font-weight:950;
+      color:rgba(255,255,255,.64);
+      z-index:2;
+    }
+
+    .compare-swatches{
+      position:relative;
+      z-index:2;
+      display:flex;
+      gap:18px;
+      align-items:center;
+    }
+
+    .mini-swatch{
+      width:82px;
+      height:112px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.22);
+      box-shadow:0 16px 45px rgba(0,0,0,.28);
+      animation:swatchDrop .62s cubic-bezier(.2,.95,.2,1) both;
+    }
+
+    .mini-swatch.target{background:var(--target-col)}
+    .mini-swatch.guess{background:var(--guess-col);animation-delay:.16s}
+
+    .vs{
+      font-size:14px;
+      font-weight:950;
+      color:rgba(255,255,255,.68);
+      z-index:3;
+    }
+
+    .compare-readout{
+      position:absolute;
+      bottom:24px;
+      left:0;
+      right:0;
+      z-index:2;
+      text-align:center;
+      font-size:12px;
+      font-weight:950;
+      color:rgba(255,255,255,.65);
+    }
+
+    @keyframes comparePop{
+      from{transform:scale(.86);opacity:0}
+      to{transform:scale(1);opacity:1}
+    }
+
+    @keyframes spinGlow{to{transform:rotate(360deg)}}
+    @keyframes swatchDrop{
+      from{transform:translateY(28px) rotate(-8deg);opacity:0}
+      to{transform:translateY(0) rotate(0);opacity:1}
+    }
+
+    .result-score{
+      margin-left:auto;
+      text-align:right;
+      font-size:76px;
+      line-height:.82;
+      letter-spacing:-.08em;
+      font-weight:950;
+      font-variant-numeric:tabular-nums;
+    }
+
+    .result-comment{
+      margin-left:auto;
+      margin-top:12px;
+      max-width:220px;
+      text-align:right;
+      font-size:13px;
+      line-height:1.2;
+      color:rgba(255,255,255,.68);
+      font-weight:800;
+    }
+
+    .result-block{
+      margin-top:auto;
+      margin-bottom:16px;
+    }
+
+    .target-label{
+      color:rgba(255,255,255,.5);
+      font-size:11px;
+      font-weight:950;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+      margin-bottom:7px;
+    }
+
+    .result-swatches{
+      display:flex;
+      gap:12px;
+      align-items:end;
+    }
+
+    .result-swatch{
+      width:112px;
+      height:112px;
+      border-radius:24px;
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 18px 45px rgba(0,0,0,.22);
+    }
+
+    .result-swatch.small{
+      width:86px;
+      height:86px;
+      opacity:.86;
+    }
+
+    .pill-btn{
+      position:relative;
+      z-index:8;
+      border:0;
+      border-radius:999px;
+      background:white;
+      color:#111;
+      font-weight:950;
+      font-size:13px;
+      padding:12px 15px;
+      cursor:pointer;
+    }
+
+    .pill-btn.dark{
+      background:rgba(255,255,255,.12);
+      color:white;
+    }
+
+    .final-actions{
+      margin-top:18px;
+      display:flex;
+      gap:10px;
+    }
+
+    .help{
+      position:fixed;
+      inset:0;
+      z-index:50;
+      background:rgba(255,255,255,.68);
+      backdrop-filter:blur(14px);
+      display:grid;
+      place-items:center;
+      padding:20px;
+    }
+
+    .help-card{
+      width:min(420px, 94vw);
+      background:#111;
+      color:white;
+      border-radius:24px;
+      padding:24px;
+      box-shadow:0 24px 80px rgba(0,0,0,.24);
+    }
+
+    .help-card h2{
+      margin:0 0 10px;
+      font-size:32px;
+      letter-spacing:-.06em;
+    }
+
+    .help-card p{
+      color:rgba(255,255,255,.7);
+      font-weight:750;
+      line-height:1.4;
+    }
+
+    .help.hide{display:none}
+
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      pointer-events:auto;
+    }
+
+    .nav-link{
+      position:relative;
+      color:#111;
+      text-decoration:none;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:-.02em;
+      padding:7px 8px;
+      border-radius:999px;
+      opacity:.62;
+      transition:opacity .15s ease, background .15s ease;
+    }
+
+    .nav-link:hover{
+      opacity:1;
+      background:#f3f3f3;
+    }
+
+    .nav-link.active{
+      opacity:1;
+    }
+
+    .nav-link.active:after{
+      content:"";
+      position:absolute;
+      left:8px;
+      right:8px;
+      bottom:3px;
+      height:2px;
+      border-radius:999px;
+      background:#111;
+    }
+
+    .nav-link.disabled{
+      opacity:.32;
+      cursor:not-allowed;
+      pointer-events:none;
+    }
+
+    @media(max-width:560px){
+      body{overflow:auto}
+      .topbar{top:12px;left:14px;right:14px}
+      .brand{gap:8px}
+      .brand img{height:25px}
+      .brand span{font-size:12px}
+      .mode-link{height:28px;padding:0 8px 0 6px;font-size:11px}
+      .nav-links{gap:2px}
+      .nav-link{font-size:11px;padding:7px 6px}
+      .center{padding-top:64px;padding-bottom:22px}
+      .shell{
+        width:min(370px, 94vw);
+        height:560px;
+        min-height:unset;
+      }
+      .intro-title{font-size:56px}
+      .phase-big,.result-score{font-size:70px}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <img src="https://studybase.site/assets/images/site-icons/navbar-labs.svg" alt="StudyBase">
+      <nav class="nav-links" aria-label="Dialed modes">
+        <a class="nav-link " href="index.html" target="_self">Home</a>
+        <a class="nav-link " href="sounds.html" target="_self">Sound</a>
+        <a class="nav-link active" href="colour.html" target="_self">Colour</a>
+        <a class="nav-link  disabled" href="#" aria-disabled="true">Time</a>
+        <a class="nav-link  disabled" href="#" aria-disabled="true">Shape</a>
+      </nav>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" id="helpBtn" title="Help" aria-label="Help">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.7 2.7 0 0 1 5.2.9c0 1.9-2.7 2.2-2.7 4.1"/><path d="M12 17.2h.01"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <main class="center">
+    <section class="shell" id="card">
+      <div class="colour-bg" id="colourBg"></div>
+
+      <div class="compare-overlay hidden" id="compareOverlay">
+        <div class="compare-card">
+          <div class="compare-label">Comparing colour</div>
+          <div class="compare-swatches">
+            <div class="mini-swatch target"></div>
+            <div class="vs">vs</div>
+            <div class="mini-swatch guess"></div>
+          </div>
+          <div class="compare-readout" id="compareReadout">checking colour distance...</div>
+        </div>
+      </div>
+
+      <div class="screen" id="introScreen">
+        <h1 class="intro-title">colour</h1>
+        <p class="copy">Most people can spot colour. Fewer people can remember it.</p>
+        <p class="copy">We'll show five colours, then you recreate each one using the sliders.</p>
+        <div class="spacer"></div>
+        <div class="choice-title">Start challenge</div>
+        <div class="start-row">
+          <button class="circle selected-ring" id="startBtn" aria-label="Start">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-5-7-13-7-13S5 10 5 15a7 7 0 0 0 7 7Z"/></svg>
+          </button>
+          <button class="circle" id="helpStartBtn" aria-label="Help">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.7 2.7 0 0 1 5.2.9c0 1.9-2.7 2.2-2.7 4.1"/><path d="M12 17.2h.01"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="screen hidden" id="lookScreen">
+        <div class="card-top">
+          <span id="lookRound">1/5</span>
+          <div>
+            <div class="phase-big" id="timerText">3.00</div>
+            <div class="phase-label">Seconds to remember</div>
+          </div>
+        </div>
+        <div class="target-swatch" id="targetSwatch"></div>
+      </div>
+
+      <div class="screen hidden" id="guessScreen">
+        <div class="card-top">
+          <span id="guessRound">1/5</span>
+          <span style="color:rgba(255,255,255,.42)">StudyBase</span>
+        </div>
+
+        <div class="picker-wrap">
+          <div class="selected-preview" id="selectedPreview"></div>
+
+          <div class="slider-row">
+            <label for="hue">Hue</label>
+            <input id="hue" type="range" min="0" max="360" value="210">
+          </div>
+          <div class="slider-row">
+            <label for="sat">Sat</label>
+            <input id="sat" type="range" min="20" max="100" value="80">
+          </div>
+          <div class="slider-row">
+            <label for="light">Light</label>
+            <input id="light" type="range" min="18" max="82" value="55">
+          </div>
+
+          <div class="submit-row">
+            <div class="colour-values" id="colourValues">H 210 • S 80 • L 55</div>
+            <button class="arrow" id="nextBtn" aria-label="Submit answer">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen hidden" id="resultScreen">
+        <div class="card-top">
+          <span id="resultRound">1/5</span>
+          <div>
+            <div class="result-score" id="toneScore">0.00</div>
+            <div class="result-comment" id="resultComment">Colour memory loading...</div>
+          </div>
+        </div>
+
+        <div class="result-block">
+          <div class="target-label">Target vs your match</div>
+          <div class="result-swatches">
+            <div class="result-swatch" id="resultTarget"></div>
+            <div class="result-swatch small" id="resultGuess"></div>
+          </div>
+
+          <div class="final-actions hidden" id="finalActions">
+            <button class="pill-btn" id="playAgainBtn">Play again</button>
+            <button class="pill-btn dark" id="copyBtn">Copy score</button>
+          </div>
+        </div>
+
+        <button class="arrow" id="resultNextBtn" aria-label="Next colour" style="position:absolute;right:24px;bottom:28px">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <div class="help hide" id="help">
+    <div class="help-card">
+      <h2>How it works</h2>
+      <p>You’ll see a colour for three seconds. Then use hue, saturation and lightness sliders to recreate it from memory.</p>
+      <p>Each colour is scored out of 10. Total score is out of 50.</p>
+      <button class="pill-btn" id="closeHelp">Got it</button>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const COLOURS = 5;
+  const LOOK_SECONDS = 3;
+
+  const root = document.documentElement;
+  const screens = {
+    intro: document.getElementById("introScreen"),
+    look: document.getElementById("lookScreen"),
+    guess: document.getElementById("guessScreen"),
+    result: document.getElementById("resultScreen")
+  };
+
+  const els = {
+    startBtn: document.getElementById("startBtn"),
+    helpStartBtn: document.getElementById("helpStartBtn"),
+    helpBtn: document.getElementById("helpBtn"),
+    closeHelp: document.getElementById("closeHelp"),
+    help: document.getElementById("help"),
+    lookRound: document.getElementById("lookRound"),
+    guessRound: document.getElementById("guessRound"),
+    resultRound: document.getElementById("resultRound"),
+    timerText: document.getElementById("timerText"),
+    targetSwatch: document.getElementById("targetSwatch"),
+    selectedPreview: document.getElementById("selectedPreview"),
+    hue: document.getElementById("hue"),
+    sat: document.getElementById("sat"),
+    light: document.getElementById("light"),
+    colourValues: document.getElementById("colourValues"),
+    nextBtn: document.getElementById("nextBtn"),
+    resultNextBtn: document.getElementById("resultNextBtn"),
+    toneScore: document.getElementById("toneScore"),
+    resultComment: document.getElementById("resultComment"),
+    resultTarget: document.getElementById("resultTarget"),
+    resultGuess: document.getElementById("resultGuess"),
+    finalActions: document.getElementById("finalActions"),
+    playAgainBtn: document.getElementById("playAgainBtn"),
+    copyBtn: document.getElementById("copyBtn"),
+    compareOverlay: document.getElementById("compareOverlay"),
+    compareReadout: document.getElementById("compareReadout")
+  };
+
+  let targets = [];
+  let guesses = [];
+  let round = 0;
+  let submitLock = false;
+
+  function show(name){
+    Object.entries(screens).forEach(([key, el]) => el.classList.toggle("hidden", key !== name));
+  }
+
+  function colourString(c){
+    return `hsl(${c.h}, ${c.s}%, ${c.l}%)`;
+  }
+
+  function setCssColour(c, prefix=""){
+    root.style.setProperty(`${prefix}--h`, c.h);
+    root.style.setProperty(`${prefix}--s`, `${c.s}%`);
+    root.style.setProperty(`${prefix}--l`, `${c.l}%`);
+  }
+
+  function randomColours(){
+    return Array.from({length:COLOURS}, () => ({
+      h: Math.round(Math.random() * 360),
+      s: Math.round(52 + Math.random() * 43),
+      l: Math.round(36 + Math.random() * 30)
+    }));
+  }
+
+  function getGuess(){
+    return {
+      h: Number(els.hue.value),
+      s: Number(els.sat.value),
+      l: Number(els.light.value)
+    };
+  }
+
+  function updatePicker(){
+    const c = getGuess();
+    root.style.setProperty("--h", c.h);
+    root.style.setProperty("--s", `${c.s}%`);
+    root.style.setProperty("--l", `${c.l}%`);
+    els.selectedPreview.style.background = colourString(c);
+    els.colourValues.textContent = `H ${c.h} • S ${c.s} • L ${c.l}`;
+  }
+
+  function setupGuessStart(){
+    const c = {
+      h: Math.round(Math.random()*360),
+      s: Math.round(45 + Math.random()*45),
+      l: Math.round(35 + Math.random()*35)
+    };
+    els.hue.value = c.h;
+    els.sat.value = c.s;
+    els.light.value = c.l;
+    updatePicker();
+  }
+
+  function startGame(){
+    targets = randomColours();
+    guesses = [];
+    round = 0;
+    els.finalActions.classList.add("hidden");
+    els.resultNextBtn.classList.remove("hidden");
+    playLookRound();
+  }
+
+  function playLookRound(){
+    show("look");
+    const c = targets[round];
+    els.lookRound.textContent = `${round+1}/5`;
+    setCssColour(c, "--target");
+    els.targetSwatch.style.background = colourString(c);
+    root.style.setProperty("--h", c.h);
+    root.style.setProperty("--s", `${c.s}%`);
+    root.style.setProperty("--l", `${c.l}%`);
+
+    const started = performance.now();
+    function tick(now){
+      const elapsed = (now - started) / 1000;
+      const left = Math.max(0, LOOK_SECONDS - elapsed);
+      els.timerText.textContent = left.toFixed(2);
+      if(left > 0){
+        requestAnimationFrame(tick);
+      } else {
+        beginGuess();
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function beginGuess(){
+    els.guessRound.textContent = `${round+1}/5`;
+    setupGuessStart();
+    show("guess");
+  }
+
+  function hueDiff(a,b){
+    const d = Math.abs(a-b) % 360;
+    return Math.min(d, 360-d);
+  }
+
+  function scoreColour(target, guess){
+    const h = hueDiff(target.h, guess.h) / 180;
+    const s = Math.abs(target.s - guess.s) / 80;
+    const l = Math.abs(target.l - guess.l) / 64;
+    const distance = Math.sqrt((h*h*1.55) + (s*s*.7) + (l*l*.95));
+    return Math.max(0, 10 * Math.exp(-distance * 2.25));
+  }
+
+  function comment(score){
+    if(score >= 9) return "Basically identical. That was properly dialed.";
+    if(score >= 7) return "Very close. Your colour memory is sharp.";
+    if(score >= 4) return "Not bad, but the shade drifted.";
+    if(score >= 1) return "A bit off. You caught part of it.";
+    return "Colour blindfolded? Don't worry, practice helps.";
+  }
+
+  function finalComment(total){
+    if(total >= 44) return "Elite colour memory. That score is ridiculous.";
+    if(total >= 35) return "Very sharp. You remembered the shades well.";
+    if(total >= 24) return "Decent run. A few colours slipped.";
+    if(total >= 12) return "You caught the vibe, not always the colour.";
+    return "The colours entered witness protection.";
+  }
+
+  function showCompare(target, guess){
+    return new Promise(resolve => {
+      els.compareOverlay.style.setProperty("--target-col", colourString(target));
+      els.compareOverlay.style.setProperty("--guess-col", colourString(guess));
+      els.compareReadout.textContent = "checking colour distance...";
+      els.compareOverlay.classList.remove("hidden");
+      setTimeout(() => {
+        els.compareReadout.textContent = "calculating memory match...";
+      }, 520);
+      setTimeout(() => {
+        els.compareOverlay.classList.add("hidden");
+        setTimeout(resolve, 260);
+      }, 1320);
+    });
+  }
+
+  async function submitGuess(){
+    if(submitLock) return;
+    submitLock = true;
+    setTimeout(() => submitLock = false, 1700);
+
+    const target = targets[round];
+    const guess = getGuess();
+    const score = scoreColour(target, guess);
+    guesses.push({target, guess, score});
+
+    await showCompare(target, guess);
+
+    els.resultRound.textContent = `${round+1}/5`;
+    els.toneScore.textContent = score.toFixed(2);
+    els.resultComment.textContent = comment(score);
+    els.resultTarget.style.background = colourString(target);
+    els.resultGuess.style.background = colourString(guess);
+    show("result");
+
+    if(round === COLOURS - 1){
+      const total = guesses.reduce((a,b)=>a+b.score,0);
+      els.toneScore.textContent = total.toFixed(2);
+      els.resultComment.textContent = finalComment(total);
+      els.finalActions.classList.remove("hidden");
+      els.resultNextBtn.classList.add("hidden");
+    }
+  }
+
+  function nextResult(){
+    if(round >= COLOURS - 1) return;
+    round++;
+    playLookRound();
+  }
+
+  function copyScore(){
+    const total = guesses.reduce((a,b)=>a+b.score,0).toFixed(2);
+    const text = `I scored ${total}/50 on Dialed by StudyBase colour.`;
+    navigator.clipboard?.writeText(text).then(()=>{
+      els.copyBtn.textContent = "Copied";
+      setTimeout(()=>els.copyBtn.textContent = "Copy score", 1100);
+    }).catch(()=>alert(text));
+  }
+
+  [els.hue, els.sat, els.light].forEach(slider => slider.addEventListener("input", updatePicker));
+  els.startBtn.addEventListener("click", startGame);
+  els.playAgainBtn.addEventListener("click", startGame);
+  els.nextBtn.addEventListener("click", submitGuess);
+  els.resultNextBtn.addEventListener("click", nextResult);
+  els.copyBtn.addEventListener("click", copyScore);
+
+  els.helpBtn.addEventListener("click",()=>els.help.classList.remove("hide"));
+  els.helpStartBtn.addEventListener("click",()=>els.help.classList.remove("hide"));
+  els.closeHelp.addEventListener("click",()=>els.help.classList.add("hide"));
+  els.help.addEventListener("click",(e)=>{ if(e.target === els.help) els.help.classList.add("hide"); });
+
+  updatePicker();
+  show("intro");
+})();
+</script>
+</body>
+</html>

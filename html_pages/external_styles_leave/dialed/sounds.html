@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="/assets/js/auth/iframeCheck.js"></script>
+  <title>Dialed by StudyBase — Sound</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --ink:#111111;
+      --muted:#8d8d8d;
+      --soft:#f4f4f4;
+      --card:#050505;
+      --cyan:#00e5d4;
+      --purple:#8a35ff;
+      --red:#ff4b55;
+      --orange:#ff8a32;
+      --shadow:0 28px 70px rgba(0,0,0,.22);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow:hidden;
+      user-select:none;
+      -webkit-user-select:none;
+    }
+
+    .topbar{
+      position:fixed;
+      top:18px;
+      left:22px;
+      right:22px;
+      height:36px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      z-index:10;
+      pointer-events:none;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      pointer-events:auto;
+    }
+
+    .brand img{
+      height:30px;
+      width:auto;
+      display:block;
+    }
+
+    .brand span{
+      font-size:13px;
+      color:#6f6f6f;
+      font-weight:800;
+      letter-spacing:-.02em;
+      padding-top:1px;
+    }
+
+    .mode-link{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      height:30px;
+      padding:0 10px 0 8px;
+      border:1px solid rgba(0,0,0,.1);
+      border-radius:999px;
+      background:#f7f7f7;
+      color:#111;
+      text-decoration:none;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:-.02em;
+      transition:background .15s ease, transform .15s ease;
+    }
+
+    .mode-link:hover{
+      background:#eeeeee;
+      transform:translateY(-1px);
+    }
+
+    .top-actions{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      pointer-events:auto;
+    }
+
+    .icon-btn{
+      width:34px;
+      height:34px;
+      border:0;
+      background:transparent;
+      color:#111;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      opacity:.86;
+      padding:0;
+      border-radius:999px;
+    }
+
+    .icon-btn:hover{background:#f3f3f3}
+
+    .center{
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:76px 16px 44px;
+    }
+
+    .shell{
+      width:min(390px, 92vw);
+      height:min(520px, calc(100vh - 126px));
+      min-height:480px;
+      border-radius:17px;
+      background:var(--card);
+      color:white;
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+      isolation:isolate;
+      touch-action:none;
+    }
+
+    .shell:before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 65% 20%, rgba(0,229,212,.22), transparent 19%),
+        radial-gradient(circle at 68% 58%, rgba(138,53,255,.22), transparent 20%),
+        linear-gradient(90deg, rgba(255,255,255,.045), transparent 18%, transparent 82%, rgba(255,255,255,.045));
+      opacity:.75;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    canvas#waveCanvas{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:1;
+      opacity:.95;
+      pointer-events:none;
+    }
+
+    .screen{
+      position:absolute;
+      inset:0;
+      z-index:2;
+      padding:28px 24px;
+      display:flex;
+      flex-direction:column;
+      transition:opacity .24s ease, transform .24s ease;
+    }
+
+    .hidden{
+      opacity:0;
+      transform:scale(.985);
+      pointer-events:none;
+    }
+
+    .intro-title{
+      margin:22px 0 12px;
+      font-size:60px;
+      letter-spacing:-.09em;
+      line-height:.82;
+      font-weight:950;
+    }
+
+    .copy{
+      width:230px;
+      color:rgba(255,255,255,.78);
+      font-size:13px;
+      font-weight:750;
+      line-height:1.22;
+      margin:0 0 14px;
+    }
+
+    .spacer{flex:1}
+
+    .choice-title{
+      font-weight:900;
+      font-size:15px;
+      letter-spacing:-.035em;
+      margin-bottom:13px;
+    }
+
+    .start-row{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .circle{
+      position:relative;
+      z-index:8;
+      width:54px;
+      height:54px;
+      border-radius:50%;
+      border:0;
+      background:#fff;
+      color:#0b0b0b;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      box-shadow:0 8px 22px rgba(0,0,0,.16);
+      transition:transform .16s ease, filter .16s ease;
+    }
+
+    .circle:hover{transform:translateY(-2px)}
+    .circle:active{transform:scale(.96)}
+
+    .selected-ring{
+      position:relative;
+    }
+
+    .selected-ring:after{
+      content:"";
+      position:absolute;
+      inset:-5px;
+      border-radius:50%;
+      background:conic-gradient(var(--cyan), var(--purple), var(--orange), var(--red), var(--cyan));
+      z-index:-1;
+    }
+
+    .toggle{
+      display:flex;
+      gap:7px;
+      align-items:center;
+      color:rgba(255,255,255,.38);
+      font-size:13px;
+      font-weight:800;
+      margin-left:4px;
+    }
+
+    .toggle .switch{
+      width:28px;
+      height:15px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.3);
+      position:relative;
+    }
+
+    .small-logo{
+      position:absolute;
+      right:24px;
+      bottom:20px;
+      color:rgba(255,255,255,.46);
+      font-size:13px;
+      font-weight:900;
+      letter-spacing:-.05em;
+      z-index:5;
+    }
+
+    .card-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      font-size:12px;
+      font-weight:950;
+      letter-spacing:-.02em;
+      color:white;
+    }
+
+    .phase-big{
+      margin-left:auto;
+      text-align:right;
+      font-size:78px;
+      line-height:.8;
+      font-weight:950;
+      letter-spacing:-.08em;
+      color:rgba(255,255,255,.58);
+      font-variant-numeric:tabular-nums;
+    }
+
+    .phase-label{
+      margin-left:auto;
+      text-align:right;
+      font-size:11px;
+      font-weight:950;
+      margin-top:9px;
+      color:white;
+    }
+
+    .listen-wrap{
+      align-items:stretch;
+    }
+
+    .guess-wrap{
+      cursor:ns-resize;
+    }
+
+    .freq-area{
+      margin-top:auto;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .freq{
+      font-size:54px;
+      line-height:.84;
+      letter-spacing:-.085em;
+      font-weight:950;
+      font-variant-numeric:tabular-nums;
+    }
+
+    .freq small{
+      font-size:19px;
+      letter-spacing:-.04em;
+      margin-left:2px;
+    }
+
+    .arrow{
+      position:relative;
+      z-index:8;
+      width:43px;
+      height:43px;
+      border-radius:50%;
+      border:0;
+      background:#fff;
+      color:#111;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      flex:0 0 auto;
+      transition:transform .16s ease;
+    }
+
+    .arrow:hover{transform:translateX(2px)}
+
+    .result-score{
+      margin-left:auto;
+      text-align:right;
+      font-size:76px;
+      line-height:.82;
+      letter-spacing:-.08em;
+      font-weight:950;
+      font-variant-numeric:tabular-nums;
+    }
+
+    .result-comment{
+      margin-left:auto;
+      margin-top:12px;
+      max-width:215px;
+      text-align:right;
+      font-size:13px;
+      line-height:1.2;
+      color:rgba(255,255,255,.62);
+      font-weight:800;
+    }
+
+    .target-block{
+      margin-top:auto;
+      margin-bottom:16px;
+    }
+
+    .target-label{
+      color:rgba(255,255,255,.5);
+      font-size:11px;
+      font-weight:950;
+      letter-spacing:.13em;
+      text-transform:uppercase;
+      margin-bottom:4px;
+    }
+
+    .target-freq{
+      color:rgba(255,255,255,.48);
+      font-size:48px;
+      line-height:.85;
+      font-weight:950;
+      letter-spacing:-.075em;
+      font-variant-numeric:tabular-nums;
+    }
+
+    .guess-freq{
+      color:#fff;
+      font-size:47px;
+      line-height:.85;
+      font-weight:950;
+      letter-spacing:-.075em;
+      font-variant-numeric:tabular-nums;
+    }
+
+    .final-actions{
+      margin-top:18px;
+      display:flex;
+      gap:10px;
+    }
+
+    .pill-btn{
+      position:relative;
+      z-index:8;
+      border:0;
+      border-radius:999px;
+      background:white;
+      color:#111;
+      font-weight:950;
+      font-size:13px;
+      padding:12px 15px;
+      cursor:pointer;
+    }
+
+    .pill-btn.dark{
+      background:rgba(255,255,255,.12);
+      color:white;
+    }
+
+    .help{
+      position:fixed;
+      inset:0;
+      z-index:50;
+      background:rgba(255,255,255,.68);
+      backdrop-filter:blur(14px);
+      display:grid;
+      place-items:center;
+      padding:20px;
+    }
+
+    .help-card{
+      width:min(420px, 94vw);
+      background:#111;
+      color:white;
+      border-radius:24px;
+      padding:24px;
+      box-shadow:0 24px 80px rgba(0,0,0,.24);
+    }
+
+    .help-card h2{
+      margin:0 0 10px;
+      font-size:32px;
+      letter-spacing:-.06em;
+    }
+
+    .help-card p{
+      color:rgba(255,255,255,.7);
+      font-weight:750;
+      line-height:1.4;
+    }
+
+    .help.hide{display:none}
+
+    .footer{
+      position:fixed;
+      left:24px;
+      bottom:19px;
+      color:#bababa;
+      font-size:10px;
+      font-weight:800;
+      z-index:2;
+    }
+
+
+    .compare-overlay{
+      position:absolute;
+      inset:0;
+      z-index:20;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(0,229,212,.16), transparent 29%),
+        radial-gradient(circle at 50% 56%, rgba(138,53,255,.16), transparent 34%),
+        rgba(0,0,0,.76);
+      backdrop-filter:blur(5px);
+      opacity:1;
+      transition:opacity .28s ease;
+      pointer-events:none;
+    }
+
+    .compare-overlay.hidden{
+      opacity:0;
+      pointer-events:none;
+    }
+
+    .compare-card{
+      width:255px;
+      height:255px;
+      border-radius:34px;
+      background:rgba(255,255,255,.055);
+      border:1px solid rgba(255,255,255,.12);
+      display:grid;
+      place-items:center;
+      position:relative;
+      overflow:hidden;
+      box-shadow:inset 0 0 70px rgba(255,255,255,.035), 0 18px 60px rgba(0,0,0,.24);
+      animation:comparePop .38s cubic-bezier(.2,.95,.2,1) both;
+    }
+
+    .compare-card:before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:conic-gradient(from 120deg, transparent, rgba(0,229,212,.22), transparent, rgba(138,53,255,.24), transparent);
+      animation:spinGlow 1.1s linear infinite;
+    }
+
+    .compare-label{
+      position:absolute;
+      top:24px;
+      left:0;
+      right:0;
+      text-align:center;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      font-size:10px;
+      font-weight:950;
+      color:rgba(255,255,255,.58);
+      z-index:2;
+    }
+
+    .compare-orbit{
+      width:148px;
+      height:148px;
+      border-radius:50%;
+      position:relative;
+      z-index:2;
+      border:1px solid rgba(255,255,255,.12);
+      background:radial-gradient(circle, rgba(255,255,255,.08), rgba(255,255,255,.02) 46%, transparent 65%);
+      box-shadow:0 0 40px rgba(0,229,212,.13);
+    }
+
+    .compare-line{
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:2px;
+      height:126px;
+      transform-origin:50% 0;
+      border-radius:999px;
+    }
+
+    .target-line{
+      background:linear-gradient(to bottom, rgba(255,255,255,.75), rgba(0,229,212,.1));
+      transform:translate(-50%, 0) rotate(var(--target-angle, 0deg));
+    }
+
+    .guess-line{
+      background:linear-gradient(to bottom, rgba(255,255,255,.85), rgba(138,53,255,.12));
+      transform:translate(-50%, 0) rotate(var(--guess-angle, 110deg));
+      animation:guessSweep .9s cubic-bezier(.2,.9,.2,1) both;
+    }
+
+    .compare-dot{
+      position:absolute;
+      width:15px;
+      height:15px;
+      border-radius:50%;
+      top:50%;
+      left:50%;
+      transform:translate(-50%, -50%);
+      box-shadow:0 0 24px currentColor;
+    }
+
+    .target-dot{
+      color:var(--cyan);
+      background:var(--cyan);
+      animation:targetPulse .65s ease-in-out infinite alternate;
+    }
+
+    .guess-dot{
+      color:var(--purple);
+      background:var(--purple);
+      animation:guessLock .9s cubic-bezier(.2,.9,.2,1) both;
+    }
+
+    .pulse-ring{
+      position:absolute;
+      inset:35px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.2);
+      animation:ringPulse .7s ease-in-out infinite;
+    }
+
+    .compare-readout{
+      position:absolute;
+      bottom:22px;
+      left:22px;
+      right:22px;
+      z-index:2;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      font-size:11px;
+      font-weight:950;
+      color:rgba(255,255,255,.56);
+      font-variant-numeric:tabular-nums;
+    }
+
+    @keyframes comparePop{
+      from{transform:scale(.86);opacity:0}
+      to{transform:scale(1);opacity:1}
+    }
+
+    @keyframes spinGlow{
+      to{transform:rotate(360deg)}
+    }
+
+    @keyframes guessSweep{
+      from{transform:translate(-50%, 0) rotate(var(--start-angle, -120deg))}
+      to{transform:translate(-50%, 0) rotate(var(--guess-angle, 110deg))}
+    }
+
+    @keyframes targetPulse{
+      from{transform:translate(-50%, -50%) scale(.82)}
+      to{transform:translate(-50%, -50%) scale(1.28)}
+    }
+
+    @keyframes guessLock{
+      0%{transform:translate(-50%, -50%) scale(.5);opacity:.25}
+      70%{transform:translate(-50%, -50%) scale(1.45);opacity:1}
+      100%{transform:translate(-50%, -50%) scale(1);opacity:1}
+    }
+
+    @keyframes ringPulse{
+      from{transform:scale(.75);opacity:.9}
+      to{transform:scale(1.22);opacity:.1}
+    }
+
+
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      pointer-events:auto;
+    }
+
+    .nav-link{
+      position:relative;
+      color:#111;
+      text-decoration:none;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:-.02em;
+      padding:7px 8px;
+      border-radius:999px;
+      opacity:.62;
+      transition:opacity .15s ease, background .15s ease;
+    }
+
+    .nav-link:hover{
+      opacity:1;
+      background:#f3f3f3;
+    }
+
+    .nav-link.active{
+      opacity:1;
+    }
+
+    .nav-link.active:after{
+      content:"";
+      position:absolute;
+      left:8px;
+      right:8px;
+      bottom:3px;
+      height:2px;
+      border-radius:999px;
+      background:#111;
+    }
+
+    .nav-link.disabled{
+      opacity:.32;
+      cursor:not-allowed;
+      pointer-events:none;
+    }
+
+    @media(max-width:560px){
+      body{overflow:auto}
+      .topbar{top:12px;left:14px;right:14px}
+      .brand{gap:8px}
+      .brand img{height:25px}
+      .brand span{font-size:12px}
+      .mode-link{height:28px;padding:0 8px 0 6px;font-size:11px}
+      .nav-links{gap:2px}
+      .nav-link{font-size:11px;padding:7px 6px}
+      .center{padding-top:64px;padding-bottom:22px}
+      .shell{
+        width:min(370px, 94vw);
+        height:560px;
+        min-height:unset;
+      }
+      .intro-title{font-size:56px}
+      .phase-big,.result-score{font-size:70px}
+      .footer{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">
+      <img src="https://studybase.site/assets/images/site-icons/navbar-labs.svg" alt="StudyBase">
+      <nav class="nav-links" aria-label="Dialed modes">
+        <a class="nav-link " href="index.html" target="_self">Home</a>
+        <a class="nav-link active" href="sounds.html" target="_self">Sound</a>
+        <a class="nav-link " href="colour.html" target="_self">Colour</a>
+        <a class="nav-link  disabled" href="#" aria-disabled="true">Time</a>
+        <a class="nav-link  disabled" href="#" aria-disabled="true">Shape</a>
+      </nav>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" id="muteBtn" title="Sound on" aria-label="Toggle sound">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+      </button>
+      <button class="icon-btn" id="helpBtn" title="Help" aria-label="Help">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.7 2.7 0 0 1 5.2.9c0 1.9-2.7 2.2-2.7 4.1"/><path d="M12 17.2h.01"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <main class="center">
+    <section class="shell" id="card">
+      <canvas id="waveCanvas"></canvas>
+      <div class="compare-overlay hidden" id="compareOverlay">
+        <div class="compare-card">
+          <div class="compare-label">Comparing pitch</div>
+          <div class="compare-orbit">
+            <div class="compare-line target-line"></div>
+            <div class="compare-line guess-line"></div>
+            <div class="pulse-ring"></div>
+            <div class="compare-dot target-dot"></div>
+            <div class="compare-dot guess-dot"></div>
+          </div>
+          <div class="compare-readout">
+            <span id="compareTarget">000.00Hz</span>
+            <span id="compareGuess">000.00Hz</span>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="screen" id="introScreen">
+        <h1 class="intro-title">sound</h1>
+        <p class="copy">Most people think they have a good ear. Some people are wrong.</p>
+        <p class="copy">We'll play you five tones, then you'll recreate them from memory.</p>
+        <div class="spacer"></div>
+        <div class="choice-title">Start challenge</div>
+        <div class="start-row">
+          <button class="circle selected-ring" id="startBtn" aria-label="Start solo">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20a4 4 0 0 1 8 0"/><circle cx="12" cy="10" r="3"/><path d="M12 2v3"/><path d="M5.6 4.6 7.7 6.7"/><path d="M18.4 4.6 16.3 6.7"/></svg>
+          </button>
+          <button class="circle" id="helpStartBtn" aria-label="Help">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.7 2.7 0 0 1 5.2.9c0 1.9-2.7 2.2-2.7 4.1"/><path d="M12 17.2h.01"/></svg>
+          </button>
+          <div class="toggle"><span class="switch"></span><span>Easy</span></div>
+        </div>
+      </div>
+
+      <div class="screen hidden listen-wrap" id="listenScreen">
+        <div class="card-top">
+          <span id="listenRound">1/5</span>
+          <div>
+            <div class="phase-big" id="timerText">3.00</div>
+            <div class="phase-label">Seconds to remember</div>
+          </div>
+        </div>
+        <div class="small-logo">StudyBase</div>
+      </div>
+
+      <div class="screen hidden guess-wrap" id="guessScreen">
+        <div class="card-top">
+          <span id="guessRound">1/5</span>
+          <span style="color:rgba(255,255,255,.42)">StudyBase</span>
+        </div>
+        <div class="freq-area">
+          <div class="freq"><span id="guessHz">440.00</span><small>Hz</small></div>
+          <button class="arrow" id="nextBtn" aria-label="Submit answer">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="screen hidden" id="resultScreen">
+        <div class="card-top">
+          <span id="resultRound">1/5</span>
+          <div>
+            <div class="result-score" id="toneScore">0.00</div>
+            <div class="result-comment" id="resultComment">Tone deaf? Don't worry, practice helps.</div>
+          </div>
+        </div>
+
+        <div class="target-block">
+          <div class="target-label">Target</div>
+          <div class="target-freq"><span id="targetHz">546.45</span><small>Hz</small></div>
+          <div class="guess-freq"><span id="finalGuessHz">97.36</span><small>Hz</small></div>
+          <div class="final-actions hidden" id="finalActions">
+            <button class="pill-btn" id="playAgainBtn">Play again</button>
+            <button class="pill-btn dark" id="copyBtn">Copy score</button>
+          </div>
+        </div>
+
+        <button class="arrow" id="resultNextBtn" aria-label="Next tone" style="position:absolute;right:24px;bottom:28px">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <div class="help hide" id="help">
+    <div class="help-card">
+      <h2>How it works</h2>
+      <p>You’ll hear five tones. For each one, you get three seconds to remember it. Then drag up or down on the black card to recreate the frequency. The wave changes as you drag, and your selected tone plays live.</p>
+      <p>Each tone is scored out of 10. Total score is out of 50.</p>
+      <button class="pill-btn" id="closeHelp">Got it</button>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const MIN_HZ = 80;
+  const MAX_HZ = 1600;
+  const TONES = 5;
+  const LISTEN_SECONDS = 3;
+
+  const card = document.getElementById("card");
+  const canvas = document.getElementById("waveCanvas");
+  const ctx = canvas.getContext("2d");
+
+  const screens = {
+    intro: document.getElementById("introScreen"),
+    listen: document.getElementById("listenScreen"),
+    guess: document.getElementById("guessScreen"),
+    result: document.getElementById("resultScreen")
+  };
+
+  const els = {
+    startBtn: document.getElementById("startBtn"),
+    helpStartBtn: document.getElementById("helpStartBtn"),
+    helpBtn: document.getElementById("helpBtn"),
+    closeHelp: document.getElementById("closeHelp"),
+    help: document.getElementById("help"),
+    muteBtn: document.getElementById("muteBtn"),
+    timerText: document.getElementById("timerText"),
+    listenRound: document.getElementById("listenRound"),
+    guessRound: document.getElementById("guessRound"),
+    resultRound: document.getElementById("resultRound"),
+    guessHz: document.getElementById("guessHz"),
+    targetHz: document.getElementById("targetHz"),
+    finalGuessHz: document.getElementById("finalGuessHz"),
+    toneScore: document.getElementById("toneScore"),
+    resultComment: document.getElementById("resultComment"),
+    nextBtn: document.getElementById("nextBtn"),
+    resultNextBtn: document.getElementById("resultNextBtn"),
+    finalActions: document.getElementById("finalActions"),
+    playAgainBtn: document.getElementById("playAgainBtn"),
+    copyBtn: document.getElementById("copyBtn"),
+    compareOverlay: document.getElementById("compareOverlay"),
+    compareTarget: document.getElementById("compareTarget"),
+    compareGuess: document.getElementById("compareGuess")
+  };
+
+  let audioCtx, osc, gain;
+  let muted = false;
+  let mode = "intro";
+  let tones = [];
+  let guesses = [];
+  let round = 0;
+  let selectedHz = 440;
+  let shownTarget = 440;
+  let dragging = false;
+  let dragStartY = 0;
+  let dragStartHz = 440;
+  let animationTime = 0;
+
+  function resizeCanvas(){
+    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    const rect = card.getBoundingClientRect();
+    canvas.width = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    canvas.style.width = rect.width + "px";
+    canvas.style.height = rect.height + "px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+
+  function show(name){
+    mode = name;
+    Object.entries(screens).forEach(([key, el]) => el.classList.toggle("hidden", key !== name));
+  }
+
+  function ensureAudio(){
+    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === "suspended") audioCtx.resume();
+  }
+
+  function startTone(freq){
+    if(muted) return;
+    ensureAudio();
+    stopTone();
+    const now = audioCtx.currentTime;
+    osc = audioCtx.createOscillator();
+    gain = audioCtx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(freq, now);
+
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.12, now + 0.035);
+
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(now);
+  }
+
+  function setTone(freq){
+    if(osc && audioCtx) osc.frequency.setTargetAtTime(freq, audioCtx.currentTime, 0.018);
+  }
+
+  function stopTone(){
+    if(gain && audioCtx){
+      try{
+        gain.gain.cancelScheduledValues(audioCtx.currentTime);
+        gain.gain.setTargetAtTime(0.0001, audioCtx.currentTime, 0.035);
+        osc.stop(audioCtx.currentTime + 0.12);
+      }catch(e){}
+    }
+    osc = null;
+    gain = null;
+  }
+
+  function playBlip(freq, seconds){
+    if(muted) return;
+    ensureAudio();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    const now = audioCtx.currentTime;
+    o.type = "sine";
+    o.frequency.setValueAtTime(freq, now);
+    g.gain.setValueAtTime(0.0001, now);
+    g.gain.exponentialRampToValueAtTime(0.13, now + 0.04);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + seconds);
+    o.connect(g).connect(audioCtx.destination);
+    o.start(now);
+    o.stop(now + seconds + 0.06);
+  }
+
+  function randomTones(){
+    const arr = [];
+    for(let i=0;i<TONES;i++){
+      const t = Math.random();
+      const hz = Math.exp(Math.log(MIN_HZ) + t * (Math.log(MAX_HZ) - Math.log(MIN_HZ)));
+      arr.push(Number(hz.toFixed(2)));
+    }
+    return arr;
+  }
+
+  function hzToY(hz){
+    const t = (Math.log(hz) - Math.log(MIN_HZ)) / (Math.log(MAX_HZ) - Math.log(MIN_HZ));
+    return 1 - Math.max(0, Math.min(1, t));
+  }
+
+  function yToHz(y){
+    const t = 1 - Math.max(0, Math.min(1, y));
+    return Math.exp(Math.log(MIN_HZ) + t * (Math.log(MAX_HZ) - Math.log(MIN_HZ)));
+  }
+
+  function fmt(n){
+    return Number(n).toFixed(2);
+  }
+
+  function angleFromHz(hz){
+    const t = (Math.log(hz) - Math.log(MIN_HZ)) / (Math.log(MAX_HZ) - Math.log(MIN_HZ));
+    return -155 + Math.max(0, Math.min(1, t)) * 310;
+  }
+
+  function showCompareAnimation(target, guess){
+    return new Promise(resolve => {
+      const overlay = els.compareOverlay;
+      overlay.classList.remove("hidden");
+      els.compareTarget.textContent = `${fmt(target)}Hz`;
+      els.compareGuess.textContent = `${fmt(guess)}Hz`;
+
+      const targetAngle = angleFromHz(target);
+      const guessAngle = angleFromHz(guess);
+      overlay.style.setProperty("--target-angle", `${targetAngle}deg`);
+      overlay.style.setProperty("--guess-angle", `${guessAngle}deg`);
+      overlay.style.setProperty("--start-angle", `${guessAngle - 170}deg`);
+
+      playBlip(target, .34);
+      setTimeout(() => playBlip(guess, .34), 430);
+      setTimeout(() => {
+        overlay.classList.add("hidden");
+        setTimeout(resolve, 260);
+      }, 1320);
+    });
+  }
+
+  async function startGame(){
+    ensureAudio();
+    tones = randomTones();
+    guesses = [];
+    round = 0;
+    els.finalActions.classList.add("hidden");
+    els.resultNextBtn.classList.remove("hidden");
+    await playListenRound();
+  }
+
+  async function playListenRound(){
+    show("listen");
+    stopTone();
+    shownTarget = tones[round];
+    els.listenRound.textContent = `${round+1}/5`;
+    startTone(shownTarget);
+
+    const started = performance.now();
+    return new Promise(resolve => {
+      function tick(now){
+        const elapsed = (now - started) / 1000;
+        const left = Math.max(0, LISTEN_SECONDS - elapsed);
+        els.timerText.textContent = left.toFixed(2);
+        if(left > 0 && mode === "listen"){
+          requestAnimationFrame(tick);
+        } else {
+          stopTone();
+          beginGuess();
+          resolve();
+        }
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  function beginGuess(){
+    selectedHz = 440;
+    els.guessRound.textContent = `${round+1}/5`;
+    updateGuessUI();
+    show("guess");
+    startTone(selectedHz);
+  }
+
+  function updateGuessUI(){
+    els.guessHz.textContent = fmt(selectedHz);
+    setTone(selectedHz);
+  }
+
+  function scoreTone(target, guess){
+    const cents = Math.abs(1200 * Math.log2(guess / target));
+    const score = Math.max(0, 10 * Math.exp(-cents / 260));
+    return score;
+  }
+
+  let submitLock = false;
+
+  async function submitGuess(){
+    if(mode !== "guess" || submitLock) return;
+    submitLock = true;
+    setTimeout(() => submitLock = false, 1800);
+    stopTone();
+
+    const guess = Number(selectedHz);
+    const target = tones[round];
+    const score = scoreTone(target, guess);
+    guesses.push({ target, guess, score });
+
+    await showCompareAnimation(target, guess);
+
+    els.resultRound.textContent = `${round+1}/5`;
+    els.toneScore.textContent = score.toFixed(2);
+    els.targetHz.textContent = fmt(target);
+    els.finalGuessHz.textContent = fmt(guess);
+    els.resultComment.textContent = comment(score);
+    show("result");
+
+    if(round === TONES - 1){
+      const total = guesses.reduce((a,b) => a + b.score, 0);
+      els.toneScore.textContent = total.toFixed(2);
+      els.resultComment.textContent = finalComment(total);
+      els.finalActions.classList.remove("hidden");
+      els.resultNextBtn.classList.add("hidden");
+    }
+  }
+
+  function nextResult(){
+    if(round >= TONES - 1) return;
+    round++;
+    playListenRound();
+  }
+
+  function comment(score){
+    if(score >= 9) return "Nearly perfect. Your ear is locked in.";
+    if(score >= 7) return "Very close. That was properly dialed.";
+    if(score >= 4) return "Not bad. You were in the right area.";
+    if(score >= 1) return "A bit off. Still recoverable.";
+    return "Tone deaf? Don't worry, practice helps.";
+  }
+
+  function finalComment(total){
+    if(total >= 44) return "Elite score. You might actually have perfect pitch.";
+    if(total >= 35) return "Sharp ears. That was very solid.";
+    if(total >= 24) return "Decent run. A few tones got away.";
+    if(total >= 12) return "You heard something. Just not always the right thing.";
+    return "Tone deaf? Don't worry, practice helps.";
+  }
+
+  function drawWave(){
+    animationTime += 0.012;
+    const w = card.clientWidth;
+    const h = card.clientHeight;
+    ctx.clearRect(0,0,w,h);
+
+    const activeHz = mode === "listen" ? shownTarget : selectedHz;
+    const yNorm = hzToY(activeHz);
+    const centerBase = w * (0.55 + (yNorm - .5) * .16);
+    const amplitude = mode === "intro" ? 34 : 8 + yNorm * 50;
+    const cycles = mode === "guess" ? 5 + (activeHz / MAX_HZ) * 18 : 7.5;
+    const glow = mode === "intro" ? .9 : 1;
+
+    drawSingle(centerBase - 7, amplitude * .72, cycles, "rgba(138,53,255,.58)", 1.4, animationTime, glow);
+    drawSingle(centerBase + 7, amplitude * .58, cycles * 1.12, "rgba(0,229,212,.58)", 1.4, animationTime + 1.7, glow);
+
+    const grd = ctx.createLinearGradient(centerBase,0,centerBase,h);
+    grd.addColorStop(0, "rgba(0,229,212,0)");
+    grd.addColorStop(.24, "rgba(0,229,212,.24)");
+    grd.addColorStop(.55, "rgba(138,53,255,.18)");
+    grd.addColorStop(.82, "rgba(0,229,212,.18)");
+    grd.addColorStop(1, "rgba(0,229,212,0)");
+    ctx.fillStyle = grd;
+    ctx.fillRect(centerBase-20,0,40,h);
+
+    requestAnimationFrame(drawWave);
+  }
+
+  function drawSingle(cx, amp, cycles, color, width, phase, glow){
+    const w = card.clientWidth;
+    const h = card.clientHeight;
+    ctx.save();
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 18 * glow;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.beginPath();
+
+    for(let y=-8; y<=h+8; y+=3){
+      const p = y / h;
+      const taper = Math.sin(Math.PI * p);
+      const drift = Math.sin(p * Math.PI * 3.2 + phase * .7) * 28;
+      const x = cx + drift + Math.sin(p * Math.PI * cycles + phase * 4) * amp * Math.max(.08, taper);
+      if(y === -8) ctx.moveTo(x,y);
+      else ctx.lineTo(x,y);
+    }
+
+    ctx.stroke();
+
+    for(let i=1;i<10;i++){
+      ctx.globalAlpha = .05;
+      ctx.lineWidth = .8;
+      ctx.translate((i%2?1:-1) * 4, 0);
+      ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
+  function handlePointerDown(e){
+    if(mode !== "guess") return;
+    if(e.target.closest("button")) return;
+    dragging = true;
+    dragStartY = e.clientY || e.touches?.[0]?.clientY || 0;
+    dragStartHz = selectedHz;
+    card.setPointerCapture?.(e.pointerId);
+    startTone(selectedHz);
+  }
+
+  function handlePointerMove(e){
+    if(mode !== "guess" || !dragging) return;
+    const y = e.clientY || e.touches?.[0]?.clientY || 0;
+    const delta = dragStartY - y;
+    const logStart = Math.log(dragStartHz);
+    const range = Math.log(MAX_HZ) - Math.log(MIN_HZ);
+    selectedHz = Math.exp(logStart + (delta / card.clientHeight) * range * 1.5);
+    selectedHz = Math.max(MIN_HZ, Math.min(MAX_HZ, selectedHz));
+    updateGuessUI();
+  }
+
+  function handlePointerUp(){
+    dragging = false;
+  }
+
+  function copyScore(){
+    const total = guesses.reduce((a,b)=>a+b.score,0).toFixed(2);
+    const text = `I scored ${total}/50 on Dialed by StudyBase sound.`;
+    navigator.clipboard?.writeText(text).then(()=>{
+      els.copyBtn.textContent = "Copied";
+      setTimeout(()=>els.copyBtn.textContent = "Copy score", 1100);
+    }).catch(()=>alert(text));
+  }
+
+  els.startBtn.addEventListener("click", startGame);
+  els.playAgainBtn.addEventListener("click", startGame);
+
+  els.nextBtn.addEventListener("pointerdown", e => e.stopPropagation());
+  els.nextBtn.addEventListener("pointerup", e => {
+    e.stopPropagation();
+    submitGuess();
+  });
+  els.nextBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    submitGuess();
+  });
+
+  els.resultNextBtn.addEventListener("pointerdown", e => e.stopPropagation());
+  els.resultNextBtn.addEventListener("pointerup", e => {
+    e.stopPropagation();
+    nextResult();
+  });
+  els.resultNextBtn.addEventListener("click", e => {
+    e.stopPropagation();
+    nextResult();
+  });
+
+  els.copyBtn.addEventListener("click", copyScore);
+
+  els.helpBtn.addEventListener("click",()=>els.help.classList.remove("hide"));
+  els.helpStartBtn.addEventListener("click",()=>els.help.classList.remove("hide"));
+  els.closeHelp.addEventListener("click",()=>els.help.classList.add("hide"));
+  els.help.addEventListener("click",(e)=>{ if(e.target === els.help) els.help.classList.add("hide"); });
+
+  els.muteBtn.addEventListener("click",()=>{
+    muted = !muted;
+    if(muted) stopTone();
+    els.muteBtn.style.opacity = muted ? ".35" : ".86";
+    els.muteBtn.title = muted ? "Sound off" : "Sound on";
+  });
+
+  card.addEventListener("pointerdown", handlePointerDown);
+  window.addEventListener("pointermove", handlePointerMove);
+  window.addEventListener("pointerup", handlePointerUp);
+
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
+  drawWave();
+  show("intro");
+})();
+</script>
+</body>
+</html>
