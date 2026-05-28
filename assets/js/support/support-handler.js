@@ -6,18 +6,11 @@
   This handler turns any element with [data-support-slot] into an iframe-based
   support slot.
 
-  Random pages are controlled inside this JS file by default.
-  A placement can still override the default by using:
-  - data-support-src
-  - data-support-pages
-
-  Promo rotation:
-  - Rotates every 20 seconds by default.
-  - Each slot gets its own random cycle.
-  - It shows every promo once before starting a new cycle.
-  - It avoids showing the same promo twice in a row.
-  - It remembers the last shown promo in sessionStorage, so refreshing the page
-    should not immediately repeat the same promo.
+  Pattern:
+  - First load: random support iframe, excluding supported-soon.html
+  - Next load/rotation: /internal/support_iframes/supported-soon.html
+  - Then random again
+  - Then supported-soon again
 */
 
 (() => {
@@ -26,12 +19,6 @@
   const DEFAULT_CONFIG = {
     enabled: true,
 
-    /*
-      Default random pages controlled by this JS file.
-
-      If a placement does NOT define data-support-src or data-support-pages,
-      the handler randomly chooses from these.
-    */
     supportPages: [
       "/internal/support_iframes/supported-soon.html",
       "/internal/support_iframes/mental-health-1.html",
@@ -41,36 +28,18 @@
       "/internal/support_iframes/online-safety.html"
     ],
 
-    /*
-      Final fallback only used if supportPages is empty.
-    */
     iframeSrc: "/internal/support_iframes/supported-soon.html",
+
+    featuredSupportSrc: "/internal/support_iframes/supported-soon.html",
 
     label: "Sponsored",
 
-    /*
-      Rotate promos every 20 seconds.
-      Set to 0 or false to disable automatic rotation.
-    */
     rotateEveryMs: 20000,
 
-    /*
-      If true, hidden/disabled slots collapse fully.
-      If false, they keep their space but show an empty placeholder.
-    */
     collapseWhenDisabled: true,
 
-    /*
-      Adds simple default styling automatically.
-      Set to false if you want to style everything yourself.
-    */
     injectBaseStyles: true,
 
-    /*
-      Slot sizes.
-      These names are used in:
-      data-support-ratio="leaderboard"
-    */
     ratios: {
       square: "1 / 1",
       portrait: "9 / 16",
@@ -93,10 +62,6 @@
       thinBanner: "8 / 1"
     },
 
-    /*
-      Suggested max widths.
-      These are not strict ad rules, just useful layout defaults.
-    */
     maxWidths: {
       square: "250px",
       portrait: "360px",
@@ -123,11 +88,6 @@
   const state = {
     config: structuredCloneSafe(DEFAULT_CONFIG),
     started: false,
-
-    /*
-      Per-slot rotation state.
-      WeakMap means removed DOM nodes can still be garbage collected.
-    */
     slotStates: new WeakMap()
   };
 
@@ -193,13 +153,6 @@
     const rawValue = String(value).trim();
     if (!rawValue) return [];
 
-    /*
-      Supports either JSON:
-      data-support-pages='["/one.html", "/two.html"]'
-
-      Or comma-separated:
-      data-support-pages="/one.html,/two.html"
-    */
     if (rawValue.startsWith("[") && rawValue.endsWith("]")) {
       try {
         const parsed = JSON.parse(rawValue);
@@ -228,31 +181,20 @@
     )];
   }
 
-  function shuffleList(list) {
-    const shuffled = [...list];
-
-    for (let index = shuffled.length - 1; index > 0; index -= 1) {
-      const randomIndex = Math.floor(Math.random() * (index + 1));
-      [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
-    }
-
-    return shuffled;
+  function pickRandomItem(list) {
+    if (!Array.isArray(list) || !list.length) return null;
+    return list[Math.floor(Math.random() * list.length)];
   }
 
   function getSlotIdentity(slot) {
-    /*
-      This keeps storage separate for each placement.
-      If multiple pages use the same data-support-slot, they will share the same
-      last shown promo memory, which is usually what you want.
-    */
     return slot.dataset.supportSlot || "unknown";
   }
 
   function getSlotStorageKey(slot) {
-    return `sb_support_last_src_${getSlotIdentity(slot)}`;
+    return `sb_support_next_mode_${getSlotIdentity(slot)}`;
   }
 
-  function getStoredLastSrc(slot) {
+  function getStoredNextMode(slot) {
     try {
       return sessionStorage.getItem(getSlotStorageKey(slot));
     } catch {
@@ -260,9 +202,9 @@
     }
   }
 
-  function storeLastSrc(slot, src) {
+  function storeNextMode(slot, mode) {
     try {
-      sessionStorage.setItem(getSlotStorageKey(slot), src);
+      sessionStorage.setItem(getSlotStorageKey(slot), mode);
     } catch {
       // Storage may be blocked, so silently continue.
     }
@@ -274,9 +216,17 @@
     if (!slotState) {
       slotState = {
         pagesKey: "",
-        queue: [],
-        lastSrc: getStoredLastSrc(slot),
-        timerId: null
+        timerId: null,
+
+        /*
+          Modes:
+          - "random" means the next iframe should be one of the non-featured pages.
+          - "featured" means the next iframe should be supported-soon.html.
+
+          Defaults to "random", so the order starts:
+          random -> supported-soon -> random -> supported-soon
+        */
+        nextMode: getStoredNextMode(slot) || "random"
       };
 
       state.slotStates.set(slot, slotState);
@@ -286,14 +236,6 @@
   }
 
   function getAvailablePages(slot) {
-    /*
-      Priority:
-      1. data-support-src on the placement
-      2. data-support-pages on the placement
-      3. default random supportPages from this JS file
-      4. fallback iframeSrc
-    */
-
     if (slot.dataset.supportSrc) {
       return uniqueList([slot.dataset.supportSrc]);
     }
@@ -311,74 +253,41 @@
     return uniqueList([state.config.iframeSrc]);
   }
 
-  function makeRandomQueue(pages, lastSrc) {
-    if (!Array.isArray(pages) || pages.length === 0) return [];
-
-    const queue = shuffleList(pages);
-
-    /*
-      Avoid the first promo in a fresh cycle being the same as the previous promo.
-      This matters when:
-      - the cycle resets
-      - the page refreshes
-      - the user comes back while sessionStorage still remembers the last promo
-    */
-    if (queue.length > 1 && queue[0] === lastSrc) {
-      const swapIndex = queue.findIndex((src) => src !== lastSrc);
-
-      if (swapIndex > 0) {
-        [queue[0], queue[swapIndex]] = [queue[swapIndex], queue[0]];
-      }
-    }
-
-    return queue;
-  }
-
   function chooseNextIframeSrc(slot) {
     const slotState = getSlotState(slot);
     const pages = getAvailablePages(slot);
     const pagesKey = JSON.stringify(pages);
 
-    /*
-      If the available promo list changes, reset the queue.
-      Also reload lastSrc from sessionStorage, because the page may have been
-      refreshed or another matching slot may have updated it.
-    */
     if (slotState.pagesKey !== pagesKey) {
       slotState.pagesKey = pagesKey;
-      slotState.queue = [];
-      slotState.lastSrc = getStoredLastSrc(slot);
+      slotState.nextMode = getStoredNextMode(slot) || "random";
     }
 
-    if (!slotState.queue.length) {
-      slotState.queue = makeRandomQueue(pages, slotState.lastSrc);
+    const fallbackSrc = state.config.iframeSrc || "/internal/support_iframes/supported-soon.html";
+    const featuredSrc = state.config.featuredSupportSrc || fallbackSrc;
+
+    if (!pages.length) {
+      return fallbackSrc;
     }
 
-    let nextSrc = slotState.queue.shift() || state.config.iframeSrc;
-
-    /*
-      Extra safety: prevent immediate repeats, including after page refresh.
-    */
-    if (pages.length > 1 && nextSrc === slotState.lastSrc) {
-      const differentFromQueueIndex = slotState.queue.findIndex(
-        (src) => src !== slotState.lastSrc
-      );
-
-      if (differentFromQueueIndex >= 0) {
-        const replacement = slotState.queue.splice(differentFromQueueIndex, 1)[0];
-        slotState.queue.unshift(nextSrc);
-        nextSrc = replacement;
-      } else {
-        const fallbackDifferent = pages.find((src) => src !== slotState.lastSrc);
-
-        if (fallbackDifferent) {
-          nextSrc = fallbackDifferent;
-        }
-      }
+    if (pages.length === 1) {
+      return pages[0];
     }
 
-    slotState.lastSrc = nextSrc;
-    storeLastSrc(slot, nextSrc);
+    const hasFeatured = pages.includes(featuredSrc);
+    const otherPages = pages.filter((src) => src !== featuredSrc);
+
+    let nextSrc;
+
+    if (slotState.nextMode === "featured" && hasFeatured) {
+      nextSrc = featuredSrc;
+      slotState.nextMode = "random";
+    } else {
+      nextSrc = pickRandomItem(otherPages.length ? otherPages : pages) || fallbackSrc;
+      slotState.nextMode = "featured";
+    }
+
+    storeNextMode(slot, slotState.nextMode);
 
     return nextSrc;
   }
@@ -394,10 +303,6 @@
       url.searchParams.set("slot", slotName);
       url.searchParams.set("ratio", ratioName);
 
-      /*
-        Optional cache busting.
-        Use data-support-cache-bust="true" on a slot if you need it.
-      */
       if (slot.dataset.supportCacheBust === "true") {
         url.searchParams.set("sbRotate", String(Date.now()));
       }
@@ -434,12 +339,6 @@
     const rotateEveryMs = Number(state.config.rotateEveryMs);
     const pages = getAvailablePages(slot);
 
-    /*
-      Only rotate when:
-      - rotation is enabled globally
-      - there is more than one promo available
-      - this specific placement has not disabled rotation
-    */
     if (
       !rotateEveryMs ||
       rotateEveryMs < 1000 ||
@@ -655,10 +554,6 @@
     ratios: state.config.ratios
   };
 
-  /*
-    Auto-start unless disabled before this script loads:
-    window.STUDYBASE_SUPPORT_AUTO_INIT = false;
-  */
   if (window.STUDYBASE_SUPPORT_AUTO_INIT !== false) {
     init(window.STUDYBASE_SUPPORT_CONFIG || {});
   }
