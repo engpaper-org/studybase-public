@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyBase Respect & Boundaries Banner</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    img,
+    svg,
+    a,
+    button {
+      -webkit-user-drag: none;
+      user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    :root {
+      --sb-blue: #1597ff;
+      --sb-cyan: #35d9ff;
+      --text: #050505;
+      --muted: rgba(0, 0, 0, 0.58);
+      --soft: rgba(0, 0, 0, 0.38);
+      --border: rgba(0, 0, 0, 0.08);
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      container-type: size;
+    }
+
+    .slot {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      padding: clamp(10px, 4cqi, 28px);
+      border-radius: clamp(12px, 4cqi, 28px);
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 16% 14%, rgba(53, 217, 255, 0.22), transparent 34%),
+        radial-gradient(circle at 88% 84%, rgba(21, 151, 255, 0.18), transparent 38%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.76));
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.62),
+        0 18px 46px rgba(0, 0, 0, 0.06);
+      isolation: isolate;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .slot::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 0, 0, 0.026) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.026) 1px, transparent 1px);
+      background-size: clamp(22px, 8cqi, 42px) clamp(22px, 8cqi, 42px);
+      mask-image: radial-gradient(circle at center, black 0%, transparent 76%);
+      opacity: 0.72;
+      z-index: -4;
+    }
+
+    .slot::after {
+      content: "";
+      position: absolute;
+      inset: -110%;
+      background: linear-gradient(105deg, transparent 43%, rgba(255, 255, 255, 0.72) 50%, transparent 57%);
+      animation: softShine 8s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    .slot:focus-visible {
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.62),
+        0 18px 46px rgba(0, 0, 0, 0.06),
+        0 0 0 3px rgba(21, 151, 255, 0.18);
+    }
+
+    .orb {
+      position: absolute;
+      width: clamp(80px, 42cqi, 220px);
+      aspect-ratio: 1;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(21, 151, 255, 0.16), transparent 68%);
+      filter: blur(5px);
+      z-index: -3;
+      animation: orbMove 9s ease-in-out infinite;
+    }
+
+    .orb.one { left: -18%; top: -18%; }
+    .orb.two { right: -22%; bottom: -22%; animation-delay: -3s; }
+
+    .content {
+      width: min(90%, 720px);
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      align-items: center;
+      justify-items: center;
+      text-align: center;
+      gap: clamp(8px, 3cqi, 18px);
+      animation: gentleFloat 5.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .logo {
+      align-self: start;
+      width: min(78%, 330px);
+      max-height: clamp(30px, 17cqh, 74px);
+      object-fit: contain;
+      opacity: 0.96;
+      filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.07));
+    }
+
+    .message {
+      display: grid;
+      gap: clamp(7px, 2.4cqi, 13px);
+      place-items: center;
+    }
+
+    h1 {
+      max-width: 560px;
+      color: var(--text);
+      font-size: clamp(17px, 6.8cqi, 34px);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+      font-weight: 950;
+      text-wrap: balance;
+    }
+
+    p {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: clamp(10px, 3.1cqi, 15px);
+      line-height: 1.42;
+      font-weight: 650;
+      text-wrap: balance;
+    }
+
+    .cta {
+      color: var(--soft);
+      font-size: clamp(9px, 2.4cqi, 12px);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .default-title,
+    .default-text,
+    .wide-title,
+    .wide-text,
+    .short-title,
+    .short-text,
+    .tall-title,
+    .tall-text,
+    .tiny-title,
+    .tiny-text,
+    .default-cta,
+    .wide-cta,
+    .short-cta,
+    .tall-cta,
+    .tiny-cta {
+      display: none;
+    }
+
+    .default-title,
+    .default-text,
+    .default-cta { display: block; }
+
+    @keyframes softShine {
+      0%, 66% { transform: translateX(-58%); opacity: 0; }
+      76% { opacity: 1; }
+      100% { transform: translateX(58%); opacity: 0; }
+    }
+
+    @keyframes orbMove {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(18px, 14px) scale(1.08); }
+    }
+
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    @container (min-aspect-ratio: 4 / 1) {
+      .slot { padding: 10px clamp(18px, 4cqi, 36px); }
+      .content {
+        width: 96%;
+        max-width: 1260px;
+        height: auto;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        grid-template-rows: 1fr;
+        gap: clamp(16px, 4cqi, 42px);
+      }
+      .logo {
+        align-self: center;
+        width: min(30cqi, 290px);
+        max-height: 68px;
+      }
+      .message {
+        justify-items: start;
+        text-align: left;
+        gap: 6px;
+      }
+      .default-title, .default-text, .default-cta,
+      .short-title, .short-text, .short-cta,
+      .tall-title, .tall-text, .tall-cta,
+      .tiny-title, .tiny-text, .tiny-cta { display: none; }
+      .wide-title, .wide-text, .wide-cta { display: block; }
+      h1 {
+        max-width: 760px;
+        font-size: clamp(17px, 2.5cqi, 29px);
+        letter-spacing: -0.045em;
+      }
+      p {
+        max-width: 780px;
+        font-size: clamp(10px, 1.25cqi, 14px);
+        line-height: 1.36;
+      }
+    }
+
+    @container (max-height: 120px) {
+      .slot { padding: 9px 16px; }
+      .content {
+        width: 96%;
+        height: auto;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: 1fr;
+        gap: clamp(10px, 3cqi, 20px);
+      }
+      .logo {
+        align-self: center;
+        width: min(34cqi, 210px);
+        max-height: 52px;
+      }
+      .message {
+        justify-items: start;
+        text-align: left;
+        gap: 3px;
+      }
+      .default-title, .default-text, .default-cta,
+      .wide-title, .wide-text, .wide-cta,
+      .tall-title, .tall-text, .tall-cta,
+      .tiny-title, .tiny-text, .tiny-cta { display: none; }
+      .short-title, .short-text, .short-cta { display: block; }
+      h1 {
+        font-size: clamp(13px, 4cqh, 20px);
+        letter-spacing: -0.04em;
+        max-width: none;
+      }
+      .short-text {
+        max-width: 780px;
+        font-size: clamp(8px, 1.45cqi, 12px);
+        line-height: 1.25;
+      }
+      .cta { font-size: clamp(8px, 1.35cqi, 11px); }
+    }
+
+    @container (max-aspect-ratio: 2 / 3) {
+      .slot { padding: clamp(14px, 7cqi, 24px); }
+      .content {
+        width: 92%;
+        grid-template-rows: auto 1fr auto;
+        gap: clamp(10px, 5cqi, 22px);
+      }
+      .logo {
+        width: min(92%, 240px);
+        max-height: clamp(34px, 10cqh, 62px);
+      }
+      .message { gap: clamp(8px, 4cqi, 13px); }
+      .default-title, .default-text, .default-cta,
+      .wide-title, .wide-text, .wide-cta,
+      .short-title, .short-text, .short-cta,
+      .tiny-title, .tiny-text, .tiny-cta { display: none; }
+      .tall-title, .tall-text, .tall-cta { display: block; }
+      h1 {
+        max-width: 240px;
+        font-size: clamp(18px, 8.4cqi, 30px);
+        line-height: 1.02;
+      }
+      p {
+        max-width: 235px;
+        font-size: clamp(10px, 4.1cqi, 13px);
+        line-height: 1.36;
+      }
+    }
+
+    @container (max-width: 230px) {
+      .slot { padding: 12px; }
+      .content { width: 94%; }
+      .logo {
+        width: 90%;
+        max-height: 44px;
+      }
+      .default-title, .default-text, .default-cta,
+      .wide-title, .wide-text, .wide-cta,
+      .short-title, .short-text, .short-cta,
+      .tall-title, .tall-text, .tall-cta { display: none; }
+      .tiny-title, .tiny-text, .tiny-cta { display: block; }
+      h1 {
+        font-size: clamp(15px, 9cqi, 21px);
+        max-width: 180px;
+      }
+      p {
+        max-width: 180px;
+        font-size: clamp(9px, 4.2cqi, 12px);
+      }
+    }
+
+    @container (max-aspect-ratio: 1 / 1) and (min-aspect-ratio: 2 / 3) {
+      .content { width: 88%; }
+      .logo { width: min(86%, 300px); }
+      h1 { max-width: 320px; }
+      p { max-width: 300px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="slot" id="supportBanner" aria-label="StudyBase respect and boundaries banner" tabindex="0" role="link">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+
+    <section class="content">
+      <img
+        draggable="false"
+        class="logo"
+        src="/assets/images/site-icons/navbar-safechoices.svg"
+        alt="StudyBase Respect & Boundaries"
+      />
+
+      <div class="message">
+        <h1 class="default-title" id="defaultTitle"></h1>
+        <h1 class="wide-title" id="wideTitle"></h1>
+        <h1 class="short-title" id="shortTitle"></h1>
+        <h1 class="tall-title" id="tallTitle"></h1>
+        <h1 class="tiny-title" id="tinyTitle"></h1>
+
+        <p class="default-text" id="defaultText"></p>
+        <p class="wide-text" id="wideText"></p>
+        <p class="short-text" id="shortText"></p>
+        <p class="tall-text" id="tallText"></p>
+        <p class="tiny-text" id="tinyText"></p>
+
+        <p class="cta default-cta">Click the banner to open advice.</p>
+        <p class="cta wide-cta">Click the banner to open advice.</p>
+        <p class="cta short-cta">Click for advice.</p>
+        <p class="cta tall-cta">Click for advice.</p>
+        <p class="cta tiny-cta">Click banner.</p>
+      </div>
+
+      <div aria-hidden="true"></div>
+    </section>
+  </main>
+
+  <script>
+    const variants = [
+      {
+        title: "Pressure is not consent.",
+        shortTitle: "Pressure is not consent.",
+        tinyTitle: "No pressure.",
+        defaultText: "If someone only says yes because they feel trapped, guilty, scared, or embarrassed, that is not okay.",
+        wideText: "If someone only says yes because they feel trapped, guilty, scared, or embarrassed, that is not okay. Respect means giving people space to choose freely.",
+        shortText: "A pressured yes is not okay.",
+        tallText: "A pressured yes is not okay.",
+        tinyText: "Respect the answer.",
+        supportHref: "https://www.childline.org.uk/info-advice/friends-relationships-sex/sex-relationships/healthy-unhealthy-relationships/"
+      },
+      {
+        title: "Be the mate who steps in.",
+        shortTitle: "Step in safely.",
+        tinyTitle: "Step in.",
+        defaultText: "If someone is being pressured, help them get out of it. You do not have to make it dramatic — just back them up.",
+        wideText: "If someone is being pressured, help them get out of it. You do not have to make it dramatic — interrupt, check in, or get help from someone trusted.",
+        shortText: "If someone is pressured, back them up.",
+        tallText: "Back them up.",
+        tinyText: "Help safely.",
+        supportHref: "https://www.nspcc.org.uk/keeping-children-safe/support-for-parents/pants-underwear-rule/"
+      },
+      {
+        title: "Screenshots are not trophies.",
+        shortTitle: "Screenshots are not trophies.",
+        tinyTitle: "Keep trust.",
+        defaultText: "Private messages, photos, and moments are not for showing off. If it was sent in trust, keep it private.",
+        wideText: "Private messages, photos, and moments are not for showing off. If it was sent in trust, keep it private — do not turn someone else’s trust into content.",
+        shortText: "Private chats are not content.",
+        tallText: "Private means private.",
+        tinyText: "Private stays private.",
+        supportHref: "https://www.childline.org.uk/info-advice/bullying-abuse-safety/online-mobile-safety/sexting/"
+      }
+    ];
+
+    const chosen = variants[Math.floor(Math.random() * variants.length)];
+
+    document.getElementById('defaultTitle').textContent = chosen.title;
+    document.getElementById('wideTitle').textContent = chosen.title;
+    document.getElementById('shortTitle').textContent = chosen.shortTitle;
+    document.getElementById('tallTitle').textContent = chosen.shortTitle;
+    document.getElementById('tinyTitle').textContent = chosen.tinyTitle;
+
+    document.getElementById('defaultText').textContent = chosen.defaultText;
+    document.getElementById('wideText').textContent = chosen.wideText;
+    document.getElementById('shortText').textContent = chosen.shortText;
+    document.getElementById('tallText').textContent = chosen.tallText;
+    document.getElementById('tinyText').textContent = chosen.tinyText;
+
+    const banner = document.getElementById('supportBanner');
+    const openSupport = () => {
+      window.open(chosen.supportHref, '_blank', 'noopener,noreferrer');
+    };
+
+    banner.addEventListener('click', openSupport);
+    banner.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openSupport();
+      }
+    });
+
+    document.addEventListener('dragstart', (event) => {
+      if (event.target && event.target.closest('img, svg, a, button')) {
+        event.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>
