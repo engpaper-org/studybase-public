@@ -3,8 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="/assets/js/auth/iframeCheck.js"></script>
+  <!-- <script src="/assets/js/auth/iframeCheck.js"></script> -->
   <title>StudyBase Labs</title>
+
+  <script>
+    window.STUDYBASE_SUPPORT_CONFIG = {
+      iframeSrc: "/support/slot.html",
+      label: "Sponsored"
+    };
+  </script>
+  <script src="/assets/js/support/support-handler.js" defer></script>
   
   <style>
     :root{
@@ -238,6 +246,23 @@
       pointer-events:none;
     }
 
+
+
+    .support-placement{
+      width:100%;
+      display:flex;
+      justify-content:center;
+    }
+
+
+    .support-bottom{
+      margin:18px auto 0;
+    }
+
+    [data-support-slot]{
+      width:100%;
+    }
+
     @media(max-width:760px){
       .grid{grid-template-columns:1fr 1fr}
       .tile{min-height:185px}
@@ -307,6 +332,15 @@
           <div class="name">colour</div>
           <div class="desc">Recreate the colour you were shown.</div>
         </a>
+      </div>
+
+      <div class="support-placement support-bottom" aria-label="Sponsored placement">
+        <div
+          data-support-slot="below-modes"
+          data-support-ratio="rectangle"
+          data-support-max-width="336px"
+          data-support-label="Sponsored">
+        </div>
       </div>
     </section>
   </main>

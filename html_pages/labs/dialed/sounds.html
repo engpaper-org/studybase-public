@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="/assets/js/auth/iframeCheck.js"></script>
+  <!-- <script src="/assets/js/auth/iframeCheck.js"></script> -->
   <title>StudyBase Labs</title>
   <style>
     :root{
@@ -677,6 +677,29 @@
       pointer-events:none;
     }
 
+
+
+    .support-right-float{
+      position:fixed;
+      right:22px;
+      bottom:22px;
+      width:min(300px, 21vw);
+      z-index:3;
+      display:flex;
+      justify-content:center;
+      pointer-events:auto;
+    }
+
+    .support-right-float [data-support-slot]{
+      width:100%;
+    }
+
+    @media(max-width:1120px){
+      .support-right-float{
+        display:none;
+      }
+    }
+
     @media(max-width:560px){
       body{overflow:auto}
       .topbar{top:12px;left:14px;right:14px}
@@ -719,6 +742,16 @@
       </button>
     </div>
   </div>
+
+  <aside class="support-right-float" aria-label="Sponsored placement">
+    <div
+      data-support-slot="sound-bottom-right-large"
+      data-support-ratio="half-page"
+      data-support-desktop-only="true"
+      data-support-label="Sponsored">
+    </div>
+  </aside>
+
 
   <main class="center">
     <section class="shell" id="card">
@@ -816,6 +849,14 @@
       <button class="pill-btn" id="closeHelp">Got it</button>
     </div>
   </div>
+
+<script>
+  window.STUDYBASE_SUPPORT_CONFIG = {
+    iframeSrc: "/support/slot.html",
+    label: "Sponsored"
+  };
+</script>
+<script src="/assets/js/support/support-handler.js" defer></script>
 
 <script>
 (() => {

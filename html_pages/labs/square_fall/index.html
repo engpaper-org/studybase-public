@@ -166,7 +166,7 @@
       display: block;
     }
 
-    .high-score-panel {
+    .best-panel {
       width: min(215px, 88%);
       padding: 16px;
       border-radius: 28px;
@@ -181,7 +181,7 @@
       backdrop-filter: blur(14px);
     }
 
-    .high-score-title {
+    .best-title {
       margin-bottom: 13px;
       color: rgba(35, 65, 94, 0.78);
       font-size: 18px;
@@ -194,8 +194,8 @@
       gap: 7px;
     }
 
-    .high-score-title::before,
-    .high-score-title::after {
+    .best-title::before,
+    .best-title::after {
       content: "";
       width: 8px;
       height: 8px;
@@ -421,7 +421,7 @@
       padding-top: 0;
     }
 
-    .play-btn,
+    .start-btn,
     .restart-btn,
     .home-btn {
       border: 0;
@@ -435,7 +435,7 @@
       transition: transform 0.12s ease, opacity 0.12s ease, background 0.2s ease;
     }
 
-    .play-btn {
+    .start-btn {
       width: min(282px, 80%);
       margin-top: 12px;
       color: white;
@@ -446,7 +446,7 @@
         0 14px 28px rgba(49, 88, 127, 0.18);
     }
 
-    .play-btn:hover,
+    .start-btn:hover,
     .restart-btn:hover,
     .home-btn:hover {
       filter: brightness(1.04);
@@ -533,7 +533,7 @@
       line-height: 1;
     }
 
-    .gameover-card {
+    .end-card {
       width: min(350px, 86%);
       padding: 30px 22px 22px;
       border-radius: 30px;
@@ -543,7 +543,7 @@
       text-align: center;
     }
 
-    .gameover-card h2 {
+    .end-card h2 {
       margin: 0 0 24px;
       text-transform: uppercase;
       font-size: 28px;
@@ -616,8 +616,8 @@
 <body>
   <div id="outer">
     <aside class="side-scores left">
-      <div class="high-score-panel">
-        <div class="high-score-title">High Scores</div>
+      <div class="best-panel">
+        <div class="best-title">Best</div>
         <div class="side-stack">
           <div class="mode-score-card easy" data-score-card="easy"><span>Easy</span><strong id="sideBestEasy">0</strong></div>
           <div class="mode-score-card medium" data-score-card="medium"><span>Medium</span><strong id="sideBestMedium">0</strong></div>
@@ -632,7 +632,7 @@
         <img class="labs-logo" src="https://studybase.site/assets/images/site-icons/navbar-labs.svg" alt="StudyBase Labs" />
       </header>
 
-      <canvas id="game"></canvas>
+      <canvas id="activityCanvas"></canvas>
 
       <div class="mini-hud" id="miniHud">
         <div class="score-line"><span id="liveScore">0</span></div>
@@ -662,17 +662,17 @@
             <div class="control-row"><span>White Cubes</span><span>Danger</span></div>
           </div>
 
-          <button class="play-btn" id="playBtn">Play Easy</button>
+          <button class="start-btn" id="startBtn">Start Easy</button>
           <div class="bottom-stats">
             <div>Mode Best: <span id="homeBest">0</span></div>
-            <div>Total Games: <span id="totalGames">0</span></div>
+            <div>Total Runs: <span id="totalRuns">0</span></div>
           </div>
         </div>
       </section>
 
-      <section class="screen hidden" id="gameOverScreen">
-        <div class="gameover-card">
-          <h2>Game Over</h2>
+      <section class="screen hidden" id="endScreen">
+        <div class="end-card">
+          <h2>Finished</h2>
           <div class="result-grid">
             <div class="result-box">
               <div>
@@ -714,12 +714,12 @@
 
   <script>
     var app = document.getElementById("app");
-    var canvas = document.getElementById("game");
+    var canvas = document.getElementById("activityCanvas");
     var ctx = canvas.getContext("2d");
 
     var homeScreen = document.getElementById("homeScreen");
-    var gameOverScreen = document.getElementById("gameOverScreen");
-    var playBtn = document.getElementById("playBtn");
+    var endScreen = document.getElementById("endScreen");
+    var startBtn = document.getElementById("startBtn");
     var restartBtn = document.getElementById("restartBtn");
     var homeBtn = document.getElementById("homeBtn");
     var miniHud = document.getElementById("miniHud");
@@ -728,7 +728,7 @@
     var scoreMultiplier = document.getElementById("scoreMultiplier");
     var liveMode = document.getElementById("liveMode");
     var homeBest = document.getElementById("homeBest");
-    var totalGames = document.getElementById("totalGames");
+    var totalRuns = document.getElementById("totalRuns");
     var finalScore = document.getElementById("finalScore");
     var finalBest = document.getElementById("finalBest");
     var modeButtons = document.querySelectorAll(".mode-btn");
@@ -814,7 +814,7 @@
     };
 
     var store = {
-      games: Number(localStorage.getItem("squareFallGames") || 0),
+      runs: Number(localStorage.getItem("squareFallRuns") || 0),
       bests: {
         easy: Number(localStorage.getItem("squareFallBest_easy") || localStorage.getItem("squareFallBest") || 0),
         medium: Number(localStorage.getItem("squareFallBest_medium") || 0),
@@ -861,13 +861,13 @@
     function updateStats() {
       var cfg = config();
       homeBest.textContent = store.bests[state.difficulty];
-      totalGames.textContent = store.games;
+      totalRuns.textContent = store.runs;
       finalBest.textContent = store.bests[state.difficulty];
       liveScore.textContent = state.score;
       liveStreak.textContent = state.streak;
       scoreMultiplier.textContent = multiplier();
       liveMode.textContent = cfg.label;
-      playBtn.textContent = "Play " + cfg.label;
+      startBtn.textContent = "Start " + cfg.label;
       restartBtn.textContent = "Restart " + cfg.label;
       document.getElementById("sideBestEasy").textContent = store.bests.easy;
       document.getElementById("sideBestMedium").textContent = store.bests.medium;
@@ -880,7 +880,7 @@
       var cfg = config();
       app.className = "mode-" + state.difficulty;
       app.style.background = cfg.bg;
-      playBtn.style.background = cfg.colour;
+      startBtn.style.background = cfg.colour;
       restartBtn.style.background = cfg.colour;
 
       for (i = 0; i < modeButtons.length; i++) {
@@ -926,7 +926,7 @@
       return Math.max(min, Math.min(max, n));
     }
 
-    function startGame() {
+    function startRun() {
       var rect = app.getBoundingClientRect();
       var cfg = config();
       state.mode = "playing";
@@ -950,11 +950,11 @@
       state.orbitRadius = clamp(rect.width * 0.36, 118, 165);
       state.ballRadius = clamp(rect.width * 0.04, 15, 21);
 
-      store.games += 1;
-      localStorage.setItem("squareFallGames", String(store.games));
+      store.runs += 1;
+      localStorage.setItem("squareFallRuns", String(store.runs));
 
       homeScreen.classList.add("hidden");
-      gameOverScreen.classList.add("hidden");
+      endScreen.classList.add("hidden");
       miniHud.classList.add("show");
       updateModeVisuals();
     }
@@ -962,12 +962,12 @@
     function goHome() {
       state.mode = "home";
       miniHud.classList.remove("show");
-      gameOverScreen.classList.add("hidden");
+      endScreen.classList.add("hidden");
       homeScreen.classList.remove("hidden");
       updateModeVisuals();
     }
 
-    function endGame() {
+    function endRun() {
       if (state.mode !== "playing") return;
       state.mode = "over";
       state.shake = 9;
@@ -983,7 +983,7 @@
       updateModeVisuals();
 
       setTimeout(function () {
-        gameOverScreen.classList.remove("hidden");
+        endScreen.classList.remove("hidden");
       }, 260);
     }
 
@@ -992,7 +992,7 @@
         state.dir *= -1;
         state.rings.push({ x: state.centerX, y: state.centerY, r: state.orbitRadius, age: 0, life: 0.24, colour: config().colour });
       } else if (state.mode === "home") {
-        startGame();
+        startRun();
       }
     }
 
@@ -1160,7 +1160,7 @@
           if (block.danger) {
             block.hit = true;
             pop(block.x, block.y, true, 22);
-            endGame();
+            endRun();
           } else {
             scoreBlock(block);
           }
@@ -1220,7 +1220,7 @@
       }
     }
 
-    function drawGame() {
+    function drawFrame() {
       var rect = app.getBoundingClientRect();
       var w = rect.width;
       var h = rect.height;
@@ -1338,11 +1338,11 @@
       var dt = Math.min(0.033, t - (state.last || t));
       state.last = t;
       update(dt);
-      drawGame();
+      drawFrame();
       requestAnimationFrame(loop);
     }
 
-    function runSquareFallTests() {
+    function runSquareFallChecks() {
       var oldMode = state.difficulty;
       var results = [];
       function assert(name, condition) { results.push({ name: name, pass: !!condition }); }
@@ -1363,8 +1363,8 @@
       });
     }
 
-    playBtn.addEventListener("click", startGame);
-    restartBtn.addEventListener("click", startGame);
+    startBtn.addEventListener("click", startRun);
+    restartBtn.addEventListener("click", startRun);
     homeBtn.addEventListener("click", goHome);
     canvas.addEventListener("pointerdown", reverse);
 
@@ -1373,11 +1373,11 @@
         e.preventDefault();
         reverse();
       }
-      if (e.code === "Enter" && state.mode !== "playing") startGame();
+      if (e.code === "Enter" && state.mode !== "playing") startRun();
     });
 
     window.addEventListener("resize", resize);
-    window.runSquareFallTests = runSquareFallTests;
+    window.runSquareFallChecks = runSquareFallChecks;
 
     updateModeVisuals();
     resize();
