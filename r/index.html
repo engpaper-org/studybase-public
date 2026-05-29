@@ -1612,6 +1612,49 @@
                     </div>
                 </div>
 
+                <!-- Private Feedback Buttons (Bug + Suggestion) - only visible in private mode -->
+                <div class="private-feedback-buttons mb-2" style="max-width: 1280px; margin-left: auto; margin-right: auto; display: none;">
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="openReportModalWithType('bug')" 
+                                class="flex-1 sm:flex-none px-4 py-2.5 text-sm font-semibold bg-red-600 hover:bg-red-700 text-white rounded-2xl flex items-center justify-center gap-2 shadow-sm">
+                            <i class="fas fa-bug"></i>
+                            <span>Report a Bug</span>
+                        </button>
+                        <button onclick="openReportModalWithType('suggestion')" 
+                                class="flex-1 sm:flex-none px-4 py-2.5 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl flex items-center justify-center gap-2 shadow-sm">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Make a Suggestion</span>
+                        </button>
+                    </div>
+                </div>
+
+                <style>
+                    body.rgenie-private-resources .private-feedback-buttons {
+                        display: block !important;
+                    }
+                </style>
+
+                <!-- Full-width Search + Report a Problem (matches card container width) -->
+                <div class="mb-3" style="max-width: 1280px; margin-left: auto; margin-right: auto;">
+                    <div class="flex flex-col sm:flex-row gap-3 items-stretch">
+                        <div class="flex-1 relative">
+                            <i data-lucide="search" class="w-5 h-5 absolute left-5 top-4 text-slate-400 pointer-events-none"></i>
+                            <input 
+                                type="text" 
+                                id="mainSearchInput"
+                                onkeyup="syncMainSearch()"
+                                class="w-full pl-12 pr-5 py-3.5 text-[15px] border border-slate-300 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 rounded-2xl placeholder:text-slate-400 shadow-sm"
+                                placeholder="Search resources, papers, topics..."
+                            >
+                        </div>
+                        <button onclick="openReportModal()" 
+                                class="flex items-center justify-center gap-2 px-6 py-3.5 bg-red-600 hover:bg-red-700 active:bg-red-800 transition-all text-white font-semibold text-sm rounded-2xl shadow-md hover:shadow-lg whitespace-nowrap">
+                            <i class="fas fa-flag"></i>
+                            <span>Report a problem</span>
+                        </button>
+                    </div>
+                </div>
+
                 <div class="rgenie-filter-grid">
                     <div class="rgenie-field">
                         <label for="searchInput">Search</label>
@@ -1620,7 +1663,7 @@
                             <input
                                 type="text"
                                 id="searchInput"
-                                onkeyup="filterResources()"
+                                onkeyup="filterResources(); syncMainSearchReverse();"
                                 class="rgenie-input w-full pl-11 py-3 text-base border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-2xl placeholder:text-slate-400"
                                 placeholder="Try Biology AQA, mechanics, mark scheme..."
                             >
@@ -3984,6 +4027,103 @@
   setupCommandCenterControls();
   refreshCommandFilters();
   loadResources();
+</script>
+<!-- Report Modal -->
+<div id="reportModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden relative">
+        <!-- Modal Header -->
+        <div class="flex items-center justify-between px-6 py-4 border-b">
+            <div class="font-extrabold text-lg text-slate-800">Report a Problem</div>
+            <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 text-2xl leading-none w-8 h-8 flex items-center justify-center">&times;</button>
+        </div>
+
+        <!-- Iframe Container -->
+        <div class="p-2 bg-slate-100">
+            <iframe id="reportIframe" 
+                    src="about:blank" 
+                    class="w-full h-[560px] border border-slate-200 rounded-2xl bg-white"
+                    style="box-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.1);"></iframe>
+        </div>
+
+        <div class="px-6 py-3 bg-slate-50 text-[11px] text-slate-500 text-center border-t">
+            Reports are reviewed by the StudyBase team. Misuse results in a permanent ban.
+        </div>
+    </div>
+</div>
+
+<script>
+    // Sync search between main bar and filter
+    function syncMainSearch() {
+        const main = document.getElementById('mainSearchInput');
+        const old = document.getElementById('searchInput');
+        if (main && old) {
+            old.value = main.value;
+            if (typeof filterResources === 'function') filterResources();
+        }
+    }
+
+    function syncMainSearchReverse() {
+        const main = document.getElementById('mainSearchInput');
+        const old = document.getElementById('searchInput');
+        if (main && old) {
+            main.value = old.value;
+        }
+    }
+
+    // Report Modal Functions
+    function openReportModal() {
+        const modal = document.getElementById('reportModal');
+        const iframe = document.getElementById('reportIframe');
+        
+        const currentUrl = window.location.href;
+        iframe.src = `/report.html?pageUrl=${encodeURIComponent(currentUrl)}`;
+        
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    // Opens report modal with specific type (bypasses selection screen)
+    function openReportModalWithType(type) {
+        const modal = document.getElementById('reportModal');
+        const iframe = document.getElementById('reportIframe');
+        
+        const currentUrl = window.location.href;
+        let src = `/report.html?pageUrl=${encodeURIComponent(currentUrl)}`;
+        
+        if (type) {
+            src += `&type=${encodeURIComponent(type)}`;
+        }
+        
+        iframe.src = src;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function closeReportModal() {
+        const modal = document.getElementById('reportModal');
+        const iframe = document.getElementById('reportIframe');
+        
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+        iframe.src = 'about:blank'; // unload
+    }
+
+    // Allow escape key to close modal
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modal = document.getElementById('reportModal');
+            if (modal && !modal.classList.contains('hidden')) {
+                closeReportModal();
+            }
+        }
+    });
+
+    // Optional: close when clicking backdrop
+    document.getElementById('reportModal')?.addEventListener('click', function(e) {
+        if (e.target.id === 'reportModal') {
+            closeReportModal();
+        }
+    });
 </script>
 </body>
 </html>

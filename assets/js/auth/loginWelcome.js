@@ -4,6 +4,8 @@
   const QUICK_LOGIN_ENABLED_KEY = "sb_quickLogin";
   const QUICK_LOGIN_HASH_KEY = "sb_quickLoginCodeHash";
   const GENDER_KEY = "sb_gender"; // local only, never sent to server
+  const RECENT_HISTORY_KEY = "sb_saveRecentlyPlayed";
+  const SEARCH_HISTORY_KEY = "sb_saveSearchHistory";
 
   let modal = null;
 
@@ -69,7 +71,7 @@
         
         <!-- Header with progress -->
         <div style="padding:18px 20px 12px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;">
-          <div style="font-size:12px;font-weight:700;color:#64748b;letter-spacing:0.5px;" id="sbw-progress">1 of 3</div>
+          <div style="font-size:12px;font-weight:700;color:#64748b;letter-spacing:0.5px;" id="sbw-progress">1 of 5</div>
           <div style="font-size:11px;color:#94a3b8;">Post-login setup</div>
         </div>
 
@@ -153,14 +155,86 @@
                       style="flex:1;padding:12px 16px;border-radius:12px;border:1px solid #e2e8f0;background:#fff;font-weight:700;font-size:14px;color:#475569;cursor:pointer;">
                 Back
               </button>
+              <button id="sbw-next-3" type="button"
+                      style="flex:2;padding:12px 18px;border-radius:12px;border:none;background:#0f172a;color:#fff;font-weight:800;font-size:14.5px;cursor:pointer;">
+                Continue
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 4: Recent / Play History -->
+          <div id="sbw-step-4" class="sbw-step" style="display:none;">
+            <div style="text-align:center;margin-bottom:14px;">
+              <h2 style="margin:0 0 6px;font-size:19px;font-weight:900;color:#0f172a;letter-spacing:-0.02em;">Save recent history?</h2>
+              <p style="margin:0;font-size:13.5px;color:#64748b;line-height:1.4;">Remember papers, tools and pages you've recently used.</p>
+            </div>
+
+            <div style="display:flex;gap:10px;margin:16px 0 8px;">
+              <div id="sbw-recent-yes" data-value="true"
+                   style="flex:1;padding:16px 10px;border:2px solid #e2e8f0;background:#fff;border-radius:16px;text-align:center;cursor:pointer;transition:all .1s ease;">
+                <div style="font-size:13px;font-weight:700;color:#166534;margin-bottom:4px;">YES</div>
+                <div style="font-size:13.5px;font-weight:700;color:#334155;">Save my recent activity</div>
+              </div>
+              <div id="sbw-recent-no" data-value="false"
+                   style="flex:1;padding:16px 10px;border:2px solid #e2e8f0;background:#fff;border-radius:16px;text-align:center;cursor:pointer;transition:all .1s ease;">
+                <div style="font-size:13px;font-weight:700;color:#475569;margin-bottom:4px;">NO</div>
+                <div style="font-size:13.5px;font-weight:700;color:#334155;">Don't save it</div>
+              </div>
+            </div>
+
+            <div style="margin-top:8px;text-align:center;font-size:11.5px;color:#64748b;">
+              This is off by default for privacy.
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:16px;">
+              <button id="sbw-back-4" type="button"
+                      style="flex:1;padding:12px 16px;border-radius:12px;border:1px solid #e2e8f0;background:#fff;font-weight:700;font-size:14px;color:#475569;cursor:pointer;">
+                Back
+              </button>
+              <button id="sbw-next-4" type="button"
+                      style="flex:2;padding:12px 18px;border-radius:12px;border:none;background:#0f172a;color:#fff;font-weight:800;font-size:14.5px;cursor:pointer;">
+                Continue
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 5: Search History -->
+          <div id="sbw-step-5" class="sbw-step" style="display:none;">
+            <div style="text-align:center;margin-bottom:14px;">
+              <h2 style="margin:0 0 6px;font-size:19px;font-weight:900;color:#0f172a;letter-spacing:-0.02em;">Save search history?</h2>
+              <p style="margin:0;font-size:13.5px;color:#64748b;line-height:1.4;">Remember what you've searched for on the site.</p>
+            </div>
+
+            <div style="display:flex;gap:10px;margin:16px 0 8px;">
+              <div id="sbw-search-yes" data-value="true"
+                   style="flex:1;padding:16px 10px;border:2px solid #e2e8f0;background:#fff;border-radius:16px;text-align:center;cursor:pointer;transition:all .1s ease;">
+                <div style="font-size:13px;font-weight:700;color:#166534;margin-bottom:4px;">YES</div>
+                <div style="font-size:13.5px;font-weight:700;color:#334155;">Save my searches</div>
+              </div>
+              <div id="sbw-search-no" data-value="false"
+                   style="flex:1;padding:16px 10px;border:2px solid #e2e8f0;background:#fff;border-radius:16px;text-align:center;cursor:pointer;transition:all .1s ease;">
+                <div style="font-size:13px;font-weight:700;color:#475569;margin-bottom:4px;">NO</div>
+                <div style="font-size:13.5px;font-weight:700;color:#334155;">Don't save searches</div>
+              </div>
+            </div>
+
+            <div style="margin-top:8px;text-align:center;font-size:11.5px;color:#64748b;">
+              This is off by default for privacy.
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:16px;">
+              <button id="sbw-back-5" type="button"
+                      style="flex:1;padding:12px 16px;border-radius:12px;border:1px solid #e2e8f0;background:#fff;font-weight:700;font-size:14px;color:#475569;cursor:pointer;">
+                Back
+              </button>
               <button id="sbw-save" type="button"
                       style="flex:2;padding:12px 18px;border-radius:12px;border:none;background:#0f172a;color:#fff;font-weight:800;font-size:14.5px;cursor:pointer;">
-                Save my details
+                Save my preferences
               </button>
             </div>
 
             <div style="margin-top:12px;text-align:center;font-size:10.5px;color:#94a3b8;font-weight:600;">
-              You can change these later in Settings
+              You can change any of these later in Settings
             </div>
           </div>
 
@@ -173,20 +247,29 @@
     // === Wizard State ===
     let currentStep = 1;
     let selectedGender = storedGender;
+    let saveRecent = false;   // off by default
+    let saveSearch = false;   // off by default
 
     const progressEl = modal.querySelector("#sbw-progress");
     const step1 = modal.querySelector("#sbw-step-1");
     const step2 = modal.querySelector("#sbw-step-2");
     const step3 = modal.querySelector("#sbw-step-3");
+    const step4 = modal.querySelector("#sbw-step-4");
+    const step5 = modal.querySelector("#sbw-step-5");
+
+    const TOTAL_STEPS = 5;
 
     function showStep(step) {
       currentStep = step;
+
       step1.style.display = step === 1 ? "block" : "none";
       step2.style.display = step === 2 ? "block" : "none";
       step3.style.display = step === 3 ? "block" : "none";
+      step4.style.display = step === 4 ? "block" : "none";
+      step5.style.display = step === 5 ? "block" : "none";
 
       if (progressEl) {
-        progressEl.textContent = `${step} of 3`;
+        progressEl.textContent = `${step} of ${TOTAL_STEPS}`;
       }
 
       // Focus logic
@@ -226,6 +309,60 @@
       updateGenderUI();
     });
     updateGenderUI();
+
+    // === Recent History (Step 4) - defaults to No ===
+    const recentYes = modal.querySelector("#sbw-recent-yes");
+    const recentNo = modal.querySelector("#sbw-recent-no");
+
+    function updateRecentUI() {
+      if (!recentYes || !recentNo) return;
+      const yesSelected = saveRecent === true;
+
+      recentYes.style.border = yesSelected ? "2px solid #16a34a" : "2px solid #e2e8f0";
+      recentYes.style.background = yesSelected ? "#f0fdf4" : "#fff";
+      recentYes.querySelector("div:last-child").style.color = yesSelected ? "#166534" : "#334155";
+
+      recentNo.style.border = !yesSelected ? "2px solid #64748b" : "2px solid #e2e8f0";
+      recentNo.style.background = !yesSelected ? "#f8fafc" : "#fff";
+      recentNo.querySelector("div:last-child").style.color = !yesSelected ? "#334155" : "#334155";
+    }
+
+    recentYes?.addEventListener("click", () => {
+      saveRecent = true;
+      updateRecentUI();
+    });
+    recentNo?.addEventListener("click", () => {
+      saveRecent = false;
+      updateRecentUI();
+    });
+    updateRecentUI(); // starts with No selected
+
+    // === Search History (Step 5) - defaults to No ===
+    const searchYes = modal.querySelector("#sbw-search-yes");
+    const searchNo = modal.querySelector("#sbw-search-no");
+
+    function updateSearchUI() {
+      if (!searchYes || !searchNo) return;
+      const yesSelected = saveSearch === true;
+
+      searchYes.style.border = yesSelected ? "2px solid #16a34a" : "2px solid #e2e8f0";
+      searchYes.style.background = yesSelected ? "#f0fdf4" : "#fff";
+      searchYes.querySelector("div:last-child").style.color = yesSelected ? "#166534" : "#334155";
+
+      searchNo.style.border = !yesSelected ? "2px solid #64748b" : "2px solid #e2e8f0";
+      searchNo.style.background = !yesSelected ? "#f8fafc" : "#fff";
+      searchNo.querySelector("div:last-child").style.color = !yesSelected ? "#334155" : "#334155";
+    }
+
+    searchYes?.addEventListener("click", () => {
+      saveSearch = true;
+      updateSearchUI();
+    });
+    searchNo?.addEventListener("click", () => {
+      saveSearch = false;
+      updateSearchUI();
+    });
+    updateSearchUI(); // starts with No selected
 
     // === Input sanitization for quick login (Step 2) ===
     const q1 = modal.querySelector("#sbw-q1");
@@ -278,12 +415,27 @@
       });
     });
 
+    // Step 3 navigation
     const back3 = modal.querySelector("#sbw-back-3");
-    const saveBtn = modal.querySelector("#sbw-save");
+    const next3 = modal.querySelector("#sbw-next-3");
 
     back3?.addEventListener("click", () => showStep(2));
+    next3?.addEventListener("click", () => showStep(4));
 
-    // === Final Save ===
+    // Step 4 navigation
+    const back4 = modal.querySelector("#sbw-back-4");
+    const next4 = modal.querySelector("#sbw-next-4");
+
+    back4?.addEventListener("click", () => showStep(3));
+    next4?.addEventListener("click", () => showStep(5));
+
+    // Step 5 navigation
+    const back5 = modal.querySelector("#sbw-back-5");
+    const saveBtn = modal.querySelector("#sbw-save");
+
+    back5?.addEventListener("click", () => showStep(4));
+
+    // === Final Save (on Step 5) ===
     saveBtn?.addEventListener("click", async () => {
       // Save name (from step 1)
       const finalName = (nameInput?.value || "").trim();
@@ -308,6 +460,10 @@
         } catch (e) {}
       }
 
+      // Save the two history preferences (off by default)
+      localStorage.setItem(RECENT_HISTORY_KEY, String(saveRecent));
+      localStorage.setItem(SEARCH_HISTORY_KEY, String(saveSearch));
+
       closeModal(true);
     });
 
@@ -318,8 +474,8 @@
       }
     });
 
-    // Start on the appropriate step (could be 1, 2, or 3 depending on what's missing)
-    const initialStep = (startStep >= 1 && startStep <= 3) ? startStep : 1;
+    // Start on the appropriate step (1-5 depending on what's missing)
+    const initialStep = (startStep >= 1 && startStep <= TOTAL_STEPS) ? startStep : 1;
     showStep(initialStep);
 
     return modal;

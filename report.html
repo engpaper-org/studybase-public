@@ -13,9 +13,10 @@
     <meta property="og:site_name" content="StudyBase" data-studybase-education-meta="true">
     <meta property="og:type" content="website" data-studybase-education-meta="true">
     <meta property="og:locale" content="en_GB" data-studybase-education-meta="true">
-<script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
+<script src="/assets/js/config/siteConfig.js"></script>
+    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
 <title>Report an Issue</title>
-    <script src="/assets/js/auth/iframeCheck.js" defer></script>
+    <!-- <script src="/assets/js/auth/iframeCheck.js" defer></script> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -60,6 +61,86 @@
         /* Animation */
         .animate-enter { animation: enter 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes enter { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* Cool Success Checkmark Animation */
+        .success-checkmark {
+            width: 80px;
+            height: 80px;
+        }
+        .check-icon {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            border-radius: 50%;
+            box-sizing: content-box;
+            border: 4px solid #10b981;
+        }
+        .check-icon::before {
+            top: 3px;
+            left: -2px;
+            width: 30px;
+            height: 50px;
+            position: absolute;
+            transform: rotate(45deg);
+            content: '';
+            border-radius: 0 0 0 0;
+            background: #10b981;
+        }
+        .icon-line {
+            height: 5px;
+            background-color: #10b981;
+            display: block;
+            border-radius: 2px;
+            position: absolute;
+        }
+        .icon-line.line-tip {
+            top: 46px;
+            left: 14px;
+            width: 25px;
+            transform: rotate(45deg);
+            animation: icon-line-tip 0.75s;
+        }
+        .icon-line.line-long {
+            top: 38px;
+            right: 8px;
+            width: 47px;
+            transform: rotate(-45deg);
+            animation: icon-line-long 0.75s;
+        }
+        .icon-circle {
+            top: -4px;
+            left: -4px;
+            z-index: 10;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            position: absolute;
+            box-sizing: content-box;
+            border: 4px solid rgba(16, 185, 129, 0.2);
+        }
+        .icon-fix {
+            top: 8px;
+            width: 5px;
+            left: 26px;
+            z-index: 1;
+            height: 85px;
+            position: absolute;
+            transform: rotate(-45deg);
+            background-color: white;
+        }
+        @keyframes icon-line-tip {
+            0% { width: 0; left: 1px; top: 19px; }
+            54% { width: 0; left: 1px; top: 19px; }
+            70% { width: 50px; left: -8px; top: 37px; }
+            84% { width: 17px; left: 21px; top: 48px; }
+            100% { width: 25px; left: 14px; top: 46px; }
+        }
+        @keyframes icon-line-long {
+            0% { width: 0; right: 46px; top: 54px; }
+            65% { width: 0; right: 46px; top: 54px; }
+            84% { width: 55px; right: 0px; top: 35px; }
+            100% { width: 47px; right: 8px; top: 38px; }
+        }
     </style>
   <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
 </head>
@@ -70,87 +151,95 @@
         <div class="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-100/60 rounded-full blur-3xl opacity-60"></div>
     </div>
 
-    <div class="w-full max-w-lg relative z-10 animate-enter my-10">
+    <div class="w-full max-w-[520px] relative z-10 animate-enter my-8">
         
-        <div class="bg-white/80 backdrop-blur-xl border border-white/60 rounded-[2.5rem] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] p-8 md:p-10 relative overflow-hidden">
+        <div class="bg-white border border-slate-200 rounded-3xl shadow-xl p-7 md:p-8 relative overflow-hidden">
             
-            <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-gradient-to-br from-red-50 to-orange-50 text-red-500 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-5 shadow-sm border border-red-100/50">
-                    <i class="fas fa-bug"></i>
-                </div>
-                <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Report an Issue</h1>
-                <p class="text-slate-500 mt-2 text-sm font-medium">Help us keep the database clean and functional.</p>
+            <!-- Persistent Ban Warning -->
+            <div class="mb-5 p-3 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-xs leading-relaxed">
+                <strong class="font-bold">Warning:</strong> Misuse of this system (false reports, spam, harassment) will result in an <span class="font-extrabold">immediate permanent ban</span>.
             </div>
 
-            <form id="reportForm" class="space-y-5" onsubmit="submitReport(event)">
-                
-                <div>
-                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-2">Problem Location</label>
-                    <div class="relative group">
-                        <span class="absolute left-4 top-3.5 text-slate-400 group-focus-within:text-blue-500 transition-colors"><i class="fas fa-link"></i></span>
-                        <input type="text" id="urlInput" required
-                            class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl py-3.5 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium placeholder-slate-400 truncate"
-                            placeholder="https://revisionbase.site/resource...">
+            <!-- TYPE SELECTION SCREEN -->
+            <div id="typeSelection">
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-500 text-white rounded-2xl flex items-center justify-center text-2xl mx-auto mb-3 shadow-md shadow-red-500/30">
+                        <i class="fas fa-flag"></i>
                     </div>
+                    <h1 class="text-2xl font-extrabold text-slate-900 tracking-tighter">What would you like to do?</h1>
+                    <p class="text-slate-500 mt-1 text-sm">Choose one to continue</p>
                 </div>
 
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-2">What's wrong?</label>
-                    <div class="relative">
-                        <span class="absolute left-4 top-3.5 text-slate-400"><i class="fas fa-triangle-exclamation"></i></span>
-                        <select id="problemType" required
-                            class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl py-3.5 pl-10 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium appearance-none cursor-pointer">
-                            <option value="" disabled selected>Select category...</option>
-                            <option value="safety">Inappropriate content</option>
-                            <option value="ruffle">Ruffle failed to load SWF</option>
-                            <option value="broken_link">Won’t load</option>
-                            <option value="404">404 / Not found</option>
-                            <option value="controls">Controls not working</option>
-                            <option value="laggy">Very laggy</option>
-                            <option value="overheat">Device overheating</option>
-                            <option value="no-flash">Flash required (unsupported)</option>
-                            <option value="screen">Screen / fullscreen issue</option>
-                            <option value="name-error">Incorrect title</option>
-                            <option value="other">Other</option>
-
-                        </select>
-                        <span class="absolute right-4 top-3.5 text-slate-400 pointer-events-none text-xs"><i class="fas fa-chevron-down"></i></span>
-                    </div>
+                <div id="typeOptions" class="space-y-3">
+                    <!-- Populated dynamically via JS for filtering -->
                 </div>
-
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 ml-2">Details</label>
-                    <textarea id="explanation" rows="4" required
-                        class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-sm rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium resize-none placeholder-slate-400"
-                        placeholder="Please describe exactly what happened..."></textarea>
-                </div>
-
-                <button type="submit" id="submitBtn" 
-                    class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2 mt-2">
-                    <span>Submit Report</span>
-                </button>
-            </form>
-
-            <div id="successMessage" class="hidden absolute inset-0 bg-white z-20 flex flex-col items-center justify-center text-center p-8 animate-enter">
-                <div class="w-20 h-20 bg-green-50 text-green-500 rounded-full flex items-center justify-center text-3xl mb-6 shadow-sm">
-                    <i class="fas fa-check"></i>
-                </div>
-                <h3 class="text-xl font-bold text-slate-900">Report Sent!</h3>
-                <p class="text-slate-500 mt-2 text-sm max-w-xs mx-auto">Our admins have been notified via Discord and will investigate shortly.</p>
-                <button onclick="parent.closeReportModal()" class="mt-8 px-8 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-colors text-sm">
-                    Close Window
-                </button>
             </div>
-            
-            <div id="errorMessage" class="hidden mt-4 p-4 bg-red-50 text-red-600 rounded-xl text-center text-sm font-bold border border-red-100">
-                Something went wrong. Please try again.
+
+            <!-- DYNAMIC FORM SCREEN -->
+            <div id="formScreen" class="hidden">
+                <div class="flex items-center gap-3 mb-5">
+                    <button onclick="goBackToSelection()" 
+                            class="text-slate-400 hover:text-slate-700 text-2xl leading-none px-1 transition-colors">←</button>
+                    <div id="formTitle" class="font-extrabold text-xl text-slate-900 tracking-tight"></div>
+                </div>
+
+                <form id="reportForm" class="space-y-5" onsubmit="submitReport(event)">
+                    
+                    <!-- Common URL field -->
+                    <div>
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-[1px] mb-1.5 ml-1">Relevant URL</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-3.5 text-slate-400"><i class="fas fa-link"></i></span>
+                            <input type="text" id="urlInput" required
+                                class="w-full bg-white border border-slate-300 text-slate-800 text-sm rounded-2xl py-3 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all font-medium">
+                        </div>
+                    </div>
+
+                    <!-- Dynamic fields container -->
+                    <div id="dynamicFields"></div>
+
+                    <div>
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-[1px] mb-1.5 ml-1">Additional details</label>
+                        <textarea id="explanation" rows="4" required
+                            class="w-full bg-white border border-slate-300 text-slate-800 text-sm rounded-2xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all resize-y min-h-[100px]"
+                            placeholder="Please provide as much detail as possible..."></textarea>
+                    </div>
+
+                    <button type="submit" id="submitBtn" 
+                        class="w-full bg-slate-900 hover:bg-black text-white font-extrabold py-4 rounded-2xl transition-all shadow-md flex items-center justify-center gap-2 text-[15px]">
+                        Submit
+                    </button>
+                </form>
+
+                <!-- Success State -->
+                <div id="successMessage" class="hidden py-4 text-center">
+                    <div class="success-checkmark mx-auto mb-4">
+                        <div class="check-icon">
+                            <span class="icon-line line-tip"></span>
+                            <span class="icon-line line-long"></span>
+                            <div class="icon-circle"></div>
+                            <div class="icon-fix"></div>
+                        </div>
+                    </div>
+                    <h3 class="text-2xl font-extrabold text-slate-900 tracking-tight">Thank you.</h3>
+                    <p class="text-slate-600 mt-1.5 max-w-xs mx-auto text-sm">Your submission has been received securely. The team will review it shortly.</p>
+                    
+                    <button onclick="parent.closeReportModal ? parent.closeReportModal() : window.close()" 
+                            class="mt-6 px-8 py-2.5 bg-slate-900 hover:bg-black text-white font-semibold rounded-2xl text-sm transition-all">
+                        Close
+                    </button>
+                </div>
+
+                <div id="errorMessage" class="hidden mt-3 p-3 bg-red-50 text-red-600 rounded-xl text-center text-sm font-medium border border-red-100">
+                    Something went wrong. Please try again.
+                </div>
             </div>
 
         </div>
     </div>
 
     <script>
-        // Set worker URL
+        let currentType = null;
         let WORKER_URL = "https://report-problem.revisionbase.site";
 
         async function getReportEndpoint() {
@@ -160,43 +249,187 @@
             } else if (window.SB_CONFIG?.endpoints?.reportProblem) {
                 WORKER_URL = window.SB_CONFIG.endpoints.reportProblem;
             }
-
             return WORKER_URL;
+        }
+
+        let forcedType = null;
+
+        function renderTypeOptions() {
+            const container = document.getElementById('typeOptions');
+            container.innerHTML = '';
+
+            const options = [];
+
+            // Determine which options to show
+            if (forcedType === 'bug') {
+                options.push('bug', 'legal');
+            } else if (forcedType === 'suggestion') {
+                options.push('suggestion', 'legal');
+            } else if (forcedType === 'legal') {
+                options.push('legal');
+            } else {
+                // No forced type → show all
+                options.push('bug', 'suggestion', 'legal');
+            }
+
+            const optionData = {
+                bug: {
+                    icon: '🐞',
+                    title: 'Report a Bug',
+                    desc: 'Something is broken or not working correctly',
+                    color: 'red'
+                },
+                suggestion: {
+                    icon: '💡',
+                    title: 'Make a Suggestion',
+                    desc: 'Idea to improve StudyBase',
+                    color: 'emerald'
+                },
+                legal: {
+                    icon: '⚖️',
+                    title: 'Legal or Safety Request',
+                    desc: 'Copyright, privacy, DMCA, or safety concern',
+                    color: 'amber'
+                }
+            };
+
+            options.forEach(type => {
+                const data = optionData[type];
+                const btn = document.createElement('button');
+                btn.className = `w-full group flex items-center gap-4 p-4 border border-slate-200 hover:border-${data.color}-400 hover:bg-${data.color}-50 rounded-2xl transition-all text-left shadow-sm hover:shadow`;
+                btn.innerHTML = `
+                    <div class="w-10 h-10 flex-shrink-0 bg-${data.color}-100 text-${data.color}-600 rounded-xl flex items-center justify-center text-xl">${data.icon}</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="font-bold text-[15px] text-slate-900 group-hover:text-${data.color}-700 leading-tight">${data.title}</div>
+                        <div class="text-xs text-slate-500 mt-0.5">${data.desc}</div>
+                    </div>
+                `;
+                btn.onclick = () => selectReportType(type);
+                container.appendChild(btn);
+            });
+        }
+
+        function selectReportType(type) {
+            currentType = type;
+            document.getElementById('typeSelection').classList.add('hidden');
+            document.getElementById('formScreen').classList.remove('hidden');
+
+            const titleEl = document.getElementById('formTitle');
+            const fieldsContainer = document.getElementById('dynamicFields');
+            fieldsContainer.innerHTML = '';
+
+            const urlInput = document.getElementById('urlInput');
+
+            if (type === 'bug') {
+                titleEl.textContent = 'Report a Bug';
+                fieldsContainer.innerHTML = `
+                    <div>
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-[1px] mb-1.5 ml-1">Severity</label>
+                        <select id="severity" required class="w-full bg-white border border-slate-300 text-sm rounded-2xl py-3 px-4">
+                            <option value="minor">Minor / Cosmetic</option>
+                            <option value="annoying">Annoying but usable</option>
+                            <option value="major" selected>Major issue (affects core use)</option>
+                            <option value="critical">Critical / Blocking</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-[1px] mb-1.5 ml-1">Steps to Reproduce</label>
+                        <textarea id="steps" rows="3" required class="w-full bg-white border border-slate-300 text-sm rounded-2xl p-4" placeholder="1. Go to...\n2. Click...\n3. See error..."></textarea>
+                    </div>
+                `;
+            } else if (type === 'suggestion') {
+                titleEl.textContent = 'Make a Suggestion';
+                fieldsContainer.innerHTML = `
+                    <div>
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-[1px] mb-1.5 ml-1">Suggestion Title</label>
+                        <input type="text" id="suggestionTitle" required class="w-full bg-white border border-slate-300 text-sm rounded-2xl py-3 px-4" placeholder="e.g. Add dark mode for the resource viewer">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-[1px] mb-1.5 ml-1">Why would this be useful?</label>
+                        <textarea id="whyUseful" rows="3" required class="w-full bg-white border border-slate-300 text-sm rounded-2xl p-4" placeholder="This would help students..."></textarea>
+                    </div>
+                `;
+            } else if (type === 'legal') {
+                titleEl.textContent = 'Legal or Safety Request';
+                fieldsContainer.innerHTML = `
+                    <div>
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase tracking-[1px] mb-1.5 ml-1">Request Type</label>
+                        <select id="legalType" required class="w-full bg-white border border-slate-300 text-sm rounded-2xl py-3 px-4">
+                            <option value="dmca">DMCA / Copyright Takedown</option>
+                            <option value="privacy">Privacy / Data Request</option>
+                            <option value="safety">Safety or Harmful Content</option>
+                            <option value="other">Other Legal Matter</option>
+                        </select>
+                    </div>
+                `;
+            }
+
+            // Pre-fill URL if available
+            const params = new URLSearchParams(window.location.search);
+            const pageUrl = params.get('pageUrl');
+            if (pageUrl && pageUrl !== "undefined") {
+                urlInput.value = pageUrl;
+            }
+        }
+
+        function goBackToSelection() {
+            document.getElementById('formScreen').classList.add('hidden');
+            document.getElementById('typeSelection').classList.remove('hidden');
+            document.getElementById('successMessage').classList.add('hidden');
+            document.getElementById('errorMessage').classList.add('hidden');
+            document.getElementById('reportForm').style.display = '';
+            document.getElementById('reportForm').style.opacity = '1';
+            currentType = null;
+        }
+
+        function getFormData() {
+            const base = {
+                url: document.getElementById('urlInput').value,
+                type: currentType,
+                notes: document.getElementById('explanation').value,
+                timestamp: new Date().toISOString()
+            };
+
+            if (currentType === 'bug') {
+                base.severity = document.getElementById('severity')?.value;
+                base.steps = document.getElementById('steps')?.value;
+            } else if (currentType === 'suggestion') {
+                base.title = document.getElementById('suggestionTitle')?.value;
+                base.whyUseful = document.getElementById('whyUseful')?.value;
+            } else if (currentType === 'legal') {
+                base.legalType = document.getElementById('legalType')?.value;
+            }
+
+            return base;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
-            const pageUrl = params.get('pageUrl');
-            const input = document.getElementById('urlInput');
+            const typeParam = params.get('type');
 
-            if (pageUrl && pageUrl !== "undefined" && pageUrl !== "") {
-                input.value = pageUrl;
-                input.classList.add('bg-blue-50/30');
+            if (typeParam === 'bug' || typeParam === 'suggestion' || typeParam === 'legal') {
+                forcedType = typeParam;
             }
+
+            // Always render selection (filtered if forcedType exists)
+            renderTypeOptions();
         });
 
         async function submitReport(e) {
             e.preventDefault();
             
             const btn = document.getElementById('submitBtn');
+            const form = document.getElementById('reportForm');
             const success = document.getElementById('successMessage');
             const errorMsg = document.getElementById('errorMessage');
-            
-            // Prepare Data
-            const data = {
-                url: document.getElementById('urlInput').value,
-                type: document.getElementById('problemType').value,
-                notes: document.getElementById('explanation').value,
-                timestamp: new Date().toISOString()
-            };
 
-            // Loading State
+            const data = getFormData();
+
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Sending...';
             errorMsg.classList.add('hidden');
 
             try {
-                // Send to Cloudflare Worker
                 const response = await fetch(await getReportEndpoint(), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -204,14 +437,19 @@
                 });
 
                 if (response.ok) {
-                    success.classList.remove('hidden');
+                    form.style.transition = 'opacity 0.2s';
+                    form.style.opacity = '0';
+                    setTimeout(() => {
+                        form.style.display = 'none';
+                        success.classList.remove('hidden');
+                    }, 150);
                 } else {
-                    throw new Error('Server returned error');
+                    throw new Error('Server error');
                 }
             } catch (err) {
                 console.error(err);
                 btn.disabled = false;
-                btn.innerHTML = '<span>Try Again</span>';
+                btn.innerHTML = 'Submit';
                 errorMsg.classList.remove('hidden');
             }
         }
