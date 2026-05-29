@@ -36,10 +36,10 @@
       label: "Support",
       href: "/support/help_center.html",
       links: [
-        ["Help centre", "/support/help_center.html"],
-        ["FAQ", "/faq.html"],
-        ["Contact", "/contact.html"],
-        ["Report issue", "/report.html"]
+        ["Help Centre", "/support/help_center.html"],
+        ["Privacy", "/legal/privacy.html"],
+        ["TOS", "/legal/tos.html"],
+        ["Contributions", "/legal/contributions.html"]
       ]
     }
   ];

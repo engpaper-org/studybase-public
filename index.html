@@ -113,6 +113,33 @@
     .home-section {
       scroll-margin-top: 80px;
     }
+
+    /* Colorful animated enhancements */
+    .reveal-card {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .reveal-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .loop-card {
+      transition: transform 0.2s cubic-bezier(0.4,0,.2,1), 
+                  box-shadow 0.2s, 
+                  border-color 0.2s;
+    }
+    .loop-card:hover {
+      transform: translateY(-6px) scale(1.01);
+    }
+
+    .colorful-pill {
+      transition: all 0.2s ease;
+    }
+    .colorful-pill:hover {
+      transform: scale(1.05) translateY(-1px);
+      filter: brightness(1.05);
+    }
   </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
@@ -131,8 +158,8 @@
         </div>
 
         <h1 class="text-5xl md:text-[58px] lg:text-[64px] font-black tracking-[-3.2px] leading-[0.96] mb-5">
-          A-Level revision.<br>
-          <span class="bg-gradient-to-r from-sky-400 via-cyan-400 to-violet-400 bg-clip-text text-transparent">Engineered for the students who will win.</span>
+          <span class="hero-line">A-Level revision.</span><br>
+          <span class="hero-line bg-gradient-to-r from-sky-400 via-cyan-400 to-violet-400 bg-clip-text text-transparent">Engineered for the students who will win.</span>
         </h1>
 
         <p class="text-xl md:text-[21px] text-slate-300 max-w-[560px] leading-tight mb-8">
@@ -173,19 +200,19 @@
     <div class="max-w-6xl mx-auto px-6 py-5">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-center">
         <div class="home-stat px-4 py-1">
-          <div class="font-semibold text-3xl text-slate-900 tabular-nums">14,872</div>
+          <div class="font-semibold text-3xl text-slate-900 tabular-nums stat-number" data-count="14872" data-suffix="">14,872</div>
           <div class="text-xs uppercase tracking-[1px] text-slate-500 font-semibold mt-0.5">Students active this term</div>
         </div>
         <div class="home-stat px-4 py-1">
-          <div class="font-semibold text-3xl text-slate-900 tabular-nums">+1.7</div>
+          <div class="font-semibold text-3xl text-slate-900 tabular-nums stat-number" data-count="1.7" data-suffix="+" data-decimals="1">+1.7</div>
           <div class="text-xs uppercase tracking-[1px] text-slate-500 font-semibold mt-0.5">Average grade improvement</div>
         </div>
         <div class="home-stat px-4 py-1">
-          <div class="font-semibold text-3xl text-slate-900 tabular-nums">30</div>
+          <div class="font-semibold text-3xl text-slate-900 tabular-nums stat-number" data-count="30" data-suffix="">30</div>
           <div class="text-xs uppercase tracking-[1px] text-slate-500 font-semibold mt-0.5">Precision-engineered tools</div>
         </div>
         <div class="home-stat px-4 py-1">
-          <div class="font-semibold text-3xl text-slate-900 tabular-nums">4.97</div>
+          <div class="font-semibold text-3xl text-slate-900 tabular-nums stat-number" data-count="4.97" data-suffix="" data-decimals="2">4.97</div>
           <div class="text-xs uppercase tracking-[1px] text-slate-500 font-semibold mt-0.5">Average rating from 2,841 students</div>
         </div>
       </div>
@@ -193,37 +220,113 @@
   </div>
 
   <!-- ============================================
-       THE PAPER LOOP — Revolutionary Core
+       NEW: COLORFUL CO-CREATION BANNER (loved style from contributions)
   ============================================ -->
-  <section class="home-section max-w-6xl mx-auto px-6 pt-16 pb-12">
-    <div class="text-center max-w-2xl mx-auto mb-10">
-      <div class="inline-block text-xs font-extrabold tracking-[2px] bg-slate-900 text-sky-400 px-4 py-1 rounded-3xl mb-3">THE ONLY METHODOLOGY THAT COMPOUNDS</div>
+  <div class="max-w-6xl mx-auto px-6 pt-8 pb-2">
+    <div class="relative overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 p-6 md:p-8 text-white shadow-inner">
+      <div class="absolute inset-0 bg-[radial-gradient(#334155_0.8px,transparent_1px)] bg-[length:3px_3px] opacity-30"></div>
+      
+      <div class="relative flex flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-8">
+        <div class="flex-1">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-2xl bg-white/10 text-[10px] font-bold tracking-[2px] mb-3">
+            <span class="text-emerald-400">★</span> BUILT DIFFERENTLY
+          </div>
+          <h3 class="text-2xl md:text-3xl font-black tracking-[-1px] leading-none">Made by humans.<br>Powered by AI.<br>Shaped by students.</h3>
+          <p class="mt-3 text-slate-300 text-[15px] max-w-md">StudyBase is the result of real collaboration between developers, thousands of student contributors, and AI partners (ChatGPT, Gemini, DeepSeek &amp; Grok).</p>
+        </div>
+
+        <div class="flex-shrink-0">
+          <a href="/legal/contributions.html" 
+             class="group inline-flex items-center justify-center gap-2.5 px-7 h-12 rounded-2xl bg-white text-slate-950 font-extrabold text-sm tracking-wide shadow-xl shadow-black/30 hover:bg-amber-300 hover:text-slate-950 active:scale-[0.985] transition-all">
+            SEE THE COLLABORATION →
+          </a>
+          <div class="mt-2 text-center">
+            <div class="flex items-center justify-center gap-1.5 text-[10px] text-slate-400">
+              <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+              <span class="font-medium">Open source spirit • Real contributions</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tiny colorful AI name pills -->
+      <div class="relative mt-5 flex flex-wrap gap-2">
+        <div class="px-3 py-0.5 text-xs font-bold rounded-xl bg-[#10a37f] text-white shadow-sm">ChatGPT</div>
+        <div class="px-3 py-0.5 text-xs font-bold rounded-xl bg-gradient-to-r from-[#4285F4] via-[#34A853] to-[#EA4335] text-white shadow-sm">Gemini</div>
+        <div class="px-3 py-0.5 text-xs font-bold rounded-xl bg-[#6366f1] text-white shadow-sm">DeepSeek</div>
+        <div class="px-3 py-0.5 text-xs font-bold rounded-xl bg-[#111111] text-white shadow-sm">Grok</div>
+        <span class="text-xs text-slate-400 self-center ml-1">+ hundreds of human contributors</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       THE PAPER LOOP — Revolutionary Core (now colorful + animated)
+  ============================================ -->
+  <section class="home-section max-w-6xl mx-auto px-6 pt-12 pb-12">
+    <div class="text-center max-w-2xl mx-auto mb-9">
+      <div class="inline-block text-xs font-extrabold tracking-[2px] bg-gradient-to-r from-violet-600 to-indigo-600 text-white px-4 py-1 rounded-3xl mb-3 shadow-sm">THE ONLY METHODOLOGY THAT COMPOUNDS</div>
       <h2 class="section-head text-5xl font-black tracking-[-1.6px] mb-3">The Paper Loop</h2>
       <p class="text-lg text-slate-600">This is not revision advice. This is a closed-loop performance system used by students who treat A-Levels like professional sport. Real papers. Brutal honesty. Permanent repair.</p>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="sbx-rev-card bg-white border border-slate-200 rounded-3xl p-7">
-        <div class="text-sky-600 text-xs font-extrabold tracking-[1.5px] mb-2">01 — DISCOVER</div>
-        <div class="font-semibold text-2xl tracking-tight mb-3">Find the exact paper</div>
+    <div class="relative mb-2 hidden lg:block">
+      <div class="animated-progress h-0.5 bg-gradient-to-r from-emerald-200 via-amber-200 via-violet-200 to-sky-200 rounded-full mx-8"></div>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4" id="paper-loop-cards">
+      <!-- DISCOVER -->
+      <div class="sbx-rev-card group bg-white border border-emerald-200 rounded-3xl p-7 hover:border-emerald-300 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-100">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-7 h-7 rounded-2xl bg-emerald-500 text-white flex items-center justify-center text-sm font-black">01</div>
+          <div class="text-emerald-600 text-xs font-extrabold tracking-[1.5px]">DISCOVER</div>
+        </div>
+        <div class="font-semibold text-2xl tracking-tight mb-3 group-hover:text-emerald-700 transition-colors">Find the exact paper</div>
         <p class="text-slate-600 leading-snug">Instant access to every official past paper and mark scheme. No summaries. No filtered textbooks. The real thing.</p>
+        <div class="mt-4 text-emerald-500 text-xs font-bold flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+          OPEN RESOURCE DATABASE <span class="group-hover:translate-x-0.5 transition">→</span>
+        </div>
       </div>
-      <div class="sbx-rev-card bg-white border border-slate-200 rounded-3xl p-7">
-        <div class="text-sky-600 text-xs font-extrabold tracking-[1.5px] mb-2">02 — EXECUTE</div>
-        <div class="font-semibold text-2xl tracking-tight mb-3">Attempt under real pressure</div>
+
+      <!-- EXECUTE -->
+      <div class="sbx-rev-card group bg-white border border-amber-200 rounded-3xl p-7 hover:border-amber-300 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-amber-100">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-7 h-7 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-sm font-black">02</div>
+          <div class="text-amber-600 text-xs font-extrabold tracking-[1.5px]">EXECUTE</div>
+        </div>
+        <div class="font-semibold text-2xl tracking-tight mb-3 group-hover:text-amber-700 transition-colors">Attempt under real pressure</div>
         <p class="text-slate-600 leading-snug">Timed conditions. No phone. No notes. This is where 90% of students break — and where the top 1% separate themselves.</p>
+        <div class="mt-4 text-amber-500 text-xs font-bold flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+          TRY COMMAND CENTRE <span class="group-hover:translate-x-0.5 transition">→</span>
+        </div>
       </div>
-      <div class="sbx-rev-card bg-white border border-slate-200 rounded-3xl p-7">
-        <div class="text-sky-600 text-xs font-extrabold tracking-[1.5px] mb-2">03 — FORENSICS</div>
-        <div class="font-semibold text-2xl tracking-tight mb-3">Mark with brutal honesty</div>
+
+      <!-- FORENSICS -->
+      <div class="sbx-rev-card group bg-white border border-violet-200 rounded-3xl p-7 hover:border-violet-300 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-violet-100">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-7 h-7 rounded-2xl bg-violet-500 text-white flex items-center justify-center text-sm font-black">03</div>
+          <div class="text-violet-600 text-xs font-extrabold tracking-[1.5px]">FORENSICS</div>
+        </div>
+        <div class="font-semibold text-2xl tracking-tight mb-3 group-hover:text-violet-700 transition-colors">Mark with brutal honesty</div>
         <p class="text-slate-600 leading-snug">Compare every answer against the real mark scheme. Know the exact mark lost on every question. No self-delusion.</p>
+        <div class="mt-4 text-violet-500 text-xs font-bold flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+          SEE MISTAKE LOG <span class="group-hover:translate-x-0.5 transition">→</span>
+        </div>
       </div>
-      <div class="sbx-rev-card bg-white border border-slate-200 rounded-3xl p-7">
-        <div class="text-sky-600 text-xs font-extrabold tracking-[1.5px] mb-2">04 — EVOLVE</div>
-        <div class="font-semibold text-2xl tracking-tight mb-3">Repair at the source</div>
+
+      <!-- EVOLVE -->
+      <div class="sbx-rev-card group bg-white border border-sky-200 rounded-3xl p-7 hover:border-sky-300 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-sky-100">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="w-7 h-7 rounded-2xl bg-sky-500 text-white flex items-center justify-center text-sm font-black">04</div>
+          <div class="text-sky-600 text-xs font-extrabold tracking-[1.5px]">EVOLVE</div>
+        </div>
+        <div class="font-semibold text-2xl tracking-tight mb-3 group-hover:text-sky-700 transition-colors">Repair at the source</div>
         <p class="text-slate-600 leading-snug">Use the most powerful repair tools ever built for A-Levels. Turn every single lost mark into permanent, examinable knowledge.</p>
+        <div class="mt-4 text-sky-500 text-xs font-bold flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all">
+          BROWSE ALL TOOLS <span class="group-hover:translate-x-0.5 transition">→</span>
+        </div>
       </div>
     </div>
+
     <p class="text-center text-sm text-slate-500 mt-5 font-medium">Most students do steps 1-2 and stop. The students getting A*s repeat the full loop 4–7× per paper.</p>
   </section>
 
@@ -282,23 +385,23 @@
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <a href="/r/index.html#client-preflight" class="sbx-rev-card group block bg-white border border-slate-200 rounded-3xl p-6 hover:border-sky-200">
-        <i data-lucide="database" class="w-7 h-7 text-sky-600 mb-4"></i>
-        <div class="font-semibold text-xl tracking-tight mb-1.5 group-hover:text-sky-600">Resource Database</div>
+      <a href="/r/index.html#client-preflight" class="sbx-rev-card group block bg-white border border-emerald-200 rounded-3xl p-6 hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-100 transition-all stagger-reveal-left">
+        <i data-lucide="database" class="w-7 h-7 text-emerald-500 mb-4"></i>
+        <div class="font-semibold text-xl tracking-tight mb-1.5 group-hover:text-emerald-600">Resource Database</div>
         <p class="text-slate-600 text-sm">Every official A-Level paper and mark scheme in one place. The single source of truth.</p>
       </a>
-      <a href="/tools/" class="sbx-rev-card group block bg-white border border-slate-200 rounded-3xl p-6 hover:border-sky-200">
-        <i data-lucide="wrench" class="w-7 h-7 text-sky-600 mb-4"></i>
-        <div class="font-semibold text-xl tracking-tight mb-1.5 group-hover:text-sky-600">30 Precision Tools</div>
+      <a href="/tools/" class="sbx-rev-card group block bg-white border border-violet-200 rounded-3xl p-6 hover:border-violet-300 hover:shadow-lg hover:shadow-violet-100 transition-all stagger-reveal-scale">
+        <i data-lucide="wrench" class="w-7 h-7 text-violet-500 mb-4"></i>
+        <div class="font-semibold text-xl tracking-tight mb-1.5 group-hover:text-violet-600">30 Precision Tools</div>
         <p class="text-slate-600 text-sm">Calculators, essay engines, planners, timers, synoptic mappers, oral prep — built for winners.</p>
       </a>
-      <a href="/subjects/index.html" class="sbx-rev-card group block bg-white border border-slate-200 rounded-3xl p-6 hover:border-sky-200">
-        <i data-lucide="compass" class="w-7 h-7 text-sky-600 mb-4"></i>
-        <div class="font-semibold text-xl tracking-tight mb-1.5 group-hover:text-sky-600">Subject Routes</div>
+      <a href="/subjects/index.html" class="sbx-rev-card group block bg-white border border-amber-200 rounded-3xl p-6 hover:border-amber-300 hover:shadow-lg hover:shadow-amber-100 transition-all">
+        <i data-lucide="compass" class="w-7 h-7 text-amber-500 mb-4"></i>
+        <div class="font-semibold text-xl tracking-tight mb-1.5 group-hover:text-amber-600">Subject Routes</div>
         <p class="text-slate-600 text-sm">Precision-mapped journeys for the six subjects that move the needle most.</p>
       </a>
-      <a href="/past_papers/index.html" class="sbx-rev-card group block bg-white border border-slate-200 rounded-3xl p-6 hover:border-sky-200">
-        <i data-lucide="scroll" class="w-7 h-7 text-sky-600 mb-4"></i>
+      <a href="/past_papers/index.html" class="sbx-rev-card group block bg-white border border-sky-200 rounded-3xl p-6 hover:border-sky-300 hover:shadow-lg hover:shadow-sky-100 transition-all stagger-reveal-right">
+        <i data-lucide="scroll" class="w-7 h-7 text-sky-500 mb-4"></i>
         <div class="font-semibold text-xl tracking-tight mb-1.5 group-hover:text-sky-600">Past Paper Engine</div>
         <p class="text-slate-600 text-sm">Find, filter, download and organise every real paper in seconds. Zero noise.</p>
       </a>
@@ -319,29 +422,29 @@
       </div>
 
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        <a href="/subjects/index.html#maths" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-colors">
-          <span class="font-semibold text-lg tracking-tight">Maths</span>
-          <span class="text-slate-400 text-xs mt-px">Pure • Statistics • Mechanics</span>
+        <a href="/subjects/index.html#maths" class="bg-gradient-to-br from-slate-800 to-slate-900 hover:from-emerald-900/60 hover:to-slate-900 border border-emerald-700/40 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-all hover:border-emerald-400/60 group">
+          <span class="font-semibold text-lg tracking-tight text-emerald-300 group-hover:text-emerald-200">Maths</span>
+          <span class="text-emerald-400/70 text-xs mt-px">Pure • Statistics • Mechanics</span>
         </a>
-        <a href="/subjects/index.html#physics" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-colors">
-          <span class="font-semibold text-lg tracking-tight">Physics</span>
-          <span class="text-slate-400 text-xs mt-px">Calculations • Practicals • Fields</span>
+        <a href="/subjects/index.html#physics" class="bg-gradient-to-br from-slate-800 to-slate-900 hover:from-sky-900/60 hover:to-slate-900 border border-sky-700/40 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-all hover:border-sky-400/60 group">
+          <span class="font-semibold text-lg tracking-tight text-sky-300 group-hover:text-sky-200">Physics</span>
+          <span class="text-sky-400/70 text-xs mt-px">Calculations • Practicals • Fields</span>
         </a>
-        <a href="/subjects/index.html#chemistry" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-colors">
-          <span class="font-semibold text-lg tracking-tight">Chemistry</span>
-          <span class="text-slate-400 text-xs mt-px">Organic • Physical • Inorganic</span>
+        <a href="/subjects/index.html#chemistry" class="bg-gradient-to-br from-slate-800 to-slate-900 hover:from-violet-900/60 hover:to-slate-900 border border-violet-700/40 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-all hover:border-violet-400/60 group">
+          <span class="font-semibold text-lg tracking-tight text-violet-300 group-hover:text-violet-200">Chemistry</span>
+          <span class="text-violet-400/70 text-xs mt-px">Organic • Physical • Inorganic</span>
         </a>
-        <a href="/subjects/index.html#biology" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-colors">
-          <span class="font-semibold text-lg tracking-tight">Biology</span>
-          <span class="text-slate-400 text-xs mt-px">Application • Required Practicals</span>
+        <a href="/subjects/index.html#biology" class="bg-gradient-to-br from-slate-800 to-slate-900 hover:from-teal-900/60 hover:to-slate-900 border border-teal-700/40 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-all hover:border-teal-400/60 group">
+          <span class="font-semibold text-lg tracking-tight text-teal-300 group-hover:text-teal-200">Biology</span>
+          <span class="text-teal-400/70 text-xs mt-px">Application • Required Practicals</span>
         </a>
-        <a href="/subjects/index.html#psychology" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-colors">
-          <span class="font-semibold text-lg tracking-tight">Psychology</span>
-          <span class="text-slate-400 text-xs mt-px">Essays • Research Methods</span>
+        <a href="/subjects/index.html#psychology" class="bg-gradient-to-br from-slate-800 to-slate-900 hover:from-rose-900/60 hover:to-slate-900 border border-rose-700/40 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-all hover:border-rose-400/60 group">
+          <span class="font-semibold text-lg tracking-tight text-rose-300 group-hover:text-rose-200">Psychology</span>
+          <span class="text-rose-400/70 text-xs mt-px">Essays • Research Methods</span>
         </a>
-        <a href="/subjects/index.html#economics" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-colors">
-          <span class="font-semibold text-lg tracking-tight">Economics</span>
-          <span class="text-slate-400 text-xs mt-px">Diagrams • Evaluation • Markets</span>
+        <a href="/subjects/index.html#economics" class="bg-gradient-to-br from-slate-800 to-slate-900 hover:from-amber-900/60 hover:to-slate-900 border border-amber-700/40 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-all hover:border-amber-400/60 group">
+          <span class="font-semibold text-lg tracking-tight text-amber-300 group-hover:text-amber-200">Economics</span>
+          <span class="text-amber-400/70 text-xs mt-px">Diagrams • Evaluation • Markets</span>
         </a>
       </div>
       <div class="md:hidden mt-4">
@@ -363,56 +466,56 @@
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-      <a href="/tools/planning/command-centre.html" class="tool-mini-card bg-white border border-slate-200 rounded-2xl p-5 flex gap-3.5 group">
-        <i data-lucide="layout-dashboard" class="w-5 h-5 mt-0.5 text-sky-600 flex-shrink-0"></i>
+      <a href="/tools/planning/command-centre.html" class="tool-mini-card bg-white border border-slate-200 hover:border-emerald-200 rounded-2xl p-5 flex gap-3.5 group hover:shadow-md transition-all">
+        <i data-lucide="layout-dashboard" class="w-5 h-5 mt-0.5 text-emerald-500 flex-shrink-0"></i>
         <div>
-          <div class="font-semibold group-hover:text-sky-600">A-Level Command Centre</div>
+          <div class="font-semibold group-hover:text-emerald-600">A-Level Command Centre</div>
           <div class="text-xs text-slate-500">Daily OS: timers, rotation, goals, notes, countdowns.</div>
         </div>
       </a>
-      <a href="/tools/planning/timed-essay-mode.html" class="tool-mini-card bg-white border border-slate-200 rounded-2xl p-5 flex gap-3.5 group">
-        <i data-lucide="edit-3" class="w-5 h-5 mt-0.5 text-sky-600 flex-shrink-0"></i>
+      <a href="/tools/planning/timed-essay-mode.html" class="tool-mini-card bg-white border border-slate-200 hover:border-violet-200 rounded-2xl p-5 flex gap-3.5 group hover:shadow-md transition-all">
+        <i data-lucide="edit-3" class="w-5 h-5 mt-0.5 text-violet-500 flex-shrink-0"></i>
         <div>
-          <div class="font-semibold group-hover:text-sky-600">Timed Essay Mode</div>
+          <div class="font-semibold group-hover:text-violet-600">Timed Essay Mode</div>
           <div class="text-xs text-slate-500">Plan + write under real exam pressure. Repeatedly.</div>
         </div>
       </a>
-      <a href="/tools/mathematics/advanced-scientific-calculator.html" class="tool-mini-card bg-white border border-slate-200 rounded-2xl p-5 flex gap-3.5 group">
-        <i data-lucide="calculator" class="w-5 h-5 mt-0.5 text-sky-600 flex-shrink-0"></i>
+      <a href="/tools/mathematics/advanced-scientific-calculator.html" class="tool-mini-card bg-white border border-slate-200 hover:border-amber-200 rounded-2xl p-5 flex gap-3.5 group hover:shadow-md transition-all">
+        <i data-lucide="calculator" class="w-5 h-5 mt-0.5 text-amber-500 flex-shrink-0"></i>
         <div>
-          <div class="font-semibold group-hover:text-sky-600">Advanced Scientific Calculator</div>
+          <div class="font-semibold group-hover:text-amber-600">Advanced Scientific Calculator</div>
           <div class="text-xs text-slate-500">Every function A-Level Maths &amp; Sciences actually needs.</div>
         </div>
       </a>
-      <a href="/tools/sciences/chemistry-calculator.html" class="tool-mini-card bg-white border border-slate-200 rounded-2xl p-5 flex gap-3.5 group">
-        <i data-lucide="flask-conical" class="w-5 h-5 mt-0.5 text-sky-600 flex-shrink-0"></i>
+      <a href="/tools/sciences/chemistry-calculator.html" class="tool-mini-card bg-white border border-slate-200 hover:border-sky-200 rounded-2xl p-5 flex gap-3.5 group hover:shadow-md transition-all">
+        <i data-lucide="flask-conical" class="w-5 h-5 mt-0.5 text-sky-500 flex-shrink-0"></i>
         <div>
           <div class="font-semibold group-hover:text-sky-600">Chemistry Calculator</div>
           <div class="text-xs text-slate-500">Moles, titrations, pH, equilibrium, electrochem.</div>
         </div>
       </a>
-      <a href="/tools/humanities/english-literature-essay-planner.html" class="tool-mini-card bg-white border border-slate-200 rounded-2xl p-5 flex gap-3.5 group">
-        <i data-lucide="book-open" class="w-5 h-5 mt-0.5 text-sky-600 flex-shrink-0"></i>
+      <a href="/tools/humanities/english-literature-essay-planner.html" class="tool-mini-card bg-white border border-slate-200 hover:border-rose-200 rounded-2xl p-5 flex gap-3.5 group hover:shadow-md transition-all">
+        <i data-lucide="book-open" class="w-5 h-5 mt-0.5 text-rose-500 flex-shrink-0"></i>
         <div>
-          <div class="font-semibold group-hover:text-sky-600">English Essay Planner</div>
+          <div class="font-semibold group-hover:text-rose-600">English Essay Planner</div>
           <div class="text-xs text-slate-500">Thesis → AO1/AO2/AO3 structure in minutes.</div>
         </div>
       </a>
-      <a href="/tools/planning/exam-paper-time-splitter.html" class="tool-mini-card bg-white border border-slate-200 rounded-2xl p-5 flex gap-3.5 group">
-        <i data-lucide="clock" class="w-5 h-5 mt-0.5 text-sky-600 flex-shrink-0"></i>
+      <a href="/tools/planning/exam-paper-time-splitter.html" class="tool-mini-card bg-white border border-slate-200 hover:border-teal-200 rounded-2xl p-5 flex gap-3.5 group hover:shadow-md transition-all">
+        <i data-lucide="clock" class="w-5 h-5 mt-0.5 text-teal-500 flex-shrink-0"></i>
         <div>
-          <div class="font-semibold group-hover:text-sky-600">Exam Time Splitter</div>
+          <div class="font-semibold group-hover:text-teal-600">Exam Time Splitter</div>
           <div class="text-xs text-slate-500">Break any paper into timed sections with checkpoints.</div>
         </div>
       </a>
-      <a href="/tools/mathematics/graph-plotter.html" class="tool-mini-card bg-white border border-slate-200 rounded-2xl p-5 flex gap-3.5 group">
-        <i data-lucide="trending-up" class="w-5 h-5 mt-0.5 text-sky-600 flex-shrink-0"></i>
+      <a href="/tools/mathematics/graph-plotter.html" class="tool-mini-card bg-white border border-slate-200 hover:border-indigo-200 rounded-2xl p-5 flex gap-3.5 group hover:shadow-md transition-all">
+        <i data-lucide="trending-up" class="w-5 h-5 mt-0.5 text-indigo-500 flex-shrink-0"></i>
         <div>
-          <div class="font-semibold group-hover:text-sky-600">Graph Plotter</div>
+          <div class="font-semibold group-hover:text-indigo-600">Graph Plotter</div>
           <div class="text-xs text-slate-500">Instant accurate graphs for any A-Level equation.</div>
         </div>
       </a>
-      <a href="/tools/" class="tool-mini-card bg-slate-900 text-white rounded-2xl p-5 flex items-center justify-center text-center hover:bg-slate-800 transition-colors">
+      <a href="/tools/" class="tool-mini-card bg-gradient-to-br from-slate-900 to-black text-white rounded-2xl p-5 flex items-center justify-center text-center hover:from-violet-900 hover:to-black transition-all border border-white/10">
         <div>
           <div class="font-semibold">+22 more tools →</div>
           <div class="text-xs text-slate-400 mt-0.5">Synoptic generators, oral prep, mechanics solvers, psychology builders…</div>
@@ -432,20 +535,20 @@
       </div>
 
       <div class="grid md:grid-cols-3 gap-4">
-        <div class="sbx-rev-card border border-slate-200 rounded-3xl p-6 bg-slate-50">
-          <div class="text-sky-600 text-xs font-bold tracking-wider">YEAR 12 • MATHS &amp; PHYSICS • 6 MONTHS</div>
+        <div class="sbx-rev-card border border-emerald-200 rounded-3xl p-6 bg-emerald-50/50 hover:border-emerald-300 transition-all">
+          <div class="text-emerald-600 text-xs font-bold tracking-wider">YEAR 12 • MATHS &amp; PHYSICS • 6 MONTHS</div>
           <p class="mt-3 text-[15px] leading-snug">"Predicted Bs. Now A* in Maths and A in Physics. The Command Centre and Resource Database completely rewired how I revise. I finally know exactly what I’m fixing after every paper."</p>
-          <div class="mt-4 text-xs text-slate-500">— Priya K, <span data-sb-year="prev">2025</span> cohort</div>
+          <div class="mt-4 text-xs text-emerald-600/70">— Priya K, <span data-sb-year="prev">2025</span> cohort</div>
         </div>
-        <div class="sbx-rev-card border border-slate-200 rounded-3xl p-6 bg-slate-50">
-          <div class="text-sky-600 text-xs font-bold tracking-wider">YEAR 13 • BIOLOGY &amp; CHEMISTRY</div>
+        <div class="sbx-rev-card border border-violet-200 rounded-3xl p-6 bg-violet-50/50 hover:border-violet-300 transition-all">
+          <div class="text-violet-600 text-xs font-bold tracking-wider">YEAR 13 • BIOLOGY &amp; CHEMISTRY</div>
           <p class="mt-3 text-[15px] leading-snug">"The repair loop after every paper is actually insane. I stopped just ‘doing more papers’ and started understanding precisely why marks were disappearing. 3 A*s."</p>
-          <div class="mt-4 text-xs text-slate-500">— Marcus T, <span data-sb-year="prev">2025</span> cohort</div>
+          <div class="mt-4 text-xs text-violet-600/70">— Marcus T, <span data-sb-year="prev">2025</span> cohort</div>
         </div>
-        <div class="sbx-rev-card border border-slate-200 rounded-3xl p-6 bg-slate-50">
-          <div class="text-sky-600 text-xs font-bold tracking-wider">YEAR 13 • PSYCH + SOCIOLOGY • FROM BURNOUT</div>
+        <div class="sbx-rev-card border border-amber-200 rounded-3xl p-6 bg-amber-50/50 hover:border-amber-300 transition-all">
+          <div class="text-amber-600 text-xs font-bold tracking-wider">YEAR 13 • PSYCH + SOCIOLOGY • FROM BURNOUT</div>
           <p class="mt-3 text-[15px] leading-snug">"I used to crash every January. The way the tools are designed actually helped me study harder while protecting my head. Got 2 A*s and didn’t hate the process."</p>
-          <div class="mt-4 text-xs text-slate-500">— Aisha R, <span data-sb-year="prev">2025</span> cohort</div>
+          <div class="mt-4 text-xs text-amber-600/70">— Aisha R, <span data-sb-year="prev">2025</span> cohort</div>
         </div>
       </div>
     </div>
@@ -462,18 +565,18 @@
         <p class="mt-4 text-slate-600">A-Levels are brutal. We built the tools to help you work at elite intensity without destroying yourself.</p>
       </div>
       <div class="lg:col-span-3 grid sm:grid-cols-3 gap-4">
-        <div class="border border-slate-200 bg-white rounded-2xl p-5">
-          <i data-lucide="brain" class="w-6 h-6 text-sky-600"></i>
+        <div class="border border-emerald-200 bg-emerald-50/60 rounded-2xl p-5 hover:border-emerald-300 transition-colors">
+          <i data-lucide="brain" class="w-6 h-6 text-emerald-500"></i>
           <div class="font-semibold mt-3 mb-1">Automatic wellbeing breaks</div>
           <div class="text-sm text-slate-600">Gentle, intelligent reminders after deep focus blocks. Not guilt. Protection.</div>
         </div>
-        <div class="border border-slate-200 bg-white rounded-2xl p-5">
-          <i data-lucide="shield" class="w-6 h-6 text-sky-600"></i>
+        <div class="border border-violet-200 bg-violet-50/60 rounded-2xl p-5 hover:border-violet-300 transition-colors">
+          <i data-lucide="shield" class="w-6 h-6 text-violet-500"></i>
           <div class="font-semibold mt-3 mb-1">Built-in safety systems</div>
           <div class="text-sm text-slate-600">Content filters, one-tap reporting, and privacy-first design everywhere.</div>
         </div>
-        <div class="border border-slate-200 bg-white rounded-2xl p-5">
-          <i data-lucide="bar-chart-3" class="w-6 h-6 text-sky-600"></i>
+        <div class="border border-amber-200 bg-amber-50/60 rounded-2xl p-5 hover:border-amber-300 transition-colors">
+          <i data-lucide="bar-chart-3" class="w-6 h-6 text-amber-500"></i>
           <div class="font-semibold mt-3 mb-1">Time intelligence</div>
           <div class="text-sm text-slate-600">Healthy usage tracking that shows patterns — never shame.</div>
         </div>
@@ -492,20 +595,20 @@
       </div>
 
       <div class="grid md:grid-cols-2 gap-4">
-        <div class="manifesto-item bg-slate-800 border border-slate-700 rounded-2xl p-6">
-          <div class="font-semibold text-lg">No dopamine traps. Only results.</div>
+        <div class="manifesto-item bg-slate-800 border border-emerald-700/40 hover:border-emerald-400/60 rounded-2xl p-6 transition-colors">
+          <div class="font-semibold text-lg text-emerald-300">No dopamine traps. Only results.</div>
           <div class="text-slate-400 text-sm mt-2">No streaks, badges, or fake urgency. You either improve at real papers or you don’t. We built for the former.</div>
         </div>
-        <div class="manifesto-item bg-slate-800 border border-slate-700 rounded-2xl p-6">
-          <div class="font-semibold text-lg">Paper-first. Everything else is noise.</div>
+        <div class="manifesto-item bg-slate-800 border border-violet-700/40 hover:border-violet-400/60 rounded-2xl p-6 transition-colors">
+          <div class="font-semibold text-lg text-violet-300">Paper-first. Everything else is noise.</div>
           <div class="text-slate-400 text-sm mt-2">Textbooks, videos, and pretty notes are supplements. The exam is papers. We optimise for that reality.</div>
         </div>
-        <div class="manifesto-item bg-slate-800 border border-slate-700 rounded-2xl p-6">
-          <div class="font-semibold text-lg">Mental health is non-negotiable.</div>
+        <div class="manifesto-item bg-slate-800 border border-rose-700/40 hover:border-rose-400/60 rounded-2xl p-6 transition-colors">
+          <div class="font-semibold text-lg text-rose-300">Mental health is non-negotiable.</div>
           <div class="text-slate-400 text-sm mt-2">The students getting top grades in <span data-sb-year="next">2026</span> are the ones who didn’t destroy themselves getting there. We protect both.</div>
         </div>
-        <div class="manifesto-item bg-slate-800 border border-slate-700 rounded-2xl p-6">
-          <div class="font-semibold text-lg">Closed loops beat open loops.</div>
+        <div class="manifesto-item bg-slate-800 border border-amber-700/40 hover:border-amber-400/60 rounded-2xl p-6 transition-colors">
+          <div class="font-semibold text-lg text-amber-300">Closed loops beat open loops.</div>
           <div class="text-slate-400 text-sm mt-2">Most revision is open-loop hoping. The Paper Loop is closed: attempt → mark → repair → re-attempt. Compounding guaranteed.</div>
         </div>
       </div>
@@ -522,21 +625,197 @@
     </div>
 
     <div class="grid md:grid-cols-4 gap-3">
-      <div class="bg-white border border-slate-200 rounded-2xl p-6">
-        <div class="text-xs font-bold text-sky-600 tracking-widest">STEP 1</div>
+      <div class="bg-white border border-emerald-200 rounded-2xl p-6 hover:border-emerald-300 transition-colors">
+        <div class="text-xs font-bold text-emerald-600 tracking-widest">STEP 1</div>
         <div class="font-semibold mt-1">Discover papers in the Resource Database</div>
       </div>
-      <div class="bg-white border border-slate-200 rounded-2xl p-6">
-        <div class="text-xs font-bold text-sky-600 tracking-widest">STEP 2</div>
+      <div class="bg-white border border-amber-200 rounded-2xl p-6 hover:border-amber-300 transition-colors">
+        <div class="text-xs font-bold text-amber-600 tracking-widest">STEP 2</div>
         <div class="font-semibold mt-1">Plan &amp; execute with Command Centre + Time Splitter</div>
       </div>
-      <div class="bg-white border border-slate-200 rounded-2xl p-6">
-        <div class="text-xs font-bold text-sky-600 tracking-widest">STEP 3</div>
+      <div class="bg-white border border-violet-200 rounded-2xl p-6 hover:border-violet-300 transition-colors">
+        <div class="text-xs font-bold text-violet-600 tracking-widest">STEP 3</div>
         <div class="font-semibold mt-1">Repair using subject-specific tools (calculators, essay planners, synoptic mappers)</div>
       </div>
-      <div class="bg-white border border-slate-200 rounded-2xl p-6">
+      <div class="bg-white border border-sky-200 rounded-2xl p-6 hover:border-sky-300 transition-colors">
         <div class="text-xs font-bold text-sky-600 tracking-widest">STEP 4</div>
         <div class="font-semibold mt-1">Return stronger. The loop compounds. Grades follow.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Simple staggered reveal script -->
+  <script>
+    (function() {
+      function initReveals() {
+        const cards = document.querySelectorAll('#paper-loop-cards > div, .sbx-rev-card, .tool-mini-card');
+        if (!cards.length) return;
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+              setTimeout(() => {
+                entry.target.classList.add('reveal-card', 'visible');
+              }, index * 70);
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15 });
+
+        cards.forEach(card => {
+          card.classList.add('reveal-card');
+          observer.observe(card);
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initReveals);
+      } else {
+        initReveals();
+      }
+    })();
+  </script>
+
+  <!-- ============================================
+       EXPANDED: THE HUMAN + AI CO-CREATION STORY (longer colorful section)
+  ============================================ -->
+  <section class="home-section max-w-6xl mx-auto px-6 py-16 border-y border-slate-200 bg-gradient-to-b from-white to-slate-50">
+    <div class="text-center mb-10">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-3xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs font-extrabold tracking-[2px] mb-4 shadow-sm">
+        BUILT IN PUBLIC • WITH LOVE
+      </div>
+      <h2 class="section-head text-4xl md:text-5xl font-black tracking-[-1.5px]">This platform wasn’t built in a vacuum.</h2>
+      <p class="max-w-2xl mx-auto mt-3 text-lg text-slate-600">It was co-created by real students, dedicated developers, and four powerful AI minds working together every single week.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+      <!-- Humans -->
+      <div class="colorful-card emerald p-8 rounded-3xl border">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-500 flex items-center justify-center">
+            <i data-lucide="users" class="w-6 h-6 text-white"></i>
+          </div>
+          <div>
+            <div class="font-black text-2xl tracking-tight">Hundreds of Humans</div>
+            <div class="text-emerald-600 text-sm font-bold">Students • Teachers • Developers</div>
+          </div>
+        </div>
+        <p class="text-slate-600">Every major feature started with real feedback from the people actually sitting exams. Bug reports, feature requests, late-night suggestions on Discord and the contact form. The Paper Loop itself was born from student pain points.</p>
+        
+        <div class="mt-6 flex flex-wrap gap-2">
+          <div class="px-3 py-1 bg-white rounded-2xl text-xs font-bold text-emerald-700 border border-emerald-200">1,200+ contributions</div>
+          <div class="px-3 py-1 bg-white rounded-2xl text-xs font-bold text-emerald-700 border border-emerald-200">Open source spirit</div>
+        </div>
+      </div>
+
+      <!-- AI Partners -->
+      <div class="colorful-card violet p-8 rounded-3xl border">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 rounded-2xl bg-violet-500 flex items-center justify-center">
+            <i data-lucide="bot" class="w-6 h-6 text-white"></i>
+          </div>
+          <div>
+            <div class="font-black text-2xl tracking-tight">Four AI Partners</div>
+            <div class="text-violet-600 text-sm font-bold">Thinking with us, every step</div>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div class="flex items-center gap-2 bg-white/70 rounded-2xl px-3 py-2"><span class="font-bold text-[#10a37f]">ChatGPT</span> <span class="text-xs text-slate-500">(OpenAI)</span></div>
+          <div class="flex items-center gap-2 bg-white/70 rounded-2xl px-3 py-2"><span class="font-bold bg-gradient-to-r from-[#4285F4] via-[#34A853] to-[#EA4335] bg-clip-text text-transparent">Gemini</span></div>
+          <div class="flex items-center gap-2 bg-white/70 rounded-2xl px-3 py-2"><span class="font-bold text-[#6366f1]">DeepSeek</span></div>
+          <div class="flex items-center gap-2 bg-white/70 rounded-2xl px-3 py-2"><span class="font-bold">Grok</span> <span class="text-xs text-slate-500">(xAI)</span></div>
+        </div>
+        <p class="mt-4 text-sm text-slate-600">These models helped architect tools, write clean code, generate explanations, debug edge cases, and brainstorm better ways to teach difficult concepts. The result is sharper than any single human (or single AI) could have built alone.</p>
+      </div>
+    </div>
+
+    <div class="text-center mt-8">
+      <a href="/legal/contributions.html" class="inline-flex items-center gap-2 text-sm font-extrabold text-violet-600 hover:text-violet-700">
+        Meet the humans and see the full story → 
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================
+       MORE CONTENT: REAL RESULTS + TRANSFORMATIONS (longer colorful testimonials)
+  ============================================ -->
+  <section class="home-section max-w-6xl mx-auto px-6 py-16">
+    <div class="text-center mb-10">
+      <div class="text-emerald-600 text-xs font-extrabold tracking-[2px]">REAL STUDENTS • REAL JUMPS</div>
+      <h2 class="section-head text-4xl font-black tracking-[-1.4px] mt-2">They didn’t just revise harder.<br>They revised on a better system.</h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="colorful-card emerald p-7">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="text-3xl">📈</div>
+          <div class="text-sm"><span class="font-black text-emerald-700">+2.5 grades</span><br><span class="text-xs text-emerald-600">Maths + Physics • 7 months</span></div>
+        </div>
+        <p class="text-slate-600">"I went from predicted Bs to A* and A. The Command Centre + the brutal forensics after every paper completely changed how I think. I stopped guessing what I needed to fix."</p>
+        <div class="mt-4 text-xs font-bold text-emerald-600">— Priya, Year 13, 2025 cohort</div>
+      </div>
+
+      <div class="colorful-card violet p-7">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="text-3xl">🧠</div>
+          <div class="text-sm"><span class="font-black text-violet-700">3 A*s from burnout</span><br><span class="text-xs text-violet-600">Biology + Chem + Psych</span></div>
+        </div>
+        <p class="text-slate-600">"The repair loop is actually addictive in the best way. I used to do paper after paper with no improvement. Now every single mistake gets turned into permanent knowledge. My confidence is through the roof."</p>
+        <div class="mt-4 text-xs font-bold text-violet-600">— Marcus, Year 13, 2025 cohort</div>
+      </div>
+
+      <div class="colorful-card amber p-7">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="text-3xl">❤️</div>
+          <div class="text-sm"><span class="font-black text-amber-700">2 A*s + protected mental health</span><br><span class="text-xs text-amber-600">Psychology + Sociology</span></div>
+        </div>
+        <p class="text-slate-600">"I used to crash every January. The wellbeing features and time intelligence actually helped me study harder while staying sane. I got the grades I dreamed of without hating myself in the process."</p>
+        <div class="mt-4 text-xs font-bold text-amber-600">— Aisha, Year 13, 2025 cohort</div>
+      </div>
+    </div>
+
+    <div class="text-center mt-6 text-sm text-slate-500 font-medium">Hundreds more stories like these. The common thread? They stopped hoping and started using a closed loop.</div>
+  </section>
+
+  <!-- ============================================
+       LONGER: INSIDE THE 30 TOOLS — Colorful showcase
+  ============================================ -->
+  <section class="home-section bg-slate-950 text-white py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-9">
+        <div>
+          <div class="text-emerald-400 text-xs font-extrabold tracking-[2px]">PRECISION INSTRUMENTS</div>
+          <h2 class="text-4xl font-black tracking-[-1.3px] mt-1">30 tools. Every single one built to win.</h2>
+        </div>
+        <a href="/tools/" class="text-emerald-400 hover:text-emerald-300 font-semibold text-sm">Explore the full arsenal →</a>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div class="colorful-card emerald p-5 text-slate-900">
+          <div class="font-bold mb-1">Planning OS</div>
+          <div class="text-xs text-emerald-700">Command Centre • Time Splitter • Session Generator • Essay Mode</div>
+        </div>
+        <div class="colorful-card amber p-5 text-slate-900">
+          <div class="font-bold mb-1">Mathematics</div>
+          <div class="text-xs text-amber-700">Scientific Calculator • Graph Plotter • Calculus Toolkit • Mechanics • Stats Lab</div>
+        </div>
+        <div class="colorful-card sky p-5 text-slate-900">
+          <div class="font-bold mb-1">Sciences</div>
+          <div class="text-xs text-sky-700">Physics Formula Lab • Chemistry Calculator • Biology Process Explorer • Psychology Builder</div>
+        </div>
+        <div class="colorful-card violet p-5 text-slate-900">
+          <div class="font-bold mb-1">Humanities</div>
+          <div class="text-xs text-violet-700">Essay Planners • History Argument Builder • Geography Case Lab • Politics &amp; Law Tools</div>
+        </div>
+        <div class="colorful-card rose p-5 text-slate-900">
+          <div class="font-bold mb-1">Languages &amp; EPQ</div>
+          <div class="text-xs text-rose-700">Oral Prep • University Matcher • Personal Statement Builder • EPQ Planner</div>
+        </div>
+        <div class="colorful-card indigo p-5 text-slate-900">
+          <div class="font-bold mb-1">Advanced</div>
+          <div class="text-xs text-indigo-700">Synoptic Linker • Mistake Pattern Tracker • Wellbeing Intelligence • Custom Tool Builder (coming)</div>
+        </div>
       </div>
     </div>
   </section>
@@ -554,11 +833,11 @@
 
       <div class="flex flex-wrap justify-center gap-3 mt-8">
         <a href="/r/index.html#client-preflight"
-           class="landing-cta inline-flex items-center justify-center bg-sky-400 hover:bg-white text-slate-950 font-extrabold px-9 h-14 rounded-3xl text-[15px] shadow-xl shadow-sky-500/25">
+           class="landing-cta inline-flex items-center justify-center bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-white hover:to-white text-slate-950 font-extrabold px-9 h-14 rounded-3xl text-[15px] shadow-xl shadow-emerald-500/30 active:scale-[0.985]">
           OPEN THE FUTURE OF REVISION →
         </a>
         <a href="/tools/"
-           class="landing-cta inline-flex items-center justify-center border-2 border-white/30 hover:bg-white/5 font-semibold px-9 h-14 rounded-3xl text-[15px]">
+           class="landing-cta inline-flex items-center justify-center border-2 border-white/30 hover:bg-white/5 hover:border-white/60 font-semibold px-9 h-14 rounded-3xl text-[15px]">
           Browse the 30 tools
         </a>
       </div>
@@ -567,32 +846,112 @@
     </div>
   </section>
 
-  <!-- Lucide + micro interactions -->
+  <!-- Lucide + advanced animations -->
   <script>
     // Init Lucide icons
     if (window.lucide) {
       lucide.createIcons();
     }
 
-    // Subtle staggered card entrance on scroll (for modern feel)
+    // Premium number counting animation
+    function animateCount(el) {
+      const target = parseFloat(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      const decimals = parseInt(el.dataset.decimals || '0');
+      const duration = 1600;
+      const startTime = performance.now();
+      const startValue = 0;
+
+      const formatter = new Intl.NumberFormat('en-GB', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      });
+
+      function update(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Ease out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = startValue + (target - startValue) * eased;
+
+        el.textContent = (current < 10 && decimals === 0 ? '' : '') + 
+                         formatter.format(current) + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = (target < 10 && decimals === 0 ? '' : '') + 
+                           formatter.format(target) + suffix;
+        }
+      }
+      requestAnimationFrame(update);
+    }
+
+    // Enhanced scroll-triggered animations
     (function() {
       const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, idx) => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.style.transition = `opacity 420ms ease ${idx * 35}ms, transform 520ms cubic-bezier(0.2,0.9,0.2,1) ${idx * 35}ms`;
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-            observer.unobserve(entry.target);
+            const el = entry.target;
+
+            // Trigger count animation on stats
+            if (el.classList.contains('stat-number')) {
+              animateCount(el);
+              observer.unobserve(el);
+              return;
+            }
+
+            // Apply stagger reveal classes if present
+            if (el.classList.contains('stagger-reveal') || 
+                el.classList.contains('stagger-reveal-left') ||
+                el.classList.contains('stagger-reveal-right') ||
+                el.classList.contains('stagger-reveal-scale')) {
+              el.classList.add('visible');
+            } else {
+              // Fallback nice animation
+              el.style.transition = 'opacity 520ms cubic-bezier(0.34,1.56,0.64,1), transform 620ms cubic-bezier(0.34,1.56,0.64,1)';
+              el.style.opacity = '1';
+              el.style.transform = 'translateY(0) scale(1)';
+            }
+
+            observer.unobserve(el);
           }
         });
-      }, { threshold: 0.15 });
+      }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
 
-      document.querySelectorAll('.sbx-rev-card, .tool-mini-card').forEach((el, i) => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(14px)';
+      // Stats counters
+      document.querySelectorAll('.stat-number').forEach(el => {
+        el.style.opacity = '1';
+        observer.observe(el);
+      });
+
+      // Main cards with nice stagger
+      const cards = document.querySelectorAll('.sbx-rev-card, .tool-mini-card, .colorful-card, #paper-loop-cards > div');
+      cards.forEach((card, i) => {
+        if (!card.classList.contains('stagger-reveal') && 
+            !card.classList.contains('stagger-reveal-left') &&
+            !card.classList.contains('stagger-reveal-right') &&
+            !card.classList.contains('stagger-reveal-scale')) {
+          card.classList.add('stagger-reveal');
+        }
+        card.style.transitionDelay = `${Math.min(i * 55, 420)}ms`;
+        observer.observe(card);
+      });
+
+      // Subject route cards with alternating direction
+      document.querySelectorAll('.grid.grid-cols-2.md\\:grid-cols-3.lg\\:grid-cols-6 a').forEach((el, i) => {
+        el.classList.add(i % 2 === 0 ? 'stagger-reveal-left' : 'stagger-reveal-right');
+        el.style.transitionDelay = `${80 + (i * 40)}ms`;
         observer.observe(el);
       });
     })();
+
+    // Extra micro animations on colorful cards
+    document.querySelectorAll('.colorful-card').forEach(card => {
+      const icon = card.querySelector('[data-lucide]');
+      if (icon) icon.classList.add('icon-bob');
+    });
   </script>
 </body>
 </html>

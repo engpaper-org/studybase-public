@@ -249,6 +249,234 @@ header .sbx-nav-theme-btn {
   transform: translateY(-2px);
 }
 
+/* ============================================
+   VIBRANT COLORFUL + ANIMATED SYSTEM (2026 refresh)
+   Inspired by the contributions page — more joy + color across the site
+   ============================================ */
+
+/* Colorful category cards */
+.colorful-card {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.2s, 
+              border-color 0.2s;
+  border-radius: 20px;
+}
+.colorful-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 25px -8px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.colorful-card.emerald { border-color: #a7f3d0; background: #f0fdf4; }
+.colorful-card.emerald:hover { border-color: #4ade80; box-shadow: 0 20px 25px -8px rgb(16 185 129 / 0.15); }
+
+.colorful-card.amber { border-color: #fde68a; background: #fffbeb; }
+.colorful-card.amber:hover { border-color: #fbbf24; box-shadow: 0 20px 25px -8px rgb(245 158 11 / 0.15); }
+
+.colorful-card.violet { border-color: #ddd6fe; background: #f5f3ff; }
+.colorful-card.violet:hover { border-color: #a78bfa; box-shadow: 0 20px 25px -8px rgb(139 92 246 / 0.15); }
+
+.colorful-card.sky { border-color: #bae6fd; background: #f0f9ff; }
+.colorful-card.sky:hover { border-color: #38bdf8; box-shadow: 0 20px 25px -8px rgb(14 165 233 / 0.15); }
+
+.colorful-card.rose { border-color: #fecdd3; background: #fff1f2; }
+.colorful-card.rose:hover { border-color: #fb7185; box-shadow: 0 20px 25px -8px rgb(244 63 94 / 0.15); }
+
+.colorful-card.indigo { border-color: #c7d2fe; background: #eef2ff; }
+.colorful-card.indigo:hover { border-color: #818cf8; box-shadow: 0 20px 25px -8px rgb(99 102 241 / 0.15); }
+
+.colorful-card.teal { border-color: #99f6e4; background: #f0fdfa; }
+.colorful-card.teal:hover { border-color: #2dd4bf; box-shadow: 0 20px 25px -8px rgb(13 148 136 / 0.15); }
+
+/* Animated elements */
+.float-slow {
+  animation: float-slow 3.2s ease-in-out infinite;
+}
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2.8s ease-in-out infinite;
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.35); }
+  50% { box-shadow: 0 0 0 16px rgba(16, 185, 129, 0); }
+}
+
+.stagger-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.stagger-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Gradient text helpers */
+.gradient-text-emerald {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.gradient-text-violet {
+  background: linear-gradient(135deg, #7c3aed, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.gradient-text-amber {
+  background: linear-gradient(135deg, #d97706, #fbbf24);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================================
+   ADVANCED ANIMATION UTILITIES (2026 refresh)
+   Better, smoother, more premium animations
+   ============================================ */
+
+.stagger-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 520ms cubic-bezier(0.34, 1.56, 0.64, 1), 
+              transform 620ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.stagger-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Directional staggers */
+.stagger-reveal-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 520ms cubic-bezier(0.34, 1.56, 0.64, 1), 
+              transform 620ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.stagger-reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+.stagger-reveal-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity 520ms cubic-bezier(0.34, 1.56, 0.64, 1), 
+              transform 620ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.stagger-reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+.stagger-reveal-scale {
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 480ms ease, transform 620ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.stagger-reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Icon micro-animations */
+.icon-bob {
+  transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.colorful-card:hover .icon-bob,
+.sbx-rev-card:hover .icon-bob {
+  transform: translateY(-3px) rotate(2deg);
+}
+
+.icon-pop {
+  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.colorful-card:hover .icon-pop {
+  transform: scale(1.2) rotate(8deg);
+}
+
+/* Number counter style */
+.stat-number {
+  font-variant-numeric: tabular-nums;
+  transition: color 200ms ease;
+}
+
+/* Progress / connection line */
+.animated-progress {
+  position: relative;
+  overflow: hidden;
+}
+.animated-progress::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.35),
+    transparent
+  );
+  animation: progress-shimmer 2.2s infinite;
+}
+@keyframes progress-shimmer {
+  0% { left: -100%; }
+  100% { left: 250%; }
+}
+
+/* Hero text line reveal */
+.hero-line {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroLineIn 680ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.hero-line:nth-child(2) { animation-delay: 120ms; }
+.hero-line:nth-child(3) { animation-delay: 240ms; }
+
+@keyframes heroLineIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fun micro interactions */
+.tool-icon {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.colorful-card:hover .tool-icon {
+  transform: scale(1.15) rotate(3deg);
+}
+
+/* Collaboration / colorful banner style */
+.collab-banner {
+  background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
+  position: relative;
+  overflow: hidden;
+}
+.collab-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(16,185,129,0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Connection line animation */
+.connection-line {
+  position: relative;
+}
+.connection-line::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #64748b, transparent);
+  animation: connection-flow 2.5s linear infinite;
+}
+@keyframes connection-flow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+}
+
 .sbx-manifesto-item {
   transition: all 0.2s ease;
 }

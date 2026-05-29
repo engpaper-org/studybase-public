@@ -25,12 +25,13 @@
     }
 
     :root {
-      --sb-blue: #1597ff;
-      --sb-cyan: #35d9ff;
-      --text: #050505;
-      --muted: rgba(0, 0, 0, 0.58);
-      --soft: rgba(0, 0, 0, 0.38);
-      --border: rgba(0, 0, 0, 0.08);
+      --theme-primary: #134e4b;
+      --theme-secondary: #0f766e;
+      --theme-accent: #5eead4;
+      --text: #0f172a;
+      --muted: #475569;
+      --soft: #64748b;
+      --border: #5eead4;
     }
 
     html,
@@ -55,17 +56,27 @@
       place-items: center;
       padding: clamp(12px, 4cqi, 32px);
       border-radius: clamp(14px, 4cqi, 28px);
-      border: 1px solid #e2e8f0;
-      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-      box-shadow: 0 12px 32px -12px rgba(15, 23, 42, 0.12), inset 0 0 0 1px rgba(255,255,255,0.95);
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, #f0fdfa 0%, #ccfbf1 100%);
+      box-shadow: 
+        0 12px 32px -12px rgba(13, 148, 136, 0.22),
+        0 4px 6px -4px rgba(13, 148, 136, 0.12),
+        inset 0 0 0 1px rgba(255,255,255,0.7);
       isolation: isolate;
       cursor: pointer;
       outline: none;
-      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                  box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .slot:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.14), inset 0 0 0 1px rgba(255,255,255,0.95);
+      transform: translateY(-4px) scale(1.005);
+      box-shadow: 
+        0 24px 48px -12px rgba(13, 148, 136, 0.28),
+        0 8px 16px -6px rgba(13, 148, 136, 0.18),
+        inset 0 0 0 1px rgba(255,255,255,0.85);
+    }
+    .slot:active {
+      transform: scale(0.985);
     }
 
     .slot::before {
@@ -90,11 +101,51 @@
       z-index: -1;
     }
 
+    /* Colorful soft background orbs */
+    .slot::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -25%;
+      width: 60%;
+      height: 75%;
+      background: radial-gradient(circle, rgba(52, 211, 153, 0.18) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .slot::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      left: -20%;
+      width: 50%;
+      height: 65%;
+      background: radial-gradient(circle, rgba(13, 148, 136, 0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
     .slot:focus-visible {
       box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.62),
-        0 18px 46px rgba(0, 0, 0, 0.06),
-        0 0 0 3px rgba(21, 151, 255, 0.18);
+        0 24px 48px -12px rgba(13, 148, 136, 0.32),
+        0 0 0 3px rgba(13, 148, 136, 0.28);
+    }
+
+    /* Subtle entrance animation */
+    .content {
+      animation: bannerFadeIn 420ms cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    }
+    @keyframes bannerFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .orb {
@@ -141,7 +192,7 @@
 
     h1 {
       max-width: 560px;
-      color: var(--text);
+      color: #134e4b;
       font-size: clamp(17px, 6.8cqi, 34px);
       line-height: 1.02;
       letter-spacing: -0.055em;
@@ -151,7 +202,7 @@
 
     p {
       max-width: 520px;
-      color: var(--muted);
+      color: #475569;
       font-size: clamp(10px, 3.1cqi, 15px);
       line-height: 1.42;
       font-weight: 650;
@@ -159,10 +210,14 @@
     }
 
     .cta {
-      color: var(--soft);
+      color: #0f766e;
       font-size: clamp(9px, 2.4cqi, 12px);
       font-weight: 800;
       letter-spacing: 0.02em;
+      transition: color 0.2s ease;
+    }
+    .slot:hover .cta {
+      color: #115e59;
     }
 
     .default-title,
@@ -343,8 +398,6 @@
 </head>
 <body>
   <main class="slot" id="supportBanner" aria-label="StudyBase substance safety banner" tabindex="0" role="link">
-    <!-- Decorative orbs removed for clean professional appearance -->
-
     <section class="content">
       <img
         draggable="false"

@@ -16,8 +16,15 @@
   <script src="/assets/js/core/sessionManager.js" defer></script>
   <script src="/assets/js/privacy/checkCookieConsent.js"></script>
   <style>
-    .subject-card { transition: all .2s cubic-bezier(0.4,0,.2,1); }
-    .subject-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+    .subject-card { 
+      transition: all .2s cubic-bezier(0.4,0,.2,1); 
+    }
+    .subject-card:hover { 
+      transform: translateY(-6px) scale(1.01); 
+      box-shadow: 0 20px 25px -8px rgb(0 0 0 / 0.12); 
+    }
+    .subject-card .icon-pop { transition: transform 220ms cubic-bezier(0.34,1.56,0.64,1); }
+    .subject-card:hover .icon-pop { transform: scale(1.15) rotate(5deg); }
     .mini-stat { font-size: 10px; padding: 1px 6px; background: #f1f5f9; border-radius: 999px; }
     .filter-btn { font-size: .75rem; padding: .35rem .75rem; border-radius: 999px; border: 1px solid #cbd5e1; background: white; }
     .filter-btn.active { background: #0f172a; color: white; border-color: #0f172a; }
@@ -27,10 +34,18 @@
   <div class="max-w-[1180px] mx-auto px-5 pt-7 pb-12">
     <div class="mb-8">
       <div class="flex items-center gap-3">
-        <span class="px-3 py-1 text-xs font-black tracking-widest bg-violet-100 text-violet-700 rounded-full">A-LEVEL SUBJECTS</span>
+        <span class="px-3 py-1 text-xs font-black tracking-widest bg-gradient-to-r from-violet-500 to-indigo-500 text-white rounded-full shadow-sm">A-LEVEL SUBJECTS</span>
       </div>
       <h1 class="text-4xl font-extrabold tracking-[-1.5px] mt-2">Choose your subject.<br>Every route is paper-first.</h1>
       <p class="text-slate-600 mt-2 max-w-xl">Select a subject to see recommended resources, common pitfalls, specification highlights and direct links into the Resource Database filtered for that course.</p>
+    </div>
+
+    <!-- Colorful collaboration teaser -->
+    <div class="mb-6 p-4 bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl text-white text-sm flex flex-col sm:flex-row items-start sm:items-center gap-3">
+      <div class="flex-1">
+        These routes were co-created with students + AI (ChatGPT, Gemini, DeepSeek, Grok).
+      </div>
+      <a href="/legal/contributions.html" class="text-xs font-bold px-4 py-1.5 bg-white/10 hover:bg-white/20 rounded-xl transition-colors whitespace-nowrap">See who built this →</a>
     </div>
 
     <!-- Top ad -->
@@ -80,16 +95,26 @@
       const filtered = filter === 'all' ? subjects : subjects.filter(s => s.id === filter || (filter === 'cs' && s.id === 'cs'));
 
       filtered.forEach(sub => {
+        const colorMap = {
+          blue: 'emerald',
+          indigo: 'sky',
+          emerald: 'emerald',
+          teal: 'teal',
+          violet: 'violet',
+          amber: 'amber',
+          slate: 'slate'
+        };
+        const accent = colorMap[sub.color] || 'slate';
         const el = document.createElement('div');
-        el.className = `subject-card bg-white border border-slate-200 rounded-3xl p-5 flex flex-col`;
+        el.className = `subject-card bg-white border border-${accent}-200 hover:border-${accent}-300 rounded-3xl p-5 flex flex-col transition-all hover:-translate-y-0.5`;
         el.innerHTML = `
           <div class="flex items-start gap-3">
             <img src="/assets/images/app-icons/${sub.icon}" class="w-11 h-11 rounded-2xl ring-1 ring-slate-100" alt="">
             <div class="flex-1 min-w-0">
-              <div class="font-extrabold text-xl tracking-tight">${sub.name}</div>
+              <div class="font-extrabold text-xl tracking-tight text-${accent}-700">${sub.name}</div>
               <div class="text-[10px] text-slate-500 mt-0.5">${sub.boards}</div>
             </div>
-            <span class="mini-stat">${sub.papers}</span>
+            <span class="mini-stat bg-${accent}-100 text-${accent}-700">${sub.papers}</span>
           </div>
           <div class="mt-3 text-sm text-slate-600 flex-1">${sub.desc}</div>
           <div class="mt-3 text-[10px] font-bold text-slate-500">FOCUS AREAS</div>
@@ -97,7 +122,7 @@
 
           <div class="mt-4 pt-3 border-t flex gap-2">
             <a href="/r/index.html#client-preflight" class="flex-1 text-center text-xs font-bold py-2 rounded-2xl border hover:bg-slate-50">Open in database</a>
-            <a href="/tools/" class="flex-1 text-center text-xs font-bold py-2 rounded-2xl bg-slate-900 text-white hover:bg-black">Study tools</a>
+            <a href="/tools/" class="flex-1 text-center text-xs font-bold py-2 rounded-2xl bg-gradient-to-r from-slate-900 to-black text-white hover:from-${accent}-700 hover:to-black">Study tools</a>
           </div>
         `;
         grid.appendChild(el);
@@ -130,6 +155,31 @@
     }
     init();
     window.addEventListener('hashchange', init);
+
+    // Nice staggered entrance for subject cards
+    setTimeout(() => {
+      const grid = document.getElementById('subject-grid');
+      if (grid) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+              setTimeout(() => {
+                entry.target.style.transition = `opacity 420ms ease, transform 520ms cubic-bezier(0.34,1.56,0.64,1)`;
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+              }, i * 60);
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+
+        grid.querySelectorAll('.subject-card').forEach(card => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(18px)';
+          observer.observe(card);
+        });
+      }
+    }, 300);
 
     console.log('%c[Subjects] Functional subject explorer ready', 'color:#64748b');
   </script>

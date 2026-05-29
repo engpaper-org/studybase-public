@@ -9,6 +9,35 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <script>
+    // Staggered colorful reveal animation (uses premium-system.css classes)
+    function initToolAnimations() {
+      const sections = ['planning-tools', 'math-tools', 'sciences-tools', 'humanities-tools', 'languages-tools'];
+      sections.forEach((id, sectionIndex) => {
+        const container = document.getElementById(id);
+        if (!container) return;
+        const cards = container.querySelectorAll('.colorful-card');
+        cards.forEach((card, i) => {
+          card.style.transitionDelay = `${(sectionIndex * 80) + (i * 45)}ms`;
+          card.classList.add('stagger-reveal-scale');
+          
+          // Add icon pop to icons
+          const icon = card.querySelector('[data-lucide]');
+          if (icon) icon.classList.add('icon-pop');
+
+          // Reveal on scroll
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                setTimeout(() => card.classList.add('visible'), 60);
+                observer.disconnect();
+              }
+            });
+          }, { threshold: 0.15 });
+          observer.observe(card);
+        });
+      });
+    }
+
     function initTailwind() {
       if (window.tailwind) {
         window.tailwind.config = {
@@ -25,9 +54,13 @@
       }
     }
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initTailwind);
+      document.addEventListener('DOMContentLoaded', () => {
+        initTailwind();
+        initToolAnimations();
+      });
     } else {
       initTailwind();
+      initToolAnimations();
     }
   </script>
   <style>
@@ -70,46 +103,47 @@
     </div>
 
     <!-- PLANNING -->
-    <div class="mb-8">
+    <div class="mb-10">
       <div class="flex items-end justify-between mb-4">
         <div>
-          <h2 class="text-2xl font-bold tracking-tight">Planning &amp; Command Centre</h2>
-          <p class="text-slate-500 text-sm mt-0.5">The daily system for students who want to win.</p>
+          <span class="px-3 py-1 text-xs font-extrabold tracking-widest bg-emerald-100 text-emerald-700 rounded-2xl">DAILY SYSTEM</span>
+          <h2 class="text-2xl font-black tracking-tight mt-2">Planning &amp; Command Centre</h2>
+          <p class="text-slate-500 text-sm mt-0.5">The daily operating system for students who want to win.</p>
         </div>
-        <a href="/tools/planning/" class="text-sky-600 hover:text-sky-700 font-semibold text-sm">View all →</a>
+        <a href="/tools/planning/" class="text-emerald-600 hover:text-emerald-700 font-semibold text-sm">View all →</a>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-        <a href="/tools/planning/command-centre.html" class="group block p-4 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3" id="planning-tools">
+        <a href="/tools/planning/command-centre.html" class="colorful-card emerald group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="layout-dashboard" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="layout-dashboard" class="w-5 h-5 text-emerald-600 tool-icon"></i>
             <span class="font-semibold">A-Level Command Centre</span>
           </div>
           <p class="text-sm text-slate-600">Timers, subject rotation, countdowns, goals &amp; notes in one place.</p>
         </a>
-        <a href="/tools/planning/exam-paper-time-splitter.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+        <a href="/tools/planning/exam-paper-time-splitter.html" class="colorful-card amber group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="clock" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="clock" class="w-5 h-5 text-amber-600 tool-icon"></i>
             <span class="font-semibold">Exam Paper Time Splitter</span>
           </div>
           <p class="text-sm text-slate-600">Split papers into timed sections with checkpoints and review time.</p>
         </a>
-        <a href="/tools/planning/revision-session-generator.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+        <a href="/tools/planning/revision-session-generator.html" class="colorful-card violet group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="calendar" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="calendar" class="w-5 h-5 text-violet-600 tool-icon"></i>
             <span class="font-semibold">Revision Session Generator</span>
           </div>
           <p class="text-sm text-slate-600">Build focused sessions based on time and topic confidence.</p>
         </a>
-        <a href="/tools/planning/timed-essay-mode.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+        <a href="/tools/planning/timed-essay-mode.html" class="colorful-card sky group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="edit-3" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="edit-3" class="w-5 h-5 text-sky-600 tool-icon"></i>
             <span class="font-semibold">Timed Essay Mode</span>
           </div>
           <p class="text-sm text-slate-600">Plan then write under real pressure with self-marking.</p>
         </a>
-        <a href="/tools/planning/synoptic-link-generator.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+        <a href="/tools/planning/synoptic-link-generator.html" class="colorful-card rose group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="link-2" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="link-2" class="w-5 h-5 text-rose-600 tool-icon"></i>
             <span class="font-semibold">Synoptic Link Generator</span>
           </div>
           <p class="text-sm text-slate-600">Connect topics across your spec for deeper understanding.</p>
@@ -118,46 +152,47 @@
     </div>
 
     <!-- MATHEMATICS -->
-    <div class="mb-8">
+    <div class="mb-10">
       <div class="flex items-end justify-between mb-4">
         <div>
-          <h2 class="text-2xl font-bold tracking-tight">Mathematics</h2>
+          <span class="px-3 py-1 text-xs font-extrabold tracking-widest bg-amber-100 text-amber-700 rounded-2xl">NUMBERS &amp; GRAPHS</span>
+          <h2 class="text-2xl font-black tracking-tight mt-2">Mathematics</h2>
           <p class="text-slate-500 text-sm mt-0.5">Every calculator and solver you actually need.</p>
         </div>
-        <a href="/tools/mathematics/" class="text-sky-600 hover:text-sky-700 font-semibold text-sm">View all →</a>
+        <a href="/tools/mathematics/" class="text-amber-600 hover:text-amber-700 font-semibold text-sm">View all →</a>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-        <a href="/tools/mathematics/advanced-scientific-calculator.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3" id="math-tools">
+        <a href="/tools/mathematics/advanced-scientific-calculator.html" class="colorful-card amber group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="calculator" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="calculator" class="w-5 h-5 text-amber-600 tool-icon"></i>
             <span class="font-semibold">Advanced Scientific Calculator</span>
           </div>
           <p class="text-sm text-slate-600">Trig, logs, matrices, calculus and full scientific functions.</p>
         </a>
-        <a href="/tools/mathematics/graph-plotter.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+        <a href="/tools/mathematics/graph-plotter.html" class="colorful-card sky group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="trending-up" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="trending-up" class="w-5 h-5 text-sky-600 tool-icon"></i>
             <span class="font-semibold">A-Level Graph Plotter</span>
           </div>
           <p class="text-sm text-slate-600">Plot polynomials, trig, parametric and transformations live.</p>
         </a>
-        <a href="/tools/mathematics/calculus-toolkit.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+        <a href="/tools/mathematics/calculus-toolkit.html" class="colorful-card violet group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="function-square" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="function-square" class="w-5 h-5 text-violet-600 tool-icon"></i>
             <span class="font-semibold">Calculus Toolkit</span>
           </div>
           <p class="text-sm text-slate-600">Differentiation, integration, stationary points and areas.</p>
         </a>
-        <a href="/tools/mathematics/mechanics-solver.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+        <a href="/tools/mathematics/mechanics-solver.html" class="colorful-card emerald group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="compass" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="compass" class="w-5 h-5 text-emerald-600 tool-icon"></i>
             <span class="font-semibold">Mechanics Solver</span>
           </div>
           <p class="text-sm text-slate-600">SUVAT, projectiles, forces, moments and friction with steps.</p>
         </a>
-        <a href="/tools/mathematics/statistics-probability-lab.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+        <a href="/tools/mathematics/statistics-probability-lab.html" class="colorful-card indigo group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="bar-chart-2" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="bar-chart-2" class="w-5 h-5 text-indigo-600 tool-icon"></i>
             <span class="font-semibold">Statistics &amp; Probability Lab</span>
           </div>
           <p class="text-sm text-slate-600">Normal, binomial, hypothesis testing, correlation and regression.</p>
@@ -166,39 +201,40 @@
     </div>
 
     <!-- SCIENCES -->
-    <div class="mb-8">
+    <div class="mb-10">
       <div class="flex items-end justify-between mb-4">
         <div>
-          <h2 class="text-2xl font-bold tracking-tight">Sciences</h2>
+          <span class="px-3 py-1 text-xs font-extrabold tracking-widest bg-sky-100 text-sky-700 rounded-2xl">FORMULAS &amp; PRACTICALS</span>
+          <h2 class="text-2xl font-black tracking-tight mt-2">Sciences</h2>
           <p class="text-slate-500 text-sm mt-0.5">Formula reference and working calculators.</p>
         </div>
         <a href="/tools/sciences/" class="text-sky-600 hover:text-sky-700 font-semibold text-sm">View all →</a>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-        <a href="/tools/sciences/physics-formula-lab.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3" id="sciences-tools">
+        <a href="/tools/sciences/physics-formula-lab.html" class="colorful-card sky group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="atom" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="atom" class="w-5 h-5 text-sky-600 tool-icon"></i>
             <span class="font-semibold">Physics Formula Lab</span>
           </div>
           <p class="text-sm text-slate-600">Electricity, waves, mechanics, fields and quantum calculators.</p>
         </a>
-        <a href="/tools/sciences/chemistry-calculator.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+        <a href="/tools/sciences/chemistry-calculator.html" class="colorful-card emerald group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="flask-conical" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="flask-conical" class="w-5 h-5 text-emerald-600 tool-icon"></i>
             <span class="font-semibold">Chemistry Calculator</span>
           </div>
           <p class="text-sm text-slate-600">Moles, pH, titrations, Kc, rates and Born-Haber.</p>
         </a>
-        <a href="/tools/sciences/biology-process-explorer.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+        <a href="/tools/sciences/biology-process-explorer.html" class="colorful-card teal group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="dna" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="dna" class="w-5 h-5 text-teal-600 tool-icon"></i>
             <span class="font-semibold">Biology Process Explorer</span>
           </div>
           <p class="text-sm text-slate-600">Respiration, photosynthesis, immunity and homeostasis.</p>
         </a>
-        <a href="/tools/sciences/psychology-study-builder.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+        <a href="/tools/sciences/psychology-study-builder.html" class="colorful-card violet group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="brain" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="brain" class="w-5 h-5 text-violet-600 tool-icon"></i>
             <span class="font-semibold">Psychology Study Builder</span>
           </div>
           <p class="text-sm text-slate-600">Full study structure with evaluation and ethics.</p>
@@ -223,21 +259,21 @@
         <a href="/tools/humanities/" class="text-sky-600 hover:text-sky-700 font-semibold text-sm">View all →</a>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-        <a href="/tools/humanities/english-literature-essay-planner.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+        <a href="/tools/humanities/english-literature-essay-planner.html" class="colorful-card violet group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="book-open" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="book-open" class="w-5 h-5 text-violet-600 tool-icon"></i>
             <span class="font-semibold">English Literature Essay Planner</span>
           </div>
           <p class="text-sm text-slate-600">Thesis, critics, context and AO-tagged essay plans.</p>
         </a>
-        <a href="/tools/humanities/history-argument-builder.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+        <a href="/tools/humanities/history-argument-builder.html" class="colorful-card amber group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="scroll" class="w-5 h-5 text-sky-600"></i>
+            <i data-lucide="scroll" class="w-5 h-5 text-amber-600 tool-icon"></i>
             <span class="font-semibold">History Argument Builder</span>
           </div>
           <p class="text-sm text-slate-600">Source essays, causation and judgement frameworks.</p>
         </a>
-        <a href="/tools/humanities/geography-case-study-lab.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
+        <a href="/tools/humanities/geography-case-study-lab.html" class="colorful-card emerald group block p-5 rounded-2xl border">
           <div class="flex items-center gap-2 mb-1.5">
             <i data-lucide="map" class="w-5 h-5 text-sky-600"></i>
             <span class="font-semibold">Geography Case Study Lab</span>

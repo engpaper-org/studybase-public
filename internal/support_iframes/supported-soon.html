@@ -24,12 +24,13 @@
     }
 
     :root {
-      --sb-blue: #1597ff;
-      --sb-cyan: #35d9ff;
-      --text: #050505;
-      --muted: rgba(0, 0, 0, 0.58);
-      --soft: rgba(0, 0, 0, 0.34);
-      --border: rgba(0, 0, 0, 0.08);
+      --theme-primary: #0c4a6e;
+      --theme-secondary: #0ea5e9;
+      --theme-accent: #7dd3fc;
+      --text: #0f172a;
+      --muted: #475569;
+      --soft: #64748b;
+      --border: #7dd3fc;
     }
 
     html,
@@ -54,10 +55,27 @@
       place-items: center;
       padding: clamp(12px, 4cqi, 32px);
       border-radius: clamp(14px, 4cqi, 28px);
-      border: 1px solid #e2e8f0;
-      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-      box-shadow: 0 12px 32px -12px rgba(15, 23, 42, 0.12), inset 0 0 0 1px rgba(255,255,255,0.95);
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, #f0f9ff 0%, #e0f2fe 100%);
+      box-shadow: 
+        0 12px 32px -12px rgba(14, 165, 233, 0.22),
+        0 4px 6px -4px rgba(14, 165, 233, 0.12),
+        inset 0 0 0 1px rgba(255,255,255,0.7);
       isolation: isolate;
+      cursor: pointer;
+      outline: none;
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                  box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .slot:hover {
+      transform: translateY(-4px) scale(1.005);
+      box-shadow: 
+        0 24px 48px -12px rgba(14, 165, 233, 0.28),
+        0 8px 16px -6px rgba(14, 165, 233, 0.18),
+        inset 0 0 0 1px rgba(255,255,255,0.85);
+    }
+    .slot:active {
+      transform: scale(0.985);
     }
 
     .slot::before {
@@ -138,7 +156,7 @@
 
     h1 {
       max-width: 520px;
-      color: var(--text);
+      color: #0c4a6e;
       font-size: clamp(17px, 6.8cqi, 34px);
       line-height: 1.02;
       letter-spacing: -0.055em;
@@ -148,7 +166,7 @@
 
     p {
       max-width: 490px;
-      color: var(--muted);
+      color: #475569;
       font-size: clamp(10px, 3.1cqi, 15px);
       line-height: 1.42;
       font-weight: 650;
