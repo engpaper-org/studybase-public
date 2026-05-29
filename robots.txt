@@ -1,1 +1,8 @@
-Sitemap: https://revisionbase.site/sitemap.xml
+User-agent: *
+Allow: /
+
+# Block private/authenticated areas
+Disallow: /myaccount/
+Disallow: /internal/
+
+Sitemap: https://studybase.site/sitemap.xml

@@ -1603,16 +1603,28 @@
                     <span class="rgenie-pill"><i class="fas fa-wand-magic-sparkles"></i> Command search</span>
                 </div>
 
+                <!-- Account safety warning - only visible when logged in -->
+                <div class="mb-4 p-3 rounded-2xl bg-red-50 border border-red-200 text-red-800 text-sm flex gap-2 items-start dark:bg-red-950/30 dark:border-red-800/50 dark:text-red-300">
+                    <i data-lucide="alert-triangle" class="w-4 h-4 mt-0.5 shrink-0"></i>
+                    <div>
+                        <strong>Account Safety Warning:</strong> Sending direct emails to site owners or staff will result in a permanent ban. 
+                        Use the in-site reporting tools for any issues.
+                    </div>
+                </div>
+
                 <div class="rgenie-filter-grid">
                     <div class="rgenie-field">
                         <label for="searchInput">Search</label>
-                        <input
-                            type="text"
-                            id="searchInput"
-                            onkeyup="filterResources()"
-                            class="rgenie-input"
-                            placeholder="Try Biology AQA, mechanics, mark scheme..."
-                        >
+                        <div class="relative">
+                            <i data-lucide="search" class="w-4 h-4 absolute left-4 top-3.5 text-slate-400 pointer-events-none"></i>
+                            <input
+                                type="text"
+                                id="searchInput"
+                                onkeyup="filterResources()"
+                                class="rgenie-input w-full pl-11 py-3 text-base border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-2xl placeholder:text-slate-400"
+                                placeholder="Try Biology AQA, mechanics, mark scheme..."
+                            >
+                        </div>
                     </div>
                     <div class="rgenie-field">
                         <label for="contentTypeFilter">Content type</label>

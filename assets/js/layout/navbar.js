@@ -487,6 +487,37 @@
     window.addEventListener("storage", updateAuthState);
     window.addEventListener("focus", updateAuthState);
     window.addEventListener("studybase:account-session-cleared", updateAuthState);
+
+    // Handle ?sessionExpired=true (or the configured param name).
+    // Opens the standard navbar login modal and cleans the URL parameter.
+    function handleSessionExpiredParam() {
+      try {
+        const configParam =
+          (window.SB_CONFIG && window.SB_CONFIG.account && window.SB_CONFIG.account.sessionExpiredParam) ||
+          "sessionExpired";
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get(configParam) === "true") {
+          // Clean the parameter from the URL immediately (no reload)
+          const url = new URL(window.location.href);
+          url.searchParams.delete(configParam);
+          const cleanUrl = url.pathname + url.search + url.hash;
+          window.history.replaceState({}, "", cleanUrl);
+
+          // Open the normal login modal (iframe) shortly after navbar is ready.
+          // Respect the existing maintenance gate so we don't show login during shutdown.
+          setTimeout(() => {
+            if (!isMaintenanceActive()) {
+              ensureAccountModal().openPage("/myaccount/login.html", "StudyBase login");
+            }
+          }, 80);
+        }
+      } catch (_) {
+        // Never let a bad/malformed param break the navbar
+      }
+    }
+
+    handleSessionExpiredParam();
   }
 
   if (document.readyState === "loading") {
