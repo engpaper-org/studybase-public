@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Annotator • Doc Tools</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap');
+    
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    
+    .pdf-page {
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      background: white;
+      position: relative;
+      margin-bottom: 24px;
+    }
+    
+    .annotation-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      cursor: crosshair;
+    }
+    
+    .tool-btn {
+      transition: all 0.1s ease;
+    }
+    
+    .tool-btn.active {
+      background-color: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+    
+    .color-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 9999px;
+      border: 2px solid #e2e8f0;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+    
+    .color-swatch:hover {
+      transform: scale(1.1);
+    }
+    
+    .color-swatch.active {
+      border-color: #1e40af;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    /* Light theme overrides */
+    body.light-pdf {
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    body.light-pdf .bg-slate-900,
+    body.light-pdf .bg-slate-800 {
+      background-color: #ffffff !important;
+    }
+    body.light-pdf .border-slate-800,
+    body.light-pdf .border-slate-700 {
+      border-color: #e2e8f0 !important;
+    }
+    body.light-pdf .text-slate-200,
+    body.light-pdf .text-slate-300,
+    body.light-pdf .text-slate-400 {
+      color: #334155 !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-200">
+  <!-- Custom Header (full width) -->
+  <div class="border-b border-slate-800 bg-slate-900 w-full">
+    <div class="px-4 h-14 flex items-center justify-between max-w-screen-2xl mx-auto">
+      <div class="flex items-center gap-x-3">
+        <a href="/docs/" 
+           class="flex items-center gap-x-2 px-3 py-1.5 text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>Doc Tools</span>
+        </a>
+        
+        <div class="h-5 w-px bg-slate-700"></div>
+        
+        <div class="flex items-center gap-x-2">
+          <i data-lucide="pen-tool" class="w-5 h-5 text-red-400"></i>
+          <span class="font-semibold text-lg tracking-tight">PDF Annotator</span>
+          
+          <!-- Theme Toggle -->
+          <button onclick="toggleTheme()" 
+                  class="ml-2 flex items-center gap-x-1.5 px-2.5 py-1 text-xs font-medium border border-slate-700 hover:bg-slate-800 rounded-lg transition-colors">
+            <i data-lucide="moon" class="w-3.5 h-3.5" id="pdf-theme-icon"></i>
+            <span id="pdf-theme-text" class="hidden sm:inline">Dark</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-x-2 text-sm">
+        <div id="pdf-filename" class="text-slate-400 text-sm px-3 py-1 bg-slate-800 rounded-lg hidden"></div>
+        
+        <button onclick="uploadPDF()" 
+                class="flex items-center gap-x-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm font-medium">
+          <i data-lucide="upload" class="w-4 h-4"></i>
+          <span>Load New PDF</span>
+        </button>
+        
+        <button onclick="exportAnnotatedPDF()" 
+                class="flex items-center gap-x-2 px-3 py-1.5 bg-red-600 hover:bg-red-500 rounded-lg text-sm font-medium">
+          <i data-lucide="download" class="w-4 h-4"></i>
+          <span>Export</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex h-[calc(100vh-56px)] max-w-screen-2xl mx-auto">
+    
+    <!-- LEFT SIDEBAR -->
+    <div class="w-72 bg-slate-900 border-r border-slate-800 flex flex-col">
+      
+      <!-- Tools -->
+      <div class="p-4 border-b border-slate-800">
+        <div class="text-xs font-semibold text-slate-400 tracking-wider mb-3 px-1">TOOLS</div>
+        
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="setTool('pen')" id="tool-pen"
+                  class="tool-btn flex items-center gap-x-2 px-3 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-sm font-medium active">
+            <i data-lucide="pen" class="w-4 h-4"></i>
+            <span>Pen</span>
+          </button>
+          
+          <button onclick="setTool('highlighter')" id="tool-highlighter"
+                  class="tool-btn flex items-center gap-x-2 px-3 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-sm font-medium">
+            <i data-lucide="highlighter" class="w-4 h-4"></i>
+            <span>Highlighter</span>
+          </button>
+          
+          <button onclick="setTool('text')" id="tool-text"
+                  class="tool-btn flex items-center gap-x-2 px-3 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-sm font-medium">
+            <i data-lucide="type" class="w-4 h-4"></i>
+            <span>Text</span>
+          </button>
+          
+          <button onclick="setTool('eraser')" id="tool-eraser"
+                  class="tool-btn flex items-center gap-x-2 px-3 py-2.5 bg-slate-800 hover:bg-slate-700 rounded-xl text-sm font-medium">
+            <i data-lucide="eraser" class="w-4 h-4"></i>
+            <span>Eraser</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Stroke Settings -->
+      <div class="p-4 border-b border-slate-800 space-y-5">
+        <div>
+          <div class="flex items-center justify-between mb-2 px-1">
+            <span class="text-xs font-semibold text-slate-400 tracking-wider">STROKE COLOR</span>
+          </div>
+          
+          <div class="grid grid-cols-6 gap-2 mb-3">
+            <div onclick="setColor('#ef4444')" class="color-swatch bg-red-500" data-color="#ef4444"></div>
+            <div onclick="setColor('#f97316')" class="color-swatch bg-orange-500" data-color="#f97316"></div>
+            <div onclick="setColor('#eab308')" class="color-swatch bg-yellow-500" data-color="#eab308"></div>
+            <div onclick="setColor('#22c55e')" class="color-swatch bg-green-500" data-color="#22c55e"></div>
+            <div onclick="setColor('#3b82f6')" class="color-swatch bg-blue-500" data-color="#3b82f6"></div>
+            <div onclick="setColor('#8b5cf6')" class="color-swatch bg-violet-500" data-color="#8b5cf6"></div>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <input type="color" id="color-picker" value="#ef4444" 
+                   class="w-10 h-9 p-0.5 bg-slate-800 border border-slate-700 rounded-lg cursor-pointer"
+                   onchange="setColor(this.value)">
+            <span id="current-color" class="text-xs text-slate-400">#EF4444</span>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-2 px-1">
+            <span class="text-xs font-semibold text-slate-400 tracking-wider">STROKE SIZE</span>
+            <span id="size-value" class="text-xs font-mono text-slate-300">4 px</span>
+          </div>
+          <input type="range" id="stroke-size" min="1" max="40" value="4" step="1"
+                 class="w-full accent-blue-500" oninput="updateStrokeSize()">
+          <div class="flex justify-between text-[10px] text-slate-500 mt-1 px-0.5">
+            <div>1</div><div>40</div>
+          </div>
+        </div>
+
+        <div id="opacity-control">
+          <div class="flex items-center justify-between mb-2 px-1">
+            <span class="text-xs font-semibold text-slate-400 tracking-wider">OPACITY</span>
+            <span id="opacity-value" class="text-xs font-mono text-slate-300">60%</span>
+          </div>
+          <input type="range" id="opacity-slider" min="10" max="100" value="60" step="5"
+                 class="w-full accent-blue-500" oninput="updateOpacity()">
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="p-4 space-y-2">
+        <div class="text-xs font-semibold text-slate-400 tracking-wider mb-2 px-1">ACTIONS</div>
+        
+        <button onclick="undo()" class="w-full flex items-center justify-center gap-x-2 px-3 py-2 text-sm bg-slate-800 hover:bg-slate-700 rounded-xl">
+          <i data-lucide="undo" class="w-4 h-4"></i>
+          <span>Undo</span>
+        </button>
+        
+        <button onclick="redo()" class="w-full flex items-center justify-center gap-x-2 px-3 py-2 text-sm bg-slate-800 hover:bg-slate-700 rounded-xl">
+          <i data-lucide="redo" class="w-4 h-4"></i>
+          <span>Redo</span>
+        </button>
+        
+        <button onclick="clearCurrentPage()" class="w-full flex items-center justify-center gap-x-2 px-3 py-2 text-sm bg-slate-800 hover:bg-red-900/30 text-red-400 hover:text-red-300 rounded-xl">
+          <i data-lucide="trash-2" class="w-4 h-4"></i>
+          <span>Clear Page</span>
+        </button>
+      </div>
+
+      <div class="flex-1"></div>
+
+      <div class="p-4 border-t border-slate-800 text-xs text-slate-400">
+        <div id="page-info">No PDF loaded</div>
+      </div>
+    </div>
+
+    <!-- MAIN VIEWER -->
+    <div class="flex-1 overflow-auto bg-slate-950 p-8" id="viewer">
+      <div id="pages-container" class="flex flex-col items-center">
+        <!-- PDF pages rendered here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Load split JS files -->
+  <script src="js/main.js"></script>
+  <script src="js/viewer.js"></script>
+  <script src="js/annotation.js"></script>
+</body>
+</html>

@@ -36,9 +36,10 @@
       label: "Support",
       href: "/support/help_center.html",
       links: [
+        ["Legal Centre", "/legal/index.html"],
         ["Help Centre", "/support/help_center.html"],
-        ["Privacy", "/legal/privacy.html"],
         ["TOS", "/legal/tos.html"],
+        ["Privacy", "/legal/privacy.html"],
         ["Contributions", "/legal/contributions.html"]
       ]
     }
@@ -301,8 +302,31 @@
           </span>
         </a>
         <nav class="sbx-nav-links" aria-label="Primary navigation">
-          <a class="sbx-nav-link ${isActive("/alevel.html") ? "is-active" : ""}" href="/alevel.html">A-Level Routes</a>
           ${navGroups.map(groupMarkup).join("")}
+          <div class="sbx-nav-group ${isActive("/docs/") ? "is-active" : ""}">
+            <button class="sbx-nav-link sbx-nav-dropdown-trigger" type="button" aria-label="Open Doc Tools menu" aria-expanded="false">
+              <span>Doc Tools</span>
+              <span class="sbx-nav-caret" aria-hidden="true"></span>
+            </button>
+            <div class="sbx-nav-dropdown">
+              <div class="sbx-nav-dropdown-head">
+                <strong>Doc Tools</strong>
+                <small>Offline document apps</small>
+              </div>
+              <a class="sbx-nav-dropdown-link is-primary" href="/docs/">
+                <span>All Doc Tools</span>
+                <span aria-hidden="true">&rarr;</span>
+              </a>
+              <a class="sbx-nav-dropdown-link" href="/docs/text-editor/">
+                <span>Text Editor</span>
+                <span aria-hidden="true">&rarr;</span>
+              </a>
+              <a class="sbx-nav-dropdown-link" href="/docs/pdf-editor/">
+                <span>PDF Annotator</span>
+                <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </div>
         </nav>
         ${authMarkup()}
         <button class="sbx-nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
@@ -310,7 +334,12 @@
         </button>
       </div>
       <nav class="sbx-mobile-menu" aria-label="Mobile navigation" hidden>
-        <a class="sbx-mobile-link" href="/alevel.html">A-Level Routes</a>
+        <details class="sbx-mobile-group">
+          <summary>Doc Tools</summary>
+          <a href="/docs/">All Doc Tools</a>
+          <a href="/docs/text-editor/">Text Editor</a>
+          <a href="/docs/pdf-editor/">PDF Annotator</a>
+        </details>
         ${mobileMarkup()}
         ${authMarkup()}
       </nav>

@@ -30,7 +30,7 @@
       links: [
         ["/support/help_center.html", "Help Centre"],
         ["/faq.html", "FAQ"],
-        ["/contact.html", "Contact"]
+        ["/support/contact.html", "Contact support"]
       ]
     }
   ];

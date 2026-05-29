@@ -25,13 +25,13 @@
     }
 
     :root {
-      --theme-primary: #0f766e;
-      --theme-secondary: #14b8a6;
-      --theme-accent: #5eead4;
+      --theme-primary: #1e40af;
+      --theme-secondary: #3b82f6;
+      --theme-accent: #93c5fd;
       --text: #0f172a;
       --muted: #475569;
       --soft: #64748b;
-      --border: #99f6e4;
+      --border: #bfdbfe;
     }
 
     html,
@@ -57,10 +57,10 @@
       padding: clamp(12px, 4cqi, 32px);
       border-radius: clamp(14px, 4cqi, 28px);
       border: 1px solid var(--border);
-      background: linear-gradient(145deg, #f0fdfa 0%, #ccfbf1 100%);
+      background: linear-gradient(145deg, #eff6ff 0%, #dbeafe 100%);
       box-shadow: 
-        0 12px 32px -12px rgba(13, 148, 136, 0.18),
-        0 4px 6px -4px rgba(13, 148, 136, 0.1),
+        0 12px 32px -12px rgba(59, 130, 246, 0.18),
+        0 4px 6px -4px rgba(59, 130, 246, 0.1),
         inset 0 0 0 1px rgba(255,255,255,0.7);
       isolation: isolate;
       cursor: pointer;
@@ -71,8 +71,8 @@
     .slot:hover {
       transform: translateY(-4px) scale(1.005);
       box-shadow: 
-        0 24px 48px -12px rgba(13, 148, 136, 0.25),
-        0 8px 16px -6px rgba(13, 148, 136, 0.15),
+        0 24px 48px -12px rgba(59, 130, 246, 0.25),
+        0 8px 16px -6px rgba(59, 130, 246, 0.15),
         inset 0 0 0 1px rgba(255,255,255,0.8);
     }
     .slot:active {
@@ -87,7 +87,7 @@
       right: -20%;
       width: 55%;
       height: 70%;
-      background: radial-gradient(circle, rgba(52, 211, 153, 0.18) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
       border-radius: 50%;
       pointer-events: none;
       z-index: -1;
@@ -99,7 +99,7 @@
       left: -15%;
       width: 45%;
       height: 60%;
-      background: radial-gradient(circle, rgba(13, 148, 136, 0.12) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.10) 0%, transparent 70%);
       border-radius: 50%;
       pointer-events: none;
       z-index: -1;
@@ -107,8 +107,8 @@
 
     .slot:focus-visible {
       box-shadow:
-        0 24px 48px -12px rgba(13, 148, 136, 0.28),
-        0 0 0 3px rgba(13, 148, 136, 0.25);
+        0 24px 48px -12px rgba(59, 130, 246, 0.28),
+        0 0 0 3px rgba(59, 130, 246, 0.25);
     }
 
     .content {
@@ -140,7 +140,7 @@
 
     h1 {
       max-width: 560px;
-      color: #134e4b;
+      color: #1e3a8a;
       font-size: clamp(17px, 6.8cqi, 34px);
       line-height: 1.02;
       letter-spacing: -0.055em;
@@ -158,14 +158,14 @@
     }
 
     .cta {
-      color: #0f766e;
+      color: #1e40af;
       font-size: clamp(9px, 2.4cqi, 12px);
       font-weight: 800;
       letter-spacing: 0.02em;
       transition: color 0.2s ease;
     }
     .slot:hover .cta {
-      color: #115e59;
+      color: #1e3a8a;
     }
 
     .default-title,

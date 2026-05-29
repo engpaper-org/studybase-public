@@ -16,10 +16,8 @@
 <script src="/assets/js/config/siteConfig.js"></script>
     <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 | Page Still Being Made</title>
+    <title>404 | Page not found</title>
     <link rel="icon" href="/assets/images/site-icons/main.ico">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="/assets/js/auth/loginAnimationCheck.js" defer></script>
     <script src="/assets/js/core/sessionManager.js" defer></script>
     <script>const PAGE_ID = "404";</script>
@@ -45,341 +43,194 @@
     <script src="/assets/js/privacy/cookieConsent.js"></script>
     <!-- End of consent and analytics -->
 
-    <script>
-        (function () {
-            function isInIframe() {
-                try {
-                    return window.self !== window.top;
-                } catch (e) {
-                    return true;
-                }
-            }
-
-            window.__SB_IS_IFRAME__ = isInIframe();
-            document.documentElement.classList.toggle('is-iframe', window.__SB_IS_IFRAME__);
-
-            if (!window.__SB_IS_IFRAME__) {
-                const sharedScripts = [
-                    '/assets/js/layout/navbar.js',
-                    '/assets/js/layout/footer.js'
-                ];
-
-                sharedScripts.forEach((src) => {
-                    const script = document.createElement('script');
-                    script.src = src;
-                    script.defer = true;
-                    document.head.appendChild(script);
-                });
-            }
-        })();
-    </script>
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
         html, body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        @keyframes rise {
-            0% {
-                transform: translateY(12vh) scale(0.55);
-                opacity: 0;
-            }
-            15% {
-                opacity: 0.75;
-            }
-            100% {
-                transform: translateY(-115vh) scale(1.2);
-                opacity: 0;
-            }
-        }
-
-        @keyframes rotateBorder {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes floaty {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .bubble {
-            position: absolute;
-            bottom: -100px;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.42), rgba(255,255,255,0.08));
-            border: 1px solid rgba(255,255,255,0.26);
-            border-radius: 9999px;
-            backdrop-filter: blur(2px);
-            animation: rise linear infinite;
-            pointer-events: none;
-        }
-
-        .loading-border-container {
-            position: relative;
-            padding: 4px;
-            border-radius: 2rem;
-            background: rgba(255,255,255,0.1);
-            overflow: hidden;
-        }
-
-        .loading-border-container::before {
-            content: "";
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            top: -25%;
-            left: -25%;
-            background: conic-gradient(
-                transparent,
-                transparent,
-                rgba(255,255,255,0.18),
-                #60a5fa,
-                rgba(255,255,255,0.18),
-                transparent
-            );
-            animation: rotateBorder 3s linear infinite;
-        }
-
-        .inner-card {
-            position: relative;
-            z-index: 1;
-            border-radius: 1.75rem;
-            background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.96) 100%);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.65);
-        }
-
-        .floaty {
-            animation: floaty 5s ease-in-out infinite;
+            font-family: var(--sbx-font-heading, 'Plus Jakarta Sans', system-ui, sans-serif);
         }
 
         .sb404-page {
-            background:
-                radial-gradient(circle at 16% 12%, rgba(47, 109, 246, 0.18), transparent 28rem),
-                radial-gradient(circle at 86% 14%, rgba(183, 236, 59, 0.16), transparent 24rem),
-                linear-gradient(180deg, #f7fbff 0%, #ffffff 48%, #edf7fb 100%);
+            background: #f8fafc;
+            min-height: 100vh;
         }
 
-        .sb404-page::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            z-index: -30;
-            pointer-events: none;
-            background:
-                linear-gradient(rgba(55, 83, 122, 0.045) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(55, 83, 122, 0.045) 1px, transparent 1px);
-            background-size: 36px 36px;
-            mask-image: linear-gradient(180deg, rgba(0,0,0,0.92), rgba(0,0,0,0.38), transparent);
+        .sb404-main {
+            padding: clamp(3rem, 8vh, 5rem) 0;
         }
 
-        .sb404-shell {
-            width: min(1120px, calc(100% - 2rem));
+        .sb404-content {
+            max-width: 620px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(320px, 0.78fr);
-            gap: clamp(1.5rem, 5vw, 4rem);
-            align-items: center;
-        }
-
-        .sb404-card {
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(16, 24, 39, 0.10);
-            border-radius: 34px;
-            background:
-                radial-gradient(circle at 88% 12%, rgba(183,236,59,0.22), transparent 12rem),
-                rgba(255,255,255,0.92);
-            box-shadow: 0 28px 90px rgba(16, 24, 39, 0.13);
-            padding: clamp(1.5rem, 4vw, 3rem);
+            padding: 0 1.5rem;
+            text-align: center;
         }
 
         .sb404-kicker {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.55rem;
-            border-radius: 999px;
-            border: 1px solid rgba(47, 109, 246, 0.16);
-            background: #ffffff;
-            color: #245ef2;
-            box-shadow: 0 12px 28px rgba(47,109,246,0.08);
-            font-size: 0.72rem;
-            font-weight: 900;
-            letter-spacing: 0.12em;
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            padding: 0.55rem 0.85rem;
-        }
-
-        .sb404-kicker span {
-            width: 0.55rem;
-            height: 0.55rem;
+            color: #64748b;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            padding: 6px 14px;
             border-radius: 999px;
-            background: #b7ec3b;
-            box-shadow: 0 0 0 5px rgba(183,236,59,0.22);
+            margin-bottom: 1rem;
         }
 
         .sb404-title {
-            margin: 1.2rem 0 0;
-            color: #101827;
-            font-size: clamp(3.4rem, 8vw, 6.8rem);
-            line-height: 0.9;
-            letter-spacing: 0;
+            font-size: clamp(2.25rem, 6vw, 3.25rem);
+            line-height: 1.05;
             font-weight: 900;
-        }
-
-        .sb404-subtitle {
-            margin: 1rem 0 0;
-            color: #101827;
-            font-size: clamp(1.75rem, 4vw, 3.2rem);
-            line-height: 1;
-            font-weight: 900;
-            letter-spacing: 0;
+            letter-spacing: -0.02em;
+            color: #0f172a;
+            margin: 0 0 0.75rem;
         }
 
         .sb404-copy {
-            max-width: 42rem;
-            margin: 1rem 0 0;
-            color: #5a6a82;
             font-size: 1.05rem;
+            line-height: 1.7;
+            color: #475569;
+            max-width: 42ch;
+            margin: 0 auto 1.75rem;
+        }
+
+        .sb404-mascot {
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            background: linear-gradient(145deg, #f1f5f9, #e0e7ff);
+            padding: 22px;
+            box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255,255,255,0.8);
+        }
+
+        .sb404-mascot img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 20px rgba(15, 23, 42, 0.12));
+        }
+
+        .sb404-meta {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+        }
+
+        .sb404-meta code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            background: #fff;
+            border: 1px solid #cbd5e1;
+            padding: 2px 7px;
+            border-radius: 6px;
             font-weight: 700;
-            line-height: 1.75;
+            color: #0f172a;
         }
 
         .sb404-actions {
             display: flex;
             flex-wrap: wrap;
             gap: 0.75rem;
-            margin-top: 1.6rem;
-        }
-
-        .sb404-button {
-            display: inline-flex;
-            align-items: center;
             justify-content: center;
-            gap: 0.6rem;
-            min-height: 3.05rem;
-            border-radius: 999px;
-            border: 1px solid rgba(16,24,39,0.10);
-            padding: 0 1.05rem;
-            background: #ffffff;
-            color: #101827;
-            font-weight: 900;
-            text-decoration: none;
-            box-shadow: 0 12px 28px rgba(16,24,39,0.08);
         }
 
-        .sb404-button.primary {
-            border-color: transparent;
-            background: linear-gradient(135deg, #245ef2, #13bad7);
-            color: #ffffff;
-            box-shadow: 0 18px 42px rgba(47,109,246,0.24);
+        /* Make sure iframe mode stays clean and minimal */
+        .is-iframe .sb404-page {
+            background: #fff;
         }
-
-        .sb404-genie-panel {
-            position: relative;
-            min-height: 420px;
-            border-radius: 34px;
-            border: 1px solid rgba(255,255,255,0.78);
-            background:
-                radial-gradient(circle at 34% 18%, rgba(255,255,255,0.9), transparent 8rem),
-                linear-gradient(135deg, #ffef7a, #53daf0 58%, #6977ff);
-            box-shadow: 0 32px 90px rgba(47,109,246,0.22);
-            display: grid;
-            place-items: center;
-            overflow: hidden;
+        .is-iframe .sb404-main {
+            padding: 2rem 1rem;
         }
-
-        .sb404-genie-panel img {
-            width: min(72%, 320px);
-            aspect-ratio: 1;
-            object-fit: contain;
-            filter: drop-shadow(0 24px 26px rgba(27, 43, 86, 0.18));
-        }
-
-        .sb404-genie-fallback {
-            width: 12rem;
-            height: 12rem;
-            display: grid;
-            place-items: center;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.48);
-            color: #245ef2;
-            font-size: 5rem;
-        }
-
-        .sb404-note {
-            position: absolute;
-            left: 1.1rem;
-            right: 1.1rem;
-            bottom: 1.1rem;
-            border: 1px solid rgba(255,255,255,0.46);
-            border-radius: 22px;
-            background: rgba(255,255,255,0.74);
-            backdrop-filter: blur(14px);
-            color: #101827;
-            padding: 1rem;
-            box-shadow: 0 16px 38px rgba(16,24,39,0.12);
-        }
-
-        .sb404-note strong {
-            display: block;
-            font-size: 1rem;
-            font-weight: 900;
-        }
-
-        .sb404-note span {
-            display: block;
-            margin-top: 0.2rem;
-            color: #5a6a82;
-            font-size: 0.88rem;
-            font-weight: 800;
-        }
-
-        @media (max-width: 860px) {
-            .sb404-shell {
-                grid-template-columns: 1fr;
-            }
-
-            .sb404-genie-panel {
-                min-height: 320px;
-            }
+        .is-iframe .sb404-mascot {
+            width: 160px;
+            height: 160px;
+            padding: 16px;
         }
     </style>
   <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
 </head>
-<body class="sb404-page min-h-screen text-slate-900 flex flex-col overflow-x-hidden">
+<body class="sb404-page">
 
     <div id="navbar-root"></div>
 
-    <main class="flex-1 flex items-center px-4 py-12 sm:px-6 sm:py-16">
-        <div class="sb404-shell">
-            <section class="sb404-card">
-                <div class="sb404-kicker"><span></span> Error 404</div>
-                <h1 class="sb404-title">Still being made.</h1>
-                <h2 class="sb404-subtitle">This StudyBase page is not ready yet.</h2>
-                <p class="sb404-copy">
-                    The page you tried to open could not be found, but it may simply be under construction while StudyBase keeps building clearer A-Level resources, tools, and paper-first revision routes.
-                </p>
-                
-            </section>
+    <main class="sb404-main">
+        <div class="sbx-shell">
+            <div class="sb404-content">
+                <div class="sb404-kicker">Error 404</div>
 
-            <aside class="sb404-genie-panel" aria-label="Under construction">
-                <img src="/assets/images/site-icons/genie-avatar.svg" alt="" onerror="this.remove(); this.parentElement.insertAdjacentHTML('afterbegin','<div class=&quot;sb404-genie-fallback&quot;><i data-lucide=&quot;wand-sparkles&quot;></i></div>'); lucide.createIcons();">
-                <div class="sb404-note">
-                    <strong>Pardon our dust</strong>
-                    <span>A little genie is still polishing this route.</span>
+                <h1 class="sb404-title">Page not found</h1>
+                <p class="sb404-copy">
+                    Sorry, we couldn’t find the page you were looking for. 
+                    It may have been moved or no longer exists.
+                </p>
+
+                <div class="sb404-mascot" aria-hidden="true">
+                    <img src="/assets/images/site-icons/genie-mascot.svg" alt="StudyBase mascot"
+                         onerror="this.style.display='none';">
                 </div>
-            </aside>
+
+                <div class="sb404-meta">
+                    Error code: <code>404</code>
+                </div>
+
+                <div class="sbx-actions sb404-actions" id="sb404-actions"></div>
+            </div>
         </div>
     </main>
 
     <div id="footer-root"></div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            lucide.createIcons();
-        });
+        (function () {
+            function isInIframe() {
+                try { return window.self !== window.top; } catch (e) { return true; }
+            }
+            const inIframe = isInIframe() || document.documentElement.classList.contains('is-iframe');
+
+            // Strip navbar/footer + any injected elements when the 404 is loaded inside an iframe
+            if (inIframe) {
+                const navRoot = document.getElementById('navbar-root');
+                const footRoot = document.getElementById('footer-root');
+                if (navRoot) navRoot.remove();
+                if (footRoot) footRoot.remove();
+                document.body.classList.add('is-iframe');
+                document.querySelectorAll('#sbx-navbar, #sbx-footer').forEach(el => el.remove());
+            }
+
+            // Only load navbar + footer for normal page views
+            if (!inIframe) {
+                ['/assets/js/layout/navbar.js', '/assets/js/layout/footer.js'].forEach(src => {
+                    const s = document.createElement('script');
+                    s.src = src;
+                    s.defer = true;
+                    document.head.appendChild(s);
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const actions = document.getElementById('sb404-actions');
+                if (!actions) return;
+
+                if (inIframe) {
+                    // In iframe context: zero external links, just a small note
+                    actions.innerHTML = 
+                        '<div style="font-size:0.85rem; color:#64748b; font-weight:600;">This page cannot be displayed here.</div>';
+                    return;
+                }
+
+                // Normal view: proper site-style buttons
+                actions.innerHTML = `
+                    <a href="/index.html" class="sbx-btn sbx-btn-primary">Go to homepage</a>
+                    <a href="/support/help_center.html" class="sbx-btn">Visit Help Centre</a>
+                `;
+            });
+        })();
     </script>
 </body>
 </html>

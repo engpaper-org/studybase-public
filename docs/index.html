@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doc Tools | StudyBase</title>
+  
+  <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
+  
+  <script src="/assets/js/config/siteConfig.js"></script>
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <script src="/assets/js/layout/footer.js" defer></script>
+  <script src="/assets/js/core/sessionManager.js" defer></script>
+  
+  <style>
+    .docs-hero {
+      padding: 3.5rem 1.5rem 2.5rem;
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .docs-hero h1 {
+      font-size: clamp(2.25rem, 5vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+    .docs-hero p {
+      font-size: 1.1rem;
+      color: #475569;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+    }
+    .tool-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 1.75rem;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+    }
+    .tool-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      border-color: #cbd5e1;
+    }
+    .tool-card .icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+    .tool-card.text-editor .icon { background: #e0e7ff; color: #3730a3; }
+    .tool-card.pdf .icon { background: #fee2e2; color: #9f1239; }
+    
+    .tool-card h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .tool-card p {
+      color: #475569;
+      line-height: 1.5;
+      flex: 1;
+    }
+    .tool-card .tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 999px;
+      margin-top: 1rem;
+    }
+    .tool-card.text-editor .tag { background: #e0e7ff; color: #3730a3; }
+    .tool-card.pdf .tag { background: #fee2e2; color: #9f1239; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="docs-hero">
+      <h1>Doc Tools</h1>
+      <p>Fully offline, privacy-first document tools built for students. No accounts. No data leaves your device.</p>
+    </div>
+
+    <div class="tools-grid">
+      <!-- Text Editor -->
+      <a href="/docs/text-editor/" class="tool-card text-editor">
+        <div class="icon">📝</div>
+        <h2>Text Editor</h2>
+        <p>A powerful, modern text editor that saves everything locally. Perfect for essays, revision notes, plans, and long-form writing.</p>
+        <div class="tag">Fully Offline • Markdown Support</div>
+      </a>
+
+      <!-- PDF Annotator -->
+      <a href="/docs/pdf-editor/" class="tool-card pdf">
+        <div class="icon">📄</div>
+        <h2>PDF Annotator</h2>
+        <p>Upload, view, annotate, highlight and draw directly on PDFs. All processing happens in your browser.</p>
+        <div class="tag">Fully Offline • Export Annotated PDFs</div>
+      </a>
+    </div>
+  </main>
+
+  <div style="text-align: center; padding-bottom: 3rem; color: #64748b; font-size: 0.85rem;">
+    All tools work completely offline after loading. Your documents never leave your device.
+  </div>
+</body>
+</html>

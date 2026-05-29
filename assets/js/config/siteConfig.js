@@ -283,7 +283,7 @@
     support: {
       url: "/support/help_center.html",
       label: "Support Centre",
-      contactUrl: "/contact.html",
+      contactUrl: "/support/contact.html",
       reportUrl: "/report.html"
     },
     security: {

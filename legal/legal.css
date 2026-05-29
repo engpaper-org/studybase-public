@@ -26,8 +26,17 @@ body.legal-body {
     linear-gradient(180deg, #ffffff 0%, #f7fbff 48%, #eef7fb 100%);
 }
 
-.legal-body a {
+.legal-body a:not(.sbx-nav-access, .sbx-nav-link, .sbx-nav-dropdown-link, .sbx-mobile-link, .sbx-nav-dropdown-trigger) {
   color: inherit;
+}
+
+/* Ensure navbar auth buttons (Login / My account / Sign out) keep their intended colors
+   even when .legal-body rules are present */
+#sbx-navbar .sbx-nav-access {
+  color: #ffffff;
+}
+#sbx-navbar .sbx-nav-account {
+  color: #0f172a;
 }
 
 .legal-wrap {
