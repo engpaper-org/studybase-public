@@ -4,6 +4,8 @@
   const POPUP_ID = "sb-endpoint-error-popup";
   const STYLE_ID = "sb-endpoint-error-popup-style";
   const MAINTENANCE_CODE = "MAINTENANCE_MODE";
+  const DAILY_LIMIT_CODE = "1027";
+  const RATE_LIMIT_STATUS = 429;
   const DEFAULT_HOSTS = ["api.studybase.site", "api.revisionbase.site"];
   const monitoredHosts = new Set(DEFAULT_HOSTS);
   const originalFetch = window.fetch ? window.fetch.bind(window) : null;
@@ -59,6 +61,10 @@
       "#" + POPUP_ID + " .sb-endpoint-topline{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:8px;}",
       "#" + POPUP_ID + " .sb-endpoint-chip{display:inline-flex;align-items:center;border-radius:999px;background:#e0f2fe;color:#0369a1;padding:4px 11px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}",
       "#" + POPUP_ID + " .sb-endpoint-ban-warning{font-size:13px;}",
+      "#" + POPUP_ID + " .sb-daily-limit-countdown{margin-top:22px;padding:16px 18px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:14px;text-align:center;}",
+      "#" + POPUP_ID + " .sb-daily-limit-label{font-size:12px;font-weight:700;color:#475569;margin-bottom:6px;letter-spacing:0.3px;}",
+      "#" + POPUP_ID + " .sb-daily-limit-timer{font-size:26px;font-weight:900;color:#0f172a;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:1px;line-height:1;}",
+      "#" + POPUP_ID + " .sb-daily-limit-reset-note{font-size:11px;color:#64748b;margin-top:6px;font-weight:600;}",
       "@media (max-width:760px){#" + POPUP_ID + " .sb-endpoint-shell{padding-top:24px;}#" + POPUP_ID + " .sb-endpoint-main{min-height:calc(100vh - 90px);}#" + POPUP_ID + " .sb-endpoint-card{padding:24px 18px;}#" + POPUP_ID + " .sb-endpoint-details-view .sb-endpoint-card{padding:22px 16px;}#" + POPUP_ID + " .sb-endpoint-icon-wrap{width:132px;height:132px;}#" + POPUP_ID + " .sb-endpoint-topline{flex-direction:column;}#" + POPUP_ID + " .sb-endpoint-actions{flex-direction:column;}#" + POPUP_ID + " .sb-endpoint-details-view .sb-endpoint-actions{justify-content:stretch;}#" + POPUP_ID + " button,#" + POPUP_ID + " a.sb-endpoint-button{width:100%;}}"
     ].join("");
     document.head.appendChild(style);
@@ -83,7 +89,7 @@
       '            <img data-field="error-icon" alt="" />',
       '            <span class="sb-endpoint-icon-fallback" data-field="error-icon-fallback">!</span>',
       "          </div>",
-      '          <h1 id="sb-endpoint-title">There was an error</h1>',
+      '          <h1 id="sb-endpoint-title" data-field="title">There was an error</h1>',
       '          <p class="sb-endpoint-summary" data-field="summary">A StudyBase request did not complete successfully.</p>',
       '          <div class="sb-endpoint-ban-warning" style="max-width:520px;margin:16px auto 0;padding:10px 14px;border-radius:12px;background:#fef2f2;border:1px solid #fecaca;color:#991b1b;font-size:12.5px;font-weight:700;line-height:1.4;">',
       "            Reaching out to the site owner by email about this will lead to a <strong>permanent account ban</strong>.",
@@ -141,6 +147,7 @@
         return;
       }
       if (action === "details") {
+        if (host.getAttribute("data-daily-limit") === "true") return;
         openDetailsFromPopup();
         return;
       }
@@ -181,6 +188,51 @@
     popup.querySelector('[data-field="details"]').textContent =
       payload.details || "No extra details were returned.";
 
+    const titleEl = popup.querySelector('[data-field="title"]');
+    if (titleEl) {
+      titleEl.textContent = payload.title || "There was an error";
+    }
+
+    const banWarnings = popup.querySelectorAll(".sb-endpoint-ban-warning");
+    if (payload.hideBanWarning) {
+      banWarnings.forEach((el) => { el.style.display = "none"; });
+    } else {
+      banWarnings.forEach((el) => { el.style.display = ""; });
+    }
+
+    const isDailyLimit = !!payload.isDailyLimit;
+
+    // Always clean previous daily-limit UI first
+    const actions = popup.querySelector('.sb-endpoint-actions');
+    const existingCountdown = popup.querySelector('.sb-daily-limit-countdown');
+    if (existingCountdown) existingCountdown.remove();
+
+    if (isDailyLimit) {
+      popup.setAttribute("data-daily-limit", "true");
+
+      // Completely hide all action buttons (no reload, no more info)
+      if (actions) actions.style.display = "none";
+
+      // Clear any previous interval
+      if (popup._dailyLimitInterval) {
+        clearInterval(popup._dailyLimitInterval);
+        popup._dailyLimitInterval = null;
+      }
+
+      // Set up the live countdown to 00:00 UTC
+      setupDailyLimitCountdown(popup);
+    } else {
+      popup.removeAttribute("data-daily-limit");
+
+      if (actions) actions.style.display = "";
+
+      // Clean up timer if we were previously in daily limit mode
+      if (popup._dailyLimitInterval) {
+        clearInterval(popup._dailyLimitInterval);
+        popup._dailyLimitInterval = null;
+      }
+    }
+
     setImageWithFallback(
       popup.querySelector('[data-field="error-icon"]'),
       popup.querySelector('[data-field="error-icon-fallback"]'),
@@ -193,7 +245,26 @@
   function closePopup() {
     const popup = document.getElementById(POPUP_ID);
     if (!popup) return;
+
+    // Clear any running daily limit countdown timer
+    if (popup._dailyLimitInterval) {
+      clearInterval(popup._dailyLimitInterval);
+      popup._dailyLimitInterval = null;
+    }
+
     popup.classList.remove("is-open");
+    popup.removeAttribute("data-daily-limit");
+
+    // Restore buttons for normal errors
+    const moreBtn = popup.querySelector('.sb-endpoint-summary-view button[data-action="details"]');
+    if (moreBtn) moreBtn.style.display = "";
+    const reloadBtn = popup.querySelector('.sb-endpoint-summary-view button[data-action="reload"]');
+    if (reloadBtn) reloadBtn.textContent = "Reload page";
+
+    // Remove any previously injected daily limit countdown
+    const existingCountdown = popup.querySelector('.sb-daily-limit-countdown');
+    if (existingCountdown) existingCountdown.remove();
+
     document.documentElement.classList.remove("sb-endpoint-error-open");
     if (window.StudybaseEndpointPopup) {
       window.StudybaseEndpointPopup.activeSignature = null;
@@ -386,6 +457,46 @@
     showMaintenanceBanner(message);
   }
 
+  function openDailyLimitPopup(endpoint, payload, triggeredCode) {
+    const signature = "rate-limit-quota";
+    if (window.StudybaseEndpointPopup && window.StudybaseEndpointPopup.activeSignature === signature) {
+      return;
+    }
+
+    const effectiveCode = triggeredCode || DAILY_LIMIT_CODE;
+
+    const detailsText = payload && payload.details
+      ? payload.details
+      : "The endpoint returned a rate limit / daily quota response.";
+
+    const customPayload = {
+      code: effectiveCode,
+      endpoint: endpoint || "Unknown",
+      details: detailsText,
+      summary: "Due to extremely high user activity across the entire platform, StudyBase has reached the maximum daily capacity of our servers (100,000 requests). This is a global server-side limit that affects all users equally.",
+      title: "Server daily limit reached",
+      hideBanWarning: true,
+      isDailyLimit: true
+    };
+
+    window.StudybaseEndpointPopup.lastError = customPayload;
+    window.StudybaseEndpointPopup.activeSignature = signature;
+
+    const render = function () {
+      const popup = ensurePopup();
+      renderPopupPayload(customPayload);
+      popup.setAttribute("data-view", "summary");
+      popup.classList.add("is-open");
+      document.documentElement.classList.add("sb-endpoint-error-open");
+    };
+
+    if (document.readyState === "loading" || !document.body) {
+      document.addEventListener("DOMContentLoaded", render, { once: true });
+    } else {
+      render();
+    }
+  }
+
   function addMonitoredHost(rawUrl) {
     if (!rawUrl || typeof rawUrl !== "string") return;
 
@@ -420,6 +531,14 @@
     if (typeof support.tiktokUrl === "string") settings.tiktokUrl = support.tiktokUrl;
   }
 
+  function isMonitoredHost(hostname) {
+    if (!hostname) return false;
+    if (monitoredHosts.has(hostname)) return true;
+    if (hostname === "studybase.site" || hostname.endsWith(".studybase.site")) return true;
+    if (hostname === "revisionbase.site" || hostname.endsWith(".revisionbase.site")) return true;
+    return false;
+  }
+
   function shouldInspect(input) {
     try {
       const requestUrl =
@@ -432,7 +551,7 @@
       if (!requestUrl) return false;
 
       const parsed = new URL(requestUrl, window.location.origin);
-      return monitoredHosts.has(parsed.hostname);
+      return isMonitoredHost(parsed.hostname);
     } catch (error) {
       return false;
     }
@@ -443,6 +562,37 @@
     const text = String(raw).trim();
     if (!text) return "";
     return text.length > 1500 ? text.slice(0, 1500) + "..." : text;
+  }
+
+  function isDailyLimitResponse(response, payload) {
+    if (!response) return false;
+
+    const status = Number(response.status || 0);
+    if (status === RATE_LIMIT_STATUS) return true; // 429 Too Many Requests
+    if (String(status) === DAILY_LIMIT_CODE) return true;
+
+    if (!payload || !payload.isJson || !payload.json || typeof payload.json !== "object") return false;
+
+    const data = payload.json;
+    const errorFields = ["error", "code", "errorCode", "err", "errCode", "statusCode", "status"];
+    for (const field of errorFields) {
+      const val = String(data[field] || "").trim();
+      if (val === DAILY_LIMIT_CODE || val === String(RATE_LIMIT_STATUS)) {
+        return true;
+      }
+    }
+
+    // Only treat message/reason fields as rate limit if they *exactly* match the code
+    // (prevents false positives on 404s or other errors that mention numbers in passing)
+    const messageFields = ["message", "reason", "details", "errorMessage"];
+    for (const field of messageFields) {
+      const val = String(data[field] || "").trim();
+      if (val === DAILY_LIMIT_CODE || val === String(RATE_LIMIT_STATUS)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   async function getResponsePayload(response) {
@@ -627,6 +777,71 @@
     }
   }
 
+  // ==================== DAILY LIMIT COUNTDOWN (resets at 00:00 UTC) ====================
+  function getMsUntilUtcMidnight() {
+    const now = new Date();
+    const nextMidnight = new Date(Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() + 1,
+      0, 0, 0, 0
+    ));
+    return nextMidnight.getTime() - now.getTime();
+  }
+
+  function formatCountdown(ms) {
+    const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return `${hours}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+  }
+
+  function setupDailyLimitCountdown(popup) {
+    // Clear any existing timer
+    if (popup._dailyLimitInterval) {
+      clearInterval(popup._dailyLimitInterval);
+      popup._dailyLimitInterval = null;
+    }
+
+    // Remove old countdown if present
+    const old = popup.querySelector('.sb-daily-limit-countdown');
+    if (old) old.remove();
+
+    // Create the countdown UI
+    const countdownWrap = document.createElement('div');
+    countdownWrap.className = 'sb-daily-limit-countdown';
+
+    countdownWrap.innerHTML = `
+      <div class="sb-daily-limit-label">This global daily limit resets at <strong>00:00 UTC</strong></div>
+      <div class="sb-daily-limit-timer"></div>
+      <div class="sb-daily-limit-reset-note">Please try again after the reset</div>
+    `;
+
+    const timerEl = countdownWrap.querySelector('.sb-daily-limit-timer');
+
+    // Insert after the summary paragraph
+    const summaryP = popup.querySelector('[data-field="summary"]');
+    if (summaryP && summaryP.parentNode) {
+      summaryP.parentNode.insertBefore(countdownWrap, summaryP.nextSibling);
+    } else {
+      // Fallback: append to the card
+      const card = popup.querySelector('.sb-endpoint-card');
+      if (card) card.appendChild(countdownWrap);
+    }
+
+    function updateTimer() {
+      if (!timerEl || !timerEl.isConnected) {
+        clearInterval(popup._dailyLimitInterval);
+        return;
+      }
+      timerEl.textContent = formatCountdown(getMsUntilUtcMidnight());
+    }
+
+    updateTimer();
+    popup._dailyLimitInterval = setInterval(updateTimer, 1000);
+  }
+
   window.fetch = async function (input, init) {
     if (!shouldInspect(input)) {
       return originalFetch(input, init);
@@ -653,8 +868,41 @@
         return response;
       }
 
+      // Also scan successful (200) JSON responses for embedded 429 / 1027 daily quota signals
+      if (response.ok) {
+        const ct = (response.headers.get("content-type") || "").toLowerCase();
+        if (ct.includes("application/json")) {
+          try {
+            const clone = response.clone();
+            const json = await clone.json();
+            const fakePayload = {
+              isJson: true,
+              json,
+              details: normaliseDetails(JSON.stringify(json, null, 2))
+            };
+            if (isDailyLimitResponse(response, fakePayload)) {
+              const errVal = json && (json.error || json.code || json.status);
+              const statusStr = String(errVal || "429");
+              const triggeredCode = (statusStr === "429" || statusStr === DAILY_LIMIT_CODE) ? statusStr : "429";
+              openDailyLimitPopup(buildEndpointLabel(input), fakePayload, triggeredCode);
+              return response;
+            }
+          } catch (_) {
+            // ignore parse failures
+          }
+        }
+      }
+
       if (!response.ok) {
         const payload = await getResponsePayload(response);
+
+        if (isDailyLimitResponse(response, payload)) {
+          const statusStr = String(response.status || "");
+          const triggeredCode = statusStr === "429" ? "429" : (statusStr === DAILY_LIMIT_CODE ? DAILY_LIMIT_CODE : statusStr);
+          openDailyLimitPopup(buildEndpointLabel(input), payload, triggeredCode);
+          return response;
+        }
+
         if (isHandledApplicationResponse(response, payload)) {
           return response;
         }
@@ -669,13 +917,43 @@
 
       return response;
     } catch (error) {
-      openPopup({
-        code: error && error.name ? error.name : "NETWORK_ERROR",
-        endpoint: buildEndpointLabel(input),
-        details: normaliseDetails(error && error.message ? error.message : String(error)),
-        summary:
-          "The request could not reach the StudyBase endpoint successfully. This usually means a network failure, a blocked request, or the endpoint being unavailable."
-      });
+      const isFailedFetch = error &&
+        error.name === "TypeError" &&
+        /failed to fetch/i.test(String(error.message || ""));
+
+      // When Cloudflare returns 429 (or other errors) without CORS headers,
+      // fetch rejects with "Failed to fetch". We can't read the status.
+      // We use a heuristic on the URL to decide whether to show the special
+      // daily limit screen (no buttons + countdown) or the normal error page.
+      const requestUrl = typeof input === "string"
+        ? input
+        : (input && typeof input.url === "string" ? input.url : "");
+
+      const looksLikeQuotaOrRateLimit =
+        /1027|error-test|rate.?limit|daily.?limit|quota|capacity/i.test(requestUrl);
+
+      if (isFailedFetch && looksLikeQuotaOrRateLimit) {
+        // Show the special clean daily limit screen for known quota-related endpoints
+        // even when it comes back as a raw "Failed to fetch".
+        openDailyLimitPopup(
+          buildEndpointLabel(input),
+          {
+            details: "The request was rate-limited (429 Too Many Requests). The response could not be read because the upstream did not include CORS headers on the error."
+          },
+          "429"
+        );
+      } else {
+        // Normal network / CORS-blocked error (e.g. real 404s, outages, etc.)
+        // Show the standard error page with Reload + More info buttons.
+        openPopup({
+          code: error && error.name ? error.name : "NETWORK_ERROR",
+          endpoint: buildEndpointLabel(input),
+          details: normaliseDetails(error && error.message ? error.message : String(error)),
+          summary:
+            "The request could not reach the StudyBase endpoint successfully. This usually means a network failure, a blocked request, or the endpoint being unavailable."
+        });
+      }
+
       throw error;
     }
   };
@@ -697,6 +975,7 @@
     close: closePopup,
     closeToast: closeToast,
     showDetails: openDetailsFromPopup,
+    showDailyLimit: openDailyLimitPopup,
     lastError: null,
     activeSignature: null
   };
