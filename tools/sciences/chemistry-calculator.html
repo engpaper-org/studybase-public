@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chemistry Calculator | StudyBase Tools</title>
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
+  <link rel="stylesheet" href="/assets/css/premium-system.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .back-link {
+      color: #64748b;
+      font-size: 0.92rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .back-link:hover { color: #0f172a; }
+    a { color: #0ea5e9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button { font-weight: 700; border-radius: 11px; padding: 9px 16px; font-size: 0.93rem; cursor: pointer; transition: all 0.15s ease; }
+  </style>
+</head>
+<body>
+  <div class="sbx-shell" style="max-width:860px;padding:1.5rem 1rem 3rem;">
+    <a href="/tools/sciences/" class="back-link">← Sciences</a>
+    <div style="margin:1rem 0 1.3rem;display:flex;gap:10px;align-items:center;">
+      <i data-lucide="flask-conical" style="width:28px;height:28px;color:#0ea5e9;"></i>
+      <h1 style="font-size:1.85rem;font-weight:700;margin:0;">Chemistry Calculator</h1>
+    </div>
+
+    <div style="background:white;border:1px solid #e2e8f0;border-radius:14px;padding:1.15rem;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;">
+        <div><label style="font-size:0.78rem;font-weight:700;">Moles (n)</label><input id="moles" value="0.25" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:9px;"></div>
+        <div><label style="font-size:0.78rem;font-weight:700;">Volume (dm³)</label><input id="vol" value="0.5" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:9px;"></div>
+        <div><label style="font-size:0.78rem;font-weight:700;">Conc (mol/dm³)</label><input id="conc" value="" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:9px;"></div>
+      </div>
+      <button onclick="calcMoles()" style="margin-top:12px;padding:9px 18px;background:#0f172a;color:white;border-radius:11px;font-weight:700;">Calculate Concentration</button>
+      <div id="chem-out" style="margin-top:12px;padding:11px;background:#f8fafc;border-radius:10px;min-height:48px;"></div>
+      <div style="margin-top:10px;font-size:0.82rem;color:#64748b;">pH, Kc, titration and Born-Haber calculators follow the same local pattern — expand as needed.</div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <script src="/assets/js/layout/footer.js" defer></script>
+  <script>
+    lucide.createIcons();
+    function calcMoles() {
+      const n = parseFloat(document.getElementById('moles').value);
+      const v = parseFloat(document.getElementById('vol').value);
+      const c = n / v;
+      document.getElementById('chem-out').textContent = 'Concentration = ' + c.toFixed(3) + ' mol dm⁻³';
+    }
+  </script>
+</body>
+</html>

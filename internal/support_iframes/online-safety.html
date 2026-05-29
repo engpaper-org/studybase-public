@@ -53,19 +53,19 @@
       overflow: hidden;
       display: grid;
       place-items: center;
-      padding: clamp(10px, 4cqi, 28px);
-      border-radius: clamp(12px, 4cqi, 28px);
-      border: 1px solid var(--border);
-      background:
-        radial-gradient(circle at 16% 14%, rgba(53, 217, 255, 0.22), transparent 34%),
-        radial-gradient(circle at 88% 84%, rgba(21, 151, 255, 0.18), transparent 38%),
-        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.76));
-      box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.62),
-        0 18px 46px rgba(0, 0, 0, 0.06);
+      padding: clamp(12px, 4cqi, 32px);
+      border-radius: clamp(14px, 4cqi, 28px);
+      border: 1px solid #e2e8f0;
+      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+      box-shadow: 0 12px 32px -12px rgba(15, 23, 42, 0.12), inset 0 0 0 1px rgba(255,255,255,0.95);
       isolation: isolate;
       cursor: pointer;
       outline: none;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+    .slot:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.14), inset 0 0 0 1px rgba(255,255,255,0.95);
     }
 
     .slot::before {
@@ -81,14 +81,7 @@
       z-index: -4;
     }
 
-    .slot::after {
-      content: "";
-      position: absolute;
-      inset: -110%;
-      background: linear-gradient(105deg, transparent 43%, rgba(255, 255, 255, 0.72) 50%, transparent 57%);
-      animation: softShine 8s ease-in-out infinite;
-      z-index: -1;
-    }
+    /* Shine animation removed for clean professional look */
 
     .slot:focus-visible {
       box-shadow:
@@ -120,7 +113,7 @@
       justify-items: center;
       text-align: center;
       gap: clamp(8px, 3cqi, 18px);
-      animation: gentleFloat 5.5s ease-in-out infinite;
+      /* gentleFloat animation removed */
       pointer-events: none;
     }
 
@@ -187,7 +180,7 @@
     .default-text,
     .default-cta { display: block; }
 
-    @keyframes softShine {
+    /* @keyframes softShine removed */
       0%, 66% { transform: translateX(-58%); opacity: 0; }
       76% { opacity: 1; }
       100% { transform: translateX(58%); opacity: 0; }
@@ -206,12 +199,12 @@
     @container (min-aspect-ratio: 4 / 1) {
       .slot { padding: 10px clamp(18px, 4cqi, 36px); }
       .content {
-        width: 96%;
-        max-width: 1260px;
+        width: 94%;
+        max-width: 1180px;
         height: auto;
-        grid-template-columns: auto minmax(0, 1fr) auto;
+        grid-template-columns: auto minmax(0, 1fr);
         grid-template-rows: 1fr;
-        gap: clamp(16px, 4cqi, 42px);
+        gap: clamp(18px, 5cqi, 48px);
       }
       .logo {
         align-self: center;
@@ -221,21 +214,22 @@
       .message {
         justify-items: start;
         text-align: left;
-        gap: 6px;
+        gap: 5px;
       }
       .default-title, .default-text, .default-cta,
       .short-title, .short-text, .short-cta,
       .tall-title, .tall-text, .tall-cta,
       .tiny-title, .tiny-text, .tiny-cta { display: none; }
-      .wide-title, .wide-text, .wide-cta { display: block; }
+      .wide-title, .wide-text { display: block; }
+      .wide-cta { display: none; }
       h1 {
         max-width: 760px;
-        font-size: clamp(17px, 2.5cqi, 29px);
+        font-size: clamp(17px, 2.7cqi, 30px);
         letter-spacing: -0.045em;
       }
       p {
         max-width: 780px;
-        font-size: clamp(10px, 1.25cqi, 14px);
+        font-size: clamp(10px, 1.35cqi, 14px);
         line-height: 1.36;
       }
     }
@@ -342,8 +336,7 @@
 </head>
 <body>
   <main class="slot" id="supportBanner" aria-label="StudyBase online safety banner" tabindex="0" role="link">
-    <div class="orb one"></div>
-    <div class="orb two"></div>
+    <!-- Decorative orbs removed for clean professional appearance -->
 
     <section class="content">
       <img
@@ -360,11 +353,11 @@
         <h1 class="tall-title">Stay safe online.</h1>
         <h1 class="tiny-title">Stay safe.</h1>
 
-        <p class="default-text" id="defaultText"></p>
-        <p class="wide-text" id="wideText"></p>
-        <p class="short-text" id="shortText"></p>
-        <p class="tall-text" id="tallText"></p>
-        <p class="tiny-text">Think before you share.</p>
+        <p class="default-text" id="defaultText">Think carefully before you share anything. Screenshots, messages and posts can last much longer than the original moment, so always consider the consequences.</p>
+        <p class="wide-text" id="wideText">Think carefully before you share anything online. Screenshots, private messages and posts can last far longer than the moment they were created. Taking just a few extra seconds to pause and consider the consequences can genuinely save you a huge amount of stress and regret later on, and helps protect everyone involved from unnecessary harm down the line, including your future opportunities and relationships.</p>
+        <p class="short-text" id="shortText">Think before you share anything online.</p>
+        <p class="tall-text" id="tallText">Posts and messages can last a long time.</p>
+        <p class="tiny-text">Think before you share anything online.</p>
 
         <p class="cta default-cta">Click the banner to open advice.</p>
         <p class="cta wide-cta">Click the banner to open advice.</p>
@@ -373,33 +366,32 @@
         <p class="cta tiny-cta">Click banner.</p>
       </div>
 
-      <div aria-hidden="true"></div>
     </section>
   </main>
 
   <script>
     const variants = [
       {
-        defaultText: "Think before you share — screenshots, messages, and posts can last longer than the moment.",
-        wideText: "Think before you share — screenshots, messages, and posts can last longer than the moment. A few seconds of thinking can save a lot of stress later.",
-        shortText: "Think before you share.",
-        tallText: "Posts can last.",
-        supportHref: "https://www.saferinternet.org.uk/"
-      },
-      {
-        defaultText: "If something online feels off, trust that feeling and speak to someone you trust.",
-        wideText: "If something online feels off, trust that feeling and speak to someone you trust. You never have to handle pressure, threats, or weird messages on your own.",
-        shortText: "Trust that feeling.",
-        tallText: "Tell someone you trust.",
-        supportHref: "https://www.nspcc.org.uk/keeping-children-safe/online-safety/"
-      },
-      {
-        defaultText: "Keep private things private — your location, passwords, and personal details should stay yours.",
-        wideText: "Keep private things private — your location, passwords, and personal details should stay yours. Being careful online is part of protecting yourself offline too.",
-        shortText: "Keep private things private.",
-        tallText: "Protect your details.",
-        supportHref: "https://www.childline.org.uk/info-advice/bullying-abuse-safety/online-mobile-safety/staying-safe-online/"
-      }
+  defaultText: "Think before you share anything online, because screenshots, messages, and posts can last much longer than the original moment ever will.",
+  wideText: "Think carefully before you share anything online. Screenshots, private messages, and posts can last far longer than the moment they were created, and once something is out there it can be very difficult to take back. Taking just a few extra seconds to pause and think can genuinely save you a huge amount of stress and regret later on.",
+  shortText: "Think before sharing posts, screenshots, messages, or personal moments online.",
+  tallText: "Posts can last.",
+  supportHref: "https://www.saferinternet.org.uk/"
+},
+{
+  defaultText: "If something online feels off or uncomfortable, trust that feeling and speak to someone you trust about it.",
+  wideText: "If something online feels off, uncomfortable, or wrong, it is really important to trust that instinct and not ignore it. You never have to deal with pressure, threats, or strange messages completely on your own. Speaking to someone you trust can make the whole situation feel much more manageable and help you work out what to do next.",
+  shortText: "Trust uncomfortable feelings online and speak to someone you trust.",
+  tallText: "Tell someone you trust.",
+  supportHref: "https://www.nspcc.org.uk/keeping-children-safe/online-safety/"
+},
+{
+  defaultText: "Keep private things private. Your location, passwords, and personal details should always stay under your control.",
+  wideText: "Keep the private parts of your life truly private. Your location, passwords, and personal details should remain yours and no one else’s. Being careful and thoughtful about what you share online is one of the most important ways you can protect yourself both online and when you are offline in real life.",
+  shortText: "Keep your location, passwords, and personal details under control.",
+  tallText: "Protect your details.",
+  supportHref: "https://www.childline.org.uk/info-advice/bullying-abuse-safety/online-mobile-safety/staying-safe-online/"
+}
     ];
 
     const chosen = variants[Math.floor(Math.random() * variants.length)];
@@ -410,8 +402,16 @@
     document.getElementById('tallText').textContent = chosen.tallText;
 
     const banner = document.getElementById('supportBanner');
+
     const openSupport = () => {
-      window.open(chosen.supportHref, '_blank', 'noopener,noreferrer');
+      try {
+        window.parent.postMessage({
+          type: 'show-external-warning',
+          url: chosen.supportHref
+        }, '*');
+      } catch (e) {
+        window.open(chosen.supportHref, '_blank', 'noopener,noreferrer');
+      }
     };
 
     banner.addEventListener('click', openSupport);

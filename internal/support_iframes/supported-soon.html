@@ -52,16 +52,11 @@
       overflow: hidden;
       display: grid;
       place-items: center;
-      padding: clamp(10px, 4cqi, 28px);
-      border-radius: clamp(12px, 4cqi, 28px);
-      border: 1px solid var(--border);
-      background:
-        radial-gradient(circle at 16% 14%, rgba(53, 217, 255, 0.22), transparent 34%),
-        radial-gradient(circle at 88% 84%, rgba(21, 151, 255, 0.18), transparent 38%),
-        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.76));
-      box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.62),
-        0 18px 46px rgba(0, 0, 0, 0.06);
+      padding: clamp(12px, 4cqi, 32px);
+      border-radius: clamp(14px, 4cqi, 28px);
+      border: 1px solid #e2e8f0;
+      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+      box-shadow: 0 12px 32px -12px rgba(15, 23, 42, 0.12), inset 0 0 0 1px rgba(255,255,255,0.95);
       isolation: isolate;
     }
 
@@ -88,7 +83,7 @@
         rgba(255, 255, 255, 0.72) 50%,
         transparent 57%
       );
-      animation: softShine 8s ease-in-out infinite;
+      /* softShine removed */
       z-index: -1;
     }
 
@@ -123,7 +118,7 @@
       justify-items: center;
       text-align: center;
       gap: clamp(8px, 3cqi, 18px);
-      animation: gentleFloat 5.5s ease-in-out infinite;
+      /* gentleFloat animation removed */
     }
 
     .logo {
@@ -464,8 +459,7 @@
 
 <body>
   <main class="slot" aria-label="StudyBase ads space">
-    <div class="orb one"></div>
-    <div class="orb two"></div>
+    <!-- Decorative orbs removed for clean professional appearance -->
 
     <section class="content">
       <img

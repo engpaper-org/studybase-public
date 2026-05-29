@@ -29,7 +29,7 @@ window.SUPPORT_ARTICLES = {
             title: "Study study tools",
             body: "Use timers, planners, breathing tools, and study methods when you need structure.",
             icon: "fa-toolbox",
-            href: "/study-tools.html",
+            href: "/tools/",
             label: "Open study tools",
           },
           {
@@ -47,7 +47,7 @@ window.SUPPORT_ARTICLES = {
         title: "Your first five minutes",
         orderedList: [
           "Open the <a href='/r/index.html#client-preflight'>resource vault</a> or <a href='/subjects/index.html'>subject pages</a> and pick one subject.",
-          "Open the <a href='/study-tools.html'>study tools</a> only when you want extra structure, not because you feel you have to use every tool.",
+          "Open the <a href='/tools/'>study tools</a> only when you want extra structure, not because you feel you have to use every tool.",
           "If you want saved settings or account features, sign in through <a href='/myaccount/login.html'>the login page</a>.",
           "Bookmark the <a href='/support/help_center.html'>help centre</a> so you have a clear fallback if a page is confusing or not loading.",
         ],
@@ -75,7 +75,7 @@ window.SUPPORT_ARTICLES = {
       body: "Start with the areas most students use first.",
       buttons: [
         { label: "Browse resources", href: "/r/index.html#client-preflight", primary: true },
-        { label: "Open study tools", href: "/study-tools.html" },
+        { label: "Open study tools", href: "/tools/" },
       ],
     },
   },

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam Paper Time Splitter | StudyBase Tools</title>
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
+  <link rel="stylesheet" href="/assets/css/premium-system.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>.sbx-shell{max-width:980px;padding:0.6rem 1rem 3rem}</style>
+</head>
+<body>
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <div class="sbx-shell">
+    <a href="/tools/planning/" style="color:#64748b;font-size:0.9rem;">← Planning tools</a>
+    <div style="margin:1rem 0 1.6rem;display:flex;gap:11px;align-items:center;">
+      <i data-lucide="clock" style="width:28px;height:28px;color:#0ea5e9;"></i>
+      <h1 style="font-size:1.9rem;font-weight:700;margin:0;">Exam Paper Time Splitter</h1>
+    </div>
+
+    <div class="card" style="background:white;border:1px solid #e2e8f0;border-radius:14px;padding:1.3rem;max-width:720px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div>
+          <label style="font-size:0.8rem;font-weight:700;color:#475569;">Total paper length (minutes)</label>
+          <input id="total-mins" type="number" value="120" style="width:100%;padding:9px 11px;border:1px solid #cbd5e1;border-radius:10px;">
+        </div>
+        <div>
+          <label style="font-size:0.8rem;font-weight:700;color:#475569;">Number of sections / questions</label>
+          <input id="sections" type="number" value="4" style="width:100%;padding:9px 11px;border:1px solid #cbd5e1;border-radius:10px;">
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:0.8rem;font-weight:700;color:#475569;">Review buffer at the end (minutes)</label>
+        <input id="buffer" type="number" value="12" style="width:140px;padding:9px 11px;border:1px solid #cbd5e1;border-radius:10px;">
+      </div>
+      <button onclick="generateSplit()" style="background:#0f172a;color:white;padding:10px 22px;border-radius:12px;font-weight:700;">Generate Timed Split</button>
+    </div>
+
+    <div id="split-output" style="margin-top:1.25rem;display:none;">
+      <h3 style="margin-bottom:0.6rem;font-size:1.05rem;">Your timed sections</h3>
+      <div id="split-list" style="display:grid;gap:8px;"></div>
+      <button onclick="startSplitTimer()" style="margin-top:1rem;background:#0ea5e9;color:white;padding:10px 18px;border-radius:999px;font-weight:700;">Start First Section</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <script src="/assets/js/layout/footer.js" defer></script>
+  <script>
+    lucide.createIcons();
+    let currentSplit = [];
+    let splitTimer = null, splitIdx = 0, splitRemaining = 0;
+
+    function generateSplit() {
+      const total = parseInt(document.getElementById('total-mins').value) || 120;
+      const n = parseInt(document.getElementById('sections').value) || 4;
+      const buf = parseInt(document.getElementById('buffer').value) || 10;
+      const work = total - buf;
+      const per = Math.floor(work / n);
+      const rem = work % n;
+
+      currentSplit = [];
+      for (let i=0; i<n; i++) {
+        currentSplit.push({label: `Section ${i+1}`, mins: per + (i < rem ? 1 : 0)});
+      }
+      currentSplit.push({label: 'Final Review & Check', mins: buf});
+
+      renderSplit();
+    }
+
+    function renderSplit() {
+      const out = document.getElementById('split-output');
+      const list = document.getElementById('split-list');
+      list.innerHTML = '';
+      currentSplit.forEach((s,i) => {
+        const div = document.createElement('div');
+        div.style.cssText = 'background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;';
+        div.innerHTML = `<div><strong>${s.label}</strong> <span style="color:#64748b;font-size:0.9rem;">— ${s.mins} min</span></div><div style="font-size:0.75rem;color:#94a3b8;">Checkpoint ${i+1}</div>`;
+        list.appendChild(div);
+      });
+      out.style.display = 'block';
+    }
+
+    function startSplitTimer() {
+      if (splitTimer) clearInterval(splitTimer);
+      splitIdx = 0; splitRemaining = currentSplit[0].mins * 60;
+      tickSplit();
+      splitTimer = setInterval(tickSplit, 1000);
+    }
+    function tickSplit() {
+      const list = document.getElementById('split-list');
+      if (!list) return;
+      const mins = Math.floor(splitRemaining / 60);
+      const secs = splitRemaining % 60;
+      list.children[splitIdx].style.borderColor = '#0ea5e9';
+      list.children[splitIdx].innerHTML = `<div><strong>${currentSplit[splitIdx].label}</strong> <span style="color:#0ea5e9;font-weight:700;">${mins}:${secs.toString().padStart(2,'0')}</span></div><div style="font-size:0.75rem;color:#0ea5e9;">NOW</div>`;
+      splitRemaining--;
+      if (splitRemaining < 0) {
+        splitIdx++;
+        if (splitIdx >= currentSplit.length) {
+          clearInterval(splitTimer);
+          alert('Paper complete — well done. Now mark it properly.');
+          return;
+        }
+        splitRemaining = currentSplit[splitIdx].mins * 60;
+      }
+    }
+  </script>
+  <script src="/assets/js/layout/footer.js" defer></script>
+</body>
+</html>

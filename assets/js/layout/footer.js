@@ -4,32 +4,33 @@
       title: "Revise",
       links: [
         ["/r/index.html#client-preflight", "Resource Database"],
-        ["/past_papers/index.html", "Past papers"],
-        ["/subjects/index.html", "Subjects"]
+        ["/past_papers/index.html", "Past Papers"],
+        ["/subjects/index.html", "Subject Routes"]
       ]
     },
     {
-      title: "Plan",
+      title: "Tools",
       links: [
-        ["/alevel.html", "A-Level route"],
-        ["/exam-planner.html", "Exam planner"],
-        ["/mistake-log.html", "Mistake log"]
+        ["/tools/", "All Study Tools"],
+        ["/tools/planning/", "Planning & Command Centre"],
+        ["/tools/mathematics/", "Mathematics Tools"],
+        ["/tools/sciences/", "Sciences Tools"]
       ]
     },
     {
-      title: "Help",
+      title: "More Tools",
       links: [
-        ["/support/help_center.html", "Support"],
+        ["/tools/humanities/", "Humanities & Essays"],
+        ["/tools/compsci/", "Computer Science"],
+        ["/tools/languages/", "Languages & EPQ"]
+      ]
+    },
+    {
+      title: "Support",
+      links: [
+        ["/support/help_center.html", "Help Centre"],
         ["/faq.html", "FAQ"],
         ["/contact.html", "Contact"]
-      ]
-    },
-    {
-      title: "Legal",
-      links: [
-        ["/legal/privacy.html", "Privacy"],
-        ["/legal/tos.html", "Terms"],
-        ["/legal/disclaimer.html", "Disclaimer"]
       ]
     }
   ];
@@ -42,9 +43,9 @@
     footer.innerHTML = `
       <div class="sbx-footer-inner">
         <div class="sbx-footer-brand">
-          <img src="/assets/images/site-icons/navbar.png" alt="StudyBase logo">
+          <img src="/assets/images/site-icons/genie-avatar.svg" alt="StudyBase logo" style="border:none;">
           <div>
-            <strong>StudyBase</strong>
+            <strong data-brand>StudyBase</strong>
             <p>A-Level revision remastered around papers, marking and useful next steps.</p>
           </div>
         </div>

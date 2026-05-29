@@ -3,33 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="StudyBase support centre for A-Level students using the remastered revision workspace.">
-  <title>StudyBase | Support</title>
+  <meta name="description" content="StudyBase Support Centre — help with the A-Level revision workspace, safety features, account access, and study tools.">
+  <title>StudyBase | Support Centre</title>
   <link rel="icon" href="/assets/images/site-icons/main.ico">
   <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
   <script src="/assets/js/config/siteConfig.js"></script>
   <script src="/assets/js/layout/navbar.js" defer></script>
   <script src="/assets/js/layout/footer.js" defer></script>
+  <script src="/assets/js/support/support-handler.js" defer></script>
+  <style>
+    .support-category { transition: transform .2s ease, box-shadow .2s ease; }
+    .support-category:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+    :root.dark .support-category { background: #0f172a; border-color: #334155; color: #e2e8f0; }
+  </style>
 </head>
 <body>
   <main>
     <section class="sbx-section">
       <div class="sbx-shell">
-        <span class="sbx-kicker">Support</span>
-        <h1 class="sbx-h1">Help without the maze.</h1>
-        <p class="sbx-lede">Get help with access, resources, safety, reports and the remastered A-Level study workflow.</p>
+        <span class="sbx-kicker">Support Centre</span>
+        <h1 class="sbx-h1">Real help for real A-Level students.</h1>
+        <p class="sbx-lede">Everything you need to use the revision workspace confidently — from logging in to staying safe and productive while you study.</p>
       </div>
     </section>
-    <section class="sbx-section sbx-band">
-      <div class="sbx-shell sbx-card-grid">
-        <a class="sbx-card sbx-link-card" href="/myaccount/login.html"><h3>Login</h3><p>Use your StudyBase login to open the resource database and account pages.</p></a>
-        <a class="sbx-card sbx-link-card" href="/faq.html"><h3>FAQ</h3><p>Answers about papers, tools, resources and site behaviour.</p></a>
-        <a class="sbx-card sbx-link-card" href="/contact.html"><h3>Contact</h3><p>Send a question, report a problem or suggest a subject route.</p></a>
-        <a class="sbx-card sbx-link-card" href="/report.html"><h3>Report an issue</h3><p>Tell us when a link, resource or page needs attention.</p></a>
-        <a class="sbx-card sbx-link-card" href="/safety.html"><h3>Safety</h3><p>Read the safety and wellbeing notes for using StudyBase well.</p></a>
-        <a class="sbx-card sbx-link-card" href="/legal/privacy.html"><h3>Privacy</h3><p>See what the site stores and why.</p></a>
+
+    <!-- Support ad slot -->
+    <div class="sbx-shell" style="max-width: 1100px; margin-bottom: 1rem;">
+      <div data-support-slot="support-hub-leaderboard" data-support-ratio="leaderboard" data-support-label="Wellbeing Partner"></div>
+    </div>
+
+    <section class="sbx-section">
+      <div class="sbx-shell">
+        <div class="sbx-heading-row">
+          <h2>Choose a category</h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <a href="/support/getting-started.html" class="support-category block bg-white border border-slate-200 rounded-3xl p-6">
+            <div class="font-extrabold text-lg mb-1">Getting started</div>
+            <p class="text-sm text-slate-600">How to use the Resource Database, study tools, and your account.</p>
+          </a>
+
+          <a href="/faq.html" class="support-category block bg-white border border-slate-200 rounded-3xl p-6">
+            <div class="font-extrabold text-lg mb-1">Frequently asked questions</div>
+            <p class="text-sm text-slate-600">Common questions about papers, tools, access and site behaviour.</p>
+          </a>
+
+          <a href="/contact.html" class="support-category block bg-white border border-slate-200 rounded-3xl p-6">
+            <div class="font-extrabold text-lg mb-1">Contact the team</div>
+            <p class="text-sm text-slate-600">Ask a question, report a problem, or request new subject materials.</p>
+          </a>
+
+          <a href="/report.html" class="support-category block bg-white border border-slate-200 rounded-3xl p-6">
+            <div class="font-extrabold text-lg mb-1">Report an issue</div>
+            <p class="text-sm text-slate-600">Something broken, inappropriate, or not working as expected?</p>
+          </a>
+
+          <a href="/safety.html" class="support-category block bg-white border border-slate-200 rounded-3xl p-6">
+            <div class="font-extrabold text-lg mb-1">Safety &amp; wellbeing</div>
+            <p class="text-sm text-slate-600">Time limits, content filters, breaks, and how we help you study safely.</p>
+          </a>
+
+          <a href="/support/mental-health.html" class="support-category block bg-white border border-slate-200 rounded-3xl p-6">
+            <div class="font-extrabold text-lg mb-1">Mental health resources</div>
+            <p class="text-sm text-slate-600">If revision is getting heavy — support and guidance links.</p>
+          </a>
+
+          <a href="/support/online-warning-signs.html" class="support-category block bg-white border border-slate-200 rounded-3xl p-6">
+            <div class="font-extrabold text-lg mb-1">Online safety</div>
+            <p class="text-sm text-slate-600">Recognising pressure, grooming, and staying safe while using study platforms.</p>
+          </a>
+
+          <a href="/legal/privacy.html" class="support-category block bg-white border border-slate-200 rounded-3xl p-6">
+            <div class="font-extrabold text-lg mb-1">Privacy &amp; data</div>
+            <p class="text-sm text-slate-600">What we store, why, and how your information is protected.</p>
+          </a>
+
+          <a href="/support/ban/account_ban.html" class="support-category block bg-white border border-slate-200 rounded-3xl p-6">
+            <div class="font-extrabold text-lg mb-1">Account issues &amp; appeals</div>
+            <p class="text-sm text-slate-600">Problems logging in, restricted access, or appealing a decision.</p>
+          </a>
+        </div>
       </div>
     </section>
+
+    <!-- 3 side-by-side rectangle ads (better use of the space than a single almost-square) -->
+    <div class="sbx-shell grid grid-cols-1 md:grid-cols-3 gap-4" style="max-width: 900px; margin-top: 1rem;">
+      <div data-support-slot="support-hub-bottom-1" data-support-ratio="rectangle" data-support-label="Student Support"></div>
+      <div data-support-slot="support-hub-bottom-2" data-support-ratio="rectangle" data-support-label="Student Support"></div>
+      <div data-support-slot="support-hub-bottom-3" data-support-ratio="rectangle" data-support-label="Student Support"></div>
+    </div>
   </main>
 </body>
 </html>

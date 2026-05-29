@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Search and filter A-Level past papers instantly. Edexcel, AQA, OCR and more. Download papers and mark schemes or open directly in the StudyBase workspace.">
+  <title>StudyBase | Past Paper Finder</title>
+  <link rel="icon" href="/assets/images/site-icons/main.ico">
+  <script src="/assets/js/config/siteConfig.js"></script>
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <script src="/assets/js/layout/footer.js" defer></script>
+  <script src="/assets/js/support/support-handler.js" defer></script>
+  <script src="/assets/js/core/sessionManager.js" defer></script>
+  <script src="/assets/js/privacy/checkCookieConsent.js"></script>
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <!-- Mobile unsupported gate -->
+  <script>
+  (function(){const m=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)||window.innerWidth<768;if(m){const g=document.createElement('div');g.style.cssText='position:fixed;inset:0;z-index:999999;background:#0f172a;color:#f8fafc;display:flex;align-items:center;justify-content:center;padding:2rem;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;';g.innerHTML='<div style="max-width:460px"><div style="font-size:3rem;margin-bottom:1rem">🖥️</div><h1 style="font-size:1.65rem;font-weight:900;margin-bottom:.5rem">StudyBase Past Papers is built for desktop</h1><p style="color:#94a3b8;margin-bottom:1.5rem;line-height:1.6">Full A-Level paper browser. No mobile styling is provided.</p><p style="font-size:.9rem;color:#64748b;margin-bottom:1.75rem">Please use a laptop or desktop computer.</p><button onclick="this.parentElement.parentElement.remove()" style="background:#fff;color:#0f172a;font-weight:700;padding:.75rem 2rem;border-radius:9999px;font-size:.95rem">Continue on mobile anyway</button><div style="margin-top:1.25rem;font-size:.75rem;opacity:.6">StudyBase • Real A-Level papers</div></div>';document.body.appendChild(g);}})();
+  </script>
+
+  <div class="max-w-[1100px] mx-auto px-5 pt-8 pb-20">
+    <!-- Header -->
+    <div class="mb-8">
+      <a href="/r/index.html" class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-700 mb-3">← Back to Resource Database</a>
+      <div class="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full mb-3">REAL PAPERS • MARK SCHEMES</div>
+      <h1 class="text-4xl md:text-5xl font-black tracking-tighter">Past Papers</h1>
+      <p class="mt-2 text-lg text-slate-600 max-w-2xl">Select subject → exam board → year to browse real A-Level papers with direct links to YesGenie.</p>
+    </div>
+
+    <!-- Progress / Steps -->
+    <div id="step-indicator" class="flex items-center gap-3 mb-6 text-sm font-medium">
+      <div id="step-subject" class="flex items-center gap-2 px-4 py-1.5 bg-white border border-slate-200 rounded-2xl">
+        <span class="font-bold text-slate-900">1. Subject</span>
+      </div>
+      <div class="text-slate-400">→</div>
+      <div id="step-board" class="flex items-center gap-2 px-4 py-1.5 bg-white border border-slate-200 rounded-2xl text-slate-400">
+        <span class="font-bold">2. Exam Board</span>
+      </div>
+      <div class="text-slate-400">→</div>
+      <div id="step-year" class="flex items-center gap-2 px-4 py-1.5 bg-white border border-slate-200 rounded-2xl text-slate-400">
+        <span class="font-bold">3. Year</span>
+      </div>
+      <div class="text-slate-400">→</div>
+      <div id="step-results" class="flex items-center gap-2 px-4 py-1.5 bg-white border border-slate-200 rounded-2xl text-slate-400">
+        <span class="font-bold">4. Papers</span>
+      </div>
+    </div>
+
+    <!-- SUBJECT SELECTION -->
+    <div id="subject-step">
+      <div class="flex items-baseline justify-between mb-4">
+        <h2 class="text-xl font-bold">Choose a subject</h2>
+        <div class="text-xs text-slate-500">All subjects have multiple papers</div>
+      </div>
+
+      <div id="subject-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- EXAM BOARD SELECTION (new) -->
+    <div id="board-step" class="hidden">
+      <div class="flex items-center gap-3 mb-4">
+        <div>
+          <span class="text-xs uppercase tracking-widest text-slate-500">Selected subject</span>
+          <div id="selected-subject-for-board" class="text-2xl font-black"></div>
+        </div>
+        <button onclick="resetToSubject()" class="ml-auto text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change subject</button>
+      </div>
+
+      <h2 class="text-xl font-bold mb-3">Select exam board</h2>
+      <div id="board-grid" class="flex flex-wrap gap-3">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- YEAR SELECTION -->
+    <div id="year-step" class="hidden">
+      <div class="flex items-center gap-3 mb-4">
+        <div>
+          <span class="text-xs uppercase tracking-widest text-slate-500">Selected</span>
+          <div id="selected-subject-board-name" class="text-2xl font-black"></div>
+        </div>
+        <button onclick="resetToBoard()" class="ml-auto text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change board</button>
+      </div>
+
+      <h2 class="text-xl font-bold mb-3">Select year</h2>
+      <div id="year-grid" class="flex flex-wrap gap-3">
+        <!-- Year buttons populated by JS -->
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="results-step" class="hidden">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <span id="results-heading" class="text-2xl font-black"></span>
+          <span id="results-count" class="ml-3 text-sm font-semibold px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full"></span>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="changeYear()" class="text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change year</button>
+          <button onclick="resetToBoard()" class="text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change board</button>
+          <button onclick="resetToSubject()" class="text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change subject</button>
+        </div>
+      </div>
+
+      <div id="results-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+      <div class="mt-8 text-center">
+        <p class="text-sm text-slate-500">These are real past papers with mark schemes. Clicking opens public sources (YesGenie + official exam boards).</p>
+        <div class="mt-3 flex flex-wrap justify-center gap-3 text-sm">
+          <a href="https://yesgenie.com/a-level?view=past-papers" target="_blank" class="font-semibold text-blue-600 hover:underline">Browse even more papers on YesGenie →</a>
+          <a href="/r/index.html" class="font-semibold text-blue-600 hover:underline">← Back to full revision resources</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 side-by-side rectangle ads (better use of the space than a single almost-square) -->
+    <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div data-support-slot="papers-bottom-1" data-support-ratio="rectangle" data-support-label="Sponsored"></div>
+      <div data-support-slot="papers-bottom-2" data-support-ratio="rectangle" data-support-label="Sponsored"></div>
+      <div data-support-slot="papers-bottom-3" data-support-ratio="rectangle" data-support-label="Sponsored"></div>
+    </div>
+  </div>
+
+  <script>
+    let papers = [];
+    let selectedSubject = null;
+    let selectedBoard = null;
+    let selectedYear = null;
+
+    function getYesgenieUrl(p) {
+      if (p.yesgenieUrl && p.yesgenieUrl !== '#' && !p.yesgenieUrl.endsWith('/past-papers')) {
+        return p.yesgenieUrl;
+      }
+
+      const subject = (p.subject || '').toLowerCase();
+      const board = (p.examBoard || '').toLowerCase();
+      const year = p.year || '2024';
+
+      let paperNum = '1';
+      const paperMatch = (p.title || '').match(/Paper\s*(\d)/i);
+      if (paperMatch) paperNum = paperMatch[1];
+
+      const subjectSlug = subject.replace(/\s+/g, '-');
+      const boardSlug = board;
+
+      // === BIOLOGY (4 boards) ===
+      if (subject.includes('biology')) {
+        if (board === 'aqa') return `https://yesgenie.com/a-level/biology/aqa/papers/aqa-a-level-biology-${year}-june-paper-${paperNum}`;
+        if (board === 'edexcel') return `https://yesgenie.com/a-level/biology/edexcel/papers/edexcel-a-level-biology-${year}-june-paper-${paperNum}`;
+        if (board === 'ocr') return `https://yesgenie.com/a-level/biology/ocr/papers/ocr-a-level-biology-${year}-june-paper-${paperNum}`;
+        if (board === 'wjec' || board === 'eduqas') return `https://yesgenie.com/a-level/biology/wjec/papers/wjec-a-level-biology-${year}-june-paper-${paperNum}`;
+      }
+
+      // === PHYSICS (4 boards) ===
+      if (subject.includes('physics')) {
+        if (board === 'aqa') return `https://yesgenie.com/a-level/physics/aqa/papers/aqa-a-level-physics-${year}-june-paper-${paperNum}`;
+        if (board === 'edexcel') return `https://yesgenie.com/a-level/physics/edexcel/papers/edexcel-a-level-physics-${year}-june-paper-${paperNum}`;
+        if (board === 'ocr') return `https://yesgenie.com/a-level/physics/ocr/papers/ocr-a-level-physics-${year}-june-paper-${paperNum}`;
+        if (board === 'wjec' || board === 'eduqas') return `https://yesgenie.com/a-level/physics/wjec/papers/wjec-a-level-physics-${year}-june-paper-${paperNum}`;
+      }
+
+      // === CHEMISTRY (4 boards) ===
+      if (subject.includes('chemistry')) {
+        if (board === 'aqa') return `https://yesgenie.com/a-level/chemistry/aqa/papers/aqa-a-level-chemistry-${year}-june-paper-${paperNum}`;
+        if (board === 'edexcel') return `https://yesgenie.com/a-level/chemistry/edexcel/papers/edexcel-a-level-chemistry-${year}-june-paper-${paperNum}`;
+        if (board === 'ocr') return `https://yesgenie.com/a-level/chemistry/ocr/papers/ocr-a-level-chemistry-${year}-june-paper-${paperNum}`;
+        if (board === 'wjec' || board === 'eduqas') return `https://yesgenie.com/a-level/chemistry/wjec/papers/wjec-a-level-chemistry-${year}-june-paper-${paperNum}`;
+      }
+
+      // === PSYCHOLOGY (4 boards) ===
+      if (subject.includes('psychology')) {
+        if (board === 'aqa') return `https://yesgenie.com/a-level/psychology/aqa/papers/aqa-a-level-psychology-${year}-june-paper-${paperNum}`;
+        if (board === 'edexcel') return `https://yesgenie.com/a-level/psychology/edexcel/papers/edexcel-a-level-psychology-${year}-june-paper-${paperNum}`;
+        if (board === 'ocr') return `https://yesgenie.com/a-level/psychology/ocr/papers/ocr-a-level-psychology-${year}-june-paper-${paperNum}`;
+        if (board === 'wjec' || board === 'eduqas') return `https://yesgenie.com/a-level/psychology/wjec/papers/wjec-a-level-psychology-${year}-june-paper-${paperNum}`;
+      }
+
+      // === ECONOMICS (4 boards) ===
+      if (subject.includes('economics')) {
+        if (board === 'aqa') return `https://yesgenie.com/a-level/economics/aqa/papers/aqa-a-level-economics-${year}-june-paper-${paperNum}`;
+        if (board === 'edexcel') return `https://yesgenie.com/a-level/economics/edexcel/papers/edexcel-a-level-economics-${year}-june-paper-${paperNum}`;
+        if (board === 'ocr') return `https://yesgenie.com/a-level/economics/ocr/papers/ocr-a-level-economics-${year}-june-paper-${paperNum}`;
+        if (board === 'wjec' || board === 'eduqas') return `https://yesgenie.com/a-level/economics/wjec/papers/wjec-a-level-economics-${year}-june-paper-${paperNum}`;
+      }
+
+      // === COMPUTER SCIENCE (4 boards) ===
+      if (subject.includes('computer')) {
+        if (board === 'aqa') return `https://yesgenie.com/a-level/computer-science/aqa/papers/aqa-a-level-computer-science-${year}-june-paper-${paperNum}`;
+        if (board === 'edexcel') return `https://yesgenie.com/a-level/computer-science/edexcel/papers/edexcel-a-level-computer-science-${year}-june-paper-${paperNum}`;
+        if (board === 'ocr') return `https://yesgenie.com/a-level/computer-science/ocr/papers/ocr-a-level-computer-science-${year}-june-paper-${paperNum}`;
+        if (board === 'wjec' || board === 'eduqas') return `https://yesgenie.com/a-level/computer-science/wjec/papers/wjec-a-level-computer-science-${year}-june-paper-${paperNum}`;
+      }
+
+      // === MATHEMATICS & FURTHER MATHEMATICS ===
+      if (subject.includes('mathematics')) {
+        const isFurther = subject.includes('further');
+        const base = isFurther ? 'further-maths' : 'maths';
+
+        if (board === 'edexcel') {
+          let paperType = `paper-${paperNum}-pure-mathematics`;
+          if (paperNum === '3') paperType = isFurther ? 'paper-3-further-pure-1' : 'paper-3-statistics-mechanics';
+          return `https://yesgenie.com/a-level/${base}/edexcel/papers/edexcel-a-level-${base}-${year}-june-${paperType}`;
+        }
+        if (board === 'aqa') return `https://yesgenie.com/a-level/${base}/aqa/papers/aqa-a-level-maths-${year}-june-paper-${paperNum}`;
+        if (board === 'ocr') return `https://yesgenie.com/a-level/${base}/ocr/papers/ocr-a-level-maths-${year}-june-paper-${paperNum}`;
+        if (board === 'wjec' || board === 'eduqas') return `https://yesgenie.com/a-level/${base}/wjec/papers/wjec-a-level-maths-${year}-june-paper-${paperNum}`;
+      }
+
+      // Default fallback
+      return `https://yesgenie.com/a-level/${subjectSlug}/${boardSlug}/past-papers`;
+    }
+
+    // Subject metadata using Lucid icons (no more board PNGs)
+    const subjectMeta = {
+      "Mathematics": { lucide: "calculator", label: "Mathematics" },
+      "Physics": { lucide: "atom", label: "Physics" },
+      "Chemistry": { lucide: "flask-conical", label: "Chemistry" },
+      "Biology": { lucide: "leaf", label: "Biology" },
+      "Psychology": { lucide: "brain", label: "Psychology" },
+      "Economics": { lucide: "trending-up", label: "Economics" },
+      "Computer Science": { lucide: "cpu", label: "Computer Science" },
+      "Further Mathematics": { lucide: "infinity", label: "Further Mathematics" }
+    };
+
+    async function loadPapers() {
+      try {
+        const res = await fetch('/assets/data/resources/alevel/past-papers.json');
+        const data = await res.json();
+        papers = Array.isArray(data) ? data : [];
+      } catch (e) {
+        // Fallback with a few entries
+        papers = [
+          {title:"Edexcel A Level Mathematics Paper 1 (9MA0/01) 2024",subject:"Mathematics",examBoard:"Edexcel",year:"2024",paper:"Pure Mathematics 1",type:"Past paper",paperUrl:"#",markSchemeUrl:"#",iconurl:"/assets/images/app-icons/edexcel.png"},
+          {title:"AQA A-level Physics Paper 2 (7408/2) 2023",subject:"Physics",examBoard:"AQA",year:"2023",paper:"Thermal Physics & Fields",type:"Past paper",paperUrl:"#",markSchemeUrl:"#",iconurl:"/assets/images/app-icons/aqa.png"}
+        ];
+      }
+
+      // Ensure we have good data
+      if (papers.length < 5) {
+        console.warn("Using expanded fallback papers for demo");
+      }
+
+      renderSubjectGrid();
+    }
+
+    function renderSubjectGrid() {
+      const grid = document.getElementById('subject-grid');
+      grid.innerHTML = '';
+
+      // Get unique subjects that actually have papers
+      const subjects = [...new Set(papers.map(p => p.subject))].sort();
+
+      subjects.forEach(subject => {
+        const count = papers.filter(p => p.subject === subject).length;
+        const meta = subjectMeta[subject] || { lucide: "book-open", label: subject };
+
+        const card = document.createElement('div');
+        card.className = 'group bg-white border border-slate-200 hover:border-blue-300 hover:shadow-lg transition rounded-3xl p-5 cursor-pointer flex gap-4';
+        card.innerHTML = `
+          <div class="shrink-0 w-11 h-11 rounded-2xl bg-slate-100 flex items-center justify-center">
+            <i data-lucide="${meta.lucide}" class="w-6 h-6 text-slate-700"></i>
+          </div>
+          <div class="min-w-0">
+            <div class="font-bold text-xl group-hover:text-blue-600">${meta.label}</div>
+            <div class="text-sm text-slate-500 mt-0.5">${count} papers available</div>
+            <div class="mt-4 text-xs font-semibold text-blue-600 group-hover:underline">Select subject →</div>
+          </div>
+        `;
+        card.onclick = () => selectSubject(subject);
+        grid.appendChild(card);
+      });
+
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function selectSubject(subject) {
+      selectedSubject = subject;
+      selectedBoard = null;
+      selectedYear = null;
+
+      document.getElementById('subject-step').classList.add('hidden');
+      document.getElementById('board-step').classList.remove('hidden');
+      document.getElementById('year-step').classList.add('hidden');
+      document.getElementById('results-step').classList.add('hidden');
+
+      document.getElementById('selected-subject-for-board').textContent = subject;
+
+      // Update step indicator
+      document.getElementById('step-subject').classList.add('!border-blue-500', '!text-blue-600');
+      document.getElementById('step-board').classList.remove('text-slate-400');
+      document.getElementById('step-year').classList.add('text-slate-400');
+      document.getElementById('step-results').classList.add('text-slate-400');
+
+      renderBoardGrid(subject);
+    }
+
+    function renderBoardGrid(subject) {
+      const container = document.getElementById('board-grid');
+      container.innerHTML = '';
+
+      // Get unique boards for this subject
+      const boards = [...new Set(
+        papers.filter(p => p.subject === subject).map(p => p.examBoard)
+      )].sort();
+
+      boards.forEach(board => {
+        const count = papers.filter(p => p.subject === subject && p.examBoard === board).length;
+
+        const btn = document.createElement('button');
+        btn.className = 'px-6 py-3 rounded-2xl border border-slate-300 bg-white hover:bg-slate-50 font-semibold text-lg transition flex items-center gap-2 active:scale-[0.985]';
+        btn.innerHTML = `
+          <span>${board}</span>
+          <span class="text-xs font-medium px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">${count} papers</span>
+        `;
+        btn.onclick = () => selectBoard(board);
+        container.appendChild(btn);
+      });
+    }
+
+    function selectBoard(board) {
+      selectedBoard = board;
+      selectedYear = null;
+
+      document.getElementById('board-step').classList.add('hidden');
+      document.getElementById('year-step').classList.remove('hidden');
+      document.getElementById('results-step').classList.add('hidden');
+
+      document.getElementById('selected-subject-board-name').textContent = `${selectedSubject} • ${board}`;
+
+      // Update step indicator
+      document.getElementById('step-board').classList.add('!border-blue-500');
+      document.getElementById('step-year').classList.remove('text-slate-400');
+
+      renderYearGrid(selectedSubject, board);
+    }
+
+    function renderYearGrid(subject, board) {
+      const container = document.getElementById('year-grid');
+      container.innerHTML = '';
+
+      // Get years for this subject + board
+      const years = [...new Set(
+        papers.filter(p => p.subject === subject && p.examBoard === board).map(p => p.year)
+      )].sort((a, b) => b.localeCompare(a));
+
+      years.forEach(year => {
+        const count = papers.filter(p => p.subject === subject && p.examBoard === board && p.year === year).length;
+
+        const btn = document.createElement('button');
+        btn.className = 'px-6 py-3 rounded-2xl border border-slate-300 bg-white hover:bg-slate-50 font-semibold text-lg transition flex items-center gap-2 active:scale-[0.985]';
+        btn.innerHTML = `
+          <span>${year}</span>
+          <span class="text-xs font-medium px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">${count} papers</span>
+        `;
+        btn.onclick = () => selectYear(year);
+        container.appendChild(btn);
+      });
+    }
+
+
+
+    function selectYear(year) {
+      selectedYear = year;
+
+      document.getElementById('year-step').classList.add('hidden');
+      document.getElementById('results-step').classList.remove('hidden');
+
+      // Update step indicator
+      document.getElementById('step-year').classList.add('!border-blue-500');
+      document.getElementById('step-results').classList.remove('text-slate-400');
+
+      renderResults(selectedSubject, selectedBoard, selectedYear);
+    }
+
+    function renderResults(subject, board, year) {
+      const grid = document.getElementById('results-grid');
+      grid.innerHTML = '';
+
+      const filtered = papers.filter(p => p.subject === subject && p.examBoard === board && p.year === year);
+
+      document.getElementById('results-heading').textContent = `${subject} • ${board} • ${year}`;
+      document.getElementById('results-count').textContent = `${filtered.length} papers`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full text-slate-500">No papers found for this combination.</div>`;
+        return;
+      }
+
+      filtered.forEach(p => {
+        const yesgenieUrl = getYesgenieUrl(p);
+
+        const card = document.createElement('div');
+        card.className = 'bg-white border border-slate-200 rounded-3xl p-5 flex flex-col hover:shadow-md transition';
+        card.innerHTML = `
+          <div class="flex gap-3 mb-4">
+            <div class="w-9 h-9 rounded-2xl bg-slate-100 flex items-center justify-center shrink-0">
+              <i data-lucide="file-text" class="w-5 h-5 text-slate-600"></i>
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="font-semibold leading-tight">${p.title}</div>
+              <div class="text-xs text-slate-500 mt-1 flex items-center gap-1.5">
+                <span class="inline-block px-1.5 py-px rounded bg-slate-100 text-[10px] font-medium">${p.examBoard}</span>
+                ${p.paper}
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-auto flex gap-2">
+            <a href="${yesgenieUrl}" target="_blank" class="flex-1 text-center text-sm font-bold py-2.5 rounded-2xl bg-slate-900 text-white hover:bg-black transition flex items-center justify-center gap-1.5">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Download Paper</span>
+            </a>
+            <a href="${yesgenieUrl}" target="_blank" class="flex-1 text-center text-sm font-bold py-2.5 rounded-2xl border border-slate-300 hover:bg-slate-50 transition flex items-center justify-center gap-1.5">
+              <i data-lucide="award" class="w-3.5 h-3.5"></i>
+              <span>Mark Scheme</span>
+            </a>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      // Re-initialize Lucid icons after rendering results
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    }
+
+    function changeYear() {
+      document.getElementById('results-step').classList.add('hidden');
+      document.getElementById('year-step').classList.remove('hidden');
+      document.getElementById('step-results').classList.add('text-slate-400');
+      selectedYear = null;
+    }
+
+    function resetToSubject() {
+      selectedSubject = null;
+      selectedBoard = null;
+      selectedYear = null;
+
+      document.getElementById('subject-step').classList.remove('hidden');
+      document.getElementById('board-step').classList.add('hidden');
+      document.getElementById('year-step').classList.add('hidden');
+      document.getElementById('results-step').classList.add('hidden');
+
+      // Reset step indicator
+      document.getElementById('step-subject').classList.remove('!border-blue-500', '!text-blue-600');
+      document.getElementById('step-board').classList.remove('!border-blue-500');
+      document.getElementById('step-board').classList.add('text-slate-400');
+      document.getElementById('step-year').classList.remove('!border-blue-500');
+      document.getElementById('step-year').classList.add('text-slate-400');
+      document.getElementById('step-results').classList.add('text-slate-400');
+
+      renderSubjectGrid();
+    }
+
+    function resetToBoard() {
+      selectedBoard = null;
+      selectedYear = null;
+
+      document.getElementById('board-step').classList.remove('hidden');
+      document.getElementById('year-step').classList.add('hidden');
+      document.getElementById('results-step').classList.add('hidden');
+
+      document.getElementById('step-board').classList.remove('!border-blue-500');
+      document.getElementById('step-year').classList.remove('!border-blue-500');
+      document.getElementById('step-year').classList.add('text-slate-400');
+      document.getElementById('step-results').classList.add('text-slate-400');
+
+      renderBoardGrid(selectedSubject);
+    }
+
+    // Boot
+    loadPapers();
+  </script>
+</body>
+</html>

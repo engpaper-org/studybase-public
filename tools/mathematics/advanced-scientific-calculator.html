@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Scientific Calculator | StudyBase Tools</title>
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
+  <link rel="stylesheet" href="/assets/css/premium-system.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    function initTailwind() {
+      if (window.tailwind) {
+        window.tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                'sb-dark': '#0f172a',
+                'sb-accent': '#0ea5e9',
+              }
+            }
+          }
+        };
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTailwind);
+    } else {
+      initTailwind();
+    }
+  </script>
+  <style>
+    .calc-btn{padding:13px 0;border:1px solid #cbd5e1;border-radius:12px;font-weight:700;font-size:0.95rem;background:#fff;cursor:pointer;transition:all .1s}
+    .calc-btn:active{background:#f1f5f9; transform:scale(0.97)}
+    .sbx-shell{max-width:820px;padding:0.5rem 1rem 3rem}
+    .back-link {
+      color: #64748b;
+      font-size: 0.92rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .back-link:hover { color: #0f172a; }
+    a { color: #0ea5e9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button { font-weight: 700; border-radius: 11px; padding: 9px 16px; font-size: 0.93rem; cursor: pointer; transition: all 0.15s ease; }
+  </style>
+</head>
+<body>
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <script src="/assets/js/support/support-handler.js" defer></script>
+
+  <div class="max-w-[1100px] mx-auto px-6 py-8">
+    <!-- Top Support Promo -->
+    <div data-support-slot="calculator-top" data-support-ratio="leaderboard" data-support-label="Wellbeing Partner" class="mb-6"></div>
+
+    <a href="/tools/mathematics/" class="text-slate-500 hover:text-slate-700 text-sm flex items-center gap-1 mb-6">← Mathematics tools</a>
+    
+    <div class="flex items-center gap-4 mb-6">
+      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-cyan-400 flex items-center justify-center flex-shrink-0">
+        <i data-lucide="calculator" class="w-6 h-6 text-white"></i>
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight">Advanced Scientific Calculator</h1>
+        <p class="text-slate-600">Full A-Level maths &amp; science functions with history.</p>
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-200 rounded-2xl p-6 max-w-md">
+      <input id="calc-display" class="w-full text-3xl font-bold text-right border border-slate-200 rounded-xl px-4 py-3 mb-4 font-mono" value="0" readonly>
+      
+      <div class="grid grid-cols-4 gap-2">
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcClear()">C</button>
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcOp('(')">(</button>
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcOp(')')">)</button>
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcOp('/')">÷</button>
+        
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcNum(7)">7</button>
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcNum(8)">8</button>
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcNum(9)">9</button>
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcOp('*')">×</button>
+        
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcNum(4)">4</button>
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcNum(5)">5</button>
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcNum(6)">6</button>
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcOp('-')">−</button>
+        
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcNum(1)">1</button>
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcNum(2)">2</button>
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcNum(3)">3</button>
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcOp('+')">+</button>
+        
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcNum(0)">0</button>
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcOp('.')">.</button>
+        <button class="py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl font-bold" onclick="calcEquals()">=</button>
+        <button class="py-3 border border-slate-200 rounded-xl hover:bg-slate-50 font-medium" onclick="calcBack()">⌫</button>
+      </div>
+
+      <div class="mt-3 flex flex-wrap gap-2">
+        <button onclick="calcFunc('sin')" class="px-3 py-1 text-xs border rounded-lg hover:bg-slate-50">sin</button>
+        <button onclick="calcFunc('cos')" class="px-3 py-1 text-xs border rounded-lg hover:bg-slate-50">cos</button>
+        <button onclick="calcFunc('tan')" class="px-3 py-1 text-xs border rounded-lg hover:bg-slate-50">tan</button>
+        <button onclick="calcFunc('log')" class="px-3 py-1 text-xs border rounded-lg hover:bg-slate-50">log</button>
+        <button onclick="calcFunc('ln')" class="px-3 py-1 text-xs border rounded-lg hover:bg-slate-50">ln</button>
+        <button onclick="calcFunc('sqrt')" class="px-3 py-1 text-xs border rounded-lg hover:bg-slate-50">√</button>
+        <button onclick="calcFunc('pow')" class="px-3 py-1 text-xs border rounded-lg hover:bg-slate-50">x²</button>
+        <button onclick="calcFunc('pi')" class="px-3 py-1 text-xs border rounded-lg hover:bg-slate-50">π</button>
+      </div>
+    </div>
+    <div style="font-size:0.78rem;color:#64748b;margin-top:8px;max-width:520px;">All calculations happen locally. History is saved on this device.</div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <script src="/assets/js/layout/footer.js" defer></script>
+  <script>
+    lucide.createIcons();
+    let display = document.getElementById('calc-display');
+    let expr = '0';
+    function update() { display.value = expr; }
+    function calcNum(n){ if(expr==='0') expr=''; expr += n; update(); }
+    function calcOp(op){ expr += op; update(); }
+    function calcClear(){ expr='0'; update(); }
+    function calcBack(){ expr = expr.slice(0,-1) || '0'; update(); }
+    function calcFunc(f){
+      if(f==='pi'){ expr = (parseFloat(expr)||0) + Math.PI + ''; }
+      else if(f==='sqrt'){ expr = Math.sqrt(parseFloat(expr)||0) + ''; }
+      else if(f==='pow'){ expr = Math.pow(parseFloat(expr)||0, 2) + ''; }
+      else if(f==='sin'){ expr = Math.sin((parseFloat(expr)||0)*Math.PI/180) + ''; }
+      else if(f==='cos'){ expr = Math.cos((parseFloat(expr)||0)*Math.PI/180) + ''; }
+      else if(f==='tan'){ expr = Math.tan((parseFloat(expr)||0)*Math.PI/180) + ''; }
+      else if(f==='log'){ expr = Math.log10(parseFloat(expr)||1) + ''; }
+      else if(f==='ln'){ expr = Math.log(parseFloat(expr)||1) + ''; }
+      update();
+    }
+    function calcEquals(){
+      try { expr = eval(expr.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-')) + ''; } catch(e){ expr='Error'; }
+      update();
+      setTimeout(()=>{ if(expr!=='Error') localStorage.setItem('sb_calc_last', expr); }, 20);
+    }
+    window.addEventListener('load', ()=>{ const last = localStorage.getItem('sb_calc_last'); if(last) { expr = last; update(); } });
+  </script>
+  <script src="/assets/js/layout/footer.js" defer></script>
+</body>
+</html>

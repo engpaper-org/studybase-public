@@ -16,6 +16,67 @@
 (() => {
   "use strict";
 
+  // External link warning modal (shown in parent, not inside iframes)
+  function showExternalLinkWarning(url) {
+    const existing = document.getElementById('sb-external-warning-modal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'sb-external-warning-modal';
+    modal.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,0.82);display:flex;align-items:center;justify-content:center;padding:20px;font-family:Inter,system-ui,-apple-system,sans-serif;';
+
+    modal.innerHTML = `
+      <div style="background:#fff;border-radius:20px;max-width:440px;width:100%;padding:28px 26px;box-shadow:0 25px 70px -15px rgba(0,0,0,0.35);border:1px solid #e2e8f0;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:44px;height:44px;border-radius:12px;background:#fef2f2;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">⚠️</div>
+          <div>
+            <div style="font-weight:800;font-size:18px;color:#0f172a;">Leaving StudyBase</div>
+            <div style="font-size:13px;color:#64748b;">You are about to visit an external website</div>
+          </div>
+        </div>
+
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:11px 13px;margin-bottom:16px;font-size:13.5px;color:#334155;word-break:break-all;">
+          ${new URL(url, window.location.origin).hostname}
+        </div>
+
+        <p style="font-size:13.8px;color:#475569;line-height:1.5;margin-bottom:18px;">
+          This site is not operated by StudyBase. We recommend reviewing their privacy policy before sharing any information.
+        </p>
+
+        <div style="display:flex;gap:10px;">
+          <button id="sb-ext-cancel" style="flex:1;padding:11px 16px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;font-weight:700;font-size:14px;color:#334155;cursor:pointer;">Cancel</button>
+          <button id="sb-ext-continue" style="flex:1;padding:11px 16px;border-radius:12px;border:none;background:#0f172a;color:#fff;font-weight:700;font-size:14px;cursor:pointer;">Continue</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    modal.querySelector('#sb-ext-cancel').onclick = () => modal.remove();
+    modal.querySelector('#sb-ext-continue').onclick = () => {
+      modal.remove();
+      window.open(url, '_blank', 'noopener,noreferrer');
+    };
+
+    modal.onclick = (e) => {
+      if (e.target === modal) modal.remove();
+    };
+
+    document.addEventListener('keydown', function escHandler(e) {
+      if (e.key === 'Escape') {
+        modal.remove();
+        document.removeEventListener('keydown', escHandler);
+      }
+    }, { once: true });
+  }
+
+  // Listen for messages from support iframes
+  window.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'show-external-warning' && event.data.url) {
+      showExternalLinkWarning(event.data.url);
+    }
+  });
+
   const DEFAULT_CONFIG = {
     enabled: true,
 

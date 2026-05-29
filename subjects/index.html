@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A-Level subject routes on StudyBase. Explore Maths, Physics, Chemistry, Biology, Psychology, Economics and more with specification-aligned resources, past papers and targeted tools.">
+  <title>StudyBase | Subjects &amp; A-Level Routes</title>
+  <link rel="icon" href="/assets/images/site-icons/main.ico">
+  <script src="/assets/js/config/siteConfig.js"></script>
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <script src="/assets/js/layout/footer.js" defer></script>
+  <script src="/assets/js/support/support-handler.js" defer></script>
+  <script src="/assets/js/core/sessionManager.js" defer></script>
+  <script src="/assets/js/privacy/checkCookieConsent.js"></script>
+  <style>
+    .subject-card { transition: all .2s cubic-bezier(0.4,0,.2,1); }
+    .subject-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+    .mini-stat { font-size: 10px; padding: 1px 6px; background: #f1f5f9; border-radius: 999px; }
+    .filter-btn { font-size: .75rem; padding: .35rem .75rem; border-radius: 999px; border: 1px solid #cbd5e1; background: white; }
+    .filter-btn.active { background: #0f172a; color: white; border-color: #0f172a; }
+  </style>
+</head>
+<body class="bg-slate-50">
+  <div class="max-w-[1180px] mx-auto px-5 pt-7 pb-12">
+    <div class="mb-8">
+      <div class="flex items-center gap-3">
+        <span class="px-3 py-1 text-xs font-black tracking-widest bg-violet-100 text-violet-700 rounded-full">A-LEVEL SUBJECTS</span>
+      </div>
+      <h1 class="text-4xl font-extrabold tracking-[-1.5px] mt-2">Choose your subject.<br>Every route is paper-first.</h1>
+      <p class="text-slate-600 mt-2 max-w-xl">Select a subject to see recommended resources, common pitfalls, specification highlights and direct links into the Resource Database filtered for that course.</p>
+    </div>
+
+    <!-- Top ad -->
+    <div data-support-slot="subjects-top" data-support-ratio="leaderboard" data-support-label="Partner" class="mb-6"></div>
+
+    <!-- Filters -->
+    <div class="flex flex-wrap gap-2 mb-4" id="subject-filters">
+      <button data-filter="all" class="filter-btn active">All subjects</button>
+      <button data-filter="maths" class="filter-btn">Maths</button>
+      <button data-filter="physics" class="filter-btn">Physics</button>
+      <button data-filter="chemistry" class="filter-btn">Chemistry</button>
+      <button data-filter="biology" class="filter-btn">Biology</button>
+      <button data-filter="psychology" class="filter-btn">Psychology</button>
+      <button data-filter="economics" class="filter-btn">Economics</button>
+      <button data-filter="cs" class="filter-btn">Computer Science</button>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4" id="subject-grid">
+      <!-- Populated by JS -->
+    </div>
+
+    <div class="mt-6 text-xs text-slate-500">Can't see your subject? Use the full <a href="/r/index.html#client-preflight" class="text-sky-600 underline">Resource Database</a> — it contains materials for 30+ A-Level courses.</div>
+
+    <!-- Bottom ad -->
+    <!-- 3 side-by-side rectangle ads (better use of the space than a single almost-square) -->
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div data-support-slot="subjects-bottom-1" data-support-ratio="rectangle" data-support-label="Sponsored Resources"></div>
+      <div data-support-slot="subjects-bottom-2" data-support-ratio="rectangle" data-support-label="Sponsored Resources"></div>
+      <div data-support-slot="subjects-bottom-3" data-support-ratio="rectangle" data-support-label="Sponsored Resources"></div>
+    </div>
+  </div>
+
+  <script>
+    const subjects = [
+      { id: 'maths', name: 'Mathematics', boards: 'AQA, Edexcel, OCR, MEI', papers: '12+ papers', focus: 'Pure, Mechanics, Statistics, Decision', icon: 'folder-maths.png', color: 'blue', desc: 'The most popular A-Level. Heavy emphasis on method and algebraic accuracy.' },
+      { id: 'physics', name: 'Physics', boards: 'AQA, Edexcel, OCR', papers: '9+ papers', focus: 'Mechanics, Fields, Particles, Practical', icon: 'folder-physics.png', color: 'indigo', desc: 'Application heavy. Practicals and data analysis are heavily weighted.' },
+      { id: 'chemistry', name: 'Chemistry', boards: 'AQA, Edexcel, OCR', papers: '9+ papers', focus: 'Organic, Physical, Inorganic', icon: 'folder-chem.png', color: 'emerald', desc: 'Lots of mechanisms and calculations. Organic mechanisms are a common weak area.' },
+      { id: 'biology', name: 'Biology', boards: 'AQA, Edexcel, OCR', papers: '8+ papers', focus: 'Cell biology, Genetics, Ecosystems', icon: 'folder-biology.png', color: 'teal', desc: 'Essay technique and precise terminology matter as much as facts.' },
+      { id: 'psychology', name: 'Psychology', boards: 'AQA, Edexcel, OCR', papers: '7+ papers', focus: 'Research methods, Approaches, Issues', icon: 'folder-econ.png', color: 'violet', desc: 'Evaluation and application to scenarios. Research methods questions are frequent.' },
+      { id: 'economics', name: 'Economics', boards: 'AQA, Edexcel, OCR', papers: '6+ papers', focus: 'Micro, Macro, Global', icon: 'folder-econ.png', color: 'amber', desc: 'Diagrams must be accurate and explained. Judgement and evaluation score highly.' },
+      { id: 'cs', name: 'Computer Science', boards: 'AQA, Edexcel, OCR', papers: '5+ papers', focus: 'Algorithms, Data structures, Theory', icon: 'folder-cs.png', color: 'slate', desc: 'Programming project + written papers. Trace tables and Boolean algebra are high-yield.' }
+    ];
+
+    function renderSubjects(filter = 'all') {
+      const grid = document.getElementById('subject-grid');
+      grid.innerHTML = '';
+      const filtered = filter === 'all' ? subjects : subjects.filter(s => s.id === filter || (filter === 'cs' && s.id === 'cs'));
+
+      filtered.forEach(sub => {
+        const el = document.createElement('div');
+        el.className = `subject-card bg-white border border-slate-200 rounded-3xl p-5 flex flex-col`;
+        el.innerHTML = `
+          <div class="flex items-start gap-3">
+            <img src="/assets/images/app-icons/${sub.icon}" class="w-11 h-11 rounded-2xl ring-1 ring-slate-100" alt="">
+            <div class="flex-1 min-w-0">
+              <div class="font-extrabold text-xl tracking-tight">${sub.name}</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">${sub.boards}</div>
+            </div>
+            <span class="mini-stat">${sub.papers}</span>
+          </div>
+          <div class="mt-3 text-sm text-slate-600 flex-1">${sub.desc}</div>
+          <div class="mt-3 text-[10px] font-bold text-slate-500">FOCUS AREAS</div>
+          <div class="text-xs text-slate-700 mt-0.5">${sub.focus}</div>
+
+          <div class="mt-4 pt-3 border-t flex gap-2">
+            <a href="/r/index.html#client-preflight" class="flex-1 text-center text-xs font-bold py-2 rounded-2xl border hover:bg-slate-50">Open in database</a>
+            <a href="/tools/" class="flex-1 text-center text-xs font-bold py-2 rounded-2xl bg-slate-900 text-white hover:bg-black">Study tools</a>
+          </div>
+        `;
+        grid.appendChild(el);
+      });
+    }
+
+    // Filter logic
+    document.getElementById('subject-filters').addEventListener('click', (e) => {
+      if (!e.target.matches('.filter-btn')) return;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      const f = e.target.dataset.filter;
+      renderSubjects(f);
+    });
+
+    // Initial render + hash support
+    function init() {
+      let initial = 'all';
+      if (location.hash) {
+        const h = location.hash.replace('#','');
+        if (subjects.some(s => s.id === h)) initial = h;
+      }
+      renderSubjects(initial);
+      // activate matching filter button
+      const btn = document.querySelector(`[data-filter="${initial}"]`);
+      if (btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+    }
+    init();
+    window.addEventListener('hashchange', init);
+
+    console.log('%c[Subjects] Functional subject explorer ready', 'color:#64748b');
+  </script>
+</body>
+</html>

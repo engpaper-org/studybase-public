@@ -1,0 +1,29 @@
+# StudyBase - Requested Custom Image Assets
+# Add these when you have time (high visual impact for disguise as a premium revision platform)
+
+## Hero / Landing visuals (used on home + r/ public view)
+- hero-revision-desk.jpg          (JPG, 1600x900, modern clean student desk with past papers + laptop, soft natural light, no people or very subtle)
+- hero-command-center.png         (PNG with transparency or JPG, 1400x800, abstract clean dashboard mock with subject cards and paper thumbnails)
+
+## Subject / Category banners (for subjects/index.html and subject cards)
+- subject-maths-hero.jpg          (JPG, 1200x420, abstract maths / geometric clean)
+- subject-physics-hero.jpg        (JPG, 1200x420, subtle physics / waves / lab feel, premium)
+- subject-chemistry-hero.jpg      (JPG, 1200x420)
+- subject-biology-hero.jpg        (JPG, 1200x420)
+- subject-psychology-hero.jpg     (JPG, 1200x420)
+- subject-economics-hero.jpg      (JPG, 1200x420)
+
+## Trust / Safety section visuals (home + support)
+- safety-wellbeing.jpg            (JPG, 900x600, calm student taking a healthy break, warm lighting, no faces if possible)
+- protected-platform.png          (clean icon-style or illustration, 800x600)
+
+## Paper / Resource visual
+- paper-stack-premium.jpg         (JPG, 800x600, nice stack of real-looking A-Level papers with highlighters, very clean and academic)
+
+## Notes
+- All images should feel premium, calm, academic, and safe (no clutter, no faces if possible, soft lighting).
+- Prefer cool/neutral palettes that work in both light and dark mode.
+- Use high quality, no watermarks, royalty-free or original.
+- If you can provide WebP versions too, even better.
+
+This list can be expanded as we continue polishing the public-facing revision content.

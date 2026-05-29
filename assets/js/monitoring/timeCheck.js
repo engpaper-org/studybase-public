@@ -141,6 +141,73 @@
     `;
     document.body.appendChild(shutdownPopup);
 
+    // --- Resource page top banner (instead of fullscreen overlay on r/index.html) ---
+    const isResourcePage = ['/r', '/r/', '/r/index.html'].some(p =>
+      location.pathname === p || location.pathname.startsWith('/r/')
+    );
+
+    var maintenanceBanner = document.createElement('div');
+    maintenanceBanner.id = 'studybase-maint-banner';
+    maintenanceBanner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:2147483640;background:linear-gradient(90deg,#0f172a,#1e2937);color:#f1f5f9;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;box-shadow:0 10px 30px -10px rgba(0,0,0,0.45);border-bottom:1px solid rgba(148,163,184,0.25);display:none;';
+    maintenanceBanner.innerHTML = `
+      <div style="max-width:1080px;margin:0 auto;padding:14px 20px;display:flex;align-items:flex-start;gap:16px;font-size:13.8px;line-height:1.5;">
+        <div style="flex-shrink:0;width:30px;height:30px;border-radius:8px;background:#334155;display:flex;align-items:center;justify-content:center;font-size:16px;margin-top:2px;">🛠️</div>
+        <div style="flex:1;min-width:0;">
+          <strong style="color:#f8fafc;font-weight:800;letter-spacing:-0.01em;">Studybase online services are suspended.</strong>
+          <span style="opacity:0.92; margin-left:4px;">Scheduled maintenance is active. Services will automatically restore at 4:00 AM.</span>
+          <span style="display:block;margin-top:7px;font-size:12.2px;font-weight:700;color:#fda4af;background:rgba(190,18,60,0.18);padding:4px 10px;border-radius:6px;border:1px solid rgba(244,63,94,0.35);">
+            Reaching out to the site owner by email about maintenance or errors will lead to a permanent account ban.
+          </span>
+        </div>
+        <button type="button" aria-label="Dismiss maintenance notice" style="flex-shrink:0;background:rgba(255,255,255,0.08);border:1px solid rgba(148,163,184,0.3);color:#e2e8f0;width:30px;height:30px;border-radius:999px;font-size:19px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-top:2px;">&times;</button>
+      </div>
+    `;
+    document.body.appendChild(maintenanceBanner);
+
+    const maintCloseBtn = maintenanceBanner.querySelector('button');
+    if (maintCloseBtn) {
+      maintCloseBtn.addEventListener('click', () => {
+        maintenanceBanner.style.display = 'none';
+        const nav = document.getElementById('sbx-navbar');
+        if (nav) nav.style.paddingTop = '';
+      });
+    }
+
+    function showMaintenanceTopBanner() {
+      if (!isResourcePage) return;
+
+      // Remove any API-triggered maintenance banner to avoid duplicates/overlaps
+      const existingSb = document.getElementById('sb-maint-banner');
+      if (existingSb) {
+        existingSb.remove();
+        document.documentElement.classList.remove('sb-maint-active');
+        const navEl = document.getElementById('sbx-navbar');
+        if (navEl) navEl.style.paddingTop = '';
+      }
+
+      maintenanceBanner.style.display = 'block';
+      const nav = document.getElementById('sbx-navbar');
+      if (nav) nav.style.paddingTop = '96px';
+      setMaintenanceActive(true);
+    }
+
+    function hideMaintenanceTopBanner() {
+      maintenanceBanner.style.display = 'none';
+      const nav = document.getElementById('sbx-navbar');
+      if (nav) nav.style.paddingTop = '';
+      setMaintenanceActive(false);
+    }
+
+    // Expose maintenance state for other scripts (e.g. navbar login button)
+    window.SB_MAINTENANCE_ACTIVE = false;
+
+    function setMaintenanceActive(active) {
+      window.SB_MAINTENANCE_ACTIVE = !!active;
+      try {
+        document.dispatchEvent(new CustomEvent(active ? 'sb-maintenance-banner-shown' : 'sb-maintenance-banner-hidden'));
+      } catch (e) {}
+    }
+
     // --- 3. Logic to Check the Time ---
     function checkServerTime() {
         var now = new Date();
@@ -155,29 +222,47 @@
         var shutdownEnd = minutesFromTime(SHUTDOWN_END, 4 * 60);
 
         if (minutesPastMidnight >= warningStart && minutesPastMidnight < shutdownStart) {
+            setMaintenanceActive(false); // services still available during warning period
+
             if (!warningDismissed) {
                 warningPopup.style.transform = "translate(-50%, 0)";
                 warningPopup.style.opacity = "1";
             }
+            hideMaintenanceTopBanner();
             shutdownPopup.style.opacity = "0";
             shutdownPopup.style.visibility = "hidden";
             document.body.style.overflow = ''; 
         } 
         else if (minutesPastMidnight >= shutdownStart || minutesPastMidnight < shutdownEnd) {
+            // Global maintenance state for the whole site (used by navbar login blocking etc.)
+            setMaintenanceActive(true);
+
             warningPopup.style.transform = "translate(-50%, 150%)";
             warningPopup.style.opacity = "0";
             warningDismissed = false; 
             
-            shutdownPopup.style.visibility = "visible";
-            shutdownPopup.style.opacity = "1";
-            document.body.style.overflow = 'hidden';
+            if (isResourcePage) {
+                // On r/index.html show a non-intrusive banner above the navbar instead of the big fullscreen popup
+                hideMaintenanceTopBanner(); // ensure clean state first
+                showMaintenanceTopBanner();
+                shutdownPopup.style.opacity = "0";
+                shutdownPopup.style.visibility = "hidden";
+                document.body.style.overflow = '';
+            } else {
+                shutdownPopup.style.visibility = "visible";
+                shutdownPopup.style.opacity = "1";
+                document.body.style.overflow = 'hidden';
+            }
         } 
         // Normal operation (4:00 AM to 10:59:59 PM)
         else {
+            setMaintenanceActive(false);
+
             warningPopup.style.transform = "translate(-50%, 150%)";
             warningPopup.style.opacity = "0";
             warningDismissed = false;
             
+            hideMaintenanceTopBanner();
             shutdownPopup.style.opacity = "0";
             shutdownPopup.style.visibility = "hidden";
             document.body.style.overflow = ''; 

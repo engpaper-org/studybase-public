@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Statement Builder | StudyBase Tools</title>
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="sbx-shell" style="max-width:980px;padding:1.6rem 1rem 3rem;">
+    <a href="/tools/planning/" style="color:#64748b;font-size:0.9rem;">← Planning tools</a>
+    <div style="margin:1rem 0 1.4rem;display:flex;gap:11px;align-items:center;">
+      <i data-lucide="file-text" style="width:28px;height:28px;color:#0ea5e9;"></i>
+      <h1 style="font-size:1.9rem;font-weight:700;margin:0;">Personal Statement Builder</h1>
+    </div>
+
+    <div style="max-width:740px;background:white;border:1px solid #e2e8f0;border-radius:14px;padding:1.2rem;">
+      <div style="margin-bottom:1rem;">
+        <div style="font-size:0.82rem;font-weight:700;margin-bottom:3px;">Opening hook (1–2 lines)</div>
+        <textarea id="hook" style="width:100%;height:62px;border:1px solid #cbd5e1;border-radius:10px;padding:9px;"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div><div style="font-size:0.82rem;font-weight:700;margin-bottom:3px;">Supercurricular 1</div><input id="sc1" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:10px;"></div>
+        <div><div style="font-size:0.82rem;font-weight:700;margin-bottom:3px;">Supercurricular 2</div><input id="sc2" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:10px;"></div>
+      </div>
+      <div style="margin-top:10px;">
+        <div style="font-size:0.82rem;font-weight:700;margin-bottom:3px;">Key skills &amp; wider reading</div>
+        <textarea id="skills" style="width:100%;height:72px;border:1px solid #cbd5e1;border-radius:10px;padding:9px;"></textarea>
+      </div>
+      <button onclick="buildStatement()" style="margin-top:12px;background:#0f172a;color:white;padding:9px 22px;border-radius:12px;font-weight:700;">Build Full Draft</button>
+      <div id="ps-output" style="margin-top:1rem;padding:12px;background:#f8fafc;border-radius:10px;white-space:pre-wrap;display:none;font-size:0.95rem;"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <script src="/assets/js/layout/footer.js" defer></script>
+  <script>
+    lucide.createIcons();
+    function buildStatement() {
+      const hook = document.getElementById('hook').value || 'My fascination with...';
+      const sc1 = document.getElementById('sc1').value || 'Reading X';
+      const sc2 = document.getElementById('sc2').value || 'Project Y';
+      const skills = document.getElementById('skills').value || 'Analytical thinking, independent research';
+      const out = document.getElementById('ps-output');
+      out.textContent = hook + '\n\nThrough ' + sc1 + ' and ' + sc2 + ' I developed ' + skills + '.\n\nThese experiences confirmed my desire to read [Course] at university.';
+      out.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

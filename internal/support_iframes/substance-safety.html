@@ -53,19 +53,19 @@
       overflow: hidden;
       display: grid;
       place-items: center;
-      padding: clamp(10px, 4cqi, 28px);
-      border-radius: clamp(12px, 4cqi, 28px);
-      border: 1px solid var(--border);
-      background:
-        radial-gradient(circle at 16% 14%, rgba(53, 217, 255, 0.22), transparent 34%),
-        radial-gradient(circle at 88% 84%, rgba(21, 151, 255, 0.18), transparent 38%),
-        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.76));
-      box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.62),
-        0 18px 46px rgba(0, 0, 0, 0.06);
+      padding: clamp(12px, 4cqi, 32px);
+      border-radius: clamp(14px, 4cqi, 28px);
+      border: 1px solid #e2e8f0;
+      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+      box-shadow: 0 12px 32px -12px rgba(15, 23, 42, 0.12), inset 0 0 0 1px rgba(255,255,255,0.95);
       isolation: isolate;
       cursor: pointer;
       outline: none;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+    .slot:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.14), inset 0 0 0 1px rgba(255,255,255,0.95);
     }
 
     .slot::before {
@@ -86,7 +86,7 @@
       position: absolute;
       inset: -110%;
       background: linear-gradient(105deg, transparent 43%, rgba(255, 255, 255, 0.72) 50%, transparent 57%);
-      animation: softShine 8s ease-in-out infinite;
+      /* softShine removed */
       z-index: -1;
     }
 
@@ -120,7 +120,7 @@
       justify-items: center;
       text-align: center;
       gap: clamp(8px, 3cqi, 18px);
-      animation: gentleFloat 5.5s ease-in-out infinite;
+      /* gentleFloat animation removed */
       pointer-events: none;
     }
 
@@ -206,12 +206,12 @@
     @container (min-aspect-ratio: 4 / 1) {
       .slot { padding: 10px clamp(18px, 4cqi, 36px); }
       .content {
-        width: 96%;
-        max-width: 1260px;
+        width: 94%;
+        max-width: 1180px;
         height: auto;
-        grid-template-columns: auto minmax(0, 1fr) auto;
+        grid-template-columns: auto minmax(0, 1fr);
         grid-template-rows: 1fr;
-        gap: clamp(16px, 4cqi, 42px);
+        gap: clamp(18px, 5cqi, 48px);
       }
       .logo {
         align-self: center;
@@ -221,21 +221,22 @@
       .message {
         justify-items: start;
         text-align: left;
-        gap: 6px;
+        gap: 5px;
       }
       .default-title, .default-text, .default-cta,
       .short-title, .short-text, .short-cta,
       .tall-title, .tall-text, .tall-cta,
       .tiny-title, .tiny-text, .tiny-cta { display: none; }
-      .wide-title, .wide-text, .wide-cta { display: block; }
+      .wide-title, .wide-text { display: block; }
+      .wide-cta { display: none; }
       h1 {
         max-width: 760px;
-        font-size: clamp(17px, 2.5cqi, 29px);
+        font-size: clamp(17px, 2.7cqi, 30px);
         letter-spacing: -0.045em;
       }
       p {
         max-width: 780px;
-        font-size: clamp(10px, 1.25cqi, 14px);
+        font-size: clamp(10px, 1.35cqi, 14px);
         line-height: 1.36;
       }
     }
@@ -342,8 +343,7 @@
 </head>
 <body>
   <main class="slot" id="supportBanner" aria-label="StudyBase substance safety banner" tabindex="0" role="link">
-    <div class="orb one"></div>
-    <div class="orb two"></div>
+    <!-- Decorative orbs removed for clean professional appearance -->
 
     <section class="content">
       <img
@@ -373,45 +373,44 @@
         <p class="cta tiny-cta">Click banner.</p>
       </div>
 
-      <div aria-hidden="true"></div>
     </section>
   </main>
 
   <script>
     const variants = [
-      {
-        title: "Being in control is a strength.",
-        shortTitle: "Stay in control.",
-        tinyTitle: "In control.",
-        defaultText: "You do not have to say yes just to fit in. A good mate respects your choice the first time.",
-        wideText: "You do not have to say yes just to fit in. A good mate respects your choice the first time, and staying in control usually leads to better decisions later.",
-        shortText: "You do not have to say yes.",
-        tallText: "You can say no.",
-        tinyText: "Your choice matters.",
-        supportHref: "https://www.talktofrank.com/"
-      },
-      {
-        title: "If it feels off, trust that feeling.",
-        shortTitle: "Trust that feeling.",
-        tinyTitle: "Trust it.",
-        defaultText: "You never need a big reason to step back, leave early, or choose not to get involved.",
-        wideText: "You never need a big reason to step back, leave early, or choose not to get involved. If something feels off, listening to that feeling can help you stay safer.",
-        shortText: "You can step away.",
-        tallText: "Step away if needed.",
-        tinyText: "Leaving is okay.",
-        supportHref: "https://www.drinkaware.co.uk/advice-and-support/underage-drinking"
-      },
-      {
-        title: "Real confidence is making your own choice.",
-        shortTitle: "Make your own choice.",
-        tinyTitle: "Your choice.",
-        defaultText: "Pressure is not confidence. Looking after yourself can be the strongest choice in the room.",
-        wideText: "Pressure is not confidence. Looking after yourself can be the strongest choice in the room, especially when other people are making it harder to think clearly.",
-        shortText: "Pressure is not confidence.",
-        tallText: "Look after yourself.",
-        tinyText: "Choose for yourself.",
-        supportHref: "https://www.nhs.uk/live-well/addiction-support/"
-      }
+{
+  title: "Being in control is a strength.",
+  shortTitle: "Stay in control.",
+  tinyTitle: "In control.",
+  defaultText: "You do not have to say yes to anything just to fit in with the group. A good mate will always respect your choice the very first time you make it.",
+  wideText: "You never have to say yes to something just because you want to fit in with the group or avoid looking awkward. A good friend will respect your decision the first time you say it without making you feel bad. Staying in control of your own choices almost always leads to better and safer decisions in the long run.",
+  shortText: "You do not have to say yes just to fit in.",
+  tallText: "You can say no.",
+  tinyText: "Your choice matters.",
+  supportHref: "https://www.talktofrank.com/"
+},
+{
+  title: "If it feels off, trust that feeling.",
+  shortTitle: "Trust that feeling.",
+  tinyTitle: "Trust it.",
+  defaultText: "You never need a big dramatic reason to step back, leave early, or simply choose not to get involved in something.",
+  wideText: "You never need to come up with a big excuse or dramatic reason to step back, leave a situation early, or decide not to get involved at all. If something feels off or wrong in any way, listening to that gut feeling is genuinely one of the smartest and safest things you can do for yourself in the moment.",
+  shortText: "You can step away without needing a big reason.",
+  tallText: "Step away if needed.",
+  tinyText: "Leaving is okay.",
+  supportHref: "https://www.drinkaware.co.uk/advice-and-support/underage-drinking"
+},
+{
+  title: "Real confidence is making your own choice.",
+  shortTitle: "Make your own choice.",
+  tinyTitle: "Your choice.",
+  defaultText: "Pressure from others is not the same thing as real confidence. Looking after yourself can actually be the strongest choice anyone in the room makes.",
+  wideText: "Giving in to pressure from other people is not the same thing as having real confidence or strength. Looking after yourself properly, especially when others are trying hard to influence or pressure you into something, can actually be one of the strongest and most impressive choices you can make in almost any situation.",
+  shortText: "Pressure is not confidence, making your own choice is.",
+  tallText: "Look after yourself.",
+  tinyText: "Choose for yourself.",
+  supportHref: "https://www.nhs.uk/live-well/addiction-support/"
+}
     ];
 
     const chosen = variants[Math.floor(Math.random() * variants.length)];
@@ -429,8 +428,16 @@
     document.getElementById('tinyText').textContent = chosen.tinyText;
 
     const banner = document.getElementById('supportBanner');
+
     const openSupport = () => {
-      window.open(chosen.supportHref, '_blank', 'noopener,noreferrer');
+      try {
+        window.parent.postMessage({
+          type: 'show-external-warning',
+          url: chosen.supportHref
+        }, '*');
+      } catch (e) {
+        window.open(chosen.supportHref, '_blank', 'noopener,noreferrer');
+      }
     };
 
     banner.addEventListener('click', openSupport);

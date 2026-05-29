@@ -294,6 +294,13 @@
         test: "1x00000000000000000000AA"
       },
       useTestTurnstileInTestMode: true
+    },
+    years: {
+      // These are computed at runtime for auto-updating "future" positioning copy
+      // Use data-sb-year="next" etc on elements, or window.SB_YEARS
+      current: null,
+      next: null,
+      prev: null
     }
   };
 
@@ -303,6 +310,73 @@
 
   let activeConfig = DEFAULT_CONFIG;
   let activeThemePreference = null;
+
+  // === Dynamic Year System (auto-updates "2026 Standard", cohorts, etc. every year) ===
+  function computeYears() {
+    const current = new Date().getFullYear();
+    return {
+      current: current,
+      next: current + 1,
+      prev: current - 1
+    };
+  }
+
+  window.SB_YEARS = computeYears();
+  // Also expose on the config for consistency
+  DEFAULT_CONFIG.years = { ...window.SB_YEARS };
+
+  function replaceYearsInText(text) {
+    if (typeof text !== 'string' || !text) return text;
+    const y = window.SB_YEARS;
+    return text
+      .replace(/\b2026\b/g, y.next)           // most common future reference
+      .replace(/\b2025 cohort\b/gi, `${y.prev} cohort`)
+      .replace(/\bthe students getting top grades in \d{4}/gi, (m) => m.replace(/\d{4}/, y.next))
+      .replace(/Stop revising like it’s \d{4}/gi, `Stop revising like it’s ${y.prev}`)
+      .replace(/Start winning like it’s \d{4}/gi, `Start winning like it’s ${y.next}`)
+      .replace(/Revision in \d{4} should be different/gi, `Revision in ${y.next} should be different`)
+      .replace(/THE \d{4} STANDARD/gi, `THE ${y.next} STANDARD`)
+      .replace(/THE STUDENTS WHO WIN IN \d{4}/gi, `THE STUDENTS WHO WIN IN ${y.next}`);
+  }
+
+  function applyYearReplacements() {
+    // 1. Data attribute driven (most reliable)
+    document.querySelectorAll('[data-sb-year]').forEach(el => {
+      const mode = el.dataset.sbYear;
+      const y = window.SB_YEARS;
+      let value = '';
+
+      if (mode === 'current') value = y.current;
+      else if (mode === 'next') value = y.next;
+      else if (mode === 'prev') value = y.prev;
+      else if (mode === 'next-short') value = String(y.next).slice(-2);
+      else if (mode === 'current-short') value = String(y.current).slice(-2);
+
+      if (value) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.value = value;
+        } else {
+          el.textContent = value;
+        }
+      }
+    });
+
+    // 2. Text node replacement for marketing copy (aggressive but safe patterns)
+    if (!document.body) return;
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null);
+    const nodes = [];
+    let node;
+    while ((node = walker.nextNode())) {
+      if (node.parentElement && !['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(node.parentElement.tagName)) {
+        if (/\b(2026|2025 cohort|it’s 2019|it’s 2026)\b/i.test(node.nodeValue)) {
+          nodes.push(node);
+        }
+      }
+    }
+    nodes.forEach(n => {
+      n.nodeValue = replaceYearsInText(n.nodeValue);
+    });
+  }
 
   function getThemeSettings(config) {
     return (config && config.ui && config.ui.theme) || DEFAULT_CONFIG.ui.theme;
@@ -516,13 +590,32 @@
     const displayName = config.brand.displayName || config.brand.name || "";
     const shortName = config.brand.shortName || config.brand.name || displayName;
     const siteUrl = config.urls.site || "";
+    const securityName = config.brand.securityName || shortName;
 
-    return value
+    // Support easy full rebrand: these strings in the UI will be replaced by whatever is in config.brand
+    const replaceable = ["StudyBase", "Study Base", "studybase", "Studybase"];
+
+    let result = value
       .replace(/https:\/\/revisionbase\.site/gi, siteUrl)
       .replace(/RevisionBase\.site/g, displayName)
       .replace(/revisionbase\.site/g, displayName.toLowerCase())
-      .replace(/Revision Base Security Checkpoint/g, config.brand.securityName || shortName)
-      .replace(/RevisionBase/g, shortName);
+      .replace(/Revision Base Security Checkpoint/g, securityName);
+
+    // Replace any of the known current brand names with the configured one (case-aware)
+    replaceable.forEach((oldName) => {
+      const lowerOld = oldName.toLowerCase();
+      // Title case / exact
+      result = result.replace(new RegExp(`\\b${oldName}\\b`, "g"), shortName);
+      // All lower
+      result = result.replace(new RegExp(`\\b${lowerOld}\\b`, "g"), shortName.toLowerCase());
+      // All upper (rare)
+      result = result.replace(new RegExp(`\\b${oldName.toUpperCase()}\\b`, "g"), shortName.toUpperCase());
+    });
+
+    // Final legacy fallback
+    result = result.replace(/RevisionBase/g, shortName);
+
+    return result;
   }
 
   function applyTextNodeBranding(config) {
@@ -536,7 +629,7 @@
         acceptNode(node) {
           const parent = node.parentElement;
           if (!parent || excluded.has(parent.tagName)) return NodeFilter.FILTER_REJECT;
-          return /RevisionBase|revisionbase\.site|Revision Base Security Checkpoint/.test(node.nodeValue)
+          return /StudyBase|Study Base|studybase|RevisionBase|revisionbase\.site|Revision Base Security Checkpoint/.test(node.nodeValue)
             ? NodeFilter.FILTER_ACCEPT
             : NodeFilter.FILTER_REJECT;
         }
@@ -568,6 +661,48 @@
     window.SB_CONFIG = config;
     refreshThemeFromConfig(config);
 
+    // Load unified premium design system
+    if (!document.getElementById("sbx-premium-system")) {
+      const link = document.createElement("link");
+      link.id = "sbx-premium-system";
+      link.rel = "stylesheet";
+      link.href = "/assets/css/premium-system.css";
+      document.head.appendChild(link);
+    }
+
+    // Load Tailwind CDN if not present (for consistent modern styling across pages)
+    if (!document.getElementById("sbx-tailwind-cdn")) {
+      const tw = document.createElement("script");
+      tw.id = "sbx-tailwind-cdn";
+      tw.src = "https://cdn.tailwindcss.com";
+      tw.onload = () => {
+        if (window.tailwind) {
+          window.tailwind.config = {
+            darkMode: 'class',
+            theme: {
+              extend: {
+                fontFamily: {
+                  sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif']
+                }
+              }
+            }
+          };
+        }
+      };
+      document.head.appendChild(tw);
+    }
+
+    // Load Lucid icons for consistent iconography (especially theme button)
+    if (!document.getElementById("sbx-lucid-icons")) {
+      const luc = document.createElement("script");
+      luc.id = "sbx-lucid-icons";
+      luc.src = "https://unpkg.com/lucide@latest/dist/umd/lucide.js";
+      luc.onload = () => {
+        if (window.lucide) window.lucide.createIcons();
+      };
+      document.head.appendChild(luc);
+    }
+
     document.title = replaceBrandText(document.title, config);
     setIcon("icon", config.icons.favicon);
     setIcon("shortcut icon", config.icons.favicon);
@@ -577,6 +712,7 @@
       document.body.dataset.siteName = config.brand.displayName || config.brand.name || "";
       applyTextNodeBranding(config);
       applyAttributeBranding(config);
+      applyYearReplacements();
     }
 
     window.dispatchEvent(new CustomEvent("site-config-ready", { detail: config }));
@@ -593,6 +729,7 @@
       observerTimer = window.setTimeout(() => {
         applyTextNodeBranding(config);
         applyAttributeBranding(config);
+        applyYearReplacements();
         document.title = replaceBrandText(document.title, config);
       }, 30);
     });

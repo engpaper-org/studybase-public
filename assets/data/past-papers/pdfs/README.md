@@ -1,29 +1,36 @@
-# Self-Hosted Past Paper PDFs
+# Self-Hosted Past Paper PDFs (Public Access)
 
-Put downloaded PDFs in this folder using the filenames already referenced by `assets/data/past-papers/papers.json`.
+**Goal**: Let non-logged-in visitors actually download real A-Level past papers + mark schemes.
 
-Generated catalogue:
+## Recommended Source (as requested)
+YesGenie.com has a large free collection of A-Level papers (no login required for most):
 
-- Years: `2024`, `2023`, `2022`, `2021`, `2019`
-- Maths: Edexcel, 3 papers per year
-- Computing: OCR, 2 papers per year
-- Physics: AQA, 3 papers per year
-- Chemistry: AQA, 3 papers per year
-- Biology: OCR, 3 papers per year
-- Economics: Edexcel, 3 papers per year
-- Further Maths: Edexcel, 5 papers per year
+- Main page: https://yesgenie.com/a-level?view=past-papers
+- Direct examples:
+  - https://yesgenie.com/a-level/maths/edexcel/past-papers
+  - https://yesgenie.com/a-level/maths/aqa/past-papers
+  - https://yesgenie.com/a-level/physics/aqa/past-papers
 
-Required file pattern:
+**Official board sources** (always the most authoritative):
+- AQA: https://www.aqa.org.uk/past-papers-and-mark-schemes-finder
+- Edexcel/Pearson: https://qualifications.pearson.com/en/support/support-topics/exams/past-papers.html
+- OCR: https://www.ocr.org.uk/qualifications/past-paper-finder/
 
-- `{paper-id}-question-paper.pdf`
-- `{paper-id}-mark-scheme.pdf`
+## How to add real PDFs to this site
+1. Download PDFs from YesGenie or official boards.
+2. Rename them following this pattern and place them in this `pdfs/` folder:
+   - `edexcel-maths-9ma0-01-2024-paper.pdf`
+   - `edexcel-maths-9ma0-01-2024-ms.pdf`
+3. Update the corresponding entry in:
+   `assets/data/resources/alevel/past-papers.json`
+   Change `"paperUrl": "#"` → `"paperUrl": "/assets/data/past-papers/pdfs/edexcel-maths-9ma0-01-2024-paper.pdf"`
 
-Optional file pattern:
+When a public visitor clicks Download, it will now open the local PDF directly in a new tab (no login message).
 
-- `{paper-id}-examiner-report.pdf`
+**Note on copyright**: Exam boards allow free personal/educational use. Hosting on your own site for students is generally acceptable if you add proper attribution and don't charge for access.
 
-Each JSON entry should use direct PDF paths:
+## Current behaviour (public visitors)
+- Past Papers page (`/past_papers/index.html`): Subject → Year flow → clicking buttons opens in new tab (prefers local PDF if you add them, otherwise falls back to YesGenie/official sources).
+- Rich public hub on `/r/index.html`: Buttons open the nice paper explorer in a new tab.
 
-- `resources.paperPdfUrl`
-- `resources.markSchemePdfUrl`
-- `resources.examinerReportPdfUrl`
+No more "login required" messages for public users.

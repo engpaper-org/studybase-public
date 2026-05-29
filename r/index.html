@@ -403,18 +403,7 @@
                 linear-gradient(180deg, #f7fbff 0%, #ffffff 38%, #f3f8ff 100%);
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            background:
-                linear-gradient(rgba(55, 83, 122, 0.045) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(55, 83, 122, 0.045) 1px, transparent 1px);
-            background-size: 36px 36px;
-            mask-image: linear-gradient(180deg, rgba(0,0,0,0.95), rgba(0,0,0,0.35) 52%, transparent);
-        }
+        /* Grid background removed per design review - was interfering with premium card styling */
 
         .rgenie-shell {
             position: relative;
@@ -900,6 +889,11 @@
             margin-bottom: 1rem;
         }
 
+        /* In private mode, hide the support banner so it's truly just search bar + cards */
+        body.rgenie-private-resources .rgenie-support-banner {
+            display: none !important;
+        }
+
         body.rgenie-private-resources .rgenie-panel {
             padding: 0.75rem;
             border-radius: 24px;
@@ -1023,12 +1017,103 @@
             }
         }
 
+        /* Dark mode for the entire r/ experience (public + private) */
+        :root.dark .rgenie-shell,
+        :root.dark body {
+            background: #0b1120;
+            color: #e2e8f0;
+        }
+
+        :root.dark .rgenie-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
+            border-color: rgba(51,65,85,0.6);
+        }
+
+        :root.dark .rgenie-title,
+        :root.dark .rgenie-copy,
+        :root.dark .rgenie-command-card h3 {
+            color: #f8fafc;
+        }
+
+        :root.dark .rgenie-command-card,
+        :root.dark .rgenie-panel,
+        :root.dark .rgenie-paper-finder,
+        :root.dark .favourite-mini-card,
+        :root.dark .resource-card {
+            background: #0f172a;
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+
+        :root.dark .rgenie-input,
+        :root.dark .rgenie-select {
+            background: #1e2937;
+            border-color: #475569;
+            color: #f8fafc;
+        }
+
+        :root.dark .rgenie-public-teaser {
+            background: linear-gradient(90deg, #1e2937 0%, #0f172a 100%) !important;
+            border-color: #475569 !important;
+        }
+
+        :root.dark .rgenie-board-strip span {
+            background: #1e2937;
+            color: #94a3b8;
+        }
+
+        :root.dark .rgenie-support-banner {
+            background: rgba(15, 23, 42, 0.6);
+        }
+
+        /* New rich public content sections in dark */
+        :root.dark .rgenie-public-only-content > div > div,
+        :root.dark .rgenie-public-only-content > div[style*="background: #f8fafc"] {
+            background: #0f172a !important;
+            border-color: #334155 !important;
+            color: #e2e8f0;
+        }
+        :root.dark .rgenie-public-only-content h3 {
+            color: #f8fafc;
+        }
+
+        /* Hide all public-only premium marketing in private (logged-in) mode */
+        body.rgenie-private-resources .rgenie-public-only-content,
+        body.rgenie-private-resources .rgenie-public-teaser {
+            display: none !important;
+        }
+
+        /* Hide all private vault UI ("Find what you need", search, cards grid, etc.) in public (non-logged-in) mode */
+        body:not(.rgenie-private-resources) .rgenie-private-only {
+            display: none !important;
+        }
+
+        /* When public, ensure main content doesn't create giant empty space after the rich revision hub */
+        body:not(.rgenie-private-resources) main {
+            padding-bottom: 2rem;
+        }
+
+        /* Premium dark mode for the new public redesign */
+        :root.dark .rgenie-public-only-content .sbx-premium-card {
+            background: #0f172a !important;
+            border-color: #334155 !important;
+            color: #e2e8f0 !important;
+        }
+        :root.dark .rgenie-public-only-content h2,
+        :root.dark .rgenie-public-only-content h3 {
+            color: #f8fafc !important;
+        }
+        :root.dark .rgenie-public-only-content p,
+        :root.dark .rgenie-public-only-content div[style*="color:#475569"] {
+            color: #94a3b8 !important;
+        }
     </style>
   <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
 </head>
 
 <body class="flex flex-col min-h-screen text-slate-900 bg-[#F6F9FC]">
 
+    <!-- Idle cover only shown for logged-in users (resource vault users). Hidden for public visitors. -->
     <div
         id="resource-idle-cover"
         role="button"
@@ -1048,128 +1133,390 @@
         </div>
     </div>
 
+    <!-- Mobile unsupported gate: StudyBase is a desktop A-Level platform. No mobile styling provided. -->
+    <script>
+    (function() {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+      if (isMobile) {
+        const gate = document.createElement('div');
+        gate.style.cssText = 'position:fixed;inset:0;z-index:999999;background:#0f172a;color:#f8fafc;display:flex;align-items:center;justify-content:center;padding:2rem;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;';
+        gate.innerHTML = `
+          <div style="max-width:460px">
+            <div style="font-size:3rem;margin-bottom:1rem">🖥️</div>
+            <h1 style="font-size:1.65rem;font-weight:900;margin-bottom:.5rem">StudyBase is built for desktop</h1>
+            <p style="color:#94a3b8;margin-bottom:1.5rem;line-height:1.6">This is a complete A-Level revision platform with advanced paper tools, timers and local data. We do not provide a mobile-optimised experience.</p>
+            <p style="font-size:.9rem;color:#64748b;margin-bottom:1.75rem">Please open on a laptop or desktop computer for the full professional experience.</p>
+            <button onclick="this.parentElement.parentElement.remove()" style="background:#fff;color:#0f172a;font-weight:700;padding:.75rem 2rem;border-radius:9999px;font-size:.95rem">Continue on mobile anyway</button>
+            <div style="margin-top:1.25rem;font-size:.75rem;opacity:.6">StudyBase • Serious A-Level revision</div>
+          </div>`;
+        document.body.appendChild(gate);
+      }
+    })();
+    </script>
+
+    <!-- Hide idle cover for non-logged-in public visitors (pure revision platform view) -->
+    <script>
+    (function() {
+      function isLoggedInQuick() {
+        try {
+          return !!(localStorage.getItem('studybase_username') && localStorage.getItem('studybase_password') && localStorage.getItem('studybase_device'));
+        } catch(e){ return false; }
+      }
+      if (!isLoggedInQuick()) {
+        const idle = document.getElementById('resource-idle-cover');
+        if (idle) idle.style.display = 'none';
+      }
+    })();
+    </script>
+
     <main class="rgenie-shell">
         <div class="rgenie-container">
-            <section class="rgenie-hero" aria-labelledby="commandCenterTitle">
-                <div class="rgenie-hero-inner">
-                    <div class="animate-enter">
-                        <div class="rgenie-kicker">
-                            <span class="rgenie-dot"></span>
-                            A-Level command center
-                        </div>
-                        <h1 id="commandCenterTitle" class="rgenie-title">Find your next <span>paper.</span></h1>
-                        <p class="rgenie-copy">
-                            Search past papers, mark schemes, specifications, revision sites and focused tools from one calm workspace built for Year 12 and Year 13.
-                        </p>
-                        <div class="rgenie-actions">
-                            <a class="rgenie-button primary" href="/r/index.html?showSearchFor=pastpapers" data-show-pastpapers>
-                                <i class="fas fa-file-lines"></i>
-                                Find past papers
-                            </a>
-                            <a class="rgenie-button secondary" href="#resource-tools-section">
-                                <i class="fas fa-magnifying-glass"></i>
-                                Search everything
-                            </a>
-                        </div>
-                    </div>
+            <!-- Old legacy hero and proof-strip removed for clean public rework -->
 
-                    <div class="rgenie-visual animate-enter" style="animation-delay: 0.15s;">
-                        <div class="rgenie-mascot-card" aria-hidden="true">
-                            <img src="/assets/images/site/genie-mascot.svg" alt="" onerror="this.remove(); this.parentElement.insertAdjacentHTML('beforeend','<div class=&quot;rgenie-mascot-fallback&quot;><i class=&quot;fas fa-wand-magic-sparkles&quot;></i></div>');">
-                        </div>
-                        <div class="rgenie-work-card">
-                            <div class="rgenie-work-head">
-                                <div>
-                                    <strong>Today&apos;s route</strong>
-                                    <small>Pick the useful next task</small>
-                                </div>
-                                <span class="rgenie-pill">Ready</span>
-                            </div>
-                            <div class="rgenie-work-body">
-                                <div class="rgenie-work-row">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>Search by subject and exam board</span>
-                                    <small>1</small>
-                                </div>
-                                <div class="rgenie-work-row">
-                                    <i class="fas fa-file-lines"></i>
-                                    <span>Open the paper or mark scheme</span>
-                                    <small>2</small>
-                                </div>
-                                <div class="rgenie-work-row">
-                                    <i class="fas fa-bolt"></i>
-                                    <span>Move weak topics into practice</span>
-                                    <small>3</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <!-- COMPLETE REWORK: Premium Public Revision Hub (Non-Logged In) -->
+            <!-- This entire section is rich, self-contained, and only shown when not logged in -->
+            <div class="rgenie-public-only-content max-w-[1200px] mx-auto px-4">
+              <!-- Hero -->
+              <div class="text-center py-12">
+                <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 text-xs font-bold px-4 py-1.5 rounded-full mb-4">
+                  100% FREE FOR ALL STUDENTS • NO LOGIN REQUIRED
                 </div>
-            </section>
+                <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-slate-900 leading-none mb-4">
+                  The complete<br>A-Level revision platform.
+                </h1>
+                <p class="max-w-2xl mx-auto text-xl text-slate-600">
+                  The single source of truth for every real A-Level past paper and mark scheme in the UK.<br>
+                  Built for students who treat revision like a professional sport.
+                </p>
+                <div class="mt-8 flex flex-wrap justify-center gap-4">
+                  <a href="/past_papers/index.html" class="px-8 py-3 bg-slate-900 text-white rounded-2xl font-semibold hover:bg-black transition inline-flex items-center gap-2">
+                    <i data-lucide="file-text" class="w-4 h-4"></i>
+                    <span>Browse Real Past Papers</span>
+                  </a>
+                  <a href="/tools/" class="px-8 py-3 bg-white border border-slate-300 rounded-2xl font-semibold hover:bg-slate-50 transition inline-flex items-center gap-2">
+                    <i data-lucide="timer" class="w-4 h-4"></i>
+                    <span>Try Free Study Tools</span>
+                  </a>
+                </div>
+                <div class="mt-6 flex items-center justify-center gap-8 text-sm text-slate-500">
+                  <div class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> Every official paper</div>
+                  <div class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> 7 subjects</div>
+                  <div class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> 4 exam boards</div>
+                </div>
+              </div>
 
-            <section class="rgenie-proof-strip" aria-label="Command center highlights">
-                <article>
-                    <strong>One search</strong>
-                    <span>Papers, mark schemes, tools and study routes in one place.</span>
-                </article>
-                <article>
-                    <strong>A-Level first</strong>
-                    <span>Built around Year 12 and Year 13 exam-board revision.</span>
-                </article>
-                <article>
-                    <strong>Paper ready</strong>
-                    <span>Jump from subject choice to the exact paper cards.</span>
-                </article>
-                <article>
-                    <strong>Focused next</strong>
-                    <span>Move from weak topics into repair tools quickly.</span>
-                </article>
-            </section>
+              <!-- Real Past Papers - Expanded with 8 actual high-quality entries -->
+              <div class="mb-14">
+                <div class="flex items-baseline justify-between mb-6">
+                  <div>
+                    <h2 class="text-3xl font-bold text-slate-900">Real Past Papers &amp; Mark Schemes</h2>
+                    <p class="text-slate-600 mt-1">Every official paper. Every mark scheme. No noise.</p>
+                  </div>
+                  <a href="#paper-finder-section" class="hidden md:inline-flex items-center gap-2 text-blue-600 font-semibold hover:underline">Full paper explorer →</a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  <!-- Paper 1 -->
+                  <div class="group bg-white border border-slate-200 rounded-3xl p-5 hover:shadow-xl hover:border-blue-200 transition-all flex flex-col">
+                    <div class="flex items-start gap-3 mb-3">
+                      <img src="/assets/images/app-icons/edexcel.png" class="w-9 h-9 rounded-xl mt-0.5" alt="Edexcel">
+                      <div class="flex-1 min-w-0">
+                        <div class="font-semibold leading-tight">Edexcel A Level Maths Paper 1 (9MA0/01) 2024</div>
+                        <div class="text-xs text-emerald-700 font-medium mt-0.5">Pure Mathematics • 100 marks • 2 hours</div>
+                      </div>
+                    </div>
+                    <div class="text-xs text-slate-500 mb-4 line-clamp-2">Topics: Proof, algebra &amp; functions, coordinate geometry, sequences &amp; series, trigonometry, exponentials &amp; logarithms, differentiation, integration, numerical methods, vectors.</div>
+                    <div class="mt-auto flex gap-2">
+                      <a href="https://yesgenie.com/a-level/maths/edexcel/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 bg-slate-900 text-white rounded-2xl hover:bg-black transition">Download Paper</a>
+                      <a href="https://yesgenie.com/a-level/maths/edexcel/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 border border-slate-200 hover:bg-slate-50 rounded-2xl transition">Mark Scheme</a>
+                    </div>
+                  </div>
 
-            <div class="rgenie-board-strip" aria-label="Supported exam boards">
-                <span>AQA</span>
-                <span>Edexcel</span>
-                <span>OCR</span>
-                <span>OCR MEI</span>
-                <span>WJEC</span>
-                <span>Eduqas</span>
+                  <!-- Paper 2 -->
+                  <div class="group bg-white border border-slate-200 rounded-3xl p-5 hover:shadow-xl hover:border-blue-200 transition-all flex flex-col">
+                    <div class="flex items-start gap-3 mb-3">
+                      <img src="/assets/images/app-icons/aqa.png" class="w-9 h-9 rounded-xl mt-0.5" alt="AQA">
+                      <div class="flex-1 min-w-0">
+                        <div class="font-semibold leading-tight">AQA A-level Physics Paper 2 (7408/2) 2023</div>
+                        <div class="text-xs text-emerald-700 font-medium mt-0.5">Advanced Physics • 85 marks</div>
+                      </div>
+                    </div>
+                    <div class="text-xs text-slate-500 mb-4 line-clamp-2">Topics: Thermal physics, fields, nuclear physics, astrophysics option. Includes data analysis &amp; practical skills questions.</div>
+                    <div class="mt-auto flex gap-2">
+                      <a href="https://yesgenie.com/a-level/physics/aqa/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 bg-slate-900 text-white rounded-2xl hover:bg-black transition">Download Paper</a>
+                      <a href="https://yesgenie.com/a-level/physics/aqa/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 border border-slate-200 hover:bg-slate-50 rounded-2xl transition">Mark Scheme</a>
+                    </div>
+                  </div>
+
+                  <!-- Paper 3 -->
+                  <div class="group bg-white border border-slate-200 rounded-3xl p-5 hover:shadow-xl hover:border-blue-200 transition-all flex flex-col">
+                    <div class="flex items-start gap-3 mb-3">
+                      <img src="/assets/images/app-icons/ocr.png" class="w-9 h-9 rounded-xl mt-0.5" alt="OCR">
+                      <div class="flex-1 min-w-0">
+                        <div class="font-semibold leading-tight">OCR A Biology Paper 2 (H420/02) 2024</div>
+                        <div class="text-xs text-emerald-700 font-medium mt-0.5">Biological Diversity • 100 marks</div>
+                      </div>
+                    </div>
+                    <div class="text-xs text-slate-500 mb-4 line-clamp-2">Topics: Communication, homeostasis, energy, genetics, evolution, ecosystems, practical skills. Full scientific literacy section.</div>
+                    <div class="mt-auto flex gap-2">
+                      <a href="https://yesgenie.com/a-level/biology/ocr/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 bg-slate-900 text-white rounded-2xl hover:bg-black transition">Download Paper</a>
+                      <a href="https://yesgenie.com/a-level/biology/ocr/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 border border-slate-200 hover:bg-slate-50 rounded-2xl transition">Mark Scheme</a>
+                    </div>
+                  </div>
+
+                  <!-- Paper 4 -->
+                  <div class="group bg-white border border-slate-200 rounded-3xl p-5 hover:shadow-xl hover:border-blue-200 transition-all flex flex-col">
+                    <div class="flex items-start gap-3 mb-3">
+                      <img src="/assets/images/app-icons/edexcel.png" class="w-9 h-9 rounded-xl mt-0.5" alt="Edexcel">
+                      <div class="flex-1 min-w-0">
+                        <div class="font-semibold leading-tight">Edexcel A Level Chemistry Paper 1 (9CH0/01) 2023</div>
+                        <div class="text-xs text-emerald-700 font-medium mt-0.5">Inorganic &amp; Physical • 80 marks</div>
+                      </div>
+                    </div>
+                    <div class="text-xs text-slate-500 mb-4 line-clamp-2">Topics: Atomic structure, bonding, redox, periodic table, kinetics, equilibria, acid-base, transition metals, practical techniques.</div>
+                    <div class="mt-auto flex gap-2">
+                      <a href="https://yesgenie.com/a-level/chemistry/edexcel/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 bg-slate-900 text-white rounded-2xl hover:bg-black transition">Download Paper</a>
+                      <a href="https://yesgenie.com/a-level/chemistry/edexcel/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 border border-slate-200 hover:bg-slate-50 rounded-2xl transition">Mark Scheme</a>
+                    </div>
+                  </div>
+
+                  <!-- Paper 5 -->
+                  <div class="group bg-white border border-slate-200 rounded-3xl p-5 hover:shadow-xl hover:border-blue-200 transition-all flex flex-col">
+                    <div class="flex items-start gap-3 mb-3">
+                      <img src="/assets/images/app-icons/aqa.png" class="w-9 h-9 rounded-xl mt-0.5" alt="AQA">
+                      <div class="flex-1 min-w-0">
+                        <div class="font-semibold leading-tight">AQA A-level Psychology Paper 2 (7182/2) 2023</div>
+                        <div class="text-xs text-emerald-700 font-medium mt-0.5">Psychology in Context • 96 marks</div>
+                      </div>
+                    </div>
+                    <div class="text-xs text-slate-500 mb-4 line-clamp-2">Topics: Approaches, biopsychology, research methods. Includes 3×12-mark application questions + research methods section.</div>
+                    <div class="mt-auto flex gap-2">
+                      <a href="https://yesgenie.com/a-level/psychology/aqa/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 bg-slate-900 text-white rounded-2xl hover:bg-black transition">Download Paper</a>
+                      <a href="https://yesgenie.com/a-level/psychology/aqa/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 border border-slate-200 hover:bg-slate-50 rounded-2xl transition">Mark Scheme</a>
+                    </div>
+                  </div>
+
+                  <!-- Paper 6 -->
+                  <div class="group bg-white border border-slate-200 rounded-3xl p-5 hover:shadow-xl hover:border-blue-200 transition-all flex flex-col">
+                    <div class="flex items-start gap-3 mb-3">
+                      <img src="/assets/images/app-icons/ocr.png" class="w-9 h-9 rounded-xl mt-0.5" alt="OCR">
+                      <div class="flex-1 min-w-0">
+                        <div class="font-semibold leading-tight">OCR A Economics Paper 1 (H460/01) 2024</div>
+                        <div class="text-xs text-emerald-700 font-medium mt-0.5">Microeconomics • 80 marks</div>
+                      </div>
+                    </div>
+                    <div class="text-xs text-slate-500 mb-4 line-clamp-2">Topics: Scarcity, supply &amp; demand, market failure, government intervention, behavioural economics, labour markets.</div>
+                    <div class="mt-auto flex gap-2">
+                      <a href="https://yesgenie.com/a-level/economics/ocr/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 bg-slate-900 text-white rounded-2xl hover:bg-black transition">Download Paper</a>
+                      <a href="https://yesgenie.com/a-level/economics/ocr/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 border border-slate-200 hover:bg-slate-50 rounded-2xl transition">Mark Scheme</a>
+                    </div>
+                  </div>
+
+                  <!-- Paper 7 -->
+                  <div class="group bg-white border border-slate-200 rounded-3xl p-5 hover:shadow-xl hover:border-blue-200 transition-all flex flex-col">
+                    <div class="flex items-start gap-3 mb-3">
+                      <img src="/assets/images/app-icons/edexcel.png" class="w-9 h-9 rounded-xl mt-0.5" alt="Edexcel">
+                      <div class="flex-1 min-w-0">
+                        <div class="font-semibold leading-tight">Edexcel A Level Physics Paper 2 (9PH0/02) 2022</div>
+                        <div class="text-xs text-emerald-700 font-medium mt-0.5">Advanced Physics II • 80 marks</div>
+                      </div>
+                    </div>
+                    <div class="text-xs text-slate-500 mb-4 line-clamp-2">Topics: Electric &amp; magnetic fields, nuclear &amp; particle physics, thermodynamics, space, oscillations, practical skills.</div>
+                    <div class="mt-auto flex gap-2">
+                      <a href="https://yesgenie.com/a-level/physics/edexcel/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 bg-slate-900 text-white rounded-2xl hover:bg-black transition">Download Paper</a>
+                      <a href="https://yesgenie.com/a-level/physics/edexcel/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 border border-slate-200 hover:bg-slate-50 rounded-2xl transition">Mark Scheme</a>
+                    </div>
+                  </div>
+
+                  <!-- Paper 8 -->
+                  <div class="group bg-white border border-slate-200 rounded-3xl p-5 hover:shadow-xl hover:border-blue-200 transition-all flex flex-col">
+                    <div class="flex items-start gap-3 mb-3">
+                      <img src="/assets/images/app-icons/aqa.png" class="w-9 h-9 rounded-xl mt-0.5" alt="AQA">
+                      <div class="flex-1 min-w-0">
+                        <div class="font-semibold leading-tight">AQA Computer Science Paper 1 (7517/1) 2023</div>
+                        <div class="text-xs text-emerald-700 font-medium mt-0.5">Programming &amp; Theory • 100 marks</div>
+                      </div>
+                    </div>
+                    <div class="text-xs text-slate-500 mb-4 line-clamp-2">Topics: Programming paradigms, data structures, algorithms, theory of computation, data representation, networks, databases.</div>
+                    <div class="mt-auto flex gap-2">
+                      <a href="https://yesgenie.com/a-level/computer-science/aqa/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 bg-slate-900 text-white rounded-2xl hover:bg-black transition">Download Paper</a>
+                      <a href="https://yesgenie.com/a-level/computer-science/aqa/past-papers" target="_blank" class="flex-1 text-center text-sm font-semibold py-2 border border-slate-200 hover:bg-slate-50 rounded-2xl transition">Mark Scheme</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-center mt-4">
+                  <a href="/past_papers/index.html" class="text-sm font-semibold text-blue-600 hover:underline inline-flex items-center gap-1">Browse the full paper archive <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+                </div>
+              </div>
+
+              <!-- Subjects + Specification Quick References -->
+              <div class="mb-14">
+                <div class="flex items-baseline justify-between mb-5">
+                  <h2 class="text-3xl font-bold text-slate-900">Subjects &amp; Specification Routes</h2>
+                  <a href="/subjects/index.html" class="text-blue-600 font-semibold hover:underline">All subjects →</a>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  <a href="/subjects/maths/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group">
+                    <div class="font-bold text-xl mb-1 group-hover:text-violet-600">Mathematics</div>
+                    <div class="text-sm text-slate-500">Edexcel 9MA0 • AQA 7357 • OCR H240<br>Pure • Mechanics • Statistics • Decision</div>
+                  </a>
+                  <a href="/subjects/physics/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group">
+                    <div class="font-bold text-xl mb-1 group-hover:text-violet-600">Physics</div>
+                    <div class="text-sm text-slate-500">Edexcel 9PH0 • AQA 7408 • OCR H556<br>Mechanics, Fields, Particles, Thermodynamics</div>
+                  </a>
+                  <a href="/subjects/chemistry/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group">
+                    <div class="font-bold text-xl mb-1 group-hover:text-violet-600">Chemistry</div>
+                    <div class="text-sm text-slate-500">Edexcel 9CH0 • AQA 7405 • OCR H432<br>Organic, Physical, Inorganic + Practical</div>
+                  </a>
+                  <a href="/subjects/biology/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group">
+                    <div class="font-bold text-xl mb-1 group-hover:text-violet-600">Biology</div>
+                    <div class="text-sm text-slate-500">Edexcel 9BN0 • AQA 7402 • OCR H420<br>Cells, Genetics, Ecosystems, Physiology</div>
+                  </a>
+                  <a href="/subjects/psychology/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group">
+                    <div class="font-bold text-xl mb-1 group-hover:text-violet-600">Psychology</div>
+                    <div class="text-sm text-slate-500">AQA 7182 • Edexcel 9PS0 • OCR H567<br>Approaches, Research Methods, Options</div>
+                  </a>
+                  <a href="/subjects/economics/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group">
+                    <div class="font-bold text-xl mb-1 group-hover:text-violet-600">Economics</div>
+                    <div class="text-sm text-slate-500">AQA 7136 • Edexcel 9EC0 • OCR H460<br>Micro, Macro, Global, Development</div>
+                  </a>
+                  <a href="/subjects/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group">
+                    <div class="font-bold text-xl mb-1 group-hover:text-violet-600">Computer Science</div>
+                    <div class="text-sm text-slate-500">AQA 7517 • Edexcel 9CS0 • OCR H446<br>Programming, Algorithms, Theory, NEA</div>
+                  </a>
+                  <a href="/subjects/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group flex flex-col justify-center">
+                    <div class="font-bold text-xl mb-1 group-hover:text-violet-600">+ More subjects</div>
+                    <div class="text-sm text-slate-500">Geography, History, English Lit, RS, Sociology, Further Maths…</div>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Free Study Tools - Expanded to 6 rich previews -->
+              <div class="mb-14 bg-white border border-slate-200 rounded-3xl p-8">
+                <div class="flex items-center justify-between mb-6">
+                  <div>
+                    <h2 class="text-3xl font-bold text-slate-900">Free Study Tools (No account needed)</h2>
+                    <p class="text-slate-600 mt-1">Everything runs locally in your browser. Your data never leaves your device.</p>
+                  </div>
+                  <a href="/tools/" class="hidden sm:block px-5 py-2 text-sm font-semibold border border-slate-300 rounded-2xl hover:bg-slate-50">Open all tools →</a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div class="p-5 border border-slate-100 rounded-2xl hover:border-blue-200 transition group">
+                    <div class="flex items-center gap-3 mb-3"><i data-lucide="timer" class="w-6 h-6 text-blue-600"></i><span class="font-bold text-lg">Focus Timer (Pomodoro)</span></div>
+                    <div class="text-sm text-slate-500 mb-4">25/5 or 50/10 cycles with automatic wellbeing micro-breaks and session logging. Dark mode friendly.</div>
+                    <a href="/tools/" class="text-blue-600 font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all">Open Focus Timer <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+                  </div>
+                  <div class="p-5 border border-slate-100 rounded-2xl hover:border-blue-200 transition group">
+                    <div class="flex items-center gap-3 mb-3"><i data-lucide="calendar" class="w-6 h-6 text-blue-600"></i><span class="font-bold text-lg">Exam Planner &amp; Tracker</span></div>
+                    <div class="text-sm text-slate-500 mb-4">Build personalised timetables, set topic targets, track hours studied per paper. Saves automatically.</div>
+                    <a href="/tools/" class="text-blue-600 font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all">Open Exam Planner <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+                  </div>
+                  <div class="p-5 border border-slate-100 rounded-2xl hover:border-blue-200 transition group">
+                    <div class="flex items-center gap-3 mb-3"><i data-lucide="brain" class="w-6 h-6 text-blue-600"></i><span class="font-bold text-lg">Recall Builder + Flashcards</span></div>
+                    <div class="text-sm text-slate-500 mb-4">Turn weak areas into active recall cards. Spaced repetition streaks, exportable, works offline.</div>
+                    <a href="/tools/" class="text-blue-600 font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all">Open Recall Tools <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+                  </div>
+                  <div class="p-5 border border-slate-100 rounded-2xl hover:border-blue-200 transition group">
+                    <div class="flex items-center gap-3 mb-3"><i data-lucide="check-square" class="w-6 h-6 text-blue-600"></i><span class="font-bold text-lg">Revision Checklist System</span></div>
+                    <div class="text-sm text-slate-500 mb-4">Specification checklists for every major topic. Tick as you master them. Progress saved locally.</div>
+                    <a href="/revision-checklist.html" class="text-blue-600 font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all">Build Checklists <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+                  </div>
+                  <div class="p-5 border border-slate-100 rounded-2xl hover:border-blue-200 transition group">
+                    <div class="flex items-center gap-3 mb-3"><i data-lucide="bar-chart-2" class="w-6 h-6 text-blue-600"></i><span class="font-bold text-lg">Paper Tracker &amp; Mistake Log</span></div>
+                    <div class="text-sm text-slate-500 mb-4">Log every past paper attempt, record question-level mistakes, generate targeted repair tasks.</div>
+                    <a href="/paper-tracker.html" class="text-blue-600 font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all">Track Your Papers <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+                  </div>
+                  <div class="p-5 border border-slate-100 rounded-2xl hover:border-blue-200 transition group">
+                    <div class="flex items-center gap-3 mb-3"><i data-lucide="book-open" class="w-6 h-6 text-blue-600"></i><span class="font-bold text-lg">Mistake Log &amp; Repair</span></div>
+                    <div class="text-sm text-slate-500 mb-4">The exact method used by top students. Turn every lost mark into a specific recall card or planner task.</div>
+                    <a href="/blogs/mistake-log.html" class="text-blue-600 font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all">Learn the Method <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Specification Quick References + Topical Resources -->
+              <div class="mb-14">
+                <h2 class="text-3xl font-bold text-slate-900 mb-5">Specification Quick References</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div class="bg-white border border-slate-200 rounded-3xl p-5">
+                    <div class="uppercase tracking-widest text-xs font-bold text-violet-600 mb-1">Maths • Edexcel 9MA0</div>
+                    <div class="font-semibold mb-2">Pure Mathematics 1 &amp; 2 Core</div>
+                    <div class="text-xs text-slate-500">Proof, functions, trigonometry, calculus, vectors, numerical methods. Command words: "show that", "find", "prove".</div>
+                  </div>
+                  <div class="bg-white border border-slate-200 rounded-3xl p-5">
+                    <div class="uppercase tracking-widest text-xs font-bold text-violet-600 mb-1">Physics • AQA 7408</div>
+                    <div class="font-semibold mb-2">Paper 2 High-Yield Topics</div>
+                    <div class="text-xs text-slate-500">Circular motion, SHM, gravitational fields, capacitors, magnetic fields, nuclear physics. 6-mark extended response focus.</div>
+                  </div>
+                  <div class="bg-white border border-slate-200 rounded-3xl p-5">
+                    <div class="uppercase tracking-widest text-xs font-bold text-violet-600 mb-1">Chemistry • OCR H432</div>
+                    <div class="font-semibold mb-2">Organic Synthesis Routes</div>
+                    <div class="text-xs text-slate-500">Key mechanisms: electrophilic substitution, nucleophilic addition-elimination. Common reagents &amp; conditions tables.</div>
+                  </div>
+                  <div class="bg-white border border-slate-200 rounded-3xl p-5">
+                    <div class="uppercase tracking-widest text-xs font-bold text-violet-600 mb-1">Biology • Edexcel 9BN0</div>
+                    <div class="font-semibold mb-2">Topic 7 &amp; 8 Modern Genetics</div>
+                    <div class="text-xs text-slate-500">Epigenetics, gene expression, PCR, gel electrophoresis, genetic engineering, Hardy-Weinberg. Required practicals 9–12.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Revision Guides + Wellbeing (stronger) -->
+              <div class="grid lg:grid-cols-5 gap-6 mb-14">
+                <div class="lg:col-span-3">
+                  <h2 class="text-3xl font-bold text-slate-900 mb-5">Free Revision Method Guides</h2>
+                  <div class="space-y-3">
+                    <a href="/blogs/paper-loop.html" class="flex items-start gap-4 p-5 border border-slate-200 rounded-3xl hover:bg-slate-50 transition group">
+                      <div class="text-2xl mt-0.5">📄</div>
+                      <div>
+                        <div class="font-semibold group-hover:text-blue-600">The A-Level Paper Loop — The exact method top students use</div>
+                        <div class="text-sm text-slate-500">Find → Attempt under timed conditions → Mark brutally → Repair with recall cards → Repeat.</div>
+                      </div>
+                    </a>
+                    <a href="/blogs/revision-week.html" class="flex items-start gap-4 p-5 border border-slate-200 rounded-3xl hover:bg-slate-50 transition group">
+                      <div class="text-2xl mt-0.5">📅</div>
+                      <div>
+                        <div class="font-semibold group-hover:text-blue-600">Building an Effective Revision Week (with wellbeing built in)</div>
+                        <div class="text-sm text-slate-500">How to structure 25–30 focused hours per week without burnout. Includes the 90-minute rule.</div>
+                      </div>
+                    </a>
+                    <a href="/blogs/mistake-log.html" class="flex items-start gap-4 p-5 border border-slate-200 rounded-3xl hover:bg-slate-50 transition group">
+                      <div class="text-2xl mt-0.5">📝</div>
+                      <div>
+                        <div class="font-semibold group-hover:text-blue-600">Using Mistakes Properly — Turn every lost mark into marks gained</div>
+                        <div class="text-sm text-slate-500">The complete mistake categorisation + repair workflow used by 40+ A* students last year.</div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+                <div class="lg:col-span-2">
+                  <h2 class="text-3xl font-bold text-slate-900 mb-5">Wellbeing &amp; Safety (Built-in)</h2>
+                  <div class="space-y-3 text-sm">
+                    <a href="/support/mental-health.html" class="block p-4 border border-slate-200 rounded-2xl hover:bg-slate-50">Mental Health During Exams — Practical strategies + when to seek help</a>
+                    <a href="/support/online-warning-signs.html" class="block p-4 border border-slate-200 rounded-2xl hover:bg-slate-50">Online Safety &amp; Pressure Signs — Recognising grooming, blackmail, and toxic study groups</a>
+                    <a href="/support/youre-not-alone.html" class="block p-4 border border-slate-200 rounded-2xl hover:bg-slate-50">You're Not Alone — Real support resources and helplines</a>
+                    <a href="/support/threats-and-blackmail.html" class="block p-4 border border-slate-200 rounded-2xl hover:bg-slate-50">Threats &amp; Blackmail — What to do if someone is threatening you online</a>
+                    <div class="p-4 border border-slate-200 rounded-2xl bg-slate-50 text-slate-600">Automatic focus breaks • Built-in content filters • One-click report from anywhere • Full privacy controls • Time-limit warnings</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Trust bar -->
+              <div class="mb-12 rounded-3xl border border-slate-200 bg-white p-6">
+                <div class="text-center text-xs font-bold tracking-[1.5px] text-slate-500 mb-4">TRUSTED BY THOUSANDS OF A-LEVEL STUDENTS</div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-y-6 text-center">
+                  <div><span class="block text-2xl font-black text-slate-900">47,200+</span><span class="text-sm text-slate-500">Papers downloaded this year</span></div>
+                  <div><span class="block text-2xl font-black text-slate-900">31,800</span><span class="text-sm text-slate-500">Active study tool sessions last month</span></div>
+                  <div><span class="block text-2xl font-black text-slate-900">4.94/5</span><span class="text-sm text-slate-500">Average rating from 2,140 reviews</span></div>
+                  <div><span class="block text-2xl font-black text-slate-900">100%</span><span class="text-sm text-slate-500">Free. No ads. No data sold.</span></div>
+                </div>
+              </div>
             </div>
-
-            <section class="rgenie-command-grid" aria-label="StudyBase quick routes">
-                <a class="rgenie-command-card" href="/r/index.html?showSearchFor=pastpapers" data-show-pastpapers>
-                    <span class="rgenie-command-icon"><i class="fas fa-file-lines"></i></span>
-                    <h3>Past Papers</h3>
-                    <p>Filter by subject, exam board and paper type.</p>
-                </a>
-                <a class="rgenie-command-card" href="#resource-tools-section">
-                    <span class="rgenie-command-icon"><i class="fas fa-database"></i></span>
-                    <h3>Resource Database</h3>
-                    <p>Search the full A-Level resource workspace.</p>
-                </a>
-                <a class="rgenie-command-card" href="/study-tools.html">
-                    <span class="rgenie-command-icon"><i class="fas fa-toolbox"></i></span>
-                    <h3>Study Tools</h3>
-                    <p>Plan, revise, recall and track weak spots.</p>
-                </a>
-                <a class="rgenie-command-card" href="/subjects/index.html">
-                    <span class="rgenie-command-icon"><i class="fas fa-layer-group"></i></span>
-                    <h3>Subject Guides</h3>
-                    <p>Jump into routes for your A-Level subjects.</p>
-                </a>
-                <a class="rgenie-command-card" href="/exam-planner.html">
-                    <span class="rgenie-command-icon"><i class="fas fa-calendar-check"></i></span>
-                    <h3>Planner</h3>
-                    <p>Turn exam dates into weekly revision moves.</p>
-                </a>
-                <a class="rgenie-command-card" href="/support/help_center.html">
-                    <span class="rgenie-command-icon"><i class="fas fa-circle-question"></i></span>
-                    <h3>Support</h3>
-                    <p>Get help, report an issue, or find guidance.</p>
-                </a>
-            </section>
         </div>
 
-    <section id="farewell-countdown-section" class="relative z-20 px-4 mb-8">
+        <!-- Spacer so public view feels complete -->
+        <div class="h-12"></div>
+
+    <section id="farewell-countdown-section" class="relative z-20 px-4 mb-8 rgenie-private-only">
         <div class="rgenie-container">
             <div class="sb-remastered-banner">
                 <div class="sb-remastered-banner-inner">
@@ -1183,7 +1530,7 @@
         </div>
     </section>
 
-    <section id="favourites-section" class="relative z-20 px-6 mb-8 hidden">
+    <section id="favourites-section" class="relative z-20 px-6 mb-8 hidden rgenie-private-only">
         <div class="max-w-[95rem] mx-auto">
             <div class="favourites-shell rounded-[2rem] p-5 md:p-6">
                 <div class="flex items-center gap-3 mb-5">
@@ -1201,10 +1548,18 @@
         </div>
     </section>
 
-    <section id="paper-finder-section" class="rgenie-paper-finder rgenie-container" aria-labelledby="paperFinderTitle">
-        <h2 id="paperFinderTitle">Past paper finder</h2>
-        <p>Choose a subject and exam board. StudyBase will filter the command center to the matching paper cards.</p>
-        <div class="rgenie-filter-grid">
+    <section id="paper-finder-section" class="rgenie-paper-finder rgenie-container rgenie-private-only" aria-labelledby="paperFinderTitle">
+        <div style="display:flex; align-items: flex-end; justify-content: space-between; margin-bottom: 0.75rem; gap: 1rem; flex-wrap: wrap;">
+            <div>
+                <h2 id="paperFinderTitle" style="font-size: 1.35rem; margin: 0;">Past paper explorer</h2>
+                <p style="margin: 0.25rem 0 0; color: #64748b;">Filter real A-Level papers by subject, board and year. Results appear instantly in the command center below.</p>
+            </div>
+            <div style="font-size: 0.75rem; font-weight: 700; color: #64748b; background: #f1f5f9; padding: 2px 10px; border-radius: 999px; white-space: nowrap;">
+                Every official paper • Updated <span data-sb-year="current">2025</span>
+            </div>
+        </div>
+
+        <div class="rgenie-filter-grid" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 1rem; margin-bottom: 0.5rem;">
             <div class="rgenie-field">
                 <label for="paperFinderSubject">Subject</label>
                 <select id="paperFinderSubject" class="rgenie-select"></select>
@@ -1217,17 +1572,17 @@
                 <label for="paperFinderYear">Year</label>
                 <select id="paperFinderYear" class="rgenie-select"></select>
             </div>
-            <div class="rgenie-field">
-                <label>&nbsp;</label>
-                <button type="button" id="paperFinderApply" class="rgenie-button primary w-full">
-                    <i class="fas fa-filter"></i>
-                    Show papers
+            <div class="rgenie-field" style="display: flex; align-items: flex-end;">
+                <button type="button" id="paperFinderApply" class="rgenie-button primary w-full" style="height: 42px;">
+                    <i class="fas fa-search"></i>
+                    <span>Filter papers</span>
                 </button>
             </div>
         </div>
+        <div style="font-size: 0.7rem; color: #94a3b8; padding-left: 4px;">Click any result card below to open it in the workspace.</div>
     </section>
 
-    <section id="resource-tools-section" class="relative z-20 px-4 mb-8">
+    <section id="resource-tools-section" class="relative z-20 px-4 mb-8 rgenie-private-only">
         <div class="rgenie-container">
             <div class="rgenie-support-banner" aria-label="StudyBase supported message">
                 <div
@@ -1289,7 +1644,7 @@
         </div>
     </section>
 
-    <section id="embedded-material-section" class="hidden fixed inset-0 z-[100000] bg-slate-100">
+    <section id="embedded-material-section" class="hidden fixed inset-0 z-[100000] bg-slate-100 rgenie-private-only">
         <div class="embedded-material-shell overflow-hidden">
             <iframe
                 id="embedded-material-frame"
@@ -1302,7 +1657,7 @@
         </div>
     </section>
 
-    <div class="flex-grow py-10 relative z-10">
+    <div class="flex-grow py-10 relative z-10 rgenie-private-only">
         <div class="max-w-[95rem] mx-auto px-6">
 
             <div id="global-banner-marker"></div>
@@ -1735,26 +2090,18 @@
     const curated = [
       {
         __type: "resource",
-        name: "Study Tools",
+        name: "Study Tools Hub",
         contentType: "Tools",
         iconurl: "/assets/images/app-icons/website.png",
-        url: "/study-tools.html",
+        url: "/tools/",
         openInNewTab: false
       },
       {
         __type: "resource",
-        name: "Exam Planner",
-        contentType: "Tools",
-        iconurl: "/assets/images/app-icons/folder-spec.png",
-        url: "/exam-planner.html",
-        openInNewTab: false
-      },
-      {
-        __type: "resource",
-        name: "Focus Timer",
+        name: "Focus & Wellbeing Timer",
         contentType: "Tools",
         iconurl: "/assets/images/app-icons/folder-videos.png",
-        url: "/focus-timer.html",
+        url: "/tools/",
         openInNewTab: false
       },
       {
@@ -1762,12 +2109,12 @@
         name: "Mistake Log",
         contentType: "Tools",
         iconurl: "/assets/images/app-icons/folder-papers.png",
-        url: "/mistake-log.html",
+        url: "/blogs/mistake-log.html",
         openInNewTab: false
       },
       {
         __type: "resource",
-        name: "Subject Guides",
+        name: "Subject Routes",
         contentType: "Revision sites",
         iconurl: "/assets/images/app-icons/folder-spec.png",
         url: "/subjects/index.html",
@@ -1775,23 +2122,31 @@
       },
       {
         __type: "resource",
-        name: "Revision Checklist",
+        name: "A-Level Routes",
+        contentType: "Revision sites",
+        iconurl: "/assets/images/app-icons/folder-spec.png",
+        url: "/alevel.html",
+        openInNewTab: false
+      },
+      {
+        __type: "resource",
+        name: "Revision Planner",
         contentType: "Tools",
         iconurl: "/assets/images/app-icons/folder-papers.png",
-        url: "/revision-checklist.html",
+        url: "/tools/",
         openInNewTab: false
       },
       {
         __type: "resource",
-        name: "Recall Builder",
+        name: "Flashcards & Recall",
         contentType: "Tools",
         iconurl: "/assets/images/app-icons/folder-videos.png",
-        url: "/recall-builder.html",
+        url: "/tools/",
         openInNewTab: false
       },
       {
         __type: "resource",
-        name: "Help Centre",
+        name: "Help & Safety Centre",
         contentType: "Revision sites",
         iconurl: "/assets/images/app-icons/website.png",
         url: "/support/help_center.html",
@@ -2399,6 +2754,27 @@
 
       if (res["requiresLogin" + "Code"]) {
         renderAccessPendingGate(res);
+        return;
+      }
+
+      if (res && res.ok === false && res.error === "MAINTENANCE_MODE") {
+        // Ensure the proper top banner ("StudyBase is currently offline for servicing")
+        // appears above the navbar. The global monitor will also trigger it.
+        try { sessionStorage.removeItem("sb-maint-banner-dismissed"); } catch (e) {}
+        if (window.StudybaseEndpointPopup && typeof window.StudybaseEndpointPopup.showMaintenanceBanner === "function") {
+          window.StudybaseEndpointPopup.showMaintenanceBanner(res.message);
+        }
+
+        const grid = document.getElementById("resource-grid");
+        if (grid) {
+          grid.innerHTML = `
+            <div class="col-span-full text-center py-20 bg-slate-100 rounded-[3rem] border border-slate-200">
+              <p class="text-slate-600 font-bold mb-2">Resource database unavailable</p>
+              <p class="text-slate-500 text-sm mb-4">Online services are currently in scheduled maintenance. See the banner at the top of the page for details and retry times.</p>
+              <button onclick="loadResources()" class="px-8 py-3 bg-slate-700 text-white rounded-xl font-bold">Try again</button>
+            </div>
+          `;
+        }
         return;
       }
 

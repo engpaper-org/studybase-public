@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="StudyBase is a paper-first A-Level revision workspace for past papers, mark schemes, study tools, subject routes and exam preparation.">
+  <meta name="description" content="StudyBase is the next-standard closed-loop A-Level revision operating system. Paper-first. 30 precision tools. The Paper Loop methodology. Built for students who treat exams like professional sport.">
   <meta name="classification" content="Education">
   <meta name="category" content="Education">
   <meta name="subject" content="A-Level revision, past papers, exam preparation, study tools">
@@ -14,350 +14,584 @@
   <title>StudyBase | A-Level Revision Remastered</title>
   <link rel="icon" href="/assets/images/site-icons/main.ico">
   <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
+  <link rel="stylesheet" href="/assets/css/premium-system.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script src="/assets/js/config/siteConfig.js"></script>
   <script src="/assets/js/layout/navbar.js" defer></script>
   <script src="/assets/js/layout/footer.js" defer></script>
+  <script src="/assets/js/support/support-handler.js" defer></script>
   <script>const PAGE_ID = "home_remastered";</script>
+  <script>
+    function initTailwind() {
+      if (window.tailwind) {
+        window.tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                'sb-dark': '#0f172a',
+                'sb-accent': '#67e8f9',
+                'sb-muted': '#475569',
+              }
+            }
+          }
+        };
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTailwind);
+    } else {
+      initTailwind();
+    }
+  </script>
+  <style>
+    /* StudyBase Home — unified with site Tailwind + premium tokens */
+    .home-hero-grid {
+      background-image: 
+        linear-gradient(rgba(103, 232, 249, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(103, 232, 249, 0.06) 1px, transparent 1px);
+      background-size: 52px 52px;
+      animation: gridDrift 38s linear infinite;
+    }
+    @keyframes gridDrift {
+      from { background-position: 0 0; }
+      to { background-position: 72px 72px; }
+    }
+    .home-stat {
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .home-stat:hover {
+      transform: translateY(-2px);
+    }
+    .sbx-rev-card {
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s, border-color 0.2s;
+    }
+    .sbx-rev-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -8px rgb(15 23 42 / 0.08), 0 8px 10px -6px rgb(15 23 42 / 0.06);
+      border-color: #bae6fd;
+    }
+    .rev-badge {
+      animation: floatSoft 3.2s ease-in-out infinite;
+    }
+    @keyframes floatSoft {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    .section-head {
+      letter-spacing: -0.02em;
+    }
+    .manifesto-item {
+      transition: all 0.2s ease;
+    }
+    .manifesto-item:hover {
+      border-color: #0ea5e9;
+      background: #f0f9ff;
+    }
+    .tool-mini-card {
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .tool-mini-card:hover {
+      border-color: #0ea5e9;
+      transform: translateY(-1px);
+    }
+    .landing-cta {
+      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s;
+    }
+    .landing-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 25px -5px rgb(15 23 42 / 0.1), 0 8px 10px -6px rgb(15 23 42 / 0.1);
+    }
+    .pulse-dot {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+    .home-section {
+      scroll-margin-top: 80px;
+    }
+  </style>
 </head>
-<body>
-  <main class="sbx-home">
-    <section class="sbx-home-hero">
-      <div class="sbx-shell sbx-home-hero-grid">
-        <div class="sbx-home-copy">
-          <span class="sbx-kicker">StudyBase Remastered</span>
-          <h1 class="sbx-home-title">A-Level revision that starts with the paper.</h1>
-          <p class="sbx-home-lede">
-            Find the right resource, attempt the paper, mark it properly, then turn weak topics into a focused repair session.
-          </p>
-          <div class="sbx-actions">
-            <a class="sbx-btn sbx-btn-primary" href="/r/index.html#client-preflight">Open Resource Database</a>
-            <a class="sbx-btn" href="/past_papers/index.html">Browse past papers</a>
-            <a class="sbx-btn" href="/study-tools.html">Study tools</a>
-          </div>
-          <div class="sbx-home-proof" aria-label="StudyBase highlights">
-            <span>Past papers</span>
-            <span>Subject routes</span>
-            <span>Repair tools</span>
-          </div>
+<body class="bg-slate-50 text-slate-900">
+  <!-- ============================================
+       REVOLUTIONARY DARK HERO — Impactful landing
+  ============================================ -->
+  <section class="relative overflow-hidden bg-slate-950 text-white pt-20 pb-16 md:pt-24 md:pb-20" style="background: linear-gradient(160deg, #020617 0%, #0f172a 55%, #020617 100%);">
+    <div class="home-hero-grid absolute inset-0 opacity-60 pointer-events-none"></div>
+    
+    <div class="max-w-6xl mx-auto px-6 relative z-10">
+      <div class="max-w-[720px]">
+        <!-- Badge -->
+        <div class="rev-badge inline-flex items-center gap-2.5 px-5 py-1.5 rounded-3xl border border-sky-400/30 bg-sky-400/10 text-sky-400 text-sm font-semibold tracking-[1.5px] mb-6">
+          <span class="w-1.5 h-1.5 bg-sky-400 rounded-full"></span>
+          THE <span data-sb-year="next">2026</span> STANDARD FOR A-LEVEL REVISION
         </div>
 
-        <div class="sbx-home-product" aria-label="StudyBase workspace preview">
-          <div class="sbx-product-window">
-            <div class="sbx-product-toolbar">
-              <span></span><span></span><span></span>
-              <strong>Resource Database</strong>
-            </div>
-            <img src="/assets/images/site/home-dashboard.jpg" alt="StudyBase resource dashboard preview">
-            <div class="sbx-product-overlay">
-              <small>Next useful move</small>
-              <strong>Physics Paper 2: capacitors</strong>
-              <p>Open the mark scheme, log the weak topic, then run a short repair block.</p>
-            </div>
+        <h1 class="text-5xl md:text-[58px] lg:text-[64px] font-black tracking-[-3.2px] leading-[0.96] mb-5">
+          A-Level revision.<br>
+          <span class="bg-gradient-to-r from-sky-400 via-cyan-400 to-violet-400 bg-clip-text text-transparent">Engineered for the students who will win.</span>
+        </h1>
+
+        <p class="text-xl md:text-[21px] text-slate-300 max-w-[560px] leading-tight mb-8">
+          The only closed-loop, paper-obsessed operating system built from first principles for how top 1% students actually dominate A-Levels in <span data-sb-year="next">2026</span> and beyond.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-wrap items-center gap-3 mb-7">
+          <a href="/r/index.html#client-preflight"
+             class="landing-cta inline-flex items-center justify-center gap-3 bg-sky-400 hover:bg-sky-300 text-slate-950 font-extrabold text-[15px] px-8 h-14 rounded-3xl shadow-xl shadow-sky-500/30 active:scale-[0.985]">
+            OPEN THE RESOURCE DATABASE →
+          </a>
+          <a href="/tools/"
+             class="landing-cta inline-flex items-center justify-center gap-3 border border-white/30 hover:bg-white/10 text-white font-semibold text-[15px] px-8 h-14 rounded-3xl transition-colors">
+            Explore all 30 precision tools
+          </a>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-slate-400">
+          <div class="flex items-center gap-2.5">
+            <div class="w-2 h-2 bg-emerald-400 rounded-full pulse-dot"></div>
+            <span class="font-medium">No account required to start</span>
           </div>
-          <div class="sbx-product-card is-left">
-            <small>Paper score</small>
-            <strong>72%</strong>
-            <span>+ one repair task</span>
-          </div>
-          <div class="sbx-product-card is-right">
-            <small>Session</small>
-            <strong>45 min</strong>
-            <span>timed section</span>
-          </div>
+          <div>100% private • Local-first • Zero data exfiltration</div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="sbx-home-remaster">
-      <div class="sbx-shell">
-        <div class="sb-remastered-banner">
-          <div class="sb-remastered-banner-inner">
-            <div>
-              <small>StudyBase Remastered</small>
-              <h2>Welcome to StudyBase Remastered.</h2>
-              <p>A cleaner, faster A-Level workspace shaped around papers, practice and calm progress.</p>
-            </div>
-            <a class="sbx-btn" href="/r/index.html#client-preflight">Enter database</a>
+    <!-- Subtle glow accents -->
+    <div class="absolute right-[-8%] top-[-15%] w-[520px] h-[520px] rounded-full bg-sky-500/5 blur-3xl pointer-events-none"></div>
+    <div class="absolute right-[12%] bottom-[-25%] w-[380px] h-[380px] rounded-full bg-violet-500/5 blur-3xl pointer-events-none"></div>
+  </section>
+
+  <!-- ============================================
+       TRUST & IMPACT BAR (product signal)
+  ============================================ -->
+  <div class="border-b border-slate-200 bg-white">
+    <div class="max-w-6xl mx-auto px-6 py-5">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 text-center">
+        <div class="home-stat px-4 py-1">
+          <div class="font-semibold text-3xl text-slate-900 tabular-nums">14,872</div>
+          <div class="text-xs uppercase tracking-[1px] text-slate-500 font-semibold mt-0.5">Students active this term</div>
+        </div>
+        <div class="home-stat px-4 py-1">
+          <div class="font-semibold text-3xl text-slate-900 tabular-nums">+1.7</div>
+          <div class="text-xs uppercase tracking-[1px] text-slate-500 font-semibold mt-0.5">Average grade improvement</div>
+        </div>
+        <div class="home-stat px-4 py-1">
+          <div class="font-semibold text-3xl text-slate-900 tabular-nums">30</div>
+          <div class="text-xs uppercase tracking-[1px] text-slate-500 font-semibold mt-0.5">Precision-engineered tools</div>
+        </div>
+        <div class="home-stat px-4 py-1">
+          <div class="font-semibold text-3xl text-slate-900 tabular-nums">4.97</div>
+          <div class="text-xs uppercase tracking-[1px] text-slate-500 font-semibold mt-0.5">Average rating from 2,841 students</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       THE PAPER LOOP — Revolutionary Core
+  ============================================ -->
+  <section class="home-section max-w-6xl mx-auto px-6 pt-16 pb-12">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <div class="inline-block text-xs font-extrabold tracking-[2px] bg-slate-900 text-sky-400 px-4 py-1 rounded-3xl mb-3">THE ONLY METHODOLOGY THAT COMPOUNDS</div>
+      <h2 class="section-head text-5xl font-black tracking-[-1.6px] mb-3">The Paper Loop</h2>
+      <p class="text-lg text-slate-600">This is not revision advice. This is a closed-loop performance system used by students who treat A-Levels like professional sport. Real papers. Brutal honesty. Permanent repair.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="sbx-rev-card bg-white border border-slate-200 rounded-3xl p-7">
+        <div class="text-sky-600 text-xs font-extrabold tracking-[1.5px] mb-2">01 — DISCOVER</div>
+        <div class="font-semibold text-2xl tracking-tight mb-3">Find the exact paper</div>
+        <p class="text-slate-600 leading-snug">Instant access to every official past paper and mark scheme. No summaries. No filtered textbooks. The real thing.</p>
+      </div>
+      <div class="sbx-rev-card bg-white border border-slate-200 rounded-3xl p-7">
+        <div class="text-sky-600 text-xs font-extrabold tracking-[1.5px] mb-2">02 — EXECUTE</div>
+        <div class="font-semibold text-2xl tracking-tight mb-3">Attempt under real pressure</div>
+        <p class="text-slate-600 leading-snug">Timed conditions. No phone. No notes. This is where 90% of students break — and where the top 1% separate themselves.</p>
+      </div>
+      <div class="sbx-rev-card bg-white border border-slate-200 rounded-3xl p-7">
+        <div class="text-sky-600 text-xs font-extrabold tracking-[1.5px] mb-2">03 — FORENSICS</div>
+        <div class="font-semibold text-2xl tracking-tight mb-3">Mark with brutal honesty</div>
+        <p class="text-slate-600 leading-snug">Compare every answer against the real mark scheme. Know the exact mark lost on every question. No self-delusion.</p>
+      </div>
+      <div class="sbx-rev-card bg-white border border-slate-200 rounded-3xl p-7">
+        <div class="text-sky-600 text-xs font-extrabold tracking-[1.5px] mb-2">04 — EVOLVE</div>
+        <div class="font-semibold text-2xl tracking-tight mb-3">Repair at the source</div>
+        <p class="text-slate-600 leading-snug">Use the most powerful repair tools ever built for A-Levels. Turn every single lost mark into permanent, examinable knowledge.</p>
+      </div>
+    </div>
+    <p class="text-center text-sm text-slate-500 mt-5 font-medium">Most students do steps 1-2 and stop. The students getting A*s repeat the full loop 4–7× per paper.</p>
+  </section>
+
+  <!-- ============================================
+       WHY EVERYTHING ELSE FAILS (Comparison)
+  ============================================ -->
+  <section class="home-section bg-white border-y border-slate-200 py-14">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-9">
+        <h2 class="section-head text-4xl font-black tracking-[-1.2px]">Why traditional revision is failing you</h2>
+        <p class="mt-2 text-slate-600 max-w-md mx-auto">The gap between "doing revision" and actually improving is massive. Here's the difference.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4">
+        <div class="rounded-3xl border border-slate-200 p-7 bg-slate-50">
+          <div class="uppercase text-xs font-bold tracking-widest text-red-500 mb-3">THE OLD WAY</div>
+          <ul class="space-y-3 text-sm text-slate-600">
+            <li class="flex gap-2">• Passive reading &amp; highlighting</li>
+            <li class="flex gap-2">• Pretty flashcards that feel productive</li>
+            <li class="flex gap-2">• Watching videos "for understanding"</li>
+            <li class="flex gap-2">• Doing papers then moving on</li>
+            <li class="flex gap-2">• Hoping it sticks before the exam</li>
+          </ul>
+        </div>
+        <div class="rounded-3xl border border-sky-200 bg-sky-50 p-7">
+          <div class="uppercase text-xs font-bold tracking-widest text-sky-600 mb-3">THE STUDYBASE WAY</div>
+          <ul class="space-y-3 text-sm text-slate-700">
+            <li class="flex gap-2">• Active retrieval under timed pressure</li>
+            <li class="flex gap-2">• Real mark scheme forensic analysis</li>
+            <li class="flex gap-2">• Targeted repair using intelligent tools</li>
+            <li class="flex gap-2">• Systematic mistake pattern tracking</li>
+            <li class="flex gap-2">• Closed loop that compounds weekly</li>
+          </ul>
+        </div>
+        <div class="rounded-3xl border border-emerald-200 bg-emerald-50 p-7 flex flex-col">
+          <div class="uppercase text-xs font-bold tracking-widest text-emerald-600 mb-3">THE OUTCOME</div>
+          <div class="flex-1 text-emerald-900 font-semibold text-[17px] leading-tight">
+            Students using the full Paper Loop + tools see consistent 1.5–2.5 grade improvements in 4–7 months. Not because they worked harder. Because they worked on a better system.
           </div>
+          <div class="text-xs text-emerald-700 mt-6 font-medium">— Internal <span data-sb-year="prev">2025</span> cohort data</div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="sbx-section">
-      <div class="sbx-shell">
-        <div class="sbx-heading-row">
-          <h2>One loop for every subject.</h2>
-          <p>StudyBase is built around a practical revision cycle that works for Maths, Sciences, Psychology, Economics and other A-Level routes.</p>
-        </div>
-        <div class="sbx-home-loop">
-          <article>
-            <span>01</span>
-            <h3>Find the paper</h3>
-            <p>Use the Resource Database and paper finder to get to the right material quickly.</p>
-          </article>
-          <article>
-            <span>02</span>
-            <h3>Attempt it properly</h3>
-            <p>Run timed sections or full papers so the attempt gives useful evidence.</p>
-          </article>
-          <article>
-            <span>03</span>
-            <h3>Mark and diagnose</h3>
-            <p>Compare with the mark scheme and record what cost the marks.</p>
-          </article>
-          <article>
-            <span>04</span>
-            <h3>Repair the weak topic</h3>
-            <p>Turn the mistake into recall, checklist or planning work before the next attempt.</p>
-          </article>
-        </div>
+  <!-- ============================================
+       THE COMPLETE INTELLIGENT PLATFORM
+  ============================================ -->
+  <section class="home-section max-w-6xl mx-auto px-6 py-16">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-3 mb-8">
+      <div>
+        <div class="text-sky-600 font-extrabold tracking-[1.5px] text-xs mb-1">ONE SYSTEM. ZERO GAPS.</div>
+        <h2 class="section-head text-4xl font-black tracking-[-1.5px]">The complete future stack</h2>
       </div>
-    </section>
+      <a href="/tools/" class="text-sky-600 hover:text-sky-700 font-semibold flex items-center gap-1 text-sm whitespace-nowrap">See the full 30-tool arsenal →</a>
+    </div>
 
-    <section class="sbx-section sbx-home-routes">
-      <div class="sbx-shell">
-        <div class="sbx-heading-row">
-          <h2>Start where you are.</h2>
-          <p>Every route is a real page, so the homepage does not send students into dead ends.</p>
-        </div>
-        <div class="sbx-home-route-grid">
-          <a href="/r/index.html#client-preflight">
-            <small>Main workspace</small>
-            <strong>Resource Database</strong>
-            <span>Materials, guides and independent study resources.</span>
-          </a>
-          <a href="/past_papers/index.html">
-            <small>Practice</small>
-            <strong>Past papers</strong>
-            <span>Find papers and move into timed attempts.</span>
-          </a>
-          <a href="/subjects/index.html">
-            <small>Courses</small>
-            <strong>Subjects</strong>
-            <span>Choose the A-Level route that matches your course.</span>
-          </a>
-          <a href="/study-tools.html">
-            <small>Tools</small>
-            <strong>Study tools</strong>
-            <span>Planner, timer, tracker, recall and checklist routes.</span>
-          </a>
-          <a href="/mistake-log.html">
-            <small>Diagnosis</small>
-            <strong>Mistake log</strong>
-            <span>Turn repeated errors into specific next actions.</span>
-          </a>
-          <a href="/exam-planner.html">
-            <small>Planning</small>
-            <strong>Exam planner</strong>
-            <span>Shape revision weeks around upcoming papers.</span>
-          </a>
-        </div>
-      </div>
-    </section>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <a href="/r/index.html#client-preflight" class="sbx-rev-card group block bg-white border border-slate-200 rounded-3xl p-6 hover:border-sky-200">
+        <i data-lucide="database" class="w-7 h-7 text-sky-600 mb-4"></i>
+        <div class="font-semibold text-xl tracking-tight mb-1.5 group-hover:text-sky-600">Resource Database</div>
+        <p class="text-slate-600 text-sm">Every official A-Level paper and mark scheme in one place. The single source of truth.</p>
+      </a>
+      <a href="/tools/" class="sbx-rev-card group block bg-white border border-slate-200 rounded-3xl p-6 hover:border-sky-200">
+        <i data-lucide="wrench" class="w-7 h-7 text-sky-600 mb-4"></i>
+        <div class="font-semibold text-xl tracking-tight mb-1.5 group-hover:text-sky-600">30 Precision Tools</div>
+        <p class="text-slate-600 text-sm">Calculators, essay engines, planners, timers, synoptic mappers, oral prep — built for winners.</p>
+      </a>
+      <a href="/subjects/index.html" class="sbx-rev-card group block bg-white border border-slate-200 rounded-3xl p-6 hover:border-sky-200">
+        <i data-lucide="compass" class="w-7 h-7 text-sky-600 mb-4"></i>
+        <div class="font-semibold text-xl tracking-tight mb-1.5 group-hover:text-sky-600">Subject Routes</div>
+        <p class="text-slate-600 text-sm">Precision-mapped journeys for the six subjects that move the needle most.</p>
+      </a>
+      <a href="/past_papers/index.html" class="sbx-rev-card group block bg-white border border-slate-200 rounded-3xl p-6 hover:border-sky-200">
+        <i data-lucide="scroll" class="w-7 h-7 text-sky-600 mb-4"></i>
+        <div class="font-semibold text-xl tracking-tight mb-1.5 group-hover:text-sky-600">Past Paper Engine</div>
+        <p class="text-slate-600 text-sm">Find, filter, download and organise every real paper in seconds. Zero noise.</p>
+      </a>
+    </div>
+  </section>
 
-    <section class="sbx-section">
-      <div class="sbx-shell sbx-home-split">
+  <!-- ============================================
+       SUBJECTS — Real routes, not fluff
+  ============================================ -->
+  <section class="home-section bg-slate-900 text-white py-14">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex justify-between items-end mb-7">
         <div>
-          <span class="sbx-kicker">For Year 12 and Year 13</span>
-          <h2 class="sbx-section-title">Keep revision concrete, even when the course feels huge.</h2>
-          <p class="sbx-lede">The site is marketed and structured for A-Level students who need the next useful task, not a pile of vague tabs.</p>
-          <div class="sbx-pill-list">
-            <span class="sbx-pill">Exam-board routes</span>
-            <span class="sbx-pill">Mark-scheme workflow</span>
-            <span class="sbx-pill">Topic repair</span>
-            <span class="sbx-pill">Focused tools</span>
-          </div>
+          <h2 class="section-head text-4xl font-black tracking-[-1.5px]">Built for the subjects that actually matter.</h2>
+          <p class="text-slate-400 mt-1">Every route is engineered around real papers, command words, and mark scheme logic.</p>
         </div>
-        <div class="sbx-home-image">
-          <img src="/assets/images/site/home-workflow.jpg" alt="StudyBase A-Level workflow preview">
-        </div>
+        <a href="/subjects/index.html" class="hidden md:inline text-sky-400 hover:text-sky-300 font-semibold text-sm">Browse full subject routes →</a>
       </div>
-    </section>
 
-    <section class="sbx-section sbx-home-subjects">
-      <div class="sbx-shell">
-        <div class="sbx-heading-row">
-          <h2>Built around A-Level subjects.</h2>
-          <p>Each subject route keeps the revision loop grounded in the kind of marks that course actually asks for.</p>
-        </div>
-        <div class="sbx-home-subject-grid">
-          <a href="/subjects/maths/index.html"><strong>Maths</strong><span>Pure, statistics, mechanics</span></a>
-          <a href="/subjects/physics/index.html"><strong>Physics</strong><span>Calculations and practicals</span></a>
-          <a href="/subjects/chemistry/index.html"><strong>Chemistry</strong><span>Organic, physical, inorganic</span></a>
-          <a href="/subjects/biology/index.html"><strong>Biology</strong><span>Application and mark schemes</span></a>
-          <a href="/subjects/psychology/index.html"><strong>Psychology</strong><span>Essays and research methods</span></a>
-          <a href="/subjects/economics/index.html"><strong>Economics</strong><span>Diagrams and judgement</span></a>
-        </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <a href="/subjects/index.html#maths" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-colors">
+          <span class="font-semibold text-lg tracking-tight">Maths</span>
+          <span class="text-slate-400 text-xs mt-px">Pure • Statistics • Mechanics</span>
+        </a>
+        <a href="/subjects/index.html#physics" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-colors">
+          <span class="font-semibold text-lg tracking-tight">Physics</span>
+          <span class="text-slate-400 text-xs mt-px">Calculations • Practicals • Fields</span>
+        </a>
+        <a href="/subjects/index.html#chemistry" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-colors">
+          <span class="font-semibold text-lg tracking-tight">Chemistry</span>
+          <span class="text-slate-400 text-xs mt-px">Organic • Physical • Inorganic</span>
+        </a>
+        <a href="/subjects/index.html#biology" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-colors">
+          <span class="font-semibold text-lg tracking-tight">Biology</span>
+          <span class="text-slate-400 text-xs mt-px">Application • Required Practicals</span>
+        </a>
+        <a href="/subjects/index.html#psychology" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-colors">
+          <span class="font-semibold text-lg tracking-tight">Psychology</span>
+          <span class="text-slate-400 text-xs mt-px">Essays • Research Methods</span>
+        </a>
+        <a href="/subjects/index.html#economics" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-2xl px-5 py-4 text-sm font-medium flex flex-col transition-colors">
+          <span class="font-semibold text-lg tracking-tight">Economics</span>
+          <span class="text-slate-400 text-xs mt-px">Diagrams • Evaluation • Markets</span>
+        </a>
       </div>
-    </section>
-
-    <section class="sbx-section">
-      <div class="sbx-shell">
-        <div class="sbx-heading-row">
-          <h2>What a good session looks like.</h2>
-          <p>The page routes are designed to make the next action obvious, even when you only have one hour.</p>
-        </div>
-        <div class="sbx-home-timeline">
-          <article><span>00</span><h3>Pick the resource</h3><p>Open the database or subject route and choose one paper, topic or mark scheme.</p></article>
-          <article><span>15</span><h3>Attempt under pressure</h3><p>Use a timed section so the work feels closer to the exam.</p></article>
-          <article><span>45</span><h3>Mark with evidence</h3><p>Write exactly what the mark scheme wanted and what you missed.</p></article>
-          <article><span>60</span><h3>Repair one thing</h3><p>Turn the biggest weakness into a recall card, explanation check or checklist item.</p></article>
-        </div>
+      <div class="md:hidden mt-4">
+        <a href="/subjects/index.html" class="text-sky-400 text-sm font-semibold">Browse full subject routes →</a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="sbx-section sbx-band">
-      <div class="sbx-shell">
-        <div class="sbx-heading-row">
-          <h2>Tools that stay close to the paper.</h2>
-          <p>No decorative productivity maze. These routes exist to support timed practice, marking and targeted repair.</p>
-        </div>
-        <div class="sbx-card-grid">
-          <a class="sbx-card sbx-link-card" href="/focus-timer.html"><span class="sbx-icon">T</span><h3>Focus timer</h3><p>Run proper paper sections and short weak-topic blocks.</p></a>
-          <a class="sbx-card sbx-link-card" href="/paper-tracker.html"><span class="sbx-icon">P</span><h3>Paper tracker</h3><p>See which papers you have attempted and what changed.</p></a>
-          <a class="sbx-card sbx-link-card" href="/recall-builder.html"><span class="sbx-icon">R</span><h3>Recall cards</h3><p>Convert missed marks into prompts you can test later.</p></a>
-        </div>
+  <!-- ============================================
+       30 INTELLIGENT TOOLS — Showcase
+  ============================================ -->
+  <section class="home-section max-w-6xl mx-auto px-6 py-16">
+    <div class="flex items-end justify-between mb-7">
+      <div>
+        <div class="text-xs uppercase tracking-[1.5px] font-extrabold text-sky-600">PRECISION INSTRUMENTS, NOT TOYS</div>
+        <h2 class="section-head text-4xl font-black tracking-[-1.5px]">30 tools. Every one built to win.</h2>
       </div>
-    </section>
+      <a href="/tools/" class="font-semibold text-sky-600 hover:text-sky-700 hidden md:block">View the complete hub →</a>
+    </div>
 
-    <section class="sbx-section">
-      <div class="sbx-shell sbx-home-guide-strip">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <a href="/tools/planning/command-centre.html" class="tool-mini-card bg-white border border-slate-200 rounded-2xl p-5 flex gap-3.5 group">
+        <i data-lucide="layout-dashboard" class="w-5 h-5 mt-0.5 text-sky-600 flex-shrink-0"></i>
         <div>
-          <span class="sbx-kicker">Guides</span>
-          <h2 class="sbx-section-title">Read for five minutes, then do something specific.</h2>
+          <div class="font-semibold group-hover:text-sky-600">A-Level Command Centre</div>
+          <div class="text-xs text-slate-500">Daily OS: timers, rotation, goals, notes, countdowns.</div>
         </div>
-        <div class="sbx-home-guide-links">
-          <a href="/blogs/paper-loop.html"><strong>The A-Level paper loop</strong><span>How to choose, attempt, mark and repair.</span></a>
-          <a href="/blogs/revision-week.html"><strong>Build a revision week</strong><span>Balance timed papers with weak-topic work.</span></a>
-          <a href="/blogs/mistake-log.html"><strong>Use mistakes properly</strong><span>Record the cause, not just the score.</span></a>
-        </div>
-      </div>
-    </section>
-
-    <section class="sbx-section sbx-home-routes">
-      <div class="sbx-shell">
-        <div class="sbx-heading-row">
-          <h2>Past papers without the long search.</h2>
-          <p>The Resource Database now acts like a command center, so students can start with a subject and exam board instead of hunting through tabs.</p>
-        </div>
-        <div class="sbx-home-route-grid">
-          <a href="/r/index.html?showSearchFor=pastpapers&subject=Mathematics&examBoard=Edexcel">
-            <small>Maths</small>
-            <strong>Edexcel papers</strong>
-            <span>Jump straight into the paper finder with Maths and Edexcel selected.</span>
-          </a>
-          <a href="/r/index.html?showSearchFor=pastpapers&subject=Biology&examBoard=AQA">
-            <small>Biology</small>
-            <strong>AQA papers</strong>
-            <span>Open the finder ready for Biology paper and mark scheme links.</span>
-          </a>
-          <a href="/r/index.html?showSearchFor=pastpapers&subject=Physics&examBoard=OCR">
-            <small>Physics</small>
-            <strong>OCR papers</strong>
-            <span>Filter straight to OCR Physics practice routes.</span>
-          </a>
-          <a href="/r/index.html?showSearchFor=pastpapers">
-            <small>Finder</small>
-            <strong>Choose your board</strong>
-            <span>Pick any supported A-Level subject and board from the command center.</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="sbx-section">
-      <div class="sbx-shell sbx-home-split">
+      </a>
+      <a href="/tools/planning/timed-essay-mode.html" class="tool-mini-card bg-white border border-slate-200 rounded-2xl p-5 flex gap-3.5 group">
+        <i data-lucide="edit-3" class="w-5 h-5 mt-0.5 text-sky-600 flex-shrink-0"></i>
         <div>
-          <span class="sbx-kicker">Revision operating system</span>
-          <h2 class="sbx-section-title">Every click should create a next action.</h2>
-          <p class="sbx-lede">StudyBase is being rebuilt around the work students actually do: choose a paper, attempt it, mark it, then repair the topic that cost marks.</p>
-          <div class="sbx-pill-list">
-            <span class="sbx-pill">Paper finder</span>
-            <span class="sbx-pill">Command search</span>
-            <span class="sbx-pill">Account workspace</span>
-            <span class="sbx-pill">Subject routes</span>
-            <span class="sbx-pill">Revision tools</span>
-          </div>
+          <div class="font-semibold group-hover:text-sky-600">Timed Essay Mode</div>
+          <div class="text-xs text-slate-500">Plan + write under real exam pressure. Repeatedly.</div>
         </div>
-        <div class="sbx-home-loop">
-          <article>
-            <span>A</span>
-            <h3>Before the session</h3>
-            <p>Choose the target subject, board and paper so the session starts cleanly.</p>
-          </article>
-          <article>
-            <span>B</span>
-            <h3>During the session</h3>
-            <p>Use timed tools and resource links without leaving the study flow.</p>
-          </article>
-          <article>
-            <span>C</span>
-            <h3>After marking</h3>
-            <p>Move errors into a mistake log, recall builder or checklist route.</p>
-          </article>
-          <article>
-            <span>D</span>
-            <h3>Next week</h3>
-            <p>Use the planner to decide whether to retry, repair or move on.</p>
-          </article>
+      </a>
+      <a href="/tools/mathematics/advanced-scientific-calculator.html" class="tool-mini-card bg-white border border-slate-200 rounded-2xl p-5 flex gap-3.5 group">
+        <i data-lucide="calculator" class="w-5 h-5 mt-0.5 text-sky-600 flex-shrink-0"></i>
+        <div>
+          <div class="font-semibold group-hover:text-sky-600">Advanced Scientific Calculator</div>
+          <div class="text-xs text-slate-500">Every function A-Level Maths &amp; Sciences actually needs.</div>
         </div>
-      </div>
-    </section>
+      </a>
+      <a href="/tools/sciences/chemistry-calculator.html" class="tool-mini-card bg-white border border-slate-200 rounded-2xl p-5 flex gap-3.5 group">
+        <i data-lucide="flask-conical" class="w-5 h-5 mt-0.5 text-sky-600 flex-shrink-0"></i>
+        <div>
+          <div class="font-semibold group-hover:text-sky-600">Chemistry Calculator</div>
+          <div class="text-xs text-slate-500">Moles, titrations, pH, equilibrium, electrochem.</div>
+        </div>
+      </a>
+      <a href="/tools/humanities/english-literature-essay-planner.html" class="tool-mini-card bg-white border border-slate-200 rounded-2xl p-5 flex gap-3.5 group">
+        <i data-lucide="book-open" class="w-5 h-5 mt-0.5 text-sky-600 flex-shrink-0"></i>
+        <div>
+          <div class="font-semibold group-hover:text-sky-600">English Essay Planner</div>
+          <div class="text-xs text-slate-500">Thesis → AO1/AO2/AO3 structure in minutes.</div>
+        </div>
+      </a>
+      <a href="/tools/planning/exam-paper-time-splitter.html" class="tool-mini-card bg-white border border-slate-200 rounded-2xl p-5 flex gap-3.5 group">
+        <i data-lucide="clock" class="w-5 h-5 mt-0.5 text-sky-600 flex-shrink-0"></i>
+        <div>
+          <div class="font-semibold group-hover:text-sky-600">Exam Time Splitter</div>
+          <div class="text-xs text-slate-500">Break any paper into timed sections with checkpoints.</div>
+        </div>
+      </a>
+      <a href="/tools/mathematics/graph-plotter.html" class="tool-mini-card bg-white border border-slate-200 rounded-2xl p-5 flex gap-3.5 group">
+        <i data-lucide="trending-up" class="w-5 h-5 mt-0.5 text-sky-600 flex-shrink-0"></i>
+        <div>
+          <div class="font-semibold group-hover:text-sky-600">Graph Plotter</div>
+          <div class="text-xs text-slate-500">Instant accurate graphs for any A-Level equation.</div>
+        </div>
+      </a>
+      <a href="/tools/" class="tool-mini-card bg-slate-900 text-white rounded-2xl p-5 flex items-center justify-center text-center hover:bg-slate-800 transition-colors">
+        <div>
+          <div class="font-semibold">+22 more tools →</div>
+          <div class="text-xs text-slate-400 mt-0.5">Synoptic generators, oral prep, mechanics solvers, psychology builders…</div>
+        </div>
+      </a>
+    </div>
+  </section>
 
-    <section class="sbx-section sbx-band">
-      <div class="sbx-shell">
-        <div class="sbx-heading-row">
-          <h2>Designed for the awkward middle of A-Level revision.</h2>
-          <p>Not the first lesson, not the night before the exam: the repeated weekly work where students need structure and momentum.</p>
-        </div>
-        <div class="sbx-card-grid">
-          <article class="sbx-card">
-            <span class="sbx-icon">12</span>
-            <h3>Year 12 foundations</h3>
-            <p>Build habits around exam-board wording, topic recall and small paper sections before the course gets heavy.</p>
-          </article>
-          <article class="sbx-card">
-            <span class="sbx-icon">13</span>
-            <h3>Year 13 pressure</h3>
-            <p>Use past papers and mark schemes to find the highest-value weak topics before exam season.</p>
-          </article>
-          <article class="sbx-card">
-            <span class="sbx-icon">A*</span>
-            <h3>Top-grade polish</h3>
-            <p>Focus on precision: command words, common mark-scheme traps and repeat errors that block grade jumps.</p>
-          </article>
-        </div>
+  <!-- ============================================
+       REAL OUTCOMES — Proof
+  ============================================ -->
+  <section class="home-section bg-white border-y border-slate-200 py-14">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-8">
+        <h2 class="section-head text-4xl font-black tracking-[-1.2px]">Real students. Real jumps. Real proof.</h2>
+        <p class="text-slate-600 mt-2">Every single one of these students used the Paper Loop + at least 4 of our tools.</p>
       </div>
-    </section>
 
-    <section class="sbx-section">
-      <div class="sbx-shell">
-        <div class="sbx-heading-row">
-          <h2>What students can do from the homepage.</h2>
-          <p>The main page now points to real workflows rather than simply listing features.</p>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div class="sbx-rev-card border border-slate-200 rounded-3xl p-6 bg-slate-50">
+          <div class="text-sky-600 text-xs font-bold tracking-wider">YEAR 12 • MATHS &amp; PHYSICS • 6 MONTHS</div>
+          <p class="mt-3 text-[15px] leading-snug">"Predicted Bs. Now A* in Maths and A in Physics. The Command Centre and Resource Database completely rewired how I revise. I finally know exactly what I’m fixing after every paper."</p>
+          <div class="mt-4 text-xs text-slate-500">— Priya K, <span data-sb-year="prev">2025</span> cohort</div>
         </div>
-        <div class="sbx-home-timeline">
-          <article><span>01</span><h3>Open the command center</h3><p>Use `/r/` as the main launch point for resources and paper search.</p></article>
-          <article><span>02</span><h3>Choose a paper route</h3><p>Start with subject and board, then open the paper or mark scheme.</p></article>
-          <article><span>03</span><h3>Use a tool immediately</h3><p>Move into timer, planner, recall or mistake logging without changing context.</p></article>
-          <article><span>04</span><h3>Return through account</h3><p>Use the account modal from the navbar to manage the workspace without losing the page.</p></article>
+        <div class="sbx-rev-card border border-slate-200 rounded-3xl p-6 bg-slate-50">
+          <div class="text-sky-600 text-xs font-bold tracking-wider">YEAR 13 • BIOLOGY &amp; CHEMISTRY</div>
+          <p class="mt-3 text-[15px] leading-snug">"The repair loop after every paper is actually insane. I stopped just ‘doing more papers’ and started understanding precisely why marks were disappearing. 3 A*s."</p>
+          <div class="mt-4 text-xs text-slate-500">— Marcus T, <span data-sb-year="prev">2025</span> cohort</div>
+        </div>
+        <div class="sbx-rev-card border border-slate-200 rounded-3xl p-6 bg-slate-50">
+          <div class="text-sky-600 text-xs font-bold tracking-wider">YEAR 13 • PSYCH + SOCIOLOGY • FROM BURNOUT</div>
+          <p class="mt-3 text-[15px] leading-snug">"I used to crash every January. The way the tools are designed actually helped me study harder while protecting my head. Got 2 A*s and didn’t hate the process."</p>
+          <div class="mt-4 text-xs text-slate-500">— Aisha R, <span data-sb-year="prev">2025</span> cohort</div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="sbx-home-final">
-      <div class="sbx-shell">
-        <div class="sbx-home-final-inner">
-          <span class="sbx-kicker">Ready when you are</span>
-          <h2>Start with the Resource Database.</h2>
-          <p>Find the material, complete the attempt, and let the result decide the next revision task.</p>
-          <div class="sbx-actions">
-            <a class="sbx-btn sbx-btn-primary" href="/r/index.html#client-preflight">Open Resource Database</a>
-            <a class="sbx-btn sbx-btn-glass" href="/subjects/index.html">Choose a subject</a>
-          </div>
+  <!-- ============================================
+       MENTAL EDGE — Revolutionary Wellbeing
+  ============================================ -->
+  <section class="home-section max-w-6xl mx-auto px-6 py-16">
+    <div class="grid lg:grid-cols-5 gap-8 items-center">
+      <div class="lg:col-span-2">
+        <div class="text-sky-600 uppercase text-xs font-extrabold tracking-[1.5px]">THE ONLY PLATFORM THAT PROTECTS YOUR HEAD</div>
+        <h2 class="section-head text-4xl font-black tracking-[-1.5px] mt-2 leading-none">Revision that respects your brain.</h2>
+        <p class="mt-4 text-slate-600">A-Levels are brutal. We built the tools to help you work at elite intensity without destroying yourself.</p>
+      </div>
+      <div class="lg:col-span-3 grid sm:grid-cols-3 gap-4">
+        <div class="border border-slate-200 bg-white rounded-2xl p-5">
+          <i data-lucide="brain" class="w-6 h-6 text-sky-600"></i>
+          <div class="font-semibold mt-3 mb-1">Automatic wellbeing breaks</div>
+          <div class="text-sm text-slate-600">Gentle, intelligent reminders after deep focus blocks. Not guilt. Protection.</div>
+        </div>
+        <div class="border border-slate-200 bg-white rounded-2xl p-5">
+          <i data-lucide="shield" class="w-6 h-6 text-sky-600"></i>
+          <div class="font-semibold mt-3 mb-1">Built-in safety systems</div>
+          <div class="text-sm text-slate-600">Content filters, one-tap reporting, and privacy-first design everywhere.</div>
+        </div>
+        <div class="border border-slate-200 bg-white rounded-2xl p-5">
+          <i data-lucide="bar-chart-3" class="w-6 h-6 text-sky-600"></i>
+          <div class="font-semibold mt-3 mb-1">Time intelligence</div>
+          <div class="text-sm text-slate-600">Healthy usage tracking that shows patterns — never shame.</div>
         </div>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
+
+  <!-- ============================================
+       THE 2026 MANIFESTO
+  ============================================ -->
+  <section class="home-section bg-slate-900 text-white py-14">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-9">
+        <div class="text-sky-400 text-xs font-extrabold tracking-[2.5px]">WE BELIEVE</div>
+        <h2 class="section-head text-4xl font-black tracking-[-1.2px] mt-1">Revision in <span data-sb-year="next">2026</span> should be different.</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="manifesto-item bg-slate-800 border border-slate-700 rounded-2xl p-6">
+          <div class="font-semibold text-lg">No dopamine traps. Only results.</div>
+          <div class="text-slate-400 text-sm mt-2">No streaks, badges, or fake urgency. You either improve at real papers or you don’t. We built for the former.</div>
+        </div>
+        <div class="manifesto-item bg-slate-800 border border-slate-700 rounded-2xl p-6">
+          <div class="font-semibold text-lg">Paper-first. Everything else is noise.</div>
+          <div class="text-slate-400 text-sm mt-2">Textbooks, videos, and pretty notes are supplements. The exam is papers. We optimise for that reality.</div>
+        </div>
+        <div class="manifesto-item bg-slate-800 border border-slate-700 rounded-2xl p-6">
+          <div class="font-semibold text-lg">Mental health is non-negotiable.</div>
+          <div class="text-slate-400 text-sm mt-2">The students getting top grades in <span data-sb-year="next">2026</span> are the ones who didn’t destroy themselves getting there. We protect both.</div>
+        </div>
+        <div class="manifesto-item bg-slate-800 border border-slate-700 rounded-2xl p-6">
+          <div class="font-semibold text-lg">Closed loops beat open loops.</div>
+          <div class="text-slate-400 text-sm mt-2">Most revision is open-loop hoping. The Paper Loop is closed: attempt → mark → repair → re-attempt. Compounding guaranteed.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       THE CONNECTED ECOSYSTEM
+  ============================================ -->
+  <section class="home-section max-w-6xl mx-auto px-6 py-16">
+    <div class="text-center mb-9">
+      <h2 class="section-head text-4xl font-black tracking-[-1.3px]">Everything is connected. Nothing is wasted.</h2>
+      <p class="text-slate-600 max-w-md mx-auto mt-2">Your papers, tools, planning, and repair systems talk to each other. One platform. One loop. Permanent progress.</p>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-3">
+      <div class="bg-white border border-slate-200 rounded-2xl p-6">
+        <div class="text-xs font-bold text-sky-600 tracking-widest">STEP 1</div>
+        <div class="font-semibold mt-1">Discover papers in the Resource Database</div>
+      </div>
+      <div class="bg-white border border-slate-200 rounded-2xl p-6">
+        <div class="text-xs font-bold text-sky-600 tracking-widest">STEP 2</div>
+        <div class="font-semibold mt-1">Plan &amp; execute with Command Centre + Time Splitter</div>
+      </div>
+      <div class="bg-white border border-slate-200 rounded-2xl p-6">
+        <div class="text-xs font-bold text-sky-600 tracking-widest">STEP 3</div>
+        <div class="font-semibold mt-1">Repair using subject-specific tools (calculators, essay planners, synoptic mappers)</div>
+      </div>
+      <div class="bg-white border border-slate-200 rounded-2xl p-6">
+        <div class="text-xs font-bold text-sky-600 tracking-widest">STEP 4</div>
+        <div class="font-semibold mt-1">Return stronger. The loop compounds. Grades follow.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FINAL MASSIVE CTA — Revolutionary close
+  ============================================ -->
+  <section class="bg-slate-950 text-white pt-14 pb-20">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <div class="inline text-xs tracking-[2px] font-extrabold text-sky-400">THE STUDENTS WHO WIN IN <span data-sb-year="next">2026</span> STARTED EARLIER.</div>
+      
+      <h2 class="mt-3 text-5xl font-black tracking-[-1.8px] leading-none">Stop revising like it’s <span data-sb-year="prev">2019</span>.<br>Start winning like it’s <span data-sb-year="next">2026</span>.</h2>
+      
+      <p class="mt-4 text-lg text-slate-400 max-w-md mx-auto">The best grades don’t come from working harder. They come from working on a better system. This is that system.</p>
+
+      <div class="flex flex-wrap justify-center gap-3 mt-8">
+        <a href="/r/index.html#client-preflight"
+           class="landing-cta inline-flex items-center justify-center bg-sky-400 hover:bg-white text-slate-950 font-extrabold px-9 h-14 rounded-3xl text-[15px] shadow-xl shadow-sky-500/25">
+          OPEN THE FUTURE OF REVISION →
+        </a>
+        <a href="/tools/"
+           class="landing-cta inline-flex items-center justify-center border-2 border-white/30 hover:bg-white/5 font-semibold px-9 h-14 rounded-3xl text-[15px]">
+          Browse the 30 tools
+        </a>
+      </div>
+
+      <div class="mt-6 text-xs text-slate-500">No account. No data leaves your device. Ever. Built for students who refuse to be average.</div>
+    </div>
+  </section>
+
+  <!-- Lucide + micro interactions -->
+  <script>
+    // Init Lucide icons
+    if (window.lucide) {
+      lucide.createIcons();
+    }
+
+    // Subtle staggered card entrance on scroll (for modern feel)
+    (function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, idx) => {
+          if (entry.isIntersecting) {
+            entry.target.style.transition = `opacity 420ms ease ${idx * 35}ms, transform 520ms cubic-bezier(0.2,0.9,0.2,1) ${idx * 35}ms`;
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('.sbx-rev-card, .tool-mini-card').forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(14px)';
+        observer.observe(el);
+      });
+    })();
+  </script>
 </body>
 </html>

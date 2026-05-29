@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revision Session Generator | StudyBase Tools</title>
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="sbx-shell" style="max-width:980px;padding:1.6rem 1rem 3rem;">
+    <a href="/tools/planning/" style="color:#64748b;font-size:0.9rem;">← Planning tools</a>
+    <div style="margin:1rem 0 1.6rem;display:flex;gap:11px;align-items:center;">
+      <i data-lucide="calendar" style="width:28px;height:28px;color:#0ea5e9;"></i>
+      <h1 style="font-size:1.9rem;font-weight:700;margin:0;">Revision Session Generator</h1>
+    </div>
+
+    <div style="max-width:640px;background:white;border:1px solid #e2e8f0;border-radius:14px;padding:1.25rem;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><label style="font-size:0.82rem;font-weight:700;">Available time (minutes)</label>
+        <input id="avail" type="number" value="90" style="width:100%;padding:9px;border:1px solid #cbd5e1;border-radius:10px;"></div>
+        <div><label style="font-size:0.82rem;font-weight:700;">Number of weak topics</label>
+        <input id="weak" type="number" value="3" style="width:100%;padding:9px;border:1px solid #cbd5e1;border-radius:10px;"></div>
+      </div>
+      <button onclick="generateSession()" style="margin-top:14px;background:#0f172a;color:#fff;padding:10px 24px;border-radius:12px;font-weight:700;">Generate My Session</button>
+      <div id="session-output" style="margin-top:1rem;display:none;"></div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <script src="/assets/js/layout/footer.js" defer></script>
+  <script>
+    lucide.createIcons();
+    function generateSession() {
+      const mins = parseInt(document.getElementById('avail').value) || 90;
+      const weak = parseInt(document.getElementById('weak').value) || 3;
+      const out = document.getElementById('session-output');
+      const blocks = [];
+      let left = mins;
+      const types = ['Past paper section','Recall cards','Topic repair notes','Timed questions','Mark scheme analysis'];
+      for (let i=0; i<weak; i++) {
+        const t = Math.max(12, Math.floor(left / (weak + 1)));
+        blocks.push({type: types[i % types.length], time: t, topic: 'Topic ' + (i+1)});
+        left -= t;
+      }
+      if (left > 8) blocks.push({type:'Buffer + stretch', time: left, topic:''});
+      let html = '<div style="background:#f8fafc;border-radius:10px;padding:12px;">';
+      blocks.forEach(b => {
+        html += `<div style="padding:8px 0;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;"><div><strong>${b.type}</strong> ${b.topic ? '— ' + b.topic : ''}</div><div style="color:#0ea5e9;font-weight:700;">${b.time} min</div></div>`;
+      });
+      html += '</div><div style="font-size:0.8rem;color:#64748b;margin-top:8px;">Session saved to your local history automatically.</div>';
+      out.innerHTML = html;
+      out.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

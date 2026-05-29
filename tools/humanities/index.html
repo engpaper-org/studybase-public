@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Humanities &amp; Essay Builders | StudyBase Tools</title>
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
+  <link rel="stylesheet" href="/assets/css/premium-system.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    function initTailwind() {
+      if (window.tailwind) {
+        window.tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                'sb-dark': '#0f172a',
+                'sb-accent': '#0ea5e9',
+              }
+            }
+          }
+        };
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTailwind);
+    } else {
+      initTailwind();
+    }
+  </script>
+  <style>
+    .sbx-shell{max-width:1100px;padding:0.75rem 1rem 4rem}
+    .back-link {
+      color: #64748b;
+      font-size: 0.92rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .back-link:hover { color: #0f172a; }
+    a { color: #0ea5e9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button { font-weight: 700; border-radius: 11px; padding: 9px 16px; font-size: 0.93rem; cursor: pointer; transition: all 0.15s ease; }
+  </style>
+</head>
+<body>
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <script src="/assets/js/support/support-handler.js" defer></script>
+
+  <div class="max-w-[1100px] mx-auto px-6 py-8">
+    <!-- Top Support Promo -->
+    <div data-support-slot="humanities-top" data-support-ratio="leaderboard" data-support-label="Wellbeing Partner" class="mb-6"></div>
+
+    <a href="/tools/" class="text-slate-500 hover:text-slate-700 text-sm flex items-center gap-1 mb-6">← All tools</a>
+
+    <div class="flex items-center gap-4 mb-6">
+      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-cyan-400 flex items-center justify-center">
+        <i data-lucide="book-open" class="w-6 h-6 text-white"></i>
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight">Humanities &amp; Essay Builders</h1>
+        <p class="text-slate-600">The structures and frameworks that separate 25+ answers from the rest.</p>
+      </div>
+    </div>
+    <p style="max-width:620px;color:#64748b;margin-bottom:1rem;">Every tool here helps you structure 20–30 mark answers with evidence and evaluation.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <a href="english-literature-essay-planner.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="book-open" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-semibold">English Literature Essay Planner</span>
+        </div>
+        <p class="text-sm text-slate-600">Thesis, argument threads, critics, context and AO-tagged plans.</p>
+      </a>
+      <a href="history-argument-builder.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="scroll" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-semibold">History Argument Builder</span>
+        </div>
+        <p class="text-sm text-slate-600">Source essays, causation, change/continuity and judgement frameworks.</p>
+      </a>
+      <a href="geography-case-study-lab.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="map" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-semibold">Geography Case Study Lab</span>
+        </div>
+        <p class="text-sm text-slate-600">Physical &amp; human case studies with data, players and evaluation.</p>
+      </a>
+      <a href="politics-essay-planner.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="landmark" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-semibold">Politics Essay Planner</span>
+        </div>
+        <p class="text-sm text-slate-600">UK/US, comparative, ideology and 30-mark essay structures.</p>
+      </a>
+      <a href="sociology-theory-mapper.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="users" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-semibold">Sociology Theory Mapper</span>
+        </div>
+        <p class="text-sm text-slate-600">Link perspectives, studies and contemporary examples for 20–30 markers.</p>
+      </a>
+      <a href="business-strategy-toolkit.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="briefcase" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-semibold">Business Strategy Toolkit</span>
+        </div>
+        <p class="text-sm text-slate-600">SWOT, Ansoff, Porter’s 5 forces and evaluation frames.</p>
+      </a>
+      <a href="law-scenario-tool.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="scale" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-semibold">Law Scenario Tool</span>
+        </div>
+        <p class="text-sm text-slate-600">Apply legal principles to scenarios with clear structure.</p>
+      </a>
+      <a href="media-studies-analysis-board.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="film" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-semibold">Media Studies Analysis Board</span>
+        </div>
+        <p class="text-sm text-slate-600">MIGRAIN + theory application for media texts.</p>
+      </a>
+    </div>
+
+    <!-- Extra 3 rectangle ads row (these pages previously only had the top leaderboard) -->
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div data-support-slot="humanities-extra-1" data-support-ratio="rectangle" data-support-label="Partner"></div>
+      <div data-support-slot="humanities-extra-2" data-support-ratio="rectangle" data-support-label="Partner"></div>
+      <div data-support-slot="humanities-extra-3" data-support-ratio="rectangle" data-support-label="Partner"></div>
+    </div>
+  </div>
+
+  <script src="/assets/js/layout/footer.js" defer></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

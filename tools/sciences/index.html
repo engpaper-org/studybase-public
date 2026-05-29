@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sciences Tools | StudyBase Tools</title>
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
+  <link rel="stylesheet" href="/assets/css/premium-system.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    function initTailwind() {
+      if (window.tailwind) {
+        window.tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                'sb-dark': '#0f172a',
+                'sb-accent': '#0ea5e9',
+              }
+            }
+          }
+        };
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTailwind);
+    } else {
+      initTailwind();
+    }
+  </script>
+  <style>
+    .sbx-shell{max-width:1100px;padding:0.75rem 1rem 4rem}
+    .back-link {
+      color: #64748b;
+      font-size: 0.92rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .back-link:hover { color: #0f172a; }
+    a { color: #0ea5e9; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    button { font-weight: 700; border-radius: 11px; padding: 9px 16px; font-size: 0.93rem; cursor: pointer; transition: all 0.15s ease; }
+  </style>
+</head>
+<body>
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <script src="/assets/js/support/support-handler.js" defer></script>
+
+  <div class="max-w-[1100px] mx-auto px-6 py-8">
+    <!-- Top Support Promo -->
+    <div data-support-slot="sciences-top" data-support-ratio="leaderboard" data-support-label="Wellbeing Partner" class="mb-6"></div>
+
+    <a href="/tools/" class="text-slate-500 hover:text-slate-700 text-sm flex items-center gap-1 mb-6">← All tools</a>
+
+    <div class="flex items-center gap-4 mb-6">
+      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-cyan-400 flex items-center justify-center">
+        <i data-lucide="atom" class="w-6 h-6 text-white"></i>
+      </div>
+      <div>
+        <h1 class="text-3xl font-bold tracking-tight">Sciences</h1>
+        <p class="text-slate-600">Modern labs and calculators for the students pushing for the highest grades.</p>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <a href="physics-formula-lab.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="atom" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-semibold">Physics Formula Lab</span>
+        </div>
+        <p class="text-sm text-slate-600">Electricity, waves, mechanics, fields and quantum calculators.</p>
+      </a>
+      <a href="chemistry-calculator.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="flask-conical" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-semibold">Chemistry Calculator</span>
+        </div>
+        <p class="text-sm text-slate-600">Moles, pH, titrations, Kc, rates and Born-Haber cycles.</p>
+      </a>
+      <a href="biology-process-explorer.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="dna" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-semibold">Biology Process Explorer</span>
+        </div>
+        <p class="text-sm text-slate-600">Respiration, photosynthesis, immunity and homeostasis pathways.</p>
+      </a>
+      <a href="psychology-study-builder.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="brain" class="w-5 h-5 text-sky-600"></i>
+          <span class="font-semibold">Psychology Study Builder</span>
+        </div>
+        <p class="text-sm text-slate-600">Full study structure: aim, procedure, findings, evaluation, ethics.</p>
+      </a>
+    </div>
+
+    <!-- Extra 3 rectangle ads row (these pages previously only had the top leaderboard) -->
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div data-support-slot="sciences-extra-1" data-support-ratio="rectangle" data-support-label="Partner"></div>
+      <div data-support-slot="sciences-extra-2" data-support-ratio="rectangle" data-support-label="Partner"></div>
+      <div data-support-slot="sciences-extra-3" data-support-ratio="rectangle" data-support-label="Partner"></div>
+    </div>
+  </div>
+
+  <script src="/assets/js/layout/footer.js" defer></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

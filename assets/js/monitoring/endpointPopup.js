@@ -8,7 +8,7 @@
   const monitoredHosts = new Set(DEFAULT_HOSTS);
   const originalFetch = window.fetch ? window.fetch.bind(window) : null;
   const settings = {
-    errorIcon: "/assets/images/site-icons/endpoint-error.png",
+    errorIcon: "/assets/images/site-icons/genie-mascot.svg",
     tiktokQrImage: "/assets/qrcodes/tiktok.png",
     tiktokUrl: "https://www.tiktok.com/@project.fin.support"
   };
@@ -21,40 +21,45 @@
     const style = document.createElement("style");
     style.id = STYLE_ID;
     style.textContent = [
-      "#" + POPUP_ID + "{position:fixed;inset:0;z-index:2147483647;display:none;background:#f8fafc;color:#0f172a;font-family:Arial,sans-serif;overflow:auto;}",
+      "#" + POPUP_ID + "{position:fixed;inset:0;z-index:2147483647;display:none;background:rgba(15,23,42,0.82);color:#0f172a;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;overflow:auto;}",
       "html.sb-endpoint-error-open,html.sb-endpoint-error-open body{overflow:hidden;}",
       "#" + POPUP_ID + ".is-open{display:block;}",
       "#" + POPUP_ID + " .sb-endpoint-page{min-height:100vh;display:flex;flex-direction:column;}",
-      "#" + POPUP_ID + " .sb-endpoint-shell{width:min(860px,calc(100vw - 32px));margin:0 auto;padding:32px 0 28px;display:flex;flex:1;flex-direction:column;}",
-      "#" + POPUP_ID + " .sb-endpoint-main{min-height:calc(100vh - 150px);display:flex;align-items:center;justify-content:center;}",
-      "#" + POPUP_ID + " .sb-endpoint-card{width:100%;text-align:center;}",
-      "#" + POPUP_ID + " .sb-endpoint-icon-wrap{width:clamp(180px,28vw,260px);height:clamp(180px,28vw,260px);margin:0 auto 26px;display:flex;align-items:center;justify-content:center;overflow:visible;}",
-      "#" + POPUP_ID + " .sb-endpoint-icon-wrap img{width:100%;height:100%;object-fit:contain;display:block;}",
-      "#" + POPUP_ID + " .sb-endpoint-icon-fallback{width:clamp(150px,22vw,210px);height:clamp(150px,22vw,210px);border-radius:42px;background:#fee2e2;color:#b91c1c;display:none;align-items:center;justify-content:center;font-size:92px;font-weight:900;}",
-      "#" + POPUP_ID + " h1{margin:0;font-size:clamp(32px,4vw,48px);line-height:1.08;letter-spacing:0;font-weight:900;color:#0f172a;}",
-      "#" + POPUP_ID + " h2{margin:0;font-size:28px;line-height:1.15;font-weight:900;color:#0f172a;}",
+      "#" + POPUP_ID + " .sb-endpoint-shell{width:min(780px,calc(100vw - 32px));margin:0 auto;padding:40px 0 32px;display:flex;flex:1;flex-direction:column;}",
+      "#" + POPUP_ID + " .sb-endpoint-main{min-height:calc(100vh - 120px);display:flex;align-items:center;justify-content:center;}",
+      "#" + POPUP_ID + " .sb-endpoint-card{width:100%;text-align:center;background:#fff;border-radius:24px;padding:32px 28px 28px;box-shadow:0 25px 70px -15px rgba(0,0,0,0.35),0 10px 30px -10px rgba(15,23,42,0.2);border:1px solid #e2e8f0;}",
+      "#" + POPUP_ID + " .sb-endpoint-details-view .sb-endpoint-card{text-align:left;padding:26px 24px;box-shadow:0 20px 55px -12px rgba(0,0,0,0.28);}",
+      "#" + POPUP_ID + " .sb-endpoint-icon-wrap{width:168px;height:168px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;overflow:visible;border-radius:9999px;background:linear-gradient(145deg,#f8fafc,#e0f2fe);padding:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.9),0 10px 30px -8px rgba(14,165,233,0.15);}",
+      "#" + POPUP_ID + " .sb-endpoint-icon-wrap img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 8px 18px rgba(15,23,42,0.12));}",
+      "#" + POPUP_ID + " .sb-endpoint-icon-fallback{width:140px;height:140px;border-radius:9999px;background:#e0f2fe;color:#0369a1;display:none;align-items:center;justify-content:center;font-size:68px;font-weight:900;}",
+      "#" + POPUP_ID + " h1{margin:0;font-size:clamp(28px,3.8vw,40px);line-height:1.05;letter-spacing:-0.02em;font-weight:900;color:#0f172a;}",
+      "#" + POPUP_ID + " h2{margin:0;font-size:22px;line-height:1.2;font-weight:800;color:#0f172a;}",
       "#" + POPUP_ID + " p{margin:0;color:#475569;font-size:15px;line-height:1.65;}",
-      "#" + POPUP_ID + " .sb-endpoint-summary{max-width:560px;margin:14px auto 0;font-size:17px;}",
-      "#" + POPUP_ID + " .sb-endpoint-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:28px;}",
-      "#" + POPUP_ID + " button,#" + POPUP_ID + " a.sb-endpoint-button{appearance:none;border:none;text-decoration:none;cursor:pointer;border-radius:16px;padding:12px 18px;font-size:14px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px;}",
+      "#" + POPUP_ID + " .sb-endpoint-summary{max-width:520px;margin:12px auto 0;font-size:16px;}",
+      "#" + POPUP_ID + " .sb-endpoint-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:22px;}",
+      "#" + POPUP_ID + " .sb-endpoint-details-view .sb-endpoint-actions{margin-top:26px;justify-content:flex-end;}",
+      "#" + POPUP_ID + " button,#" + POPUP_ID + " a.sb-endpoint-button{appearance:none;border:none;text-decoration:none;cursor:pointer;border-radius:14px;padding:12px 20px; transition:all .1s ease;font-size:14px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px;}",
       "#" + POPUP_ID + " .sb-endpoint-primary{background:#0f172a;color:#fff;}",
-      "#" + POPUP_ID + " .sb-endpoint-secondary{background:#fff;color:#334155;border:1px solid #cbd5e1;}",
-      "#" + POPUP_ID + " .sb-endpoint-footer{margin-top:auto;padding-top:18px;text-align:center;color:#64748b;font-size:14px;}",
-      "#" + POPUP_ID + " .sb-endpoint-footer button{padding:0;border-radius:0;background:transparent;color:#0f172a;text-decoration:underline;font:inherit;font-weight:900;}",
+      "#" + POPUP_ID + " .sb-endpoint-primary:hover{background:#020617;}",
+      "#" + POPUP_ID + " .sb-endpoint-secondary{background:#f8fafc;color:#334155;border:1px solid #cbd5e1;}",
+      "#" + POPUP_ID + " .sb-endpoint-secondary:hover{background:#fff;border-color:#94a3b8;}",
+      "#" + POPUP_ID + " .sb-endpoint-footer{margin-top:26px;padding-top:18px;text-align:center;color:#64748b;font-size:13px;border-top:1px solid #f1f5f9;}",
+      "#" + POPUP_ID + " .sb-endpoint-footer button{padding:0;border-radius:0;background:transparent;color:#0e7490;text-decoration:underline;font:inherit;font-weight:800;}",
       "#" + POPUP_ID + " .sb-endpoint-view{display:none;}",
       "#" + POPUP_ID + "[data-view='summary'] .sb-endpoint-summary-view{display:block;}",
       "#" + POPUP_ID + "[data-view='details'] .sb-endpoint-details-view{display:block;}",
-      "#" + POPUP_ID + " .sb-endpoint-details-view{width:100%;}",
-      "#" + POPUP_ID + " .sb-endpoint-detail-layout{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:18px;align-items:start;margin-top:24px;}",
-      "#" + POPUP_ID + " .sb-endpoint-panel{border:1px solid #e2e8f0;background:#fff;border-radius:22px;padding:18px;text-align:left;box-shadow:0 12px 28px rgba(15,23,42,.06);}",
-      "#" + POPUP_ID + " .sb-endpoint-label{margin:0 0 7px;color:#64748b;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;}",
-      "#" + POPUP_ID + " .sb-endpoint-value{margin:0;color:#0f172a;font-size:14px;line-height:1.55;word-break:break-word;}",
-      "#" + POPUP_ID + " pre.sb-endpoint-value{max-height:310px;overflow:auto;white-space:pre-wrap;font-family:Consolas,'Courier New',monospace;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:14px;}",
+      "#" + POPUP_ID + " .sb-endpoint-details-view{width:100%; padding:28px 0 36px;}",
+      "#" + POPUP_ID + " .sb-endpoint-detail-layout{display:grid;grid-template-columns:1fr;gap:14px;align-items:start;margin-top:8px;}",
+      "#" + POPUP_ID + " .sb-endpoint-panel{border:1px solid #e2e8f0;background:#f8fafc;border-radius:16px;padding:14px 16px;text-align:left;}",
+      "#" + POPUP_ID + " .sb-endpoint-label{margin:0 0 5px;color:#64748b;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}",
+      "#" + POPUP_ID + " .sb-endpoint-value{margin:0;color:#0f172a;font-size:14px;line-height:1.5;word-break:break-word;}",
+      "#" + POPUP_ID + " pre.sb-endpoint-value{max-height:260px;overflow:auto;white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px;font-size:12.5px;color:#1e2937;}",
       "#" + POPUP_ID + " .sb-endpoint-qr{width:100%;aspect-ratio:1;background:#f8fafc;border:1px solid #e2e8f0;border-radius:20px;object-fit:contain;display:block;}",
       "#" + POPUP_ID + " .sb-endpoint-qr-fallback{display:none;width:100%;aspect-ratio:1;border-radius:20px;border:1px dashed #cbd5e1;background:#f8fafc;color:#64748b;align-items:center;justify-content:center;text-align:center;padding:18px;font-size:13px;line-height:1.4;}",
-      "#" + POPUP_ID + " .sb-endpoint-topline{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;}",
-      "#" + POPUP_ID + " .sb-endpoint-chip{display:inline-flex;align-items:center;border-radius:999px;background:#fee2e2;color:#991b1b;padding:7px 11px;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;}",
-      "@media (max-width:760px){#" + POPUP_ID + " .sb-endpoint-shell{padding-top:22px;}#" + POPUP_ID + " .sb-endpoint-main{min-height:calc(100vh - 135px);}#" + POPUP_ID + " .sb-endpoint-detail-layout{grid-template-columns:1fr;}#" + POPUP_ID + " .sb-endpoint-topline{align-items:flex-start;flex-direction:column;}#" + POPUP_ID + " .sb-endpoint-actions{flex-direction:column;}#" + POPUP_ID + " button,#" + POPUP_ID + " a.sb-endpoint-button{width:100%;}}"
+      "#" + POPUP_ID + " .sb-endpoint-topline{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:8px;}",
+      "#" + POPUP_ID + " .sb-endpoint-chip{display:inline-flex;align-items:center;border-radius:999px;background:#e0f2fe;color:#0369a1;padding:4px 11px;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;}",
+      "#" + POPUP_ID + " .sb-endpoint-ban-warning{font-size:13px;}",
+      "@media (max-width:760px){#" + POPUP_ID + " .sb-endpoint-shell{padding-top:24px;}#" + POPUP_ID + " .sb-endpoint-main{min-height:calc(100vh - 90px);}#" + POPUP_ID + " .sb-endpoint-card{padding:24px 18px;}#" + POPUP_ID + " .sb-endpoint-details-view .sb-endpoint-card{padding:22px 16px;}#" + POPUP_ID + " .sb-endpoint-icon-wrap{width:132px;height:132px;}#" + POPUP_ID + " .sb-endpoint-topline{flex-direction:column;}#" + POPUP_ID + " .sb-endpoint-actions{flex-direction:column;}#" + POPUP_ID + " .sb-endpoint-details-view .sb-endpoint-actions{justify-content:stretch;}#" + POPUP_ID + " button,#" + POPUP_ID + " a.sb-endpoint-button{width:100%;}}"
     ].join("");
     document.head.appendChild(style);
   }
@@ -80,50 +85,48 @@
       "          </div>",
       '          <h1 id="sb-endpoint-title">There was an error</h1>',
       '          <p class="sb-endpoint-summary" data-field="summary">A StudyBase request did not complete successfully.</p>',
+      '          <div class="sb-endpoint-ban-warning" style="max-width:520px;margin:16px auto 0;padding:10px 14px;border-radius:12px;background:#fef2f2;border:1px solid #fecaca;color:#991b1b;font-size:12.5px;font-weight:700;line-height:1.4;">',
+      "            Reaching out to the site owner by email about this will lead to a <strong>permanent account ban</strong>.",
+      "          </div>",
       '          <div class="sb-endpoint-actions">',
       '            <button type="button" class="sb-endpoint-primary" data-action="reload">Reload page</button>',
-      '            <button type="button" class="sb-endpoint-secondary" data-action="dismiss">Close</button>',
+      '            <button type="button" class="sb-endpoint-secondary" data-action="details">More info</button>',
       "          </div>",
       "        </div>",
       "      </main>",
-      '      <footer class="sb-endpoint-footer">',
-      "        An unexpected error occurred. To report the error, ",
-      '        <button type="button" data-action="details">click here</button>.',
-      "      </footer>",
       "    </section>",
       '    <section class="sb-endpoint-view sb-endpoint-details-view">',
-      '      <div class="sb-endpoint-topline">',
-      "        <div>",
-      '          <span class="sb-endpoint-chip">Error report</span>',
-      '          <h2 class="mt-3">Send a photo of this page to us on TikTok</h2>',
-      '          <p class="mt-2">These details help the site admin find what went wrong.</p>',
+      '      <div class="sb-endpoint-card sb-details-card">',
+      '        <div class="sb-endpoint-topline">',
+      "          <div>",
+      '            <span class="sb-endpoint-chip">Admin reference</span>',
+      '            <h2 class="mt-3">Technical details for site administrators</h2>',
+      '            <p class="mt-2">Show this screen to a site admin. Do not send screenshots or details to the site owner by email.</p>',
+      "          </div>",
+      '          <button type="button" class="sb-endpoint-secondary" data-action="summary">Back</button>',
       "        </div>",
-      '        <button type="button" class="sb-endpoint-secondary" data-action="summary">Back</button>',
-      "      </div>",
-      '      <div class="sb-endpoint-detail-layout">',
-      "        <div>",
-      '          <div class="sb-endpoint-panel">',
-      '            <p class="sb-endpoint-label">Error code</p>',
-      '            <p class="sb-endpoint-value" data-field="code">Unknown</p>',
-      "          </div>",
-      '          <div class="sb-endpoint-panel" style="margin-top:14px;">',
-      '            <p class="sb-endpoint-label">Endpoint</p>',
-      '            <p class="sb-endpoint-value" data-field="endpoint">Unknown</p>',
-      "          </div>",
-      '          <div class="sb-endpoint-panel" style="margin-top:14px;">',
-      '            <p class="sb-endpoint-label">Details</p>',
-      '            <pre class="sb-endpoint-value" data-field="details">No extra details were returned.</pre>',
+      '        <div class="sb-endpoint-ban-warning" style="margin: 12px 0 20px; padding: 14px 18px; border-radius: 14px; background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; font-size: 13px; font-weight: 700; line-height: 1.45;">',
+      "          <strong>PERMANENT BAN WARNING:</strong> Reaching out to the site owner by email about this error (or any maintenance) will result in a permanent account ban. This information is for authorised site administrators only.",
+      "        </div>",
+      '        <div class="sb-endpoint-detail-layout" style="grid-template-columns: 1fr;">',
+      "          <div>",
+      '            <div class="sb-endpoint-panel">',
+      '              <p class="sb-endpoint-label">Error code</p>',
+      '              <p class="sb-endpoint-value" data-field="code">Unknown</p>',
+      "            </div>",
+      '            <div class="sb-endpoint-panel" style="margin-top:14px;">',
+      '              <p class="sb-endpoint-label">Endpoint</p>',
+      '              <p class="sb-endpoint-value" data-field="endpoint">Unknown</p>',
+      "            </div>",
+      '            <div class="sb-endpoint-panel" style="margin-top:14px;">',
+      '              <p class="sb-endpoint-label">Details</p>',
+      '              <pre class="sb-endpoint-value" data-field="details">No extra details were returned.</pre>',
+      "            </div>",
       "          </div>",
       "        </div>",
-      '        <aside class="sb-endpoint-panel">',
-      '          <p class="sb-endpoint-label">TikTok support</p>',
-      '          <img data-field="qr-image" class="sb-endpoint-qr" alt="TikTok QR code" />',
-      '          <div class="sb-endpoint-qr-fallback" data-field="qr-fallback">QR Code not found</div>',
-      '          <p class="sb-endpoint-value" style="margin-top:12px;">Reach out to us on TikTok and send a photo of this page.</p>',
-      "        </aside>",
-      "      </div>",
-      '      <div class="sb-endpoint-actions">',
-      '        <button type="button" class="sb-endpoint-secondary" data-action="dismiss">Close</button>',
+      '        <div class="sb-endpoint-actions">',
+      '          <button type="button" class="sb-endpoint-primary" data-action="reload">Reload page</button>',
+      "        </div>",
       "      </div>",
       "    </section>",
       "  </div>",
@@ -132,10 +135,6 @@
 
     host.addEventListener("click", function (event) {
       const action = event.target && event.target.getAttribute ? event.target.getAttribute("data-action") : null;
-      if (action === "dismiss") {
-        closePopup();
-        return;
-      }
       if (action === "reload") {
         closePopup();
         window.location.reload();
@@ -151,7 +150,10 @@
     });
 
     document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") closePopup();
+      // Escape is intentionally disabled — this error screen cannot be closed
+      if (event.key === "Escape") {
+        event.preventDefault();
+      }
     });
 
     document.body.appendChild(host);
@@ -184,11 +186,7 @@
       popup.querySelector('[data-field="error-icon-fallback"]'),
       settings.errorIcon
     );
-    setImageWithFallback(
-      popup.querySelector('[data-field="qr-image"]'),
-      popup.querySelector('[data-field="qr-fallback"]'),
-      settings.tiktokQrImage
-    );
+    // QR image elements removed (no longer TikTok based)
 
   }
 
@@ -204,6 +202,148 @@
 
   function closeToast() {
     closePopup();
+  }
+
+  // ==================== MAINTENANCE BANNER (above navbar) ====================
+  const BANNER_ID = "sb-maint-banner";
+  let bannerInjected = false;
+
+  function ensureBannerStyles() {
+    if (document.getElementById("sb-maint-banner-styles")) return;
+    const st = document.createElement("style");
+    st.id = "sb-maint-banner-styles";
+    st.textContent = `
+      #${BANNER_ID} {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 2147483640;
+        background: linear-gradient(90deg, #0f172a, #1e2937);
+        color: #f1f5f9;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        box-shadow: 0 10px 30px -10px rgba(0,0,0,0.45);
+        border-bottom: 1px solid rgba(148,163,184,0.25);
+      }
+      #${BANNER_ID} .sb-maint-inner {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 11px 16px;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        font-size: 13.5px;
+        line-height: 1.45;
+      }
+      #${BANNER_ID} .sb-maint-icon {
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: #334155;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        margin-top: 1px;
+      }
+      #${BANNER_ID} .sb-maint-text { flex: 1; }
+      #${BANNER_ID} .sb-maint-text strong { color: #f8fafc; font-weight: 800; }
+      #${BANNER_ID} .sb-maint-ban {
+        display: block;
+        margin-top: 4px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #fda4af;
+        background: rgba(190, 18, 60, 0.18);
+        padding: 3px 8px;
+        border-radius: 6px;
+        border: 1px solid rgba(244, 63, 94, 0.35);
+      }
+      #${BANNER_ID} .sb-maint-close {
+        flex-shrink: 0;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(148,163,184,0.3);
+        color: #e2e8f0;
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        font-size: 18px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1px;
+      }
+      #${BANNER_ID} .sb-maint-close:hover { background: rgba(255,255,255,0.16); }
+      .sb-maint-active #sbx-navbar { padding-top: 96px !important; }
+      @media (max-width: 640px) {
+        #${BANNER_ID} .sb-maint-inner { padding: 10px 12px; font-size: 13px; }
+      }
+    `;
+    document.head.appendChild(st);
+  }
+
+  function showMaintenanceBanner(message) {
+    ensureBannerStyles();
+
+    let banner = document.getElementById(BANNER_ID);
+    if (banner) {
+      // already visible
+      return;
+    }
+
+    // Prevent showing again this session if user dismissed
+    if (sessionStorage.getItem("sb-maint-banner-dismissed") === "1") {
+      return;
+    }
+
+    // If the scheduled "services suspended" banner from timeCheck.js is already visible
+    // (especially on r/ pages during the maintenance window), don't show a duplicate.
+    if (document.getElementById('studybase-maint-banner')) {
+      return;
+    }
+
+    banner = document.createElement("div");
+    banner.id = BANNER_ID;
+    banner.setAttribute("role", "status");
+    banner.innerHTML = `
+      <div class="sb-maint-inner">
+        <div class="sb-maint-icon" aria-hidden="true">🛠️</div>
+        <div class="sb-maint-text">
+          <strong>StudyBase is currently offline for servicing.</strong>
+          Online services and API requests will not function between 11:02pm and 4:00am.
+          <span class="sb-maint-ban">Reaching out to the site owner by email about maintenance or errors will lead to a PERMANENT ACCOUNT BAN.</span>
+        </div>
+        <button type="button" class="sb-maint-close" aria-label="Dismiss maintenance notice">&times;</button>
+      </div>
+    `;
+
+    document.body.insertAdjacentElement("afterbegin", banner);
+    document.documentElement.classList.add("sb-maint-active");
+    // Also nudge the navbar if it exists already
+    const nav = document.getElementById("sbx-navbar");
+    if (nav) nav.style.paddingTop = "96px";
+
+    banner.querySelector(".sb-maint-close").addEventListener("click", () => {
+      hideMaintenanceBanner(true);
+    });
+
+    bannerInjected = true;
+  }
+
+  function hideMaintenanceBanner(remember = false) {
+    const banner = document.getElementById(BANNER_ID);
+    if (banner) banner.remove();
+    document.documentElement.classList.remove("sb-maint-active");
+
+    const nav = document.getElementById("sbx-navbar");
+    if (nav) nav.style.paddingTop = "";
+
+    if (remember) {
+      try { sessionStorage.setItem("sb-maint-banner-dismissed", "1"); } catch (e) {}
+    }
   }
 
   function openDetailsFromPopup() {
@@ -243,12 +383,7 @@
         ? payload.message.trim()
         : "Service is offline between 11:02pm and 4:00am.";
 
-    openPopup({
-      code: MAINTENANCE_CODE,
-      endpoint: endpoint || "StudyBase state endpoint",
-      details: message,
-      summary: "StudyBase is in maintenance mode. Overnight updates are running."
-    });
+    showMaintenanceBanner(message);
   }
 
   function addMonitoredHost(rawUrl) {
@@ -390,6 +525,48 @@
     }
   }
 
+  async function shouldIgnoreResourcesListMaintenanceResponse(input, response) {
+    try {
+      const requestUrl =
+        typeof input === "string"
+          ? input
+          : input && typeof input.url === "string"
+            ? input.url
+            : "";
+
+      const parsed = new URL(requestUrl, window.location.origin);
+      if (parsed.hostname !== "api.studybase.site" && parsed.hostname !== "api.revisionbase.site") {
+        return false;
+      }
+
+      if (parsed.pathname !== "/resources/list") return false;
+
+      const payload = await response.clone().json();
+      const isMaintenance = Boolean(
+        payload &&
+        payload.ok === false &&
+        payload.error === MAINTENANCE_CODE
+      );
+
+      if (isMaintenance) {
+        // Surface the proper top banner (above navbar) instead of any old popup.
+        // This ensures r/index.html and other pages get the "offline for servicing" banner.
+        const msg = (payload && payload.message) || "";
+        try { sessionStorage.removeItem("sb-maint-banner-dismissed"); } catch (e) {}
+        if (window.StudybaseEndpointPopup && typeof window.StudybaseEndpointPopup.showMaintenanceBanner === "function") {
+          // Use setTimeout to let the current fetch settle before showing UI
+          setTimeout(() => {
+            window.StudybaseEndpointPopup.showMaintenanceBanner(msg);
+          }, 0);
+        }
+      }
+
+      return isMaintenance;
+    } catch (error) {
+      return false;
+    }
+  }
+
   async function getStateMaintenancePayload(input, response) {
     try {
       const requestUrl =
@@ -468,6 +645,10 @@
         return response;
       }
 
+      if (await shouldIgnoreResourcesListMaintenanceResponse(input, response)) {
+        return response;
+      }
+
       if (await shouldIgnoreStateShutdownResponse(input, response)) {
         return response;
       }
@@ -511,6 +692,8 @@
     configure: configure,
     open: openPopup,
     showMaintenance: openMaintenanceToast,
+    showMaintenanceBanner: showMaintenanceBanner,
+    hideMaintenanceBanner: hideMaintenanceBanner,
     close: closePopup,
     closeToast: closeToast,
     showDetails: openDetailsFromPopup,

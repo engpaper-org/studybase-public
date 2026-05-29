@@ -1,5 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap");
 
+/* Unified premium design system - ensures theme button, modals, and components are consistent and premium everywhere */
+@import url('/assets/css/premium-system.css');
+
 :root {
   color-scheme: light;
   --sbx-bg: #f8fafc;
@@ -2229,3 +2232,115 @@ main:not([class]) input[type="submit"] {
     align-items: start;
   }
 }
+
+/* ============================================================
+   FULL DARK MODE — :root.dark overrides for remastered design system
+   Goal: Make dark mode look nice on every modern page (home, study-tools, subjects, past_papers, alevel, etc.)
+   ============================================================ */
+:root.dark {
+  color-scheme: dark;
+
+  /* Core tokens (mirroring the light ones but in dark slate) */
+  --sbx-bg: #0b1120;
+  --sbx-bg-grid: rgba(15, 23, 42, 0.08);
+  --sbx-surface: rgba(15, 23, 42, 0.92);
+  --sbx-surface-strong: #0f172a;
+  --sbx-ink: #f8fafc;
+  --sbx-muted: #94a3b8;
+  --sbx-line: rgba(51, 65, 85, 0.78);
+  --sbx-blue: #93c5fd;
+  --sbx-blue-strong: #bfdbfe;
+  --sbx-teal: #5eead4;
+  --sbx-violet: #a5b4fc;
+  --sbx-amber: #fcd34d;
+  --sbx-radius: 8px;
+  --sbx-shadow: 0 18px 42px rgba(2, 6, 23, 0.55);
+  --sbx-shadow-lg: 0 28px 84px rgba(2, 6, 23, 0.65);
+}
+
+/* Backgrounds & surfaces */
+:root.dark body {
+  background: var(--sbx-bg) !important;
+  color: var(--sbx-ink);
+}
+
+:root.dark .sbx-shell,
+:root.dark .sbx-home,
+:root.dark .sbx-section,
+:root.dark .sbx-home-remaster,
+:root.dark .sbx-home-routes,
+:root.dark .sbx-home-subjects,
+:root.dark .sbx-band {
+  background: transparent;
+}
+
+:root.dark .sbx-product-window,
+:root.dark .sbx-remastered-banner,
+:root.dark .sbx-home-loop article,
+:root.dark .sbx-home-route-grid > a,
+:root.dark .sbx-home-subject-grid > a,
+:root.dark .sbx-card,
+:root.dark .sbx-trust-card {
+  background: var(--sbx-surface);
+  border-color: var(--sbx-line);
+  color: var(--sbx-ink);
+}
+
+:root.dark .sbx-home-proof span,
+:root.dark .sbx-pill,
+:root.dark .sbx-kicker {
+  background: rgba(15, 23, 42, 0.6);
+  color: var(--sbx-muted);
+  border-color: var(--sbx-line);
+}
+
+/* Text */
+:root.dark h1, :root.dark h2, :root.dark h3, :root.dark h4 {
+  color: var(--sbx-ink);
+}
+
+:root.dark p, :root.dark .sbx-lede, :root.dark .sbx-copy {
+  color: var(--sbx-muted);
+}
+
+/* Buttons */
+:root.dark .sbx-btn {
+  background: var(--sbx-surface-strong);
+  color: var(--sbx-ink);
+  border-color: var(--sbx-line);
+}
+:root.dark .sbx-btn-primary {
+  background: var(--sbx-blue);
+  color: #0b1120;
+  border: none;
+}
+:root.dark .sbx-btn:hover {
+  background: #1e2937;
+}
+
+/* Links and accents */
+:root.dark a {
+  color: var(--sbx-blue);
+}
+:root.dark .sbx-home-route-grid a strong,
+:root.dark .sbx-home-subject-grid a strong {
+  color: var(--sbx-ink);
+}
+
+/* Support / ad slots in dark */
+:root.dark [data-support-slot] {
+  border-color: rgba(51, 65, 85, 0.6);
+  background: rgba(15, 23, 42, 0.6);
+}
+
+/* Footer dark */
+:root.dark .sbx-footer {
+  background: #020617;
+  color: #e2e8f0;
+}
+:root.dark .sbx-footer a {
+  color: #94a3b8;
+}
+
+/* Premium system is now the single source of truth (see premium-system.css).
+   These rules are kept for backward compatibility on pages that haven't been fully migrated yet. */

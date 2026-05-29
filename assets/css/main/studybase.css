@@ -2,6 +2,9 @@
    Keep site-wide tokens, component primitives, navbar styles, and theme overrides here. */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
 
+/* Unified premium design system - theme button, modal, components consistent everywhere */
+@import url('/assets/css/premium-system.css');
+
 :root {
     color-scheme: light;
     --sb-bg: #f8fafc;
@@ -1987,6 +1990,88 @@ body.support-page-body {
 :root.dark .support-card-shell:hover,
 :root.dark .blog-card:hover {
     border-color: rgba(129, 140, 248, 0.55) !important;
+}
+
+/* Extra broad dark coverage for support, myaccount, legal, blogs, etc. */
+:root.dark .sbx-card,
+:root.dark .legal-panel,
+:root.dark .legal-tile,
+:root.dark .support-category,
+:root.dark article.sbx-card,
+:root.dark .myaccount-card,
+:root.dark .blog-post,
+:root.dark .faq-item {
+  background: #0f172a !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+:root.dark .sbx-card h3,
+:root.dark h1, :root.dark h2, :root.dark h3 {
+  color: #f8fafc !important;
+}
+
+:root.dark p, :root.dark li, :root.dark .text-slate-600 {
+  color: #94a3b8 !important;
+}
+
+:root.dark a {
+  color: #93c5fd !important;
+}
+
+:root.dark input, :root.dark select, :root.dark textarea {
+  background: #1e2937 !important;
+  border-color: #475569 !important;
+  color: #f8fafc !important;
+}
+
+/* Even more coverage for remaining pages */
+:root.dark .myaccount-sidebar,
+:root.dark .blog-list,
+:root.dark .legal-wrap,
+:root.dark .support-page-body,
+:root.dark .internal-iframe-content,
+:root.dark .blog-post,
+:root.dark .guide-content,
+:root.dark .myaccount-main,
+:root.dark .legal-main {
+  background: #0b1120 !important;
+  color: #e2e8f0 !important;
+}
+
+/* Premium theme button + modal on legacy pages */
+.sbx-nav-theme-btn {
+  background: transparent !important;
+  border: 1px solid rgba(148,163,184,0.4) !important;
+  color: #334155 !important;
+  border-radius: 9999px !important;
+  padding: 6px 14px 6px 12px !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 4px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sbx-nav-theme-btn:hover { background:#f1f5f9 !important; border-color:#94a3b8 !important; }
+:root.dark .sbx-nav-theme-btn { border-color: rgba(71,85,105,0.7) !important; color:#e2e8f0 !important; }
+:root.dark .sbx-nav-theme-btn:hover { background:#1e2937 !important; border-color:#64748b !important; }
+
+/* Strong premium modal styles on legacy pages */
+#sbx-theme-modal .sbx-login-dialog {
+  background: rgba(255,255,255,0.98) !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25) !important;
+  border-radius: 24px !important;
+  padding: 2rem 1.75rem !important;
+}
+:root.dark #sbx-theme-modal .sbx-login-dialog {
+  background: #0f172a !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
     box-shadow: 0 24px 56px rgba(2, 6, 23, 0.68) !important;
 }
 
