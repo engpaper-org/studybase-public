@@ -478,7 +478,7 @@
         <h1 class="tiny-title">Not alone.</h1>
 
         <p class="default-text" id="defaultText"></p>
-        <p class="wide-text" id="wideText">If things have been building up over time, talking to someone trained to listen can help more than you might expect right now. Support is available even if you are not sure what to say yet or how to begin explaining what is going on inside your head. Reaching out is often the hardest part, but it can make a real difference to how you feel.</p>
+        <p class="wide-text" id="wideText">If things have been building up, talking to someone trained to listen can help more than you might expect. Support is available even when you are unsure where to begin.</p>
         <p class="short-text" id="shortText"></p>
         <p class="tall-text" id="tallText"></p>
         <p class="tiny-text">Support is here.</p>
@@ -496,26 +496,26 @@
   <script>
     const variants = [
       {
-  defaultText: "If things have been building up, talking to someone can help more than you think. You do not have to face everything on your own.",
-  wideText: "If things have been building up over time, talking to someone trained to listen can help more than you might expect right now. Support is available even if you are not sure what to say yet or how to begin explaining what is going on inside your head. Reaching out is often the hardest part, but it can make a big difference.",
-  shortText: "Talking to someone can make things feel lighter.",
-  tallText: "Talking can help.",
-  supportHref: "https://www.samaritans.org/how-we-can-help/contact-samaritan/"
-},
-{
-  defaultText: "Bad days happen, and asking for help is not weakness — it is a strong first step toward feeling better.",
-  wideText: "Bad days happen to everyone from time to time, and asking for help is not a sign of weakness at all. It is actually a strong and important first step toward feeling better. You do not have to carry everything on your own when there are people ready to listen without judgment or pressure.",
-  shortText: "Asking for help shows strength, not weakness.",
-  tallText: "Help is not weakness.",
-  supportHref: "https://giveusashout.org/"
-},
-{
-  defaultText: "Even if you have stayed quiet for a while, support is still there when you are ready to reach out.",
-  wideText: "Even if you have stayed quiet for quite some time, support is still there waiting whenever you feel ready to talk. Reaching out once, even in a small way, can make things feel a little lighter and help you realise you are not as alone as it sometimes feels when you are going through a tough patch.",
-  shortText: "Support is still there when you feel ready.",
-  tallText: "Support is there.",
-  supportHref: "https://www.samaritans.org/"
-}
+        defaultText: "If things have been building up, talking to someone can help more than you think.",
+        wideText: "If things have been building up, talking to someone trained to listen can help more than you might expect. Support is available even when you are unsure where to begin.",
+        shortText: "Talking to someone can make things feel more manageable.",
+        tallText: "Talking can help.",
+        supportHref: "https://www.samaritans.org/how-we-can-help/contact-samaritan/"
+      },
+      {
+        defaultText: "Bad days happen, and asking for help is a strong first step toward feeling better.",
+        wideText: "Bad days happen to everyone. Asking for help is not a weakness — it is a strong first step toward feeling better. You do not have to carry it all alone.",
+        shortText: "Asking for help shows strength and courage.",
+        tallText: "Help is not weakness.",
+        supportHref: "https://giveusashout.org/"
+      },
+      {
+        defaultText: "Support is still there even if you have stayed quiet for a while.",
+        wideText: "Even if you have stayed quiet for some time, support is still there when you are ready. Reaching out can make things feel a little lighter.",
+        shortText: "Support is there whenever you feel ready.",
+        tallText: "Support is there.",
+        supportHref: "https://www.samaritans.org/"
+      }
     ];
 
     const chosen = variants[Math.floor(Math.random() * variants.length)];

@@ -406,11 +406,11 @@
         <h1 class="tall-title">Stay safe online.</h1>
         <h1 class="tiny-title">Stay safe.</h1>
 
-        <p class="default-text" id="defaultText">Think carefully before you share anything. Screenshots, messages and posts can last much longer than the original moment, so always consider the consequences.</p>
-        <p class="wide-text" id="wideText">Think carefully before you share anything online. Screenshots, private messages and posts can last far longer than the moment they were created. Taking just a few extra seconds to pause and consider the consequences can genuinely save you a huge amount of stress and regret later on, and helps protect everyone involved from unnecessary harm down the line, including your future opportunities and relationships.</p>
-        <p class="short-text" id="shortText">Think before you share anything online.</p>
-        <p class="tall-text" id="tallText">Posts and messages can last a long time.</p>
-        <p class="tiny-text">Think before you share anything online.</p>
+        <p class="default-text" id="defaultText">Think before you share anything online. Screenshots and posts can last much longer than the moment.</p>
+        <p class="wide-text" id="wideText">Think carefully before you share anything online. Screenshots and messages can last far longer than you expect, and are hard to take back once out there.</p>
+        <p class="short-text" id="shortText">Think before sharing anything online.</p>
+        <p class="tall-text" id="tallText">Posts can last.</p>
+        <p class="tiny-text">Think before sharing anything online.</p>
 
         <p class="cta default-cta">Click the banner to open advice.</p>
         <p class="cta wide-cta">Click the banner to open advice.</p>
@@ -425,26 +425,26 @@
   <script>
     const variants = [
       {
-  defaultText: "Think before you share anything online, because screenshots, messages, and posts can last much longer than the original moment ever will.",
-  wideText: "Think carefully before you share anything online. Screenshots, private messages, and posts can last far longer than the moment they were created, and once something is out there it can be very difficult to take back. Taking just a few extra seconds to pause and think can genuinely save you a huge amount of stress and regret later on.",
-  shortText: "Think before sharing posts, screenshots, messages, or personal moments online.",
-  tallText: "Posts can last.",
-  supportHref: "https://www.saferinternet.org.uk/"
-},
-{
-  defaultText: "If something online feels off or uncomfortable, trust that feeling and speak to someone you trust about it.",
-  wideText: "If something online feels off, uncomfortable, or wrong, it is really important to trust that instinct and not ignore it. You never have to deal with pressure, threats, or strange messages completely on your own. Speaking to someone you trust can make the whole situation feel much more manageable and help you work out what to do next.",
-  shortText: "Trust uncomfortable feelings online and speak to someone you trust.",
-  tallText: "Tell someone you trust.",
-  supportHref: "https://www.nspcc.org.uk/keeping-children-safe/online-safety/"
-},
-{
-  defaultText: "Keep private things private. Your location, passwords, and personal details should always stay under your control.",
-  wideText: "Keep the private parts of your life truly private. Your location, passwords, and personal details should remain yours and no one else’s. Being careful and thoughtful about what you share online is one of the most important ways you can protect yourself both online and when you are offline in real life.",
-  shortText: "Keep your location, passwords, and personal details under control.",
-  tallText: "Protect your details.",
-  supportHref: "https://www.childline.org.uk/info-advice/bullying-abuse-safety/online-mobile-safety/staying-safe-online/"
-}
+        defaultText: "Think before you share anything online. Screenshots and posts can last much longer than the moment.",
+        wideText: "Think carefully before you share anything online. Screenshots and messages can last far longer than you expect, and are hard to take back once out there.",
+        shortText: "Think before sharing anything online.",
+        tallText: "Posts can last.",
+        supportHref: "https://www.saferinternet.org.uk/"
+      },
+      {
+        defaultText: "If something online feels off, trust that feeling and speak to someone you trust.",
+        wideText: "If something online feels off or uncomfortable, trust your instinct. You never have to deal with pressure or strange messages on your own.",
+        shortText: "Trust uncomfortable feelings and speak up.",
+        tallText: "Tell someone you trust.",
+        supportHref: "https://www.nspcc.org.uk/keeping-children-safe/online-safety/"
+      },
+      {
+        defaultText: "Keep your location, passwords, and personal details private and under your control.",
+        wideText: "Keep the private parts of your life private. Your location and personal details should stay under your control, online and offline.",
+        shortText: "Keep your personal details under control.",
+        tallText: "Protect your details.",
+        supportHref: "https://www.childline.org.uk/info-advice/bullying-abuse-safety/online-mobile-safety/staying-safe-online/"
+      }
     ];
 
     const chosen = variants[Math.floor(Math.random() * variants.length)];
