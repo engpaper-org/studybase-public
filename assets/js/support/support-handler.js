@@ -7,73 +7,242 @@
   support slot.
 
   Pattern:
-  - First load: random support iframe, excluding supported-soon.html
-  - Next load/rotation: /internal/support_iframes/supported-soon.html
-  - Then random again
-  - Then supported-soon again
+  - Each page/rotation group has a 1 in 3 chance to show supported-soon.html.
+  - If supported-soon is chosen, every support slot on the page shows it together.
+  - If supported-soon is not chosen, every slot picks a different weighted support page where possible.
+  - Each page can have its own weight using supportPageWeights or data-support-page-weights.
+  - External link warning popup includes an auto-generated QR code to open the actual link on a phone.
+  - If the URL is https://internal.studybase.site/popup/supported-soon, it opens a custom info modal instead.
 */
 
 (() => {
   "use strict";
 
-  // External link warning modal (shown in parent, not inside iframes)
-  function showExternalLinkWarning(url) {
-    const existing = document.getElementById('sb-external-warning-modal');
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function getIframeBaseUrlFromSource(sourceWindow) {
+    const iframes = document.querySelectorAll("iframe");
+
+    for (const iframe of iframes) {
+      if (iframe.contentWindow === sourceWindow) {
+        try {
+          return iframe.src || window.location.href;
+        } catch {
+          return window.location.href;
+        }
+      }
+    }
+
+    return window.location.href;
+  }
+
+  function getSafeUrl(rawUrl, baseUrl = window.location.href) {
+    try {
+      const resolvedUrl = new URL(rawUrl, baseUrl);
+
+      if (!["http:", "https:"].includes(resolvedUrl.protocol)) {
+        return null;
+      }
+
+      return resolvedUrl;
+    } catch {
+      return null;
+    }
+  }
+
+  function showSupportedSoonInfoModal() {
+    const existing = document.getElementById("sb-supported-soon-info-modal");
     if (existing) existing.remove();
 
-    const modal = document.createElement('div');
-    modal.id = 'sb-external-warning-modal';
-    modal.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,0.82);display:flex;align-items:center;justify-content:center;padding:20px;font-family:Inter,system-ui,-apple-system,sans-serif;';
+    const modal = document.createElement("div");
+    modal.id = "sb-supported-soon-info-modal";
+    modal.style.cssText =
+      "position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,0.84);display:flex;align-items:center;justify-content:center;padding:20px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;";
 
     modal.innerHTML = `
-      <div style="background:#fff;border-radius:20px;max-width:440px;width:100%;padding:28px 26px;box-shadow:0 25px 70px -15px rgba(0,0,0,0.35);border:1px solid #e2e8f0;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-          <div style="width:44px;height:44px;border-radius:12px;background:#fef2f2;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">⚠️</div>
-          <div>
-            <div style="font-weight:800;font-size:18px;color:#0f172a;">Leaving StudyBase</div>
-            <div style="font-size:13px;color:#64748b;">You are about to visit an external website</div>
+      <div style="background:#fff;border-radius:24px;max-width:560px;width:100%;max-height:min(720px,88vh);display:flex;flex-direction:column;box-shadow:0 25px 80px -15px rgba(0,0,0,0.38);border:1px solid #e2e8f0;overflow:hidden;">
+        <div style="padding:24px 24px 16px;border-bottom:1px solid #e2e8f0;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:46px;height:46px;border-radius:14px;background:#eff6ff;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">💙</div>
+            <div>
+              <div style="font-weight:850;font-size:19px;color:#0f172a;letter-spacing:-0.02em;">Support slots are coming soon</div>
+              <div style="font-size:13px;color:#64748b;">A quick note about future StudyBase support</div>
+            </div>
           </div>
         </div>
 
-        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:11px 13px;margin-bottom:16px;font-size:13.5px;color:#334155;word-break:break-all;">
-          ${new URL(url, window.location.origin).hostname}
+        <div style="padding:18px 24px;overflow-y:auto;line-height:1.58;color:#334155;font-size:14px;">
+          <p style="margin:0 0 14px;">
+            StudyBase may start showing small support slots soon. These are planned to help fund the running costs of the site, including hosting, infrastructure, bandwidth, security tools, and future improvements.
+          </p>
+
+          <p style="margin:0 0 14px;">
+            The aim is to keep StudyBase useful, fast, and available without putting everything behind a paywall. Support slots help cover the costs of keeping resources online while still making the site easy to access.
+          </p>
+
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:14px 15px;margin:16px 0;">
+            <div style="font-weight:800;color:#0f172a;margin-bottom:8px;">What this means</div>
+            <ul style="margin:0;padding-left:18px;">
+              <li style="margin-bottom:7px;">Support slots may appear in certain areas of StudyBase.</li>
+              <li style="margin-bottom:7px;">They are designed to be limited and not get in the way of studying.</li>
+              <li style="margin-bottom:7px;">They help fund StudyBase infrastructure and future tools.</li>
+              <li style="margin-bottom:0;">The aim is to keep the site clean, safe, and student-friendly.</li>
+            </ul>
+          </div>
+
+          <p style="margin:0 0 14px;">
+            Support slots should stay separate from the main learning tools, so revision, focus, and usability still come first.
+          </p>
+
+          <div style="background:#fefce8;border:1px solid #fde68a;border-radius:16px;padding:14px 15px;margin:16px 0;">
+            <div style="font-weight:800;color:#713f12;margin-bottom:8px;">Why not just hide everything behind accounts?</div>
+            <p style="margin:0;color:#713f12;">
+              StudyBase is meant to stay simple to use. Support slots make it easier to keep public tools and resources available without forcing every feature behind a paid system.
+            </p>
+          </div>
+
+          <p style="margin:0;">
+            Thanks for using StudyBase and helping support the project as it grows.
+          </p>
         </div>
 
-        <p style="font-size:13.8px;color:#475569;line-height:1.5;margin-bottom:18px;">
-          This site is not operated by StudyBase. We recommend reviewing their privacy policy before sharing any information.
-        </p>
-
-        <div style="display:flex;gap:10px;">
-          <button id="sb-ext-cancel" style="flex:1;padding:11px 16px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;font-weight:700;font-size:14px;color:#334155;cursor:pointer;">Cancel</button>
-          <button id="sb-ext-continue" style="flex:1;padding:11px 16px;border-radius:12px;border:none;background:#0f172a;color:#fff;font-weight:700;font-size:14px;cursor:pointer;">Continue</button>
+        <div style="padding:16px 24px 22px;border-top:1px solid #e2e8f0;background:#fff;">
+          <button id="sb-supported-soon-close" style="width:100%;padding:12px 16px;border-radius:13px;border:none;background:#0f172a;color:#fff;font-weight:800;font-size:14px;cursor:pointer;">Got it</button>
         </div>
       </div>
     `;
 
     document.body.appendChild(modal);
 
-    modal.querySelector('#sb-ext-cancel').onclick = () => modal.remove();
-    modal.querySelector('#sb-ext-continue').onclick = () => {
+    modal.querySelector("#sb-supported-soon-close").onclick = () => modal.remove();
+
+    modal.onclick = (e) => {
+      if (e.target === modal) modal.remove();
+    };
+
+    document.addEventListener(
+      "keydown",
+      function escHandler(e) {
+        if (e.key === "Escape") {
+          modal.remove();
+          document.removeEventListener("keydown", escHandler);
+        }
+      },
+      { once: true }
+    );
+  }
+
+  function showExternalLinkWarning(url, baseUrl = window.location.href) {
+    const safeUrl = getSafeUrl(url, baseUrl);
+    if (!safeUrl) return;
+
+    const absoluteUrl = safeUrl.toString();
+
+    if (absoluteUrl === "https://internal.studybase.site/popup/supported-soon") {
+      showSupportedSoonInfoModal();
+      return;
+    }
+
+    const existing = document.getElementById("sb-external-warning-modal");
+    if (existing) existing.remove();
+
+    const qrUrl =
+      "https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=12&data=" +
+      encodeURIComponent(absoluteUrl);
+
+    const modal = document.createElement("div");
+    modal.id = "sb-external-warning-modal";
+    modal.style.cssText =
+      "position:fixed;inset:0;z-index:2147483647;background:rgba(15,23,42,0.84);display:flex;align-items:center;justify-content:center;padding:20px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;";
+
+    modal.innerHTML = `
+      <div style="background:#fff;border-radius:24px;max-width:520px;width:100%;padding:26px;box-shadow:0 25px 80px -15px rgba(0,0,0,0.38);border:1px solid #e2e8f0;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div style="width:46px;height:46px;border-radius:14px;background:#fef2f2;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">⚠️</div>
+          <div>
+            <div style="font-weight:850;font-size:19px;color:#0f172a;letter-spacing:-0.02em;">Leaving StudyBase</div>
+            <div style="font-size:13px;color:#64748b;">You are about to visit an external website</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 156px;gap:16px;align-items:stretch;margin-bottom:18px;">
+          <div style="min-width:0;">
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:12px 13px;margin-bottom:12px;font-size:13.5px;color:#334155;word-break:break-all;">
+              ${escapeHtml(absoluteUrl)}
+            </div>
+
+            <p style="font-size:13.8px;color:#475569;line-height:1.55;margin:0;">
+              This site is not operated by StudyBase. Scan the QR code to open this exact link on your phone.
+            </p>
+          </div>
+
+          <a href="${escapeHtml(absoluteUrl)}" target="_blank" rel="noopener noreferrer" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-decoration:none;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:10px;">
+            <img src="${escapeHtml(qrUrl)}" alt="QR code to open this link on your phone" width="118" height="118" style="display:block;width:118px;height:118px;border-radius:10px;background:#fff;">
+            <div style="margin-top:8px;font-size:11px;font-weight:800;color:#0f172a;text-align:center;letter-spacing:-0.01em;">Open on phone</div>
+            <div style="margin-top:2px;font-size:10px;color:#64748b;text-align:center;">Scan QR code</div>
+          </a>
+        </div>
+
+        <div style="display:flex;gap:10px;">
+          <button id="sb-ext-cancel" style="flex:1;padding:12px 16px;border-radius:13px;border:1px solid #cbd5e1;background:#fff;font-weight:800;font-size:14px;color:#334155;cursor:pointer;">Cancel</button>
+          <button id="sb-ext-continue" style="flex:1;padding:12px 16px;border-radius:13px;border:none;background:#0f172a;color:#fff;font-weight:800;font-size:14px;cursor:pointer;">Continue</button>
+        </div>
+
+        <style>
+          @media (max-width: 520px) {
+            #sb-external-warning-modal > div {
+              padding: 22px !important;
+            }
+
+            #sb-external-warning-modal div[style*="grid-template-columns"] {
+              grid-template-columns: 1fr !important;
+            }
+
+            #sb-external-warning-modal a[href] {
+              max-width: 180px;
+              margin: 0 auto;
+            }
+          }
+        </style>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    modal.querySelector("#sb-ext-cancel").onclick = () => modal.remove();
+
+    modal.querySelector("#sb-ext-continue").onclick = () => {
       modal.remove();
-      window.open(url, '_blank', 'noopener,noreferrer');
+      window.open(absoluteUrl, "_blank", "noopener,noreferrer");
     };
 
     modal.onclick = (e) => {
       if (e.target === modal) modal.remove();
     };
 
-    document.addEventListener('keydown', function escHandler(e) {
-      if (e.key === 'Escape') {
-        modal.remove();
-        document.removeEventListener('keydown', escHandler);
-      }
-    }, { once: true });
+    document.addEventListener(
+      "keydown",
+      function escHandler(e) {
+        if (e.key === "Escape") {
+          modal.remove();
+          document.removeEventListener("keydown", escHandler);
+        }
+      },
+      { once: true }
+    );
   }
 
-  // Listen for messages from support iframes
-  window.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'show-external-warning' && event.data.url) {
-      showExternalLinkWarning(event.data.url);
+  window.addEventListener("message", (event) => {
+    if (event.data && event.data.type === "show-external-warning" && event.data.url) {
+      const iframeBaseUrl = getIframeBaseUrlFromSource(event.source);
+      showExternalLinkWarning(event.data.url, iframeBaseUrl);
     }
   });
 
@@ -81,6 +250,7 @@
     enabled: true,
 
     supportPages: [
+      "/internal/support_iframes/digital-wellbeing.html",
       "/internal/support_iframes/supported-soon.html",
       "/internal/support_iframes/mental-health-1.html",
       "/internal/support_iframes/mental-health-2.html",
@@ -92,6 +262,21 @@
     iframeSrc: "/internal/support_iframes/supported-soon.html",
 
     featuredSupportSrc: "/internal/support_iframes/supported-soon.html",
+
+    // 3 means supported-soon has a 1 in 3 chance.
+    // 2 = 1 in 2, 4 = 1 in 4, etc.
+    featuredFrequency: 3,
+
+    // Bigger number = more likely to be selected.
+    // Pages not listed here default to weight 1.
+    supportPageWeights: {
+      "/internal/support_iframes/digital-wellbeing.html": 3,
+      "/internal/support_iframes/mental-health-1.html": 2,
+      "/internal/support_iframes/mental-health-2.html": 2,
+      "/internal/support_iframes/safe-choices.html": 2,
+      "/internal/support_iframes/substance-safety.html": 1,
+      "/internal/support_iframes/online-safety.html": 3
+    },
 
     label: "Sponsored",
 
@@ -149,7 +334,14 @@
   const state = {
     config: structuredCloneSafe(DEFAULT_CONFIG),
     started: false,
-    slotStates: new WeakMap()
+    slotStates: new WeakMap(),
+    pageGroup: {
+      index: 0,
+      isFeatured: false,
+      assignments: new WeakMap(),
+      usedNonFeatured: [],
+      timerId: null
+    }
   };
 
   function structuredCloneSafe(value) {
@@ -235,11 +427,13 @@
   }
 
   function uniqueList(list) {
-    return [...new Set(
-      list
-        .map((item) => String(item).trim())
-        .filter(Boolean)
-    )];
+    return [
+      ...new Set(
+        list
+          .map((item) => String(item).trim())
+          .filter(Boolean)
+      )
+    ];
   }
 
   function pickRandomItem(list) {
@@ -247,28 +441,74 @@
     return list[Math.floor(Math.random() * list.length)];
   }
 
-  function getSlotIdentity(slot) {
-    return slot.dataset.supportSlot || "unknown";
-  }
+  function getConfiguredPageWeights(slot) {
+    const weights = {};
 
-  function getSlotStorageKey(slot) {
-    return `sb_support_next_mode_${getSlotIdentity(slot)}`;
-  }
-
-  function getStoredNextMode(slot) {
-    try {
-      return sessionStorage.getItem(getSlotStorageKey(slot));
-    } catch {
-      return null;
+    if (
+      state.config.supportPageWeights &&
+      typeof state.config.supportPageWeights === "object" &&
+      !Array.isArray(state.config.supportPageWeights)
+    ) {
+      Object.assign(weights, state.config.supportPageWeights);
     }
+
+    const rawSlotWeights = slot.dataset.supportPageWeights;
+
+    if (rawSlotWeights) {
+      try {
+        const parsed = JSON.parse(rawSlotWeights);
+
+        if (
+          parsed &&
+          typeof parsed === "object" &&
+          !Array.isArray(parsed)
+        ) {
+          Object.assign(weights, parsed);
+        }
+      } catch {
+        // Invalid JSON should not break support slots.
+      }
+    }
+
+    return weights;
   }
 
-  function storeNextMode(slot, mode) {
-    try {
-      sessionStorage.setItem(getSlotStorageKey(slot), mode);
-    } catch {
-      // Storage may be blocked, so silently continue.
+  function getPageWeight(src, slot) {
+    const weights = getConfiguredPageWeights(slot);
+    const directWeight = Number(weights[src]);
+
+    if (Number.isFinite(directWeight) && directWeight > 0) {
+      return directWeight;
     }
+
+    return 1;
+  }
+
+  function pickWeightedPage(pages, slot) {
+    if (!Array.isArray(pages) || !pages.length) return null;
+
+    const weightedPages = pages.map((src) => ({
+      src,
+      weight: getPageWeight(src, slot)
+    }));
+
+    const totalWeight = weightedPages.reduce((total, page) => total + page.weight, 0);
+
+    if (!totalWeight) {
+      return pickRandomItem(pages);
+    }
+
+    let point = Math.random() * totalWeight;
+
+    for (const page of weightedPages) {
+      point -= page.weight;
+
+      if (point <= 0) {
+        return page.src;
+      }
+    }
+
+    return weightedPages[weightedPages.length - 1].src;
   }
 
   function getSlotState(slot) {
@@ -277,17 +517,7 @@
     if (!slotState) {
       slotState = {
         pagesKey: "",
-        timerId: null,
-
-        /*
-          Modes:
-          - "random" means the next iframe should be one of the non-featured pages.
-          - "featured" means the next iframe should be supported-soon.html.
-
-          Defaults to "random", so the order starts:
-          random -> supported-soon -> random -> supported-soon
-        */
-        nextMode: getStoredNextMode(slot) || "random"
+        timerId: null
       };
 
       state.slotStates.set(slot, slotState);
@@ -302,16 +532,58 @@
     }
 
     const slotPages = parseList(slot.dataset.supportPages);
+
     if (slotPages.length) {
       return uniqueList(slotPages);
     }
 
     const configPages = parseList(state.config.supportPages);
+
     if (configPages.length) {
       return uniqueList(configPages);
     }
 
     return uniqueList([state.config.iframeSrc]);
+  }
+
+  function getFeaturedFrequency() {
+    const frequency = Number(state.config.featuredFrequency);
+
+    if (!Number.isFinite(frequency) || frequency < 1) {
+      return 3;
+    }
+
+    return Math.floor(frequency);
+  }
+
+  function startNewPageGroup() {
+    state.pageGroup.index += 1;
+    state.pageGroup.assignments = new WeakMap();
+    state.pageGroup.usedNonFeatured = [];
+    state.pageGroup.isFeatured = Math.floor(Math.random() * getFeaturedFrequency()) === 0;
+  }
+
+  function getNonFeaturedPages(slot) {
+    const pages = getAvailablePages(slot);
+    const fallbackSrc = state.config.iframeSrc || "/internal/support_iframes/supported-soon.html";
+    const featuredSrc = state.config.featuredSupportSrc || fallbackSrc;
+
+    return pages.filter((src) => src !== featuredSrc);
+  }
+
+  function chooseDifferentWeightedPage(slot, nonFeaturedPages) {
+    const unusedPages = nonFeaturedPages.filter(
+      (src) => !state.pageGroup.usedNonFeatured.includes(src)
+    );
+
+    const pool = unusedPages.length ? unusedPages : nonFeaturedPages;
+    const picked = pickWeightedPage(pool, slot);
+
+    if (picked) {
+      state.pageGroup.usedNonFeatured.push(picked);
+    }
+
+    return picked;
   }
 
   function chooseNextIframeSrc(slot) {
@@ -321,7 +593,6 @@
 
     if (slotState.pagesKey !== pagesKey) {
       slotState.pagesKey = pagesKey;
-      slotState.nextMode = getStoredNextMode(slot) || "random";
     }
 
     const fallbackSrc = state.config.iframeSrc || "/internal/support_iframes/supported-soon.html";
@@ -335,20 +606,28 @@
       return pages[0];
     }
 
+    if (!state.pageGroup.index) {
+      startNewPageGroup();
+    }
+
+    if (state.pageGroup.assignments.has(slot)) {
+      return state.pageGroup.assignments.get(slot);
+    }
+
     const hasFeatured = pages.includes(featuredSrc);
-    const otherPages = pages.filter((src) => src !== featuredSrc);
+    const nonFeaturedPages = getNonFeaturedPages(slot);
 
     let nextSrc;
 
-    if (slotState.nextMode === "featured" && hasFeatured) {
+    if (state.pageGroup.isFeatured && hasFeatured) {
       nextSrc = featuredSrc;
-      slotState.nextMode = "random";
     } else {
-      nextSrc = pickRandomItem(otherPages.length ? otherPages : pages) || fallbackSrc;
-      slotState.nextMode = "featured";
+      nextSrc =
+        chooseDifferentWeightedPage(slot, nonFeaturedPages.length ? nonFeaturedPages : pages) ||
+        fallbackSrc;
     }
 
-    storeNextMode(slot, slotState.nextMode);
+    state.pageGroup.assignments.set(slot, nextSrc);
 
     return nextSrc;
   }
@@ -377,26 +656,35 @@
   function rotateSlot(slot) {
     if (!slot || slot.dataset.supportMounted !== "true") return;
 
+    startNewPageGroup();
+
     const iframe = slot.querySelector("iframe");
     if (!iframe) return;
 
     iframe.src = buildIframeSrc(slot);
   }
 
-  function stopSlotRotation(slot) {
-    if (!slot) return;
+  function rotateAllSlots() {
+    startNewPageGroup();
 
-    const slotState = getSlotState(slot);
+    const slots = document.querySelectorAll('[data-support-slot][data-support-mounted="true"]');
 
-    if (slotState.timerId) {
-      window.clearInterval(slotState.timerId);
-      slotState.timerId = null;
+    slots.forEach((slot) => {
+      const iframe = slot.querySelector("iframe");
+      if (!iframe) return;
+
+      iframe.src = buildIframeSrc(slot);
+    });
+  }
+
+  function stopSlotRotation() {
+    if (state.pageGroup.timerId) {
+      window.clearInterval(state.pageGroup.timerId);
+      state.pageGroup.timerId = null;
     }
   }
 
   function startSlotRotation(slot) {
-    stopSlotRotation(slot);
-
     const rotateEveryMs = Number(state.config.rotateEveryMs);
     const pages = getAvailablePages(slot);
 
@@ -409,10 +697,10 @@
       return;
     }
 
-    const slotState = getSlotState(slot);
+    if (state.pageGroup.timerId) return;
 
-    slotState.timerId = window.setInterval(() => {
-      rotateSlot(slot);
+    state.pageGroup.timerId = window.setInterval(() => {
+      rotateAllSlots();
     }, rotateEveryMs);
   }
 
@@ -541,7 +829,7 @@
   function unmountSlot(slot) {
     if (!slot) return;
 
-    stopSlotRotation(slot);
+    stopSlotRotation();
 
     slot.innerHTML = "";
     slot.dataset.supportMounted = "false";
@@ -556,6 +844,8 @@
     injectStyles();
 
     const slots = document.querySelectorAll("[data-support-slot]");
+
+    startNewPageGroup();
 
     slots.forEach((slot) => {
       const slotEnabled = slot.dataset.supportEnabled;
@@ -611,6 +901,7 @@
     enable,
     disable,
     rotateSlot,
+    rotateAllSlots,
     config: state.config,
     ratios: state.config.ratios
   };

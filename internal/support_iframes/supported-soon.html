@@ -57,23 +57,33 @@
       border-radius: clamp(14px, 4cqi, 28px);
       border: 1px solid var(--border);
       background: linear-gradient(145deg, #f0f9ff 0%, #e0f2fe 100%);
-      box-shadow: 
+      box-shadow:
         0 12px 32px -12px rgba(14, 165, 233, 0.22),
         0 4px 6px -4px rgba(14, 165, 233, 0.12),
         inset 0 0 0 1px rgba(255,255,255,0.7);
       isolation: isolate;
       cursor: pointer;
       outline: none;
-      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
-                  box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition:
+        transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     .slot:hover {
       transform: translateY(-4px) scale(1.005);
-      box-shadow: 
+      box-shadow:
         0 24px 48px -12px rgba(14, 165, 233, 0.28),
         0 8px 16px -6px rgba(14, 165, 233, 0.18),
         inset 0 0 0 1px rgba(255,255,255,0.85);
     }
+
+    .slot:focus-visible {
+      box-shadow:
+        0 24px 48px -12px rgba(14, 165, 233, 0.28),
+        0 0 0 3px rgba(14, 165, 233, 0.28),
+        inset 0 0 0 1px rgba(255,255,255,0.85);
+    }
+
     .slot:active {
       transform: scale(0.985);
     }
@@ -101,7 +111,6 @@
         rgba(255, 255, 255, 0.72) 50%,
         transparent 57%
       );
-      /* softShine removed */
       z-index: -1;
     }
 
@@ -136,7 +145,6 @@
       justify-items: center;
       text-align: center;
       gap: clamp(8px, 3cqi, 18px);
-      /* gentleFloat animation removed */
     }
 
     .logo {
@@ -200,22 +208,6 @@
       white-space: nowrap;
     }
 
-    @keyframes softShine {
-      0%, 66% {
-        transform: translateX(-58%);
-        opacity: 0;
-      }
-
-      76% {
-        opacity: 1;
-      }
-
-      100% {
-        transform: translateX(58%);
-        opacity: 0;
-      }
-    }
-
     @keyframes orbMove {
       0%, 100% {
         transform: translate(0, 0) scale(1);
@@ -226,17 +218,6 @@
       }
     }
 
-    @keyframes gentleFloat {
-      0%, 100% {
-        transform: translateY(0);
-      }
-
-      50% {
-        transform: translateY(-4px);
-      }
-    }
-
-    /* Wide banner slots */
     @container (min-aspect-ratio: 4 / 1) {
       .slot {
         padding: 10px clamp(18px, 4cqi, 36px);
@@ -299,7 +280,6 @@
       }
     }
 
-    /* Very short / long banner slots */
     @container (max-height: 120px) {
       .slot {
         padding: 9px 16px;
@@ -354,7 +334,6 @@
       }
     }
 
-    /* Narrow/tall side slots */
     @container (max-aspect-ratio: 2 / 3) {
       .slot {
         padding: clamp(14px, 7cqi, 24px);
@@ -409,7 +388,6 @@
       }
     }
 
-    /* Tiny narrow slots */
     @container (max-width: 230px) {
       .slot {
         padding: 12px;
@@ -446,7 +424,6 @@
       }
     }
 
-    /* Square-ish compact slots */
     @container (max-aspect-ratio: 1 / 1) and (min-aspect-ratio: 2 / 3) {
       .content {
         width: 88%;
@@ -476,9 +453,13 @@
 </head>
 
 <body>
-  <main class="slot" aria-label="StudyBase ads space">
-    <!-- Decorative orbs removed for clean professional appearance -->
-
+  <main
+    class="slot"
+    tabindex="0"
+    role="button"
+    aria-label="Learn why StudyBase ads may appear soon"
+    data-modal-url="https://internal.studybase.site/popup/supported-soon"
+  >
     <section class="content">
       <img
         draggable="false"
@@ -515,18 +496,42 @@
       </div>
 
       <div class="footer">
-        StudyBase infrastructure support
+        Click for more info
       </div>
     </section>
   </main>
 
   <script>
-    document.addEventListener('dragstart', (event) => {
-      if (event.target && event.target.closest('img, svg')) {
+    const SUPPORTED_SOON_MODAL_URL = "https://internal.studybase.site/popup/supported-soon";
+
+    function openSupportedSoonModal() {
+      try {
+        window.parent.postMessage(
+          {
+            type: "show-external-warning",
+            url: SUPPORTED_SOON_MODAL_URL
+          },
+          "*"
+        );
+      } catch {
+        window.open(SUPPORTED_SOON_MODAL_URL, "_blank", "noopener,noreferrer");
+      }
+    }
+
+    document.addEventListener("dragstart", (event) => {
+      if (event.target && event.target.closest("img, svg")) {
         event.preventDefault();
       }
     });
-  </script>
 
+    document.querySelector(".slot").addEventListener("click", openSupportedSoonModal);
+
+    document.querySelector(".slot").addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openSupportedSoonModal();
+      }
+    });
+  </script>
 </body>
 </html>
