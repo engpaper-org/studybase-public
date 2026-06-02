@@ -3,6 +3,32 @@
 <head>
     
     <meta charset="UTF-8">
+
+    <script>
+        (function () {
+            "use strict";
+
+            function isInIframe() {
+                try { return window.self !== window.top; }
+                catch (e) { return true; }
+            }
+
+            var inIframe = isInIframe();
+            var path = window.location.pathname || "";
+            var is404File = /\/404\.html$/i.test(path);
+
+            // GitHub Pages can serve this file for unknown routes while keeping the unknown URL
+            // in the address bar. Normalise normal page views to /404.html?routeAnalytics=...
+            // using the same parameter as the direct-access iframe guard.
+            if (!inIframe && !is404File) {
+                var missedRoute = path + window.location.search + window.location.hash;
+                var target = new URL("/404.html", window.location.origin);
+                target.searchParams.set("routeAnalytics", missedRoute || "/");
+                window.location.replace(target.toString());
+            }
+        })();
+    </script>
+
             <meta name="description" content="StudyBase provides educational revision resources, A-Level and GCSE study tools, past papers, subject guides, wellbeing support, and learning materials for students." data-studybase-education-meta="true">
     <meta name="classification" content="Education" data-studybase-education-meta="true">
     <meta name="category" content="Education" data-studybase-education-meta="true">
@@ -140,7 +166,55 @@
             justify-content: center;
         }
 
-        /* Make sure iframe mode stays clean and minimal */
+
+        .sb404-route-card {
+            display: none;
+            text-align: left;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 1rem;
+            margin: 0 auto 1.5rem;
+            max-width: 560px;
+            box-shadow: 0 10px 30px -18px rgba(15, 23, 42, 0.18);
+        }
+
+        .sb404-route-card.is-visible {
+            display: block;
+        }
+
+        .sb404-route-label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 900;
+            color: #64748b;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.35rem;
+        }
+
+        .sb404-route-value {
+            display: block;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.82rem;
+            line-height: 1.6;
+            color: #0f172a;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 0.75rem;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .sb404-route-help {
+            margin: 0.75rem 0 0;
+            font-size: 0.86rem;
+            line-height: 1.55;
+            color: #64748b;
+        }
+
+        /* Compact display mode */
         .is-iframe .sb404-page {
             background: #fff;
         }
@@ -165,10 +239,18 @@
                 <div class="sb404-kicker">Error 404</div>
 
                 <h1 class="sb404-title">Page not found</h1>
-                <p class="sb404-copy">
+                <p class="sb404-copy" id="sb404-copy">
                     Sorry, we couldn’t find the page you were looking for. 
                     It may have been moved or no longer exists.
                 </p>
+
+                <div class="sb404-route-card" id="sb404-route-card" aria-live="polite">
+                    <span class="sb404-route-label" id="sb404-route-label">Requested file</span>
+                    <code class="sb404-route-value" id="sb404-route-value"></code>
+                    <p class="sb404-route-help" id="sb404-route-help">
+                        The file at this URL was not found.
+                    </p>
+                </div>
 
                 <div class="sb404-mascot" aria-hidden="true">
                     <img src="/assets/images/site-icons/genie-mascot.svg" alt="StudyBase mascot"
@@ -188,13 +270,39 @@
 
     <script>
         (function () {
-            function isInIframe() {
+            "use strict";
+
+            function isInFrame() {
                 try { return window.self !== window.top; } catch (e) { return true; }
             }
-            const inIframe = isInIframe() || document.documentElement.classList.contains('is-iframe');
 
-            // Strip navbar/footer + any injected elements when the 404 is loaded inside an iframe
-            if (inIframe) {
+            function safeDecode(value) {
+                if (!value) return "";
+                try { return decodeURIComponent(value); } catch (e) { return value; }
+            }
+
+            function currentShownUrl() {
+                return window.location.pathname + window.location.search + window.location.hash;
+            }
+
+            function getRouteInfo(showRouteDetails) {
+                if (!showRouteDetails) return null;
+
+                const params = new URLSearchParams(window.location.search);
+                const routeAnalytics = params.get("routeAnalytics");
+                const requestedUrl = safeDecode(routeAnalytics || currentShownUrl());
+
+                return {
+                    label: "Requested file",
+                    value: requestedUrl,
+                    help: "The file at this URL was not found."
+                };
+            }
+
+            const inFrame = isInFrame() || document.documentElement.classList.contains('is-iframe');
+            const routeInfo = getRouteInfo(!inFrame);
+
+            if (inFrame) {
                 const navRoot = document.getElementById('navbar-root');
                 const footRoot = document.getElementById('footer-root');
                 if (navRoot) navRoot.remove();
@@ -203,8 +311,7 @@
                 document.querySelectorAll('#sbx-navbar, #sbx-footer').forEach(el => el.remove());
             }
 
-            // Only load navbar + footer for normal page views
-            if (!inIframe) {
+            if (!inFrame) {
                 ['/assets/js/layout/navbar.js', '/assets/js/layout/footer.js'].forEach(src => {
                     const s = document.createElement('script');
                     s.src = src;
@@ -215,16 +322,32 @@
 
             document.addEventListener('DOMContentLoaded', function () {
                 const actions = document.getElementById('sb404-actions');
-                if (!actions) return;
+                const title = document.querySelector('.sb404-title');
+                const copy = document.getElementById('sb404-copy');
+                const card = document.getElementById('sb404-route-card');
+                const label = document.getElementById('sb404-route-label');
+                const value = document.getElementById('sb404-route-value');
+                const help = document.getElementById('sb404-route-help');
 
-                if (inIframe) {
-                    // In iframe context: zero external links, just a small note
-                    actions.innerHTML = 
-                        '<div style="font-size:0.85rem; color:#64748b; font-weight:600;">This page cannot be displayed here.</div>';
+                if (inFrame) {
+                    if (card) card.remove();
+                    if (title) title.textContent = "Page not found";
+                    if (copy) copy.textContent = "Sorry, we couldn’t find the page you were looking for.";
+                    if (actions) actions.innerHTML = '';
                     return;
                 }
 
-                // Normal view: proper site-style buttons
+                if (routeInfo && card && label && value && help) {
+                    card.classList.add('is-visible');
+                    label.textContent = routeInfo.label;
+                    value.textContent = routeInfo.value;
+                    help.textContent = routeInfo.help;
+                    if (title) title.textContent = "File not found";
+                    if (copy) copy.textContent = "The file at this URL was not found.";
+                }
+
+                if (!actions) return;
+
                 actions.innerHTML = `
                     <a href="/index.html" class="sbx-btn sbx-btn-primary">Go to homepage</a>
                     <a href="/support/help_center.html" class="sbx-btn">Visit Help Centre</a>
