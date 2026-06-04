@@ -143,7 +143,16 @@
       const action = event.target && event.target.getAttribute ? event.target.getAttribute("data-action") : null;
       if (action === "reload") {
         closePopup();
-        window.location.reload();
+
+        const currentUrl = new URL(window.location.href);
+
+        if (currentUrl.pathname === "/r/index.html" && currentUrl.hash) {
+          currentUrl.hash = "client-preflight";
+          window.location.href = currentUrl.toString();
+        } else {
+          window.location.reload();
+        }
+
         return;
       }
       if (action === "details") {
