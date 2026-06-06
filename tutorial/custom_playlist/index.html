@@ -396,7 +396,7 @@
       <p>The music player needs one public playlist URL. For Cloudflare, that URL should be a Worker connected to an R2 bucket. For GitHub Pages, use a custom domain because default GitHub domains may be blocked.</p>
       <div class="helper-grid">
         <div class="helper-card"><strong>Audio files</strong><span>Upload MP3, M4A, WAV, OGG, FLAC, or AAC files. Keep names consistent.</span></div>
-        <div class="helper-card"><strong>Cover image</strong><span>Upload a cover image called <strong>cover</strong>. The Worker example below will find common image extensions.</span></div>
+        <div class="helper-card"><strong>Cover image</strong><span>For Cloudflare, upload a cover image called <strong>cover</strong> at the bucket root. The Worker example below will find common image extensions.</span></div>
         <div class="helper-card"><strong>No login</strong><span>Custom playlist endpoints should be public. They do not use the music app device-code authentication.</span></div>
       </div>
     </section>
@@ -409,16 +409,16 @@
 
     <section class="provider-card" data-provider-card="cloudflare">
       <h2>Cloudflare Worker + R2</h2>
-      <p>This is the best option if you want one clean playlist URL. R2 stores the music files and cover image, while the Worker returns the playlist list as JSON.</p>
+      <p>This option gives you one public playlist URL. Put the songs in a bucket folder called <strong>music/</strong>, put the cover image at the root of the bucket as <strong>cover.jpg</strong>, <strong>cover.png</strong>, <strong>cover.webp</strong>, or <strong>cover.gif</strong>, then connect that bucket to a Worker named <strong>MUSIC_BUCKET</strong>.</p>
       <ol class="step-list">
         <li>Open the Cloudflare dashboard and choose <strong>Workers &amp; Pages</strong>. <a class="youtube-link" href="https://www.youtube.com/results?search_query=Cloudflare+Workers+Pages+dashboard+tutorial" target="_blank" rel="noopener"><i data-lucide="youtube"></i>Watch help</a></li>
-        <li>Create or open the Worker you want to use for music.</li>
-        <li>Open <strong>R2 Object Storage</strong>, create a bucket, and upload your playlist folder. <a class="youtube-link" href="https://www.youtube.com/results?search_query=Cloudflare+R2+upload+files+tutorial" target="_blank" rel="noopener"><i data-lucide="youtube"></i>R2 video</a></li>
-        <li>Bind the R2 bucket to the Worker so the Worker can list the files. <a class="youtube-link" href="https://www.youtube.com/results?search_query=Cloudflare+Worker+R2+bucket+binding+tutorial" target="_blank" rel="noopener"><i data-lucide="youtube"></i>Binding video</a></li>
-        <li>Upload your audio files into one folder. Use the same naming style for every song.</li>
-        <li>Upload a cover image called <strong>cover</strong>. The extension can be jpg, png, webp, or another image type if your Worker returns it as <strong>coverUrl</strong>.</li>
-        <li>Make the Worker URL public and do not require login or a device code.</li>
-        <li>Paste the Worker playlist URL into the music app and choose <strong>Cloudflare Worker + R2</strong> as the provider.</li>
+        <li>Create a Worker. This is the public URL the music app will check when you add the custom playlist.</li>
+        <li>Open <strong>R2 Object Storage</strong>, create a bucket, and upload your audio files into a folder named <strong>music/</strong>. <a class="youtube-link" href="https://www.youtube.com/results?search_query=Cloudflare+R2+upload+files+tutorial" target="_blank" rel="noopener"><i data-lucide="youtube"></i>R2 video</a></li>
+        <li>Upload your cover image at the bucket root, not inside <strong>music/</strong>. Name it <strong>cover</strong> with an image extension such as <strong>cover.jpg</strong> or <strong>cover.png</strong>.</li>
+        <li>Open the Worker settings, go to bindings, add an R2 bucket binding, choose your bucket, and set the variable name to <strong>MUSIC_BUCKET</strong>. <a class="youtube-link" href="https://www.youtube.com/results?search_query=Cloudflare+Worker+R2+bucket+binding+tutorial" target="_blank" rel="noopener"><i data-lucide="youtube"></i>Binding video</a></li>
+        <li>Paste the Worker code below into the Worker editor, then deploy it.</li>
+        <li>Open the Worker URL in your browser. You should see JSON with a playlist name, cover URL, and tracks list. If it shows an error, read the message and fix that Cloudflare setting first.</li>
+        <li>Paste the Worker URL into the music app and choose <strong>Cloudflare Worker + R2</strong> as the provider.</li>
       </ol>
       <div class="shot-grid">
         <button class="shot" type="button" data-full="/assets/images/tutorial/custom-playlist/cloudflare-workers.png" data-title="Cloudflare Workers dashboard">
@@ -435,7 +435,7 @@
     <section class="panel" id="worker-code" data-provider-card="cloudflare">
       <h2>Cloudflare Worker code</h2>
       <p>This example does everything needed for a simple custom playlist: it lists audio files in R2, finds a cover image called <strong>cover</strong>, returns playlist JSON, and streams the files publicly through the Worker.</p>
-      <div class="warning">Set your R2 bucket binding name to <strong>MUSIC_BUCKET</strong>. Upload songs into the folder named in <strong>PLAYLIST_PREFIX</strong>. Upload the cover image as <strong>cover.jpg</strong>, <strong>cover.png</strong>, <strong>cover.webp</strong>, or <strong>cover.gif</strong>.</div>
+      <div class="warning">Set your R2 bucket binding name to <strong>MUSIC_BUCKET</strong>. Upload songs into the folder named in <strong>PLAYLIST_PREFIX</strong>. Upload the cover image at the root of the bucket as <strong>cover.jpg</strong>, <strong>cover.png</strong>, <strong>cover.webp</strong>, or <strong>cover.gif</strong>.</div>
       <div class="actions">
         <button class="button primary" type="button" id="copyWorkerCode">Copy Worker code</button>
       </div>
@@ -514,9 +514,7 @@ async function playlistResponse(request, env, headers) {
     }, headers, 500);
   }
 
-  const coverKey = objects
-    .map((item) =&gt; item.key)
-    .find((key) =&gt; COVER_EXTENSIONS.some((ext) =&gt; key.toLowerCase() === PLAYLIST_PREFIX + "cover" + ext));
+  const coverKey = await findCoverKey(env);
 
   const tracks = objects
     .filter((item) =&gt; AUDIO_EXTENSIONS.has(extensionOf(item.key)))
@@ -614,10 +612,19 @@ function contentTypeForKey(key) {
   if (ext === ".webp") return "image/webp";
   if (ext === ".gif") return "image/gif";
   return "application/octet-stream";
+}
+
+async function findCoverKey(env) {
+  for (const ext of COVER_EXTENSIONS) {
+    const key = "cover" + ext;
+    const object = await env.MUSIC_BUCKET.head(key);
+    if (object) return key;
+  }
+  return "";
 }</code></pre>
       <ol class="step-list">
         <li>In Cloudflare, create an R2 bucket and upload your songs into the <strong>music/</strong> folder.</li>
-        <li>Upload one image named <strong>cover.jpg</strong>, <strong>cover.png</strong>, <strong>cover.webp</strong>, or <strong>cover.gif</strong> into the same folder.</li>
+        <li>Upload one image named <strong>cover.jpg</strong>, <strong>cover.png</strong>, <strong>cover.webp</strong>, or <strong>cover.gif</strong> at the root of the bucket, not inside the <strong>music/</strong> folder.</li>
         <li>Create a Worker and paste the code above.</li>
         <li>Add an R2 bucket binding named <strong>MUSIC_BUCKET</strong>. <a class="youtube-link" href="https://www.youtube.com/results?search_query=Cloudflare+Worker+R2+binding+MUSIC_BUCKET+tutorial" target="_blank" rel="noopener"><i data-lucide="youtube"></i>Watch help</a></li>
         <li>Deploy the Worker and copy the Worker URL into the music app.</li>
