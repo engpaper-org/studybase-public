@@ -80,6 +80,50 @@
       margin-top: 16px;
     }
 
+    .youtube-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 30px;
+      margin: 4px 0 0 8px;
+      border: 1px solid rgba(220, 38, 38, 0.16);
+      border-radius: 999px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(254, 242, 242, 0.92));
+      color: #b91c1c;
+      padding: 5px 11px 5px 9px;
+      box-shadow: 0 8px 22px rgba(185, 28, 28, 0.08);
+      font-size: 12px;
+      font-weight: 950;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      vertical-align: middle;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .youtube-link svg {
+      width: 16px;
+      height: 16px;
+      color: #dc2626;
+      fill: rgba(220, 38, 38, 0.10);
+      stroke-width: 2.6;
+      flex: 0 0 auto;
+    }
+
+    .youtube-link:hover {
+      transform: translateY(-1px);
+      border-color: rgba(220, 38, 38, 0.28);
+      background: #ffffff;
+      box-shadow: 0 12px 26px rgba(185, 28, 28, 0.14);
+    }
+
+    .youtube-link:focus-visible {
+      outline: 3px solid rgba(220, 38, 38, 0.18);
+      outline-offset: 2px;
+    }
+
     .helper-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -106,6 +150,29 @@
       color: #536a82;
       font-size: 13px;
       line-height: 1.45;
+      font-weight: 750;
+    }
+
+    .download-card {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+      border: 1px solid rgba(14, 165, 233, 0.25);
+      border-radius: 18px;
+      background: #f0f9ff;
+      padding: 16px;
+    }
+
+    .download-card strong {
+      color: #0f172a;
+      font-size: 15px;
+      font-weight: 950;
+    }
+
+    .download-card span {
+      color: #536a82;
+      font-size: 13px;
+      line-height: 1.5;
       font-weight: 750;
     }
 
@@ -306,6 +373,10 @@
       .page-shell {
         padding-top: 74px;
       }
+
+      .youtube-link {
+        margin-left: 0;
+      }
     }
   </style>
 </head>
@@ -315,8 +386,7 @@
       <h1>Custom playlist setup</h1>
       <p>Use this guide to make a public playlist endpoint that the music app can open. The playlist URL must be public, must not need login, and must return a simple list of songs.</p>
       <div class="actions">
-        <a class="button primary" href="downloads/sorter.exe" download>Download JSON sorter</a>
-        <a class="button" href="#format">View playlist format</a>
+        <a class="button primary" href="#format">View playlist format</a>
         <a class="button" href="#worker-code">Copy Worker code</a>
       </div>
     </section>
@@ -331,17 +401,6 @@
       </div>
     </section>
 
-    <section class="panel">
-      <h2>Video help</h2>
-      <p>These buttons open YouTube searches for the setup steps. Pick a recent video with the same dashboard layout you see on your screen.</p>
-      <div class="video-links">
-        <a class="button" href="https://www.youtube.com/results?search_query=Cloudflare+Workers+R2+bucket+binding+tutorial" target="_blank" rel="noopener">Worker + R2 videos</a>
-        <a class="button" href="https://www.youtube.com/results?search_query=Cloudflare+R2+upload+files+tutorial" target="_blank" rel="noopener">R2 upload videos</a>
-        <a class="button" href="https://www.youtube.com/results?search_query=GitHub+Pages+custom+domain+tutorial" target="_blank" rel="noopener">GitHub custom domain videos</a>
-        <a class="button" href="https://www.youtube.com/results?search_query=GitHub+Pages+upload+JSON+file+tutorial" target="_blank" rel="noopener">GitHub JSON upload videos</a>
-      </div>
-    </section>
-
     <div class="provider-tabs" aria-label="Choose provider">
       <button class="provider-tab is-active" type="button" data-provider-tab="cloudflare">Cloudflare Worker + R2</button>
       <button class="provider-tab" type="button" data-provider-tab="github">GitHub Pages</button>
@@ -352,10 +411,10 @@
       <h2>Cloudflare Worker + R2</h2>
       <p>This is the best option if you want one clean playlist URL. R2 stores the music files and cover image, while the Worker returns the playlist list as JSON.</p>
       <ol class="step-list">
-        <li>Open the Cloudflare dashboard and choose <strong>Workers &amp; Pages</strong>.</li>
+        <li>Open the Cloudflare dashboard and choose <strong>Workers &amp; Pages</strong>. <a class="youtube-link" href="https://www.youtube.com/results?search_query=Cloudflare+Workers+Pages+dashboard+tutorial" target="_blank" rel="noopener"><i data-lucide="youtube"></i>Watch help</a></li>
         <li>Create or open the Worker you want to use for music.</li>
-        <li>Open <strong>R2 Object Storage</strong>, create a bucket, and upload your playlist folder.</li>
-        <li>Bind the R2 bucket to the Worker so the Worker can list the files.</li>
+        <li>Open <strong>R2 Object Storage</strong>, create a bucket, and upload your playlist folder. <a class="youtube-link" href="https://www.youtube.com/results?search_query=Cloudflare+R2+upload+files+tutorial" target="_blank" rel="noopener"><i data-lucide="youtube"></i>R2 video</a></li>
+        <li>Bind the R2 bucket to the Worker so the Worker can list the files. <a class="youtube-link" href="https://www.youtube.com/results?search_query=Cloudflare+Worker+R2+bucket+binding+tutorial" target="_blank" rel="noopener"><i data-lucide="youtube"></i>Binding video</a></li>
         <li>Upload your audio files into one folder. Use the same naming style for every song.</li>
         <li>Upload a cover image called <strong>cover</strong>. The extension can be jpg, png, webp, or another image type if your Worker returns it as <strong>coverUrl</strong>.</li>
         <li>Make the Worker URL public and do not require login or a device code.</li>
@@ -373,7 +432,7 @@
       </div>
     </section>
 
-    <section class="panel" id="worker-code">
+    <section class="panel" id="worker-code" data-provider-card="cloudflare">
       <h2>Cloudflare Worker code</h2>
       <p>This example does everything needed for a simple custom playlist: it lists audio files in R2, finds a cover image called <strong>cover</strong>, returns playlist JSON, and streams the files publicly through the Worker.</p>
       <div class="warning">Set your R2 bucket binding name to <strong>MUSIC_BUCKET</strong>. Upload songs into the folder named in <strong>PLAYLIST_PREFIX</strong>. Upload the cover image as <strong>cover.jpg</strong>, <strong>cover.png</strong>, <strong>cover.webp</strong>, or <strong>cover.gif</strong>.</div>
@@ -385,29 +444,53 @@ const PLAYLIST_PREFIX = "music/";
 const AUDIO_EXTENSIONS = new Set([".mp3", ".m4a", ".wav", ".ogg", ".flac", ".aac"]);
 const COVER_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp", ".gif"];
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
-  "Access-Control-Allow-Headers": "Range, Content-Type"
-};
+function corsHeaders(request) {
+  return {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, HEAD, POST, OPTIONS",
+    "Access-Control-Allow-Headers": request.headers.get("Access-Control-Request-Headers") || "Range, Content-Type, Authorization, X-Playlist-Token",
+    "Access-Control-Max-Age": "86400",
+    "Vary": "Origin, Access-Control-Request-Headers"
+  };
+}
 
 export default {
   async fetch(request, env) {
-    const url = new URL(request.url);
+    const headers = corsHeaders(request);
 
     if (request.method === "OPTIONS") {
-      return new Response(null, { headers: corsHeaders });
+      return new Response(null, { status: 204, headers });
     }
 
-    if (url.pathname.startsWith("/file/")) {
-      return streamFile(request, env, decodeURIComponent(url.pathname.slice("/file/".length)));
-    }
+    try {
+      const url = new URL(request.url);
 
-    return playlistResponse(request, env);
+      if (url.pathname.startsWith("/file/")) {
+        return streamFile(request, env, decodeURIComponent(url.pathname.slice("/file/".length)), headers);
+      }
+
+      return playlistResponse(request, env, headers);
+    } catch (error) {
+      return json({
+        ok: false,
+        error: "Playlist setup problem",
+        message: error.message || "The playlist Worker could not finish the request.",
+        fix: "Check that the R2 binding is named MUSIC_BUCKET and that PLAYLIST_PREFIX matches the folder containing your music."
+      }, headers, 500);
+    }
   }
 };
 
-async function playlistResponse(request, env) {
+async function playlistResponse(request, env, headers) {
+  if (!env.MUSIC_BUCKET) {
+    return json({
+      ok: false,
+      error: "Missing R2 binding",
+      message: "This Worker cannot see an R2 bucket binding called MUSIC_BUCKET.",
+      fix: "In Cloudflare, open the Worker settings, add an R2 bucket binding, set the variable name to MUSIC_BUCKET, then deploy again."
+    }, headers, 500);
+  }
+
   const origin = new URL(request.url).origin;
   const objects = [];
   let cursor;
@@ -421,6 +504,15 @@ async function playlistResponse(request, env) {
     objects.push(...page.objects);
     cursor = page.truncated ? page.cursor : undefined;
   } while (cursor);
+
+  if (!objects.length) {
+    return json({
+      ok: false,
+      error: "No files found",
+      message: "The R2 bucket was reached, but no files were found inside the folder set by PLAYLIST_PREFIX.",
+      fix: "Upload your songs into the folder named " + PLAYLIST_PREFIX + ", or change PLAYLIST_PREFIX at the top of the Worker code to match your folder."
+    }, headers, 500);
+  }
 
   const coverKey = objects
     .map((item) =&gt; item.key)
@@ -436,20 +528,53 @@ async function playlistResponse(request, env) {
       };
     });
 
+  if (!tracks.length) {
+    return json({
+      ok: false,
+      error: "No audio files found",
+      message: "The folder was found, but it does not contain any supported audio files.",
+      fix: "Upload .mp3, .m4a, .wav, .ogg, .flac, or .aac files into " + PLAYLIST_PREFIX + "."
+    }, headers, 500);
+  }
+
   return json({
+    ok: true,
     name: PLAYLIST_NAME,
     coverUrl: coverKey ? origin + "/file/" + encodeURIComponent(coverKey) : "",
     tracks
-  });
+  }, headers);
 }
 
-async function streamFile(request, env, key) {
-  if (!key || key.includes("..")) return new Response("Not found", { status: 404, headers: corsHeaders });
+async function streamFile(request, env, key, cors) {
+  if (!env.MUSIC_BUCKET) {
+    return json({
+      ok: false,
+      error: "Missing R2 binding",
+      message: "This Worker cannot stream files because MUSIC_BUCKET is not connected.",
+      fix: "Add an R2 bucket binding named MUSIC_BUCKET in the Worker settings."
+    }, cors, 500);
+  }
+
+  if (!key || key.includes("..")) {
+    return json({
+      ok: false,
+      error: "Invalid file path",
+      message: "The file URL is missing or invalid.",
+      fix: "Use the song URLs returned by the playlist JSON instead of typing file URLs manually."
+    }, cors, 404);
+  }
 
   const object = await env.MUSIC_BUCKET.get(key);
-  if (!object) return new Response("Not found", { status: 404, headers: corsHeaders });
+  if (!object) {
+    return json({
+      ok: false,
+      error: "File not found",
+      message: "The file was not found in R2: " + key,
+      fix: "Check that the file still exists in the bucket and that the file name has not changed."
+    }, cors, 404);
+  }
 
-  const headers = new Headers(corsHeaders);
+  const headers = new Headers(cors);
   object.writeHttpMetadata(headers);
   headers.set("Cache-Control", "public, max-age=3600");
   headers.set("Accept-Ranges", "bytes");
@@ -458,13 +583,14 @@ async function streamFile(request, env, key) {
     headers.set("Content-Type", contentTypeForKey(key));
   }
 
-  return new Response(object.body, { headers });
+  return new Response(request.method === "HEAD" ? null : object.body, { headers });
 }
 
-function json(payload) {
+function json(payload, cors, status = 200) {
   return new Response(JSON.stringify(payload), {
+    status,
     headers: {
-      ...corsHeaders,
+      ...Object.fromEntries(new Headers(cors)),
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "public, max-age=60"
     }
@@ -493,27 +619,44 @@ function contentTypeForKey(key) {
         <li>In Cloudflare, create an R2 bucket and upload your songs into the <strong>music/</strong> folder.</li>
         <li>Upload one image named <strong>cover.jpg</strong>, <strong>cover.png</strong>, <strong>cover.webp</strong>, or <strong>cover.gif</strong> into the same folder.</li>
         <li>Create a Worker and paste the code above.</li>
-        <li>Add an R2 bucket binding named <strong>MUSIC_BUCKET</strong>.</li>
+        <li>Add an R2 bucket binding named <strong>MUSIC_BUCKET</strong>. <a class="youtube-link" href="https://www.youtube.com/results?search_query=Cloudflare+Worker+R2+binding+MUSIC_BUCKET+tutorial" target="_blank" rel="noopener"><i data-lucide="youtube"></i>Watch help</a></li>
         <li>Deploy the Worker and copy the Worker URL into the music app.</li>
       </ol>
+      <div class="shot-grid">
+        <button class="shot" type="button" data-full="/assets/images/tutorial/custom-playlist/cloudflare-worker-code.png" data-title="Paste Worker code">
+          <span class="shot-frame"><img src="/assets/images/tutorial/custom-playlist/cloudflare-worker-code.png" alt="Paste Worker code" loading="lazy" onload="this.nextElementSibling.hidden=true" onerror="this.hidden=true"><span class="shot-placeholder">Click to enlarge Worker code screenshot slot</span></span>
+          <span>Where to paste the Worker code</span>
+        </button>
+      </div>
     </section>
 
     <section class="provider-card" data-provider-card="github" hidden>
       <h2>GitHub Pages</h2>
       <div class="warning">Important: GitHub's default domains may be blocked. Use a custom domain for the playlist if you choose GitHub Pages.</div>
       <p>This works if you already know how to upload files to a repository. Keep the playlist JSON public and make sure each audio URL is publicly reachable.</p>
+      <div class="download-card">
+        <strong>GitHub Pages JSON sorter</strong>
+        <span>This helper is only for GitHub Pages. Put your music files next to the tool, run it, and it creates the playlist JSON in the same folder.</span>
+        <div class="actions">
+          <a class="button primary" href="downloads/sorter.exe" download>Download JSON sorter</a>
+        </div>
+      </div>
       <ol class="step-list">
         <li>Create a public repository or open an existing one.</li>
-        <li>Upload a JSON file for the playlist.</li>
+        <li>Upload a JSON file for the playlist, or use the JSON sorter above to create it.</li>
         <li>Upload your cover image and audio files, or link to audio files hosted somewhere else.</li>
-        <li>Turn on GitHub Pages in the repository settings.</li>
-        <li>Add a custom domain to GitHub Pages.</li>
+        <li>Turn on GitHub Pages in the repository settings. <a class="youtube-link" href="https://www.youtube.com/results?search_query=enable+GitHub+Pages+repository+settings+tutorial" target="_blank" rel="noopener"><i data-lucide="youtube"></i>Pages video</a></li>
+        <li>Add a custom domain to GitHub Pages. <a class="youtube-link" href="https://www.youtube.com/results?search_query=GitHub+Pages+custom+domain+tutorial" target="_blank" rel="noopener"><i data-lucide="youtube"></i>Domain video</a></li>
         <li>Copy the custom-domain URL for the playlist JSON and paste it into the music app.</li>
       </ol>
       <div class="shot-grid">
         <button class="shot" type="button" data-full="/assets/images/tutorial/custom-playlist/github-pages.png" data-title="GitHub Pages settings">
           <span class="shot-frame"><img src="/assets/images/tutorial/custom-playlist/github-pages.png" alt="GitHub Pages settings" loading="lazy" onload="this.nextElementSibling.hidden=true" onerror="this.hidden=true"><span class="shot-placeholder">Click to enlarge screenshot slot</span></span>
           <span>GitHub Pages settings</span>
+        </button>
+        <button class="shot" type="button" data-full="/assets/images/tutorial/custom-playlist/github-files.png" data-title="GitHub playlist files">
+          <span class="shot-frame"><img src="/assets/images/tutorial/custom-playlist/github-files.png" alt="GitHub playlist files" loading="lazy" onload="this.nextElementSibling.hidden=true" onerror="this.hidden=true"><span class="shot-placeholder">Click to enlarge file upload screenshot slot</span></span>
+          <span>Where the JSON and files go</span>
         </button>
       </div>
     </section>
@@ -523,11 +666,17 @@ function contentTypeForKey(key) {
       <p>Any service can work if it gives you a public HTTPS URL that returns JSON and allows the music app to fetch it from the browser.</p>
       <ol class="step-list">
         <li>Upload your music somewhere public.</li>
-        <li>Create a JSON playlist file using the format below.</li>
+        <li>Create a JSON playlist file using the format below. <a class="youtube-link" href="https://www.youtube.com/results?search_query=create+JSON+file+for+music+playlist+tutorial" target="_blank" rel="noopener"><i data-lucide="youtube"></i>JSON video</a></li>
         <li>Make sure the URL starts with <strong>https://</strong>.</li>
         <li>Make sure the service allows browser requests from StudyBase. This is usually called CORS.</li>
         <li>Paste the public JSON URL into the music app.</li>
       </ol>
+      <div class="shot-grid">
+        <button class="shot" type="button" data-full="/assets/images/tutorial/custom-playlist/public-url.png" data-title="Public playlist URL">
+          <span class="shot-frame"><img src="/assets/images/tutorial/custom-playlist/public-url.png" alt="Public playlist URL" loading="lazy" onload="this.nextElementSibling.hidden=true" onerror="this.hidden=true"><span class="shot-placeholder">Click to enlarge public URL screenshot slot</span></span>
+          <span>Example of the public playlist URL</span>
+        </button>
+      </div>
     </section>
 
     <section class="panel" id="format">
