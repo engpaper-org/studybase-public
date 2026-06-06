@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom playlist setup | StudyBase</title>
+  <link rel="icon" href="/assets/images/site-icons/main.ico">
+  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="/assets/js/layout/navbar.js" defer></script>
+  <style>
+    :root {
+      color-scheme: light;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 12% 0%, rgba(14, 165, 233, 0.18), transparent 28rem),
+        radial-gradient(circle at 88% 4%, rgba(37, 99, 235, 0.12), transparent 30rem),
+        linear-gradient(180deg, #f8fcff 0%, #eef8ff 46%, #ffffff 100%);
+      color: #0f172a;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .page-shell {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: 86px 20px 54px;
+    }
+
+    .hero,
+    .panel,
+    .provider-card {
+      border: 1px solid #d9e9f7;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 22px 64px rgba(15, 23, 42, 0.10);
+    }
+
+    .hero {
+      border-radius: 28px;
+      padding: clamp(24px, 5vw, 52px);
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(42px, 7vw, 86px);
+      line-height: 0.92;
+      letter-spacing: 0;
+      font-weight: 950;
+    }
+
+    .hero p,
+    .panel p,
+    .provider-card p,
+    .step-list li {
+      color: #536a82;
+      line-height: 1.58;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .video-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .helper-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .helper-card {
+      border: 1px solid #d9e9f7;
+      border-radius: 18px;
+      background: #f8fbff;
+      padding: 16px;
+    }
+
+    .helper-card strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #0f172a;
+      font-size: 14px;
+      font-weight: 950;
+    }
+
+    .helper-card span {
+      color: #536a82;
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 750;
+    }
+
+    .button {
+      min-height: 44px;
+      border-radius: 14px;
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #d9e9f7;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 13px;
+      font-weight: 900;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .button.primary {
+      border-color: transparent;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0ea5e9, #2563eb);
+      box-shadow: 0 18px 38px rgba(14, 165, 233, 0.26);
+    }
+
+    .provider-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 24px 0 18px;
+    }
+
+    .provider-tab {
+      border: 1px solid #d9e9f7;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.88);
+      color: #536a82;
+      padding: 11px 15px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .provider-tab.is-active {
+      color: #ffffff;
+      border-color: transparent;
+      background: linear-gradient(135deg, #0ea5e9, #2563eb);
+    }
+
+    .provider-card,
+    .panel {
+      border-radius: 24px;
+      padding: clamp(18px, 3vw, 28px);
+      margin-top: 18px;
+    }
+
+    .provider-card[hidden] {
+      display: none;
+    }
+
+    .provider-card h2,
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: clamp(26px, 4vw, 42px);
+      line-height: 1;
+      font-weight: 950;
+    }
+
+    .step-list {
+      margin: 18px 0 0;
+      padding-left: 22px;
+    }
+
+    .step-list li + li {
+      margin-top: 10px;
+    }
+
+    .shot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .shot {
+      width: 100%;
+      border: 1px solid #d9e9f7;
+      border-radius: 18px;
+      background: #f8fbff;
+      padding: 8px;
+      cursor: zoom-in;
+      text-align: left;
+    }
+
+    .shot-frame {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(135deg, rgba(14, 165, 233, 0.10), rgba(37, 99, 235, 0.08)),
+        #ffffff;
+      color: #2563eb;
+      font-weight: 900;
+      font-size: 13px;
+      text-align: center;
+      padding: 12px;
+    }
+
+    .shot img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background: #ffffff;
+    }
+
+    .shot-placeholder {
+      color: #2563eb;
+      font-weight: 900;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .shot span {
+      display: block;
+      margin-top: 8px;
+      color: #536a82;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    pre {
+      overflow: auto;
+      border: 1px solid #d9e9f7;
+      border-radius: 16px;
+      background: #0f172a;
+      color: #e0f2fe;
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.55;
+      white-space: pre;
+      tab-size: 2;
+    }
+
+    .warning {
+      margin: 14px 0 18px;
+      border: 1px solid rgba(251, 191, 36, 0.48);
+      border-radius: 18px;
+      background: #fffbeb;
+      color: #92400e;
+      padding: 14px 16px;
+      font-weight: 850;
+      line-height: 1.5;
+    }
+
+    .image-modal[hidden] {
+      display: none;
+    }
+
+    .image-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(15, 23, 42, 0.82);
+    }
+
+    .image-modal-inner {
+      width: min(1120px, 100%);
+      display: grid;
+      gap: 12px;
+    }
+
+    .image-modal img {
+      width: 100%;
+      max-height: 78vh;
+      object-fit: contain;
+      border-radius: 18px;
+      background: #ffffff;
+    }
+
+    .image-modal-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      color: #ffffff;
+      font-weight: 900;
+    }
+
+    @media (max-width: 640px) {
+      .page-shell {
+        padding-top: 74px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero">
+      <h1>Custom playlist setup</h1>
+      <p>Use this guide to make a public playlist endpoint that the music app can open. The playlist URL must be public, must not need login, and must return a simple list of songs.</p>
+      <div class="actions">
+        <a class="button primary" href="downloads/sorter.exe" download>Download JSON sorter</a>
+        <a class="button" href="#format">View playlist format</a>
+        <a class="button" href="#worker-code">Copy Worker code</a>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Before you start</h2>
+      <p>The music player needs one public playlist URL. For Cloudflare, that URL should be a Worker connected to an R2 bucket. For GitHub Pages, use a custom domain because default GitHub domains may be blocked.</p>
+      <div class="helper-grid">
+        <div class="helper-card"><strong>Audio files</strong><span>Upload MP3, M4A, WAV, OGG, FLAC, or AAC files. Keep names consistent.</span></div>
+        <div class="helper-card"><strong>Cover image</strong><span>Upload a cover image called <strong>cover</strong>. The Worker example below will find common image extensions.</span></div>
+        <div class="helper-card"><strong>No login</strong><span>Custom playlist endpoints should be public. They do not use the music app device-code authentication.</span></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Video help</h2>
+      <p>These buttons open YouTube searches for the setup steps. Pick a recent video with the same dashboard layout you see on your screen.</p>
+      <div class="video-links">
+        <a class="button" href="https://www.youtube.com/results?search_query=Cloudflare+Workers+R2+bucket+binding+tutorial" target="_blank" rel="noopener">Worker + R2 videos</a>
+        <a class="button" href="https://www.youtube.com/results?search_query=Cloudflare+R2+upload+files+tutorial" target="_blank" rel="noopener">R2 upload videos</a>
+        <a class="button" href="https://www.youtube.com/results?search_query=GitHub+Pages+custom+domain+tutorial" target="_blank" rel="noopener">GitHub custom domain videos</a>
+        <a class="button" href="https://www.youtube.com/results?search_query=GitHub+Pages+upload+JSON+file+tutorial" target="_blank" rel="noopener">GitHub JSON upload videos</a>
+      </div>
+    </section>
+
+    <div class="provider-tabs" aria-label="Choose provider">
+      <button class="provider-tab is-active" type="button" data-provider-tab="cloudflare">Cloudflare Worker + R2</button>
+      <button class="provider-tab" type="button" data-provider-tab="github">GitHub Pages</button>
+      <button class="provider-tab" type="button" data-provider-tab="other">Other public URL</button>
+    </div>
+
+    <section class="provider-card" data-provider-card="cloudflare">
+      <h2>Cloudflare Worker + R2</h2>
+      <p>This is the best option if you want one clean playlist URL. R2 stores the music files and cover image, while the Worker returns the playlist list as JSON.</p>
+      <ol class="step-list">
+        <li>Open the Cloudflare dashboard and choose <strong>Workers &amp; Pages</strong>.</li>
+        <li>Create or open the Worker you want to use for music.</li>
+        <li>Open <strong>R2 Object Storage</strong>, create a bucket, and upload your playlist folder.</li>
+        <li>Bind the R2 bucket to the Worker so the Worker can list the files.</li>
+        <li>Upload your audio files into one folder. Use the same naming style for every song.</li>
+        <li>Upload a cover image called <strong>cover</strong>. The extension can be jpg, png, webp, or another image type if your Worker returns it as <strong>coverUrl</strong>.</li>
+        <li>Make the Worker URL public and do not require login or a device code.</li>
+        <li>Paste the Worker playlist URL into the music app and choose <strong>Cloudflare Worker + R2</strong> as the provider.</li>
+      </ol>
+      <div class="shot-grid">
+        <button class="shot" type="button" data-full="/assets/images/tutorial/custom-playlist/cloudflare-workers.png" data-title="Cloudflare Workers dashboard">
+          <span class="shot-frame"><img src="/assets/images/tutorial/custom-playlist/cloudflare-workers.png" alt="Cloudflare Workers dashboard" loading="lazy" onload="this.nextElementSibling.hidden=true" onerror="this.hidden=true"><span class="shot-placeholder">Click to enlarge screenshot slot</span></span>
+          <span>Cloudflare Workers dashboard</span>
+        </button>
+        <button class="shot" type="button" data-full="/assets/images/tutorial/custom-playlist/cloudflare-bindings.png" data-title="Worker storage binding">
+          <span class="shot-frame"><img src="/assets/images/tutorial/custom-playlist/cloudflare-bindings.png" alt="Worker storage binding" loading="lazy" onload="this.nextElementSibling.hidden=true" onerror="this.hidden=true"><span class="shot-placeholder">Click to enlarge screenshot slot</span></span>
+          <span>Where to check storage bindings</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="panel" id="worker-code">
+      <h2>Cloudflare Worker code</h2>
+      <p>This example does everything needed for a simple custom playlist: it lists audio files in R2, finds a cover image called <strong>cover</strong>, returns playlist JSON, and streams the files publicly through the Worker.</p>
+      <div class="warning">Set your R2 bucket binding name to <strong>MUSIC_BUCKET</strong>. Upload songs into the folder named in <strong>PLAYLIST_PREFIX</strong>. Upload the cover image as <strong>cover.jpg</strong>, <strong>cover.png</strong>, <strong>cover.webp</strong>, or <strong>cover.gif</strong>.</div>
+      <div class="actions">
+        <button class="button primary" type="button" id="copyWorkerCode">Copy Worker code</button>
+      </div>
+      <pre><code id="workerCodeText">const PLAYLIST_NAME = "My custom playlist";
+const PLAYLIST_PREFIX = "music/";
+const AUDIO_EXTENSIONS = new Set([".mp3", ".m4a", ".wav", ".ogg", ".flac", ".aac"]);
+const COVER_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp", ".gif"];
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+  "Access-Control-Allow-Headers": "Range, Content-Type"
+};
+
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+
+    if (request.method === "OPTIONS") {
+      return new Response(null, { headers: corsHeaders });
+    }
+
+    if (url.pathname.startsWith("/file/")) {
+      return streamFile(request, env, decodeURIComponent(url.pathname.slice("/file/".length)));
+    }
+
+    return playlistResponse(request, env);
+  }
+};
+
+async function playlistResponse(request, env) {
+  const origin = new URL(request.url).origin;
+  const objects = [];
+  let cursor;
+
+  do {
+    const page = await env.MUSIC_BUCKET.list({
+      prefix: PLAYLIST_PREFIX,
+      cursor,
+      limit: 1000
+    });
+    objects.push(...page.objects);
+    cursor = page.truncated ? page.cursor : undefined;
+  } while (cursor);
+
+  const coverKey = objects
+    .map((item) =&gt; item.key)
+    .find((key) =&gt; COVER_EXTENSIONS.some((ext) =&gt; key.toLowerCase() === PLAYLIST_PREFIX + "cover" + ext));
+
+  const tracks = objects
+    .filter((item) =&gt; AUDIO_EXTENSIONS.has(extensionOf(item.key)))
+    .map((item) =&gt; {
+      const fileName = item.key.slice(PLAYLIST_PREFIX.length);
+      return {
+        fileName,
+        url: origin + "/file/" + encodeURIComponent(item.key)
+      };
+    });
+
+  return json({
+    name: PLAYLIST_NAME,
+    coverUrl: coverKey ? origin + "/file/" + encodeURIComponent(coverKey) : "",
+    tracks
+  });
+}
+
+async function streamFile(request, env, key) {
+  if (!key || key.includes("..")) return new Response("Not found", { status: 404, headers: corsHeaders });
+
+  const object = await env.MUSIC_BUCKET.get(key);
+  if (!object) return new Response("Not found", { status: 404, headers: corsHeaders });
+
+  const headers = new Headers(corsHeaders);
+  object.writeHttpMetadata(headers);
+  headers.set("Cache-Control", "public, max-age=3600");
+  headers.set("Accept-Ranges", "bytes");
+
+  if (!headers.get("Content-Type")) {
+    headers.set("Content-Type", contentTypeForKey(key));
+  }
+
+  return new Response(object.body, { headers });
+}
+
+function json(payload) {
+  return new Response(JSON.stringify(payload), {
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "public, max-age=60"
+    }
+  });
+}
+
+function extensionOf(key) {
+  const dot = key.lastIndexOf(".");
+  return dot === -1 ? "" : key.slice(dot).toLowerCase();
+}
+
+function contentTypeForKey(key) {
+  const ext = extensionOf(key);
+  if (ext === ".mp3") return "audio/mpeg";
+  if (ext === ".m4a" || ext === ".aac") return "audio/aac";
+  if (ext === ".ogg") return "audio/ogg";
+  if (ext === ".wav") return "audio/wav";
+  if (ext === ".flac") return "audio/flac";
+  if (ext === ".jpg" || ext === ".jpeg") return "image/jpeg";
+  if (ext === ".png") return "image/png";
+  if (ext === ".webp") return "image/webp";
+  if (ext === ".gif") return "image/gif";
+  return "application/octet-stream";
+}</code></pre>
+      <ol class="step-list">
+        <li>In Cloudflare, create an R2 bucket and upload your songs into the <strong>music/</strong> folder.</li>
+        <li>Upload one image named <strong>cover.jpg</strong>, <strong>cover.png</strong>, <strong>cover.webp</strong>, or <strong>cover.gif</strong> into the same folder.</li>
+        <li>Create a Worker and paste the code above.</li>
+        <li>Add an R2 bucket binding named <strong>MUSIC_BUCKET</strong>.</li>
+        <li>Deploy the Worker and copy the Worker URL into the music app.</li>
+      </ol>
+    </section>
+
+    <section class="provider-card" data-provider-card="github" hidden>
+      <h2>GitHub Pages</h2>
+      <div class="warning">Important: GitHub's default domains may be blocked. Use a custom domain for the playlist if you choose GitHub Pages.</div>
+      <p>This works if you already know how to upload files to a repository. Keep the playlist JSON public and make sure each audio URL is publicly reachable.</p>
+      <ol class="step-list">
+        <li>Create a public repository or open an existing one.</li>
+        <li>Upload a JSON file for the playlist.</li>
+        <li>Upload your cover image and audio files, or link to audio files hosted somewhere else.</li>
+        <li>Turn on GitHub Pages in the repository settings.</li>
+        <li>Add a custom domain to GitHub Pages.</li>
+        <li>Copy the custom-domain URL for the playlist JSON and paste it into the music app.</li>
+      </ol>
+      <div class="shot-grid">
+        <button class="shot" type="button" data-full="/assets/images/tutorial/custom-playlist/github-pages.png" data-title="GitHub Pages settings">
+          <span class="shot-frame"><img src="/assets/images/tutorial/custom-playlist/github-pages.png" alt="GitHub Pages settings" loading="lazy" onload="this.nextElementSibling.hidden=true" onerror="this.hidden=true"><span class="shot-placeholder">Click to enlarge screenshot slot</span></span>
+          <span>GitHub Pages settings</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="provider-card" data-provider-card="other" hidden>
+      <h2>Other public URL</h2>
+      <p>Any service can work if it gives you a public HTTPS URL that returns JSON and allows the music app to fetch it from the browser.</p>
+      <ol class="step-list">
+        <li>Upload your music somewhere public.</li>
+        <li>Create a JSON playlist file using the format below.</li>
+        <li>Make sure the URL starts with <strong>https://</strong>.</li>
+        <li>Make sure the service allows browser requests from StudyBase. This is usually called CORS.</li>
+        <li>Paste the public JSON URL into the music app.</li>
+      </ol>
+    </section>
+
+    <section class="panel" id="format">
+      <h2>Playlist format</h2>
+      <p>The music app accepts either a plain array of audio URLs or an object with a playlist name, cover URL, and tracks. The object format is better because it can show a cover.</p>
+      <pre><code>{
+  "name": "My playlist",
+  "coverUrl": "https://example.com/cover.jpg",
+  "tracks": [
+    {
+      "url": "https://example.com/music/Artist -- Song.mp3",
+      "fileName": "Artist -- Song.mp3"
+    }
+  ]
+}</code></pre>
+      <p>If you do not send a <strong>coverUrl</strong>, the app uses <strong>/assets/images/m-covers/default.jpg</strong>. When adding the playlist, choose the song name format that matches your files. The default is <strong>Show full file name</strong>.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Song name formats</h2>
+      <p>Pick the option that matches how your files are named. Keep the same style for every song in the playlist.</p>
+      <ol class="step-list">
+        <li><strong>Show full file name:</strong> displays the whole file name exactly as it comes from your playlist.</li>
+        <li><strong>{artist} -- {name}:</strong> turns <strong>Offset -- Ric Flair Drip.mp3</strong> into artist <strong>Offset</strong> and title <strong>Ric Flair Drip</strong>.</li>
+        <li><strong>{name} -- {artist}:</strong> use this if the song name comes first.</li>
+        <li><strong>Custom separator:</strong> use this if you separate the two parts with something else, such as <strong>::</strong>.</li>
+      </ol>
+    </section>
+  </main>
+
+  <div class="image-modal" id="imageModal" hidden>
+    <div class="image-modal-inner">
+      <div class="image-modal-bar">
+        <span id="imageModalTitle">Tutorial image</span>
+        <button class="button" type="button" id="imageModalClose">Close</button>
+      </div>
+      <img id="imageModalImg" src="" alt="">
+    </div>
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll("[data-provider-tab]");
+    const cards = document.querySelectorAll("[data-provider-card]");
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const target = tab.dataset.providerTab;
+        tabs.forEach((item) => item.classList.toggle("is-active", item === tab));
+        cards.forEach((card) => {
+          card.hidden = card.dataset.providerCard !== target;
+        });
+      });
+    });
+
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("imageModalImg");
+    const modalTitle = document.getElementById("imageModalTitle");
+    document.querySelectorAll(".shot").forEach((shot) => {
+      shot.addEventListener("click", () => {
+        modalImg.src = shot.dataset.full;
+        modalImg.alt = shot.dataset.title || "Tutorial image";
+        modalTitle.textContent = shot.dataset.title || "Tutorial image";
+        modal.hidden = false;
+      });
+    });
+    document.getElementById("imageModalClose").addEventListener("click", () => {
+      modal.hidden = true;
+      modalImg.removeAttribute("src");
+    });
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.hidden = true;
+        modalImg.removeAttribute("src");
+      }
+    });
+    document.getElementById("copyWorkerCode")?.addEventListener("click", async () => {
+      const button = document.getElementById("copyWorkerCode");
+      const code = document.getElementById("workerCodeText")?.textContent || "";
+      try {
+        await navigator.clipboard.writeText(code);
+        button.textContent = "Copied";
+        window.setTimeout(() => { button.textContent = "Copy Worker code"; }, 1600);
+      } catch (_) {
+        button.textContent = "Select and copy the code below";
+      }
+    });
+    window.lucide?.createIcons?.();
+  </script>
+</body>
+</html>
