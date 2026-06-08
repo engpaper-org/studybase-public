@@ -22,9 +22,13 @@
       id: "rate-limited",
       responses: [RATE_LIMIT_CODE],
       action: "retry-minute",
-      title: "Too many requests",
-      summary: "You are being rate limited. Please try again in a minute.",
-      details: "The endpoint returned a short-term rate limit response."
+      title: "You have sent too many requests",
+      summary: "You have sent too many requests in a short amount of time. StudyBase has temporarily paused new requests from this page to keep the service stable. Please wait about one minute, then try again.",
+      details: "The endpoint returned a short-term rate limit response. This usually happens after repeated searches, song loads, or button presses in a small time window.",
+      fields: {
+        "What happened": "Too many requests were sent too quickly.",
+        "What to do": "Wait about one minute before trying again."
+      }
     }
   ];
   const originalFetch = window.fetch ? window.fetch.bind(window) : null;
@@ -548,7 +552,22 @@
   }
 
   function openDailyLimitPopup(endpoint, payload, triggeredCode) {
-    openCustomErrorPopup(endpoint, payload, customErrorRules[0], triggeredCode || DAILY_LIMIT_CODE);
+    openCustomErrorPopup(endpoint, payload, getCustomRuleById("requests-reached") || customErrorRules[0], triggeredCode || DAILY_LIMIT_CODE);
+  }
+
+  function getCustomRuleById(id) {
+    return customErrorRules.find(function (rule) {
+      return rule && rule.id === id;
+    }) || null;
+  }
+
+  function openRateLimitPopup(endpoint, payload, triggeredCode) {
+    openCustomErrorPopup(
+      endpoint,
+      payload || { details: "The request was stopped because too many requests were made in a short time." },
+      getCustomRuleById("rate-limited") || customErrorRules[1],
+      triggeredCode || RATE_LIMIT_CODE
+    );
   }
 
   function addMonitoredHost(rawUrl) {
@@ -1091,6 +1110,7 @@
     closeToast: closeToast,
     showDetails: openDetailsFromPopup,
     showDailyLimit: openDailyLimitPopup,
+    showRateLimit: openRateLimitPopup,
     lastError: null,
     activeSignature: null
   };

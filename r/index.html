@@ -882,22 +882,184 @@
             display: none !important;
         }
 
+        body.rgenie-private-resources {
+            background:
+                radial-gradient(circle at 14% 12%, rgba(18, 185, 214, 0.16), transparent 28rem),
+                radial-gradient(circle at 86% 10%, rgba(124, 58, 237, 0.14), transparent 30rem),
+                linear-gradient(180deg, #f6fbff 0%, #ffffff 42%, #f4f8ff 100%);
+        }
+
         body.rgenie-private-resources .rgenie-shell {
-            padding-top: 7rem;
+            padding-top: 6.4rem;
         }
 
         body.rgenie-private-resources #resource-tools-section {
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
         }
 
-        /* In private mode, hide the support banner so it's truly just search bar + cards */
+        body.rgenie-private-resources #resource-tools-section .rgenie-container {
+            width: min(95rem, calc(100% - 3rem));
+        }
+
         body.rgenie-private-resources .rgenie-support-banner {
-            display: none !important;
+            display: block !important;
+            width: 100%;
+            margin: 0 auto 1rem;
+            padding: 0.72rem;
+            border-radius: 26px;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,0.94), rgba(239,246,255,0.88)),
+                radial-gradient(circle at 16% 25%, rgba(18,185,214,0.18), transparent 34%),
+                radial-gradient(circle at 86% 22%, rgba(124,58,237,0.13), transparent 32%);
+            border: 1px solid rgba(191, 219, 254, 0.9);
+            box-shadow: 0 22px 54px rgba(15,23,42,0.10);
         }
 
         body.rgenie-private-resources .rgenie-panel {
-            padding: 0.75rem;
-            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            padding: clamp(1rem, 2vw, 1.35rem);
+            border-radius: 30px;
+            border-color: rgba(148, 163, 184, 0.24);
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.93));
+            box-shadow: 0 24px 70px rgba(15,23,42,0.11);
+        }
+
+        body.rgenie-private-resources .rgenie-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto;
+            height: 4px;
+            background: linear-gradient(90deg, #12b9d6, #7c3aed, #10b981);
+        }
+
+        .private-vault-intro {
+            display: none;
+        }
+
+        body.rgenie-private-resources .private-vault-intro {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.35rem 0.25rem 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .private-vault-intro h2 {
+            margin: 0;
+            color: #0f172a;
+            font-size: clamp(1.55rem, 3vw, 2.45rem);
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            font-weight: 950;
+        }
+
+        .private-vault-intro p {
+            margin: 0.45rem 0 0;
+            max-width: 560px;
+            color: #64748b;
+            font-size: 0.94rem;
+            font-weight: 720;
+            line-height: 1.45;
+        }
+
+        .resource-warning-card {
+            position: relative;
+            border-radius: 20px !important;
+            padding: 1rem !important;
+            box-shadow: 0 12px 28px rgba(15,23,42,0.05);
+        }
+
+        .resource-warning-card i {
+            margin-top: 0.15rem;
+        }
+
+        .resource-warning-danger {
+            background: linear-gradient(135deg, #fff1f2, #fff7ed) !important;
+            border-color: #fecdd3 !important;
+            color: #9f1239 !important;
+        }
+
+        .resource-warning-info {
+            background: linear-gradient(135deg, #eff6ff, #ecfeff) !important;
+            border-color: #bfdbfe !important;
+            color: #1e3a8a !important;
+        }
+
+        body.rgenie-private-resources #mainSearchInput {
+            min-height: 3.8rem;
+            border-radius: 22px;
+            border-color: rgba(148, 163, 184, 0.36);
+            background: rgba(255,255,255,0.96);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 16px 34px rgba(15,23,42,0.07);
+            font-weight: 850;
+        }
+
+        body.rgenie-private-resources #mainSearchInput:focus {
+            border-color: rgba(18,185,214,0.7);
+            box-shadow: 0 0 0 5px rgba(18,185,214,0.13), 0 18px 38px rgba(15,23,42,0.10);
+        }
+
+        body.rgenie-private-resources #resource-tools-section .max-w-\[95rem\] {
+            max-width: none;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .resource-action-icons {
+            display: flex;
+            gap: 0.65rem;
+            align-items: stretch;
+        }
+
+        .resource-action-icon {
+            width: 3.8rem;
+            min-height: 3.8rem;
+            border-radius: 20px;
+            border: 1px solid rgba(148, 163, 184, 0.32);
+            background: rgba(255,255,255,0.96);
+            color: #334155;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 14px 30px rgba(15,23,42,0.08);
+            transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, color 0.16s ease, background 0.16s ease;
+        }
+
+        .resource-action-icon:hover {
+            transform: translateY(-2px);
+            border-color: rgba(18,185,214,0.62);
+            color: #0369a1;
+            background: #ecfeff;
+            box-shadow: 0 18px 36px rgba(14,116,144,0.14);
+        }
+
+        .resource-action-icon.danger:hover {
+            border-color: rgba(239,68,68,0.5);
+            color: #b91c1c;
+            background: #fff1f2;
+        }
+
+        .resource-action-icon.contact {
+            width: auto;
+            min-width: 8.9rem;
+            padding: 0 1.05rem;
+            gap: 0.55rem;
+            justify-content: center;
+            color: #0f766e;
+            border-color: rgba(15, 118, 110, 0.28);
+            background: linear-gradient(135deg, rgba(240,253,250,0.98), rgba(255,255,255,0.96));
+            font-size: 0.86rem;
+            font-weight: 900;
+        }
+
+        .resource-action-icon.contact:hover {
+            color: #0f766e;
+            border-color: rgba(15, 118, 110, 0.52);
+            background: #f0fdfa;
+            box-shadow: 0 18px 36px rgba(15,118,110,0.15);
         }
 
         body.rgenie-private-resources .rgenie-filter-grid {
@@ -955,6 +1117,109 @@
             border-color: rgba(18,24,38,0.10) !important;
             background: rgba(255,255,255,0.92) !important;
             box-shadow: 0 18px 44px rgba(18,24,38,0.08) !important;
+        }
+
+        .resource-tag {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 30;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            min-height: 2rem;
+            padding: 0 0.7rem;
+            border-radius: 0 0 16px 16px;
+            background: rgba(255,255,255,0.88);
+            border: 0;
+            border-top: 1.5px solid rgba(148,163,184,0.55);
+            color: #334155;
+            box-shadow: 0 -10px 22px rgba(15,23,42,0.12);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            font-size: 0.62rem;
+            font-weight: 950;
+            letter-spacing: 0.09em;
+            line-height: 1;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .resource-visual-glow {
+            position: relative;
+            overflow: hidden;
+            border-radius: inherit;
+            outline: 2px solid rgba(18,185,214,0.18);
+            outline-offset: 0;
+            box-shadow:
+                0 16px 34px rgba(15,23,42,0.12),
+                0 0 0 1px rgba(255,255,255,0.96),
+                0 0 0 5px rgba(18,185,214,0.08),
+                0 0 34px rgba(18,185,214,0.20);
+        }
+
+        .resource-visual-glow::after {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            z-index: 1;
+            border-radius: inherit;
+            pointer-events: none;
+            box-shadow: inset 0 -38px 48px rgba(15,23,42,0.22);
+            opacity: 0.9;
+        }
+
+        .resource-card:hover .resource-visual-glow {
+            outline-color: rgba(124,58,237,0.34);
+            box-shadow:
+                0 22px 48px rgba(15,23,42,0.16),
+                0 0 0 1px rgba(255,255,255,0.96),
+                0 0 0 6px rgba(124,58,237,0.10),
+                0 0 46px rgba(124,58,237,0.26);
+        }
+
+        .resource-tag i {
+            font-size: 0.68rem;
+        }
+
+        .resource-tag-popular {
+            border-top-color: rgba(239,68,68,0.92);
+            color: #b91c1c;
+            background: rgba(255,241,242,0.9);
+            box-shadow: 0 -10px 24px rgba(239,68,68,0.18);
+        }
+
+        .resource-tag-labs {
+            border-top-color: rgba(16,185,129,0.9);
+            color: #047857;
+            background: rgba(236,253,245,0.9);
+            box-shadow: 0 -10px 24px rgba(16,185,129,0.16);
+        }
+
+        .resource-tag-beta {
+            border-top-color: rgba(124,58,237,0.82);
+            color: #6d28d9;
+            background: rgba(245,243,255,0.9);
+        }
+
+        .resource-tag-rising {
+            border-top-color: rgba(14,165,233,0.85);
+            color: #0369a1;
+            background: rgba(240,249,255,0.9);
+        }
+
+        .resource-tag-soon {
+            border-top-color: rgba(100,116,139,0.75);
+            color: #334155;
+            background: rgba(248,250,252,0.9);
+        }
+
+        .resource-tag-folder {
+            border-top-color: rgba(168,85,247,0.78);
+            color: #7e22ce;
+            background: rgba(250,245,255,0.9);
         }
 
         @media (max-width: 980px) {
@@ -1530,12 +1795,6 @@
             </div>
         </div>
 
-        <!-- CSS to show More Options dropdown only in private resources mode -->
-        <style>
-            body.rgenie-private-resources .private-more-options {
-                display: block !important;
-            }
-        </style>
     </section>
 
     <section id="favourites-section" class="relative z-20 px-6 mb-8 hidden rgenie-private-only">
@@ -1598,12 +1857,19 @@
                     data-support-slot="resource-command-top"
                     data-support-ratio="leaderboard"
                     data-support-max-width="970px"
-                    data-support-label="Supported"
+                    data-support-label="Sponsored"
                     data-support-title="StudyBase supported message">
                 </div>
             </div>
 
             <div class="rgenie-panel">
+                <div class="private-vault-intro">
+                    <div>
+                        <h2>Resource vault</h2>
+                        <p>Search papers, tools and revision routes from your approved StudyBase workspace.</p>
+                    </div>
+                </div>
+
                 <div class="rgenie-panel-head">
                     <div>
                         <h2>Find what you need</h2>
@@ -1613,7 +1879,7 @@
                 </div>
 
                 <!-- Account safety warning - only visible when logged in -->
-                <div class="mb-4 p-3 rounded-2xl bg-red-50 border border-red-200 text-red-800 text-sm flex gap-2 items-start dark:bg-red-950/30 dark:border-red-800/50 dark:text-red-300">
+                <div class="resource-warning-card resource-warning-danger mb-4 p-3 rounded-2xl bg-red-50 border border-red-200 text-red-800 text-sm flex gap-2 items-start dark:bg-red-950/30 dark:border-red-800/50 dark:text-red-300">
                     <i data-lucide="alert-triangle" class="w-4 h-4 mt-0.5 shrink-0"></i>
                     <div>
                         <strong>Account Safety Warning:</strong> Sending direct emails to site owners or staff will result in a permanent ban. 
@@ -1621,7 +1887,7 @@
                     </div>
                 </div>
 
-                <div class="mb-4 p-3 rounded-2xl bg-blue-50 border border-blue-200 text-blue-900 text-sm flex flex-col sm:flex-row sm:items-start gap-3 dark:bg-blue-950/30 dark:border-blue-800/50 dark:text-blue-300">
+                <div class="resource-warning-card resource-warning-info mb-4 p-3 rounded-2xl bg-blue-50 border border-blue-200 text-blue-900 text-sm flex flex-col sm:flex-row sm:items-start gap-3 dark:bg-blue-950/30 dark:border-blue-800/50 dark:text-blue-300">
   <div class="flex gap-2 items-start flex-1">
     <i data-lucide="shield-alert" class="w-4 h-4 mt-0.5 shrink-0"></i>
     <div>
@@ -1642,7 +1908,7 @@
 
 
 
-                <!-- Full-width Search + Report a Problem (matches card container width) -->
+                <!-- Full-width Search + quick actions (matches card container width) -->
                 <div class="mb-3 max-w-[95rem] mx-auto px-6">
                     <div class="flex flex-col sm:flex-row gap-3 items-stretch">
                         <div class="flex-1 relative">
@@ -1656,37 +1922,17 @@
                             >
                         </div>
 
-                        <!-- More Options Dropdown - Only visible in private resources mode -->
-                        <div class="private-more-options relative" style="min-width: 160px; display: none;">
-                            <button onclick="toggleMoreOptionsDropdown(event)" 
-                                    class="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-slate-800 hover:bg-slate-900 text-white font-semibold text-sm rounded-2xl transition-all whitespace-nowrap">
-                                <span>More Options</span>
-                                <i class="fas fa-chevron-down text-xs"></i>
+                        <div class="resource-action-icons" aria-label="Resource actions">
+                            <button type="button" onclick="openReportModalWithType('bug')" class="resource-action-icon danger" title="Report a bug" aria-label="Report a bug">
+                                <i class="fas fa-bug"></i>
                             </button>
-
-                            <div id="header-more-options-dropdown" 
-                                 class="hidden absolute right-0 mt-1 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl py-1 z-[999] text-sm">
-                                
-                                <button onclick="openReportModalWithType('bug'); hideHeaderMoreOptions();" 
-                                        class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-2 text-red-600 font-medium">
-                                    <i class="fas fa-bug w-4"></i> 
-                                    <span>Report a Bug</span>
-                                </button>
-                                
-                                <button onclick="openReportModalWithType('suggestion'); hideHeaderMoreOptions();" 
-                                        class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-2 text-emerald-600 font-medium">
-                                    <i class="fas fa-lightbulb w-4"></i> 
-                                    <span>Make a Suggestion</span>
-                                </button>
-                                
-                                <div class="border-t my-1"></div>
-                                
-                                <button onclick="openReportModal(); hideHeaderMoreOptions();" 
-                                        class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center gap-2">
-                                    <i class="fas fa-flag w-4"></i> 
-                                    <span>Report a Problem</span>
-                                </button>
-                            </div>
+                            <button type="button" onclick="openReportModalWithType('suggestion')" class="resource-action-icon" title="Make a suggestion" aria-label="Make a suggestion">
+                                <i class="fas fa-lightbulb"></i>
+                            </button>
+                            <button type="button" onclick="openReportModal()" class="resource-action-icon contact" title="Contact us" aria-label="Contact us">
+                                <i class="fas fa-envelope"></i>
+                                <span>Contact us</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1764,18 +2010,6 @@
         </div>
     </div>
     </main>
-
-    <div id="report-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-        <div class="bg-white w-full md:w-1/2 max-w-4xl h-[80vh] rounded-[2rem] shadow-2xl relative overflow-hidden animate-enter flex flex-col">
-            <div class="flex items-center justify-between p-6 border-b border-slate-100">
-                <h3 class="font-bold text-slate-800 text-lg">Report Content</h3>
-                <button onclick="closeReportModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <iframe id="report-iframe" class="flex-grow w-full border-none bg-slate-50" src=""></iframe>
-        </div>
-    </div>
 
     <div id="weekly-feedback-modal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-md z-[100002] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="weeklyFeedbackTitle">
         <div class="weekly-feedback-modal w-full max-w-lg rounded-[2rem] shadow-2xl border border-white/70 overflow-hidden">
@@ -2519,13 +2753,13 @@
 
       let imageUrl = item.iconurl;
       let tagHtml = `
-        <div class="absolute top-2 left-2 z-30 bg-amber-500/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-amber-400/50">
+        <div class="resource-tag" style="border-color:rgba(245,158,11,0.9);color:#b45309;background:rgba(255,251,235,0.94);">
           <i class="fas fa-star"></i> Favourite
         </div>`;
 
       if (isComingSoon) {
         tagHtml = `
-        <div class="absolute top-2 left-2 z-30 bg-slate-900/90 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-white/10">
+        <div class="resource-tag resource-tag-soon">
           <i class="fas fa-clock"></i> Coming soon
         </div>`;
       }
@@ -2551,7 +2785,7 @@
       if (imageUrl === "pass") {
         contentHtml = `
           ${tagHtml}
-          <div class="p-3 w-full h-full flex items-center justify-center image-fallback">
+          <div class="p-3 w-full h-full flex items-center justify-center image-fallback resource-visual-glow">
             <h3 class="font-bold text-sm text-slate-700 text-center leading-snug group-hover:text-blue-600 transition-colors">
               ${displayName}${verifiedHtml}
             </h3>
@@ -2563,7 +2797,7 @@
           : "";
 
         const fallbackHtml = `
-          <div class="image-fallback w-full h-full flex items-center justify-center p-4">
+          <div class="image-fallback resource-visual-glow w-full h-full flex items-center justify-center p-4">
             <h3 class="font-bold text-sm text-slate-700 text-center leading-snug">
               ${displayName}${verifiedHtml}
             </h3>
@@ -2572,7 +2806,7 @@
 
         contentHtml = `
           ${tagHtml}
-          <div data-resource-visual data-fallback='${fallbackHtml.replace(/'/g, "&apos;")}' class="absolute inset-0">
+          <div data-resource-visual data-fallback='${fallbackHtml.replace(/'/g, "&apos;")}' class="absolute inset-0 resource-visual-glow">
             <img src="${imageUrl}" onerror="handleImageError(this)" class="absolute inset-0 w-full h-full object-cover z-10 group-hover:scale-110 transition-transform duration-500" loading="lazy">
             <div class="absolute inset-0 private-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center p-3 backdrop-blur-[1px]">
               <h3 class="font-bold text-sm text-white text-center leading-snug transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
@@ -2936,7 +3170,7 @@
 
   function createFallbackContent(displayName, verifiedHtml, extraClasses = "") {
     return `
-      <div class="image-fallback w-full h-full flex items-center justify-center p-4 ${extraClasses}">
+      <div class="image-fallback resource-visual-glow w-full h-full flex items-center justify-center p-4 ${extraClasses}">
         <h3 class="font-bold text-sm text-slate-700 text-center leading-snug group-hover:text-blue-600 transition-colors">
           ${displayName}${verifiedHtml}
         </h3>
@@ -3004,7 +3238,7 @@
     if (!fallback) return;
 
     fallback.innerHTML = fallback.dataset.fallback || `
-      <div class="image-fallback w-full h-full flex items-center justify-center p-4">
+      <div class="image-fallback resource-visual-glow w-full h-full flex items-center justify-center p-4">
         <h3 class="font-bold text-sm text-slate-700 text-center leading-snug">Resource</h3>
       </div>
     `;
@@ -3456,14 +3690,14 @@
 
       if (openMode === "public" && item.__type === "folder") {
         tagHtml = `
-          <div class="absolute top-2 left-2 z-30 bg-purple-600/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-purple-500/40">
+          <div class="resource-tag resource-tag-folder">
             <i class="fas fa-folder"></i> Folder
           </div>`;
         if (imageUrl === "pass") imageUrl = "/assets/images/app-icons/folder-papers.png";
 
       } else if (openMode === "public" && item.__type === "back") {
         tagHtml = `
-          <div class="absolute top-2 left-2 z-30 bg-slate-900/90 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-white/10">
+          <div class="resource-tag resource-tag-soon">
             <i class="fas fa-arrow-left"></i> Back
           </div>`;
         if (imageUrl === "pass") imageUrl = "/assets/images/site-icons/back.png";
@@ -3471,7 +3705,7 @@
       } else {
         if (isComingSoon) {
           tagHtml = `
-            <div class="absolute top-2 left-2 z-30 bg-slate-900/90 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-white/10">
+            <div class="resource-tag resource-tag-soon">
               <i class="fas fa-clock"></i> Coming soon
             </div>`;
         }
@@ -3479,7 +3713,7 @@
         else if (isBeta) {
           if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
           tagHtml = `
-            <div class="absolute top-2 left-2 z-30 bg-purple-600/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-purple-500/50">
+            <div class="resource-tag resource-tag-beta">
               <i class="fas fa-lock"></i> Beta
             </div>`;
         }
@@ -3487,23 +3721,23 @@
         else if (isPopular) {
           if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
           tagHtml = `
-            <div class="absolute top-2 left-2 z-30 bg-orange-500/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-orange-400/50">
-              <i class="fas fa-fire animate-pulse"></i> Popular
+            <div class="resource-tag resource-tag-popular">
+              <i class="fas fa-fire"></i> Popular
             </div>`;
         }
 
         else if (isOriginal) {
           if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
           tagHtml = `
-            <div class="absolute top-2 left-2 z-30 bg-emerald-600/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-emerald-500/50">
-              <i class="fas fa-star"></i> Site Original
+            <div class="resource-tag resource-tag-labs">
+              <i class="fas fa-star"></i> StudyBase Labs
             </div>`;
         }
 
         else if (isRising) {
           if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/rising.jpg";
           tagHtml = `
-            <div class="absolute top-2 left-2 z-30 bg-blue-500/95 backdrop-blur-sm text-white text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-1 rounded-lg flex items-center gap-1.5 shadow-lg border border-blue-400/50">
+            <div class="resource-tag resource-tag-rising">
               <i class="fas fa-arrow-trend-up"></i> Rising
             </div>`;
         }
@@ -3522,7 +3756,7 @@
         if (imageUrl === "pass") {
           contentHtml = `
             ${tagHtml}
-            <div class="flex-grow flex items-center justify-center min-h-[10rem] p-3 rounded-2xl image-fallback border border-slate-100">
+            <div class="flex-grow flex items-center justify-center min-h-[10rem] p-3 rounded-2xl image-fallback resource-visual-glow border border-slate-100">
               <h3 class="font-bold text-sm text-slate-700 text-center leading-snug group-hover:text-blue-600 transition-colors">
                 ${displayName}${verifiedHtml}
               </h3>
@@ -3535,7 +3769,7 @@
           `;
 
           contentHtml = `
-            <div data-resource-visual data-fallback='${fallbackHtml.replace(/'/g, "&apos;")}' class="aspect-square w-full overflow-hidden rounded-2xl bg-slate-50 relative mb-4 border border-slate-100">
+            <div data-resource-visual data-fallback='${fallbackHtml.replace(/'/g, "&apos;")}' class="aspect-square w-full overflow-hidden rounded-2xl bg-slate-50 relative mb-4 border border-slate-100 resource-visual-glow">
               ${tagHtml}
               <img src="${imageUrl}" onerror="handleImageError(this)" class="w-full h-full object-cover relative z-10 group-hover:scale-110 transition-transform duration-500" loading="lazy">
               <div class="absolute inset-0 bg-blue-900/20 opacity-0 group-hover:opacity-100 transition-opacity z-20 flex items-center justify-center backdrop-blur-[2px]">
@@ -3555,7 +3789,7 @@
 
         if (imageUrl === "pass") {
           contentHtml = `
-            <div class="p-3 w-full h-full flex items-center justify-center image-fallback">
+            <div class="p-3 w-full h-full flex items-center justify-center image-fallback resource-visual-glow">
               <h3 class="font-bold text-sm text-slate-700 text-center leading-snug group-hover:text-blue-600 transition-colors">
                 ${displayName}${verifiedHtml}
               </h3>
@@ -3570,7 +3804,7 @@
 
           contentHtml = `
             ${tagHtml}
-            <div data-resource-visual data-fallback='${fallbackHtml.replace(/'/g, "&apos;")}' class="absolute inset-0">
+            <div data-resource-visual data-fallback='${fallbackHtml.replace(/'/g, "&apos;")}' class="absolute inset-0 resource-visual-glow">
               <img src="${imageUrl}" onerror="handleImageError(this)" class="absolute inset-0 w-full h-full object-cover z-10 group-hover:scale-110 transition-transform duration-500" loading="lazy">
               <div class="absolute inset-0 private-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center p-3 backdrop-blur-[1px]">
                 <h3 class="font-bold text-sm text-white text-center leading-snug transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
@@ -3602,7 +3836,7 @@
   function getBodyBlockingModalIds() {
     return [
       "announcement-modal",
-      "report-modal",
+      "reportModal",
       "weekly-feedback-modal",
       "sb-account-page-modal"
     ];
@@ -4032,19 +4266,6 @@
     openEmbeddedMaterial(encoded, stripResourceDecorators(item.name));
   }
 
-  function openReportModal() {
-    document.getElementById("report-modal").classList.remove("hidden");
-    document.getElementById("report-iframe").src =
-      `/report.html?pageUrl=${encodeURIComponent(window.location.href)}`;
-    updateBodyScrollLock();
-  }
-
-  function closeReportModal() {
-    document.getElementById("report-modal").classList.add("hidden");
-    document.getElementById("report-iframe").src = "";
-    updateBodyScrollLock();
-  }
-
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       closeAnnouncementModal();
@@ -4066,11 +4287,11 @@
   loadResources();
 </script>
 <!-- Report Modal -->
-<div id="reportModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[99999] flex items-center justify-center p-4">
+<div id="reportModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[1000001] flex items-center justify-center p-4" aria-hidden="true">
     <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden relative">
         <!-- Modal Header -->
         <div class="flex items-center justify-between px-6 py-4 border-b">
-            <div class="font-extrabold text-lg text-slate-800">Report a Problem</div>
+            <div class="font-extrabold text-lg text-slate-800">Contact StudyBase</div>
             <button onclick="closeReportModal()" class="text-slate-400 hover:text-slate-600 text-2xl leading-none w-8 h-8 flex items-center justify-center">&times;</button>
         </div>
 
@@ -4083,7 +4304,7 @@
         </div>
 
         <div class="px-6 py-3 bg-slate-50 text-[11px] text-slate-500 text-center border-t">
-            Reports are reviewed by the StudyBase team. Misuse results in a permanent ban.
+            Messages and reports are reviewed by the StudyBase team. Misuse results in a permanent ban.
         </div>
     </div>
 </div>
@@ -4208,18 +4429,22 @@
     function openReportModal() {
         const modal = document.getElementById('reportModal');
         const iframe = document.getElementById('reportIframe');
+        if (!modal || !iframe) return;
         
         const currentUrl = window.location.href;
         iframe.src = `/report.html?pageUrl=${encodeURIComponent(currentUrl)}`;
         
         modal.classList.remove('hidden');
         modal.classList.add('flex');
+        modal.setAttribute('aria-hidden', 'false');
+        if (typeof updateBodyScrollLock === 'function') updateBodyScrollLock();
     }
 
     // Opens report modal with specific type (bypasses selection screen)
     function openReportModalWithType(type) {
         const modal = document.getElementById('reportModal');
         const iframe = document.getElementById('reportIframe');
+        if (!modal || !iframe) return;
         
         const currentUrl = window.location.href;
         let src = `/report.html?pageUrl=${encodeURIComponent(currentUrl)}`;
@@ -4231,15 +4456,22 @@
         iframe.src = src;
         modal.classList.remove('hidden');
         modal.classList.add('flex');
+        modal.setAttribute('aria-hidden', 'false');
+        if (typeof updateBodyScrollLock === 'function') updateBodyScrollLock();
     }
 
     function closeReportModal() {
         const modal = document.getElementById('reportModal');
         const iframe = document.getElementById('reportIframe');
         
-        modal.classList.remove('flex');
-        modal.classList.add('hidden');
-        iframe.src = 'about:blank'; // unload
+        if (modal) {
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            modal.setAttribute('aria-hidden', 'true');
+        }
+        if (iframe) iframe.src = 'about:blank'; // unload
+        if (typeof updateBodyScrollLock === 'function') updateBodyScrollLock();
+        if (typeof maybeResumeQuietResourceListing === 'function') maybeResumeQuietResourceListing();
     }
 
     // Allow escape key to close modal

@@ -3,122 +3,762 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="StudyBase Doc Tools is a private, offline-first workspace for essays, revision notes, PDF annotation, highlighting, and export-ready study files.">
   <title>Doc Tools | StudyBase</title>
-  
+
   <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
   <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
-  
+  <link rel="icon" href="/assets/images/site-icons/main.ico">
+
   <script src="/assets/js/config/siteConfig.js"></script>
   <script src="/assets/js/layout/navbar.js" defer></script>
   <script src="/assets/js/layout/footer.js" defer></script>
   <script src="/assets/js/core/sessionManager.js" defer></script>
-  
+  <script src="https://unpkg.com/lucide@latest"></script>
+
   <style>
+    :root {
+      --docs-bg: #f8fafc;
+      --docs-ink: #0f172a;
+      --docs-muted: #475569;
+      --docs-line: #dbeafe;
+      --docs-cyan: #06b6d4;
+      --docs-violet: #7c3aed;
+      --docs-emerald: #10b981;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(180deg, #eefcff 0, #f8fafc 320px, #ffffff 100%);
+      color: var(--docs-ink);
+      font-family: Inter, "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .docs-page {
+      overflow: hidden;
+    }
+
+    .docs-shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
     .docs-hero {
-      padding: 3.5rem 1.5rem 2.5rem;
-      text-align: center;
-      max-width: 720px;
-      margin: 0 auto;
+      position: relative;
+      padding: 104px 0 54px;
     }
-    .docs-hero h1 {
-      font-size: clamp(2.25rem, 5vw, 3rem);
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.75rem;
+
+    .docs-hero::before {
+      content: "";
+      position: absolute;
+      inset: 20px -18vw auto auto;
+      width: 520px;
+      height: 520px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(6, 182, 212, 0.18), transparent 68%);
+      pointer-events: none;
     }
-    .docs-hero p {
-      font-size: 1.1rem;
-      color: #475569;
-      max-width: 520px;
-      margin: 0 auto;
-    }
-    .tools-grid {
+
+    .docs-hero-grid {
+      position: relative;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.5rem;
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 0 1.5rem 4rem;
+      grid-template-columns: minmax(0, 0.95fr) minmax(420px, 1fr);
+      gap: 48px;
+      align-items: center;
     }
-    .tool-card {
-      background: white;
-      border: 1px solid #e2e8f0;
-      border-radius: 20px;
-      padding: 1.75rem;
-      text-decoration: none;
-      color: inherit;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    .docs-copy h1 {
+      margin: 0;
+      max-width: 670px;
+      font-size: clamp(3.25rem, 8vw, 6.9rem);
+      line-height: 0.86;
+      letter-spacing: -0.075em;
+      font-weight: 950;
+    }
+
+    .docs-copy h1 span {
+      display: block;
+      background: linear-gradient(90deg, #0f172a, #155e75 52%, #6d28d9);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .docs-copy p {
+      margin: 26px 0 0;
+      max-width: 560px;
+      color: var(--docs-muted);
+      font-size: 1.16rem;
+      line-height: 1.55;
+      font-weight: 560;
+    }
+
+    .docs-actions {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
     }
-    .tool-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-      border-color: #cbd5e1;
-    }
-    .tool-card .icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 14px;
-      display: flex;
+
+    .docs-btn {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.75rem;
-      margin-bottom: 1rem;
+      gap: 10px;
+      min-height: 52px;
+      padding: 0 22px;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 850;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
     }
-    .tool-card.text-editor .icon { background: #e0e7ff; color: #3730a3; }
-    .tool-card.pdf .icon { background: #fee2e2; color: #9f1239; }
-    
-    .tool-card h2 {
-      font-size: 1.35rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
+
+    .docs-btn:hover {
+      transform: translateY(-2px);
     }
-    .tool-card p {
-      color: #475569;
-      line-height: 1.5;
-      flex: 1;
+
+    .docs-btn-primary {
+      background: #0f172a;
+      color: #ffffff;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.18);
     }
-    .tool-card .tag {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 2px 9px;
+
+    .docs-btn-secondary {
+      background: #ffffff;
+      color: #0f172a;
+      border-color: #cbd5e1;
+    }
+
+    .docs-btn-secondary:hover {
+      border-color: #67e8f9;
+      box-shadow: 0 16px 36px rgba(14, 116, 144, 0.12);
+    }
+
+    .docs-promises {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 26px;
+    }
+
+    .docs-promise {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #dbeafe;
+      background: rgba(255, 255, 255, 0.72);
       border-radius: 999px;
-      margin-top: 1rem;
+      padding: 8px 12px;
+      color: #334155;
+      font-size: 0.82rem;
+      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.04);
     }
-    .tool-card.text-editor .tag { background: #e0e7ff; color: #3730a3; }
-    .tool-card.pdf .tag { background: #fee2e2; color: #9f1239; }
+
+    .docs-promise i {
+      width: 16px;
+      height: 16px;
+      color: var(--docs-cyan);
+    }
+
+    .docs-preview {
+      position: relative;
+      min-height: 530px;
+    }
+
+    .docs-window {
+      position: relative;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      border-radius: 26px;
+      background: #ffffff;
+      box-shadow: 0 34px 80px rgba(15, 23, 42, 0.18);
+      overflow: hidden;
+    }
+
+    .docs-window-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 18px;
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .docs-dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .docs-dots span {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      background: #38bdf8;
+    }
+
+    .docs-dots span:first-child { background: #fb7185; }
+    .docs-dots span:nth-child(2) { background: #fbbf24; }
+    .docs-dots span:nth-child(3) { background: #34d399; }
+
+    .docs-editor-body {
+      display: grid;
+      grid-template-columns: 162px minmax(0, 1fr);
+      min-height: 410px;
+    }
+
+    .docs-sidebar {
+      border-right: 1px solid #e2e8f0;
+      background: #f8fafc;
+      padding: 16px;
+    }
+
+    .docs-sidebar strong {
+      display: block;
+      margin-bottom: 12px;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+
+    .docs-file {
+      margin-bottom: 9px;
+      border-radius: 13px;
+      padding: 10px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      font-size: 0.78rem;
+      font-weight: 850;
+      color: #334155;
+    }
+
+    .docs-file.is-active {
+      background: #ecfeff;
+      border-color: #67e8f9;
+      color: #155e75;
+    }
+
+    .docs-paper {
+      padding: 28px;
+    }
+
+    .docs-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 22px;
+    }
+
+    .docs-tool {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      color: #334155;
+    }
+
+    .docs-tool i {
+      width: 17px;
+      height: 17px;
+    }
+
+    .docs-line {
+      height: 10px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      margin-bottom: 14px;
+    }
+
+    .docs-line.title {
+      width: 76%;
+      height: 22px;
+      background: #0f172a;
+    }
+
+    .docs-line.cyan {
+      width: 92%;
+      background: #a5f3fc;
+    }
+
+    .docs-line.violet {
+      width: 68%;
+      background: #ddd6fe;
+    }
+
+    .docs-highlight {
+      margin-top: 24px;
+      border-radius: 18px;
+      border: 1px solid #bae6fd;
+      background: #ecfeff;
+      padding: 16px;
+    }
+
+    .docs-highlight strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #155e75;
+      font-size: 0.86rem;
+    }
+
+    .docs-pdf-card {
+      position: absolute;
+      right: -8px;
+      bottom: 18px;
+      width: 250px;
+      border-radius: 22px;
+      border: 1px solid rgba(124, 58, 237, 0.2);
+      background: #ffffff;
+      box-shadow: 0 28px 56px rgba(76, 29, 149, 0.2);
+      padding: 18px;
+      transform: rotate(2.2deg);
+    }
+
+    .docs-pdf-card .pdf-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #6d28d9;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .docs-pdf-card i {
+      width: 22px;
+      height: 22px;
+    }
+
+    .docs-pdf-mark {
+      height: 58px;
+      border-radius: 16px;
+      background:
+        linear-gradient(90deg, rgba(251, 191, 36, 0.38), transparent 76%),
+        repeating-linear-gradient(#f1f5f9 0 8px, #ffffff 8px 15px);
+      border: 1px solid #fef3c7;
+    }
+
+    .docs-section {
+      padding: 64px 0;
+    }
+
+    .docs-section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .docs-section-head h2 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 0.94;
+      letter-spacing: -0.055em;
+      font-weight: 950;
+    }
+
+    .docs-section-head p {
+      margin: 0;
+      max-width: 390px;
+      color: var(--docs-muted);
+      line-height: 1.5;
+      font-weight: 560;
+    }
+
+    .docs-tool-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .docs-tool-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 390px;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      padding: 28px;
+      color: inherit;
+      text-decoration: none;
+      box-shadow: 0 18px 44px rgba(15, 23, 42, 0.06);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .docs-tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 28px 58px rgba(15, 23, 42, 0.12);
+      border-color: #67e8f9;
+    }
+
+    .docs-tool-card.pdf:hover {
+      border-color: #c4b5fd;
+    }
+
+    .docs-tool-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: #ecfeff;
+      color: #0891b2;
+      margin-bottom: 22px;
+    }
+
+    .docs-tool-card.pdf .docs-tool-icon {
+      background: #f5f3ff;
+      color: #7c3aed;
+    }
+
+    .docs-tool-icon i {
+      width: 28px;
+      height: 28px;
+    }
+
+    .docs-tool-card h3 {
+      margin: 0;
+      font-size: 2rem;
+      line-height: 1;
+      letter-spacing: -0.045em;
+      font-weight: 950;
+    }
+
+    .docs-tool-card p {
+      margin: 14px 0 0;
+      color: var(--docs-muted);
+      line-height: 1.55;
+      font-weight: 560;
+    }
+
+    .docs-card-list {
+      display: grid;
+      gap: 10px;
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .docs-card-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #334155;
+      font-size: 0.94rem;
+      font-weight: 750;
+    }
+
+    .docs-card-list i {
+      flex: 0 0 auto;
+      width: 18px;
+      height: 18px;
+      color: var(--docs-emerald);
+    }
+
+    .docs-tool-card .docs-card-action {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #0e7490;
+      font-weight: 900;
+      padding-top: 24px;
+    }
+
+    .docs-tool-card.pdf .docs-card-action {
+      color: #6d28d9;
+    }
+
+    .docs-privacy {
+      border-radius: 32px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 34px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
+      gap: 28px;
+      align-items: center;
+      box-shadow: 0 26px 58px rgba(15, 23, 42, 0.22);
+    }
+
+    .docs-privacy h2 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.7rem);
+      line-height: 0.96;
+      letter-spacing: -0.055em;
+      font-weight: 950;
+    }
+
+    .docs-privacy p {
+      margin: 16px 0 0;
+      max-width: 620px;
+      color: #cbd5e1;
+      line-height: 1.55;
+      font-weight: 560;
+    }
+
+    .docs-privacy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .docs-privacy-item {
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      padding: 15px;
+    }
+
+    .docs-privacy-item strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #ffffff;
+    }
+
+    .docs-privacy-item span {
+      color: #94a3b8;
+      font-size: 0.86rem;
+      line-height: 1.35;
+    }
+
+    .docs-bottom-cta {
+      padding: 64px 0 82px;
+      text-align: center;
+    }
+
+    .docs-bottom-cta h2 {
+      margin: 0 auto;
+      max-width: 760px;
+      font-size: clamp(2.4rem, 6vw, 5.2rem);
+      line-height: 0.9;
+      letter-spacing: -0.065em;
+      font-weight: 950;
+    }
+
+    .docs-bottom-cta .docs-actions {
+      justify-content: center;
+    }
+
+    @media (max-width: 920px) {
+      .docs-hero-grid,
+      .docs-privacy {
+        grid-template-columns: 1fr;
+      }
+
+      .docs-preview {
+        min-height: 500px;
+      }
+
+      .docs-tool-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .docs-section-head {
+        display: block;
+      }
+
+      .docs-section-head p {
+        margin-top: 12px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .docs-hero {
+        padding-top: 82px;
+      }
+
+      .docs-copy h1 {
+        letter-spacing: -0.058em;
+      }
+
+      .docs-editor-body {
+        grid-template-columns: 1fr;
+      }
+
+      .docs-sidebar {
+        display: none;
+      }
+
+      .docs-pdf-card {
+        position: relative;
+        right: auto;
+        bottom: auto;
+        width: auto;
+        margin-top: 16px;
+        transform: none;
+      }
+
+      .docs-preview {
+        min-height: 0;
+      }
+
+      .docs-privacy-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
-  <main>
-    <div class="docs-hero">
-      <h1>Doc Tools</h1>
-      <p>Fully offline, privacy-first document tools built for students. No accounts. No data leaves your device.</p>
-    </div>
+  <main class="docs-page">
+    <section class="docs-hero">
+      <div class="docs-shell docs-hero-grid">
+        <div class="docs-copy">
+          <h1>Document tools for serious revision.<span>No upload drama.</span></h1>
+          <p>Write essays, build revision notes, annotate papers, highlight PDFs, and export clean study files from a workspace designed for students who live inside past papers.</p>
+          <div class="docs-actions">
+            <a class="docs-btn docs-btn-primary" href="/docs/text-editor/">
+              Open Text Editor <i data-lucide="arrow-up-right"></i>
+            </a>
+            <a class="docs-btn docs-btn-secondary" href="/docs/pdf-editor/">
+              Open PDF Annotator <i data-lucide="file-text"></i>
+            </a>
+          </div>
+          <div class="docs-promises">
+            <span class="docs-promise"><i data-lucide="wifi-off"></i> Offline after loading</span>
+            <span class="docs-promise"><i data-lucide="hard-drive"></i> Saves locally</span>
+            <span class="docs-promise"><i data-lucide="shield-check"></i> Private by default</span>
+          </div>
+        </div>
 
-    <div class="tools-grid">
-      <!-- Text Editor -->
-      <a href="/docs/text-editor/" class="tool-card text-editor">
-        <div class="icon">📝</div>
-        <h2>Text Editor</h2>
-        <p>A powerful, modern text editor that saves everything locally. Perfect for essays, revision notes, plans, and long-form writing.</p>
-        <div class="tag">Fully Offline • Markdown Support</div>
-      </a>
+        <div class="docs-preview" aria-hidden="true">
+          <div class="docs-window">
+            <div class="docs-window-bar">
+              <div class="docs-dots"><span></span><span></span><span></span></div>
+              <span>StudyBase Docs</span>
+            </div>
+            <div class="docs-editor-body">
+              <aside class="docs-sidebar">
+                <strong>Documents</strong>
+                <div class="docs-file is-active">Paper 2 essay plan</div>
+                <div class="docs-file">Organic mechanisms</div>
+                <div class="docs-file">Psychology AO3</div>
+                <div class="docs-file">Physics practicals</div>
+              </aside>
+              <div class="docs-paper">
+                <div class="docs-toolbar">
+                  <span class="docs-tool"><i data-lucide="bold"></i></span>
+                  <span class="docs-tool"><i data-lucide="italic"></i></span>
+                  <span class="docs-tool"><i data-lucide="list-checks"></i></span>
+                  <span class="docs-tool"><i data-lucide="highlighter"></i></span>
+                  <span class="docs-tool"><i data-lucide="download"></i></span>
+                </div>
+                <div class="docs-line title"></div>
+                <div class="docs-line"></div>
+                <div class="docs-line cyan"></div>
+                <div class="docs-line"></div>
+                <div class="docs-line violet"></div>
+                <div class="docs-highlight">
+                  <strong>Mark scheme repair note</strong>
+                  <div class="docs-line cyan"></div>
+                  <div class="docs-line" style="width:72%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <!-- PDF Annotator -->
-      <a href="/docs/pdf-editor/" class="tool-card pdf">
-        <div class="icon">📄</div>
-        <h2>PDF Annotator</h2>
-        <p>Upload, view, annotate, highlight and draw directly on PDFs. All processing happens in your browser.</p>
-        <div class="tag">Fully Offline • Export Annotated PDFs</div>
-      </a>
-    </div>
+          <div class="docs-pdf-card">
+            <div class="pdf-top"><i data-lucide="file-search"></i> PDF Annotator</div>
+            <div class="docs-pdf-mark"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="docs-section">
+      <div class="docs-shell">
+        <div class="docs-section-head">
+          <h2>Two tools. One study workflow.</h2>
+          <p>Start with a blank document, mark a real paper, then turn the mistakes into a clean plan without leaving your browser.</p>
+        </div>
+
+        <div class="docs-tool-grid">
+          <a href="/docs/text-editor/" class="docs-tool-card">
+            <span class="docs-tool-icon"><i data-lucide="file-pen-line"></i></span>
+            <h3>Text Editor</h3>
+            <p>A focused writing space for essays, revision notes, plans, and long-form answers. It saves locally, keeps your document list tidy, and works without an account.</p>
+            <ul class="docs-card-list">
+              <li><i data-lucide="check"></i> Local document library</li>
+              <li><i data-lucide="check"></i> Formatting for study notes and essays</li>
+              <li><i data-lucide="check"></i> Recovery support for interrupted sessions</li>
+            </ul>
+            <span class="docs-card-action">Start writing <i data-lucide="arrow-right"></i></span>
+          </a>
+
+          <a href="/docs/pdf-editor/" class="docs-tool-card pdf">
+            <span class="docs-tool-icon"><i data-lucide="file-search"></i></span>
+            <h3>PDF Annotator</h3>
+            <p>Load past papers, highlight key evidence, draw directly on pages, and export your annotated PDF for later repair sessions.</p>
+            <ul class="docs-card-list">
+              <li><i data-lucide="check"></i> Highlight, draw, and annotate</li>
+              <li><i data-lucide="check"></i> Browser-side PDF processing</li>
+              <li><i data-lucide="check"></i> Export annotated files</li>
+            </ul>
+            <span class="docs-card-action">Mark a PDF <i data-lucide="arrow-right"></i></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="docs-section">
+      <div class="docs-shell">
+        <div class="docs-privacy">
+          <div>
+            <h2>Your documents should not need a server to exist.</h2>
+            <p>StudyBase Docs is intentionally local-first. It is built for the student reality: school Wi-Fi drops, tabs refresh, laptops sleep, and private notes should stay private.</p>
+          </div>
+          <div class="docs-privacy-grid">
+            <div class="docs-privacy-item">
+              <strong>No account gate</strong>
+              <span>Open the tools and start working.</span>
+            </div>
+            <div class="docs-privacy-item">
+              <strong>No cloud upload</strong>
+              <span>Files are handled in your browser.</span>
+            </div>
+            <div class="docs-privacy-item">
+              <strong>Offline capable</strong>
+              <span>Keep writing after the page loads.</span>
+            </div>
+            <div class="docs-privacy-item">
+              <strong>Export ready</strong>
+              <span>Take your notes and PDFs with you.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="docs-bottom-cta">
+      <div class="docs-shell">
+        <h2>Turn the paper you just marked into the plan you actually follow.</h2>
+        <div class="docs-actions">
+          <a class="docs-btn docs-btn-primary" href="/docs/text-editor/">
+            Open Text Editor <i data-lucide="arrow-up-right"></i>
+          </a>
+          <a class="docs-btn docs-btn-secondary" href="/r/index.html#client-preflight">
+            Find a past paper <i data-lucide="database"></i>
+          </a>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <div style="text-align: center; padding-bottom: 3rem; color: #64748b; font-size: 0.85rem;">
-    All tools work completely offline after loading. Your documents never leave your device.
-  </div>
+  <script>
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  </script>
 </body>
 </html>

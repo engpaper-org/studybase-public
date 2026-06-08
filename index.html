@@ -220,46 +220,89 @@
   </div>
 
   <!-- ============================================
-       NEW: COLORFUL CO-CREATION BANNER (loved style from contributions)
+       DOC TOOLS PROMO
   ============================================ -->
-  <div class="max-w-6xl mx-auto px-6 pt-8 pb-2">
-    <div class="relative overflow-hidden rounded-3xl border border-slate-200 bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 p-6 md:p-8 text-white shadow-inner">
-      <div class="absolute inset-0 bg-[radial-gradient(#334155_0.8px,transparent_1px)] bg-[length:3px_3px] opacity-30"></div>
-      
-      <div class="relative flex flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-8">
-        <div class="flex-1">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-2xl bg-white/10 text-[10px] font-bold tracking-[2px] mb-3">
-            <span class="text-emerald-400">★</span> BUILT DIFFERENTLY
+  <section class="home-section max-w-6xl mx-auto px-6 pt-8 pb-2">
+    <div class="relative overflow-hidden rounded-[2rem] border border-cyan-200 bg-white shadow-xl shadow-cyan-950/5">
+      <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-400 via-violet-400 to-emerald-400"></div>
+      <div class="grid lg:grid-cols-[1fr_0.95fr] gap-0">
+        <div class="p-7 md:p-10 lg:p-12">
+          <div class="inline-flex items-center gap-2 rounded-full bg-cyan-50 px-4 py-1.5 text-xs font-extrabold tracking-[1.8px] text-cyan-700 mb-5">
+            <i data-lucide="file-pen-line" class="w-4 h-4"></i>
+            DOC TOOLS
           </div>
-          <h3 class="text-2xl md:text-3xl font-black tracking-[-1px] leading-none">Made by humans.<br>Powered by AI.<br>Shaped by students.</h3>
-          <p class="mt-3 text-slate-300 text-[15px] max-w-md">StudyBase is the result of real collaboration between developers, thousands of student contributors, and AI partners (ChatGPT, Gemini, DeepSeek &amp; Grok).</p>
+          <h2 class="section-head text-4xl md:text-5xl font-black tracking-[-1.7px] leading-[0.98] text-slate-950">
+            Write essays, mark PDFs, and keep every document on your device.
+          </h2>
+          <p class="mt-5 max-w-xl text-lg leading-snug text-slate-600">
+            StudyBase Docs gives you a private browser workspace for notes, long-form writing, revision plans, PDF highlighting, annotations, and export-ready study files.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="/docs/" class="landing-cta inline-flex items-center justify-center gap-2.5 rounded-2xl bg-slate-950 px-7 py-4 text-sm font-extrabold text-white shadow-xl shadow-slate-950/15 hover:bg-slate-800">
+              Open Doc Tools <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            </a>
+            <a href="/docs/pdf-editor/" class="landing-cta inline-flex items-center justify-center gap-2.5 rounded-2xl border border-slate-200 bg-white px-7 py-4 text-sm font-extrabold text-slate-800 hover:border-cyan-300 hover:bg-cyan-50">
+              Annotate a PDF
+            </a>
+          </div>
+          <div class="mt-7 grid sm:grid-cols-3 gap-3 text-sm">
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div class="font-black text-slate-950">Offline-first</div>
+              <div class="mt-1 text-slate-500">Loads once. Keeps working.</div>
+            </div>
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div class="font-black text-slate-950">Local saves</div>
+              <div class="mt-1 text-slate-500">Your docs stay yours.</div>
+            </div>
+            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+              <div class="font-black text-slate-950">Built for study</div>
+              <div class="mt-1 text-slate-500">Essays, notes, papers.</div>
+            </div>
+          </div>
         </div>
-
-        <div class="flex-shrink-0">
-          <a href="/legal/contributions.html" 
-             class="group inline-flex items-center justify-center gap-2.5 px-7 h-12 rounded-2xl bg-white text-slate-950 font-extrabold text-sm tracking-wide shadow-xl shadow-black/30 hover:bg-amber-300 hover:text-slate-950 active:scale-[0.985] transition-all">
-            SEE THE COLLABORATION →
-          </a>
-          <div class="mt-2 text-center">
-            <div class="flex items-center justify-center gap-1.5 text-[10px] text-slate-400">
-              <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-              <span class="font-medium">Open source spirit • Real contributions</span>
+        <div class="relative min-h-[360px] bg-slate-950 p-6 md:p-9 text-white overflow-hidden">
+          <div class="absolute inset-0 opacity-60" style="background-image:linear-gradient(rgba(103,232,249,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(103,232,249,.08) 1px,transparent 1px);background-size:34px 34px;"></div>
+          <div class="relative h-full rounded-3xl border border-white/10 bg-white/10 p-4 shadow-2xl shadow-black/25 backdrop-blur">
+            <div class="flex items-center justify-between border-b border-white/10 pb-3">
+              <div class="flex items-center gap-2">
+                <span class="h-3 w-3 rounded-full bg-red-400"></span>
+                <span class="h-3 w-3 rounded-full bg-amber-300"></span>
+                <span class="h-3 w-3 rounded-full bg-emerald-400"></span>
+              </div>
+              <span class="text-xs font-bold text-cyan-200">study-plan.md</span>
+            </div>
+            <div class="grid grid-cols-[0.72fr_1fr] gap-4 pt-4">
+              <div class="space-y-3">
+                <div class="rounded-2xl bg-white/10 p-3">
+                  <div class="h-2 w-16 rounded bg-cyan-300"></div>
+                  <div class="mt-3 space-y-2">
+                    <div class="h-2 rounded bg-white/30"></div>
+                    <div class="h-2 w-5/6 rounded bg-white/20"></div>
+                  </div>
+                </div>
+                <div class="rounded-2xl bg-emerald-400/15 p-3 text-xs font-bold text-emerald-100">Autosaved locally</div>
+                <div class="rounded-2xl bg-violet-400/15 p-3 text-xs font-bold text-violet-100">PDF highlights ready</div>
+              </div>
+              <div class="rounded-2xl bg-white text-slate-950 p-4">
+                <div class="text-xs font-black uppercase tracking-[1.4px] text-cyan-700">Essay repair plan</div>
+                <div class="mt-3 h-3 w-4/5 rounded bg-slate-900"></div>
+                <div class="mt-4 space-y-2.5">
+                  <div class="h-2 rounded bg-slate-200"></div>
+                  <div class="h-2 rounded bg-slate-200"></div>
+                  <div class="h-2 w-3/4 rounded bg-slate-200"></div>
+                </div>
+                <div class="mt-5 rounded-xl border border-cyan-200 bg-cyan-50 p-3">
+                  <div class="h-2 w-24 rounded bg-cyan-400"></div>
+                  <div class="mt-2 h-2 w-full rounded bg-cyan-100"></div>
+                </div>
+                <div class="mt-4 h-20 rounded-xl border-2 border-dashed border-violet-200 bg-violet-50"></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Tiny colorful AI name pills -->
-      <div class="relative mt-5 flex flex-wrap gap-2">
-        <div class="px-3 py-0.5 text-xs font-bold rounded-xl bg-[#10a37f] text-white shadow-sm">ChatGPT</div>
-        <div class="px-3 py-0.5 text-xs font-bold rounded-xl bg-gradient-to-r from-[#4285F4] via-[#34A853] to-[#EA4335] text-white shadow-sm">Gemini</div>
-        <div class="px-3 py-0.5 text-xs font-bold rounded-xl bg-[#6366f1] text-white shadow-sm">DeepSeek</div>
-        <div class="px-3 py-0.5 text-xs font-bold rounded-xl bg-[#111111] text-white shadow-sm">Grok</div>
-        <span class="text-xs text-slate-400 self-center ml-1">+ hundreds of human contributors</span>
-      </div>
     </div>
-  </div>
-
+  </section>
   <!-- ============================================
        THE PAPER LOOP — Revolutionary Core (now colorful + animated)
   ============================================ -->
