@@ -5,9 +5,28 @@
   const STYLE_ID = "sb-endpoint-error-popup-style";
   const MAINTENANCE_CODE = "MAINTENANCE_MODE";
   const DAILY_LIMIT_CODE = "1027";
+  const RATE_LIMIT_CODE = "209";
   const RATE_LIMIT_STATUS = 429;
   const DEFAULT_HOSTS = ["api.studybase.site", "api.revisionbase.site"];
   const monitoredHosts = new Set(DEFAULT_HOSTS);
+  const customErrorRules = [
+    {
+      id: "requests-reached",
+      responses: [DAILY_LIMIT_CODE, RATE_LIMIT_STATUS],
+      action: "countdown",
+      title: "Server request limit reached",
+      summary: "StudyBase has reached the current request limit. Please try again when the countdown finishes.",
+      details: "The endpoint returned a request limit response."
+    },
+    {
+      id: "rate-limited",
+      responses: [RATE_LIMIT_CODE],
+      action: "retry-minute",
+      title: "Too many requests",
+      summary: "You are being rate limited. Please try again in a minute.",
+      details: "The endpoint returned a short-term rate limit response."
+    }
+  ];
   const originalFetch = window.fetch ? window.fetch.bind(window) : null;
   const settings = {
     errorIcon: "/assets/images/site-icons/genie-mascot.svg",
@@ -23,7 +42,7 @@
     const style = document.createElement("style");
     style.id = STYLE_ID;
     style.textContent = [
-      "#" + POPUP_ID + "{position:fixed;inset:0;z-index:2147483647;display:none;background:rgba(15,23,42,0.82);color:#0f172a;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;overflow:auto;}",
+      "#" + POPUP_ID + "{position:fixed!important;inset:0!important;z-index:2147483647!important;isolation:isolate;display:none;background:rgba(15,23,42,0.82);color:#0f172a;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;overflow:auto;}",
       "html.sb-endpoint-error-open,html.sb-endpoint-error-open body{overflow:hidden;}",
       "#" + POPUP_ID + ".is-open{display:block;}",
       "#" + POPUP_ID + " .sb-endpoint-page{min-height:100vh;display:flex;flex-direction:column;}",
@@ -38,6 +57,12 @@
       "#" + POPUP_ID + " h2{margin:0;font-size:22px;line-height:1.2;font-weight:800;color:#0f172a;}",
       "#" + POPUP_ID + " p{margin:0;color:#475569;font-size:15px;line-height:1.65;}",
       "#" + POPUP_ID + " .sb-endpoint-summary{max-width:520px;margin:12px auto 0;font-size:16px;}",
+      "#" + POPUP_ID + " .sb-endpoint-custom-fields{display:none;max-width:520px;margin:16px auto 0;text-align:left;border:1px solid #e2e8f0;background:#f8fafc;border-radius:14px;padding:12px 14px;}",
+      "#" + POPUP_ID + " .sb-endpoint-custom-fields.is-visible{display:block;}",
+      "#" + POPUP_ID + " .sb-endpoint-custom-field{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:13px;line-height:1.35;}",
+      "#" + POPUP_ID + " .sb-endpoint-custom-field + .sb-endpoint-custom-field{border-top:1px solid #e2e8f0;}",
+      "#" + POPUP_ID + " .sb-endpoint-custom-field strong{color:#334155;font-weight:800;}",
+      "#" + POPUP_ID + " .sb-endpoint-custom-field span{color:#0f172a;text-align:right;word-break:break-word;}",
       "#" + POPUP_ID + " .sb-endpoint-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:22px;}",
       "#" + POPUP_ID + " .sb-endpoint-details-view .sb-endpoint-actions{margin-top:26px;justify-content:flex-end;}",
       "#" + POPUP_ID + " button,#" + POPUP_ID + " a.sb-endpoint-button{appearance:none;border:none;text-decoration:none;cursor:pointer;border-radius:14px;padding:12px 20px; transition:all .1s ease;font-size:14px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px;}",
@@ -91,12 +116,12 @@
       "          </div>",
       '          <h1 id="sb-endpoint-title" data-field="title">There was an error</h1>',
       '          <p class="sb-endpoint-summary" data-field="summary">A StudyBase request did not complete successfully.</p>',
+      '          <div class="sb-endpoint-custom-fields" data-field="custom-fields"></div>',
       '          <div class="sb-endpoint-ban-warning" style="max-width:520px;margin:16px auto 0;padding:10px 14px;border-radius:12px;background:#fef2f2;border:1px solid #fecaca;color:#991b1b;font-size:12.5px;font-weight:700;line-height:1.4;">',
       "            Reaching out to the site owner by email about this will lead to a <strong>permanent account ban</strong>.",
       "          </div>",
       '          <div class="sb-endpoint-actions">',
-      '            <button type="button" class="sb-endpoint-primary" data-action="reload">Reload page</button>',
-      '            <button type="button" class="sb-endpoint-secondary" data-action="details">More info</button>',
+      '            <button type="button" class="sb-endpoint-primary" data-action="dismiss">Dismiss</button>',
       "          </div>",
       "        </div>",
       "      </main>",
@@ -131,7 +156,7 @@
       "          </div>",
       "        </div>",
       '        <div class="sb-endpoint-actions">',
-      '          <button type="button" class="sb-endpoint-primary" data-action="reload">Reload page</button>',
+      '          <button type="button" class="sb-endpoint-primary" data-action="dismiss">Dismiss</button>',
       "        </div>",
       "      </div>",
       "    </section>",
@@ -141,23 +166,8 @@
 
     host.addEventListener("click", function (event) {
       const action = event.target && event.target.getAttribute ? event.target.getAttribute("data-action") : null;
-      if (action === "reload") {
+      if (action === "dismiss") {
         closePopup();
-
-        const currentUrl = new URL(window.location.href);
-
-        if (currentUrl.pathname === "/r/index.html" && currentUrl.hash) {
-          currentUrl.hash = "client-preflight";
-          window.location.href = currentUrl.toString();
-        } else {
-          window.location.reload();
-        }
-
-        return;
-      }
-      if (action === "details") {
-        if (host.getAttribute("data-daily-limit") === "true") return;
-        openDetailsFromPopup();
         return;
       }
       if (action === "summary") {
@@ -166,9 +176,8 @@
     });
 
     document.addEventListener("keydown", function (event) {
-      // Escape is intentionally disabled — this error screen cannot be closed
       if (event.key === "Escape") {
-        event.preventDefault();
+        closePopup();
       }
     });
 
@@ -202,6 +211,31 @@
       titleEl.textContent = payload.title || "There was an error";
     }
 
+    const customFieldsEl = popup.querySelector('[data-field="custom-fields"]');
+    if (customFieldsEl) {
+      customFieldsEl.textContent = "";
+      const fields = payload.customFields && typeof payload.customFields === "object" ? payload.customFields : null;
+      if (fields) {
+        Object.keys(fields).forEach(function (label) {
+          const row = document.createElement("div");
+          row.className = "sb-endpoint-custom-field";
+
+          const name = document.createElement("strong");
+          name.textContent = label;
+
+          const value = document.createElement("span");
+          value.textContent = String(fields[label]);
+
+          row.appendChild(name);
+          row.appendChild(value);
+          customFieldsEl.appendChild(row);
+        });
+        customFieldsEl.classList.add("is-visible");
+      } else {
+        customFieldsEl.classList.remove("is-visible");
+      }
+    }
+
     const banWarnings = popup.querySelectorAll(".sb-endpoint-ban-warning");
     if (payload.hideBanWarning) {
       banWarnings.forEach((el) => { el.style.display = "none"; });
@@ -219,8 +253,7 @@
     if (isDailyLimit) {
       popup.setAttribute("data-daily-limit", "true");
 
-      // Completely hide all action buttons (no reload, no more info)
-      if (actions) actions.style.display = "none";
+      if (actions) actions.style.display = "";
 
       // Clear any previous interval
       if (popup._dailyLimitInterval) {
@@ -264,11 +297,8 @@
     popup.classList.remove("is-open");
     popup.removeAttribute("data-daily-limit");
 
-    // Restore buttons for normal errors
-    const moreBtn = popup.querySelector('.sb-endpoint-summary-view button[data-action="details"]');
-    if (moreBtn) moreBtn.style.display = "";
-    const reloadBtn = popup.querySelector('.sb-endpoint-summary-view button[data-action="reload"]');
-    if (reloadBtn) reloadBtn.textContent = "Reload page";
+    const dismissBtn = popup.querySelector('.sb-endpoint-summary-view button[data-action="dismiss"]');
+    if (dismissBtn) dismissBtn.textContent = "Dismiss";
 
     // Remove any previously injected daily limit countdown
     const existingCountdown = popup.querySelector('.sb-daily-limit-countdown');
@@ -282,6 +312,14 @@
 
   function closeToast() {
     closePopup();
+  }
+
+  function bringPopupToFront(popup) {
+    if (!popup || !document.body) return;
+    popup.style.zIndex = "2147483647";
+    if (popup.parentNode !== document.body || document.body.lastElementChild !== popup) {
+      document.body.appendChild(popup);
+    }
   }
 
   // ==================== MAINTENANCE BANNER (above navbar) ====================
@@ -444,6 +482,7 @@
 
     const render = function () {
       const popup = ensurePopup();
+      bringPopupToFront(popup);
       renderPopupPayload(payload);
       popup.setAttribute("data-view", "summary");
       popup.classList.add("is-open");
@@ -466,26 +505,27 @@
     showMaintenanceBanner(message);
   }
 
-  function openDailyLimitPopup(endpoint, payload, triggeredCode) {
-    const signature = "rate-limit-quota";
+  function openCustomErrorPopup(endpoint, payload, rule, triggeredCode) {
+    rule = rule || {};
+    const code = triggeredCode || (rule.responses && rule.responses.length ? String(rule.responses[0]) : "CUSTOM_ERROR");
+    const signature = [rule.id || "custom-error", code, endpoint].join("|");
     if (window.StudybaseEndpointPopup && window.StudybaseEndpointPopup.activeSignature === signature) {
       return;
     }
 
-    const effectiveCode = triggeredCode || DAILY_LIMIT_CODE;
-
     const detailsText = payload && payload.details
       ? payload.details
-      : "The endpoint returned a rate limit / daily quota response.";
+      : rule.details || "The endpoint returned a custom monitored error response.";
 
     const customPayload = {
-      code: effectiveCode,
+      code: code,
       endpoint: endpoint || "Unknown",
       details: detailsText,
-      summary: "Due to extremely high user activity across the entire platform, StudyBase has reached the maximum daily capacity of our servers (100,000 requests). This is a global server-side limit that affects all users equally.",
-      title: "Server daily limit reached",
-      hideBanWarning: true,
-      isDailyLimit: true
+      summary: rule.summary || "A monitored StudyBase request needs attention.",
+      title: rule.title || "Request interrupted",
+      hideBanWarning: rule.hideBanWarning !== false,
+      isDailyLimit: rule.action === "countdown",
+      customFields: rule.fields || null
     };
 
     window.StudybaseEndpointPopup.lastError = customPayload;
@@ -493,6 +533,7 @@
 
     const render = function () {
       const popup = ensurePopup();
+      bringPopupToFront(popup);
       renderPopupPayload(customPayload);
       popup.setAttribute("data-view", "summary");
       popup.classList.add("is-open");
@@ -504,6 +545,10 @@
     } else {
       render();
     }
+  }
+
+  function openDailyLimitPopup(endpoint, payload, triggeredCode) {
+    openCustomErrorPopup(endpoint, payload, customErrorRules[0], triggeredCode || DAILY_LIMIT_CODE);
   }
 
   function addMonitoredHost(rawUrl) {
@@ -538,6 +583,20 @@
     if (typeof assets.endpointErrorIcon === "string") settings.errorIcon = assets.endpointErrorIcon;
     if (typeof support.tiktokQrImage === "string") settings.tiktokQrImage = support.tiktokQrImage;
     if (typeof support.tiktokUrl === "string") settings.tiktokUrl = support.tiktokUrl;
+
+    if (Array.isArray(monitoring.endpointCustomErrors)) {
+      const configuredRules = [];
+      monitoring.endpointCustomErrors.forEach(function (rule) {
+        if (!rule || typeof rule !== "object") return;
+        configuredRules.push(rule);
+        if (Array.isArray(rule.urls)) {
+          rule.urls.forEach(function (url) {
+            if (typeof url === "string" && /^https?:\/\//i.test(url)) addMonitoredHost(url);
+          });
+        }
+      });
+      customErrorRules.unshift.apply(customErrorRules, configuredRules);
+    }
   }
 
   function isMonitoredHost(hostname) {
@@ -571,6 +630,62 @@
     const text = String(raw).trim();
     if (!text) return "";
     return text.length > 1500 ? text.slice(0, 1500) + "..." : text;
+  }
+
+  function getRequestUrl(input) {
+    return typeof input === "string"
+      ? input
+      : input && typeof input.url === "string"
+        ? input.url
+        : "";
+  }
+
+  function ruleUrlMatches(rule, endpoint) {
+    if (!rule || !Array.isArray(rule.urls) || !rule.urls.length) return true;
+    return rule.urls.some(function (pattern) {
+      if (pattern instanceof RegExp) return pattern.test(endpoint);
+      if (typeof pattern !== "string" || !pattern) return false;
+      return endpoint.indexOf(pattern) !== -1;
+    });
+  }
+
+  function getResponseTokens(response, payload) {
+    const tokens = [];
+    if (response && response.status) tokens.push(String(response.status));
+
+    if (payload && payload.isJson && payload.json && typeof payload.json === "object") {
+      const fields = ["error", "code", "errorCode", "err", "errCode", "statusCode", "status", "message", "reason", "details", "errorMessage"];
+      fields.forEach(function (field) {
+        const value = payload.json[field];
+        if (value !== undefined && value !== null && value !== "") tokens.push(String(value).trim());
+      });
+    }
+
+    return tokens;
+  }
+
+  function ruleResponseMatches(rule, response, payload) {
+    if (!rule || !Array.isArray(rule.responses) || !rule.responses.length) return true;
+    const expected = rule.responses.map(function (value) { return String(value).trim(); });
+    const tokens = getResponseTokens(response, payload);
+    return tokens.some(function (token) { return expected.indexOf(token) !== -1; });
+  }
+
+  function getCustomErrorRule(input, response, payload) {
+    const endpoint = buildEndpointLabel(input);
+    return customErrorRules.find(function (rule) {
+      return ruleUrlMatches(rule, endpoint) && ruleResponseMatches(rule, response, payload);
+    }) || null;
+  }
+
+  function getTriggeredCode(rule, response, payload) {
+    const tokens = getResponseTokens(response, payload);
+    if (rule && Array.isArray(rule.responses)) {
+      const expected = rule.responses.map(function (value) { return String(value).trim(); });
+      const matched = tokens.find(function (token) { return expected.indexOf(token) !== -1; });
+      if (matched) return matched;
+    }
+    return tokens[0] || (rule && rule.responses && rule.responses.length ? String(rule.responses[0]) : "CUSTOM_ERROR");
   }
 
   function isDailyLimitResponse(response, payload) {
@@ -877,33 +992,24 @@
         return response;
       }
 
-      // Also scan successful (200) JSON responses for embedded 429 / 1027 daily quota signals
-      if (response.ok) {
-        const ct = (response.headers.get("content-type") || "").toLowerCase();
-        if (ct.includes("application/json")) {
-          try {
-            const clone = response.clone();
-            const json = await clone.json();
-            const fakePayload = {
-              isJson: true,
-              json,
-              details: normaliseDetails(JSON.stringify(json, null, 2))
-            };
-            if (isDailyLimitResponse(response, fakePayload)) {
-              const errVal = json && (json.error || json.code || json.status);
-              const statusStr = String(errVal || "429");
-              const triggeredCode = (statusStr === "429" || statusStr === DAILY_LIMIT_CODE) ? statusStr : "429";
-              openDailyLimitPopup(buildEndpointLabel(input), fakePayload, triggeredCode);
-              return response;
-            }
-          } catch (_) {
-            // ignore parse failures
-          }
+      const contentType = (response.headers.get("content-type") || "").toLowerCase();
+      let inspectedPayload = null;
+      if (!response.ok || response.status !== 200 || contentType.includes("application/json")) {
+        inspectedPayload = await getResponsePayload(response);
+        const customRule = getCustomErrorRule(input, response, inspectedPayload);
+        if (customRule) {
+          openCustomErrorPopup(
+            buildEndpointLabel(input),
+            inspectedPayload,
+            customRule,
+            getTriggeredCode(customRule, response, inspectedPayload)
+          );
+          return response;
         }
       }
 
       if (!response.ok) {
-        const payload = await getResponsePayload(response);
+        const payload = inspectedPayload || await getResponsePayload(response);
 
         if (isDailyLimitResponse(response, payload)) {
           const statusStr = String(response.status || "");
@@ -953,7 +1059,7 @@
         );
       } else {
         // Normal network / CORS-blocked error (e.g. real 404s, outages, etc.)
-        // Show the standard error page with Reload + More info buttons.
+        // Show the standard dismiss-only network error page.
         openPopup({
           code: error && error.name ? error.name : "NETWORK_ERROR",
           endpoint: buildEndpointLabel(input),
