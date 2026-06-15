@@ -40,7 +40,7 @@
 
   async function apiBase() {
     const config = await getConfig();
-    return config?.endpoints?.apiBase || "https://api.studybase.site";
+    return config?.endpoints?.apiBase || window.SiteConfig?.defaults?.endpoints?.apiBase || "";
   }
 
   async function endpoint(path) {

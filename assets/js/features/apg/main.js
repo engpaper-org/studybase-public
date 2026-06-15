@@ -1,7 +1,9 @@
 (function () {
   const ENDPOINT =
     window.SB_APG_ENDPOINT ||
-    "https://alert-api.revisionbase.site/apg/list";
+    window.SB_CONFIG?.endpoints?.apgList ||
+    window.SiteConfig?.defaults?.endpoints?.apgList ||
+    "";
 
   const REQUEST_PAGE = "/internal/apg/request.html";
 

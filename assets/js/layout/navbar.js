@@ -132,7 +132,8 @@
   async function checkLoginAvailability() {
     const stateUrl =
       (window.SB_CONFIG && window.SB_CONFIG.endpoints && window.SB_CONFIG.endpoints.loginState) ||
-      "https://api.studybase.site/state";
+      (window.SiteConfig && window.SiteConfig.defaults && window.SiteConfig.defaults.endpoints && window.SiteConfig.defaults.endpoints.loginState) ||
+      "";
     try {
       const response = await fetch(stateUrl, {
         cache: "no-store",

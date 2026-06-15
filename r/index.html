@@ -1910,6 +1910,33 @@
 
                 <!-- Full-width Search + quick actions (matches card container width) -->
                 <div class="mb-3 max-w-[95rem] mx-auto px-6">
+                    <div
+                        id="studybase-routing-bookmark-banner"
+                        class="hidden mb-3 rounded-2xl border border-blue-200 bg-gradient-to-r from-blue-50 via-sky-50 to-cyan-50 p-4 shadow-sm dark:border-blue-800/50 dark:from-blue-950/40 dark:via-sky-950/30 dark:to-cyan-950/30"
+                    >
+                        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                            <div class="flex gap-3">
+                                <div class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-600/20">
+                                    <i data-lucide="route" class="h-5 w-5"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-sm font-black tracking-tight text-slate-950 dark:text-white">Never lose access to StudyBase again</h2>
+                                    <p class="mt-1 text-sm font-semibold leading-6 text-slate-600 dark:text-slate-300">
+                                        We have deployed more domains to help StudyBase stay reachable if one gets blocked. Bookmark our routing website to always find the newest working version.
+                                    </p>
+                                </div>
+                            </div>
+                            <a
+                                href="https://takemetoaworkingstudybase.site?action=bookmark"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-black text-white shadow-lg shadow-slate-950/20 transition hover:bg-slate-800 active:scale-[0.98] dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100"
+                            >
+                                <span>Add bookmark</span>
+                                <i data-lucide="bookmark-plus" class="h-4 w-4"></i>
+                            </a>
+                        </div>
+                    </div>
                     <div class="flex flex-col sm:flex-row gap-3 items-stretch">
                         <div class="flex-1 relative">
                             <i data-lucide="search" class="w-5 h-5 absolute left-5 top-4 text-slate-400 pointer-events-none"></i>
@@ -2063,7 +2090,7 @@
     </div>
 
     <script>
-  let WORKER = "https://api.revisionbase.site";
+  let WORKER = window.SB_CONFIG?.endpoints?.apiBase || window.SiteConfig?.defaults?.endpoints?.apiBase || "";
   let RESOURCE_LIST_ENDPOINT = `${WORKER}/resources/list`;
   let TOP_CARDS_ENDPOINT = `${WORKER}/resources/top-cards`;
   let RESOURCE_DATA_BASE = "/assets/data/resources/alevel";
@@ -3855,7 +3882,7 @@
   let weeklyFeedbackRating = 0;
   let weeklyFeedbackWeekId = "";
   let weeklyFeedbackSubmitting = false;
-  let WEEKLY_FEEDBACK_REPORT_URL = "https://report-problem.revisionbase.site";
+  let WEEKLY_FEEDBACK_REPORT_URL = window.SB_CONFIG?.endpoints?.reportProblem || window.SiteConfig?.defaults?.endpoints?.reportProblem || "";
 
   async function getWeeklyFeedbackReportEndpoint() {
     if (window.SiteConfig && window.SiteConfig.ready) {
@@ -3901,6 +3928,12 @@
     const password = (localStorage.getItem("studybase_password") || localStorage.getItem("gh_password") || "").trim();
     const device = (localStorage.getItem("studybase_device") || localStorage.getItem("gh_device") || "").trim();
     return Boolean(username && password && device);
+  }
+
+  function updateRoutingBookmarkBanner() {
+    const banner = document.getElementById("studybase-routing-bookmark-banner");
+    if (!banner) return;
+    banner.classList.toggle("hidden", !isResourceUserLoggedIn());
   }
 
   function setWeeklyFeedbackView(viewName) {
@@ -4278,9 +4311,27 @@
     if (event.key === "sb_fav") {
       renderFavourites();
     }
+
+    if (
+      [
+        "studybase_username",
+        "studybase_password",
+        "studybase_device",
+        "gh_username",
+        "gh_password",
+        "gh_device"
+      ].includes(event.key)
+    ) {
+      updateRoutingBookmarkBanner();
+    }
   });
 
+  window.addEventListener("focus", updateRoutingBookmarkBanner);
+  window.addEventListener("studybase:account-session-cleared", updateRoutingBookmarkBanner);
+  window.addEventListener("site-config-ready", updateRoutingBookmarkBanner);
+
   setupResourceIdleCover();
+  updateRoutingBookmarkBanner();
   setupWeeklyFeedbackPrompt();
   setupCommandCenterControls();
   refreshCommandFilters();

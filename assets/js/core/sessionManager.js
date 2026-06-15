@@ -162,9 +162,9 @@
 
     try {
       const config = window.SiteConfig?.ready ? await window.SiteConfig.ready : window.SB_CONFIG;
-      return config?.endpoints?.apiBase || "https://api.studybase.site";
+      return config?.endpoints?.apiBase || window.SiteConfig?.defaults?.endpoints?.apiBase || "";
     } catch (_) {
-      return "https://api.studybase.site";
+      return window.SiteConfig?.defaults?.endpoints?.apiBase || "";
     }
   }
 

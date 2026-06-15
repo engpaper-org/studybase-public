@@ -2000,7 +2000,7 @@
 
   <script>
   const localTest = false;
-  let WORKER = "https://api.studybase.site";
+  let WORKER = window.SB_CONFIG?.endpoints?.apiBase || window.SiteConfig?.defaults?.endpoints?.apiBase || "";
   const configuredTurnstileKeys = window.SB_CONFIG?.security?.turnstileSiteKeys || {};
   const TURNSTILE_SITE_KEYS = {
     login: configuredTurnstileKeys.login || "0x4AAAAAAC9-EW6MUp3spIEP",

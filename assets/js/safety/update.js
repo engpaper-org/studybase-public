@@ -29,7 +29,7 @@
   let UPDATE_PER_MODULE_DELAY_MS = 1000;
   let isUpdating = false;
   let lastFailedAttempt = 0; // Tracks failures to prevent infinite loops
-  let updateEndpoint = "https://update.studybase.site";
+  let updateEndpoint = window.SB_CONFIG?.endpoints?.update || window.SiteConfig?.defaults?.endpoints?.update || "";
 
   function formatModuleName(key) {
     return String(key || "")

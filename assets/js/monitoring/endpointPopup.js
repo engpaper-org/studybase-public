@@ -7,7 +7,7 @@
   const DAILY_LIMIT_CODE = "1027";
   const RATE_LIMIT_CODE = "209";
   const RATE_LIMIT_STATUS = 429;
-  const DEFAULT_HOSTS = ["api.studybase.site", "api.revisionbase.site"];
+  const DEFAULT_HOSTS = [];
   const monitoredHosts = new Set(DEFAULT_HOSTS);
   const customErrorRules = [
     {
@@ -799,7 +799,7 @@
             : "";
 
       const parsed = new URL(requestUrl, window.location.origin);
-      if (parsed.hostname !== "api.studybase.site" && parsed.hostname !== "api.revisionbase.site") {
+      if (!isMonitoredHost(parsed.hostname)) {
         return false;
       }
 
@@ -828,7 +828,7 @@
             : "";
 
       const parsed = new URL(requestUrl, window.location.origin);
-      if (parsed.hostname !== "api.studybase.site" && parsed.hostname !== "api.revisionbase.site") {
+      if (!isMonitoredHost(parsed.hostname)) {
         return false;
       }
 
@@ -870,7 +870,7 @@
             : "";
 
       const parsed = new URL(requestUrl, window.location.origin);
-      if (parsed.hostname !== "api.studybase.site" && parsed.hostname !== "api.revisionbase.site") {
+      if (!isMonitoredHost(parsed.hostname)) {
         return null;
       }
 

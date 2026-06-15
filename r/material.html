@@ -680,7 +680,7 @@
 </div>
 
 <script>
-let WORKER = "https://api.revisionbase.site";
+let WORKER = window.SB_CONFIG?.endpoints?.apiBase || window.SiteConfig?.defaults?.endpoints?.apiBase || "";
 let RESOURCE_GET_ENDPOINT = `${WORKER}/resource/get`;
 let RESOURCE_STATE_ENDPOINT = `${WORKER}/state`;
 let TURNSTILE_SITE_KEY = window.SB_CONFIG?.security?.turnstileSiteKeys?.resource || "0x4AAAAAACxsClLBNoaHGiZm";

@@ -1,5 +1,6 @@
 (function () {
   const DEFAULT_CONFIG = {
+    distributionId: "studybase-main",
     brand: {
       name: "StudyBase",
       suffix: ".site",
@@ -79,10 +80,8 @@
       resourceGet: "https://api.studybase.site/resource/get",
       resourceState: "https://api.studybase.site/state",
       resourceTopCards: "https://api.studybase.site/resources/top-cards",
-      consentLog:
-        "https://script.google.com/macros/s/AKfycbyW-AQ4JeYOMujbXToocpkXPH_GMYxhJTqViDOkoPyXYrpcaMvFuxnVjtWQx-ot6T3L/exec",
-      materialAnalytics:
-        "https://script.google.com/macros/s/AKfycbz6WAa5VWe19UTQhKJ32eTF0gQnV2ZqQMyKlBflyzz9lpQrczB4RKeECsb5oKz7RLK9/exec",
+      consentLog: "https://script.google.com/macros/s/AKfycbyW-AQ4JeYOMujbXToocpkXPH_GMYxhJTqViDOkoPyXYrpcaMvFuxnVjtWQx-ot6T3L/exec",
+      materialAnalytics: "https://script.google.com/macros/s/AKfycbz6WAa5VWe19UTQhKJ32eTF0gQnV2ZqQMyKlBflyzz9lpQrczB4RKeECsb5oKz7RLK9/exec",
       update: "https://update.studybase.site"
     },
     environment: {
@@ -304,7 +303,6 @@
     }
   };
 
-  const CONFIG_URL = window.SB_CONFIG_URL || "/site.config.json";
   const root = document.documentElement;
   root.classList.add("sb-config-loading");
 
@@ -554,25 +552,6 @@
     document.head.appendChild(style);
   }
 
-  function isObject(value) {
-    return value && typeof value === "object" && !Array.isArray(value);
-  }
-
-  function mergeDeep(base, override) {
-    const output = Object.assign({}, base);
-    if (!isObject(override)) return output;
-
-    Object.keys(override).forEach((key) => {
-      if (isObject(base[key]) && isObject(override[key])) {
-        output[key] = mergeDeep(base[key], override[key]);
-      } else {
-        output[key] = override[key];
-      }
-    });
-
-    return output;
-  }
-
   function setIcon(rel, href) {
     if (!href) return;
     let link = document.querySelector(`link[rel="${rel}"]`);
@@ -582,6 +561,80 @@
       document.head.appendChild(link);
     }
     link.href = href;
+  }
+
+  function getDistributionId(config = activeConfig || DEFAULT_CONFIG) {
+    return String(
+      config?.distributionId ||
+      config?.distribution?.id ||
+      DEFAULT_CONFIG.distributionId ||
+      ""
+    ).trim();
+  }
+
+  function shouldAddDistributionId(url, config = activeConfig || DEFAULT_CONFIG) {
+    if (!url || !config || !config.endpoints) return false;
+    const endpoints = config.endpoints;
+
+    return Object.keys(endpoints).some((key) => {
+      const endpoint = endpoints[key];
+      if (typeof endpoint !== "string" || !endpoint) return false;
+
+      try {
+        const parsedEndpoint = new URL(endpoint, window.location.origin);
+        return (
+          parsedEndpoint.protocol === url.protocol &&
+          parsedEndpoint.hostname === url.hostname &&
+          parsedEndpoint.port === url.port
+        );
+      } catch (_) {
+        return false;
+      }
+    });
+  }
+
+  function withDistributionId(rawUrl, config = activeConfig || DEFAULT_CONFIG) {
+    const distributionId = getDistributionId(config);
+    if (!distributionId) return rawUrl;
+
+    try {
+      const url = new URL(rawUrl, window.location.href);
+      if (!shouldAddDistributionId(url, config)) return rawUrl;
+      if (!url.searchParams.has("distributionId")) {
+        url.searchParams.set("distributionId", distributionId);
+      }
+      return url.toString();
+    } catch (_) {
+      return rawUrl;
+    }
+  }
+
+  function installDistributionFetchWrapper(config) {
+    if (window.__studybaseDistributionFetchWrapped) return;
+    const originalFetch = window.fetch ? window.fetch.bind(window) : null;
+    if (!originalFetch) return;
+
+    window.__studybaseDistributionFetchWrapped = true;
+    window.fetch = function distributionFetch(input, init) {
+      try {
+        const active = window.SB_CONFIG || config || activeConfig || DEFAULT_CONFIG;
+
+        if (typeof input === "string" || input instanceof URL) {
+          return originalFetch(withDistributionId(String(input), active), init);
+        }
+
+        if (input && typeof input.url === "string") {
+          const nextUrl = withDistributionId(input.url, active);
+          if (nextUrl !== input.url) {
+            return originalFetch(new Request(nextUrl, input), init);
+          }
+        }
+      } catch (_) {
+        // Fall back to the original request below.
+      }
+
+      return originalFetch(input, init);
+    };
   }
 
   function replaceBrandText(value, config) {
@@ -659,6 +712,7 @@
 
   function applyConfig(config) {
     window.SB_CONFIG = config;
+    installDistributionFetchWrapper(config);
     refreshThemeFromConfig(config);
 
     // Load unified premium design system
@@ -743,30 +797,7 @@
     });
   }
 
-  async function fetchConfig() {
-    const controller = window.AbortController ? new AbortController() : null;
-    const timeoutMs = Number(DEFAULT_CONFIG.environment.configFetchTimeoutMs) || 2500;
-    const timeoutId = controller
-      ? window.setTimeout(() => controller.abort(), timeoutMs)
-      : null;
-
-    try {
-      const response = await fetch(CONFIG_URL, {
-        cache: "no-store",
-        signal: controller ? controller.signal : undefined
-      });
-
-      if (!response.ok) throw new Error(`Config request failed with ${response.status}`);
-      return mergeDeep(DEFAULT_CONFIG, await response.json());
-    } catch (error) {
-      console.warn("Using default site config:", error);
-      return DEFAULT_CONFIG;
-    } finally {
-      if (timeoutId) window.clearTimeout(timeoutId);
-    }
-  }
-
-  const ready = fetchConfig().then((config) => {
+  const ready = Promise.resolve(DEFAULT_CONFIG).then((config) => {
     applyConfig(config);
 
     if (document.readyState === "loading") {
@@ -803,6 +834,8 @@
       return value === undefined ? fallback : value;
     },
     apply: applyConfig,
+    getDistributionId,
+    withDistributionId,
     theme: window.SiteTheme
   };
 })();

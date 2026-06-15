@@ -456,7 +456,7 @@
   <script>
     let currentType = null;
     let forcedType = null;
-    let WORKER_URL = "https://report-problem.revisionbase.site";
+    let WORKER_URL = window.SB_CONFIG?.endpoints?.reportProblem || window.SiteConfig?.defaults?.endpoints?.reportProblem || "";
 
     const REPORT_TYPES = {
       bug: {

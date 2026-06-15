@@ -15,4 +15,4 @@ Shared browser scripts are grouped by responsibility:
 - `support/`: support article content and rendering.
 - `ui/`: small visual/UI helper scripts.
 
-Keep new shared scripts in the closest folder by responsibility, then update `site.config.json` or page-level `<script>` tags as needed.
+Keep new shared scripts in the closest folder by responsibility, then update `assets/js/config/siteConfig.js` or page-level `<script>` tags as needed.
