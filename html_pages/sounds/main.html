@@ -23,13 +23,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/assets/js/safety/tts.js" defer></script>
-  <script>
-    window.STUDYBASE_SUPPORT_CONFIG = {
-      label: "Promo"
-    };
-  </script>
-  <script src="/assets/js/support/support-handler.js" defer></script>
-  <style>
+<style>
     :root {
       --ink: #172033;
       --muted: #667085;
@@ -112,17 +106,7 @@
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
     }
-
-    .search-ad-slot {
-      min-width: 0;
-    }
-
-    .search-ad-slot [data-support-slot] {
-      width: 100%;
-    }
-
-
-    .schedule-chip {
+.schedule-chip {
       background: rgba(15, 118, 110, 0.10);
       color: var(--accent-strong);
     }
@@ -309,20 +293,7 @@
           </div>
         </div>
       </section>
-
-      <section class="mb-3 grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center" aria-label="Advertisement">
-        <div class="search-ad-slot">
-          <div
-            data-support-slot="soundboard-search-leaderboard"
-            data-support-ratio="leaderboard"
-            data-support-max-width="100%"
-            data-support-label="Support Promo">
-          </div>
-        </div>
-        <div class="hidden lg:block" aria-hidden="true"></div>
-      </section>
-
-      <section class="mb-6 grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
+<section class="mb-6 grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
         <label for="searchInput" class="sr-only">Search sounds</label>
         <div class="relative">
           <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>

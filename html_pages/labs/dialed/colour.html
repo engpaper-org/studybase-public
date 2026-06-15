@@ -645,23 +645,7 @@
       cursor:not-allowed;
       pointer-events:none;
     }
-
-
-    .support-bottom-right{
-      position:fixed;
-      right:22px;
-      bottom:22px;
-      width:min(300px, calc((100vw - 430px) / 2 - 34px));
-      max-width:300px;
-      z-index:4;
-      pointer-events:auto;
-    }
-
-    @media(max-width:1180px), (max-height:720px){
-      .support-bottom-right{display:none}
-    }
-
-    @media(max-width:560px){
+@media(max-width:560px){
       body{overflow:auto}
       .topbar{top:12px;left:14px;right:14px}
       .brand{gap:8px}
@@ -802,17 +786,7 @@
       </div>
     </section>
   </main>
-
-
-  <aside class="support-bottom-right" aria-label="Sponsored placement">
-    <div
-      data-support-slot="colour-bottom-right"
-      data-support-ratio="half-page"
-      data-support-desktop-only="true">
-    </div>
-  </aside>
-
-  <div class="help hide" id="help">
+<div class="help hide" id="help">
     <div class="help-card">
       <h2>How it works</h2>
       <p>You’ll see a colour for three seconds. Then use hue, saturation and lightness sliders to recreate it from memory.</p>
@@ -820,14 +794,6 @@
       <button class="pill-btn" id="closeHelp">Got it</button>
     </div>
   </div>
-
-<script>
-  window.STUDYBASE_SUPPORT_CONFIG = {
-    iframeSrc: "/support/slot.html"
-  };
-</script>
-<script src="/assets/js/support/support-handler.js" defer></script>
-
 <script>
 (() => {
   const COLOURS = 5;

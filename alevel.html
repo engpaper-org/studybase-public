@@ -13,41 +13,13 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="/assets/js/layout/navbar.js" defer></script>
   <script src="/assets/js/layout/footer.js" defer></script>
-  <script src="/assets/js/support/support-handler.js" defer></script>
-  <script src="/assets/js/core/sessionManager.js" defer></script>
+<script src="/assets/js/core/sessionManager.js" defer></script>
   <script src="/assets/js/privacy/checkCookieConsent.js"></script>
   <style>
     .route-card { transition: transform .2s cubic-bezier(0.4,0,0.2,1), box-shadow .2s; }
     .route-card:hover { transform: translateY(-4px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
     .board-pill { font-size: .75rem; padding: .1rem .6rem; border-radius: 999px; font-weight: 700; }
-
-    /* === SCROLL FIX for short pages + dynamic ad injection ===
-       The natural content is short. Once support-handler injects the 4 promo iframes
-       (1 leaderboard + 3 rectangles), the page must grow and show a scrollbar.
-       We completely opt out of the global body {display:flex; min-height:100vh} flex column
-       that was causing the scroll to break after ad injection.
-    */
-    html.alevel-page,
-    body.alevel-page {
-      display: block !important;
-      height: auto !important;
-      min-height: 0 !important;
-      overflow-y: auto !important;
-      overflow-x: hidden !important;
-    }
-
-    body.alevel-page > main {
-      display: block !important;
-      flex: none !important;
-      min-height: 0 !important;
-      height: auto !important;
-    }
-
-    /* Make sure the ad containers never constrain the document height */
-    body.alevel-page [data-support-slot] {
-      height: auto !important;
-    }
-  </style>
+</style>
 </head>
 <body class="bg-slate-50 alevel-page">
   <main class="max-w-[1200px] mx-auto px-5 pt-8 pb-24">
@@ -61,11 +33,7 @@
         Open full database <i class="fa-solid fa-arrow-right"></i>
       </a>
     </div>
-
-    <!-- Quick support ad slot -->
-    <div data-support-slot="alevel-top" data-support-ratio="leaderboard" data-support-label="Education Partner" class="mb-8"></div>
-
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
       <!-- AQA -->
       <div class="route-card sbx-modern-card bg-white border border-slate-200 rounded-3xl p-6 flex flex-col">
         <div class="flex items-center gap-3 mb-4">
@@ -157,48 +125,11 @@
         <a href="/r/index.html#client-preflight" class="mt-auto inline-flex w-fit items-center gap-2 bg-white text-slate-900 font-bold text-sm px-5 py-2.5 rounded-2xl">Open Resource Database</a>
       </div>
     </div>
-
-    <!-- 3 side-by-side rectangle ads (better use of the space than a single almost-square) -->
-    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div data-support-slot="alevel-bottom-1" data-support-ratio="rectangle" data-support-label="Partner Resources"></div>
-      <div data-support-slot="alevel-bottom-2" data-support-ratio="rectangle" data-support-label="Partner Resources"></div>
-      <div data-support-slot="alevel-bottom-3" data-support-ratio="rectangle" data-support-label="Partner Resources"></div>
-    </div>
-  </main>
+</main>
 
   <script>
     // Tailwind script if needed for future
     console.log('%c[A-Level Routes] Page ready — fully functional static route hub', 'color:#64748b');
-
-    // Runtime scroll unlock — runs after support-handler has injected the ads
-    // (the page is short until the promos load, at which point it must become scrollable)
-    function forceScrollable() {
-      const html = document.documentElement;
-      const body = document.body;
-
-      html.classList.add('alevel-page');
-      body.classList.add('alevel-page');
-
-      html.style.height = 'auto';
-      html.style.minHeight = '0';
-      html.style.overflowY = 'auto';
-
-      body.style.height = 'auto';
-      body.style.minHeight = '0';
-      body.style.overflowY = 'auto';
-      body.style.display = 'block';
-    }
-
-    // Run multiple times to beat any late style injection from navbar/footer/support-handler
-    document.addEventListener('DOMContentLoaded', forceScrollable);
-    setTimeout(forceScrollable, 50);
-    setTimeout(forceScrollable, 300);
-    setTimeout(forceScrollable, 900);
-    setTimeout(forceScrollable, 1800);
-
-    // Also re-apply if the support slots change (in case of rotation or late loads)
-    const supportObserver = new MutationObserver(forceScrollable);
-    supportObserver.observe(document.body, { childList: true, subtree: true });
   </script>
 </body>
 </html>
