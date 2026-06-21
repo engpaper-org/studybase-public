@@ -159,18 +159,8 @@
 
     [
       "studybase_session_active",
-      "studybase_username",
-      "studybase_password",
-      "studybase_device",
-      "studybase_device_b64",
       "studybase_session_expiry",
-      "studybase_session_expiry_set_at",
-      "gh_username",
-      "gh_password",
-      "gh_device",
-      "gh_device_b64",
-      "gh_session_expiry",
-      "gh_session_expiry_set_at"
+      "studybase_user"
     ].forEach((key) => {
       try { localStorage.removeItem(key); } catch (_) {}
     });
@@ -526,6 +516,20 @@
           "sessionExpired";
 
         const params = new URLSearchParams(window.location.search);
+        if (params.get("signup") === "true") {
+          const username = (params.get("username") || "").trim();
+          const url = new URL(window.location.href);
+          url.searchParams.delete("signup");
+          url.searchParams.delete("username");
+          window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+          setTimeout(() => {
+            if (!isMaintenanceActive()) {
+              const loginUrl = `/myaccount/login.html${username ? `?username=${encodeURIComponent(username)}` : ""}`;
+              ensureAccountModal().openPage(loginUrl, "StudyBase login");
+            }
+          }, 80);
+          return;
+        }
         if (params.get(configParam) === "true") {
           // Clean the parameter from the URL immediately (no reload)
           const url = new URL(window.location.href);

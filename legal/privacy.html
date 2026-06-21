@@ -92,12 +92,12 @@
           <h2>2. Browser storage</h2>
           <p>
             StudyBase uses local storage and session storage so pages can remember consent, account state, session expiry, device codes,
-            display names, settings, quick-login preferences, search preferences, recent history, favourites, safety toggles, active time,
+            display names, server-synchronised settings, favourites, safety toggles, active time,
             break reminders, resource state, and similar site behaviour.
           </p>
           <ul>
             <li>Consent records may include <strong>site_consent_granted</strong> and <strong>consent_uid</strong>.</li>
-            <li>Account storage contains an opaque session token, username, first name, and session expiry. Passwords and eligibility email addresses are not stored in browser storage by the account system.</li>
+            <li>Account storage contains a non-secret session marker, session expiry, and a cached copy of the signed-in user's account profile, including username, first name, date of birth, gender, status, and settings. Passwords and eligibility email addresses are not stored in browser storage.</li>
             <li>Usage records may include local recent items, favourites, search preferences, wellbeing timing, and tool choices.</li>
           </ul>
           <p>
@@ -189,7 +189,7 @@
             <li>Local browser data: until you clear it or the browser removes it.</li>
             <li>Pending signup records: up to 48 hours, unless used sooner.</li>
             <li>Sessions: up to seven days, unless revoked or the account is deleted sooner.</li>
-            <li>Account profile: while the account is active. Self-service deletion revokes sessions, removes login events, and anonymises the remaining database record. The keyed eligibility hash is retained while the one-use beta access control operates, so the same entitlement cannot be reused.</li>
+            <li>Account profile: while the account is active. Password-confirmed self-service deletion revokes sessions and removes the account record, username index, keyed eligibility record, and related pending signup data.</li>
             <li>Account security login events: up to 30 days.</li>
             <li>Support and report records: retained as long as needed to resolve the matter and for a reasonable period thereafter for audit and safety reasons.</li>
             <li>Consent records: kept for as long as the consent is active plus a short period for audit.</li>

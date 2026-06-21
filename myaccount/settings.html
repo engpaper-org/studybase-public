@@ -6,47 +6,46 @@
   <title>StudyBase | Settings</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/assets/js/core/services.js"></script>
-  <script src="/assets/js/account/sidebar.js" defer></script>
-  <script src="/assets/js/account/checkLoggedIn.js" defer></script>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
-  <main class="mx-auto max-w-3xl px-5 py-12">
-    <header><p class="text-xs font-black uppercase tracking-[.25em] text-purple-600">Account</p><h1 class="mt-3 text-4xl font-black">Settings</h1><p class="mt-2 text-slate-500">Account profile and preferences for this browser.</p></header>
-    <section class="mt-8 space-y-6">
-      <form id="profile" class="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm">
-        <h2 class="text-xl font-black">Profile name</h2>
-        <p class="mt-2 text-sm text-amber-700">Smoothwall or your organisation may monitor text entered on managed devices. Do not enter unnecessary sensitive information.</p>
-        <label class="mt-5 block text-sm font-bold">First name<input id="firstName" name="firstName" maxlength="50" required class="mt-2 w-full rounded-xl border border-slate-300 p-3"></label>
-        <button class="mt-5 rounded-xl bg-purple-600 px-5 py-3 font-black text-white">Save name</button>
-        <p id="profileMessage" class="mt-3 text-sm text-slate-500" role="status"></p>
-      </form>
-      <form id="preferences" class="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm">
-        <h2 class="text-xl font-black">Local preferences</h2>
-        <p class="mt-2 text-sm text-slate-500">These settings remain only in this browser.</p>
-        <label class="mt-5 flex gap-3 text-sm"><input id="contentWarnings" type="checkbox" class="mt-1"><span><strong>Show content warnings</strong><br><span class="text-slate-500">Show warnings before sensitive support material.</span></span></label>
-        <label class="mt-4 flex gap-3 text-sm"><input id="recentHistory" type="checkbox" class="mt-1"><span><strong>Remember recent activity</strong><br><span class="text-slate-500">Store recent StudyBase activity on this device.</span></span></label>
-        <button class="mt-5 rounded-xl border border-slate-300 px-5 py-3 font-black">Save preferences</button>
-        <p id="preferenceMessage" class="mt-3 text-sm text-slate-500" role="status"></p>
-      </form>
-    </section>
+  <main class="mx-auto max-w-3xl px-5 py-10">
+    <a href="/myaccount/account.html" class="text-sm font-bold text-purple-700">&larr; Account</a>
+    <header class="mt-5"><p class="text-xs font-black uppercase tracking-[.2em] text-purple-600">Server synced</p><h1 class="mt-2 text-4xl font-black">Settings</h1><p class="mt-2 text-slate-500">These preferences follow your StudyBase account.</p></header>
+    <div id="message" class="mt-6 hidden rounded-xl p-4 text-sm"></div>
+    <form id="settings" class="mt-7 space-y-5 rounded-3xl border bg-white p-6 shadow-sm sm:p-8">
+      <label class="block text-sm font-bold">First name<input id="firstName" name="firstName" maxlength="50" required class="mt-2 w-full rounded-xl border border-slate-300 p-4"></label>
+      <label class="flex gap-4 rounded-2xl bg-slate-50 p-5"><input id="contentWarnings" name="contentWarnings" type="checkbox" class="mt-1 h-5 w-5 accent-purple-600"><span><strong class="block">Content warnings</strong><span class="mt-1 block text-sm text-slate-500">Show safety notices before potentially sensitive content.</span></span></label>
+      <button class="w-full rounded-xl bg-purple-600 p-4 font-black text-white">Save settings</button>
+    </form>
+    <a id="delete" href="https://auth.studybase.site/delete" class="mt-6 block rounded-2xl border border-amber-200 bg-amber-50 p-5"><strong class="text-amber-950">Delete account</strong><span class="mt-1 block text-sm text-amber-800">Confirm your password and permanently remove the account.</span></a>
   </main>
   <script>
+    const form = document.getElementById("settings");
+    const message = document.getElementById("message");
     const firstName = document.getElementById("firstName");
-    firstName.value = localStorage.getItem("sb_firstName") || "";
-    document.getElementById("contentWarnings").checked = localStorage.getItem("sb_showContentWarnings") !== "false";
-    document.getElementById("recentHistory").checked = localStorage.getItem("sb_recent") !== "false";
-    document.getElementById("profile").addEventListener("submit", async event => {
-      event.preventDefault(); const message = document.getElementById("profileMessage"); message.textContent = "Saving...";
-      const result = await window.StudyBaseServices.updateProfile({ firstName: firstName.value.trim() });
-      message.textContent = result.ok ? "Profile name saved." : (result.error || "Could not save profile name.");
-      message.className = `mt-3 text-sm ${result.ok ? "text-emerald-600" : "text-red-600"}`;
-    });
-    document.getElementById("preferences").addEventListener("submit", event => {
+    const contentWarnings = document.getElementById("contentWarnings");
+    function show(text, bad = false) {
+      message.textContent = text;
+      message.className = `mt-6 rounded-xl p-4 text-sm ${bad ? "bg-red-50 text-red-800" : "bg-emerald-50 text-emerald-800"}`;
+    }
+    async function load() {
+      const result = await StudyBaseServices.request("/me");
+      if (!result.ok || !result.user) { location.replace("/myaccount/login.html?sessionExpired=true"); return; }
+      firstName.value = result.user.name || "";
+      contentWarnings.checked = result.user.settings?.contentWarnings !== false;
+      document.getElementById("delete").href = `https://auth.studybase.site/delete?username=${encodeURIComponent(result.user.username)}`;
+      localStorage.setItem("studybase_user", JSON.stringify(result.user));
+    }
+    form.onsubmit = async event => {
       event.preventDefault();
-      localStorage.setItem("sb_showContentWarnings", String(document.getElementById("contentWarnings").checked));
-      localStorage.setItem("sb_recent", String(document.getElementById("recentHistory").checked));
-      document.getElementById("preferenceMessage").textContent = "Preferences saved on this device.";
-    });
+      const profile = await StudyBaseServices.request("/profile", { method: "POST", body: JSON.stringify({ firstName: firstName.value }) });
+      if (!profile.ok) { show(profile.error || "Could not save name", true); return; }
+      const settings = await StudyBaseServices.request("/settings", { method: "POST", body: JSON.stringify({ contentWarnings: contentWarnings.checked }) });
+      if (!settings.ok) { show(settings.error || "Could not save settings", true); return; }
+      localStorage.setItem("studybase_user", JSON.stringify(settings.user));
+      show("Settings saved.");
+    };
+    load().catch(() => show("Settings could not be loaded.", true));
   </script>
 </body>
 </html>

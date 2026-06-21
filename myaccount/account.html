@@ -1,365 +1,56 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<!doctype html>
+<html lang="en">
 <head>
-    
-  <meta charset="UTF-8" />
-            <meta name="description" content="StudyBase provides educational revision resources, A-Level and GCSE study tools, past papers, subject guides, wellbeing support, and learning materials for students." data-studybase-education-meta="true">
-    <meta name="classification" content="Education" data-studybase-education-meta="true">
-    <meta name="category" content="Education" data-studybase-education-meta="true">
-    <meta name="subject" content="A-Level and GCSE revision, study resources, educational tools" data-studybase-education-meta="true">
-    <meta name="audience" content="Students, teachers, and learners" data-studybase-education-meta="true">
-    <meta name="educational-use" content="Revision, exam preparation, independent study" data-studybase-education-meta="true">
-    <meta name="learning-resource-type" content="Revision resource" data-studybase-education-meta="true">
-    <meta property="og:site_name" content="StudyBase" data-studybase-education-meta="true">
-    <meta property="og:type" content="website" data-studybase-education-meta="true">
-    <meta property="og:locale" content="en_GB" data-studybase-education-meta="true">
-<script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RevisionBase • Account</title>
-  <script src="/assets/js/auth/iframeCheck.js"></script>
-  <script src="/assets/js/core/services.js"></script>
-
-  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>StudyBase | My account</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-    :root { color-scheme: light; }
-    .bg-grid-slate-100 {
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='%23f1f5f9'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
-    }
-    .glass-panel {
-      background: rgba(255, 255, 255, 0.78);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(226, 232, 240, 0.9);
-    }
-  </style>
-
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            body: ['"Inter"', 'sans-serif'],
-          },
-        }
-      }
-    };
-  </script>
-  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
+  <script src="/assets/js/core/services.js"></script>
 </head>
-
-<body class="min-h-screen bg-slate-50 text-slate-900 font-sans">
-  <div class="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0.5))] -z-10"></div>
-
-  <header class="max-w-5xl mx-auto px-6 pt-10">
-    
-    <div class="flex items-start justify-between gap-4">
-      <div>
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-slate-600 text-xs font-bold uppercase tracking-widest shadow-sm">
-          <i class="fa-solid fa-user"></i>
-          Account
-        </div>
-
-        <h1 class="mt-4 text-3xl md:text-4xl font-black tracking-tight">
-          Hello <span id="nameSlot" class="text-slate-900">there</span>
-        </h1>
-
-        <p class="mt-2 text-slate-500 font-body">
-          Manage your profile and local device settings.
-        </p>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+  <main class="mx-auto max-w-5xl px-5 py-10">
+    <header class="flex flex-wrap items-center justify-between gap-4">
+      <div><p class="text-xs font-black uppercase tracking-[.2em] text-purple-600">StudyBase account</p><h1 class="mt-2 text-4xl font-black">Your account</h1></div>
+      <button id="logout" class="rounded-xl border border-slate-300 bg-white px-5 py-3 font-bold">Sign out</button>
+    </header>
+    <div id="message" class="mt-6 rounded-2xl border border-slate-200 bg-white p-5 text-slate-600">Loading your secure profile...</div>
+    <section id="content" class="mt-6 hidden space-y-6">
+      <div class="rounded-3xl bg-gradient-to-br from-purple-700 to-indigo-950 p-7 text-white shadow-xl">
+        <p class="text-sm font-bold text-purple-200">Signed in as</p><h2 id="name" class="mt-2 text-3xl font-black"></h2><p id="username" class="mt-1 text-purple-200"></p>
       </div>
-
-      
-    </div>
-  </header>
-
-  <main class="max-w-5xl mx-auto px-6 pb-14 pt-8">
-    <section class="glass-panel rounded-[2rem] shadow-xl shadow-slate-200/60 overflow-hidden">
-      <div class="px-8 py-6 border-b border-slate-200 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-        <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg border border-blue-100">
-            <i class="fa-solid fa-id-card"></i>
-          </div>
-          <div>
-            <p class="font-extrabold leading-tight">Account overview</p>
-          <p id="accountSyncStatus" class="text-xs text-slate-500 font-body">Syncing with StudyBase</p>
-          </div>
-        </div>
-
-        <button id="wipeBtn"
-          class="px-4 py-2 rounded-xl bg-white border border-red-200 text-red-600 font-extrabold hover:bg-red-50 transition">
-          <i class="fa-solid fa-broom mr-2"></i>Clear local data
-        </button>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="rounded-2xl border bg-white p-5"><p class="text-xs font-black uppercase tracking-wider text-slate-400">User ID</p><p id="user-id" class="mt-2 break-all font-mono text-sm"></p></article>
+        <article class="rounded-2xl border bg-white p-5"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Date of birth</p><p id="dob" class="mt-2 font-bold"></p></article>
+        <article class="rounded-2xl border bg-white p-5"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Gender</p><p id="gender" class="mt-2 font-bold"></p></article>
       </div>
-
-      <div class="p-8 space-y-10">
-        <section>
-          <h2 class="text-lg font-black">Quick actions</h2>
-          <p class="text-sm text-slate-500 font-body mt-1">Jump straight to what you need.</p>
-
-          <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <a href="/myaccount/settings.html"
-              class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 shadow-sm hover:shadow-md transition-all p-5 text-left">
-              <div class="flex items-start gap-4">
-                <div class="w-11 h-11 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                  <i class="fa-solid fa-sliders"></i>
-                </div>
-                <div class="min-w-0">
-                  <p class="font-extrabold">User settings</p>
-                  <p class="text-sm text-slate-500 font-body mt-1">Name, toggles, warnings, behaviour.</p>
-                </div>
-              </div>
-            </a>
-
-            <a href="/myaccount/history.html"
-              class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 shadow-sm hover:shadow-md transition-all p-5 text-left">
-              <div class="flex items-start gap-4">
-                <div class="w-11 h-11 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-colors">
-                  <i class="fa-solid fa-clock-rotate-left"></i>
-                </div>
-                <div class="min-w-0">
-                  <p class="font-extrabold">History</p>
-                  <p class="text-sm text-slate-500 font-body mt-1">Recently viewed + site search history.</p>
-                </div>
-              </div>
-            </a>
-
-            <button id="logoutBtn"
-              class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 shadow-sm hover:shadow-md transition-all p-5 text-left">
-              <div class="flex items-start gap-4">
-                <div class="w-11 h-11 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition-colors">
-                  <i class="fa-solid fa-right-from-bracket"></i>
-                </div>
-                <div class="min-w-0">
-                  <p class="font-extrabold">Logout</p>
-                  <p class="text-sm text-slate-500 font-body mt-1">Sign out on this device.</p>
-                </div>
-              </div>
-            </button>
-
-            <button id="deleteAccountBtn"
-              class="group rounded-2xl border border-red-100 bg-white hover:bg-red-50 shadow-sm hover:shadow-md transition-all p-5 text-left">
-              <div class="flex items-start gap-4">
-                <div class="w-11 h-11 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition-colors">
-                  <i class="fa-solid fa-user-xmark"></i>
-                </div>
-                <div class="min-w-0">
-                  <p class="font-extrabold">Delete account</p>
-                  <p class="text-sm text-slate-500 font-body mt-1">Request account removal.</p>
-                </div>
-              </div>
-            </button>
-          </div>
-        </section>
-
-        <section class="grid grid-cols-1 gap-4">
-          <div class="rounded-2xl border border-slate-200 bg-white p-6">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="text-xs font-bold uppercase tracking-widest text-slate-500">Account status</p>
-                <div class="mt-3 flex items-center gap-3">
-                  <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
-                    <i class="fa-solid fa-user-check"></i>
-                  </div>
-                  <p class="text-3xl font-black text-slate-900">Signed in</p>
-                </div>
-                <p class="mt-3 text-sm text-slate-500 font-body">Your StudyBase account is active on this device.</p>
-              </div>
-              <button id="refreshAccountBtn"
-                class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition">
-                <i class="fa-solid fa-rotate mr-2"></i>Refresh
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <section class="rounded-2xl border border-slate-200 bg-white p-6">
-          <div class="flex items-start gap-4">
-            <div class="w-11 h-11 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center border border-slate-200">
-              <i class="fa-solid fa-user-check"></i>
-            </div>
-            <div class="min-w-0">
-              <p class="font-extrabold">Local profile</p>
-              <p class="text-sm text-slate-500 font-body mt-1">
-                Name: <span id="nameDetail" class="font-bold text-slate-900">—</span>
-              </p>
-              
-            </div>
-          </div>
-        </section>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <a target="_top" href="/myaccount/settings.html" class="rounded-2xl border bg-white p-6 transition hover:border-purple-300 hover:shadow-lg"><h3 class="text-xl font-black">Account settings</h3><p class="mt-2 text-sm text-slate-500">Manage server-synced account preferences.</p></a>
+        <a id="delete-link" target="_top" href="https://auth.studybase.site/delete" class="rounded-2xl border border-amber-200 bg-amber-50 p-6 transition hover:border-amber-400"><h3 class="text-xl font-black text-amber-950">Delete account</h3><p class="mt-2 text-sm text-amber-800">Permanently delete your profile, credentials, and sessions.</p></a>
       </div>
     </section>
   </main>
-
-  <!-- Confirm modal -->
-  <div id="wipeModal" class="fixed inset-0 z-[1000] hidden">
-    <div class="absolute inset-0 bg-black/40"></div>
-    <div class="absolute inset-0 flex items-center justify-center p-6">
-      <div class="w-full max-w-md bg-white rounded-2xl border border-slate-200 shadow-2xl p-6">
-        <h3 class="text-lg font-black text-slate-900">Delete all local data?</h3>
-        <p class="mt-2 text-sm text-slate-600 font-body">
-          This will clear settings, history, and also log you out on this device.
-        </p>
-        <div class="mt-6 flex gap-3 justify-end">
-          <button id="wipeCancel" class="px-4 py-2 rounded-xl bg-white border border-slate-200 font-bold">
-            Cancel
-          </button>
-          <button id="wipeConfirm" class="px-4 py-2 rounded-xl bg-red-600 text-white font-extrabold hover:opacity-90">
-            Delete everything
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="deleteAccountModal" class="fixed inset-0 z-[1000] hidden">
-    <div class="absolute inset-0 bg-black/40"></div>
-    <div class="absolute inset-0 flex items-center justify-center p-6">
-      <div class="w-full max-w-md bg-white rounded-2xl border border-slate-200 shadow-2xl p-6">
-        <h3 class="text-lg font-black text-slate-900">Permanently delete account</h3>
-        <p class="mt-2 text-sm text-slate-600 font-body">
-          This revokes every session and deletes or anonymises the account data held by StudyBase. This cannot be undone.
-        </p>
-        <label class="mt-4 block text-sm font-bold text-slate-800">Type your username to confirm
-          <input id="deleteAccountConfirmation" autocomplete="off" class="mt-2 w-full rounded-xl border border-slate-300 p-3 font-body">
-        </label>
-        <p id="deleteAccountMessage" class="mt-3 text-sm text-red-600 font-body" role="alert"></p>
-        <div class="mt-6 flex gap-3 justify-end">
-          <button id="deleteAccountClose" class="px-4 py-2 rounded-xl bg-slate-900 text-white font-extrabold">
-            Cancel
-          </button>
-          <button id="deleteAccountConfirm" class="px-4 py-2 rounded-xl bg-red-600 text-white font-extrabold">
-            Delete account
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Auth + Sidebar -->
-  <script src="/assets/js/account/sidebar.js"></script>
-  <script src="/assets/js/account/checkLoggedIn.js"></script>
-
   <script>
-    // Require login (redirects to /index.html?error=AUTH_001)
-    if (!window.AccountAuth?.requireAuth?.()) {
-      // requireAuth already redirected
-    } else {
-      const name = (localStorage.getItem("sb_firstName") || "").trim();
-      const safe = name || "there";
-      document.getElementById("nameSlot").textContent = safe;
-      document.getElementById("nameDetail").textContent = name || "Not set";
-      syncAccount();
-    }
-
-    function setMessage(id, text, tone = "neutral") {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.textContent = text || "";
-      el.className = "mt-3 text-sm font-body " + (
-        tone === "error" ? "text-red-600" :
-        tone === "success" ? "text-emerald-600" :
-        "text-slate-500"
-      );
-    }
-
-    function renderAccount(account) {
-      if (!account) return;
-
-      const fullName = (account.name || account.profile?.firstName || localStorage.getItem("sb_firstName") || "").trim();
-      const firstName = fullName.split(/\s+/)[0];
-
-      document.getElementById("nameSlot").textContent = firstName || "there";
-      document.getElementById("nameDetail").textContent = firstName || "Not set";
-      document.getElementById("nameDetail").textContent = fullName || "Not set";
-      document.getElementById("accountSyncStatus").textContent = account.username ? `Signed in as ${account.username}` : "Synced";
-    }
-
-    async function syncAccount() {
-      const status = document.getElementById("accountSyncStatus");
-      if (status) status.textContent = "Syncing with StudyBase";
-
-      try {
-        await window.StudyBaseServices?.rotateDeviceIfNeeded?.();
-        const result = await window.StudyBaseServices?.accountMe?.();
-
-        if (result?.ok && result.account) {
-          renderAccount(result.account);
-          if (status) status.textContent = "Synced with StudyBase";
-          return;
-        }
-
-        if (status) status.textContent = result?.error || "Could not sync account";
-      } catch (_) {
-        if (status) status.textContent = "Could not sync account";
+    const message = document.getElementById("message");
+    async function loadAccount() {
+      const result = await StudyBaseServices.request("/me");
+      if (!result.ok || !result.user) { location.replace("/myaccount/login.html?sessionExpired=true"); return; }
+      const user = result.user;
+      if (document.referrer.startsWith("https://auth.studybase.site")) {
+        await StudyBaseServices.logout();
+        location.replace(`/?signup=true&username=${encodeURIComponent(user.username)}`);
+        return;
       }
+      localStorage.setItem("studybase_user", JSON.stringify(user));
+      document.getElementById("name").textContent = user.name;
+      document.getElementById("username").textContent = `@${user.username}`;
+      document.getElementById("user-id").textContent = user.id;
+      document.getElementById("dob").textContent = user.dateOfBirth || "Not recorded";
+      document.getElementById("gender").textContent = (user.gender || "Not recorded").replaceAll("-", " ");
+      document.getElementById("delete-link").href = `https://auth.studybase.site/delete?username=${encodeURIComponent(user.username)}`;
+      message.classList.add("hidden"); document.getElementById("content").classList.remove("hidden");
     }
-
-    // Logout
-    document.getElementById("logoutBtn")?.addEventListener("click", () => {
-      window.AccountAuth?.logout?.();
-    });
-
-    document.getElementById("refreshAccountBtn")?.addEventListener("click", syncAccount);
-
-    const deleteModal = document.getElementById("deleteAccountModal");
-    const openDeleteModal = () => deleteModal.classList.remove("hidden");
-    const closeDeleteModal = () => deleteModal.classList.add("hidden");
-    document.getElementById("deleteAccountBtn")?.addEventListener("click", openDeleteModal);
-    document.getElementById("deleteAccountClose")?.addEventListener("click", closeDeleteModal);
-    document.getElementById("deleteAccountConfirm")?.addEventListener("click", async () => {
-      const confirmation = document.getElementById("deleteAccountConfirmation").value.trim();
-      const message = document.getElementById("deleteAccountMessage");
-      const button = document.getElementById("deleteAccountConfirm");
-      button.disabled = true;
-      message.textContent = "Deleting account...";
-      try {
-        const result = await window.StudyBaseServices.deleteAccount(confirmation);
-        if (!result?.ok) throw new Error(result?.error || "Deletion failed");
-        window.StudyBaseServices.clearAccountSession();
-        window.location.replace("/myaccount/login.html?deleted=true");
-      } catch (error) {
-        message.textContent = error.message;
-        button.disabled = false;
-      }
-    });
-    deleteModal?.addEventListener("click", (e) => {
-      if (e.target === deleteModal.firstElementChild) closeDeleteModal();
-    });
-
-    // Wipe all local data
-    const modal = document.getElementById("wipeModal");
-    const open = () => modal.classList.remove("hidden");
-    const close = () => modal.classList.add("hidden");
-
-    document.getElementById("wipeBtn")?.addEventListener("click", open);
-    document.getElementById("wipeCancel")?.addEventListener("click", close);
-    modal?.addEventListener("click", (e) => {
-      if (e.target === modal.firstElementChild) close();
-    });
-
-    document.getElementById("wipeConfirm")?.addEventListener("click", () => {
-  try { 
-    localStorage.clear(); 
-  } catch (_) {}
-
-  const target = "/index.html?error=AUTH_001";
-
-  try {
-    if (window.top !== window.self) {
-      window.top.location.replace(target);
-    } else {
-      window.location.replace(target);
-    }
-  } catch (_) {
-    window.location.replace(target);
-  }
-});
+    document.getElementById("logout").onclick = async () => { await StudyBaseServices.logout(); location.replace("/"); };
+    loadAccount().catch(() => { message.textContent = "Your account could not be loaded."; });
   </script>
 </body>
 </html>

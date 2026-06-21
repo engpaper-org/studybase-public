@@ -9,7 +9,7 @@
     return Boolean(localStorage.getItem(TOKEN_KEY) === "1" && Number.isFinite(expiry) && expiry > Date.now());
   }
   function clearAccountSession() {
-    [TOKEN_KEY, "studybase_token", EXPIRY_KEY, "studybase_username", "sb_firstName", "studybase_password", "studybase_device", "studybase_device_b64", "sb_accountEmail"].forEach(k => localStorage.removeItem(k));
+    [TOKEN_KEY, EXPIRY_KEY, "studybase_user"].forEach(k => localStorage.removeItem(k));
     window.dispatchEvent(new CustomEvent("studybase:account-session-cleared"));
   }
   async function request(path, options = {}) {
@@ -24,8 +24,7 @@
   }
   function rememberUser(user) {
     if (!user) return;
-    if (user.username) localStorage.setItem("studybase_username", user.username);
-    if (user.name) localStorage.setItem("sb_firstName", user.name.split(/\s+/)[0]);
+    localStorage.setItem("studybase_user", JSON.stringify(user));
   }
   async function accountMe() {
     if (!isLoggedIn()) return { ok: false, error: "Not signed in" };

@@ -30,7 +30,6 @@
     <link rel="prefetch" href="/internal/iframes/normal-intro.html" as="document">
     <link rel="prefetch" href="/internal/iframes/labs-intro.html" as="document">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/assets/js/auth/loginAnimationCheck.js" defer></script>
     <script src="/assets/js/account/timeRecords.js" defer></script>
     <script>
         window.securityCheckedScriptLoader = {
@@ -38,9 +37,7 @@
             promise: null,
             scripts: [
                 { src: "/assets/js/safety/update.js", defer: true },
-                { src: "/assets/js/account/settingsSafetyWarning.js" },
                 { src: "/assets/js/account/timeWarn.js", defer: true },
-                { src: "/assets/js/monitoring/playHistory.js", defer: true },
                 { src: "/assets/js/auth/checkVerification.js", defer: true }
             ]
         };
@@ -313,55 +310,6 @@
 <div id="bootScreen" class="w-full h-screen flex flex-col items-center justify-center">
     <div class="loader border-8 border-slate-300 border-t-blue-600 rounded-full w-20 h-20 animate-spin"></div>
     <p id="bootText" class="mt-4 text-slate-600 text-lg font-medium">Preparing…</p>
-</div>
-
-<div id="profileCompletionScreen" class="hidden fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-[90] flex items-center justify-center p-4">
-    <div class="w-full max-w-lg bg-white rounded-[2rem] shadow-2xl overflow-hidden">
-        <div class="p-7 border-b border-slate-100">
-            <p class="text-xs font-semibold tracking-[0.22em] text-blue-600 uppercase mb-2 flex items-center gap-2">
-                <span class="inline-block w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-                Complete your profile
-            </p>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
-                A couple of details first
-            </h1>
-            <p class="text-slate-600 mt-2">
-                Fill in the missing details before choosing your exam board.
-            </p>
-        </div>
-
-        <form class="p-7" onsubmit="submitMaterialProfile(event)">
-            <div id="materialNameField">
-                <label for="materialFirstName" class="block text-sm font-bold text-slate-700 mb-2">First name</label>
-                <input id="materialFirstName" type="text" autocomplete="given-name" maxlength="60" placeholder="Alex"
-                    class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-semibold text-slate-800" />
-            </div>
-
-            <div id="materialGenderField" class="mt-5">
-                <p class="block text-sm font-bold text-slate-700 mb-2">How do you identify?</p>
-                <div class="grid grid-cols-2 gap-3">
-                    <button id="materialGenderMale" type="button" onclick="chooseMaterialGender('male')"
-                        class="rounded-2xl border-2 border-slate-200 bg-white p-4 text-center transition-all">
-                        <i class="fas fa-mars text-xl text-blue-600"></i>
-                        <span class="block mt-1 font-extrabold text-slate-700">Male</span>
-                    </button>
-                    <button id="materialGenderFemale" type="button" onclick="chooseMaterialGender('female')"
-                        class="rounded-2xl border-2 border-slate-200 bg-white p-4 text-center transition-all">
-                        <i class="fas fa-venus text-xl text-pink-600"></i>
-                        <span class="block mt-1 font-extrabold text-slate-700">Female</span>
-                    </button>
-                </div>
-                <p class="mt-2 text-xs text-slate-500">Gender is stored only on this device.</p>
-            </div>
-
-            <p id="materialProfileError" class="hidden mt-4 text-sm font-semibold text-red-600"></p>
-
-            <button id="materialProfileSaveBtn" type="submit"
-                class="w-full mt-6 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold transition-colors disabled:cursor-wait disabled:opacity-70">
-                Save and continue
-            </button>
-        </form>
-    </div>
 </div>
 
 <div id="subjectPicker" class="hidden fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-[80] flex items-center justify-center p-4">
@@ -729,8 +677,6 @@ let materialFetchController = null;
 let materialFinalUrl = null;
 let pendingSubject = null;
 let pendingBoard = null;
-let materialProfileResolve = null;
-let selectedMaterialGender = "";
 
 const SUBJECT_LINKS = {
     "Maths": {
@@ -991,105 +937,6 @@ const SUBJECTS = Object.entries(SUBJECT_LINKS).map(([title, value]) => ({
     icon: value.icon || "fa-book-open"
 }));
 
-function getStoredMaterialGender() {
-    const gender = (localStorage.getItem("sb_gender") || "").toLowerCase();
-    return gender === "male" || gender === "female" ? gender : "";
-}
-
-function chooseMaterialGender(gender) {
-    if (gender !== "male" && gender !== "female") return;
-
-    selectedMaterialGender = gender;
-    document.getElementById("materialGenderMale").className = gender === "male"
-        ? "rounded-2xl border-2 border-blue-500 bg-blue-50 p-4 text-center transition-all"
-        : "rounded-2xl border-2 border-slate-200 bg-white p-4 text-center transition-all";
-    document.getElementById("materialGenderFemale").className = gender === "female"
-        ? "rounded-2xl border-2 border-pink-500 bg-pink-50 p-4 text-center transition-all"
-        : "rounded-2xl border-2 border-slate-200 bg-white p-4 text-center transition-all";
-}
-
-function ensureMaterialProfileComplete() {
-    const firstName = (localStorage.getItem("sb_firstName") || "").trim();
-    const gender = getStoredMaterialGender();
-
-    if (firstName && gender) return Promise.resolve();
-
-    document.getElementById("materialNameField").classList.toggle("hidden", Boolean(firstName));
-    document.getElementById("materialGenderField").classList.toggle("hidden", Boolean(gender));
-    document.getElementById("materialFirstName").value = firstName;
-    document.getElementById("materialProfileError").classList.add("hidden");
-    document.getElementById("profileCompletionScreen").classList.remove("hidden");
-
-    selectedMaterialGender = gender;
-    if (gender) chooseMaterialGender(gender);
-
-    if (!firstName) {
-        setTimeout(() => document.getElementById("materialFirstName")?.focus(), 0);
-    }
-
-    return new Promise((resolve) => {
-        materialProfileResolve = resolve;
-    });
-}
-
-async function submitMaterialProfile(event) {
-    event.preventDefault();
-
-    const existingFirstName = (localStorage.getItem("sb_firstName") || "").trim();
-    const existingGender = getStoredMaterialGender();
-    const firstName = existingFirstName || (document.getElementById("materialFirstName").value || "").trim();
-    const gender = existingGender || selectedMaterialGender;
-    const errorEl = document.getElementById("materialProfileError");
-    const saveBtn = document.getElementById("materialProfileSaveBtn");
-
-    if (!firstName) {
-        errorEl.textContent = "Please enter your first name.";
-        errorEl.classList.remove("hidden");
-        document.getElementById("materialFirstName")?.focus();
-        return;
-    }
-
-    if (gender !== "male" && gender !== "female") {
-        errorEl.textContent = "Please select how you identify.";
-        errorEl.classList.remove("hidden");
-        return;
-    }
-
-    saveBtn.disabled = true;
-    errorEl.classList.add("hidden");
-
-    try {
-        if (!existingFirstName) {
-            const res = await fetch(`${WORKER.replace(/\/+$/, "")}/api/profile`, {
-                method: "POST",
-                credentials: "include",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    firstName
-                })
-            });
-            const data = await res.json().catch(() => null);
-
-            if (!res.ok || (data && data.ok === false)) {
-                throw new Error(data?.error || "Could not save your profile");
-            }
-        }
-
-        localStorage.setItem("sb_firstName", firstName);
-        localStorage.setItem("sb_gender", gender);
-        document.getElementById("profileCompletionScreen").classList.add("hidden");
-
-        const resolve = materialProfileResolve;
-        materialProfileResolve = null;
-        resolve?.();
-    } catch (error) {
-        errorEl.textContent = error?.message || "Could not save your profile. Please try again.";
-        errorEl.classList.remove("hidden");
-    } finally {
-        saveBtn.disabled = false;
-    }
-}
-
 function getIframeUrlWithMainParams(rawUrl) {
     const iframeUrl = new URL(rawUrl, window.location.origin);
     const mainParams = new URLSearchParams(window.location.search);
@@ -1329,7 +1176,7 @@ async function logoutUser() {
     try {
         await fetch("https://api.studybase.site/api/logout", { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: "{}" });
     } catch (_) {}
-    ["studybase_session_active", "studybase_session_expiry", "studybase_username", "sb_firstName"].forEach((key) => localStorage.removeItem(key));
+    ["studybase_session_active", "studybase_session_expiry", "studybase_user"].forEach((key) => localStorage.removeItem(key));
     window.location.href = "/r/index.html#client-preflight";
 }
 
@@ -1409,7 +1256,8 @@ async function nativeShareLink() {
 function shareCurrentPage() {
     closeMenu();
 
-    const firstName = localStorage.getItem("sb_firstName") || "Someone";
+    let firstName = "Someone";
+    try { firstName = JSON.parse(localStorage.getItem("studybase_user") || "null")?.name || firstName; } catch (_) {}
     const resourceName = getDecodedMaterialName();
     const resourceUrl = getMainPageUrlForShare();
     const timeCreated = new Date().toISOString();
@@ -1615,7 +1463,6 @@ async function boot() {
 
     document.getElementById("turnstileScreen")?.classList.add("hidden");
     document.getElementById("bootScreen").classList.add("hidden");
-    await ensureMaterialProfileComplete();
     if (bootCancelled) return;
     renderSubjectPicker();
     document.getElementById("subjectPicker").classList.remove("hidden");

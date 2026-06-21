@@ -3,14 +3,11 @@
   let scriptRegistry = {
     "deviceCheck": "/assets/js/monitoring/deviceCheck.js",
     "timeCheck": "/assets/js/monitoring/timeCheck.js",
-    "loginAnimationCheck": "/assets/js/auth/loginAnimationCheck.js",
     "timeRecords": "/assets/js/account/timeRecords.js",
     "timeWarn": "/assets/js/account/timeWarn.js",
-    "playHistory": "/assets/js/monitoring/playHistory.js",
     "checkVerification": "/assets/js/auth/checkVerification.js",
     "envCheck": "/assets/js/monitoring/envCheck.js",
     "hashtagProto": "/assets/js/resources/hashtagProto.js",
-    "settingsSafetyWarning": "/assets/js/account/settingsSafetyWarning.js",
     "analytics": "/assets/js/monitoring/analytics.js"
   };
 

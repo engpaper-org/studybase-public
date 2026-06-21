@@ -3782,10 +3782,6 @@ body.rgenie-private-resources .rgenie-panel {
     grid.appendChild(fragment);
   }
 
-  const SB_SEARCH_HISTORY_KEY = "sb_searchHistory";
-  const SB_SAVE_SEARCH_HISTORY_TOGGLE = "sb_saveSearchHistory";
-  let _sbSearchSaveTimer = null;
-
   function getBodyBlockingModalIds() {
     return [
       "announcement-modal",
@@ -3915,13 +3911,13 @@ body.rgenie-private-resources .rgenie-panel {
 
   function getWeeklyFeedbackAccountSummary() {
     try {
+      const user = JSON.parse(localStorage.getItem("studybase_user") || "null") || {};
       return {
-        username: (localStorage.getItem("studybase_username") || localStorage.getItem("gh_username") || "").trim(),
-        email: (localStorage.getItem("sb_accountEmail") || "").trim(),
-        firstName: (localStorage.getItem("sb_firstName") || "").trim()
+        username: String(user.username || "").trim(),
+        firstName: String(user.name || "").trim()
       };
     } catch (_) {
-      return { username: "", email: "", firstName: "" };
+      return { username: "", firstName: "" };
     }
   }
 
@@ -3976,7 +3972,6 @@ body.rgenie-private-resources .rgenie-panel {
         "Feedback skipped: no",
         `Feedback: ${notes}`,
         account.username ? `Username: ${account.username}` : "",
-        account.email ? `Email: ${account.email}` : "",
         account.firstName ? `First name: ${account.firstName}` : ""
       ].filter(Boolean).join("\n"),
       timestamp: new Date().toISOString(),
@@ -4095,52 +4090,10 @@ body.rgenie-private-resources .rgenie-panel {
     window.alert("Coming soon. This resource is not available yet.");
   }
 
-  function sbShouldSaveSearchHistory() {
-    const v = (localStorage.getItem(SB_SAVE_SEARCH_HISTORY_TOGGLE) || "").toLowerCase().trim();
-    if (v === "false") return false;
-    return true;
-  }
-
-  function sbReadSearchHistory() {
-    try {
-      const raw = localStorage.getItem(SB_SEARCH_HISTORY_KEY);
-      if (!raw) return [];
-      const arr = JSON.parse(raw);
-      return Array.isArray(arr) ? arr : [];
-    } catch {
-      return [];
-    }
-  }
-
-  function sbWriteSearchHistory(arr) {
-    try {
-      localStorage.setItem(SB_SEARCH_HISTORY_KEY, JSON.stringify(arr));
-    } catch {}
-  }
-
-  function sbQueueSaveSearchTerm(term) {
-    if (!sbShouldSaveSearchHistory()) return;
-
-    const t = (term || "").trim();
-    if (t.length < 2) return;
-
-    clearTimeout(_sbSearchSaveTimer);
-    _sbSearchSaveTimer = setTimeout(() => {
-      const history = sbReadSearchHistory();
-      const lower = t.toLowerCase();
-      const cleaned = history.filter(x => String(x).toLowerCase() !== lower);
-      cleaned.unshift(t);
-      const capped = cleaned.slice(0, 50);
-      sbWriteSearchHistory(capped);
-    }, 450);
-  }
-
   function filterResources() {
     const raw = (document.getElementById("searchInput").value || "").trim();
     const query = raw.toLowerCase();
     const filters = getActiveFilters();
-
-    sbQueueSaveSearchTerm(raw);
 
     if (openMode === "public") {
       const hasStructuredFilter =
@@ -4240,7 +4193,7 @@ body.rgenie-private-resources .rgenie-panel {
       [
         "studybase_session_active",
         "studybase_session_expiry",
-        "studybase_username"
+        "studybase_user"
       ].includes(event.key)
     ) {
       updateRoutingBookmarkBanner();

@@ -106,18 +106,9 @@
   function clearAuthData() {
     try {
       [
-        "studybase_device",
-        "studybase_password",
-        "studybase_username",
-        "studybase_device_b64",
+        "studybase_session_active",
         "studybase_session_expiry",
-        "studybase_session_expiry_set_at",
-        "gh_device",
-        "gh_password",
-        "gh_username",
-        "gh_device_b64",
-        "gh_session_expiry",
-        "gh_session_expiry_set_at"
+        "studybase_user"
       ].forEach(function (key) {
         localStorage.removeItem(key);
       });

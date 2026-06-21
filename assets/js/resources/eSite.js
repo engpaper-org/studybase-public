@@ -2,8 +2,6 @@
   let TARGET_URL = "https://e.revisionbase.site";
   const SESSION_KEY = "studybase_session_active";
   const SESSION_EXPIRY_KEY = "studybase_session_expiry";
-  const USER_KEY = "studybase_username";
-  const LEGACY_USER_KEY = "gh_username";
 
   let countdownTimer = null;
   let moveTimer = null;
@@ -20,18 +18,6 @@
   const qs = (sel, root = document) => root.querySelector(sel);
   const safeStr = (v) => (v ?? "").toString().trim();
 
-  function readMigratedKey(primaryKey, legacyKey) {
-    const primary = safeStr(localStorage.getItem(primaryKey));
-    if (primary) return primary;
-
-    const legacy = safeStr(localStorage.getItem(legacyKey));
-    if (legacy) {
-      localStorage.setItem(primaryKey, legacy);
-      localStorage.removeItem(legacyKey);
-    }
-    return legacy;
-  }
-
   function escapeHtml(str) {
     return safeStr(str)
       .replaceAll("&", "&amp;")
@@ -39,10 +25,6 @@
       .replaceAll(">", "&gt;")
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&#039;");
-  }
-
-  function getUsername() {
-    return readMigratedKey(USER_KEY, LEGACY_USER_KEY);
   }
 
   function looksLoggedIn() {
@@ -392,7 +374,7 @@
     });
 
     window.addEventListener("storage", async (e) => {
-      if (![SESSION_KEY, SESSION_EXPIRY_KEY, USER_KEY, LEGACY_USER_KEY].includes(e.key)) return;
+      if (![SESSION_KEY, SESSION_EXPIRY_KEY].includes(e.key)) return;
       await rerender(mounts.mount);
     });
   }

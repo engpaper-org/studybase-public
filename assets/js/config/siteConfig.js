@@ -174,14 +174,11 @@
       registry: {
         deviceCheck: "/assets/js/monitoring/deviceCheck.js",
         timeCheck: "/assets/js/monitoring/timeCheck.js",
-        loginAnimationCheck: "/assets/js/auth/loginAnimationCheck.js",
         timeRecords: "/assets/js/account/timeRecords.js",
         timeWarn: "/assets/js/account/timeWarn.js",
-        playHistory: "/assets/js/monitoring/playHistory.js",
         checkVerification: "/assets/js/auth/checkVerification.js",
         envCheck: "/assets/js/monitoring/envCheck.js",
         hashtagProto: "/assets/js/resources/hashtagProto.js",
-        settingsSafetyWarning: "/assets/js/account/settingsSafetyWarning.js",
         analytics: "/assets/js/monitoring/analytics.js"
       }
     },
@@ -232,12 +229,9 @@
       toastDurationMs: 1200,
       autoSave: true,
       storageKeys: {
-        firstName: "sb_firstName",
         redirect: "sb_redirectFromHistory",
         birthdays: "sb_showBirthdays",
         announcements: "sb_showAnnouncements",
-        recent: "sb_saveRecentlyPlayed",
-        searchHistory: "sb_saveSearchHistory",
         contentWarnings: "sb_showContentWarnings",
         redirectLogout: "sb_logoutAfterRedirect"
       },
@@ -247,8 +241,6 @@
         redirectLogout: true,
         birthdays: true,
         announcements: true,
-        recent: true,
-        searchHistory: true,
         contentWarnings: true
       },
       wizardDefaults: {
@@ -257,12 +249,8 @@
       }
     },
     account: {
-      authStorageKeys: {
-        username: "studybase_username"
-      },
       sessionStorageKeys: {
-        expiry: "studybase_session_expiry",
-        expirySetAt: "studybase_session_expiry_set_at"
+        expiry: "studybase_session_expiry"
       },
       loginSuccessMessage: "login-success",
       sessionExpiredParam: "sessionExpired"

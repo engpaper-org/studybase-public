@@ -1,8 +1,8 @@
 (function () {
-  const NAME_KEY = "sb_firstName";
-
   function getUserName() {
-    const name = (localStorage.getItem(NAME_KEY) || "").trim();
+    let name = "";
+    try { name = JSON.parse(localStorage.getItem("studybase_user") || "null")?.name || ""; } catch (_) {}
+    name = String(name).trim();
     return name.length ? name : "user";
   }
 
