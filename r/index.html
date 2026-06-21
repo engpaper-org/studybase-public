@@ -1385,7 +1385,8 @@ body.rgenie-private-resources .rgenie-panel {
     (function() {
       function isLoggedInQuick() {
         try {
-          return !!(localStorage.getItem('studybase_username') && localStorage.getItem('studybase_password') && localStorage.getItem('studybase_device'));
+          const expiry = Date.parse(localStorage.getItem('studybase_session_expiry') || '');
+          return localStorage.getItem('studybase_session_active') === '1' && Number.isFinite(expiry) && expiry > Date.now();
         } catch(e){ return false; }
       }
       if (!isLoggedInQuick()) {
@@ -2187,26 +2188,6 @@ body.rgenie-private-resources .rgenie-panel {
       .replace(/'/g, "&#39;");
   }
 
-  function readAuthKey(primaryKey, legacyKey) {
-    const primary = (localStorage.getItem(primaryKey) || "").trim();
-    if (primary) return primary;
-
-    const legacy = (localStorage.getItem(legacyKey) || "").trim();
-    if (legacy) {
-      localStorage.setItem(primaryKey, legacy);
-      localStorage.removeItem(legacyKey);
-    }
-    return legacy;
-  }
-
-  function getStoredAuth() {
-    return {
-      username: readAuthKey("studybase_username", "gh_username"),
-      password: readAuthKey("studybase_password", "gh_password"),
-      deviceCode: readAuthKey("studybase_device", "gh_device")
-    };
-  }
-
   function normaliseFilterValue(value) {
     return String(value || "").trim().toLowerCase();
   }
@@ -2835,14 +2816,13 @@ body.rgenie-private-resources .rgenie-panel {
     subtitle.textContent = "Important updates and featured notices.";
 
     try {
-      const deviceCode = getStoredAuth().deviceCode;
-
       const res = await fetch(TOP_CARDS_ENDPOINT, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ deviceCode })
+        body: "{}"
       });
 
       if (res.status === 401 || res.status === 403) {
@@ -3047,12 +3027,12 @@ body.rgenie-private-resources .rgenie-panel {
   async function loadResources() {
     await resourcePageConfigReady;
 
-    const { username: u, password: p, deviceCode: d } = getStoredAuth();
-
     try {
       const res = await fetch(RESOURCE_LIST_ENDPOINT, {
         method: "POST",
-        body: JSON.stringify({ username: u, password: p, deviceCode: d }),
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: "{}",
       }).then(r => r.json());
 
       if (res["requiresLogin" + "Code"]) {
@@ -3526,13 +3506,9 @@ body.rgenie-private-resources .rgenie-panel {
     const grid = document.getElementById("resource-grid");
     if (!frame || !section || !grid) return;
 
-    const deviceCode = getStoredAuth().deviceCode;
     const materialUrl = new URL(RESOURCE_MATERIAL_PAGE, window.location.href);
     materialUrl.searchParams.set("material-ID", encodedMaterialId);
     materialUrl.searchParams.set("embedded", "1");
-    if (deviceCode) {
-      materialUrl.searchParams.set("deviceCode", deviceCode);
-    }
     materialUrl.hash = RESOURCE_EMBEDDED_HASH.replace(/^#/, "");
     const url = materialUrl.toString();
     embeddedMaterialState = {
@@ -3874,10 +3850,8 @@ body.rgenie-private-resources .rgenie-panel {
       if (window.AccountAuth?.isLoggedIn) return window.AccountAuth.isLoggedIn();
     } catch (_) {}
 
-    const username = (localStorage.getItem("studybase_username") || localStorage.getItem("gh_username") || "").trim();
-    const password = (localStorage.getItem("studybase_password") || localStorage.getItem("gh_password") || "").trim();
-    const device = (localStorage.getItem("studybase_device") || localStorage.getItem("gh_device") || "").trim();
-    return Boolean(username && password && device);
+    const expiry = Date.parse(localStorage.getItem("studybase_session_expiry") || "");
+    return localStorage.getItem("studybase_session_active") === "1" && Number.isFinite(expiry) && expiry > Date.now();
   }
 
   function updateRoutingBookmarkBanner() {
@@ -4264,12 +4238,9 @@ body.rgenie-private-resources .rgenie-panel {
 
     if (
       [
-        "studybase_username",
-        "studybase_password",
-        "studybase_device",
-        "gh_username",
-        "gh_password",
-        "gh_device"
+        "studybase_session_active",
+        "studybase_session_expiry",
+        "studybase_username"
       ].includes(event.key)
     ) {
       updateRoutingBookmarkBanner();

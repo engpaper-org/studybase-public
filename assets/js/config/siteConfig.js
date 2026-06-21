@@ -229,7 +229,6 @@
       setupBrandLabel: "StudyBase setup",
       closeMessageTarget: "*",
       closeMessage: "animation_complete",
-      quickLoginCodeLength: 6,
       toastDurationMs: 1200,
       autoSave: true,
       storageKeys: {
@@ -240,9 +239,7 @@
         recent: "sb_saveRecentlyPlayed",
         searchHistory: "sb_saveSearchHistory",
         contentWarnings: "sb_showContentWarnings",
-        redirectLogout: "sb_logoutAfterRedirect",
-        quickLogin: "sb_quickLogin",
-        quickLoginCodeHash: "sb_quickLoginCodeHash"
+        redirectLogout: "sb_logoutAfterRedirect"
       },
       defaults: {
         firstName: "",
@@ -252,20 +249,16 @@
         announcements: true,
         recent: true,
         searchHistory: true,
-        quickLogin: false,
         contentWarnings: true
       },
       wizardDefaults: {
-        quickLoginWhenUnset: true,
         firstStep: 0,
         skipHistoryStepWhenNameExists: true
       }
     },
     account: {
       authStorageKeys: {
-        username: "studybase_username",
-        password: "studybase_password",
-        device: "studybase_device"
+        username: "studybase_username"
       },
       sessionStorageKeys: {
         expiry: "studybase_session_expiry",

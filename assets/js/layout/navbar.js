@@ -120,11 +120,9 @@
       if (window.AccountAuth?.isLoggedIn) return window.AccountAuth.isLoggedIn();
     } catch (_) {}
 
-    return Boolean(
-      readAuthKey("studybase_username", "gh_username") &&
-      readAuthKey("studybase_password", "gh_password") &&
-      readAuthKey("studybase_device", "gh_device")
-    );
+    const token = localStorage.getItem("studybase_session_active") === "1";
+    const expiry = Date.parse(localStorage.getItem("studybase_session_expiry") || "");
+    return Boolean(token && Number.isFinite(expiry) && expiry > Date.now());
   }
 
   let loginAvailable = false;
@@ -160,6 +158,7 @@
     } catch (_) {}
 
     [
+      "studybase_session_active",
       "studybase_username",
       "studybase_password",
       "studybase_device",

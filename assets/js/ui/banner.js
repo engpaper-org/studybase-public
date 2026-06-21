@@ -1,10 +1,8 @@
 (() => {
-  const DEVICE_KEY = "studybase_device";
+  const SESSION_KEY = "studybase_session_active";
+  const SESSION_EXPIRY_KEY = "studybase_session_expiry";
   const USER_KEY = "studybase_username";
-  const PASS_KEY = "studybase_password";
-  const LEGACY_DEVICE_KEY = "gh_device";
   const LEGACY_USER_KEY = "gh_username";
-  const LEGACY_PASS_KEY = "gh_password";
   const TIME_KEY = "siteActiveTime";
 
   const BLOCK_REQUEST_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSe8Zez4T6HS93vLmEBYPzfHg4hTnA_fILHzTSHqDZU1vAX-kw/viewform?usp=publish-editor";
@@ -33,20 +31,13 @@
     return legacy;
   }
 
-  function getDevice() {
-    return readMigratedKey(DEVICE_KEY, LEGACY_DEVICE_KEY);
-  }
-
   function getUsername() {
     return readMigratedKey(USER_KEY, LEGACY_USER_KEY);
   }
 
-  function getPassword() {
-    return readMigratedKey(PASS_KEY, LEGACY_PASS_KEY);
-  }
-
   function looksLoggedIn() {
-    return !!(getDevice() && getUsername() && getPassword());
+    const expiry = Date.parse(localStorage.getItem(SESSION_EXPIRY_KEY) || "");
+    return localStorage.getItem(SESSION_KEY) === "1" && Number.isFinite(expiry) && expiry > Date.now();
   }
 
   function isPrivateResourceMode() {

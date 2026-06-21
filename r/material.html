@@ -991,26 +991,6 @@ const SUBJECTS = Object.entries(SUBJECT_LINKS).map(([title, value]) => ({
     icon: value.icon || "fa-book-open"
 }));
 
-function readAuthKey(primaryKey, legacyKey) {
-    const primary = (localStorage.getItem(primaryKey) || "").trim();
-    if (primary) return primary;
-
-    const legacy = (localStorage.getItem(legacyKey) || "").trim();
-    if (legacy) {
-        localStorage.setItem(primaryKey, legacy);
-        localStorage.removeItem(legacyKey);
-    }
-    return legacy;
-}
-
-function getStoredAuth() {
-    return {
-        username: readAuthKey("studybase_username", "gh_username"),
-        password: readAuthKey("studybase_password", "gh_password"),
-        deviceCode: readAuthKey("studybase_device", "gh_device")
-    };
-}
-
 function getStoredMaterialGender() {
     const gender = (localStorage.getItem("sb_gender") || "").toLowerCase();
     return gender === "male" || gender === "female" ? gender : "";
@@ -1080,11 +1060,11 @@ async function submitMaterialProfile(event) {
 
     try {
         if (!existingFirstName) {
-            const res = await fetch(`${WORKER.replace(/\/+$/, "")}/account/profile`, {
+            const res = await fetch(`${WORKER.replace(/\/+$/, "")}/api/profile`, {
                 method: "POST",
+                credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    ...getStoredAuth(),
                     firstName
                 })
             });
@@ -1113,16 +1093,12 @@ async function submitMaterialProfile(event) {
 function getIframeUrlWithMainParams(rawUrl) {
     const iframeUrl = new URL(rawUrl, window.location.origin);
     const mainParams = new URLSearchParams(window.location.search);
-    const localDeviceCode = getStoredAuth().deviceCode;
     const serviceAlias = SERVICE_ALIAS.trim();
 
     for (const [key, value] of mainParams.entries()) {
         iframeUrl.searchParams.set(key, value);
     }
 
-    if (!iframeUrl.searchParams.get("deviceCode") && localDeviceCode) {
-        iframeUrl.searchParams.set("deviceCode", localDeviceCode);
-    }
 
     if (serviceAlias) {
         iframeUrl.searchParams.set("serviceAlias", serviceAlias);
@@ -1349,21 +1325,11 @@ function showMaterialSecurityError(message) {
     if (screenEl) screenEl.classList.remove("hidden");
 }
 
-function logoutUser() {
-    [
-        "studybase_username",
-        "studybase_password",
-        "studybase_device",
-        "studybase_device_b64",
-        "studybase_session_expiry",
-        "studybase_session_expiry_set_at",
-        "gh_username",
-        "gh_password",
-        "gh_device",
-        "gh_device_b64",
-        "gh_session_expiry",
-        "gh_session_expiry_set_at"
-    ].forEach((key) => localStorage.removeItem(key));
+async function logoutUser() {
+    try {
+        await fetch("https://api.studybase.site/api/logout", { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: "{}" });
+    } catch (_) {}
+    ["studybase_session_active", "studybase_session_expiry", "studybase_username", "sb_firstName"].forEach((key) => localStorage.removeItem(key));
     window.location.href = "/r/index.html#client-preflight";
 }
 
@@ -1662,9 +1628,6 @@ async function fetchMaterialUrl() {
     const encoded = params.get("material-ID");
     if (!encoded) return false;
 
-    const { username, password, deviceCode } = getStoredAuth();
-    if (!username || !password || !deviceCode) return false;
-
     if (!turnstileToken) {
         showMaterialSecurityError("Human verification did not complete, so the resource was not opened.");
         return "verification_failed";
@@ -1676,12 +1639,10 @@ async function fetchMaterialUrl() {
         materialFetchController = new AbortController();
         const res = await fetch(RESOURCE_GET_ENDPOINT, {
             method: "POST",
+            credentials: "include",
             headers: { "Content-Type": "application/json" },
             signal: materialFetchController.signal,
             body: JSON.stringify({
-                username,
-                password,
-                deviceCode,
                 material: encoded,
                 turnstileToken
             })

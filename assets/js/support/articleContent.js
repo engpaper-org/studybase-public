@@ -112,7 +112,7 @@ window.SUPPORT_ARTICLES = {
           },
           {
             title: "Restriction or ban notice",
-            body: "If you are seeing a moderation or ban message, the next step is the account restriction guidance or an appeal.",
+            body: "If you are seeing a moderation or ban message, read the account restriction guidance instead of repeatedly retrying login.",
             icon: "fa-ban",
             href: "/support/ban/account_ban.html",
             label: "Read restriction article",
@@ -144,10 +144,10 @@ window.SUPPORT_ARTICLES = {
     related: ["login", "privacy", "contact"],
     sidebarCard: {
       eyebrow: "Account routes",
-      title: "Need to appeal instead?",
-      body: "If the issue is a ban or restriction, head to the appeal page rather than retrying the login flow.",
-      href: "/support/ban/appeal.html",
-      label: "Open appeal page",
+      title: "Account banned?",
+      body: "Read what a ban affects. There is no public appeal endpoint; only an administrator can remove a ban.",
+      href: "/support/ban/account_ban.html",
+      label: "Read ban guidance",
     },
     cta: {
       title: "Open the right route",
@@ -204,7 +204,7 @@ window.SUPPORT_ARTICLES = {
           },
           {
             title: "Restriction or ban",
-            body: "If a moderation action is involved, use the dedicated restriction and appeal pages.",
+            body: "If a moderation action is involved, use the dedicated restriction guidance page.",
             icon: "fa-ban",
             href: "/support/ban/account_ban.html",
             label: "Open restriction article",

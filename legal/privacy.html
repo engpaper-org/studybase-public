@@ -42,8 +42,8 @@
           </div>
           <div class="legal-version">
             <span>Version</span>
-            <strong>PRIVACY-2026.05.29</strong>
-            <p class="legal-copy" style="margin-top:10px;font-size:13px;line-height:1.55;">Last updated: 29 May 2026 — UK GDPR, ICO rights, retention &amp; lawful bases expanded for full UK compliance</p>
+            <strong>PRIVACY-2026.06.20</strong>
+            <p class="legal-copy" style="margin-top:10px;font-size:13px;line-height:1.55;">Last updated: 20 June 2026 — account creation, security monitoring, retention, and deletion updated</p>
           </div>
         </div>
       </div>
@@ -97,20 +97,22 @@
           </p>
           <ul>
             <li>Consent records may include <strong>site_consent_granted</strong> and <strong>consent_uid</strong>.</li>
-            <li>Account records may include username, password-like login values, email, device code, session expiry, and quick-login state.</li>
+            <li>Account storage contains an opaque session token, username, first name, and session expiry. Passwords and eligibility email addresses are not stored in browser storage by the account system.</li>
             <li>Usage records may include local recent items, favourites, search preferences, wellbeing timing, and tool choices.</li>
           </ul>
           <p>
             Clearing browser storage may remove local preferences and may sign you out, but it does not automatically delete server-side
-            account records, approved-email records, access logs, or support records.
+            account records, hashed eligibility records, access logs, or support records. Use the account deletion control for server-side deletion.
           </p>
         </article>
 
         <article id="account" class="doc-section">
           <h2>3. Account, login, access, and report data</h2>
           <p>
-            If you use account features, StudyBase may process usernames, passwords or password-like values, device identifiers, account
-            email, profile names, session state, approved-email status, login timestamps, and resource access state.
+            If you create an account, StudyBase may process your name, date of birth, gender selection, username, password, session state,
+            login timestamps, IP address, user-agent information, and resource access state. A readable eligibility email is used transiently
+            for the check but is not retained: the Worker stores a keyed cryptographic hash so it can detect previous use. Passwords are
+            salted and hashed on the server; readable passwords are not stored.
           </p>
           <p>
             If you submit support forms, reports, contact messages, APG requests, or similar inputs, StudyBase may process the information
@@ -122,11 +124,11 @@
           <h2>4. Worker and API processing</h2>
           <p>
             StudyBase pages may send requests to API workers and service endpoints configured in <strong>siteConfig.js</strong>. These
-            may include account state, login state, protected-resource access, resource lists, top resource cards, approved-email checks,
+            may include account state, login state, protected-resource access, resource lists, top resource cards, eligibility checks,
             APG alert data, report routing, and update checks.
           </p>
           <p>
-            Requests to those services may include credentials, email/access details, resource identifiers, page context, browser metadata,
+            Requests to those services may include credentials, transient eligibility details, resource identifiers, page context, browser metadata,
             verification responses where configured, and other operational values required to run the requested feature.
           </p>
         </article>
@@ -148,6 +150,13 @@
             Search-safety and text-filtering systems may normalise input, compare it with blocked references, store local violation counts,
             show warnings, or temporarily disable inputs. Automated systems can produce false positives or false negatives.
           </p>
+          <p>
+            Account login events are checked for irregular patterns, including unusually broad use across hashed IP addresses. A threshold
+            may temporarily restrict access for security review. It does not by itself permanently ban an account. Permanent bans require
+            an administrator. StudyBase does not provide an internal ban appeal form, but applicable statutory rights concerning personal
+            data and significant automated decisions remain available. IP and user-agent values used by the account service are stored
+            as keyed hashes rather than readable values.
+          </p>
         </article>
 
         <article id="third-parties" class="doc-section">
@@ -166,7 +175,7 @@
           <h2>5.1 Lawful bases for processing</h2>
           <p>Under UK GDPR we rely on the following lawful bases for the processing activities described:</p>
           <ul>
-            <li><strong>Contract</strong> — account creation, login, approved-email checks, protected resource access, and core service delivery.</li>
+            <li><strong>Contract</strong> — account creation, login, eligibility checks, protected resource access, and core service delivery.</li>
             <li><strong>Consent</strong> — analytics, non-essential cookies / similar technologies (via the cookie consent banner), and certain safety or feature toggles.</li>
             <li><strong>Legitimate interests</strong> — abuse prevention, security monitoring, error logging, performance analytics for the study platform, and maintaining the safety of the community (e.g. time tracking, banned-word filters).</li>
             <li><strong>Legal obligation</strong> — responding to valid legal requests or complying with applicable UK laws.</li>
@@ -178,8 +187,10 @@
           <h2>5.2 Data retention</h2>
           <ul>
             <li>Local browser data: until you clear it or the browser removes it.</li>
-            <li>Account and session records: retained while the account is active and for a short period (typically up to 30 days) after deletion or expiry for security and fraud prevention, unless a longer period is required by law.</li>
-            <li>Access logs and API requests: short-term (days to a few weeks) for operational, security and debugging purposes.</li>
+            <li>Pending signup records: up to 48 hours, unless used sooner.</li>
+            <li>Sessions: up to seven days, unless revoked or the account is deleted sooner.</li>
+            <li>Account profile: while the account is active. Self-service deletion revokes sessions, removes login events, and anonymises the remaining database record. The keyed eligibility hash is retained while the one-use beta access control operates, so the same entitlement cannot be reused.</li>
+            <li>Account security login events: up to 30 days.</li>
             <li>Support and report records: retained as long as needed to resolve the matter and for a reasonable period thereafter for audit and safety reasons.</li>
             <li>Consent records: kept for as long as the consent is active plus a short period for audit.</li>
           </ul>
@@ -197,10 +208,12 @@
             <li><strong>Right to restrict processing</strong> — to limit how we use your data in certain cases.</li>
             <li><strong>Right to data portability</strong> — to receive certain data in a structured, commonly used, machine-readable format and to have it transmitted to another controller.</li>
             <li><strong>Right to object</strong> — to object to processing based on legitimate interests or direct marketing (we do not do direct marketing).</li>
-            <li><strong>Rights related to automated decision-making</strong> — not to be subject to solely automated decisions producing legal or similarly significant effects (StudyBase does not currently make such decisions).</li>
+            <li><strong>Rights related to automated decision-making</strong> — to receive information about significant automated decisions and obtain human intervention where UK data-protection law requires it. StudyBase automation can impose only a temporary security review, not a permanent ban.</li>
           </ul>
           <p>
-            You can exercise many of these rights yourself by clearing local storage or through account settings. For server-side records, submit a request via the <a href="/support/contact.html">Support Centre</a> (choose the privacy/data option if available) or the contact routes described in the Support Centre. We will respond within the time limits required by law (usually one month, extendable in complex cases).
+            You can delete your account and revoke all sessions from account settings. For access, correction, restriction, objection,
+            portability, or review of a security restriction, submit a request via the <a href="/support/contact.html">Support Centre</a>.
+            We will respond within the time limits required by law (usually one month, subject to lawful extensions).
           </p>
           <p>
             If you do not agree with this Privacy Policy, you should stop using StudyBase.

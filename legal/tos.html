@@ -39,8 +39,8 @@
           </div>
           <div class="legal-version">
             <span>Version</span>
-            <strong>TOS-2026.05.29</strong>
-            <p class="legal-copy" style="margin-top:10px;font-size:13px;line-height:1.55;">Last updated: 29 May 2026 — UK consumer rights, cooling-off, complaints &amp; age rules added for full UK compliance</p>
+            <strong>TOS-2026.06.20</strong>
+            <p class="legal-copy" style="margin-top:10px;font-size:13px;line-height:1.55;">Last updated: 20 June 2026 — beta accounts, weekly sessions, monitoring, and deletion updated</p>
           </div>
         </div>
       </div>
@@ -92,7 +92,7 @@
         <article id="accounts" class="doc-section">
           <h2>3. Accounts, sessions, access checks, and worker services</h2>
           <p>
-            Some features depend on account credentials, approved-email checks, browser storage, account state, session safety,
+            Some features depend on account credentials, eligibility checks, browser storage, account state, session safety,
             and StudyBase API workers.
           </p>
           <ul>
@@ -100,10 +100,18 @@
             <li>You must keep passwords, account details, and private session information secure.</li>
             <li>StudyBase may rotate, expire, suspend, or remove device sessions for security or maintenance.</li>
             <li>StudyBase may refuse requests where credentials are missing, invalid, expired, blocked, or suspected of misuse.</li>
+            <li>Normal account sessions expire after no more than seven days and require a new login.</li>
+            <li>Usernames must not contain email addresses, dates of birth, school details, or other sensitive or identifying information.</li>
           </ul>
           <p>
-            Resource Database access may be checked against an approved email list submitted through the relevant StudyBase form.
+            Beta access may be checked using an eligible address and a StudyBase form. The account service retains only a keyed hash of the eligibility address.
             Passing an access check does not grant permission to misuse, redistribute, scrape, or bypass protected materials.
+          </p>
+          <p>
+            Login activity is monitored for abuse and apparent account sharing. Automated signals, including broad use across IP addresses,
+            may temporarily restrict access for security review. They do not guarantee wrongdoing and cannot themselves impose a permanent ban.
+            Permanent bans are administrator actions and have no internal user appeal process, although this does not remove any statutory
+            data-protection or consumer rights that apply.
           </p>
         </article>
 
@@ -165,7 +173,7 @@
         <article id="age" class="doc-section">
           <h2>8. Age and eligibility</h2>
           <p>
-            StudyBase is primarily intended for students aged 13 and over. Users under 13 must have the consent of a parent or guardian to create an account or submit personal information.
+            StudyBase accounts are intended for people aged 13 and over. People under 13 may not create an account through the current beta flow.
           </p>
           <p>
             By using StudyBase you confirm that you are old enough to do so under the laws of your country, or that you have the necessary parental/guardian consent. We may suspend accounts where we have reason to believe this requirement is not met.

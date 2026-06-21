@@ -29,16 +29,9 @@
       .replace(/'/g, "&#39;");
   }
 
-  function getDeviceCode() {
-    const primary = (localStorage.getItem("studybase_device") || "").trim();
-    if (primary) return primary;
-
-    const legacy = (localStorage.getItem("gh_device") || "").trim();
-    if (legacy) {
-      localStorage.setItem("studybase_device", legacy);
-      localStorage.removeItem("gh_device");
-    }
-    return legacy;
+  function hasCurrentSession() {
+    const expiry = Date.parse(localStorage.getItem("studybase_session_expiry") || "");
+    return localStorage.getItem("studybase_session_active") === "1" && Number.isFinite(expiry) && expiry > Date.now();
   }
 
   function getInitials(name) {
@@ -223,9 +216,9 @@ function openApgModal(item) {
 
   async function loadApg() {
   const endpoint = await getApgEndpoint();
-  const deviceCode = getDeviceCode();
+  const sessionActive = hasCurrentSession();
 
-  if (!deviceCode) {
+  if (!sessionActive) {
     // no device at all → definitely not authorised
     const section = document.getElementById("apg-section");
     if (section) section.classList.add("hidden");
@@ -238,7 +231,8 @@ function openApgModal(item) {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ deviceCode })
+      credentials: "include",
+      body: "{}"
     });
 
     // hard block for unauthorised responses
@@ -295,7 +289,7 @@ function openApgModal(item) {
   });
 
   window.addEventListener("storage", function (event) {
-    if (event.key === "studybase_device" || event.key === "gh_device") {
+    if (event.key === "studybase_session_active" || event.key === "studybase_session_expiry") {
       loadApg();
     }
   });
