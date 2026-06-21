@@ -17,7 +17,7 @@
       <label class="flex gap-4 rounded-2xl bg-slate-50 p-5"><input id="contentWarnings" name="contentWarnings" type="checkbox" class="mt-1 h-5 w-5 accent-purple-600"><span><strong class="block">Content warnings</strong><span class="mt-1 block text-sm text-slate-500">Show safety notices before potentially sensitive content.</span></span></label>
       <button class="w-full rounded-xl bg-purple-600 p-4 font-black text-white">Save settings</button>
     </form>
-    <a id="delete" href="https://auth.studybase.site/delete" class="mt-6 block rounded-2xl border border-amber-200 bg-amber-50 p-5"><strong class="text-amber-950">Delete account</strong><span class="mt-1 block text-sm text-amber-800">Confirm your password and permanently remove the account.</span></a>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2"><a id="password" href="https://auth.studybase.site/change-password" class="block rounded-2xl border bg-white p-5"><strong>Change password</strong><span class="mt-1 block text-sm text-slate-500">Set a new password and sign out other sessions.</span></a><a id="delete" href="https://auth.studybase.site/delete" class="block rounded-2xl border border-amber-200 bg-amber-50 p-5"><strong class="text-amber-950">Delete account</strong><span class="mt-1 block text-sm text-amber-800">Confirm your password and permanently remove the account.</span></a></div>
   </main>
   <script>
     const form = document.getElementById("settings");
@@ -34,6 +34,7 @@
       firstName.value = result.user.name || "";
       contentWarnings.checked = result.user.settings?.contentWarnings !== false;
       document.getElementById("delete").href = `https://auth.studybase.site/delete?username=${encodeURIComponent(result.user.username)}`;
+      document.getElementById("password").href = `https://auth.studybase.site/change-password?username=${encodeURIComponent(result.user.username)}`;
       localStorage.setItem("studybase_user", JSON.stringify(result.user));
     }
     form.onsubmit = async event => {

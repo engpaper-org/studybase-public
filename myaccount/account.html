@@ -23,8 +23,9 @@
         <article class="rounded-2xl border bg-white p-5"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Date of birth</p><p id="dob" class="mt-2 font-bold"></p></article>
         <article class="rounded-2xl border bg-white p-5"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Gender</p><p id="gender" class="mt-2 font-bold"></p></article>
       </div>
-      <div class="grid gap-4 sm:grid-cols-2">
+      <div class="grid gap-4 sm:grid-cols-3">
         <a target="_top" href="/myaccount/settings.html" class="rounded-2xl border bg-white p-6 transition hover:border-purple-300 hover:shadow-lg"><h3 class="text-xl font-black">Account settings</h3><p class="mt-2 text-sm text-slate-500">Manage server-synced account preferences.</p></a>
+        <a id="password-link" target="_top" href="https://auth.studybase.site/change-password" class="rounded-2xl border bg-white p-6 transition hover:border-purple-300 hover:shadow-lg"><h3 class="text-xl font-black">Change password</h3><p class="mt-2 text-sm text-slate-500">Set a new password and revoke existing sessions.</p></a>
         <a id="delete-link" target="_top" href="https://auth.studybase.site/delete" class="rounded-2xl border border-amber-200 bg-amber-50 p-6 transition hover:border-amber-400"><h3 class="text-xl font-black text-amber-950">Delete account</h3><p class="mt-2 text-sm text-amber-800">Permanently delete your profile, credentials, and sessions.</p></a>
       </div>
     </section>
@@ -47,6 +48,7 @@
       document.getElementById("dob").textContent = user.dateOfBirth || "Not recorded";
       document.getElementById("gender").textContent = (user.gender || "Not recorded").replaceAll("-", " ");
       document.getElementById("delete-link").href = `https://auth.studybase.site/delete?username=${encodeURIComponent(user.username)}`;
+      document.getElementById("password-link").href = `https://auth.studybase.site/change-password?username=${encodeURIComponent(user.username)}`;
       message.classList.add("hidden"); document.getElementById("content").classList.remove("hidden");
     }
     document.getElementById("logout").onclick = async () => { await StudyBaseServices.logout(); location.replace("/"); };

@@ -45,6 +45,10 @@
     }
   ];
 
+  function escapeHtml(value) {
+    return String(value || "").replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+  }
+
   function normalPath(value) {
     return String(value || "").split("#")[0].replace(/\/+$/, "") || "/index.html";
   }
@@ -422,9 +426,29 @@
         document.body.classList.add("sbx-modal-lock");
         modal.querySelector(".sbx-login-close").focus();
       };
+      modal.closeAccountModal = close;
 
       return modal;
     }
+
+    function showLoginSuccess(user) {
+      document.getElementById("sbx-login-success-modal")?.remove();
+      const success = document.createElement("div");
+      success.id = "sbx-login-success-modal";
+      success.className = "sbx-login-modal is-open";
+      success.innerHTML = `<div class="sbx-login-dialog" style="max-width:460px;height:auto;padding:32px;background:#fff;border-radius:24px;text-align:center"><div style="width:56px;height:56px;margin:0 auto 16px;border-radius:18px;background:#dcfce7;color:#15803d;display:grid;place-items:center;font-size:28px;font-weight:900">&#10003;</div><h2 style="font-size:26px;font-weight:900;color:#0f172a">You are signed in</h2><p style="margin-top:10px;color:#64748b">Welcome back, <strong style="color:#0f172a">${escapeHtml(user?.name || "StudyBase user")}</strong>.</p><p style="margin-top:5px;color:#64748b">Logged in as <strong style="color:#6d28d9">@${escapeHtml(user?.username || "user")}</strong></p><button type="button" style="margin-top:24px;width:100%;border:0;border-radius:14px;padding:13px;background:#7c3aed;color:#fff;font-weight:800;cursor:pointer">Continue</button></div>`;
+      document.body.appendChild(success);
+      const closeSuccess = () => success.remove();
+      success.querySelector("button").onclick = closeSuccess;
+      success.onclick = event => { if (event.target === success) closeSuccess(); };
+    }
+
+    window.addEventListener("message", event => {
+      if (event.origin !== window.location.origin || event.data?.type !== "studybase:login-success") return;
+      ensureAccountModal().closeAccountModal?.();
+      updateAuthState();
+      showLoginSuccess(event.data.user);
+    });
 
     nav.addEventListener("click", (event) => {
       const login = event.target.closest("[data-sbx-login]");

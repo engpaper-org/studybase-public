@@ -8,7 +8,7 @@
   <link rel="icon" href="/assets/images/site-icons/main.ico">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
   <main class="mx-auto flex min-h-screen max-w-5xl items-center px-5 py-12">
     <section class="grid w-full overflow-hidden rounded-3xl border border-white/10 bg-white shadow-2xl lg:grid-cols-[.85fr_1.15fr]">
       <aside class="flex min-h-72 flex-col justify-between bg-gradient-to-br from-purple-700 via-indigo-800 to-slate-950 p-8 sm:p-12">
@@ -66,8 +66,11 @@
         localStorage.setItem("studybase_session_active", "1");
         localStorage.setItem("studybase_session_expiry", data.expiresAt);
         localStorage.setItem("studybase_user", JSON.stringify(data.user));
-        const target = "/myaccount/account.html";
-        try { (window.top !== window.self ? window.top : window).location.href = target; } catch (_) { location.href = target; }
+        if (window.parent !== window) {
+          window.parent.postMessage({ type: "studybase:login-success", user: data.user }, location.origin);
+        } else {
+          location.replace(`/?login=true&username=${encodeURIComponent(data.user.username)}`);
+        }
       } catch (error) { message.textContent = error.message; message.classList.remove("hidden"); }
       finally { button.disabled = false; button.textContent = "Sign in"; }
     });
