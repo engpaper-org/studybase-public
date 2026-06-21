@@ -18,10 +18,8 @@
       <div class="rounded-3xl bg-gradient-to-br from-purple-700 to-indigo-950 p-7 text-white shadow-xl">
         <p class="text-sm font-bold text-purple-200">Signed in as</p><h2 id="name" class="mt-2 text-3xl font-black"></h2><p id="username" class="mt-1 text-purple-200"></p>
       </div>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-4">
         <article class="rounded-2xl border bg-white p-5"><p class="text-xs font-black uppercase tracking-wider text-slate-400">User ID</p><p id="user-id" class="mt-2 break-all font-mono text-sm"></p></article>
-        <article class="rounded-2xl border bg-white p-5"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Date of birth</p><p id="dob" class="mt-2 font-bold"></p></article>
-        <article class="rounded-2xl border bg-white p-5"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Gender</p><p id="gender" class="mt-2 font-bold"></p></article>
       </div>
       <div class="grid gap-4 sm:grid-cols-3">
         <a target="_top" href="/myaccount/settings.html" class="rounded-2xl border bg-white p-6 transition hover:border-purple-300 hover:shadow-lg"><h3 class="text-xl font-black">Account settings</h3><p class="mt-2 text-sm text-slate-500">Manage server-synced account preferences.</p></a>
@@ -36,22 +34,20 @@
       const result = await StudyBaseServices.request("/me");
       if (!result.ok || !result.user) { location.replace("/myaccount/login.html?sessionExpired=true"); return; }
       const user = result.user;
-      if (document.referrer.startsWith("https://auth.studybase.site")) {
+      if (localStorage.getItem("studybase_session_active") !== "1") {
         await StudyBaseServices.logout();
-        location.replace(`/?signup=true&username=${encodeURIComponent(user.username)}`);
+        location.replace(`/?loggedin=true&username=${encodeURIComponent(user.username)}`);
         return;
       }
       localStorage.setItem("studybase_user", JSON.stringify(user));
       document.getElementById("name").textContent = user.name;
       document.getElementById("username").textContent = `@${user.username}`;
       document.getElementById("user-id").textContent = user.id;
-      document.getElementById("dob").textContent = user.dateOfBirth || "Not recorded";
-      document.getElementById("gender").textContent = (user.gender || "Not recorded").replaceAll("-", " ");
       document.getElementById("delete-link").href = `https://auth.studybase.site/delete?username=${encodeURIComponent(user.username)}`;
       document.getElementById("password-link").href = `https://auth.studybase.site/change-password?username=${encodeURIComponent(user.username)}`;
       message.classList.add("hidden"); document.getElementById("content").classList.remove("hidden");
     }
-    document.getElementById("logout").onclick = async () => { await StudyBaseServices.logout(); location.replace("/"); };
+    document.getElementById("logout").onclick = async () => { await StudyBaseServices.logout(); location.replace("/?signedout=true"); };
     loadAccount().catch(() => { message.textContent = "Your account could not be loaded."; });
   </script>
 </body>

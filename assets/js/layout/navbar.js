@@ -443,6 +443,17 @@
       success.onclick = event => { if (event.target === success) closeSuccess(); };
     }
 
+    function showAccountStatus({ title, message, buttonLabel = "Continue", onButton }) {
+      document.getElementById("sbx-account-status-modal")?.remove();
+      const status = document.createElement("div");
+      status.id = "sbx-account-status-modal";
+      status.className = "sbx-login-modal is-open";
+      status.innerHTML = `<div class="sbx-login-dialog" style="max-width:480px;height:auto;padding:32px;background:#fff;border-radius:24px;text-align:center"><div style="width:56px;height:56px;margin:0 auto 16px;border-radius:18px;background:#ede9fe;color:#6d28d9;display:grid;place-items:center;font-size:28px;font-weight:900">&#10003;</div><h2 style="font-size:26px;font-weight:900;color:#0f172a">${escapeHtml(title)}</h2><p style="margin-top:10px;color:#64748b;line-height:1.6">${escapeHtml(message)}</p><button type="button" style="margin-top:24px;width:100%;border:0;border-radius:14px;padding:13px;background:#7c3aed;color:#fff;font-weight:800;cursor:pointer">${escapeHtml(buttonLabel)}</button></div>`;
+      document.body.appendChild(status);
+      status.querySelector("button").onclick = () => { status.remove(); onButton?.(); };
+      status.onclick = event => { if (event.target === status) status.remove(); };
+    }
+
     window.addEventListener("message", event => {
       if (event.origin !== window.location.origin || event.data?.type !== "studybase:login-success") return;
       ensureAccountModal().closeAccountModal?.();
@@ -471,8 +482,9 @@
 
       if (signout) {
         event.preventDefault();
-        clearAuthSession();
-        updateAuthState();
+        const finish = () => { clearAuthSession(); window.location.href = "/?signedout=true"; };
+        if (window.StudyBaseServices?.logout) window.StudyBaseServices.logout().finally(finish);
+        else fetch("https://api.studybase.site/api/logout", { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: "{}" }).finally(finish);
       }
     });
 
@@ -540,6 +552,23 @@
           "sessionExpired";
 
         const params = new URLSearchParams(window.location.search);
+        const statusParam = ["loggedin", "deleted", "signedout"].find(name => params.get(name) === "true");
+        if (statusParam) {
+          const username = (params.get("username") || "").trim();
+          const url = new URL(window.location.href);
+          ["loggedin", "deleted", "signedout", "username"].forEach(name => url.searchParams.delete(name));
+          window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+          setTimeout(() => {
+            if (statusParam === "loggedin") {
+              showAccountStatus({ title: "Account created", message: "Your StudyBase account is ready. Log in to start using it.", buttonLabel: "Log in", onButton: () => ensureAccountModal().openPage(`/myaccount/login.html${username ? `?username=${encodeURIComponent(username)}` : ""}`, "StudyBase login") });
+            } else if (statusParam === "deleted") {
+              showAccountStatus({ title: "Account deleted", message: "Your account and related account data have been deleted." });
+            } else {
+              showAccountStatus({ title: "Signed out", message: "You have been securely signed out of StudyBase." });
+            }
+          }, 80);
+          return;
+        }
         if (params.get("signup") === "true") {
           const username = (params.get("username") || "").trim();
           const url = new URL(window.location.href);

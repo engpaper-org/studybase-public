@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="StudyBase is the next-standard closed-loop A-Level revision operating system. Paper-first. 30 precision tools. The Paper Loop methodology. Built for students who treat exams like professional sport.">
+  <meta name="description" content="StudyBase is a private, paper-first A-Level revision system with focused study tools, local-first document editors, and a closed-loop method for turning mistakes into marks.">
   <meta name="classification" content="Education">
   <meta name="category" content="Education">
   <meta name="subject" content="A-Level revision, past papers, exam preparation, study tools">
@@ -11,7 +11,7 @@
   <meta property="og:site_name" content="StudyBase">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="en_GB">
-  <title>StudyBase | A-Level Revision Remastered</title>
+  <title>StudyBase | Your Revision Operating System</title>
   <link rel="icon" href="/assets/images/site-icons/main.ico">
   <script src="/assets/js/config/siteConfig.js"></script>
   <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
@@ -25,691 +25,200 @@
   <script>const PAGE_ID = "home_remastered";</script>
   <script>
     if (window.tailwind) {
-      window.tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              'sb-dark': '#0f172a',
-              'sb-accent': '#67e8f9',
-              'sb-muted': '#475569'
-            }
-          }
-        }
-      };
+      window.tailwind.config = { theme: { extend: { colors: { 'sb-dark': '#070b14', 'sb-accent': '#8bffcf', 'sb-muted': '#8f9bad' } } } };
     }
   </script>
   <style>
-    .home-shell {
-      background:
-        linear-gradient(rgba(15, 23, 42, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
-        radial-gradient(circle at 10% 0%, rgba(37, 99, 235, 0.10), transparent 28rem),
-        radial-gradient(circle at 92% 6%, rgba(20, 184, 166, 0.10), transparent 24rem),
-        #f8fafc;
-      background-size: 34px 34px, 34px 34px, auto, auto, auto;
+    :root {
+      --ink: #f5f7fb;
+      --muted: #9aa7b9;
+      --night: #070b14;
+      --panel: #0d1421;
+      --line: rgba(255,255,255,.1);
+      --mint: #8bffcf;
+      --cyan: #73ddff;
+      --violet: #ad91ff;
+      --orange: #ffb36b;
+      --ease: cubic-bezier(.2,.75,.2,1);
     }
-
-    .section-title {
-      font-family: var(--sbx-font-heading, "Plus Jakarta Sans", Inter, system-ui, sans-serif);
-      letter-spacing: -0.045em;
-      line-height: 0.98;
-    }
-
-    .home-card {
-      border: 1px solid rgba(203, 213, 225, 0.86);
-      background: rgba(255, 255, 255, 0.94);
-      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.07);
-      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
-    }
-
-    .home-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(14, 165, 233, 0.45);
-      box-shadow: 0 24px 54px rgba(15, 23, 42, 0.10);
-    }
-
-    .home-link-card {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .interface-panel {
-      box-shadow: 0 28px 70px rgba(15, 23, 42, 0.18);
-    }
-
-    .ui-line {
-      height: 0.5rem;
-      border-radius: 999px;
-      background: #e2e8f0;
-    }
-
-    .ui-line.dark {
-      background: rgba(15, 23, 42, 0.9);
-    }
-
-    .ui-line.blue {
-      background: #38bdf8;
-    }
-
-    .ui-line.green {
-      background: #34d399;
-    }
-
-    .ui-line.violet {
-      background: #a78bfa;
-    }
-
-    .mini-window-dot {
-      width: 0.7rem;
-      height: 0.7rem;
-      border-radius: 999px;
-      display: inline-block;
-    }
-
-    .metric-card {
-      border-left: 1px solid rgba(203, 213, 225, 0.78);
-    }
-
-    .metric-card:first-child {
-      border-left: 0;
-    }
-
-    .paper-step::after {
-      content: "";
-      position: absolute;
-      top: 2rem;
-      right: -1rem;
-      width: 2rem;
-      height: 1px;
-      background: linear-gradient(90deg, rgba(14, 165, 233, 0.35), transparent);
-    }
-
-    .paper-step:last-child::after {
-      display: none;
-    }
-
-    .soft-band {
-      background:
-        linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(20, 184, 166, 0.08)),
-        rgba(255, 255, 255, 0.72);
-    }
-
-    .dark-band {
-      background:
-        linear-gradient(135deg, rgba(14, 165, 233, 0.12), transparent 34%),
-        linear-gradient(220deg, rgba(16, 185, 129, 0.14), transparent 32%),
-        #0f172a;
-    }
-
-    .icon-tile {
-      width: 2.75rem;
-      height: 2.75rem;
-      border-radius: 14px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .fade-in {
-      opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 520ms ease, transform 520ms cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 767px) {
-      .metric-card {
-        border-left: 0;
-        border-top: 1px solid rgba(203, 213, 225, 0.78);
-      }
-
-      .metric-card:first-child,
-      .metric-card:nth-child(2) {
-        border-top: 0;
-      }
-
-      .paper-step::after {
-        display: none;
-      }
-    }
+    * { box-sizing: border-box; }
+    html { background: var(--night); }
+    body { margin: 0; color: var(--ink); background: var(--night); font-family: Inter, "Plus Jakarta Sans", system-ui, sans-serif; overflow-x: hidden; }
+    a { color: inherit; }
+    button { font: inherit; }
+    .page { position: relative; isolation: isolate; overflow: hidden; }
+    .grain { position: fixed; inset: 0; z-index: 20; pointer-events: none; opacity: .022; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E"); }
+    .cursor-glow { position: fixed; z-index: -1; width: 600px; height: 600px; border-radius: 50%; transform: translate(-50%,-50%); background: radial-gradient(circle, rgba(69,210,172,.11), transparent 66%); pointer-events: none; transition: opacity .3s; }
+    .wrap { width: min(1200px, calc(100% - 40px)); margin: 0 auto; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; color: var(--mint); font-size: 11px; font-weight: 900; letter-spacing: .17em; text-transform: uppercase; }
+    .eyebrow::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+    .display { margin: 0; font-weight: 900; letter-spacing: -.065em; line-height: .92; }
+    .gradient-text { color: transparent; background: linear-gradient(105deg, #fff 10%, var(--mint) 44%, var(--cyan) 70%, var(--violet)); background-clip: text; -webkit-background-clip: text; }
+    .button { display: inline-flex; min-height: 54px; align-items: center; justify-content: center; gap: 10px; padding: 0 22px; border: 1px solid transparent; border-radius: 999px; text-decoration: none; font-size: 14px; font-weight: 850; transition: transform .25s var(--ease), background .25s, border-color .25s, box-shadow .25s; }
+    .button:hover { transform: translateY(-3px); }
+    .button.primary { color: #07110e; background: var(--mint); box-shadow: 0 14px 40px rgba(91,255,200,.18); }
+    .button.primary:hover { background: #fff; box-shadow: 0 18px 55px rgba(91,255,200,.28); }
+    .button.ghost { border-color: var(--line); background: rgba(255,255,255,.045); }
+    .button.ghost:hover { border-color: rgba(139,255,207,.55); background: rgba(139,255,207,.08); }
+    .hero { position: relative; min-height: 820px; padding: 105px 0 80px; display: flex; align-items: center; }
+    .hero::before { content: ""; position: absolute; inset: 0; z-index: -2; background: linear-gradient(90deg, rgba(255,255,255,.032) 1px, transparent 1px), linear-gradient(rgba(255,255,255,.032) 1px, transparent 1px); background-size: 72px 72px; mask-image: linear-gradient(to bottom,#000,transparent 85%); }
+    .hero::after { content: ""; position: absolute; width: 900px; height: 900px; left: 48%; top: -410px; z-index: -1; border-radius: 50%; background: conic-gradient(from 200deg, rgba(115,221,255,.12), rgba(173,145,255,.12), rgba(139,255,207,.14), transparent 75%); filter: blur(35px); animation: orbit 20s linear infinite; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0,1.02fr) minmax(460px,.98fr); gap: 70px; align-items: center; }
+    .hero h1 { max-width: 760px; font-size: clamp(4.2rem,8.3vw,8.4rem); }
+    .hero-copy { margin: 27px 0 0; max-width: 620px; color: #b1bccb; font-size: clamp(1.08rem,1.5vw,1.28rem); line-height: 1.62; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .trust { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 28px; color: #7f8ca0; font-size: 12px; font-weight: 750; }
+    .trust span { display: inline-flex; align-items: center; gap: 7px; }
+    .trust i { width: 14px; color: var(--mint); }
+    .orbit-stage { position: relative; min-height: 590px; perspective: 1000px; }
+    .halo { position: absolute; inset: 4% -12%; border: 1px solid rgba(115,221,255,.16); border-radius: 50%; transform: rotate(-14deg); animation: breathe 5s ease-in-out infinite; }
+    .halo:nth-child(2) { inset: 13% -3%; border-color: rgba(173,145,255,.17); transform: rotate(19deg); animation-delay: -2s; }
+    .dashboard { position: absolute; inset: 45px 5px 35px 15px; overflow: hidden; border: 1px solid rgba(255,255,255,.14); border-radius: 28px; background: rgba(11,17,29,.88); box-shadow: 0 45px 100px rgba(0,0,0,.48); backdrop-filter: blur(20px); transform: rotateY(-5deg) rotateX(2deg); transition: transform .18s ease-out; }
+    .dash-top { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; border-bottom: 1px solid var(--line); }
+    .dots { display: flex; gap: 6px; }
+    .dots b { width: 8px; height: 8px; border-radius: 50%; background: #ff728d; }
+    .dots b:nth-child(2) { background: #ffd36d; }.dots b:nth-child(3) { background: var(--mint); }
+    .live { display: flex; align-items: center; gap: 7px; color: var(--mint); font-size: 10px; font-weight: 900; letter-spacing: .12em; }
+    .live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 0 rgba(139,255,207,.6); animation: pulse 2s infinite; }
+    .dash-body { display: grid; grid-template-columns: 140px 1fr; min-height: 455px; }
+    .dash-nav { padding: 17px 12px; border-right: 1px solid var(--line); background: rgba(255,255,255,.018); }
+    .dash-logo { margin: 0 7px 20px; font-weight: 900; font-size: 13px; }.dash-logo span { color: var(--mint); }
+    .dash-link { display: flex; gap: 8px; align-items: center; margin: 5px 0; padding: 9px 10px; border-radius: 9px; color: #7f8ca0; font-size: 10px; font-weight: 750; }.dash-link.active { color: #07110e; background: var(--mint); }.dash-link i { width: 13px; }
+    .dash-main { padding: 22px; }
+    .dash-greeting { color: #8490a2; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }.dash-main h3 { margin: 5px 0 17px; font-size: 22px; letter-spacing: -.04em; }
+    .score-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 10px; }
+    .score-card { padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.035); }
+    .score-card small { color: #8591a3; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; }.score-card strong { display: block; margin-top: 7px; font-size: 30px; letter-spacing: -.06em; }.score-card strong em { color: var(--mint); font-size: 12px; font-style: normal; letter-spacing: 0; }
+    .chart { display: flex; align-items: end; gap: 5px; height: 54px; margin-top: 14px; }.chart span { flex: 1; height: var(--h); border-radius: 4px 4px 1px 1px; background: linear-gradient(var(--mint),rgba(139,255,207,.15)); animation: bars 1.4s var(--ease) both; }
+    .task { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; margin-top: 10px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 13px; font-size: 10px; }.task-icon { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 9px; color: #07110e; background: var(--cyan); }.task-icon i { width: 13px; }.task b { display:block; }.task span { color:#78869b; }.task-status { color:var(--mint)!important; font-weight:850; }
+    .float-chip { position: absolute; z-index: 2; padding: 13px 16px; border: 1px solid var(--line); border-radius: 14px; background: rgba(16,24,38,.9); box-shadow: 0 20px 45px rgba(0,0,0,.3); backdrop-filter: blur(16px); animation: float 4s ease-in-out infinite; }.float-chip strong { display:block; font-size:18px; }.float-chip span { color:#8d99aa; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.1em; }.chip-one { right:-18px; top:100px; }.chip-two { left:-20px; bottom:70px; animation-delay:-2s; }.chip-one strong { color:var(--mint); }.chip-two strong { color:var(--violet); }
+    .ticker { border-block: 1px solid var(--line); background: #0a101b; overflow: hidden; transform: rotate(-1deg) scale(1.02); }.ticker-track { display: flex; width:max-content; animation: marquee 27s linear infinite; }.ticker span { display:flex; align-items:center; gap:22px; padding:15px 22px; color:#96a3b5; font-size:11px; font-weight:850; letter-spacing:.13em; text-transform:uppercase; }.ticker span::after { content:"✦"; color:var(--mint); }
+    .section { padding: 120px 0; }.section-head { display:flex; align-items:end; justify-content:space-between; gap:30px; margin-bottom:48px; }.section-head h2 { max-width:760px; font-size:clamp(3rem,6vw,6rem); }.section-head p { max-width:390px; margin:0; color:var(--muted); line-height:1.65; }
+    .loop-grid { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--line); border-radius:28px; overflow:hidden; }.loop-card { position:relative; min-height:360px; padding:28px; border-right:1px solid var(--line); text-decoration:none; background:#0b111d; transition:background .35s, transform .35s var(--ease); }.loop-card:last-child { border:0; }.loop-card:hover { background:#101a29; }.loop-no { color:var(--tone); font-size:11px; font-weight:900; letter-spacing:.15em; }.loop-icon { display:grid; place-items:center; width:50px; height:50px; margin-top:75px; border:1px solid color-mix(in srgb,var(--tone),transparent 65%); border-radius:16px; color:var(--tone); background:color-mix(in srgb,var(--tone),transparent 90%); transition:transform .35s var(--ease); }.loop-card:hover .loop-icon { transform:rotate(-8deg) scale(1.1); }.loop-icon i { width:21px; }.loop-card h3 { margin:22px 0 9px; font-size:24px; letter-spacing:-.045em; }.loop-card p { margin:0; color:#8d99aa; font-size:14px; line-height:1.6; }.loop-arrow { position:absolute; top:27px; right:25px; color:#546174; transition:transform .3s,color .3s; }.loop-card:hover .loop-arrow { color:var(--tone); transform:translate(4px,-4px); }
+    .docs-zone { position:relative; padding:130px 0; background:#eef6f1; color:#09110e; }.docs-zone::before { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(7,11,20,.05) 1px,transparent 1px),linear-gradient(rgba(7,11,20,.05) 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(circle at 50%,#000,transparent 77%); }.docs-layout { position:relative; display:grid; grid-template-columns:.8fr 1.2fr; gap:75px; align-items:center; }.docs-zone .eyebrow { color:#087d60; }.docs-copy h2 { margin:18px 0 22px; font-size:clamp(3.6rem,7vw,7.4rem); }.docs-copy p { max-width:500px; color:#485750; font-size:18px; line-height:1.65; }.docs-pills { display:flex; flex-wrap:wrap; gap:8px; margin:24px 0 30px; }.docs-pills span { padding:8px 11px; border:1px solid rgba(9,17,14,.13); border-radius:999px; font-size:11px; font-weight:850; }.docs-zone .button.primary { color:#fff; background:#09110e; box-shadow:none; }.docs-zone .button.primary:hover { color:#09110e; background:var(--mint); }
+    .docs-stack { position:relative; min-height:620px; perspective:1200px; }.doc-window { position:absolute; width:min(100%,590px); overflow:hidden; border:1px solid rgba(9,17,14,.17); border-radius:23px; background:#fff; box-shadow:0 35px 70px rgba(23,59,45,.17); transition:transform .55s var(--ease),filter .55s,opacity .55s; }.doc-window.pdf { top:110px; right:-20px; transform:rotate(5deg) scale(.9); filter:saturate(.7); }.doc-window.text { top:25px; left:0; z-index:2; transform:rotate(-2deg); }.docs-stack.pdf-active .pdf { z-index:3; transform:rotate(-1deg) scale(1); filter:none; }.docs-stack.pdf-active .text { transform:translate(-70px,100px) rotate(-7deg) scale(.86); opacity:.72; }.window-bar { display:flex; align-items:center; justify-content:space-between; padding:13px 15px; color:#dce7e1; background:#0c1511; font-size:10px; font-weight:800; }.window-body { display:grid; grid-template-columns:128px 1fr; min-height:400px; }.window-side { padding:16px 12px; border-right:1px solid #e5ebe7; background:#f7faf8; }.mini-nav { margin:6px 0; padding:8px; border-radius:8px; color:#69766f; font-size:9px; font-weight:750; }.mini-nav.active { color:#095b46; background:#dff7ed; }.paper { margin:20px; padding:30px; min-height:330px; border:1px solid #e1e7e3; box-shadow:0 12px 25px rgba(0,0,0,.05); }.paper-label { color:#087d60; font-size:9px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }.line { height:7px; margin-top:10px; border-radius:8px; background:#e1e7e3; }.line.dark { width:74%; height:12px; background:#17231d; }.line.short { width:57%; }.highlight { margin:24px 0 12px; padding:12px; border-left:3px solid #24b789; background:#e7fff6; color:#285143; font-size:9px; line-height:1.5; }.pdf-page { position:relative; margin:20px; min-height:360px; padding:25px; border:1px solid #e3e8e5; background:#fff; }.annotation { position:absolute; left:48px; top:111px; width:245px; height:18px; background:rgba(255,210,74,.5); transform:rotate(-1deg); }.annotation-ring { position:absolute; right:45px; bottom:66px; width:100px; height:56px; border:3px solid #f25878; border-radius:50%; transform:rotate(-12deg); }.docs-switch { display:flex; gap:6px; margin-top:20px; }.docs-switch button { padding:10px 13px; border:1px solid rgba(9,17,14,.14); border-radius:10px; color:#516059; background:rgba(255,255,255,.45); font-size:11px; font-weight:850; cursor:pointer; }.docs-switch button.active { color:#fff; background:#0b1510; }
+    .toolkit { background:radial-gradient(circle at 90% 20%,rgba(173,145,255,.1),transparent 30%),var(--night); }.tool-grid { display:grid; grid-template-columns:1.15fr .85fr .85fr; gap:14px; }.tool-card { position:relative; min-height:310px; overflow:hidden; padding:27px; border:1px solid var(--line); border-radius:23px; text-decoration:none; background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018)); transform-style:preserve-3d; transition:border-color .3s,background .3s,transform .15s; }.tool-card:hover { border-color:rgba(139,255,207,.42); background:linear-gradient(145deg,rgba(139,255,207,.09),rgba(255,255,255,.02)); }.tool-card:first-child { grid-row:span 2; min-height:634px; }.tool-card.wide { grid-column:span 2; }.tool-card i { width:24px; color:var(--tone,var(--mint)); }.tool-card h3 { margin:70px 0 10px; font-size:27px; letter-spacing:-.045em; }.tool-card:first-child h3 { margin-top:260px; font-size:40px; }.tool-card p { max-width:430px; margin:0; color:#8d99aa; line-height:1.6; }.tool-tag { position:absolute; top:24px; right:24px; color:#69768a; font-size:9px; font-weight:900; letter-spacing:.12em; text-transform:uppercase; }.orb { position:absolute; right:-80px; bottom:-110px; width:260px; height:260px; border-radius:50%; background:radial-gradient(circle at 35% 30%,var(--tone,var(--mint)),transparent 65%); opacity:.18; filter:blur(2px); transition:transform .5s var(--ease); }.tool-card:hover .orb { transform:scale(1.2) translate(-12px,-12px); }
+    .manifesto { padding:130px 0 60px; text-align:center; }.manifesto h2 { max-width:950px; margin:0 auto; font-size:clamp(3.5rem,7vw,7.5rem); }.manifesto p { max-width:610px; margin:25px auto 34px; color:var(--muted); font-size:18px; line-height:1.65; }.manifesto .button { margin:5px; }
+    .reveal { opacity:0; transform:translateY(35px); transition:opacity .8s var(--ease),transform .8s var(--ease); }.reveal.visible { opacity:1; transform:none; }
+    @keyframes orbit { to { transform:rotate(360deg); } } @keyframes breathe { 50% { transform:rotate(-10deg) scale(1.04); opacity:.55; } } @keyframes pulse { 70% { box-shadow:0 0 0 8px rgba(139,255,207,0); } } @keyframes bars { from { height:0; } } @keyframes float { 50% { transform:translateY(-9px); } } @keyframes marquee { to { transform:translateX(-50%); } }
+    @media(max-width:980px){.hero{padding-top:90px}.hero-grid,.docs-layout{grid-template-columns:1fr}.hero h1{font-size:clamp(4rem,13vw,7rem)}.orbit-stage{min-height:560px}.loop-grid{grid-template-columns:1fr 1fr}.loop-card:nth-child(2){border-right:0}.loop-card{border-bottom:1px solid var(--line)}.tool-grid{grid-template-columns:1fr 1fr}.tool-card:first-child{grid-row:auto;grid-column:span 2;min-height:420px}.tool-card:first-child h3{margin-top:130px}.docs-copy{max-width:700px}.docs-stack{max-width:680px;width:100%;margin:auto}}
+    @media(max-width:650px){.wrap{width:min(100% - 28px,1200px)}.hero{min-height:auto;padding:75px 0 50px}.hero h1{font-size:clamp(3.45rem,17vw,5.3rem)}.hero-grid{gap:30px}.orbit-stage{min-height:475px}.dashboard{inset:30px 0 30px 0;transform:none}.dash-body{grid-template-columns:1fr}.dash-nav{display:none}.dash-main{padding:17px}.float-chip{display:none}.section{padding:85px 0}.section-head{display:block}.section-head p{margin-top:20px}.loop-grid{grid-template-columns:1fr}.loop-card{min-height:280px;border-right:0}.loop-icon{margin-top:45px}.docs-zone{padding:90px 0}.docs-layout{gap:40px}.docs-stack{min-height:480px}.doc-window{width:100%}.doc-window.pdf{right:0;top:70px}.window-body{grid-template-columns:1fr}.window-side{display:none}.paper,.pdf-page{margin:12px;padding:22px;min-height:320px}.docs-stack.pdf-active .text{transform:translate(-25px,70px) rotate(-5deg) scale(.84)}.tool-grid{grid-template-columns:1fr}.tool-card,.tool-card:first-child,.tool-card.wide{grid-column:auto;min-height:290px}.tool-card:first-child h3,.tool-card h3{margin-top:80px;font-size:29px}.manifesto{padding-top:90px}.cursor-glow{display:none}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}.ticker-track{animation:none}.cursor-glow{display:none}}
   </style>
 </head>
-<body class="home-shell text-slate-900">
-  <main>
-    <section class="max-w-[1200px] mx-auto px-5 md:px-6 pt-8 md:pt-12 pb-8">
-      <div class="grid lg:grid-cols-[0.95fr_1.05fr] gap-8 lg:gap-10 items-center">
-        <div>
-          <h1 class="section-title text-5xl md:text-6xl lg:text-[68px] font-black text-slate-950">
-            A-Level revision.<br>
-            <span class="text-sky-600">Built around real papers.</span>
-          </h1>
-          <p class="mt-5 max-w-xl text-lg md:text-xl leading-relaxed text-slate-600">
-            The closed-loop revision system for students who want less guesswork and better marks: official resources, 30 precision tools, and the Paper Loop methodology in one place.
-          </p>
-
-          <div class="mt-7 flex flex-wrap gap-3">
-            <a href="/r/index.html#client-preflight" class="inline-flex h-[3.25rem] items-center justify-center gap-2 rounded-2xl bg-slate-950 px-7 text-sm font-black text-white shadow-xl shadow-slate-950/15 hover:bg-slate-800">
-              Open Resource Database
-              <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
-            </a>
-            <a href="/tools/" class="inline-flex h-[3.25rem] items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-7 text-sm font-black text-slate-800 hover:border-sky-300 hover:bg-sky-50">
-              Explore Study Tools
-              <i data-lucide="wrench" class="h-4 w-4"></i>
-            </a>
+<body>
+  <div class="page">
+    <div class="grain" aria-hidden="true"></div><div class="cursor-glow" aria-hidden="true"></div>
+    <main>
+      <section class="hero">
+        <div class="wrap hero-grid">
+          <div class="hero-copy-block reveal">
+            <span class="eyebrow">A-Level revision, rebuilt</span>
+            <h1 class="display">Stop revising.<br><span class="gradient-text">Start repairing.</span></h1>
+            <p class="hero-copy">StudyBase turns real past papers into a precise plan: find the gaps, fix the thinking, and return stronger. One focused system for the work that actually moves marks.</p>
+            <div class="hero-actions">
+              <a class="button primary" href="/r/index.html#client-preflight">Enter StudyBase <i data-lucide="arrow-up-right"></i></a>
+              <a class="button ghost" href="/docs/">Meet Doc Tools <i data-lucide="file-pen-line"></i></a>
+            </div>
+            <div class="trust"><span><i data-lucide="shield-check"></i> Private by design</span><span><i data-lucide="wifi-off"></i> Local-first tools</span><span><i data-lucide="user-round-x"></i> Start without an account</span></div>
           </div>
-
-          <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-slate-500">
-            <span class="inline-flex items-center gap-2 font-semibold text-slate-700">
-              <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
-              No account required to start
-            </span>
-            <span>100% private</span>
-            <span>Local-first</span>
-            <span>Zero data exfiltration</span>
-          </div>
-        </div>
-
-        <div class="relative">
-          <div class="interface-panel overflow-hidden rounded-3xl border border-slate-200 bg-white p-4">
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-              <div class="flex items-center justify-between border-b border-slate-200 pb-4">
-                <div class="flex items-center gap-2">
-                  <span class="mini-window-dot bg-rose-400"></span>
-                  <span class="mini-window-dot bg-amber-300"></span>
-                  <span class="mini-window-dot bg-emerald-400"></span>
-                </div>
-                <div class="rounded-full bg-sky-100 px-3 py-1 text-xs font-black uppercase tracking-[1.2px] text-sky-700">Paper Loop Active</div>
-              </div>
-              <div class="grid gap-4 pt-4 md:grid-cols-[0.72fr_1fr]">
-                <div class="space-y-3">
-                  <div class="rounded-2xl border border-emerald-200 bg-white p-4">
-                    <div class="text-xs font-black uppercase tracking-[1.3px] text-emerald-700">Today</div>
-                    <div class="mt-3 ui-line dark w-4/5"></div>
-                    <div class="mt-3 space-y-2">
-                      <div class="ui-line w-full"></div>
-                      <div class="ui-line w-2/3"></div>
-                    </div>
-                  </div>
-                  <div class="rounded-2xl border border-violet-200 bg-violet-50 p-4 text-sm font-black text-violet-700">Mistake pattern: mechanisms</div>
-                  <div class="rounded-2xl border border-sky-200 bg-sky-50 p-4 text-sm font-black text-sky-700">Next re-attempt in 48h</div>
-                </div>
-                <div class="rounded-2xl bg-slate-950 p-5 text-white">
-                  <div class="text-xs font-black uppercase tracking-[1.4px] text-cyan-300">Live revision board</div>
-                  <div class="mt-4 grid grid-cols-3 gap-2">
-                    <div class="rounded-xl bg-emerald-400/15 p-3">
-                      <div class="text-xl font-black text-emerald-300">42</div>
-                      <div class="mt-1 text-[10px] font-bold text-emerald-100">marks repaired</div>
-                    </div>
-                    <div class="rounded-xl bg-violet-400/15 p-3">
-                      <div class="text-xl font-black text-violet-300">7</div>
-                      <div class="mt-1 text-[10px] font-bold text-violet-100">weak spots</div>
-                    </div>
-                    <div class="rounded-xl bg-sky-400/15 p-3">
-                      <div class="text-xl font-black text-sky-300">3</div>
-                      <div class="mt-1 text-[10px] font-bold text-sky-100">papers queued</div>
-                    </div>
-                  </div>
-                  <div class="mt-5 rounded-2xl bg-white p-4 text-slate-950">
-                    <div class="text-xs font-black uppercase tracking-[1.2px] text-sky-700">Repair plan</div>
-                    <div class="mt-3 ui-line dark w-3/4"></div>
-                    <div class="mt-4 space-y-2">
-                      <div class="ui-line w-full"></div>
-                      <div class="ui-line w-5/6"></div>
-                      <div class="ui-line w-2/3"></div>
-                    </div>
-                    <div class="mt-5 grid grid-cols-4 gap-2">
-                      <div class="ui-line green"></div>
-                      <div class="ui-line blue"></div>
-                      <div class="ui-line violet"></div>
-                      <div class="ui-line"></div>
-                    </div>
-                  </div>
+          <div class="orbit-stage reveal" aria-label="StudyBase revision dashboard preview">
+            <div class="halo"></div><div class="halo"></div>
+            <div class="dashboard">
+              <div class="dash-top"><div class="dots"><b></b><b></b><b></b></div><div class="live">SYSTEM ONLINE</div></div>
+              <div class="dash-body">
+                <aside class="dash-nav"><div class="dash-logo">study<span>base</span></div><div class="dash-link active"><i data-lucide="gauge"></i> Command</div><div class="dash-link"><i data-lucide="files"></i> Papers</div><div class="dash-link"><i data-lucide="wrench"></i> Tools</div><div class="dash-link"><i data-lucide="file-text"></i> Docs</div><div class="dash-link"><i data-lucide="chart-no-axes-combined"></i> Progress</div></aside>
+                <div class="dash-main"><div class="dash-greeting">Sunday / revision pulse</div><h3>Your next marks are here.</h3><div class="score-grid"><div class="score-card"><small>Paper repair score</small><strong>82% <em>+14 marks</em></strong><div class="chart"><span style="--h:34%"></span><span style="--h:48%"></span><span style="--h:43%"></span><span style="--h:61%"></span><span style="--h:72%"></span><span style="--h:88%"></span></div></div><div class="score-card"><small>Loop streak</small><strong>07</strong><div class="live" style="margin-top:20px">ON TRACK</div></div></div>
+                  <div class="task"><div class="task-icon"><i data-lucide="flask-conical"></i></div><div><b>Chemistry Paper 2</b><span>Mechanisms · 25 minutes</span></div><span class="task-status">REPAIR</span></div><div class="task"><div class="task-icon" style="background:var(--violet)"><i data-lucide="sigma"></i></div><div><b>Mechanics weak spots</b><span>3 questions selected</span></div><span class="task-status">NEXT</span></div><div class="task"><div class="task-icon" style="background:var(--orange)"><i data-lucide="file-pen-line"></i></div><div><b>Essay plan</b><span>Autosaved in Doc Tools</span></div><span class="task-status">LOCAL</span></div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="absolute -bottom-5 left-5 right-5 hidden rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-2xl shadow-slate-950/12 backdrop-blur md:block">
-            <div class="grid grid-cols-3 gap-3 text-sm">
-              <div>
-                <div class="text-xs font-black uppercase tracking-[1.4px] text-emerald-600">Today</div>
-                <div class="mt-1 font-bold">Maths Mechanics PP2</div>
-              </div>
-              <div>
-                <div class="text-xs font-black uppercase tracking-[1.4px] text-violet-600">Repair</div>
-                <div class="mt-1 font-bold">Organic mechanisms</div>
-              </div>
-              <div>
-                <div class="text-xs font-black uppercase tracking-[1.4px] text-sky-600">Next</div>
-                <div class="mt-1 font-bold">Timed paper loop</div>
-              </div>
-            </div>
+            <div class="float-chip chip-one"><strong>+1.7</strong><span>avg. grade lift</span></div><div class="float-chip chip-two"><strong>30+</strong><span>precision tools</span></div>
           </div>
         </div>
-      </div>
+      </section>
+      <div class="ticker" aria-hidden="true"><div class="ticker-track"><span>Past papers</span><span>Honest marking</span><span>Targeted repair</span><span>Private documents</span><span>Stronger re-attempts</span><span>Past papers</span><span>Honest marking</span><span>Targeted repair</span><span>Private documents</span><span>Stronger re-attempts</span></div></div>
 
-      <div class="home-card mt-10 grid grid-cols-2 rounded-3xl md:grid-cols-4">
-        <div class="metric-card p-5 text-center">
-          <div class="stat-number text-3xl font-black tabular-nums text-slate-950" data-count="14872">14,872</div>
-          <div class="mt-1 text-xs font-bold uppercase tracking-[1px] text-slate-500">Students active this term</div>
-        </div>
-        <div class="metric-card p-5 text-center">
-          <div class="stat-number text-3xl font-black tabular-nums text-slate-950" data-count="1.7" data-prefix="+" data-decimals="1">+1.7</div>
-          <div class="mt-1 text-xs font-bold uppercase tracking-[1px] text-slate-500">Average grade improvement</div>
-        </div>
-        <div class="metric-card p-5 text-center">
-          <div class="stat-number text-3xl font-black tabular-nums text-slate-950" data-count="30">30</div>
-          <div class="mt-1 text-xs font-bold uppercase tracking-[1px] text-slate-500">Precision-engineered tools</div>
-        </div>
-        <div class="metric-card p-5 text-center">
-          <div class="stat-number text-3xl font-black tabular-nums text-slate-950" data-count="4.97" data-decimals="2">4.97</div>
-          <div class="mt-1 text-xs font-bold uppercase tracking-[1px] text-slate-500">Average rating from 2,841 students</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="max-w-[1200px] mx-auto px-5 md:px-6 pb-10">
-</section>
-
-    <section class="max-w-[1200px] mx-auto px-5 md:px-6 py-10">
-      <div class="mx-auto max-w-2xl text-center">
-        <h2 class="section-title text-4xl md:text-5xl font-black text-slate-950">The Paper Loop</h2>
-        <p class="mt-3 text-lg text-slate-600">A closed-loop performance system: real papers, honest marking, targeted repair, then another attempt.</p>
-      </div>
-
-      <div class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <a href="/r/index.html#client-preflight" class="paper-step home-card home-link-card relative rounded-3xl p-6">
-          <div class="icon-tile bg-emerald-100 text-emerald-700"><i data-lucide="database" class="h-5 w-5"></i></div>
-          <div class="mt-4 text-xs font-black uppercase tracking-[1.5px] text-emerald-600">01 Discover</div>
-          <h3 class="mt-1 text-xl font-black tracking-tight">Find the exact paper</h3>
-          <p class="mt-2 text-sm leading-relaxed text-slate-600">Instant access to official past papers and mark schemes. No summaries. No filtered textbook version.</p>
-        </a>
-        <a href="/tools/planning/command-centre.html" class="paper-step home-card home-link-card relative rounded-3xl p-6">
-          <div class="icon-tile bg-amber-100 text-amber-700"><i data-lucide="timer" class="h-5 w-5"></i></div>
-          <div class="mt-4 text-xs font-black uppercase tracking-[1.5px] text-amber-600">02 Execute</div>
-          <h3 class="mt-1 text-xl font-black tracking-tight">Attempt under pressure</h3>
-          <p class="mt-2 text-sm leading-relaxed text-slate-600">Timed conditions. No phone. No notes. The practice environment matches the exam environment.</p>
-        </a>
-        <a href="/tools/planning/revision-session-generator.html" class="paper-step home-card home-link-card relative rounded-3xl p-6">
-          <div class="icon-tile bg-violet-100 text-violet-700"><i data-lucide="search-check" class="h-5 w-5"></i></div>
-          <div class="mt-4 text-xs font-black uppercase tracking-[1.5px] text-violet-600">03 Forensics</div>
-          <h3 class="mt-1 text-xl font-black tracking-tight">Mark honestly</h3>
-          <p class="mt-2 text-sm leading-relaxed text-slate-600">Compare against the real mark scheme and learn exactly where each mark disappeared.</p>
-        </a>
-        <a href="/tools/" class="paper-step home-card home-link-card relative rounded-3xl p-6">
-          <div class="icon-tile bg-sky-100 text-sky-700"><i data-lucide="repeat-2" class="h-5 w-5"></i></div>
-          <div class="mt-4 text-xs font-black uppercase tracking-[1.5px] text-sky-600">04 Evolve</div>
-          <h3 class="mt-1 text-xl font-black tracking-tight">Repair at the source</h3>
-          <p class="mt-2 text-sm leading-relaxed text-slate-600">Turn lost marks into targeted sessions, subject tools, and a stronger re-attempt.</p>
-        </a>
-      </div>
-      <p class="mt-5 text-center text-sm font-semibold text-slate-500">Most students do steps 1-2 and stop. The students getting A*s repeat the full loop 4-7 times per paper.</p>
-    </section>
-
-    <section class="bg-white/78 border-y border-slate-200 py-12">
-      <div class="max-w-[1200px] mx-auto px-5 md:px-6">
-        <div class="grid gap-5 lg:grid-cols-3">
-          <a href="/docs/" class="home-card home-link-card overflow-hidden rounded-3xl lg:col-span-2">
-            <div class="grid gap-0 md:grid-cols-[0.9fr_1.1fr]">
-              <div class="p-7 md:p-8">
-                <div class="icon-tile bg-cyan-100 text-cyan-700"><i data-lucide="file-pen-line" class="h-5 w-5"></i></div>
-                <h2 class="section-title mt-5 text-3xl md:text-4xl font-black text-slate-950">Documents, notes and PDFs that stay local.</h2>
-                <p class="mt-4 text-slate-600">Write essays, organise notes, annotate papers, and keep your study workflow private. Built for revision, not office theatre.</p>
-                <div class="mt-5 inline-flex items-center gap-2 text-sm font-black text-cyan-700">Open Doc Tools <i data-lucide="arrow-up-right" class="h-4 w-4"></i></div>
-              </div>
-              <div class="min-h-[280px] bg-slate-950 p-5">
-                <div class="h-full min-h-[260px] rounded-2xl border border-white/10 bg-white/10 p-5 text-white">
-                  <div class="flex items-center justify-between border-b border-white/10 pb-4">
-                    <div class="flex items-center gap-2">
-                      <span class="mini-window-dot bg-rose-400"></span>
-                      <span class="mini-window-dot bg-amber-300"></span>
-                      <span class="mini-window-dot bg-emerald-400"></span>
-                    </div>
-                    <span class="text-xs font-black text-cyan-200">study-plan.md</span>
-                  </div>
-                  <div class="mt-5 rounded-2xl bg-white p-5 text-slate-950">
-                    <div class="text-xs font-black uppercase tracking-[1.3px] text-cyan-700">Essay repair plan</div>
-                    <div class="mt-4 ui-line dark w-4/5"></div>
-                    <div class="mt-5 space-y-2.5">
-                      <div class="ui-line w-full"></div>
-                      <div class="ui-line w-11/12"></div>
-                      <div class="ui-line w-3/4"></div>
-                    </div>
-                    <div class="mt-5 rounded-xl border border-cyan-200 bg-cyan-50 p-3">
-                      <div class="ui-line blue w-1/3"></div>
-                      <div class="mt-2 ui-line w-full"></div>
-                    </div>
-                  </div>
-                  <div class="mt-4 grid grid-cols-2 gap-3 text-xs font-black">
-                    <div class="rounded-2xl border border-emerald-300/25 bg-emerald-400/15 p-3 text-emerald-100">Autosaved locally</div>
-                    <div class="rounded-2xl border border-violet-300/25 bg-violet-400/15 p-3 text-violet-100">PDF highlights ready</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-
-          <div class="grid gap-5">
-            <a href="/r/index.html#client-preflight" class="home-card home-link-card rounded-3xl p-6">
-              <div class="icon-tile bg-emerald-100 text-emerald-700"><i data-lucide="folder-search" class="h-5 w-5"></i></div>
-              <h3 class="mt-4 text-2xl font-black tracking-tight">Resource Database</h3>
-              <p class="mt-2 text-sm leading-relaxed text-slate-600">Every official A-Level paper and mark scheme in one place. The single source of truth.</p>
-            </a>
-            <a href="/past_papers/index.html" class="home-card home-link-card rounded-3xl p-6">
-              <div class="icon-tile bg-sky-100 text-sky-700"><i data-lucide="scroll-text" class="h-5 w-5"></i></div>
-              <h3 class="mt-4 text-2xl font-black tracking-tight">Past Paper Engine</h3>
-              <p class="mt-2 text-sm leading-relaxed text-slate-600">Find, filter, download and organise real papers in seconds. Zero noise.</p>
-            </a>
+      <section class="section" id="paper-loop">
+        <div class="wrap"><div class="section-head reveal"><div><span class="eyebrow">The Paper Loop</span><h2 class="display">A system that learns from every lost mark.</h2></div><p>Most revision ends after the attempt. StudyBase closes the loop, turning each mistake into the exact work you should do next.</p></div>
+          <div class="loop-grid reveal">
+            <a class="loop-card" style="--tone:var(--mint)" href="/r/index.html#client-preflight"><span class="loop-no">01 / DISCOVER</span><i class="loop-arrow" data-lucide="arrow-up-right"></i><div class="loop-icon"><i data-lucide="scan-search"></i></div><h3>Find the paper</h3><p>Official resources, organised and ready when you are.</p></a>
+            <a class="loop-card" style="--tone:var(--orange)" href="/tools/planning/command-centre.html"><span class="loop-no">02 / EXECUTE</span><i class="loop-arrow" data-lucide="arrow-up-right"></i><div class="loop-icon"><i data-lucide="timer"></i></div><h3>Work under pressure</h3><p>Build the timing and focus the real exam demands.</p></a>
+            <a class="loop-card" style="--tone:var(--violet)" href="/tools/planning/revision-session-generator.html"><span class="loop-no">03 / FORENSICS</span><i class="loop-arrow" data-lucide="arrow-up-right"></i><div class="loop-icon"><i data-lucide="search-check"></i></div><h3>Interrogate the gaps</h3><p>Mark honestly and expose where the marks disappeared.</p></a>
+            <a class="loop-card" style="--tone:var(--cyan)" href="/tools/"><span class="loop-no">04 / EVOLVE</span><i class="loop-arrow" data-lucide="arrow-up-right"></i><div class="loop-icon"><i data-lucide="refresh-cw"></i></div><h3>Repair, then return</h3><p>Target the weak spots and prove the improvement.</p></a>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="max-w-[1200px] mx-auto px-5 md:px-6 py-12">
-      <div class="grid gap-5 lg:grid-cols-3">
-        <div>
-          <h2 class="section-title text-4xl font-black text-slate-950">Why traditional revision breaks down</h2>
-          <p class="mt-3 text-slate-600">The gap between doing revision and actually improving is massive. StudyBase keeps the work tied to real evidence.</p>
-        </div>
-        <div class="home-card rounded-3xl p-6">
-          <div class="text-xs font-black uppercase tracking-[1.6px] text-rose-600">The old way</div>
-          <ul class="mt-4 space-y-3 text-sm text-slate-600">
-            <li class="flex gap-2"><i data-lucide="x" class="mt-0.5 h-4 w-4 flex-none text-rose-500"></i>Passive reading and highlighting</li>
-            <li class="flex gap-2"><i data-lucide="x" class="mt-0.5 h-4 w-4 flex-none text-rose-500"></i>Pretty flashcards that feel productive</li>
-            <li class="flex gap-2"><i data-lucide="x" class="mt-0.5 h-4 w-4 flex-none text-rose-500"></i>Watching videos "for understanding"</li>
-            <li class="flex gap-2"><i data-lucide="x" class="mt-0.5 h-4 w-4 flex-none text-rose-500"></i>Doing papers then moving on</li>
-            <li class="flex gap-2"><i data-lucide="x" class="mt-0.5 h-4 w-4 flex-none text-rose-500"></i>Hoping it sticks before the exam</li>
-          </ul>
-        </div>
-        <div class="home-card rounded-3xl border-sky-200 bg-sky-50/80 p-6">
-          <div class="text-xs font-black uppercase tracking-[1.6px] text-sky-700">The StudyBase way</div>
-          <ul class="mt-4 space-y-3 text-sm text-slate-700">
-            <li class="flex gap-2"><i data-lucide="check" class="mt-0.5 h-4 w-4 flex-none text-sky-600"></i>Active retrieval under timed pressure</li>
-            <li class="flex gap-2"><i data-lucide="check" class="mt-0.5 h-4 w-4 flex-none text-sky-600"></i>Real mark scheme forensic analysis</li>
-            <li class="flex gap-2"><i data-lucide="check" class="mt-0.5 h-4 w-4 flex-none text-sky-600"></i>Targeted repair using intelligent tools</li>
-            <li class="flex gap-2"><i data-lucide="check" class="mt-0.5 h-4 w-4 flex-none text-sky-600"></i>Systematic mistake pattern tracking</li>
-            <li class="flex gap-2"><i data-lucide="check" class="mt-0.5 h-4 w-4 flex-none text-sky-600"></i>Closed loop that compounds weekly</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section class="max-w-[1200px] mx-auto px-5 md:px-6 py-12">
-      <div class="mb-7 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-        <div>
-          <h2 class="section-title text-4xl font-black text-slate-950">One system. Zero gaps.</h2>
-          <p class="mt-2 max-w-2xl text-slate-600">Your papers, tools, planning and repair systems connect into a single workflow.</p>
-        </div>
-        <a href="/tools/" class="inline-flex items-center gap-2 text-sm font-black text-sky-700 hover:text-sky-800">See all 30 tools <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
-      </div>
-
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <a href="/r/index.html#client-preflight" class="home-card home-link-card rounded-3xl p-6">
-          <div class="icon-tile bg-emerald-100 text-emerald-700"><i data-lucide="database" class="h-5 w-5"></i></div>
-          <h3 class="mt-4 text-xl font-black">Resource Database</h3>
-          <p class="mt-2 text-sm text-slate-600">Every official paper, mark scheme and examiner-led resource.</p>
-        </a>
-        <a href="/tools/" class="home-card home-link-card rounded-3xl p-6">
-          <div class="icon-tile bg-violet-100 text-violet-700"><i data-lucide="wrench" class="h-5 w-5"></i></div>
-          <h3 class="mt-4 text-xl font-black">30 Precision Tools</h3>
-          <p class="mt-2 text-sm text-slate-600">Calculators, essay engines, planners, timers and mappers.</p>
-        </a>
-        <a href="/subjects/index.html" class="home-card home-link-card rounded-3xl p-6">
-          <div class="icon-tile bg-amber-100 text-amber-700"><i data-lucide="compass" class="h-5 w-5"></i></div>
-          <h3 class="mt-4 text-xl font-black">Subject Routes</h3>
-          <p class="mt-2 text-sm text-slate-600">Specification-aware journeys for the subjects that move the needle most.</p>
-        </a>
-        <a href="/alevel.html" class="home-card home-link-card rounded-3xl p-6">
-          <div class="icon-tile bg-sky-100 text-sky-700"><i data-lucide="route" class="h-5 w-5"></i></div>
-          <h3 class="mt-4 text-xl font-black">Exam Board Routes</h3>
-          <p class="mt-2 text-sm text-slate-600">AQA, Edexcel, OCR and MEI guidance built around paper style.</p>
-        </a>
-      </div>
-    </section>
-
-    <section class="dark-band py-12 text-white">
-      <div class="max-w-[1200px] mx-auto px-5 md:px-6">
-        <div class="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h2 class="section-title text-4xl font-black">30 tools. Every one built for marks.</h2>
-            <p class="mt-2 max-w-2xl text-slate-300">The toolkit spans daily planning, mathematics, sciences, humanities, languages, EPQ and advanced revision systems.</p>
-          </div>
-          <a href="/tools/" class="inline-flex items-center gap-2 text-sm font-black text-emerald-300 hover:text-white">Explore full toolkit <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
-        </div>
-
-        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          <a href="/tools/planning/" class="rounded-2xl border border-emerald-400/25 bg-white/[0.08] p-5 text-white hover:bg-white/[0.12]">
-            <div class="font-black">Planning OS</div>
-            <div class="mt-1 text-sm text-emerald-100">Command Centre, Time Splitter, Session Generator, Essay Mode</div>
-          </a>
-          <a href="/tools/mathematics/" class="rounded-2xl border border-amber-400/25 bg-white/[0.08] p-5 text-white hover:bg-white/[0.12]">
-            <div class="font-black">Mathematics</div>
-            <div class="mt-1 text-sm text-amber-100">Scientific Calculator, Graph Plotter, Calculus, Mechanics, Stats Lab</div>
-          </a>
-          <a href="/tools/sciences/" class="rounded-2xl border border-sky-400/25 bg-white/[0.08] p-5 text-white hover:bg-white/[0.12]">
-            <div class="font-black">Sciences</div>
-            <div class="mt-1 text-sm text-sky-100">Physics Formula Lab, Chemistry Calculator, Biology Process Explorer</div>
-          </a>
-          <a href="/tools/humanities/" class="rounded-2xl border border-violet-400/25 bg-white/[0.08] p-5 text-white hover:bg-white/[0.12]">
-            <div class="font-black">Humanities</div>
-            <div class="mt-1 text-sm text-violet-100">Essay Planners, History Arguments, Geography Case Lab, Politics and Law</div>
-          </a>
-          <a href="/tools/languages/" class="rounded-2xl border border-rose-400/25 bg-white/[0.08] p-5 text-white hover:bg-white/[0.12]">
-            <div class="font-black">Languages and EPQ</div>
-            <div class="mt-1 text-sm text-rose-100">Oral Prep, University Matcher, Personal Statement Builder, EPQ Planner</div>
-          </a>
-          <a href="/tools/" class="rounded-2xl border border-indigo-400/25 bg-white/[0.08] p-5 text-white hover:bg-white/[0.12]">
-            <div class="font-black">Advanced Repair</div>
-            <div class="mt-1 text-sm text-indigo-100">Synoptic Linker, pattern tracking, wellbeing intelligence and more</div>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="max-w-[1200px] mx-auto px-5 md:px-6 py-12">
-      <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-        <div>
-          <h2 class="section-title text-4xl font-black text-slate-950">Revision that respects your brain.</h2>
-          <p class="mt-4 text-slate-600">A-Levels are brutal. StudyBase is built for high intensity work without turning your study life into a guilt machine.</p>
-        </div>
-        <div class="grid gap-4 sm:grid-cols-3">
-          <div class="home-card rounded-3xl p-5">
-            <div class="icon-tile bg-emerald-100 text-emerald-700"><i data-lucide="brain" class="h-5 w-5"></i></div>
-            <h3 class="mt-4 font-black">Wellbeing breaks</h3>
-            <p class="mt-2 text-sm text-slate-600">Gentle reminders after deep focus blocks. Not guilt. Protection.</p>
-          </div>
-          <div class="home-card rounded-3xl p-5">
-            <div class="icon-tile bg-violet-100 text-violet-700"><i data-lucide="shield" class="h-5 w-5"></i></div>
-            <h3 class="mt-4 font-black">Safety systems</h3>
-            <p class="mt-2 text-sm text-slate-600">Content filters, reporting and privacy-first design across the platform.</p>
-          </div>
-          <div class="home-card rounded-3xl p-5">
-            <div class="icon-tile bg-amber-100 text-amber-700"><i data-lucide="bar-chart-3" class="h-5 w-5"></i></div>
-            <h3 class="mt-4 font-black">Time intelligence</h3>
-            <p class="mt-2 text-sm text-slate-600">Healthy usage tracking that shows patterns without shame.</p>
+      <section class="docs-zone" id="doc-tools">
+        <div class="wrap docs-layout">
+          <div class="docs-copy reveal"><span class="eyebrow">Featured / Doc Tools</span><h2 class="display">Your thinking.<br>Your device.</h2><p>Write the essay. Annotate the paper. Build notes that make sense to you. Doc Tools is a calm, private workspace built into StudyBase, with your files kept local.</p><div class="docs-pills"><span>Text editor</span><span>PDF annotation</span><span>Local autosave</span><span>Zero uploads</span></div><a class="button primary" href="/docs/">Open Doc Tools <i data-lucide="arrow-up-right"></i></a><div class="docs-switch" role="group" aria-label="Choose Doc Tools preview"><button class="active" data-doc-view="text" type="button">Text editor</button><button data-doc-view="pdf" type="button">PDF editor</button></div></div>
+          <div class="docs-stack reveal">
+            <div class="doc-window text"><div class="window-bar"><div class="dots"><b></b><b></b><b></b></div><span>revision-argument.study</span><span>Saved locally</span></div><div class="window-body"><div class="window-side"><div class="mini-nav active">My documents</div><div class="mini-nav">Essay plans</div><div class="mini-nav">Revision notes</div><div class="mini-nav">Archive</div></div><div class="paper"><div class="paper-label">History / Argument plan</div><div class="line dark"></div><div class="line short"></div><div class="highlight"><b>Core argument</b><br>Economic pressure accelerated change, but political legitimacy made reform unavoidable.</div><div class="line"></div><div class="line"></div><div class="line short"></div></div></div></div>
+            <div class="doc-window pdf"><div class="window-bar"><div class="dots"><b></b><b></b><b></b></div><span>AQA-Chemistry-P2.pdf</span><span>Page 11 / 32</span></div><div class="pdf-page"><div class="paper-label">Organic mechanisms / 6 marks</div><div class="line dark"></div><div class="line"></div><div class="line"></div><div class="annotation"></div><div class="line short"></div><div class="line"></div><div class="annotation-ring"></div><div class="highlight" style="margin-top:55px;border-color:#f25878;background:#fff0f4">Revisit the curly-arrow direction before re-attempting.</div></div></div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="bg-white/78 border-y border-slate-200 py-12">
-      <div class="max-w-[1200px] mx-auto px-5 md:px-6">
-        <div class="mb-7 text-center">
-          <h2 class="section-title text-4xl font-black text-slate-950">Real students. Real jumps. Real proof.</h2>
-          <p class="mt-2 text-slate-600">Every one of these students used the Paper Loop plus at least four StudyBase tools.</p>
-        </div>
-        <div class="grid gap-4 md:grid-cols-3">
-          <article class="home-card rounded-3xl border-emerald-200 bg-emerald-50/65 p-6">
-            <div class="text-xs font-black uppercase tracking-[1.4px] text-emerald-700">Year 12 - Maths and Physics - 6 months</div>
-            <p class="mt-4 text-sm leading-relaxed text-slate-700">"Predicted Bs. Now A* in Maths and A in Physics. The Command Centre and Resource Database completely rewired how I revise."</p>
-            <div class="mt-4 text-xs font-bold text-emerald-700">Priya K, <span data-sb-year="prev">2025</span> cohort</div>
-          </article>
-          <article class="home-card rounded-3xl border-violet-200 bg-violet-50/65 p-6">
-            <div class="text-xs font-black uppercase tracking-[1.4px] text-violet-700">Year 13 - Biology and Chemistry</div>
-            <p class="mt-4 text-sm leading-relaxed text-slate-700">"I stopped just doing more papers and started understanding precisely why marks were disappearing. 3 A*s."</p>
-            <div class="mt-4 text-xs font-bold text-violet-700">Marcus T, <span data-sb-year="prev">2025</span> cohort</div>
-          </article>
-          <article class="home-card rounded-3xl border-amber-200 bg-amber-50/65 p-6">
-            <div class="text-xs font-black uppercase tracking-[1.4px] text-amber-700">Year 13 - Psych and Sociology - From burnout</div>
-            <p class="mt-4 text-sm leading-relaxed text-slate-700">"The tools helped me study harder while protecting my head. Got 2 A*s and did not hate the process."</p>
-            <div class="mt-4 text-xs font-bold text-amber-700">Aisha R, <span data-sb-year="prev">2025</span> cohort</div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="max-w-[1200px] mx-auto px-5 md:px-6 py-12">
-      <div class="grid gap-5 lg:grid-cols-2">
-        <div class="home-card rounded-3xl p-7">
-          <div class="icon-tile bg-emerald-100 text-emerald-700"><i data-lucide="users" class="h-5 w-5"></i></div>
-          <h2 class="mt-5 text-3xl font-black tracking-tight text-slate-950">Built with students, teachers and developers.</h2>
-          <p class="mt-3 text-slate-600">Every major feature started with real feedback from people sitting exams: bug reports, feature requests, Discord suggestions and contact form notes.</p>
-          <div class="mt-5 flex flex-wrap gap-2 text-xs font-bold">
-            <span class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-emerald-700">1,200+ contributions</span>
-            <span class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-slate-600">Open source spirit</span>
+      <section class="section toolkit">
+        <div class="wrap"><div class="section-head reveal"><div><span class="eyebrow">One connected toolkit</span><h2 class="display">Use the right tool at the right moment.</h2></div><p>No cluttered dashboard. Just focused tools that support the loop, from first paper to final re-attempt.</p></div>
+          <div class="tool-grid">
+            <a class="tool-card reveal" style="--tone:var(--mint)" href="/r/index.html#client-preflight"><span class="tool-tag">Resource engine</span><i data-lucide="database"></i><h3>Every paper.<br>One source of truth.</h3><p>Find official past papers and mark schemes without the scavenger hunt.</p><div class="orb"></div></a>
+            <a class="tool-card reveal" style="--tone:var(--violet)" href="/tools/"><span class="tool-tag">30+ tools</span><i data-lucide="blocks"></i><h3>Subject tools</h3><p>Calculators, planners and labs built for specific A-Level problems.</p><div class="orb"></div></a>
+            <a class="tool-card reveal" style="--tone:var(--orange)" href="/tools/planning/"><span class="tool-tag">Planning</span><i data-lucide="calendar-range"></i><h3>Command Centre</h3><p>Turn the next week into a sequence you can actually finish.</p><div class="orb"></div></a>
+            <a class="tool-card wide reveal" style="--tone:var(--cyan)" href="/past_papers/index.html"><span class="tool-tag">Past paper engine</span><i data-lucide="scroll-text"></i><h3>Practice with purpose</h3><p>Filter, queue and work through the papers that expose what needs attention.</p><div class="orb"></div></a>
           </div>
         </div>
-        <div class="home-card rounded-3xl p-7">
-          <div class="icon-tile bg-violet-100 text-violet-700"><i data-lucide="bot" class="h-5 w-5"></i></div>
-          <h2 class="mt-5 text-3xl font-black tracking-tight text-slate-950">Four AI partners sharpened the build.</h2>
-          <p class="mt-3 text-slate-600">ChatGPT, Gemini, DeepSeek and Grok helped architect tools, debug edge cases, generate explanations and brainstorm better ways to teach difficult concepts.</p>
-          <a href="/legal/contributions.html" class="mt-5 inline-flex items-center gap-2 text-sm font-black text-violet-700 hover:text-violet-800">See the contribution story <i data-lucide="arrow-right" class="h-4 w-4"></i></a>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="max-w-[1200px] mx-auto px-5 md:px-6 pb-12">
-      <div class="soft-band overflow-hidden rounded-3xl border border-slate-200">
-        <div class="grid gap-0 lg:grid-cols-[1fr_0.9fr]">
-          <div class="p-7 md:p-10">
-            <h2 class="section-title text-4xl font-black text-slate-950">Everything is connected. Nothing is wasted.</h2>
-            <p class="mt-4 max-w-xl text-slate-600">Discover papers, plan the attempt, repair with subject-specific tools, then return stronger. One platform. One loop. Permanent progress.</p>
-            <div class="mt-6 grid gap-3 sm:grid-cols-2">
-              <div class="rounded-2xl border border-emerald-200 bg-white p-4 text-sm font-bold text-emerald-700">Step 1: Discover papers</div>
-              <div class="rounded-2xl border border-amber-200 bg-white p-4 text-sm font-bold text-amber-700">Step 2: Plan and execute</div>
-              <div class="rounded-2xl border border-violet-200 bg-white p-4 text-sm font-bold text-violet-700">Step 3: Repair weak spots</div>
-              <div class="rounded-2xl border border-sky-200 bg-white p-4 text-sm font-bold text-sky-700">Step 4: Re-attempt stronger</div>
-            </div>
-          </div>
-          <div class="bg-slate-950 p-5">
-            <div class="h-full min-h-[320px] rounded-2xl border border-white/10 bg-white/10 p-5 text-white">
-              <div class="rounded-2xl bg-white p-5 text-slate-950">
-                <div class="flex items-center justify-between">
-                  <div>
-                    <div class="text-xs font-black uppercase tracking-[1.4px] text-emerald-700">AQA Chemistry Paper 2</div>
-                    <div class="mt-2 text-2xl font-black tracking-tight">Repair cycle</div>
-                  </div>
-                  <div class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-black text-emerald-700">68% to 82%</div>
-                </div>
-                <div class="mt-6 space-y-3">
-                  <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
-                    <div class="flex items-center justify-between text-sm font-black text-emerald-800">
-                      <span>Discover</span>
-                      <span>complete</span>
-                    </div>
-                    <div class="mt-3 h-2 rounded-full bg-emerald-200"><div class="h-2 w-full rounded-full bg-emerald-500"></div></div>
-                  </div>
-                  <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4">
-                    <div class="flex items-center justify-between text-sm font-black text-amber-800">
-                      <span>Execute</span>
-                      <span>timed</span>
-                    </div>
-                    <div class="mt-3 h-2 rounded-full bg-amber-200"><div class="h-2 w-4/5 rounded-full bg-amber-500"></div></div>
-                  </div>
-                  <div class="rounded-2xl border border-violet-200 bg-violet-50 p-4">
-                    <div class="flex items-center justify-between text-sm font-black text-violet-800">
-                      <span>Forensics</span>
-                      <span>12 marks found</span>
-                    </div>
-                    <div class="mt-3 h-2 rounded-full bg-violet-200"><div class="h-2 w-3/5 rounded-full bg-violet-500"></div></div>
-                  </div>
-                  <div class="rounded-2xl border border-sky-200 bg-sky-50 p-4">
-                    <div class="flex items-center justify-between text-sm font-black text-sky-800">
-                      <span>Evolve</span>
-                      <span>queued</span>
-                    </div>
-                    <div class="mt-3 h-2 rounded-full bg-sky-200"><div class="h-2 w-2/5 rounded-full bg-sky-500"></div></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="bg-slate-950 py-14 text-white">
-      <div class="max-w-3xl mx-auto px-5 text-center md:px-6">
-        <h2 class="section-title text-4xl md:text-5xl font-black">Start winning with a better system.</h2>
-        <p class="mx-auto mt-4 max-w-xl text-lg text-slate-300">The best grades do not come from working blindly harder. They come from working through a loop that shows you exactly what to fix next.</p>
-        <div class="mt-8 flex flex-wrap justify-center gap-3">
-          <a href="/r/index.html#client-preflight" class="inline-flex h-[3.25rem] items-center justify-center gap-2 rounded-2xl bg-emerald-400 px-7 text-sm font-black text-slate-950 shadow-xl shadow-emerald-500/20 hover:bg-white">
-            Open Resource Database
-            <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
-          </a>
-          <a href="/tools/" class="inline-flex h-[3.25rem] items-center justify-center gap-2 rounded-2xl border border-white/25 px-7 text-sm font-black text-white hover:bg-white/10">
-            Browse the 30 tools
-            <i data-lucide="wrench" class="h-4 w-4"></i>
-          </a>
-        </div>
-        <div class="mt-5 text-xs font-semibold text-slate-500">No account. No data leaves your device. Built for students who refuse to be average.</div>
-      </div>
-    </section>
-  </main>
-
+      <section class="manifesto"><div class="wrap reveal"><span class="eyebrow">Ready when you are</span><h2 class="display">Less revision theatre.<br><span class="gradient-text">More marks repaired.</span></h2><p>Bring the next paper. StudyBase will help you decide what happens after it.</p><a class="button primary" href="/r/index.html#client-preflight">Start the Paper Loop <i data-lucide="arrow-up-right"></i></a><a class="button ghost" href="/tools/">Explore all tools <i data-lucide="wrench"></i></a></div></section>
+    </main>
+  </div>
   <script>
-    if (window.lucide) {
-      lucide.createIcons();
-    }
+    if (window.lucide) lucide.createIcons();
 
-    function animateCount(el) {
-      const target = parseFloat(el.dataset.count);
-      const prefix = el.dataset.prefix || "";
-      const suffix = el.dataset.suffix || "";
-      const decimals = parseInt(el.dataset.decimals || "0", 10);
-      const duration = 1300;
-      const startTime = performance.now();
-      const formatter = new Intl.NumberFormat("en-GB", {
-        minimumFractionDigits: decimals,
-        maximumFractionDigits: decimals
-      });
-
-      function frame(now) {
-        const elapsed = Math.min((now - startTime) / duration, 1);
-        const eased = 1 - Math.pow(1 - elapsed, 3);
-        const current = target * eased;
-        el.textContent = prefix + formatter.format(current) + suffix;
-        if (elapsed < 1) {
-          requestAnimationFrame(frame);
-        } else {
-          el.textContent = prefix + formatter.format(target) + suffix;
-        }
-      }
-
-      requestAnimationFrame(frame);
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reveals = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window && !reduceMotion) {
+      const revealObserver = new IntersectionObserver((entries) => entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         entry.target.classList.add("visible");
-        if (entry.target.classList.contains("stat-number")) {
-          animateCount(entry.target);
-        }
-        observer.unobserve(entry.target);
-      });
-    }, { threshold: 0.12, rootMargin: "0px 0px -30px 0px" });
+        revealObserver.unobserve(entry.target);
+      }), { threshold: .12, rootMargin: "0px 0px -50px" });
+      reveals.forEach((el) => revealObserver.observe(el));
+    } else reveals.forEach((el) => el.classList.add("visible"));
 
-    document.querySelectorAll(".home-card, .stat-number").forEach((el, index) => {
-      if (!el.classList.contains("stat-number")) {
-        el.classList.add("fade-in");
-        el.style.transitionDelay = `${Math.min(index * 35, 280)}ms`;
-      }
-      observer.observe(el);
-    });
+    const glow = document.querySelector(".cursor-glow");
+    const dashboard = document.querySelector(".dashboard");
+    if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
+      window.addEventListener("pointermove", (event) => {
+        glow.style.left = event.clientX + "px";
+        glow.style.top = event.clientY + "px";
+      }, { passive: true });
+      document.querySelector(".orbit-stage").addEventListener("pointermove", (event) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - .5;
+        const y = (event.clientY - rect.top) / rect.height - .5;
+        dashboard.style.transform = `rotateY(${x * 9}deg) rotateX(${-y * 7}deg)`;
+      });
+      document.querySelector(".orbit-stage").addEventListener("pointerleave", () => dashboard.style.transform = "rotateY(-5deg) rotateX(2deg)");
+      document.querySelectorAll(".tool-card").forEach((card) => {
+        card.addEventListener("pointermove", (event) => {
+          const rect = card.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width - .5;
+          const y = (event.clientY - rect.top) / rect.height - .5;
+          card.style.transform = `perspective(800px) rotateY(${x * 4}deg) rotateX(${-y * 4}deg) translateY(-3px)`;
+        });
+        card.addEventListener("pointerleave", () => card.style.transform = "");
+      });
+    }
+
+    const docsStack = document.querySelector(".docs-stack");
+    document.querySelectorAll("[data-doc-view]").forEach((button) => button.addEventListener("click", () => {
+      document.querySelectorAll("[data-doc-view]").forEach((item) => item.classList.remove("active"));
+      button.classList.add("active");
+      docsStack.classList.toggle("pdf-active", button.dataset.docView === "pdf");
+    }));
   </script>
 </body>
 </html>

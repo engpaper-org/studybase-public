@@ -13,7 +13,7 @@
     <header class="mt-5"><p class="text-xs font-black uppercase tracking-[.2em] text-purple-600">Server synced</p><h1 class="mt-2 text-4xl font-black">Settings</h1><p class="mt-2 text-slate-500">These preferences follow your StudyBase account.</p></header>
     <div id="message" class="mt-6 hidden rounded-xl p-4 text-sm"></div>
     <form id="settings" class="mt-7 space-y-5 rounded-3xl border bg-white p-6 shadow-sm sm:p-8">
-      <label class="block text-sm font-bold">First name<input id="firstName" name="firstName" maxlength="50" required class="mt-2 w-full rounded-xl border border-slate-300 p-4"></label>
+      <label class="block text-sm font-bold">First name<input id="firstName" name="firstName" maxlength="15" pattern="[a-z]{1,15}" required class="mt-2 w-full rounded-xl border border-slate-300 p-4"><span class="mt-2 block text-xs font-normal text-slate-500">Lowercase a-z only, no spaces, maximum 15 characters.</span></label>
       <label class="flex gap-4 rounded-2xl bg-slate-50 p-5"><input id="contentWarnings" name="contentWarnings" type="checkbox" class="mt-1 h-5 w-5 accent-purple-600"><span><strong class="block">Content warnings</strong><span class="mt-1 block text-sm text-slate-500">Show safety notices before potentially sensitive content.</span></span></label>
       <button class="w-full rounded-xl bg-purple-600 p-4 font-black text-white">Save settings</button>
     </form>
