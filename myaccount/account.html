@@ -6,6 +6,7 @@
   <title>StudyBase | My account</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/assets/js/core/services.js"></script>
+  <script src="/assets/js/account/sidebar.js" defer></script>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
   <main class="mx-auto max-w-5xl px-5 py-10">
@@ -22,9 +23,9 @@
         <article class="rounded-2xl border bg-white p-5"><p class="text-xs font-black uppercase tracking-wider text-slate-400">User ID</p><p id="user-id" class="mt-2 break-all font-mono text-sm"></p></article>
       </div>
       <div class="grid gap-4 sm:grid-cols-3">
-        <a target="_top" href="/myaccount/settings.html" class="rounded-2xl border bg-white p-6 transition hover:border-purple-300 hover:shadow-lg"><h3 class="text-xl font-black">Account settings</h3><p class="mt-2 text-sm text-slate-500">Manage server-synced account preferences.</p></a>
-        <a id="password-link" target="_top" href="https://auth.studybase.site/change-password" class="rounded-2xl border bg-white p-6 transition hover:border-purple-300 hover:shadow-lg"><h3 class="text-xl font-black">Change password</h3><p class="mt-2 text-sm text-slate-500">Set a new password and revoke existing sessions.</p></a>
-        <a id="delete-link" target="_top" href="https://auth.studybase.site/delete" class="rounded-2xl border border-amber-200 bg-amber-50 p-6 transition hover:border-amber-400"><h3 class="text-xl font-black text-amber-950">Delete account</h3><p class="mt-2 text-sm text-amber-800">Permanently delete your profile, credentials, and sessions.</p></a>
+        <a href="/myaccount/settings.html" class="rounded-2xl border bg-white p-6 transition hover:border-purple-300 hover:shadow-lg"><h3 class="text-xl font-black">Account settings</h3><p class="mt-2 text-sm text-slate-500">Manage server-synced account preferences.</p></a>
+        <a id="password-link" href="https://auth.studybase.site/change-password" class="rounded-2xl border bg-white p-6 transition hover:border-purple-300 hover:shadow-lg"><h3 class="text-xl font-black">Change password</h3><p class="mt-2 text-sm text-slate-500">Set a new password and revoke existing sessions.</p></a>
+        <a id="delete-link" href="https://auth.studybase.site/delete" class="rounded-2xl border border-amber-200 bg-amber-50 p-6 transition hover:border-amber-400"><h3 class="text-xl font-black text-amber-950">Delete account</h3><p class="mt-2 text-sm text-amber-800">Permanently delete your profile, credentials, and sessions.</p></a>
       </div>
     </section>
   </main>

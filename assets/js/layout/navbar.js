@@ -455,10 +455,21 @@
     }
 
     window.addEventListener("message", event => {
-      if (event.origin !== window.location.origin || event.data?.type !== "studybase:login-success") return;
-      ensureAccountModal().closeAccountModal?.();
-      updateAuthState();
-      showLoginSuccess(event.data.user);
+      if (event.origin !== window.location.origin) return;
+      if (event.data?.type === "studybase:login-success") {
+        ensureAccountModal().closeAccountModal?.();
+        updateAuthState();
+        showLoginSuccess(event.data.user);
+        return;
+      }
+      if (event.data?.type === "studybase:account-status") {
+        ensureAccountModal().closeAccountModal?.();
+        if (["deleted", "signedout", "passwordChanged"].includes(event.data.status)) clearAuthSession();
+        updateAuthState();
+        if (event.data.status === "deleted") showAccountStatus({ title: "Account deleted", message: "Your account and related account data have been deleted." });
+        if (event.data.status === "signedout") showAccountStatus({ title: "Signed out", message: "You have been securely signed out of StudyBase." });
+        if (event.data.status === "passwordChanged") showAccountStatus({ title: "Password changed", message: "Your password was changed and existing sessions were signed out.", buttonLabel: "Log in", onButton: () => ensureAccountModal().openPage(`/myaccount/login.html${event.data.username ? `?username=${encodeURIComponent(event.data.username)}` : ""}`, "StudyBase login") });
+      }
     });
 
     nav.addEventListener("click", (event) => {
@@ -552,19 +563,25 @@
           "sessionExpired";
 
         const params = new URLSearchParams(window.location.search);
-        const statusParam = ["loggedin", "deleted", "signedout"].find(name => params.get(name) === "true");
+        const statusParam = ["loggedin", "deleted", "signedout", "passwordChanged"].find(name => params.get(name) === "true");
         if (statusParam) {
           const username = (params.get("username") || "").trim();
           const url = new URL(window.location.href);
-          ["loggedin", "deleted", "signedout", "username"].forEach(name => url.searchParams.delete(name));
+          ["loggedin", "deleted", "signedout", "passwordChanged", "username"].forEach(name => url.searchParams.delete(name));
           window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+          if (window.parent !== window) {
+            window.parent.postMessage({ type: "studybase:account-status", status: statusParam, username }, window.location.origin);
+            return;
+          }
           setTimeout(() => {
             if (statusParam === "loggedin") {
               showAccountStatus({ title: "Account created", message: "Your StudyBase account is ready. Log in to start using it.", buttonLabel: "Log in", onButton: () => ensureAccountModal().openPage(`/myaccount/login.html${username ? `?username=${encodeURIComponent(username)}` : ""}`, "StudyBase login") });
             } else if (statusParam === "deleted") {
               showAccountStatus({ title: "Account deleted", message: "Your account and related account data have been deleted." });
-            } else {
+            } else if (statusParam === "signedout") {
               showAccountStatus({ title: "Signed out", message: "You have been securely signed out of StudyBase." });
+            } else {
+              showAccountStatus({ title: "Password changed", message: "Your password was changed. Log in again with the new password.", buttonLabel: "Log in", onButton: () => ensureAccountModal().openPage(`/myaccount/login.html${username ? `?username=${encodeURIComponent(username)}` : ""}`, "StudyBase login") });
             }
           }, 80);
           return;
