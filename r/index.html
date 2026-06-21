@@ -1333,6 +1333,366 @@ body.rgenie-private-resources .rgenie-panel {
         :root.dark .rgenie-public-only-content div[style*="color:#475569"] {
             color: #94a3b8 !important;
         }
+
+        /* Public resource hub: deliberately light, regardless of account theme. */
+        body:not(.rgenie-private-resources) .rgenie-shell {
+            padding-top: 6rem;
+            background:
+                radial-gradient(circle at 8% 5%, rgba(37, 99, 235, 0.09), transparent 24rem),
+                radial-gradient(circle at 92% 18%, rgba(16, 185, 129, 0.08), transparent 22rem),
+                linear-gradient(180deg, #f7fbff 0%, #ffffff 38%, #f7fafc 100%);
+        }
+
+        .rgenie-public-only-content {
+            --public-ink: #0f172a;
+            --public-muted: #5f6f85;
+            --public-line: #dce5f0;
+            --public-blue: #2563eb;
+            --public-green: #059669;
+            color: var(--public-ink);
+        }
+
+        .public-hero {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 4.5rem;
+            padding: clamp(3.5rem, 8vw, 7rem) clamp(1.25rem, 5vw, 4rem);
+            border: 1px solid rgba(148, 163, 184, 0.24);
+            border-radius: 2.5rem;
+            background:
+                radial-gradient(circle at 14% 18%, rgba(96, 165, 250, 0.16), transparent 18rem),
+                radial-gradient(circle at 88% 80%, rgba(52, 211, 153, 0.16), transparent 20rem),
+                #ffffff;
+            box-shadow: 0 30px 80px rgba(30, 64, 175, 0.10);
+        }
+
+        .public-hero::before,
+        .public-hero::after {
+            content: "";
+            position: absolute;
+            border-radius: 999px;
+            pointer-events: none;
+        }
+
+        .public-hero::before {
+            width: 13rem;
+            height: 13rem;
+            right: -4rem;
+            top: -5rem;
+            border: 1px solid rgba(37, 99, 235, 0.16);
+            box-shadow: 0 0 0 2rem rgba(37, 99, 235, 0.035), 0 0 0 4rem rgba(16, 185, 129, 0.025);
+        }
+
+        .public-hero::after {
+            width: 7rem;
+            height: 7rem;
+            left: -2rem;
+            bottom: -3rem;
+            background: rgba(16, 185, 129, 0.08);
+        }
+
+        .public-hero > * { position: relative; z-index: 1; }
+
+        .public-hero-badge {
+            border: 1px solid #a7f3d0;
+            box-shadow: 0 10px 24px rgba(5, 150, 105, 0.08);
+            letter-spacing: 0.08em;
+        }
+
+        .public-hero h1 {
+            max-width: 12ch;
+            margin-inline: auto;
+            font-size: clamp(3.4rem, 7.5vw, 6.8rem);
+            line-height: 0.91;
+            letter-spacing: -0.07em;
+        }
+
+        .public-hero .public-primary-action,
+        .public-hero .public-secondary-action {
+            min-height: 3.4rem;
+            border-radius: 999px;
+            padding-inline: 1.6rem;
+            font-weight: 800;
+            box-shadow: 0 14px 34px rgba(15, 23, 42, 0.11);
+        }
+
+        .public-hero .public-primary-action svg,
+        .public-hero .public-secondary-action svg { width: 1.1rem; height: 1.1rem; }
+
+        .public-trust-points {
+            flex-wrap: wrap;
+            row-gap: 0.65rem;
+        }
+
+        .public-trust-points > div {
+            padding: 0.55rem 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.78);
+        }
+
+        .public-section { margin-bottom: 5.5rem; }
+
+        .public-section-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.6rem;
+        }
+
+        .public-section-heading h2 {
+            margin: 0;
+            font-size: clamp(2rem, 4vw, 3.1rem);
+            line-height: 1;
+            letter-spacing: -0.045em;
+            font-weight: 850;
+        }
+
+        .public-section-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: var(--public-blue);
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .public-section-link:hover { gap: 0.55rem; }
+        .public-section-link svg { width: 1rem; height: 1rem; }
+
+        .public-paper-grid > div {
+            position: relative;
+            overflow: hidden;
+            min-height: 20rem;
+            border-color: var(--public-line);
+            border-radius: 1.4rem;
+            background: #ffffff;
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.055);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .public-paper-grid > div::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto;
+            height: 3px;
+            background: linear-gradient(90deg, #2563eb, #06b6d4, #10b981);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .public-paper-grid > div:hover {
+            transform: translateY(-5px);
+            border-color: #bfdbfe;
+            box-shadow: 0 22px 48px rgba(37, 99, 235, 0.12);
+        }
+
+        .public-paper-grid > div:hover::before { opacity: 1; }
+
+        .public-paper-grid img {
+            width: 2.75rem;
+            height: 2.75rem;
+            flex: 0 0 auto;
+            object-fit: contain;
+            padding: 0.35rem;
+            border: 1px solid #dbe5ef;
+            border-radius: 0.85rem;
+            background: #f8fafc;
+            box-shadow: 0 6px 14px rgba(15, 23, 42, 0.07);
+        }
+
+        .public-paper-grid .mt-auto a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 2.6rem;
+            border-radius: 0.8rem;
+        }
+
+        .public-subject-grid > a {
+            position: relative;
+            overflow: hidden;
+            min-height: 13rem;
+            padding: 1.35rem;
+            border-color: var(--public-line);
+            border-radius: 1.4rem;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.045);
+        }
+
+        .public-subject-grid > a:hover { transform: translateY(-4px); }
+
+        .public-subject-icon,
+        .public-tool-icon,
+        .public-guide-icon {
+            display: inline-grid;
+            place-items: center;
+            flex: 0 0 auto;
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 0.9rem;
+            color: #2563eb;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+        }
+
+        .public-subject-icon { margin-bottom: 1.5rem; }
+        .public-subject-icon svg,
+        .public-tool-icon svg,
+        .public-guide-icon svg { width: 1.3rem; height: 1.3rem; }
+
+        .public-subject-grid > a:nth-child(2n) .public-subject-icon,
+        .public-tools-grid > div:nth-child(2n) .public-tool-icon { color: #7c3aed; background: #f5f3ff; border-color: #ede9fe; }
+        .public-subject-grid > a:nth-child(3n) .public-subject-icon,
+        .public-tools-grid > div:nth-child(3n) .public-tool-icon { color: #059669; background: #ecfdf5; border-color: #d1fae5; }
+
+        .public-tools-panel {
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            border-color: var(--public-line);
+            border-radius: 1.8rem;
+            background: linear-gradient(145deg, #ffffff, #f8fbff);
+            box-shadow: 0 20px 55px rgba(15, 23, 42, 0.07);
+        }
+
+        .public-tools-grid > div {
+            padding: 1.25rem;
+            border-color: #e2e8f0;
+            border-radius: 1.15rem;
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        .public-tools-grid > div:hover {
+            transform: translateY(-3px);
+            border-color: #bfdbfe;
+            box-shadow: 0 16px 34px rgba(37, 99, 235, 0.08);
+        }
+
+        .public-guide-list > a,
+        .public-support-list > a {
+            background: #ffffff;
+            border-color: var(--public-line);
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .public-support-list > a {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .public-support-list > a svg {
+            width: 1.1rem;
+            height: 1.1rem;
+            flex: 0 0 auto;
+            color: #059669;
+        }
+
+        .public-guide-list > a:hover,
+        .public-support-list > a:hover {
+            transform: translateX(4px);
+            border-color: #bfdbfe;
+            background: #f8fbff;
+        }
+
+        .public-guide-icon { width: 2.6rem; height: 2.6rem; }
+
+        .public-trust-bar {
+            border-color: var(--public-line);
+            border-radius: 1.8rem;
+            background: linear-gradient(135deg, #ffffff, #f5f9ff);
+            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.07);
+        }
+
+        /* Public mode remains light even when the saved site preference is dark. */
+        :root.dark body:not(.rgenie-private-resources),
+        :root.dark body:not(.rgenie-private-resources) .rgenie-shell {
+            color: var(--public-ink) !important;
+            background: #f7fbff !important;
+            color-scheme: light;
+        }
+
+        :root.dark body:not(.rgenie-private-resources) .rgenie-public-only-content,
+        :root.dark body:not(.rgenie-private-resources) .rgenie-public-only-content h1,
+        :root.dark body:not(.rgenie-private-resources) .rgenie-public-only-content h2,
+        :root.dark body:not(.rgenie-private-resources) .rgenie-public-only-content h3 {
+            color: #0f172a !important;
+        }
+
+        :root.dark body:not(.rgenie-private-resources) .rgenie-public-only-content p,
+        :root.dark body:not(.rgenie-private-resources) .rgenie-public-only-content .text-slate-500,
+        :root.dark body:not(.rgenie-private-resources) .rgenie-public-only-content .text-slate-600 {
+            color: #64748b !important;
+        }
+
+        :root.dark body:not(.rgenie-private-resources) .rgenie-public-only-content .bg-white,
+        :root.dark body:not(.rgenie-private-resources) .public-hero,
+        :root.dark body:not(.rgenie-private-resources) .public-tools-panel,
+        :root.dark body:not(.rgenie-private-resources) .public-trust-bar {
+            color: #0f172a !important;
+            background-color: #ffffff !important;
+            border-color: #dce5f0 !important;
+        }
+
+        :root.dark body:not(.rgenie-private-resources) .rgenie-public-only-content > div > div {
+            color: #0f172a !important;
+            background: transparent !important;
+            border-color: #dce5f0 !important;
+        }
+
+        :root.dark body:not(.rgenie-private-resources) .public-primary-action {
+            color: #ffffff !important;
+            background: #0f172a !important;
+        }
+
+        :root.dark body:not(.rgenie-private-resources) .public-secondary-action {
+            color: #0f172a !important;
+            background: #ffffff !important;
+        }
+
+        :root.dark body:not(.rgenie-private-resources) .sbx-navbar {
+            color: #0f172a !important;
+            background: rgba(255, 255, 255, 0.94) !important;
+            border-color: #e2e8f0 !important;
+        }
+
+        :root.dark body:not(.rgenie-private-resources) .sbx-nav-link,
+        :root.dark body:not(.rgenie-private-resources) .sbx-nav-brand,
+        :root.dark body:not(.rgenie-private-resources) .sbx-nav-dropdown-link {
+            color: #334155 !important;
+        }
+
+        :root.dark body:not(.rgenie-private-resources) .sbx-nav-dropdown,
+        :root.dark body:not(.rgenie-private-resources) .sbx-mobile-menu {
+            color: #0f172a !important;
+            background: #ffffff !important;
+            border-color: #e2e8f0 !important;
+        }
+
+        :root.dark body:not(.rgenie-private-resources) .sbx-footer {
+            color: #334155 !important;
+            background: #f8fafc !important;
+            border-color: #e2e8f0 !important;
+        }
+
+        :root.dark body:not(.rgenie-private-resources) .sbx-footer a,
+        :root.dark body:not(.rgenie-private-resources) .sbx-footer p {
+            color: #64748b !important;
+        }
+
+        @media (max-width: 720px) {
+            body:not(.rgenie-private-resources) .rgenie-shell { padding-top: 4.5rem; }
+            .rgenie-public-only-content { padding-inline: 0.25rem !important; }
+            .public-hero { margin-bottom: 3.5rem; border-radius: 1.7rem; }
+            .public-hero h1 { font-size: clamp(3rem, 16vw, 4.6rem); }
+            .public-trust-points { gap: 0.45rem; }
+            .public-trust-points > div { width: 100%; justify-content: center; }
+            .public-section { margin-bottom: 4rem; }
+            .public-section-heading { align-items: flex-start; flex-direction: column; }
+            .public-paper-grid > div { min-height: auto; }
+            .public-subject-grid > a { min-height: 11rem; }
+        }
     </style>
   <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
 </head>
@@ -1404,8 +1764,9 @@ body.rgenie-private-resources .rgenie-panel {
             <!-- This entire section is rich, self-contained, and only shown when not logged in -->
             <div class="rgenie-public-only-content max-w-[1200px] mx-auto px-4">
               <!-- Hero -->
-              <div class="text-center py-12">
-                <div class="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 text-xs font-bold px-4 py-1.5 rounded-full mb-4">
+              <div class="public-hero text-center py-12">
+                <div class="public-hero-badge inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 text-xs font-bold px-4 py-1.5 rounded-full mb-4">
+                  <i data-lucide="sparkles" class="w-4 h-4"></i>
                   100% FREE FOR ALL STUDENTS • NO LOGIN REQUIRED
                 </div>
                 <h1 class="text-5xl md:text-6xl font-black tracking-tighter text-slate-900 leading-none mb-4">
@@ -1416,32 +1777,32 @@ body.rgenie-private-resources .rgenie-panel {
                   Built for students who treat revision like a professional sport.
                 </p>
                 <div class="mt-8 flex flex-wrap justify-center gap-4">
-                  <a href="/past_papers/index.html" class="px-8 py-3 bg-slate-900 text-white rounded-2xl font-semibold hover:bg-black transition inline-flex items-center gap-2">
+                  <a href="/past_papers/index.html" class="public-primary-action px-8 py-3 bg-slate-900 text-white rounded-2xl font-semibold hover:bg-black transition inline-flex items-center gap-2">
                     <i data-lucide="file-text" class="w-4 h-4"></i>
                     <span>Browse Real Past Papers</span>
                   </a>
-                  <a href="/tools/" class="px-8 py-3 bg-white border border-slate-300 rounded-2xl font-semibold hover:bg-slate-50 transition inline-flex items-center gap-2">
-                    <i data-lucide="timer" class="w-4 h-4"></i>
+                  <a href="/tools/" class="public-secondary-action px-8 py-3 bg-white border border-slate-300 rounded-2xl font-semibold hover:bg-slate-50 transition inline-flex items-center gap-2">
+                    <i data-lucide="wrench" class="w-4 h-4"></i>
                     <span>Try Free Study Tools</span>
                   </a>
                 </div>
-                <div class="mt-6 flex items-center justify-center gap-8 text-sm text-slate-500">
-                  <div class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> Every official paper</div>
-                  <div class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> 7 subjects</div>
-                  <div class="flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> 4 exam boards</div>
+                <div class="public-trust-points mt-6 flex items-center justify-center gap-8 text-sm text-slate-500">
+                  <div class="flex items-center gap-1.5"><i data-lucide="badge-check" class="w-4 h-4 text-emerald-600"></i> Every official paper</div>
+                  <div class="flex items-center gap-1.5"><i data-lucide="library-big" class="w-4 h-4 text-emerald-600"></i> 7 subjects</div>
+                  <div class="flex items-center gap-1.5"><i data-lucide="building-2" class="w-4 h-4 text-emerald-600"></i> 4 exam boards</div>
                 </div>
               </div>
 
               <!-- Real Past Papers - Expanded with 8 actual high-quality entries -->
-              <div class="mb-14">
-                <div class="flex items-baseline justify-between mb-6">
+              <div class="public-section mb-14">
+                <div class="public-section-heading flex items-baseline justify-between mb-6">
                   <div>
                     <h2 class="text-3xl font-bold text-slate-900">Real Past Papers &amp; Mark Schemes</h2>
                     <p class="text-slate-600 mt-1">Every official paper. Every mark scheme. No noise.</p>
                   </div>
-                  <a href="#paper-finder-section" class="hidden md:inline-flex items-center gap-2 text-blue-600 font-semibold hover:underline">Full paper explorer →</a>
+                  <a href="/past_papers/index.html" class="public-section-link hidden md:inline-flex items-center gap-2 text-blue-600 font-semibold">Full paper explorer <i data-lucide="arrow-up-right"></i></a>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <div class="public-paper-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   <!-- Paper 1 -->
                   <div class="group bg-white border border-slate-200 rounded-3xl p-5 hover:shadow-xl hover:border-blue-200 transition-all flex flex-col">
                     <div class="flex items-start gap-3 mb-3">
@@ -1576,41 +1937,49 @@ body.rgenie-private-resources .rgenie-panel {
               </div>
 
               <!-- Subjects + Specification Quick References -->
-              <div class="mb-14">
-                <div class="flex items-baseline justify-between mb-5">
+              <div class="public-section mb-14">
+                <div class="public-section-heading flex items-baseline justify-between mb-5">
                   <h2 class="text-3xl font-bold text-slate-900">Subjects &amp; Specification Routes</h2>
-                  <a href="/subjects/index.html" class="text-blue-600 font-semibold hover:underline">All subjects →</a>
+                  <a href="/subjects/index.html" class="public-section-link text-blue-600 font-semibold">All subjects <i data-lucide="arrow-right"></i></a>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="public-subject-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   <a href="/subjects/maths/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group">
+                    <span class="public-subject-icon"><i data-lucide="sigma"></i></span>
                     <div class="font-bold text-xl mb-1 group-hover:text-violet-600">Mathematics</div>
                     <div class="text-sm text-slate-500">Edexcel 9MA0 • AQA 7357 • OCR H240<br>Pure • Mechanics • Statistics • Decision</div>
                   </a>
                   <a href="/subjects/physics/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group">
+                    <span class="public-subject-icon"><i data-lucide="atom"></i></span>
                     <div class="font-bold text-xl mb-1 group-hover:text-violet-600">Physics</div>
                     <div class="text-sm text-slate-500">Edexcel 9PH0 • AQA 7408 • OCR H556<br>Mechanics, Fields, Particles, Thermodynamics</div>
                   </a>
                   <a href="/subjects/chemistry/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group">
+                    <span class="public-subject-icon"><i data-lucide="flask-conical"></i></span>
                     <div class="font-bold text-xl mb-1 group-hover:text-violet-600">Chemistry</div>
                     <div class="text-sm text-slate-500">Edexcel 9CH0 • AQA 7405 • OCR H432<br>Organic, Physical, Inorganic + Practical</div>
                   </a>
                   <a href="/subjects/biology/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group">
+                    <span class="public-subject-icon"><i data-lucide="dna"></i></span>
                     <div class="font-bold text-xl mb-1 group-hover:text-violet-600">Biology</div>
                     <div class="text-sm text-slate-500">Edexcel 9BN0 • AQA 7402 • OCR H420<br>Cells, Genetics, Ecosystems, Physiology</div>
                   </a>
                   <a href="/subjects/psychology/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group">
+                    <span class="public-subject-icon"><i data-lucide="brain"></i></span>
                     <div class="font-bold text-xl mb-1 group-hover:text-violet-600">Psychology</div>
                     <div class="text-sm text-slate-500">AQA 7182 • Edexcel 9PS0 • OCR H567<br>Approaches, Research Methods, Options</div>
                   </a>
                   <a href="/subjects/economics/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group">
+                    <span class="public-subject-icon"><i data-lucide="chart-no-axes-combined"></i></span>
                     <div class="font-bold text-xl mb-1 group-hover:text-violet-600">Economics</div>
                     <div class="text-sm text-slate-500">AQA 7136 • Edexcel 9EC0 • OCR H460<br>Micro, Macro, Global, Development</div>
                   </a>
                   <a href="/subjects/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group">
+                    <span class="public-subject-icon"><i data-lucide="code-2"></i></span>
                     <div class="font-bold text-xl mb-1 group-hover:text-violet-600">Computer Science</div>
                     <div class="text-sm text-slate-500">AQA 7517 • Edexcel 9CS0 • OCR H446<br>Programming, Algorithms, Theory, NEA</div>
                   </a>
                   <a href="/subjects/index.html" class="block p-6 bg-white border border-slate-200 rounded-3xl hover:border-violet-300 hover:shadow-md transition group flex flex-col justify-center">
+                    <span class="public-subject-icon"><i data-lucide="library-big"></i></span>
                     <div class="font-bold text-xl mb-1 group-hover:text-violet-600">+ More subjects</div>
                     <div class="text-sm text-slate-500">Geography, History, English Lit, RS, Sociology, Further Maths…</div>
                   </a>
@@ -1618,42 +1987,42 @@ body.rgenie-private-resources .rgenie-panel {
               </div>
 
               <!-- Free Study Tools - Expanded to 6 rich previews -->
-              <div class="mb-14 bg-white border border-slate-200 rounded-3xl p-8">
-                <div class="flex items-center justify-between mb-6">
+              <div class="public-section public-tools-panel mb-14 bg-white border border-slate-200 rounded-3xl p-8">
+                <div class="public-section-heading flex items-center justify-between mb-6">
                   <div>
                     <h2 class="text-3xl font-bold text-slate-900">Free Study Tools (No account needed)</h2>
                     <p class="text-slate-600 mt-1">Everything runs locally in your browser. Your data never leaves your device.</p>
                   </div>
                   <a href="/tools/" class="hidden sm:block px-5 py-2 text-sm font-semibold border border-slate-300 rounded-2xl hover:bg-slate-50">Open all tools →</a>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="public-tools-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div class="p-5 border border-slate-100 rounded-2xl hover:border-blue-200 transition group">
-                    <div class="flex items-center gap-3 mb-3"><i data-lucide="timer" class="w-6 h-6 text-blue-600"></i><span class="font-bold text-lg">Focus Timer (Pomodoro)</span></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="public-tool-icon"><i data-lucide="timer"></i></span><span class="font-bold text-lg">Focus Timer (Pomodoro)</span></div>
                     <div class="text-sm text-slate-500 mb-4">25/5 or 50/10 cycles with automatic wellbeing micro-breaks and session logging. Dark mode friendly.</div>
                     <a href="/tools/" class="text-blue-600 font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all">Open Focus Timer <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
                   </div>
                   <div class="p-5 border border-slate-100 rounded-2xl hover:border-blue-200 transition group">
-                    <div class="flex items-center gap-3 mb-3"><i data-lucide="calendar" class="w-6 h-6 text-blue-600"></i><span class="font-bold text-lg">Exam Planner &amp; Tracker</span></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="public-tool-icon"><i data-lucide="calendar-days"></i></span><span class="font-bold text-lg">Exam Planner &amp; Tracker</span></div>
                     <div class="text-sm text-slate-500 mb-4">Build personalised timetables, set topic targets, track hours studied per paper. Saves automatically.</div>
                     <a href="/tools/" class="text-blue-600 font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all">Open Exam Planner <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
                   </div>
                   <div class="p-5 border border-slate-100 rounded-2xl hover:border-blue-200 transition group">
-                    <div class="flex items-center gap-3 mb-3"><i data-lucide="brain" class="w-6 h-6 text-blue-600"></i><span class="font-bold text-lg">Recall Builder + Flashcards</span></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="public-tool-icon"><i data-lucide="brain"></i></span><span class="font-bold text-lg">Recall Builder + Flashcards</span></div>
                     <div class="text-sm text-slate-500 mb-4">Turn weak areas into active recall cards. Spaced repetition streaks, exportable, works offline.</div>
                     <a href="/tools/" class="text-blue-600 font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all">Open Recall Tools <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
                   </div>
                   <div class="p-5 border border-slate-100 rounded-2xl hover:border-blue-200 transition group">
-                    <div class="flex items-center gap-3 mb-3"><i data-lucide="check-square" class="w-6 h-6 text-blue-600"></i><span class="font-bold text-lg">Revision Checklist System</span></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="public-tool-icon"><i data-lucide="list-checks"></i></span><span class="font-bold text-lg">Revision Checklist System</span></div>
                     <div class="text-sm text-slate-500 mb-4">Specification checklists for every major topic. Tick as you master them. Progress saved locally.</div>
-                    <a href="/revision-checklist.html" class="text-blue-600 font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all">Build Checklists <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+                    <a href="/tools/planning/" class="text-blue-600 font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all">Build Checklists <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
                   </div>
                   <div class="p-5 border border-slate-100 rounded-2xl hover:border-blue-200 transition group">
-                    <div class="flex items-center gap-3 mb-3"><i data-lucide="bar-chart-2" class="w-6 h-6 text-blue-600"></i><span class="font-bold text-lg">Paper Tracker &amp; Mistake Log</span></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="public-tool-icon"><i data-lucide="chart-no-axes-combined"></i></span><span class="font-bold text-lg">Paper Tracker &amp; Mistake Log</span></div>
                     <div class="text-sm text-slate-500 mb-4">Log every past paper attempt, record question-level mistakes, generate targeted repair tasks.</div>
-                    <a href="/paper-tracker.html" class="text-blue-600 font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all">Track Your Papers <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
+                    <a href="/tools/planning/command-centre.html" class="text-blue-600 font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all">Track Your Papers <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
                   </div>
                   <div class="p-5 border border-slate-100 rounded-2xl hover:border-blue-200 transition group">
-                    <div class="flex items-center gap-3 mb-3"><i data-lucide="book-open" class="w-6 h-6 text-blue-600"></i><span class="font-bold text-lg">Mistake Log &amp; Repair</span></div>
+                    <div class="flex items-center gap-3 mb-3"><span class="public-tool-icon"><i data-lucide="book-open-check"></i></span><span class="font-bold text-lg">Mistake Log &amp; Repair</span></div>
                     <div class="text-sm text-slate-500 mb-4">The exact method used by top students. Turn every lost mark into a specific recall card or planner task.</div>
                     <a href="/blogs/mistake-log.html" class="text-blue-600 font-semibold text-sm inline-flex items-center gap-1 group-hover:gap-2 transition-all">Learn the Method <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i></a>
                   </div>
@@ -1661,7 +2030,7 @@ body.rgenie-private-resources .rgenie-panel {
               </div>
 
               <!-- Specification Quick References + Topical Resources -->
-              <div class="mb-14">
+              <div class="public-section mb-14">
                 <h2 class="text-3xl font-bold text-slate-900 mb-5">Specification Quick References</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <div class="bg-white border border-slate-200 rounded-3xl p-5">
@@ -1688,26 +2057,26 @@ body.rgenie-private-resources .rgenie-panel {
               </div>
 
               <!-- Revision Guides + Wellbeing (stronger) -->
-              <div class="grid lg:grid-cols-5 gap-6 mb-14">
+              <div class="public-section grid lg:grid-cols-5 gap-6 mb-14">
                 <div class="lg:col-span-3">
                   <h2 class="text-3xl font-bold text-slate-900 mb-5">Free Revision Method Guides</h2>
-                  <div class="space-y-3">
+                  <div class="public-guide-list space-y-3">
                     <a href="/blogs/paper-loop.html" class="flex items-start gap-4 p-5 border border-slate-200 rounded-3xl hover:bg-slate-50 transition group">
-                      <div class="text-2xl mt-0.5">📄</div>
+                      <span class="public-guide-icon"><i data-lucide="files"></i></span>
                       <div>
                         <div class="font-semibold group-hover:text-blue-600">The A-Level Paper Loop — The exact method top students use</div>
                         <div class="text-sm text-slate-500">Find → Attempt under timed conditions → Mark brutally → Repair with recall cards → Repeat.</div>
                       </div>
                     </a>
                     <a href="/blogs/revision-week.html" class="flex items-start gap-4 p-5 border border-slate-200 rounded-3xl hover:bg-slate-50 transition group">
-                      <div class="text-2xl mt-0.5">📅</div>
+                      <span class="public-guide-icon"><i data-lucide="calendar-range"></i></span>
                       <div>
                         <div class="font-semibold group-hover:text-blue-600">Building an Effective Revision Week (with wellbeing built in)</div>
                         <div class="text-sm text-slate-500">How to structure 25–30 focused hours per week without burnout. Includes the 90-minute rule.</div>
                       </div>
                     </a>
                     <a href="/blogs/mistake-log.html" class="flex items-start gap-4 p-5 border border-slate-200 rounded-3xl hover:bg-slate-50 transition group">
-                      <div class="text-2xl mt-0.5">📝</div>
+                      <span class="public-guide-icon"><i data-lucide="notebook-pen"></i></span>
                       <div>
                         <div class="font-semibold group-hover:text-blue-600">Using Mistakes Properly — Turn every lost mark into marks gained</div>
                         <div class="text-sm text-slate-500">The complete mistake categorisation + repair workflow used by 40+ A* students last year.</div>
@@ -1717,18 +2086,18 @@ body.rgenie-private-resources .rgenie-panel {
                 </div>
                 <div class="lg:col-span-2">
                   <h2 class="text-3xl font-bold text-slate-900 mb-5">Wellbeing &amp; Safety (Built-in)</h2>
-                  <div class="space-y-3 text-sm">
-                    <a href="/support/mental-health.html" class="block p-4 border border-slate-200 rounded-2xl hover:bg-slate-50">Mental Health During Exams — Practical strategies + when to seek help</a>
-                    <a href="/support/online-warning-signs.html" class="block p-4 border border-slate-200 rounded-2xl hover:bg-slate-50">Online Safety &amp; Pressure Signs — Recognising grooming, blackmail, and toxic study groups</a>
-                    <a href="/support/youre-not-alone.html" class="block p-4 border border-slate-200 rounded-2xl hover:bg-slate-50">You're Not Alone — Real support resources and helplines</a>
-                    <a href="/support/threats-and-blackmail.html" class="block p-4 border border-slate-200 rounded-2xl hover:bg-slate-50">Threats &amp; Blackmail — What to do if someone is threatening you online</a>
+                  <div class="public-support-list space-y-3 text-sm">
+                    <a href="/support/mental-health.html" class="block p-4 border border-slate-200 rounded-2xl hover:bg-slate-50"><i data-lucide="heart-pulse"></i><span>Mental Health During Exams &mdash; Practical strategies + when to seek help</span></a>
+                    <a href="/support/online-warning-signs.html" class="block p-4 border border-slate-200 rounded-2xl hover:bg-slate-50"><i data-lucide="shield-check"></i><span>Online Safety &amp; Pressure Signs &mdash; Recognising grooming, blackmail, and toxic study groups</span></a>
+                    <a href="/support/youre-not-alone.html" class="block p-4 border border-slate-200 rounded-2xl hover:bg-slate-50"><i data-lucide="life-buoy"></i><span>You're Not Alone &mdash; Real support resources and helplines</span></a>
+                    <a href="/support/threats-and-blackmail.html" class="block p-4 border border-slate-200 rounded-2xl hover:bg-slate-50"><i data-lucide="message-circle-warning"></i><span>Threats &amp; Blackmail &mdash; What to do if someone is threatening you online</span></a>
                     <div class="p-4 border border-slate-200 rounded-2xl bg-slate-50 text-slate-600">Automatic focus breaks • Built-in content filters • One-click report from anywhere • Full privacy controls • Time-limit warnings</div>
                   </div>
                 </div>
               </div>
 
               <!-- Trust bar -->
-              <div class="mb-12 rounded-3xl border border-slate-200 bg-white p-6">
+              <div class="public-trust-bar mb-12 rounded-3xl border border-slate-200 bg-white p-6">
                 <div class="text-center text-xs font-bold tracking-[1.5px] text-slate-500 mb-4">TRUSTED BY THOUSANDS OF A-LEVEL STUDENTS</div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-y-6 text-center">
                   <div><span class="block text-2xl font-black text-slate-900">47,200+</span><span class="text-sm text-slate-500">Papers downloaded this year</span></div>

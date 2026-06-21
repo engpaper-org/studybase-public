@@ -1,3 +1,9 @@
+(function () {
+if (window.StudyBaseConsent) {
+    window.StudyBaseConsent.init();
+    return;
+}
+
 let LOG_URL = 'https://script.google.com/macros/s/AKfycbyW-AQ4JeYOMujbXToocpkXPH_GMYxhJTqViDOkoPyXYrpcaMvFuxnVjtWQx-ot6T3L/exec';
 let PRIVACY_URL = '/legal/privacy.html';
 let TERMS_URL = '/legal/tos.html';
@@ -112,8 +118,14 @@ function buildConsentModal() {
     document.body.classList.add('overflow-hidden');
 }
 
-window.addEventListener('load', () => {
+function initConsent() {
+    if (!document.body) {
+        document.addEventListener('DOMContentLoaded', initConsent, { once: true });
+        return;
+    }
+
     if (typeof SHOW_CONSENT_BANNER !== 'undefined' && SHOW_CONSENT_BANNER === false) {
+        removeConsentModal();
         return;
     }
 
@@ -123,4 +135,18 @@ window.addEventListener('load', () => {
     }
 
     buildConsentModal();
-});
+}
+
+window.StudyBaseConsent = {
+    init: initConsent,
+    acceptAll,
+    remove: removeConsentModal
+};
+window.acceptAll = acceptAll;
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initConsent, { once: true });
+} else {
+    initConsent();
+}
+})();
