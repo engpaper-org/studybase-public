@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>StudyBase | Friends and Social</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/assets/js/core/services.js"></script>
+  <script src="/assets/js/account/sidebar.js" defer></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50 text-slate-900 antialiased">
+  <main class="mx-auto max-w-5xl px-5 py-10">
+    <a href="/myaccount/account.html" class="text-sm font-black text-purple-700">&larr; Account home</a>
+    <header class="mt-5 flex flex-wrap items-end justify-between gap-5">
+      <div><p class="text-xs font-black uppercase tracking-[.2em] text-indigo-600">Social preview</p><h1 class="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Friends &amp; Social</h1><p class="mt-3 max-w-2xl leading-7 text-slate-500">A preview of the controls planned for StudyBase friends, invites, and social privacy.</p></div>
+      <span class="rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-black text-amber-800">Not Available right now</span>
+    </header>
+
+    <div id="loading" class="mt-7 flex min-h-80 flex-col items-center justify-center rounded-[2rem] border border-slate-200 bg-white shadow-sm" role="status"><div class="relative h-16 w-16"><div class="absolute inset-0 animate-ping rounded-full bg-indigo-200"></div><div class="absolute inset-1 animate-spin rounded-full border-4 border-slate-200 border-t-indigo-600"></div></div><p class="mt-6 font-black">Loading social settings</p><p class="mt-1 text-sm text-slate-500">Checking your account...</p></div>
+
+    <section id="content" class="mt-7 hidden space-y-5" aria-disabled="true">
+      <div class="overflow-hidden rounded-[2rem] bg-gradient-to-br from-indigo-700 via-purple-700 to-slate-950 p-7 text-white shadow-xl sm:p-8"><div class="flex flex-wrap items-center justify-between gap-5"><div><p class="text-sm font-bold text-indigo-200">Previewing for</p><h2 id="social-name" class="mt-2 text-3xl font-black"></h2><p id="social-username" class="mt-1 text-indigo-200"></p></div><div class="rounded-2xl border border-white/15 bg-white/10 px-5 py-4 text-right"><p class="text-xs font-black uppercase tracking-wider text-indigo-200">Feature status</p><p class="mt-1 font-black">Not Available</p></div></div></div>
+
+      <div class="rounded-2xl border border-indigo-200 bg-indigo-50 p-5 text-sm leading-6 text-indigo-950"><strong>Preview only.</strong> Friends features are not active, and no friend lists, invitations, invite codes, or blocked-user records can be changed from this page.</div>
+
+      <div class="grid gap-5 md:grid-cols-2">
+        <article class="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"><span class="absolute right-5 top-5 rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-500">Not Available</span><div class="grid h-12 w-12 place-items-center rounded-2xl bg-purple-100 font-black text-purple-700">FL</div><h2 class="mt-5 text-2xl font-black">Friends list</h2><p class="mt-2 text-sm leading-6 text-slate-500">View friends, remove connections, and see who is available.</p><div class="mt-5 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5 text-center text-sm font-bold text-slate-400">Friends list unavailable</div></article>
+
+        <article class="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"><span class="absolute right-5 top-5 rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-500">Not Available</span><div class="grid h-12 w-12 place-items-center rounded-2xl bg-blue-100 font-black text-blue-700">IN</div><h2 class="mt-5 text-2xl font-black">Accepting invites from</h2><p class="mt-2 text-sm leading-6 text-slate-500">Choose who is permitted to send you a friend invitation.</p><div class="mt-5 grid grid-cols-3 gap-2 opacity-50"><button disabled class="rounded-xl border bg-slate-50 p-3 text-xs font-black">Everyone</button><button disabled class="rounded-xl border bg-slate-50 p-3 text-xs font-black">Mutuals</button><button disabled class="rounded-xl border bg-slate-50 p-3 text-xs font-black">Nobody</button></div></article>
+
+        <article class="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"><span class="absolute right-5 top-5 rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-500">Not Available</span><div class="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-100 font-black text-emerald-700">IC</div><h2 class="mt-5 text-2xl font-black">Invite code</h2><p class="mt-2 text-sm leading-6 text-slate-500">Share a temporary code so another StudyBase user can find you.</p><div class="mt-5 flex gap-3"><div class="min-w-0 flex-1 rounded-xl border bg-slate-50 p-3 font-mono font-black tracking-widest text-slate-400">NOT-AVAILABLE</div><button disabled class="rounded-xl bg-slate-200 px-4 font-black text-slate-400">Copy</button></div></article>
+
+        <article class="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm"><span class="absolute right-5 top-5 rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-500">Not Available</span><div class="grid h-12 w-12 place-items-center rounded-2xl bg-rose-100 font-black text-rose-700">BU</div><h2 class="mt-5 text-2xl font-black">Blocked users</h2><p class="mt-2 text-sm leading-6 text-slate-500">Review users you have blocked and manage future interactions.</p><div class="mt-5 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-5 text-center text-sm font-bold text-slate-400">Blocked-user controls unavailable</div></article>
+      </div>
+    </section>
+  </main>
+  <script>
+    async function loadSocialPreview() {
+      const result = await StudyBaseServices.request("/me");
+      if (!result.ok || !result.user) { location.replace("/myaccount/login.html?sessionExpired=true"); return; }
+      localStorage.setItem("studybase_user", JSON.stringify(result.user));
+      document.getElementById("social-name").textContent = result.user.name || "StudyBase user";
+      document.getElementById("social-username").textContent = `@${result.user.username}`;
+      document.getElementById("loading").classList.add("hidden");
+      document.getElementById("content").classList.remove("hidden");
+    }
+    loadSocialPreview().catch(() => {
+      const loading = document.getElementById("loading");
+      loading.className = "mt-7 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-800";
+      loading.textContent = "Social settings could not be loaded. Refresh the page to try again.";
+    });
+  </script>
+</body>
+</html>

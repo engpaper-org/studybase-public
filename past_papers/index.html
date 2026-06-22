@@ -14,20 +14,57 @@
   <script src="/assets/js/layout/footer.js" defer></script>
 <script src="/assets/js/core/sessionManager.js" defer></script>
   <script src="/assets/js/privacy/checkCookieConsent.js"></script>
+  <style>
+    :root { --pp-ink:#0f172a; --pp-muted:#64748b; --pp-line:#dce5ef; --pp-blue:#2563eb; --pp-green:#059669; --pp-ease:cubic-bezier(.2,.75,.2,1); }
+    * { box-sizing:border-box; }
+    html { background:#f6f9fd; }
+    body { margin:0; color:var(--pp-ink); background:radial-gradient(circle at 8% 3%,rgba(37,99,235,.09),transparent 26rem),radial-gradient(circle at 92% 12%,rgba(16,185,129,.08),transparent 24rem),linear-gradient(180deg,#f7fbff,#fff 40rem,#f7fafc); font-family:Inter,"Plus Jakarta Sans",system-ui,sans-serif; }
+    .pp-page { width:min(1160px,calc(100% - 36px))!important; margin:0 auto!important; padding:92px 0 110px!important; }
+    .pp-page > .mb-8 { position:relative; overflow:hidden; min-height:390px; margin-bottom:30px!important; padding:clamp(2rem,6vw,4.5rem); border:1px solid rgba(148,163,184,.24); border-radius:34px; background:rgba(255,255,255,.88); box-shadow:0 32px 85px rgba(30,64,175,.1); }
+    .pp-page > .mb-8::before { content:""; position:absolute; width:500px;height:500px;right:-220px;top:-270px;border-radius:50%;background:radial-gradient(circle,rgba(96,165,250,.22),rgba(52,211,153,.1) 52%,transparent 70%);pointer-events:none }
+    .pp-page > .mb-8::after { content:""; position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(15,23,42,.025) 1px,transparent 1px),linear-gradient(rgba(15,23,42,.025) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(90deg,transparent,#000) }
+    .pp-page > .mb-8 > * { position:relative;z-index:1 }
+    .pp-page > .mb-8 > a { display:inline-flex;align-items:center;gap:6px;margin-bottom:30px!important;color:#475569!important;text-decoration:none;font-size:11px;font-weight:850 }.pp-page > .mb-8 > a:hover{color:var(--pp-blue)!important}
+    .pp-page > .mb-8 > div { border:1px solid #a7f3d0;box-shadow:0 9px 23px rgba(5,150,105,.08);letter-spacing:.12em }
+    .pp-page h1 { max-width:760px;margin:16px 0 18px;font-size:clamp(4rem,7vw,7rem)!important;line-height:.88!important;letter-spacing:-.07em!important;font-weight:900!important }
+    .pp-page h1 + p { max-width:660px;margin:0!important;color:var(--pp-muted)!important;font-size:17px!important;line-height:1.65 }
+    #step-indicator { display:grid!important;grid-template-columns:repeat(4,1fr);gap:8px!important;margin-bottom:18px!important;padding:13px;border:1px solid var(--pp-line);border-radius:21px;background:rgba(255,255,255,.9);box-shadow:0 16px 45px rgba(15,23,42,.06) }
+    #step-indicator > .text-slate-400 { display:none }
+    #step-indicator > [id^="step-"] { min-height:52px;padding:10px 13px!important;border:1px solid #e2e8f0!important;border-radius:14px!important;color:#94a3b8;background:#f8fafc;transition:color .2s,border-color .2s,background .2s }
+    #step-indicator > [id^="step-"].is-active { color:#1d4ed8!important;border-color:#93c5fd!important;background:#eff6ff }
+    #step-indicator > [id^="step-"].is-complete { color:#047857!important;border-color:#a7f3d0!important;background:#ecfdf5 }
+    #subject-step,#board-step,#year-step,#results-step { min-height:390px;padding:clamp(1.3rem,3vw,2rem);border:1px solid var(--pp-line);border-radius:26px;background:rgba(255,255,255,.92);box-shadow:0 22px 60px rgba(15,23,42,.07) }
+    #subject-step.hidden,#board-step.hidden,#year-step.hidden,#results-step.hidden{display:none}
+    #subject-step h2,#board-step h2,#year-step h2 { font-size:clamp(2rem,4vw,3rem)!important;letter-spacing:-.045em;font-weight:900!important }
+    #subject-grid { display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important }
+    .pp-subject-card { position:relative;overflow:hidden;min-height:210px;padding:20px;border:1px solid var(--pp-line);border-radius:20px;color:var(--pp-ink);background:#fff;text-align:left;font:inherit;cursor:pointer;box-shadow:0 9px 26px rgba(15,23,42,.04);transition:transform .28s var(--pp-ease),border-color .28s,box-shadow .28s }
+    .pp-subject-card::after { content:"";position:absolute;width:125px;height:125px;right:-75px;bottom:-78px;border-radius:50%;background:var(--subject-color,#2563eb);opacity:.09;transition:transform .3s var(--pp-ease) }.pp-subject-card:hover{transform:translateY(-5px);border-color:#93c5fd;box-shadow:0 20px 42px rgba(37,99,235,.1)}.pp-subject-card:hover::after{transform:scale(1.35)}
+    .pp-subject-icon { display:grid;place-items:center;width:44px;height:44px;border:1px solid color-mix(in srgb,var(--subject-color,#2563eb),transparent 76%);border-radius:14px;color:var(--subject-color,#2563eb);background:color-mix(in srgb,var(--subject-color,#2563eb),transparent 91%) }.pp-subject-icon svg{width:20px;height:20px}.pp-subject-card strong{display:block;margin-top:38px;font-size:18px;letter-spacing:-.025em}.pp-subject-card small{display:block;margin-top:5px;color:#64748b;font-size:11px}.pp-subject-open{display:inline-flex;align-items:center;gap:5px;margin-top:16px;color:var(--subject-color,#2563eb);font-size:9px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}.pp-subject-open svg{width:12px;height:12px}
+    #board-step > .flex:first-child,#year-step > .flex:first-child { padding:15px 17px;border:1px solid #dbeafe;border-radius:17px;background:#f5f9ff }
+    #board-grid,#year-grid { display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px!important }
+    .pp-choice-card { display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:76px;padding:15px 17px;border:1px solid var(--pp-line);border-radius:17px;color:var(--pp-ink);background:#fff;font:inherit;font-size:16px;font-weight:850;cursor:pointer;transition:transform .22s,border-color .22s,box-shadow .22s }.pp-choice-card:hover{transform:translateY(-3px);border-color:#93c5fd;box-shadow:0 14px 30px rgba(37,99,235,.08)}.pp-choice-count{padding:5px 8px;border-radius:999px;color:#64748b;background:#f1f5f9;font-size:9px;font-weight:850}
+    .pp-change { min-height:38px;padding:0 13px!important;border:1px solid #cbd5e1!important;border-radius:999px!important;color:#475569;background:#fff;font:inherit;font-size:10px!important;font-weight:850!important;cursor:pointer }.pp-change:hover{border-color:#93c5fd!important;color:#1d4ed8;background:#fff!important}
+    #results-step > .flex:first-child { align-items:flex-start;gap:18px;margin-bottom:22px!important }#results-heading{font-size:clamp(1.8rem,4vw,2.7rem)!important;letter-spacing:-.04em}#results-count{display:inline-flex;margin-top:7px!important;padding:6px 10px!important;font-size:10px!important;font-weight:900!important}
+    #results-grid { display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important }
+    .pp-paper-card { position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:270px;padding:20px;border:1px solid var(--pp-line);border-radius:20px;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.045);transition:transform .28s var(--pp-ease),border-color .28s,box-shadow .28s }.pp-paper-card::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#2563eb,#06b6d4,#10b981);opacity:0;transition:opacity .25s}.pp-paper-card:hover{transform:translateY(-5px);border-color:#bfdbfe;box-shadow:0 21px 46px rgba(37,99,235,.1)}.pp-paper-card:hover::before{opacity:1}
+    .pp-paper-top{display:flex;gap:12px}.pp-paper-icon{display:grid;place-items:center;width:42px;height:42px;flex:0 0 auto;border:1px solid #dbeafe;border-radius:13px;color:#2563eb;background:#eff6ff}.pp-paper-icon svg{width:19px;height:19px}.pp-paper-card h3{margin:0;font-size:15px;line-height:1.35}.pp-paper-meta{display:flex;align-items:center;gap:7px;margin-top:7px;color:#64748b;font-size:10px}.pp-board-badge{padding:3px 6px;border-radius:6px;color:#475569;background:#f1f5f9;font-weight:800}.pp-paper-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:auto;padding-top:24px}.pp-paper-action{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;border:1px solid #cbd5e1;border-radius:11px;color:#334155;background:#fff;text-decoration:none;font-size:10px;font-weight:850}.pp-paper-action.primary{color:#fff;border-color:#0f172a;background:#0f172a}.pp-paper-action:hover{border-color:#60a5fa}.pp-paper-action svg{width:13px;height:13px}
+    @media(max-width:900px){#subject-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}#results-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+    @media(max-width:650px){.pp-page{width:min(100% - 24px,1160px)!important;padding-top:70px!important}.pp-page > .mb-8{min-height:0;padding:30px 19px;border-radius:24px}.pp-page h1{font-size:clamp(3.5rem,17vw,5rem)!important}#step-indicator{display:flex!important;overflow-x:auto;scrollbar-width:none}#step-indicator::-webkit-scrollbar{display:none}#step-indicator>[id^="step-"]{flex:0 0 130px}#subject-step,#board-step,#year-step,#results-step{min-height:340px;padding:16px;border-radius:21px}#subject-grid,#board-grid,#year-grid,#results-grid{grid-template-columns:1fr!important}.pp-subject-card{min-height:185px}#results-step>.flex:first-child{flex-direction:column}#results-step>.flex:first-child>.flex{flex-wrap:wrap}}
+  </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
   <!-- Mobile unsupported gate -->
   <script>
-  (function(){const m=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)||window.innerWidth<768;if(m){const g=document.createElement('div');g.style.cssText='position:fixed;inset:0;z-index:999999;background:#0f172a;color:#f8fafc;display:flex;align-items:center;justify-content:center;padding:2rem;text-align:center;font-family:Plus Jakarta Sans,system-ui,sans-serif;';g.innerHTML='<div style="max-width:460px"><div style="font-size:3rem;margin-bottom:1rem">🖥️</div><h1 style="font-size:1.65rem;font-weight:900;margin-bottom:.5rem">StudyBase Past Papers is built for desktop</h1><p style="color:#94a3b8;margin-bottom:1.5rem;line-height:1.6">Full A-Level paper browser. No mobile styling is provided.</p><p style="font-size:.9rem;color:#64748b;margin-bottom:1.75rem">Please use a laptop or desktop computer.</p><button onclick="this.parentElement.parentElement.remove()" style="background:#fff;color:#0f172a;font-weight:700;padding:.75rem 2rem;border-radius:9999px;font-size:.95rem">Continue on mobile anyway</button><div style="margin-top:1.25rem;font-size:.75rem;opacity:.6">StudyBase • Real A-Level papers</div></div>';document.body.appendChild(g);}})();
+  (function(){const m=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)||window.innerWidth<768;if(false&&m){}})();
   </script>
 
-  <div class="max-w-[1100px] mx-auto px-5 pt-8 pb-20">
+  <div class="pp-page max-w-[1100px] mx-auto px-5 pt-8 pb-20">
     <!-- Header -->
     <div class="mb-8">
-      <a href="/r/index.html" class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-700 mb-3">← Back to Resource Database</a>
-      <div class="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full mb-3">REAL PAPERS • MARK SCHEMES</div>
-      <h1 class="text-4xl md:text-5xl font-black tracking-tighter">Past Papers</h1>
-      <p class="mt-2 text-lg text-slate-600 max-w-2xl">Select subject → exam board → year to browse real A-Level papers with direct links to YesGenie.</p>
+      <a href="/r/index.html" class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-700 mb-3"><i data-lucide="arrow-left"></i> Resource Database</a>
+      <div class="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full mb-3"><i data-lucide="file-check-2" class="w-4 h-4"></i> REAL PAPERS &bull; MARK SCHEMES</div>
+      <h1 class="text-4xl md:text-5xl font-black tracking-tighter">Find a past paper.</h1>
+      <p class="mt-2 text-lg text-slate-600 max-w-2xl">Choose a subject, exam board and year. We will show the available A-Level papers and mark schemes.</p>
     </div>
 
     <!-- Progress / Steps -->
@@ -68,7 +105,7 @@
           <span class="text-xs uppercase tracking-widest text-slate-500">Selected subject</span>
           <div id="selected-subject-for-board" class="text-2xl font-black"></div>
         </div>
-        <button onclick="resetToSubject()" class="ml-auto text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change subject</button>
+        <button onclick="resetToSubject()" class="pp-change ml-auto text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change subject</button>
       </div>
 
       <h2 class="text-xl font-bold mb-3">Select exam board</h2>
@@ -84,7 +121,7 @@
           <span class="text-xs uppercase tracking-widest text-slate-500">Selected</span>
           <div id="selected-subject-board-name" class="text-2xl font-black"></div>
         </div>
-        <button onclick="resetToBoard()" class="ml-auto text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change board</button>
+        <button onclick="resetToBoard()" class="pp-change ml-auto text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change board</button>
       </div>
 
       <h2 class="text-xl font-bold mb-3">Select year</h2>
@@ -101,9 +138,9 @@
           <span id="results-count" class="ml-3 text-sm font-semibold px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full"></span>
         </div>
         <div class="flex gap-2">
-          <button onclick="changeYear()" class="text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change year</button>
-          <button onclick="resetToBoard()" class="text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change board</button>
-          <button onclick="resetToSubject()" class="text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change subject</button>
+          <button onclick="changeYear()" class="pp-change text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change year</button>
+          <button onclick="resetToBoard()" class="pp-change text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change board</button>
+          <button onclick="resetToSubject()" class="pp-change text-xs font-semibold px-4 py-2 border border-slate-300 rounded-2xl hover:bg-slate-100">Change subject</button>
         </div>
       </div>
 
@@ -124,6 +161,16 @@
     let selectedSubject = null;
     let selectedBoard = null;
     let selectedYear = null;
+
+    function updateProgress(activeStep) {
+      ['subject', 'board', 'year', 'results'].forEach((name, index) => {
+        const step = document.getElementById(`step-${name}`);
+        if (!step) return;
+        const number = index + 1;
+        step.classList.toggle('is-complete', number < activeStep);
+        step.classList.toggle('is-active', number === activeStep);
+      });
+    }
 
     function getYesgenieUrl(p) {
       if (p.yesgenieUrl && p.yesgenieUrl !== '#' && !p.yesgenieUrl.endsWith('/past-papers')) {
@@ -210,14 +257,14 @@
 
     // Subject metadata using Lucid icons (no more board PNGs)
     const subjectMeta = {
-      "Mathematics": { lucide: "calculator", label: "Mathematics" },
-      "Physics": { lucide: "atom", label: "Physics" },
-      "Chemistry": { lucide: "flask-conical", label: "Chemistry" },
-      "Biology": { lucide: "leaf", label: "Biology" },
-      "Psychology": { lucide: "brain", label: "Psychology" },
-      "Economics": { lucide: "trending-up", label: "Economics" },
-      "Computer Science": { lucide: "cpu", label: "Computer Science" },
-      "Further Mathematics": { lucide: "infinity", label: "Further Mathematics" }
+      "Mathematics": { lucide: "calculator", label: "Mathematics", color: "#d97706" },
+      "Physics": { lucide: "atom", label: "Physics", color: "#0284c7" },
+      "Chemistry": { lucide: "flask-conical", label: "Chemistry", color: "#059669" },
+      "Biology": { lucide: "leaf", label: "Biology", color: "#0d9488" },
+      "Psychology": { lucide: "brain", label: "Psychology", color: "#7c3aed" },
+      "Economics": { lucide: "trending-up", label: "Economics", color: "#2563eb" },
+      "Computer Science": { lucide: "cpu", label: "Computer Science", color: "#0891b2" },
+      "Further Mathematics": { lucide: "infinity", label: "Further Mathematics", color: "#4f46e5" }
     };
 
     async function loadPapers() {
@@ -250,19 +297,17 @@
 
       subjects.forEach(subject => {
         const count = papers.filter(p => p.subject === subject).length;
-        const meta = subjectMeta[subject] || { lucide: "book-open", label: subject };
+        const meta = subjectMeta[subject] || { lucide: "book-open", label: subject, color: "#2563eb" };
 
-        const card = document.createElement('div');
-        card.className = 'group bg-white border border-slate-200 hover:border-blue-300 hover:shadow-lg transition rounded-3xl p-5 cursor-pointer flex gap-4';
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'pp-subject-card';
+        card.style.setProperty('--subject-color', meta.color);
         card.innerHTML = `
-          <div class="shrink-0 w-11 h-11 rounded-2xl bg-slate-100 flex items-center justify-center">
-            <i data-lucide="${meta.lucide}" class="w-6 h-6 text-slate-700"></i>
-          </div>
-          <div class="min-w-0">
-            <div class="font-bold text-xl group-hover:text-blue-600">${meta.label}</div>
-            <div class="text-sm text-slate-500 mt-0.5">${count} papers available</div>
-            <div class="mt-4 text-xs font-semibold text-blue-600 group-hover:underline">Select subject →</div>
-          </div>
+          <span class="pp-subject-icon"><i data-lucide="${meta.lucide}"></i></span>
+          <strong>${meta.label}</strong>
+          <small>${count} papers available</small>
+          <span class="pp-subject-open">Select subject <i data-lucide="arrow-right"></i></span>
         `;
         card.onclick = () => selectSubject(subject);
         grid.appendChild(card);
@@ -289,6 +334,7 @@
       document.getElementById('step-year').classList.add('text-slate-400');
       document.getElementById('step-results').classList.add('text-slate-400');
 
+      updateProgress(2);
       renderBoardGrid(subject);
     }
 
@@ -305,10 +351,10 @@
         const count = papers.filter(p => p.subject === subject && p.examBoard === board).length;
 
         const btn = document.createElement('button');
-        btn.className = 'px-6 py-3 rounded-2xl border border-slate-300 bg-white hover:bg-slate-50 font-semibold text-lg transition flex items-center gap-2 active:scale-[0.985]';
+        btn.className = 'pp-choice-card';
         btn.innerHTML = `
           <span>${board}</span>
-          <span class="text-xs font-medium px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">${count} papers</span>
+          <span class="pp-choice-count">${count} papers</span>
         `;
         btn.onclick = () => selectBoard(board);
         container.appendChild(btn);
@@ -329,6 +375,7 @@
       document.getElementById('step-board').classList.add('!border-blue-500');
       document.getElementById('step-year').classList.remove('text-slate-400');
 
+      updateProgress(3);
       renderYearGrid(selectedSubject, board);
     }
 
@@ -345,10 +392,10 @@
         const count = papers.filter(p => p.subject === subject && p.examBoard === board && p.year === year).length;
 
         const btn = document.createElement('button');
-        btn.className = 'px-6 py-3 rounded-2xl border border-slate-300 bg-white hover:bg-slate-50 font-semibold text-lg transition flex items-center gap-2 active:scale-[0.985]';
+        btn.className = 'pp-choice-card';
         btn.innerHTML = `
           <span>${year}</span>
-          <span class="text-xs font-medium px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">${count} papers</span>
+          <span class="pp-choice-count">${count} papers</span>
         `;
         btn.onclick = () => selectYear(year);
         container.appendChild(btn);
@@ -367,6 +414,7 @@
       document.getElementById('step-year').classList.add('!border-blue-500');
       document.getElementById('step-results').classList.remove('text-slate-400');
 
+      updateProgress(4);
       renderResults(selectedSubject, selectedBoard, selectedYear);
     }
 
@@ -388,28 +436,26 @@
         const yesgenieUrl = getYesgenieUrl(p);
 
         const card = document.createElement('div');
-        card.className = 'bg-white border border-slate-200 rounded-3xl p-5 flex flex-col hover:shadow-md transition';
+        card.className = 'pp-paper-card';
         card.innerHTML = `
-          <div class="flex gap-3 mb-4">
-            <div class="w-9 h-9 rounded-2xl bg-slate-100 flex items-center justify-center shrink-0">
-              <i data-lucide="file-text" class="w-5 h-5 text-slate-600"></i>
-            </div>
-            <div class="min-w-0 flex-1">
-              <div class="font-semibold leading-tight">${p.title}</div>
-              <div class="text-xs text-slate-500 mt-1 flex items-center gap-1.5">
-                <span class="inline-block px-1.5 py-px rounded bg-slate-100 text-[10px] font-medium">${p.examBoard}</span>
+          <div class="pp-paper-top">
+            <span class="pp-paper-icon"><i data-lucide="file-text"></i></span>
+            <div>
+              <h3>${p.title}</h3>
+              <div class="pp-paper-meta">
+                <span class="pp-board-badge">${p.examBoard}</span>
                 ${p.paper}
               </div>
             </div>
           </div>
 
-          <div class="mt-auto flex gap-2">
-            <a href="${yesgenieUrl}" target="_blank" class="flex-1 text-center text-sm font-bold py-2.5 rounded-2xl bg-slate-900 text-white hover:bg-black transition flex items-center justify-center gap-1.5">
-              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+          <div class="pp-paper-actions">
+            <a href="${yesgenieUrl}" target="_blank" rel="noopener" class="pp-paper-action primary">
+              <i data-lucide="download"></i>
               <span>Download Paper</span>
             </a>
-            <a href="${yesgenieUrl}" target="_blank" class="flex-1 text-center text-sm font-bold py-2.5 rounded-2xl border border-slate-300 hover:bg-slate-50 transition flex items-center justify-center gap-1.5">
-              <i data-lucide="award" class="w-3.5 h-3.5"></i>
+            <a href="${yesgenieUrl}" target="_blank" rel="noopener" class="pp-paper-action">
+              <i data-lucide="award"></i>
               <span>Mark Scheme</span>
             </a>
           </div>
@@ -429,6 +475,7 @@
       document.getElementById('year-step').classList.remove('hidden');
       document.getElementById('step-results').classList.add('text-slate-400');
       selectedYear = null;
+      updateProgress(3);
     }
 
     function resetToSubject() {
@@ -449,6 +496,7 @@
       document.getElementById('step-year').classList.add('text-slate-400');
       document.getElementById('step-results').classList.add('text-slate-400');
 
+      updateProgress(1);
       renderSubjectGrid();
     }
 
@@ -465,10 +513,12 @@
       document.getElementById('step-year').classList.add('text-slate-400');
       document.getElementById('step-results').classList.add('text-slate-400');
 
+      updateProgress(2);
       renderBoardGrid(selectedSubject);
     }
 
     // Boot
+    updateProgress(1);
     loadPapers();
   </script>
 </body>

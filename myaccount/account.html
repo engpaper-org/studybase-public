@@ -8,32 +8,35 @@
   <script src="/assets/js/core/services.js"></script>
   <script src="/assets/js/account/sidebar.js" defer></script>
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 text-slate-900 antialiased">
   <main class="mx-auto max-w-6xl px-5 py-10">
     <header class="flex flex-wrap items-center justify-between gap-4">
-      <div><p class="text-xs font-black uppercase tracking-[.2em] text-purple-600">StudyBase account</p><h1 class="mt-2 text-4xl font-black">Your account</h1></div>
-      <button id="logout" class="rounded-xl border border-slate-300 bg-white px-5 py-3 font-bold">Sign out</button>
+      <div><p class="text-xs font-black uppercase tracking-[.2em] text-purple-600">StudyBase account</p><h1 class="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Account home</h1><p class="mt-2 text-slate-500">Your profile, security, and social settings in one place.</p></div>
+      <button id="logout" class="rounded-xl border border-slate-300 bg-white px-5 py-3 font-bold shadow-sm transition hover:border-purple-300 hover:text-purple-700">Sign out</button>
     </header>
-    <div id="message" class="mt-6 rounded-2xl border border-slate-200 bg-white p-5 text-slate-600">Loading your secure profile...</div>
+    <div id="message" class="mt-7 flex min-h-80 flex-col items-center justify-center rounded-[2rem] border border-slate-200 bg-white p-8 text-slate-600 shadow-sm" role="status"><div class="relative h-16 w-16"><div class="absolute inset-0 animate-ping rounded-full bg-purple-200"></div><div class="absolute inset-1 animate-spin rounded-full border-4 border-slate-200 border-t-purple-600"></div></div><p class="mt-6 font-black text-slate-800">Loading your account</p><p class="mt-1 text-sm text-slate-500">Fetching your secure profile...</p></div>
     <section id="content" class="mt-6 hidden space-y-6">
       <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-purple-700 via-purple-800 to-indigo-950 p-8 text-white shadow-xl">
         <div class="absolute -right-14 -top-14 h-48 w-48 rounded-full bg-white/10"></div>
-        <div class="relative flex flex-wrap items-end justify-between gap-5">
-          <div><p class="text-sm font-bold text-purple-200">Signed in as</p><h2 id="name" class="mt-2 text-4xl font-black"></h2><p id="username" class="mt-1 text-purple-200"></p></div>
+        <div class="absolute -bottom-20 left-1/3 h-48 w-48 rounded-full bg-purple-400/20 blur-3xl"></div>
+        <div class="relative flex flex-wrap items-center justify-between gap-5">
+          <div class="flex items-center gap-5"><div id="avatar" class="grid h-16 w-16 place-items-center rounded-2xl bg-white/15 text-3xl font-black ring-1 ring-white/20">S</div><div><div class="flex flex-wrap items-center gap-2"><p class="text-sm font-bold text-purple-200">Signed in as</p><span class="rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-black text-emerald-200">Active account</span></div><h2 id="name" class="mt-2 text-4xl font-black"></h2><p id="username" class="mt-1 text-purple-200"></p></div></div>
           <a href="/myaccount/settings.html" class="rounded-xl bg-white px-5 py-3 text-sm font-black text-purple-800 shadow-lg">Edit profile</a>
         </div>
       </div>
       <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Date of birth</p><p id="dob" class="mt-2 text-lg font-black"></p></article>
-        <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Gender</p><p id="gender" class="mt-2 text-lg font-black"></p></article>
+        <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div class="flex items-center justify-between gap-2"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Date of birth</p><span class="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-black uppercase text-slate-500">Locked</span></div><p id="dob" class="mt-2 text-lg font-black"></p></article>
+        <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><div class="flex items-center justify-between gap-2"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Gender</p><span class="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-black uppercase text-slate-500">Locked</span></div><p id="gender" class="mt-2 text-lg font-black"></p></article>
         <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Member since</p><p id="created" class="mt-2 text-lg font-black"></p></article>
         <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-xs font-black uppercase tracking-wider text-slate-400">User ID</p><p id="user-id" class="mt-2 break-all font-mono text-xs"></p></article>
       </div>
-      <div class="grid gap-4 sm:grid-cols-3">
-        <a href="/myaccount/settings.html" class="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-purple-300 hover:shadow-lg"><h3 class="text-xl font-black">Account settings</h3><p class="mt-2 text-sm text-slate-500">Update your profile and server-synced preferences.</p></a>
-        <a id="password-link" href="https://auth.studybase.site/change-password" class="rounded-2xl border bg-white p-6 transition hover:border-purple-300 hover:shadow-lg"><h3 class="text-xl font-black">Change password</h3><p class="mt-2 text-sm text-slate-500">Set a new password and revoke existing sessions.</p></a>
-        <a id="delete-link" href="https://auth.studybase.site/delete" class="rounded-2xl border border-amber-200 bg-amber-50 p-6 transition hover:border-amber-400"><h3 class="text-xl font-black text-amber-950">Delete account</h3><p class="mt-2 text-sm text-amber-800">Permanently delete your profile, credentials, and sessions.</p></a>
-      </div>
+      <div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm text-slate-600 shadow-sm"><strong class="text-slate-900">Need to correct a locked detail?</strong> Date of birth and gender can only be updated by the StudyBase site team. <a href="/support/contact.html" class="font-black text-purple-700 hover:underline">Contact the team</a>.</div>
+      <div><div class="mb-4"><p class="text-xs font-black uppercase tracking-[.18em] text-purple-600">Manage</p><h2 class="mt-1 text-2xl font-black">Account controls</h2></div><div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <a href="/myaccount/settings.html" class="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-purple-300 hover:shadow-xl"><div class="grid h-11 w-11 place-items-center rounded-2xl bg-purple-100 font-black text-purple-700">P</div><h3 class="mt-5 text-xl font-black">Profile settings</h3><p class="mt-2 text-sm leading-6 text-slate-500">Update your name, username, and preferences.</p></a>
+        <a href="/myaccount/friends.html" class="group rounded-3xl border border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"><div class="grid h-11 w-11 place-items-center rounded-2xl bg-indigo-600 font-black text-white">F</div><div class="mt-5 flex items-center gap-2"><h3 class="text-xl font-black">Friends & Social</h3><span class="rounded-full bg-white px-2 py-1 text-[10px] font-black uppercase text-indigo-600">Preview</span></div><p class="mt-2 text-sm leading-6 text-slate-600">See upcoming friends, invites, and privacy controls.</p></a>
+        <a id="password-link" href="https://auth.studybase.site/change-password" class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-purple-300 hover:shadow-xl"><div class="grid h-11 w-11 place-items-center rounded-2xl bg-slate-900 font-black text-white">S</div><h3 class="mt-5 text-xl font-black">Password</h3><p class="mt-2 text-sm leading-6 text-slate-500">Change your password and revoke existing sessions.</p></a>
+        <a id="delete-link" href="https://auth.studybase.site/delete" class="rounded-3xl border border-amber-200 bg-amber-50 p-6 shadow-sm transition hover:-translate-y-1 hover:border-amber-400 hover:shadow-xl"><div class="grid h-11 w-11 place-items-center rounded-2xl bg-amber-200 font-black text-amber-900">D</div><h3 class="mt-5 text-xl font-black text-amber-950">Delete account</h3><p class="mt-2 text-sm leading-6 text-amber-800">Permanently remove your account and sessions.</p></a>
+      </div></div>
     </section>
   </main>
   <script>
@@ -49,6 +52,7 @@
       }
       localStorage.setItem("studybase_user", JSON.stringify(user));
       document.getElementById("name").textContent = user.name;
+      document.getElementById("avatar").textContent = (user.name || user.username || "S").charAt(0).toUpperCase();
       document.getElementById("username").textContent = `@${user.username}`;
       const genderLabels = { male: "Male", female: "Female", "prefer-not-to-say": "Other / prefer not to say", "non-binary": "Other / prefer not to say", "self-described": "Other / prefer not to say" };
       const formatDate = value => value ? new Date(`${value}T00:00:00`).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : "Not recorded";
@@ -61,7 +65,7 @@
       message.classList.add("hidden"); document.getElementById("content").classList.remove("hidden");
     }
     document.getElementById("logout").onclick = async () => { await StudyBaseServices.logout(); location.replace("/?signedout=true"); };
-    loadAccount().catch(() => { message.textContent = "Your account could not be loaded."; });
+    loadAccount().catch(() => { message.className = "mt-7 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-800"; message.textContent = "Your account could not be loaded. Refresh the page to try again."; });
   </script>
 </body>
 </html>

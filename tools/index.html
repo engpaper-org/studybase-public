@@ -3,391 +3,398 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore 30 focused StudyBase tools for A-Level planning, mathematics, sciences, humanities, coding, languages and university preparation.">
   <title>Study Tools | StudyBase</title>
+  <link rel="icon" href="/assets/images/site-icons/main.ico">
   <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
   <link rel="stylesheet" href="/assets/css/premium-system.css" id="sbx-premium-system">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script>
-    // Staggered colorful reveal animation (uses premium-system.css classes)
-    function initToolAnimations() {
-      const sections = ['planning-tools', 'math-tools', 'sciences-tools', 'humanities-tools', 'languages-tools'];
-      sections.forEach((id, sectionIndex) => {
-        const container = document.getElementById(id);
-        if (!container) return;
-        const cards = container.querySelectorAll('.colorful-card');
-        cards.forEach((card, i) => {
-          card.style.transitionDelay = `${(sectionIndex * 80) + (i * 45)}ms`;
-          card.classList.add('stagger-reveal-scale');
-          
-          // Add icon pop to icons
-          const icon = card.querySelector('[data-lucide]');
-          if (icon) icon.classList.add('icon-pop');
-
-          // Reveal on scroll
-          const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                setTimeout(() => card.classList.add('visible'), 60);
-                observer.disconnect();
-              }
-            });
-          }, { threshold: 0.15 });
-          observer.observe(card);
-        });
-      });
-    }
-
-    function initTailwind() {
-      if (window.tailwind) {
-        window.tailwind.config = {
-          theme: {
-            extend: {
-              colors: {
-                'sb-dark': '#0f172a',
-                'sb-accent': '#67e8f9',
-                'sb-muted': '#475569',
-              }
-            }
-          }
-        };
-      }
-    }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        initTailwind();
-        initToolAnimations();
-      });
-    } else {
-      initTailwind();
-      initToolAnimations();
-    }
-  </script>
+  <script src="/assets/js/layout/navbar.js" defer></script>
   <style>
-    /* Minimal overrides only - main styling now via Tailwind */
-    .search-input:focus {
-      border-color: #0ea5e9;
-      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.12);
-      outline: none;
+    :root {
+      --tools-ink: #0f172a;
+      --tools-muted: #64748b;
+      --tools-line: #dbe4ef;
+      --tools-blue: #2563eb;
+      --tools-green: #059669;
+      --tools-violet: #7c3aed;
+      --tools-amber: #d97706;
+      --tools-sky: #0284c7;
+      --tools-rose: #e11d48;
+      --tools-bg: #f6f9fd;
+      --tools-ease: cubic-bezier(.2,.75,.2,1);
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--tools-bg); }
+    body {
+      margin: 0;
+      color: var(--tools-ink);
+      background:
+        radial-gradient(circle at 8% 5%, rgba(37,99,235,.09), transparent 27rem),
+        radial-gradient(circle at 91% 12%, rgba(16,185,129,.08), transparent 24rem),
+        linear-gradient(180deg, #f7fbff 0, #fff 37rem, #f7fafc 100%);
+      font-family: Inter, "Plus Jakarta Sans", system-ui, sans-serif;
+    }
+
+    .tools-page { overflow-x: clip; }
+    .tools-wrap { width: min(1180px, calc(100% - 36px)); margin: 0 auto; }
+
+    .tools-hero { position: relative; padding: 92px 0 55px; }
+    .tools-hero-shell {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0,1fr) minmax(360px,.72fr);
+      gap: 56px;
+      align-items: center;
+      min-height: 520px;
+      padding: clamp(2rem,6vw,4.7rem);
+      border: 1px solid rgba(148,163,184,.25);
+      border-radius: 36px;
+      background: rgba(255,255,255,.86);
+      box-shadow: 0 34px 90px rgba(30,64,175,.11);
+      backdrop-filter: blur(18px);
+    }
+
+    .tools-hero-shell::before {
+      content: "";
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      right: -210px;
+      top: -240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(96,165,250,.25), rgba(52,211,153,.11) 50%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .tools-hero-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(15,23,42,.025) 1px, transparent 1px), linear-gradient(rgba(15,23,42,.025) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: linear-gradient(90deg, transparent, #000 65%, #000);
+    }
+
+    .tools-hero-copy, .tools-hero-visual { position: relative; z-index: 1; }
+    .tools-eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--tools-green); font-size: 11px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
+    .tools-eyebrow::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+    .tools-hero h1 { max-width: 780px; margin: 17px 0 20px; font-size: clamp(4rem,7vw,7rem); line-height: .88; letter-spacing: -.07em; font-weight: 900; }
+    .tools-hero h1 span { color: transparent; background: linear-gradient(100deg,#2563eb,#06b6d4 55%,#059669); background-clip: text; -webkit-background-clip: text; }
+    .tools-hero-copy > p { max-width: 600px; margin: 0; color: var(--tools-muted); font-size: 18px; line-height: 1.65; }
+
+    .tool-search { position: relative; max-width: 610px; margin-top: 29px; }
+    .tool-search > i, .tool-search > svg { position: absolute; left: 18px; top: 50%; width: 20px; height: 20px; color: #64748b; transform: translateY(-50%); pointer-events: none; }
+    .tool-search input { width: 100%; min-height: 60px; padding: 0 100px 0 52px; border: 1px solid #cbd5e1; border-radius: 17px; color: var(--tools-ink); background: #fff; box-shadow: 0 14px 38px rgba(15,23,42,.08); font: inherit; font-size: 15px; outline: none; transition: border-color .2s,box-shadow .2s; }
+    .tool-search input:focus { border-color: #60a5fa; box-shadow: 0 0 0 4px rgba(59,130,246,.11),0 18px 45px rgba(15,23,42,.1); }
+    .search-key { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); padding: 6px 9px; border: 1px solid #e2e8f0; border-radius: 8px; color: #64748b; background: #f8fafc; font: 800 10px/1 ui-monospace,monospace; }
+
+    .hero-proof { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; }
+    .hero-proof span { display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border: 1px solid #dbe5ef; border-radius: 999px; color: #526175; background: rgba(255,255,255,.7); font-size: 11px; font-weight: 800; }
+    .hero-proof svg { width: 14px; height: 14px; color: var(--tools-green); }
+
+    .tools-hero-visual { min-height: 340px; }
+    .tool-orbit { position: absolute; inset: 5px; border: 1px solid rgba(37,99,235,.14); border-radius: 50%; transform: rotate(-8deg); animation: breathe 5s ease-in-out infinite; }
+    .tool-orbit.second { inset: 40px 5px; border-color: rgba(5,150,105,.16); transform: rotate(17deg); animation-delay: -2.5s; }
+    .hero-tool-stack { position: absolute; inset: 30px 15px; display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; align-content: center; transform: rotate(2deg); }
+    .hero-mini-card { min-height: 110px; padding: 17px; border: 1px solid #dbe5ef; border-radius: 18px; background: rgba(255,255,255,.93); box-shadow: 0 18px 45px rgba(15,23,42,.1); transition: transform .25s var(--tools-ease); }
+    .hero-mini-card:nth-child(2), .hero-mini-card:nth-child(3) { transform: translateY(18px); }
+    .hero-mini-card:hover { transform: translateY(-4px) rotate(-2deg); }
+    .hero-mini-card:nth-child(2):hover, .hero-mini-card:nth-child(3):hover { transform: translateY(12px) rotate(2deg); }
+    .hero-mini-icon { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 12px; color: var(--tone); background: color-mix(in srgb,var(--tone),transparent 89%); }
+    .hero-mini-icon svg { width: 18px; height: 18px; }
+    .hero-mini-card strong { display: block; margin-top: 13px; font-size: 13px; }
+    .hero-mini-card small { display: block; margin-top: 3px; color: #7b8799; font-size: 10px; }
+
+    .category-nav { position: sticky; top: 74px; z-index: 30; padding: 11px 0; border-block: 1px solid rgba(203,213,225,.65); background: rgba(248,251,255,.88); backdrop-filter: blur(18px); }
+    .category-nav-inner { display: flex; align-items: center; gap: 7px; overflow-x: auto; scrollbar-width: none; }
+    .category-nav-inner::-webkit-scrollbar { display: none; }
+    .filter-chip { flex: 0 0 auto; min-height: 38px; padding: 0 14px; border: 1px solid #dbe5ef; border-radius: 999px; color: #526175; background: #fff; font: inherit; font-size: 12px; font-weight: 850; cursor: pointer; transition: color .2s,background .2s,border-color .2s,transform .2s; }
+    .filter-chip:hover { transform: translateY(-1px); border-color: #93c5fd; }
+    .filter-chip.active { color: #fff; border-color: #0f172a; background: #0f172a; }
+    .tool-result-count { flex: 0 0 auto; margin-left: auto; color: #64748b; font-size: 11px; font-weight: 800; white-space: nowrap; }
+
+    .tools-catalogue { padding: 75px 0 105px; }
+    .tool-section { margin-bottom: 90px; scroll-margin-top: 145px; }
+    .tool-section[hidden] { display: none; }
+    .section-heading { display: grid; grid-template-columns: 1fr auto; gap: 25px; align-items: end; margin-bottom: 23px; }
+    .section-label { display: inline-flex; align-items: center; gap: 7px; color: var(--section); font-size: 10px; font-weight: 900; letter-spacing: .15em; text-transform: uppercase; }
+    .section-label svg { width: 14px; height: 14px; }
+    .section-heading h2 { margin: 9px 0 5px; font-size: clamp(2.35rem,4.5vw,4.2rem); line-height: .95; letter-spacing: -.055em; font-weight: 900; }
+    .section-heading p { max-width: 610px; margin: 0; color: var(--tools-muted); font-size: 14px; line-height: 1.6; }
+    .section-link { display: inline-flex; align-items: center; gap: 5px; padding: 10px 13px; border: 1px solid #dbe5ef; border-radius: 999px; color: #334155; background: #fff; text-decoration: none; font-size: 11px; font-weight: 850; transition: gap .2s,border-color .2s; }
+    .section-link:hover { gap: 8px; border-color: color-mix(in srgb,var(--section),transparent 45%); }
+    .section-link svg { width: 14px; height: 14px; color: var(--section); }
+
+    .tool-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 13px; }
+    .tool-card { position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 245px; padding: 22px; border: 1px solid var(--tools-line); border-radius: 21px; color: var(--tools-ink); background: rgba(255,255,255,.92); box-shadow: 0 10px 30px rgba(15,23,42,.045); text-decoration: none; transition: transform .3s var(--tools-ease),box-shadow .3s,border-color .3s; }
+    .tool-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: var(--accent); opacity: 0; transition: opacity .25s; }
+    .tool-card::after { content: ""; position: absolute; width: 150px; height: 150px; right: -90px; bottom: -95px; border-radius: 50%; background: var(--accent); opacity: .08; transition: transform .35s var(--tools-ease); }
+    .tool-card:hover { transform: translateY(-6px); border-color: color-mix(in srgb,var(--accent),transparent 58%); box-shadow: 0 22px 48px color-mix(in srgb,var(--accent),transparent 88%); }
+    .tool-card:hover::before { opacity: 1; }
+    .tool-card:hover::after { transform: scale(1.3); }
+    .tool-card.is-hidden { display: none; }
+    .tool-icon { display: grid; place-items: center; width: 45px; height: 45px; border: 1px solid color-mix(in srgb,var(--accent),transparent 77%); border-radius: 14px; color: var(--accent); background: color-mix(in srgb,var(--accent),transparent 91%); transition: transform .3s var(--tools-ease); }
+    .tool-card:hover .tool-icon { transform: rotate(-7deg) scale(1.08); }
+    .tool-icon svg { width: 20px; height: 20px; }
+    .tool-card h3 { margin: 42px 0 8px; font-size: 18px; line-height: 1.17; letter-spacing: -.025em; font-weight: 850; }
+    .tool-card p { margin: 0; color: #67758a; font-size: 13px; line-height: 1.55; }
+    .tool-open { display: inline-flex; align-items: center; gap: 5px; margin-top: auto; padding-top: 20px; color: var(--accent); font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+    .tool-open svg { width: 13px; height: 13px; transition: transform .2s; }
+    .tool-card:hover .tool-open svg { transform: translate(3px,-2px); }
+
+    .tools-empty { display: none; margin: 0 0 80px; padding: 55px 25px; border: 1px dashed #cbd5e1; border-radius: 24px; text-align: center; background: rgba(255,255,255,.6); }
+    .tools-empty.visible { display: block; }
+    .tools-empty-icon { display: grid; place-items: center; width: 54px; height: 54px; margin: 0 auto 15px; border-radius: 17px; color: #64748b; background: #eef2f7; }
+    .tools-empty-icon svg { width: 23px; height: 23px; }
+    .tools-empty h2 { margin: 0; font-size: 22px; }
+    .tools-empty p { margin: 7px 0 0; color: var(--tools-muted); }
+
+    .docs-feature { position: relative; overflow: hidden; display: grid; grid-template-columns: 1fr .9fr; gap: 45px; align-items: center; margin-top: 10px; padding: clamp(2rem,5vw,4rem); border: 1px solid #cfe8df; border-radius: 30px; color: #0b2119; background: linear-gradient(135deg,#edfff8,#f7fbff); box-shadow: 0 24px 65px rgba(5,150,105,.1); }
+    .docs-feature::after { content: ""; position: absolute; width: 390px; height: 390px; right: -170px; top: -170px; border-radius: 50%; background: rgba(16,185,129,.11); }
+    .docs-feature-copy,.docs-preview { position: relative; z-index: 1; }
+    .docs-feature h2 { margin: 14px 0 13px; font-size: clamp(2.7rem,5vw,5rem); line-height: .92; letter-spacing: -.06em; font-weight: 900; }
+    .docs-feature p { max-width: 520px; margin: 0; color: #526c62; line-height: 1.65; }
+    .docs-action { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; margin-top: 23px; padding: 0 18px; border-radius: 999px; color: #fff; background: #0f172a; text-decoration: none; font-size: 12px; font-weight: 850; }
+    .docs-action svg { width: 15px; height: 15px; }
+    .docs-preview { padding: 13px; border: 1px solid rgba(15,23,42,.12); border-radius: 21px; background: #fff; box-shadow: 0 25px 55px rgba(15,23,42,.14); transform: rotate(2deg); }
+    .docs-preview-bar { display: flex; align-items: center; gap: 6px; padding: 4px 4px 13px; }.docs-preview-bar i { display: block; width: 8px; height: 8px; border-radius: 50%; background: #fb7185; }.docs-preview-bar i:nth-child(2){background:#fbbf24}.docs-preview-bar i:nth-child(3){background:#34d399}
+    .docs-paper { min-height: 225px; padding: 25px; border: 1px solid #e2e8f0; border-radius: 13px; background: #fafcfd; }
+    .docs-line { height: 7px; margin-top: 10px; border-radius: 999px; background: #dce5e1; }.docs-line.title { width: 66%; height: 11px; margin-bottom: 22px; background: #17342a; }.docs-line.short { width: 54%; }.docs-highlight { width: 78%; height: 22px; margin-top: 15px; background: rgba(52,211,153,.25); transform: rotate(-1deg); }
+
+    .reveal { opacity: 0; transform: translateY(25px); transition: opacity .65s var(--tools-ease),transform .65s var(--tools-ease); }
+    .reveal.visible { opacity: 1; transform: none; }
+    @keyframes breathe { 50% { transform: rotate(-3deg) scale(1.04); opacity: .6; } }
+
+    @media (max-width: 900px) {
+      .tools-hero-shell { grid-template-columns: 1fr; }
+      .tools-hero-visual { min-height: 310px; max-width: 560px; width: 100%; margin: 0 auto; }
+      .tool-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .docs-feature { grid-template-columns: 1fr; }
+      .docs-preview { max-width: 560px; }
+    }
+
+    @media (max-width: 620px) {
+      .tools-wrap { width: min(100% - 24px,1180px); }
+      .tools-hero { padding-top: 68px; }
+      .tools-hero-shell { min-height: 0; padding: 32px 18px; border-radius: 25px; }
+      .tools-hero h1 { font-size: clamp(3.4rem,17vw,5rem); }
+      .tools-hero-copy > p { font-size: 16px; }
+      .tool-search input { padding-right: 52px; }
+      .search-key { font-size: 0; padding: 7px; }.search-key::after { content: "/"; font-size: 11px; }
+      .tools-hero-visual { min-height: 270px; }
+      .hero-tool-stack { inset: 20px 0; }
+      .hero-mini-card { min-height: 98px; padding: 13px; }
+      .hero-mini-card strong { font-size: 11px; }
+      .category-nav { top: 64px; }
+      .tool-result-count { display: none; }
+      .tools-catalogue { padding-top: 55px; }
+      .tool-section { margin-bottom: 65px; }
+      .section-heading { grid-template-columns: 1fr; }
+      .section-link { width: fit-content; }
+      .tool-grid { grid-template-columns: 1fr; }
+      .tool-card { min-height: 220px; }
+      .docs-feature { padding: 28px 19px; border-radius: 24px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,*::before,*::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .reveal { opacity: 1; transform: none; }
     }
   </style>
 </head>
 <body>
-  <script src="/assets/js/layout/navbar.js" defer></script>
-<div class="max-w-[1200px] mx-auto px-6 pt-2 pb-8">
-<!-- Hero -->
-    <div class="text-center mb-8">
-      <h1 class="text-4xl md:text-[42px] font-black tracking-tighter mb-2">Study Tools</h1>
-      <p class="text-slate-600 max-w-md mx-auto">
-        30 focused tools built for A-Level students who want to win.
-      </p>
-
-      <!-- Search -->
-      <div class="max-w-md mx-auto mt-5">
-        <div class="relative">
-          <i data-lucide="search" class="absolute left-4 top-3 w-5 h-5 text-slate-400"></i>
-          <input 
-            type="text" 
-            id="global-search" 
-            placeholder="Search tools..." 
-            class="w-full pl-12 pr-4 py-[13px] border border-slate-200 rounded-2xl text-[15px] focus:outline-none focus:border-sky-400"
-            onkeyup="filterAllTools()"
-          >
+  <main class="tools-page">
+    <section class="tools-hero">
+      <div class="tools-wrap tools-hero-shell reveal">
+        <div class="tools-hero-copy">
+          <span class="tools-eyebrow">The StudyBase toolkit</span>
+          <h1>30 focused tools.<br><span>One calmer workflow.</span></h1>
+          <p>Plan the session, solve the problem, structure the essay and practise the skill. Each tool has one clear job, so you can spend less time setting up and more time improving.</p>
+          <div class="tool-search">
+            <i data-lucide="search"></i>
+            <label class="sr-only" for="global-search">Search all study tools</label>
+            <input id="global-search" type="search" placeholder="Search by tool, subject or task..." autocomplete="off">
+            <span class="search-key">PRESS /</span>
+          </div>
+          <div class="hero-proof"><span><i data-lucide="badge-check"></i> Free to use</span><span><i data-lucide="shield-check"></i> Local-first</span><span><i data-lucide="user-round-x"></i> No account needed</span></div>
+        </div>
+        <div class="tools-hero-visual" aria-hidden="true">
+          <div class="tool-orbit"></div><div class="tool-orbit second"></div>
+          <div class="hero-tool-stack">
+            <div class="hero-mini-card"><span class="hero-mini-icon" style="--tone:#059669"><i data-lucide="layout-dashboard"></i></span><strong>Command Centre</strong><small>Plan the next move</small></div>
+            <div class="hero-mini-card"><span class="hero-mini-icon" style="--tone:#7c3aed"><i data-lucide="sigma"></i></span><strong>Calculus Toolkit</strong><small>Work it through</small></div>
+            <div class="hero-mini-card"><span class="hero-mini-icon" style="--tone:#0284c7"><i data-lucide="flask-conical"></i></span><strong>Science Labs</strong><small>Apply the formula</small></div>
+            <div class="hero-mini-card"><span class="hero-mini-icon" style="--tone:#e11d48"><i data-lucide="pen-line"></i></span><strong>Essay Builders</strong><small>Shape the argument</small></div>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- PLANNING -->
-    <div class="mb-10">
-      <div class="flex items-end justify-between mb-4">
-        <div>
-          <span class="px-3 py-1 text-xs font-extrabold tracking-widest bg-emerald-100 text-emerald-700 rounded-2xl">DAILY SYSTEM</span>
-          <h2 class="text-2xl font-black tracking-tight mt-2">Planning &amp; Command Centre</h2>
-          <p class="text-slate-500 text-sm mt-0.5">The daily operating system for students who want to win.</p>
+    <nav class="category-nav" aria-label="Tool categories">
+      <div class="tools-wrap category-nav-inner">
+        <button class="filter-chip active" type="button" data-filter="all">All tools</button>
+        <button class="filter-chip" type="button" data-filter="planning">Planning</button>
+        <button class="filter-chip" type="button" data-filter="mathematics">Mathematics</button>
+        <button class="filter-chip" type="button" data-filter="sciences">Sciences</button>
+        <button class="filter-chip" type="button" data-filter="humanities">Humanities</button>
+        <button class="filter-chip" type="button" data-filter="compsci">Computer Science</button>
+        <button class="filter-chip" type="button" data-filter="languages">Languages &amp; university</button>
+        <span class="tool-result-count" aria-live="polite">Showing 30 tools</span>
+      </div>
+    </nav>
+
+    <div class="tools-wrap tools-catalogue">
+      <section class="tool-section reveal" data-category-section="planning" style="--section:#059669" id="planning">
+        <div class="section-heading"><div><span class="section-label"><i data-lucide="route"></i> Daily system</span><h2>Planning &amp; Command Centre</h2><p>Turn limited time, competing subjects and exam pressure into a plan you can actually follow.</p></div><a class="section-link" href="/tools/planning/">View category <i data-lucide="arrow-up-right"></i></a></div>
+        <div class="tool-grid">
+          <a class="tool-card" style="--accent:#059669" data-tool-card data-category="planning" href="/tools/planning/command-centre.html"><span class="tool-icon"><i data-lucide="layout-dashboard"></i></span><h3>A-Level Command Centre</h3><p>Timers, subject rotation, countdowns, goals and notes in one focused workspace.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#d97706" data-tool-card data-category="planning" href="/tools/planning/exam-paper-time-splitter.html"><span class="tool-icon"><i data-lucide="clock-3"></i></span><h3>Exam Paper Time Splitter</h3><p>Split a paper into timed sections with checkpoints and protected review time.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#7c3aed" data-tool-card data-category="planning" href="/tools/planning/revision-session-generator.html"><span class="tool-icon"><i data-lucide="calendar-days"></i></span><h3>Revision Session Generator</h3><p>Build a focused session around the time available and your topic confidence.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#0284c7" data-tool-card data-category="planning" href="/tools/planning/timed-essay-mode.html"><span class="tool-icon"><i data-lucide="pen-line"></i></span><h3>Timed Essay Mode</h3><p>Plan and write under exam pressure, then move straight into self-marking.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#e11d48" data-tool-card data-category="planning" href="/tools/planning/synoptic-link-generator.html"><span class="tool-icon"><i data-lucide="link-2"></i></span><h3>Synoptic Link Generator</h3><p>Connect specification topics and build the links stronger answers depend on.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#4f46e5" data-tool-card data-category="planning" href="/tools/planning/personal-statement-builder.html"><span class="tool-icon"><i data-lucide="file-user"></i></span><h3>Personal Statement Builder</h3><p>Organise experiences, evidence and reflection into a clear application narrative.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
         </div>
-        <a href="/tools/planning/" class="text-emerald-600 hover:text-emerald-700 font-semibold text-sm">View all →</a>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3" id="planning-tools">
-        <a href="/tools/planning/command-centre.html" class="colorful-card emerald group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="layout-dashboard" class="w-5 h-5 text-emerald-600 tool-icon"></i>
-            <span class="font-semibold">A-Level Command Centre</span>
-          </div>
-          <p class="text-sm text-slate-600">Timers, subject rotation, countdowns, goals &amp; notes in one place.</p>
-        </a>
-        <a href="/tools/planning/exam-paper-time-splitter.html" class="colorful-card amber group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="clock" class="w-5 h-5 text-amber-600 tool-icon"></i>
-            <span class="font-semibold">Exam Paper Time Splitter</span>
-          </div>
-          <p class="text-sm text-slate-600">Split papers into timed sections with checkpoints and review time.</p>
-        </a>
-        <a href="/tools/planning/revision-session-generator.html" class="colorful-card violet group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="calendar" class="w-5 h-5 text-violet-600 tool-icon"></i>
-            <span class="font-semibold">Revision Session Generator</span>
-          </div>
-          <p class="text-sm text-slate-600">Build focused sessions based on time and topic confidence.</p>
-        </a>
-        <a href="/tools/planning/timed-essay-mode.html" class="colorful-card sky group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="edit-3" class="w-5 h-5 text-sky-600 tool-icon"></i>
-            <span class="font-semibold">Timed Essay Mode</span>
-          </div>
-          <p class="text-sm text-slate-600">Plan then write under real pressure with self-marking.</p>
-        </a>
-        <a href="/tools/planning/synoptic-link-generator.html" class="colorful-card rose group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="link-2" class="w-5 h-5 text-rose-600 tool-icon"></i>
-            <span class="font-semibold">Synoptic Link Generator</span>
-          </div>
-          <p class="text-sm text-slate-600">Connect topics across your spec for deeper understanding.</p>
-        </a>
-      </div>
-    </div>
+      </section>
 
-    <!-- MATHEMATICS -->
-    <div class="mb-10">
-      <div class="flex items-end justify-between mb-4">
-        <div>
-          <span class="px-3 py-1 text-xs font-extrabold tracking-widest bg-amber-100 text-amber-700 rounded-2xl">NUMBERS &amp; GRAPHS</span>
-          <h2 class="text-2xl font-black tracking-tight mt-2">Mathematics</h2>
-          <p class="text-slate-500 text-sm mt-0.5">Every calculator and solver you actually need.</p>
+      <section class="tool-section reveal" data-category-section="mathematics" style="--section:#d97706" id="mathematics">
+        <div class="section-heading"><div><span class="section-label"><i data-lucide="sigma"></i> Numbers &amp; graphs</span><h2>Mathematics</h2><p>Explore, calculate and check your working across pure mathematics, mechanics and statistics.</p></div><a class="section-link" href="/tools/mathematics/">View category <i data-lucide="arrow-up-right"></i></a></div>
+        <div class="tool-grid">
+          <a class="tool-card" style="--accent:#d97706" data-tool-card data-category="mathematics" href="/tools/mathematics/advanced-scientific-calculator.html"><span class="tool-icon"><i data-lucide="calculator"></i></span><h3>Advanced Scientific Calculator</h3><p>Trigonometry, logarithms, matrices, calculus and scientific functions.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#0284c7" data-tool-card data-category="mathematics" href="/tools/mathematics/graph-plotter.html"><span class="tool-icon"><i data-lucide="line-chart"></i></span><h3>A-Level Graph Plotter</h3><p>Plot polynomials, trigonometric curves, parametrics and transformations live.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#7c3aed" data-tool-card data-category="mathematics" href="/tools/mathematics/calculus-toolkit.html"><span class="tool-icon"><i data-lucide="sigma"></i></span><h3>Calculus Toolkit</h3><p>Differentiate, integrate, find stationary points and explore enclosed areas.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#059669" data-tool-card data-category="mathematics" href="/tools/mathematics/mechanics-solver.html"><span class="tool-icon"><i data-lucide="orbit"></i></span><h3>Mechanics Solver</h3><p>Work through SUVAT, projectiles, forces, moments and friction step by step.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#4f46e5" data-tool-card data-category="mathematics" href="/tools/mathematics/statistics-probability-lab.html"><span class="tool-icon"><i data-lucide="chart-bar"></i></span><h3>Statistics &amp; Probability Lab</h3><p>Normal and binomial distributions, testing, correlation and regression.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
         </div>
-        <a href="/tools/mathematics/" class="text-amber-600 hover:text-amber-700 font-semibold text-sm">View all →</a>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3" id="math-tools">
-        <a href="/tools/mathematics/advanced-scientific-calculator.html" class="colorful-card amber group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="calculator" class="w-5 h-5 text-amber-600 tool-icon"></i>
-            <span class="font-semibold">Advanced Scientific Calculator</span>
-          </div>
-          <p class="text-sm text-slate-600">Trig, logs, matrices, calculus and full scientific functions.</p>
-        </a>
-        <a href="/tools/mathematics/graph-plotter.html" class="colorful-card sky group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="trending-up" class="w-5 h-5 text-sky-600 tool-icon"></i>
-            <span class="font-semibold">A-Level Graph Plotter</span>
-          </div>
-          <p class="text-sm text-slate-600">Plot polynomials, trig, parametric and transformations live.</p>
-        </a>
-        <a href="/tools/mathematics/calculus-toolkit.html" class="colorful-card violet group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="function-square" class="w-5 h-5 text-violet-600 tool-icon"></i>
-            <span class="font-semibold">Calculus Toolkit</span>
-          </div>
-          <p class="text-sm text-slate-600">Differentiation, integration, stationary points and areas.</p>
-        </a>
-        <a href="/tools/mathematics/mechanics-solver.html" class="colorful-card emerald group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="compass" class="w-5 h-5 text-emerald-600 tool-icon"></i>
-            <span class="font-semibold">Mechanics Solver</span>
-          </div>
-          <p class="text-sm text-slate-600">SUVAT, projectiles, forces, moments and friction with steps.</p>
-        </a>
-        <a href="/tools/mathematics/statistics-probability-lab.html" class="colorful-card indigo group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="bar-chart-2" class="w-5 h-5 text-indigo-600 tool-icon"></i>
-            <span class="font-semibold">Statistics &amp; Probability Lab</span>
-          </div>
-          <p class="text-sm text-slate-600">Normal, binomial, hypothesis testing, correlation and regression.</p>
-        </a>
-      </div>
-    </div>
+      </section>
 
-    <!-- SCIENCES -->
-    <div class="mb-10">
-      <div class="flex items-end justify-between mb-4">
-        <div>
-          <span class="px-3 py-1 text-xs font-extrabold tracking-widest bg-sky-100 text-sky-700 rounded-2xl">FORMULAS &amp; PRACTICALS</span>
-          <h2 class="text-2xl font-black tracking-tight mt-2">Sciences</h2>
-          <p class="text-slate-500 text-sm mt-0.5">Formula reference and working calculators.</p>
+      <section class="tool-section reveal" data-category-section="sciences" style="--section:#0284c7" id="sciences">
+        <div class="section-heading"><div><span class="section-label"><i data-lucide="flask-conical"></i> Formulas &amp; practicals</span><h2>Sciences</h2><p>Focused calculators and process explorers for the places where scientific understanding meets exam technique.</p></div><a class="section-link" href="/tools/sciences/">View category <i data-lucide="arrow-up-right"></i></a></div>
+        <div class="tool-grid">
+          <a class="tool-card" style="--accent:#0284c7" data-tool-card data-category="sciences" href="/tools/sciences/physics-formula-lab.html"><span class="tool-icon"><i data-lucide="atom"></i></span><h3>Physics Formula Lab</h3><p>Electricity, waves, mechanics, fields and quantum calculations.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#059669" data-tool-card data-category="sciences" href="/tools/sciences/chemistry-calculator.html"><span class="tool-icon"><i data-lucide="flask-conical"></i></span><h3>Chemistry Calculator</h3><p>Moles, pH, titrations, equilibrium, rates and Born-Haber cycles.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#0d9488" data-tool-card data-category="sciences" href="/tools/sciences/biology-process-explorer.html"><span class="tool-icon"><i data-lucide="dna"></i></span><h3>Biology Process Explorer</h3><p>Explore respiration, photosynthesis, immunity and homeostasis.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#7c3aed" data-tool-card data-category="sciences" href="/tools/sciences/psychology-study-builder.html"><span class="tool-icon"><i data-lucide="brain"></i></span><h3>Psychology Study Builder</h3><p>Build complete study summaries with evaluation, methodology and ethics.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
         </div>
-        <a href="/tools/sciences/" class="text-sky-600 hover:text-sky-700 font-semibold text-sm">View all →</a>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3" id="sciences-tools">
-        <a href="/tools/sciences/physics-formula-lab.html" class="colorful-card sky group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="atom" class="w-5 h-5 text-sky-600 tool-icon"></i>
-            <span class="font-semibold">Physics Formula Lab</span>
-          </div>
-          <p class="text-sm text-slate-600">Electricity, waves, mechanics, fields and quantum calculators.</p>
-        </a>
-        <a href="/tools/sciences/chemistry-calculator.html" class="colorful-card emerald group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="flask-conical" class="w-5 h-5 text-emerald-600 tool-icon"></i>
-            <span class="font-semibold">Chemistry Calculator</span>
-          </div>
-          <p class="text-sm text-slate-600">Moles, pH, titrations, Kc, rates and Born-Haber.</p>
-        </a>
-        <a href="/tools/sciences/biology-process-explorer.html" class="colorful-card teal group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="dna" class="w-5 h-5 text-teal-600 tool-icon"></i>
-            <span class="font-semibold">Biology Process Explorer</span>
-          </div>
-          <p class="text-sm text-slate-600">Respiration, photosynthesis, immunity and homeostasis.</p>
-        </a>
-        <a href="/tools/sciences/psychology-study-builder.html" class="colorful-card violet group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="brain" class="w-5 h-5 text-violet-600 tool-icon"></i>
-            <span class="font-semibold">Psychology Study Builder</span>
-          </div>
-          <p class="text-sm text-slate-600">Full study structure with evaluation and ethics.</p>
-        </a>
-      </div>
-    </div>
+      </section>
 
-    <!-- HUMANITIES -->
-    <div class="mb-8">
-      <div class="flex items-end justify-between mb-4">
-        <div>
-          <h2 class="text-2xl font-bold tracking-tight">Humanities &amp; Essay Builders</h2>
-          <p class="text-slate-500 text-sm mt-0.5">Tools for writing 25+ mark answers consistently.</p>
+      <section class="tool-section reveal" data-category-section="humanities" style="--section:#7c3aed" id="humanities">
+        <div class="section-heading"><div><span class="section-label"><i data-lucide="book-open"></i> Arguments &amp; evidence</span><h2>Humanities &amp; essays</h2><p>Move from a blank page to a defensible line of argument, with evidence and evaluation in the right places.</p></div><a class="section-link" href="/tools/humanities/">View category <i data-lucide="arrow-up-right"></i></a></div>
+        <div class="tool-grid">
+          <a class="tool-card" style="--accent:#7c3aed" data-tool-card data-category="humanities" href="/tools/humanities/english-literature-essay-planner.html"><span class="tool-icon"><i data-lucide="book-open"></i></span><h3>English Literature Essay Planner</h3><p>Build thesis-led plans with critics, context and assessment objectives.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#d97706" data-tool-card data-category="humanities" href="/tools/humanities/history-argument-builder.html"><span class="tool-icon"><i data-lucide="scroll-text"></i></span><h3>History Argument Builder</h3><p>Structure source essays, causation arguments and supported judgements.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#059669" data-tool-card data-category="humanities" href="/tools/humanities/geography-case-study-lab.html"><span class="tool-icon"><i data-lucide="map"></i></span><h3>Geography Case Study Lab</h3><p>Organise physical and human case studies with data and evaluation.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#2563eb" data-tool-card data-category="humanities" href="/tools/humanities/politics-essay-planner.html"><span class="tool-icon"><i data-lucide="landmark"></i></span><h3>Politics Essay Planner</h3><p>Shape UK, US and comparative 30-mark responses with clear debate.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#e11d48" data-tool-card data-category="humanities" href="/tools/humanities/sociology-theory-mapper.html"><span class="tool-icon"><i data-lucide="users"></i></span><h3>Sociology Theory Mapper</h3><p>Connect perspectives, thinkers, evidence and contemporary examples.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#0f766e" data-tool-card data-category="humanities" href="/tools/humanities/law-scenario-tool.html"><span class="tool-icon"><i data-lucide="scale"></i></span><h3>Law Scenario Tool</h3><p>Apply legal rules to scenarios and develop reasoned conclusions.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#db2777" data-tool-card data-category="humanities" href="/tools/humanities/media-studies-analysis-board.html"><span class="tool-icon"><i data-lucide="panels-top-left"></i></span><h3>Media Studies Analysis Board</h3><p>Break down representation, audience, industry and media language.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#4f46e5" data-tool-card data-category="humanities" href="/tools/humanities/business-strategy-toolkit.html"><span class="tool-icon"><i data-lucide="chart-spline"></i></span><h3>Business Strategy Toolkit</h3><p>Analyse decisions, markets, finance and strategic trade-offs.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
         </div>
-        <a href="/tools/humanities/" class="text-sky-600 hover:text-sky-700 font-semibold text-sm">View all →</a>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-        <a href="/tools/humanities/english-literature-essay-planner.html" class="colorful-card violet group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="book-open" class="w-5 h-5 text-violet-600 tool-icon"></i>
-            <span class="font-semibold">English Literature Essay Planner</span>
-          </div>
-          <p class="text-sm text-slate-600">Thesis, critics, context and AO-tagged essay plans.</p>
-        </a>
-        <a href="/tools/humanities/history-argument-builder.html" class="colorful-card amber group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="scroll" class="w-5 h-5 text-amber-600 tool-icon"></i>
-            <span class="font-semibold">History Argument Builder</span>
-          </div>
-          <p class="text-sm text-slate-600">Source essays, causation and judgement frameworks.</p>
-        </a>
-        <a href="/tools/humanities/geography-case-study-lab.html" class="colorful-card emerald group block p-5 rounded-2xl border">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="map" class="w-5 h-5 text-sky-600"></i>
-            <span class="font-semibold">Geography Case Study Lab</span>
-          </div>
-          <p class="text-sm text-slate-600">Physical &amp; human case studies with data and evaluation.</p>
-        </a>
-        <a href="/tools/humanities/politics-essay-planner.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="landmark" class="w-5 h-5 text-sky-600"></i>
-            <span class="font-semibold">Politics Essay Planner</span>
-          </div>
-          <p class="text-sm text-slate-600">UK/US and comparative 30-mark essay structures.</p>
-        </a>
-        <a href="/tools/humanities/sociology-theory-mapper.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="users" class="w-5 h-5 text-sky-600"></i>
-            <span class="font-semibold">Sociology Theory Mapper</span>
-          </div>
-          <p class="text-sm text-slate-600">Link perspectives and contemporary examples.</p>
-        </a>
-      </div>
-    </div>
+      </section>
 
-    <!-- COMPUTER SCIENCE -->
-    <div class="mb-8">
-      <div class="flex items-end justify-between mb-4">
-        <div>
-          <h2 class="text-2xl font-bold tracking-tight">Computer Science &amp; Coding</h2>
-          <p class="text-slate-500 text-sm mt-0.5">Theory and practical tools for top marks.</p>
+      <section class="tool-section reveal" data-category-section="compsci" style="--section:#0891b2" id="computer-science">
+        <div class="section-heading"><div><span class="section-label"><i data-lucide="code-2"></i> Theory &amp; practice</span><h2>Computer Science &amp; coding</h2><p>Test the theory, practise the syntax and build confidence moving between pseudocode and Python.</p></div><a class="section-link" href="/tools/compsci/">View category <i data-lucide="arrow-up-right"></i></a></div>
+        <div class="tool-grid">
+          <a class="tool-card" style="--accent:#0891b2" data-tool-card data-category="compsci" href="/tools/compsci/computer-science-toolkit.html"><span class="tool-icon"><i data-lucide="cpu"></i></span><h3>Computer Science Toolkit</h3><p>Binary, Big O, data structures, SQL, networks and core theory.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#2563eb" data-tool-card data-category="compsci" href="/tools/compsci/code-practice-pad.html"><span class="tool-icon"><i data-lucide="code-2"></i></span><h3>Code Practice Pad</h3><p>A Python and pseudocode editor with timers and focused challenges.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
         </div>
-        <a href="/tools/compsci/" class="text-sky-600 hover:text-sky-700 font-semibold text-sm">View all →</a>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-        <a href="/tools/compsci/computer-science-toolkit.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="cpu" class="w-5 h-5 text-sky-600"></i>
-            <span class="font-semibold">Computer Science Toolkit</span>
-          </div>
-          <p class="text-sm text-slate-600">Binary, Big O, data structures, SQL and networks.</p>
-        </a>
-        <a href="/tools/compsci/code-practice-pad.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="code-2" class="w-5 h-5 text-sky-600"></i>
-            <span class="font-semibold">Code Practice Pad</span>
-          </div>
-          <p class="text-sm text-slate-600">Python + pseudocode editor with timers and challenges.</p>
-        </a>
-      </div>
-    </div>
+      </section>
 
-    <!-- LANGUAGES & UNIVERSITY -->
-    <div class="mb-4">
-      <div class="flex items-end justify-between mb-4">
-        <div>
-          <h2 class="text-2xl font-bold tracking-tight">Languages, EPQ &amp; University</h2>
-          <p class="text-slate-500 text-sm mt-0.5">Oral prep, EPQ and application tools.</p>
+      <section class="tool-section reveal" data-category-section="languages" style="--section:#e11d48" id="languages">
+        <div class="section-heading"><div><span class="section-label"><i data-lucide="languages"></i> Speaking &amp; next steps</span><h2>Languages, EPQ &amp; university</h2><p>Prepare for oral exams, manage independent research and make clearer decisions about what comes next.</p></div><a class="section-link" href="/tools/languages/">View category <i data-lucide="arrow-up-right"></i></a></div>
+        <div class="tool-grid">
+          <a class="tool-card" style="--accent:#7c3aed" data-tool-card data-category="languages" href="/tools/languages/epq-planner.html"><span class="tool-icon"><i data-lucide="notebook-pen"></i></span><h3>EPQ Planner</h3><p>Manage your question, research log, deadlines and presentation preparation.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#2563eb" data-tool-card data-category="languages" href="/tools/languages/french-oral-prep.html"><span class="tool-icon"><i data-lucide="mic-2"></i></span><h3>French Oral Prep</h3><p>Practise timed cards, opinion phrases and photo-card responses.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#d97706" data-tool-card data-category="languages" href="/tools/languages/german-oral-prep.html"><span class="tool-icon"><i data-lucide="mic-2"></i></span><h3>German Oral Prep</h3><p>Work through speaking cards, tense drills and role-play scenarios.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#e11d48" data-tool-card data-category="languages" href="/tools/languages/spanish-oral-prep.html"><span class="tool-icon"><i data-lucide="mic-2"></i></span><h3>Spanish Oral Prep</h3><p>Prepare IR responses, idioms and unpredictable conversation questions.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#059669" data-tool-card data-category="languages" href="/tools/languages/university-course-matcher.html"><span class="tool-icon"><i data-lucide="graduation-cap"></i></span><h3>University Course Matcher</h3><p>Compare courses by entry requirements, modules and likely outcomes.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
         </div>
-        <a href="/tools/languages/" class="text-sky-600 hover:text-sky-700 font-semibold text-sm">View all →</a>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
-        <a href="/tools/languages/epq-planner.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="book" class="w-5 h-5 text-sky-600"></i>
-            <span class="font-semibold">EPQ Planner</span>
-          </div>
-          <p class="text-sm text-slate-600">Research question, logs, deadlines and presentation prep.</p>
-        </a>
-        <a href="/tools/languages/french-oral-prep.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="mic" class="w-5 h-5 text-sky-600"></i>
-            <span class="font-semibold">French Oral Prep</span>
-          </div>
-          <p class="text-sm text-slate-600">Timed cards, opinion phrases and photo card practice.</p>
-        </a>
-        <a href="/tools/languages/german-oral-prep.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="mic" class="w-5 h-5 text-sky-600"></i>
-            <span class="font-semibold">German Oral Prep</span>
-          </div>
-          <p class="text-sm text-slate-600">Speaking cards, tense drills and role-play scenarios.</p>
-        </a>
-        <a href="/tools/languages/spanish-oral-prep.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="mic" class="w-5 h-5 text-sky-600"></i>
-            <span class="font-semibold">Spanish Oral Prep</span>
-          </div>
-          <p class="text-sm text-slate-600">IR drills, idioms and conversation questions.</p>
-        </a>
-        <a href="/tools/languages/university-course-matcher.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-sm transition-all">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="graduation-cap" class="w-5 h-5 text-sky-600"></i>
-            <span class="font-semibold">University Course Matcher</span>
-          </div>
-          <p class="text-sm text-slate-600">Compare courses by requirements, modules and outcomes.</p>
-        </a>
-      </div>
-    </div>
+      </section>
 
-  </div>
+      <div class="tools-empty" role="status"><span class="tools-empty-icon"><i data-lucide="search-x"></i></span><h2>No matching tools</h2><p>Try a subject, task or broader keyword.</p></div>
+
+      <aside class="docs-feature reveal">
+        <div class="docs-feature-copy"><span class="tools-eyebrow">Featured workspace</span><h2>Write it. Mark it. Keep it local.</h2><p>Doc Tools gives you a private text editor and PDF annotator for essays, revision notes and past-paper repair, without sending your files away.</p><a class="docs-action" href="/docs/">Explore Doc Tools <i data-lucide="arrow-up-right"></i></a></div>
+        <div class="docs-preview" aria-hidden="true"><div class="docs-preview-bar"><i></i><i></i><i></i></div><div class="docs-paper"><div class="docs-line title"></div><div class="docs-line"></div><div class="docs-line"></div><div class="docs-highlight"></div><div class="docs-line short"></div><div class="docs-line"></div></div></div>
+      </aside>
+    </div>
+  </main>
 
   <script>
-    lucide.createIcons();
+    if (window.lucide) window.lucide.createIcons();
 
-    function filterAllTools() {
-      const term = (document.getElementById('global-search').value || '').toLowerCase().trim();
-      const cards = document.querySelectorAll('.tool-card');
+    const searchInput = document.getElementById("global-search");
+    const cards = Array.from(document.querySelectorAll("[data-tool-card]"));
+    const sections = Array.from(document.querySelectorAll("[data-category-section]"));
+    const chips = Array.from(document.querySelectorAll("[data-filter]"));
+    const resultCount = document.querySelector(".tool-result-count");
+    const emptyState = document.querySelector(".tools-empty");
+    let activeCategory = "all";
+
+    function updateTools() {
+      const term = searchInput.value.toLowerCase().trim();
       let visible = 0;
-      
-      cards.forEach(card => {
-        const text = card.textContent.toLowerCase();
-        const show = !term || text.includes(term);
-        card.style.display = show ? '' : 'none';
-        if (show) visible++;
+
+      cards.forEach((card) => {
+        const categoryMatch = activeCategory === "all" || card.dataset.category === activeCategory;
+        const textMatch = !term || card.textContent.toLowerCase().includes(term);
+        const show = categoryMatch && textMatch;
+        card.classList.toggle("is-hidden", !show);
+        if (show) visible += 1;
       });
-      
-      // Optional: could add "no results" message but keep simple for now
+
+      sections.forEach((section) => {
+        const hasVisibleCards = section.querySelector("[data-tool-card]:not(.is-hidden)");
+        section.hidden = !hasVisibleCards;
+      });
+
+      resultCount.textContent = `Showing ${visible} ${visible === 1 ? "tool" : "tools"}`;
+      emptyState.classList.toggle("visible", visible === 0);
     }
 
-    // Keyboard hint: focus search with /
-    document.addEventListener('keydown', function(e) {
-      if (e.key === '/' && document.activeElement.tagName === 'BODY') {
-        e.preventDefault();
-        const input = document.getElementById('global-search');
-        if (input) input.focus();
+    chips.forEach((chip) => chip.addEventListener("click", () => {
+      activeCategory = chip.dataset.filter;
+      chips.forEach((item) => {
+        const active = item === chip;
+        item.classList.toggle("active", active);
+        item.setAttribute("aria-pressed", String(active));
+      });
+      updateTools();
+      if (activeCategory !== "all" && !searchInput.value) {
+        document.querySelector(`[data-category-section="${activeCategory}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }));
+
+    searchInput.addEventListener("input", updateTools);
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "/" && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) {
+        event.preventDefault();
+        searchInput.focus();
+      }
+      if (event.key === "Escape" && document.activeElement === searchInput) {
+        searchInput.value = "";
+        searchInput.blur();
+        updateTools();
       }
     });
+
+    const revealItems = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }), { threshold: .1, rootMargin: "0px 0px -45px" });
+      revealItems.forEach((item) => observer.observe(item));
+    } else {
+      revealItems.forEach((item) => item.classList.add("visible"));
+    }
+
+    updateTools();
   </script>
   <script src="/assets/js/layout/footer.js" defer></script>
 </body>
