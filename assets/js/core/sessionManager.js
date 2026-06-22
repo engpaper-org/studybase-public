@@ -8,8 +8,8 @@
     const expiry = Date.parse(localStorage.getItem(EXPIRY_KEY) || "");
     return Boolean(token && (!Number.isFinite(expiry) || expiry <= Date.now()));
   }
-  function clear() {
-    window.StudyBaseServices?.clearAccountSession?.();
+  function clear(reason = "") {
+    window.StudyBaseServices?.clearAccountSession?.({ reason });
     if (!window.StudyBaseServices) [TOKEN_KEY, EXPIRY_KEY, "studybase_user"].forEach(k => localStorage.removeItem(k));
   }
   function check() {
@@ -30,16 +30,16 @@
         headers: { "Accept": "application/json" },
         cache: "no-store"
       });
-      if (response.status === 401) {
-        clear();
+      const result = await response.json().catch(() => null);
+      if (response.status === 401 && result?.ok === false && result?.error === "Authentication required") {
+        clear("authentication-required");
         if (location.pathname.startsWith("/myaccount/") && !location.pathname.endsWith("/login.html")) {
-          location.replace("/myaccount/login.html?sessionExpired=true");
+          location.replace("/?sessionExpired=true");
         }
         return;
       }
       if (response.ok) {
-        const result = await response.json();
-        if (result.expiresAt) localStorage.setItem(EXPIRY_KEY, result.expiresAt);
+        if (result?.expiresAt) localStorage.setItem(EXPIRY_KEY, result.expiresAt);
       }
     } catch (_) {
       // Network failure is not proof that the session is invalid.

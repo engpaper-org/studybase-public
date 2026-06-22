@@ -482,8 +482,38 @@
       status.onclick = event => { if (event.target === status) status.remove(); };
     }
 
+    function showLoggedOutStatus() {
+      showAccountStatus({
+        title: "Account logged out",
+        message: "Your StudyBase session is no longer valid. Log in again to continue using account features.",
+        buttonLabel: "Log in again",
+        onButton: () => ensureAccountModal().openPage("/myaccount/login.html", "StudyBase login")
+      });
+    }
+
+    function showBanStatus(reason) {
+      document.getElementById("sbx-ban-status-modal")?.remove();
+      const modal = document.createElement("div");
+      modal.id = "sbx-ban-status-modal";
+      modal.className = "sbx-login-modal is-open";
+      const safeReason = escapeHtml(String(reason || "This account has been banned.").slice(0, 500));
+      modal.innerHTML = `<div role="dialog" aria-modal="true" aria-labelledby="sbx-ban-title" style="width:min(540px,calc(100vw - 28px));overflow:hidden;border:1px solid #fecaca;border-radius:28px;background:#fff;box-shadow:0 35px 100px rgba(69,10,10,.38)"><div style="position:relative;overflow:hidden;background:linear-gradient(135deg,#450a0a,#991b1b 62%,#dc2626);padding:32px;color:#fff"><div style="position:absolute;right:-45px;top:-55px;width:170px;height:170px;border-radius:999px;background:rgba(255,255,255,.08)"></div><div style="position:relative;width:62px;height:62px;border:1px solid rgba(255,255,255,.22);border-radius:20px;background:rgba(255,255,255,.12);display:grid;place-items:center;font-size:30px;font-weight:950">!</div><p style="position:relative;margin:22px 0 0;color:#fecaca;font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase">StudyBase account enforcement</p><h2 id="sbx-ban-title" style="position:relative;margin:7px 0 0;font-size:34px;line-height:1.05;font-weight:950">Account banned</h2><p style="position:relative;margin:10px 0 0;color:#fee2e2;line-height:1.6">Access to StudyBase services has been disabled for this account.</p></div><div style="padding:27px"><p style="margin:0;color:#64748b;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase">Reason</p><div style="margin-top:10px;border:1px solid #fecaca;border-radius:16px;background:#fef2f2;padding:17px;color:#7f1d1d;font-weight:800;line-height:1.6;overflow-wrap:anywhere">${safeReason}</div><p style="margin:16px 0 0;color:#64748b;font-size:13px;line-height:1.6">StudyBase does not provide a user ban appeal process. An administrator can remove the ban where appropriate.</p><button type="button" style="margin-top:22px;width:100%;border:0;border-radius:14px;background:#0f172a;padding:13px;color:#fff;font-weight:900;cursor:pointer">Close</button></div></div>`;
+      document.body.appendChild(modal);
+      const close = () => { document.removeEventListener("keydown", onKeydown); modal.remove(); };
+      const onKeydown = event => { if (event.key === "Escape") close(); };
+      modal.querySelector("button").onclick = close;
+      modal.onclick = event => { if (event.target === modal) close(); };
+      document.addEventListener("keydown", onKeydown);
+    }
+
     window.addEventListener("message", event => {
       if (event.origin !== window.location.origin) return;
+      if (event.data?.type === "studybase:session-ended" && event.data.reason === "authentication-required") {
+        ensureAccountModal().closeAccountModal?.();
+        updateAuthState();
+        showLoggedOutStatus();
+        return;
+      }
       if (event.data?.type === "studybase:login-success") {
         ensureAccountModal().closeAccountModal?.();
         updateAuthState();
@@ -493,11 +523,12 @@
       }
       if (event.data?.type === "studybase:account-status") {
         ensureAccountModal().closeAccountModal?.();
-        if (["deleted", "signedout", "passwordChanged"].includes(event.data.status)) clearAuthSession();
+        if (["deleted", "signedout", "passwordChanged", "ban"].includes(event.data.status)) clearAuthSession();
         updateAuthState();
         if (event.data.status === "deleted") showAccountStatus({ title: "Account deleted", message: "Your account and related account data have been deleted." });
         if (event.data.status === "signedout") showAccountStatus({ title: "Signed out", message: "You have been securely signed out of StudyBase." });
         if (event.data.status === "passwordChanged") showAccountStatus({ title: "Password changed", message: "Your password was changed and existing sessions were signed out.", buttonLabel: "Log in", onButton: () => ensureAccountModal().openPage(`/myaccount/login.html${event.data.username ? `?username=${encodeURIComponent(event.data.username)}` : ""}`, "StudyBase login") });
+        if (event.data.status === "ban") showBanStatus(event.data.reason);
       }
     });
 
@@ -581,7 +612,10 @@
 
     window.addEventListener("storage", updateAuthState);
     window.addEventListener("focus", updateAuthState);
-    window.addEventListener("studybase:account-session-cleared", updateAuthState);
+    window.addEventListener("studybase:account-session-cleared", event => {
+      updateAuthState();
+      if (event.detail?.reason === "authentication-required") showLoggedOutStatus();
+    });
 
     // Handle ?sessionExpired=true (or the configured param name).
     // Opens the standard navbar login modal and cleans the URL parameter.
@@ -592,14 +626,15 @@
           "sessionExpired";
 
         const params = new URLSearchParams(window.location.search);
-        const statusParam = ["loggedin", "deleted", "signedout", "passwordChanged"].find(name => params.get(name) === "true");
+        const statusParam = ["loggedin", "deleted", "signedout", "passwordChanged", "ban"].find(name => params.get(name) === "true");
         if (statusParam) {
           const username = (params.get("username") || "").trim();
+          const reason = (params.get("reason") || "This account has been banned.").slice(0, 500);
           const url = new URL(window.location.href);
-          ["loggedin", "deleted", "signedout", "passwordChanged", "username"].forEach(name => url.searchParams.delete(name));
+          ["loggedin", "deleted", "signedout", "passwordChanged", "ban", "username", "reason"].forEach(name => url.searchParams.delete(name));
           window.history.replaceState({}, "", url.pathname + url.search + url.hash);
           if (window.parent !== window) {
-            window.parent.postMessage({ type: "studybase:account-status", status: statusParam, username }, window.location.origin);
+            window.parent.postMessage({ type: "studybase:account-status", status: statusParam, username, reason }, window.location.origin);
             return;
           }
           setTimeout(() => {
@@ -609,6 +644,10 @@
               showAccountStatus({ title: "Account deleted", message: "Your account and related account data have been deleted." });
             } else if (statusParam === "signedout") {
               showAccountStatus({ title: "Signed out", message: "You have been securely signed out of StudyBase." });
+            } else if (statusParam === "ban") {
+              clearAuthSession();
+              updateAuthState();
+              showBanStatus(reason);
             } else {
               showAccountStatus({ title: "Password changed", message: "Your password was changed. Log in again with the new password.", buttonLabel: "Log in", onButton: () => ensureAccountModal().openPage(`/myaccount/login.html${username ? `?username=${encodeURIComponent(username)}` : ""}`, "StudyBase login") });
             }
@@ -630,17 +669,19 @@
           return;
         }
         if (params.get(configParam) === "true") {
-          // Clean the parameter from the URL immediately (no reload)
           const url = new URL(window.location.href);
           url.searchParams.delete(configParam);
           const cleanUrl = url.pathname + url.search + url.hash;
           window.history.replaceState({}, "", cleanUrl);
-
-          // Open the normal login modal (iframe) shortly after navbar is ready.
-          // Respect the existing maintenance gate so we don't show login during shutdown.
+          if (window.parent !== window) {
+            window.parent.postMessage({ type: "studybase:session-ended", reason: "authentication-required" }, window.location.origin);
+            return;
+          }
           setTimeout(() => {
             if (!isMaintenanceActive()) {
-              ensureAccountModal().openPage("/myaccount/login.html", "StudyBase login");
+              clearAuthSession();
+              updateAuthState();
+              showLoggedOutStatus();
             }
           }, 80);
         }

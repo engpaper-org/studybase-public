@@ -58,7 +58,7 @@
     }
     async function load() {
       const result = await StudyBaseServices.request("/me");
-      if (!result.ok || !result.user) { location.replace("/myaccount/login.html?sessionExpired=true"); return; }
+      if (!result.ok || !result.user) { if (window.parent === window) location.replace("/?sessionExpired=true"); return; }
       loadedUser = result.user;
       firstName.value = loadedUser.name || "";
       username.value = loadedUser.username || "";

@@ -37,7 +37,7 @@
   <script>
     async function loadSocialPreview() {
       const result = await StudyBaseServices.request("/me");
-      if (!result.ok || !result.user) { location.replace("/myaccount/login.html?sessionExpired=true"); return; }
+      if (!result.ok || !result.user) { if (window.parent === window) location.replace("/?sessionExpired=true"); return; }
       localStorage.setItem("studybase_user", JSON.stringify(result.user));
       document.getElementById("social-name").textContent = result.user.name || "StudyBase user";
       document.getElementById("social-username").textContent = `@${result.user.username}`;

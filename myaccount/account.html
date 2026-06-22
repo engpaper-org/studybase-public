@@ -43,7 +43,7 @@
     const message = document.getElementById("message");
     async function loadAccount() {
       const result = await StudyBaseServices.request("/me");
-      if (!result.ok || !result.user) { location.replace("/myaccount/login.html?sessionExpired=true"); return; }
+      if (!result.ok || !result.user) { if (window.parent === window) location.replace("/?sessionExpired=true"); return; }
       const user = result.user;
       if (localStorage.getItem("studybase_session_active") !== "1") {
         await StudyBaseServices.logout();
