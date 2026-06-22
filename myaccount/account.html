@@ -9,21 +9,28 @@
   <script src="/assets/js/account/sidebar.js" defer></script>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
-  <main class="mx-auto max-w-5xl px-5 py-10">
+  <main class="mx-auto max-w-6xl px-5 py-10">
     <header class="flex flex-wrap items-center justify-between gap-4">
       <div><p class="text-xs font-black uppercase tracking-[.2em] text-purple-600">StudyBase account</p><h1 class="mt-2 text-4xl font-black">Your account</h1></div>
       <button id="logout" class="rounded-xl border border-slate-300 bg-white px-5 py-3 font-bold">Sign out</button>
     </header>
     <div id="message" class="mt-6 rounded-2xl border border-slate-200 bg-white p-5 text-slate-600">Loading your secure profile...</div>
     <section id="content" class="mt-6 hidden space-y-6">
-      <div class="rounded-3xl bg-gradient-to-br from-purple-700 to-indigo-950 p-7 text-white shadow-xl">
-        <p class="text-sm font-bold text-purple-200">Signed in as</p><h2 id="name" class="mt-2 text-3xl font-black"></h2><p id="username" class="mt-1 text-purple-200"></p>
+      <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-purple-700 via-purple-800 to-indigo-950 p-8 text-white shadow-xl">
+        <div class="absolute -right-14 -top-14 h-48 w-48 rounded-full bg-white/10"></div>
+        <div class="relative flex flex-wrap items-end justify-between gap-5">
+          <div><p class="text-sm font-bold text-purple-200">Signed in as</p><h2 id="name" class="mt-2 text-4xl font-black"></h2><p id="username" class="mt-1 text-purple-200"></p></div>
+          <a href="/myaccount/settings.html" class="rounded-xl bg-white px-5 py-3 text-sm font-black text-purple-800 shadow-lg">Edit profile</a>
+        </div>
       </div>
-      <div class="grid gap-4">
-        <article class="rounded-2xl border bg-white p-5"><p class="text-xs font-black uppercase tracking-wider text-slate-400">User ID</p><p id="user-id" class="mt-2 break-all font-mono text-sm"></p></article>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Date of birth</p><p id="dob" class="mt-2 text-lg font-black"></p></article>
+        <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Gender</p><p id="gender" class="mt-2 text-lg font-black"></p></article>
+        <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Member since</p><p id="created" class="mt-2 text-lg font-black"></p></article>
+        <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-xs font-black uppercase tracking-wider text-slate-400">User ID</p><p id="user-id" class="mt-2 break-all font-mono text-xs"></p></article>
       </div>
       <div class="grid gap-4 sm:grid-cols-3">
-        <a href="/myaccount/settings.html" class="rounded-2xl border bg-white p-6 transition hover:border-purple-300 hover:shadow-lg"><h3 class="text-xl font-black">Account settings</h3><p class="mt-2 text-sm text-slate-500">Manage server-synced account preferences.</p></a>
+        <a href="/myaccount/settings.html" class="rounded-2xl border bg-white p-6 transition hover:-translate-y-1 hover:border-purple-300 hover:shadow-lg"><h3 class="text-xl font-black">Account settings</h3><p class="mt-2 text-sm text-slate-500">Update your profile and server-synced preferences.</p></a>
         <a id="password-link" href="https://auth.studybase.site/change-password" class="rounded-2xl border bg-white p-6 transition hover:border-purple-300 hover:shadow-lg"><h3 class="text-xl font-black">Change password</h3><p class="mt-2 text-sm text-slate-500">Set a new password and revoke existing sessions.</p></a>
         <a id="delete-link" href="https://auth.studybase.site/delete" class="rounded-2xl border border-amber-200 bg-amber-50 p-6 transition hover:border-amber-400"><h3 class="text-xl font-black text-amber-950">Delete account</h3><p class="mt-2 text-sm text-amber-800">Permanently delete your profile, credentials, and sessions.</p></a>
       </div>
@@ -43,6 +50,11 @@
       localStorage.setItem("studybase_user", JSON.stringify(user));
       document.getElementById("name").textContent = user.name;
       document.getElementById("username").textContent = `@${user.username}`;
+      const genderLabels = { male: "Male", female: "Female", "prefer-not-to-say": "Other / prefer not to say", "non-binary": "Other / prefer not to say", "self-described": "Other / prefer not to say" };
+      const formatDate = value => value ? new Date(`${value}T00:00:00`).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : "Not recorded";
+      document.getElementById("dob").textContent = formatDate(user.dateOfBirth);
+      document.getElementById("gender").textContent = genderLabels[user.gender] || "Not recorded";
+      document.getElementById("created").textContent = user.createdAt ? new Date(user.createdAt).toLocaleDateString("en-GB", { month: "long", year: "numeric" }) : "Not recorded";
       document.getElementById("user-id").textContent = user.id;
       document.getElementById("delete-link").href = `https://auth.studybase.site/delete?username=${encodeURIComponent(user.username)}`;
       document.getElementById("password-link").href = `https://auth.studybase.site/change-password?username=${encodeURIComponent(user.username)}`;

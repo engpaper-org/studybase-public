@@ -9,14 +9,29 @@
   <script src="/assets/js/account/sidebar.js" defer></script>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
-  <main class="mx-auto max-w-3xl px-5 py-10">
+  <main class="mx-auto max-w-4xl px-5 py-10">
     <a href="/myaccount/account.html" class="text-sm font-bold text-purple-700">&larr; Account</a>
     <header class="mt-5"><p class="text-xs font-black uppercase tracking-[.2em] text-purple-600">Server synced</p><h1 class="mt-2 text-4xl font-black">Settings</h1><p class="mt-2 text-slate-500">These preferences follow your StudyBase account.</p></header>
     <div id="message" class="mt-6 hidden rounded-xl p-4 text-sm"></div>
-    <form id="settings" class="mt-7 space-y-5 rounded-3xl border bg-white p-6 shadow-sm sm:p-8">
-      <label class="block text-sm font-bold">First name<input id="firstName" name="firstName" maxlength="15" pattern="[a-z]{1,15}" required class="mt-2 w-full rounded-xl border border-slate-300 p-4"><span class="mt-2 block text-xs font-normal text-slate-500">Lowercase a-z only, no spaces, maximum 15 characters.</span></label>
+    <form id="settings" class="mt-7 space-y-7 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+      <section>
+        <div class="mb-5"><h2 class="text-xl font-black">Profile details</h2><p class="mt-1 text-sm text-slate-500">Your date of birth and gender are private account data.</p></div>
+        <div class="grid gap-5 sm:grid-cols-2">
+          <label class="block text-sm font-bold">First name<input id="firstName" name="firstName" maxlength="15" pattern="[a-z]{1,15}" required autocomplete="given-name" class="mt-2 w-full rounded-xl border border-slate-300 p-4 disabled:bg-slate-100 disabled:text-slate-500"><span id="nameHelp" class="mt-2 block text-xs font-normal text-slate-500">Lowercase a-z only. Can be changed every 7 days.</span></label>
+          <label class="block text-sm font-bold">Username<input id="username" name="username" minlength="3" maxlength="24" pattern="[a-z][a-z0-9._-]{2,23}" required autocomplete="username" class="mt-2 w-full rounded-xl border border-slate-300 p-4 disabled:bg-slate-100 disabled:text-slate-500"><span id="usernameHelp" class="mt-2 block text-xs font-normal text-slate-500">Do not include personal information. Can be changed every 30 days.</span></label>
+          <label class="block text-sm font-bold sm:col-span-2">Date of birth<input id="dateOfBirth" name="dateOfBirth" type="date" required class="mt-2 w-full rounded-xl border border-slate-300 p-4"><span class="mt-2 block text-xs font-normal text-slate-500">You must be at least 13 years old.</span></label>
+        </div>
+      </section>
+      <fieldset>
+        <legend class="text-sm font-bold">Gender</legend>
+        <div class="mt-3 grid grid-cols-3 gap-3">
+          <label class="cursor-pointer"><input class="peer sr-only" type="radio" name="gender" value="male" required><span class="block rounded-2xl border-2 border-slate-200 bg-blue-50 p-4 text-center font-black text-blue-800 transition peer-checked:border-blue-500 peer-checked:ring-4 peer-checked:ring-blue-100">Male</span></label>
+          <label class="cursor-pointer"><input class="peer sr-only" type="radio" name="gender" value="female"><span class="block rounded-2xl border-2 border-slate-200 bg-pink-50 p-4 text-center font-black text-pink-800 transition peer-checked:border-pink-500 peer-checked:ring-4 peer-checked:ring-pink-100">Female</span></label>
+          <label class="cursor-pointer"><input class="peer sr-only" type="radio" name="gender" value="prefer-not-to-say"><span class="block rounded-2xl border-2 border-slate-200 bg-slate-100 p-4 text-center font-black text-slate-700 transition peer-checked:border-slate-500 peer-checked:ring-4 peer-checked:ring-slate-200">Other</span></label>
+        </div>
+      </fieldset>
       <label class="flex gap-4 rounded-2xl bg-slate-50 p-5"><input id="contentWarnings" name="contentWarnings" type="checkbox" class="mt-1 h-5 w-5 accent-purple-600"><span><strong class="block">Content warnings</strong><span class="mt-1 block text-sm text-slate-500">Show safety notices before potentially sensitive content.</span></span></label>
-      <button class="w-full rounded-xl bg-purple-600 p-4 font-black text-white">Save settings</button>
+      <button id="save" class="w-full rounded-xl bg-purple-600 p-4 font-black text-white transition hover:bg-purple-700 disabled:cursor-wait disabled:opacity-60">Save changes</button>
     </form>
     <div class="mt-6 grid gap-4 sm:grid-cols-2"><a id="password" href="https://auth.studybase.site/change-password" class="block rounded-2xl border bg-white p-5"><strong>Change password</strong><span class="mt-1 block text-sm text-slate-500">Set a new password and sign out other sessions.</span></a><a id="delete" href="https://auth.studybase.site/delete" class="block rounded-2xl border border-amber-200 bg-amber-50 p-5"><strong class="text-amber-950">Delete account</strong><span class="mt-1 block text-sm text-amber-800">Confirm your password and permanently remove the account.</span></a></div>
   </main>
@@ -24,28 +39,59 @@
     const form = document.getElementById("settings");
     const message = document.getElementById("message");
     const firstName = document.getElementById("firstName");
+    const username = document.getElementById("username");
+    const dateOfBirth = document.getElementById("dateOfBirth");
     const contentWarnings = document.getElementById("contentWarnings");
+    const save = document.getElementById("save");
+    let loadedUser = null;
     function show(text, bad = false) {
       message.textContent = text;
       message.className = `mt-6 rounded-xl p-4 text-sm ${bad ? "bg-red-50 text-red-800" : "bg-emerald-50 text-emerald-800"}`;
     }
+    function cooldown(input, help, changedAt, days, label) {
+      const changed = Date.parse(changedAt || "");
+      const next = changed + days * 86400000;
+      if (!Number.isFinite(changed) || Date.now() >= next) return;
+      input.disabled = true;
+      help.textContent = `${label} can next be changed on ${new Date(next).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}.`;
+    }
     async function load() {
       const result = await StudyBaseServices.request("/me");
       if (!result.ok || !result.user) { location.replace("/myaccount/login.html?sessionExpired=true"); return; }
-      firstName.value = result.user.name || "";
-      contentWarnings.checked = result.user.settings?.contentWarnings !== false;
-      document.getElementById("delete").href = `https://auth.studybase.site/delete?username=${encodeURIComponent(result.user.username)}`;
-      document.getElementById("password").href = `https://auth.studybase.site/change-password?username=${encodeURIComponent(result.user.username)}`;
-      localStorage.setItem("studybase_user", JSON.stringify(result.user));
+      loadedUser = result.user;
+      const today = new Date();
+      const latestBirth = new Date(Date.UTC(today.getUTCFullYear() - 13, today.getUTCMonth(), today.getUTCDate()));
+      const earliestBirth = new Date(Date.UTC(today.getUTCFullYear() - 120, today.getUTCMonth(), today.getUTCDate()));
+      dateOfBirth.max = latestBirth.toISOString().slice(0, 10);
+      dateOfBirth.min = earliestBirth.toISOString().slice(0, 10);
+      firstName.value = loadedUser.name || "";
+      username.value = loadedUser.username || "";
+      dateOfBirth.value = loadedUser.dateOfBirth || "";
+      const savedGender = ["male", "female"].includes(loadedUser.gender) ? loadedUser.gender : "prefer-not-to-say";
+      const gender = form.querySelector(`input[name="gender"][value="${savedGender}"]`);
+      if (gender) gender.checked = true;
+      contentWarnings.checked = loadedUser.settings?.contentWarnings !== false;
+      cooldown(firstName, document.getElementById("nameHelp"), loadedUser.nameChangedAt, 7, "First name");
+      cooldown(username, document.getElementById("usernameHelp"), loadedUser.usernameChangedAt, 30, "Username");
+      document.getElementById("delete").href = `https://auth.studybase.site/delete?username=${encodeURIComponent(loadedUser.username)}`;
+      document.getElementById("password").href = `https://auth.studybase.site/change-password?username=${encodeURIComponent(loadedUser.username)}`;
+      localStorage.setItem("studybase_user", JSON.stringify(loadedUser));
     }
     form.onsubmit = async event => {
       event.preventDefault();
-      const profile = await StudyBaseServices.request("/profile", { method: "POST", body: JSON.stringify({ firstName: firstName.value }) });
-      if (!profile.ok) { show(profile.error || "Could not save name", true); return; }
+      if (!form.reportValidity()) return;
+      save.disabled = true; save.textContent = "Saving...";
+      const selectedGender = form.querySelector('input[name="gender"]:checked')?.value;
+      const profile = await StudyBaseServices.request("/profile", { method: "POST", body: JSON.stringify({ firstName: firstName.disabled ? loadedUser.name : firstName.value, username: username.disabled ? loadedUser.username : username.value, dateOfBirth: dateOfBirth.value, gender: selectedGender }) });
+      if (!profile.ok) {
+        const detail = profile.nextChangeAt ? `${profile.error}. Try again after ${new Date(profile.nextChangeAt).toLocaleString("en-GB")}.` : profile.error;
+        show(detail || "Could not save profile", true); save.disabled = false; save.textContent = "Save changes"; return;
+      }
       const settings = await StudyBaseServices.request("/settings", { method: "POST", body: JSON.stringify({ contentWarnings: contentWarnings.checked }) });
-      if (!settings.ok) { show(settings.error || "Could not save settings", true); return; }
+      if (!settings.ok) { show(settings.error || "Could not save settings", true); save.disabled = false; save.textContent = "Save changes"; return; }
       localStorage.setItem("studybase_user", JSON.stringify(settings.user));
-      show("Settings saved.");
+      show("Your profile and settings have been saved.");
+      setTimeout(() => location.reload(), 800);
     };
     load().catch(() => show("Settings could not be loaded.", true));
   </script>
