@@ -431,6 +431,33 @@
       return modal;
     }
 
+    const subscriptionProducts = [
+      { name: "Games Plus", price: "£1.99/month", note: "Leaderboard submissions, verified scores, badges, and stats.", tone: "#7c3aed" },
+      { name: "Proxy Plus", price: "£3.99/month", note: "Private proxy access with fair-use limits.", tone: "#2563eb" },
+      { name: "Music Plus", price: "£1.99/month", note: "Music player, playlists, favourites, and a saved library.", tone: "#db2777" },
+      { name: "Chat Plus", price: "£1.49/month", note: "Chat with other users, profile badges, and private rooms.", tone: "#059669" },
+      { name: "Custom Domain", price: "£30/year", note: "One included domain from approved low-cost TLDs.", tone: "#d97706" },
+      { name: "All Access", price: "£6.99/month", note: "Proxy, music, leaderboards, and chat in one plan.", tone: "#6d28d9", featured: true },
+      { name: "All Access + Domain", price: "£49.99/year", note: "Everything in All Access, plus an included custom domain.", tone: "#0f172a" }
+    ];
+
+    function showSubscriptions() {
+      document.getElementById("sbx-subscriptions-modal")?.remove();
+      const modal = document.createElement("div");
+      modal.id = "sbx-subscriptions-modal";
+      modal.className = "sbx-login-modal is-open";
+      modal.innerHTML = `<div role="dialog" aria-modal="true" aria-labelledby="sbx-subscriptions-title" style="width:min(1040px,calc(100vw - 28px));max-height:calc(100vh - 28px);overflow:auto;background:linear-gradient(145deg,#fff,#f5f3ff);border-radius:28px;padding:clamp(22px,4vw,38px);box-shadow:0 30px 90px rgba(15,23,42,.35)"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px"><div><span style="display:inline-flex;padding:7px 11px;border-radius:999px;background:#ede9fe;color:#6d28d9;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase">StudyBase Plus preview</span><h2 id="sbx-subscriptions-title" style="margin:13px 0 0;font-size:clamp(28px,4vw,42px);line-height:1.05;color:#0f172a;font-weight:950">Enjoy StudyBase with more features</h2><p style="margin:12px 0 0;max-width:720px;color:#64748b;line-height:1.65">Explore upcoming optional plans. Purchases are not available yet. Plans do not renew automatically; access lasts for the monthly or annual period shown and must be purchased again when it expires.</p></div><button type="button" data-subscription-close aria-label="Close subscriptions" style="flex:0 0 auto;width:42px;height:42px;border:1px solid #e2e8f0;border-radius:14px;background:#fff;color:#475569;font-size:24px;cursor:pointer">&times;</button></div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:26px">${subscriptionProducts.map(product => `<article style="position:relative;display:flex;min-height:230px;flex-direction:column;border:${product.featured ? "2px solid #8b5cf6" : "1px solid #e2e8f0"};border-radius:22px;background:#fff;padding:21px;box-shadow:0 12px 35px rgba(15,23,42,.07)">${product.featured ? '<span style="position:absolute;right:16px;top:16px;border-radius:999px;background:#7c3aed;padding:5px 9px;color:white;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">Best value</span>' : ""}<div style="width:42px;height:42px;border-radius:14px;background:${product.tone}18;color:${product.tone};display:grid;place-items:center;font-weight:950">+</div><h3 style="margin:17px 0 0;color:#0f172a;font-size:20px;font-weight:950">${escapeHtml(product.name)}</h3><p style="margin:7px 0 0;color:${product.tone};font-size:18px;font-weight:950">${escapeHtml(product.price)}</p><p style="margin:11px 0 18px;color:#64748b;font-size:13px;line-height:1.55">${escapeHtml(product.note)}</p><button type="button" disabled style="margin-top:auto;width:100%;border:0;border-radius:12px;padding:11px;background:#e2e8f0;color:#64748b;font-weight:850;cursor:not-allowed">Not available yet</button></article>`).join("")}</div><div style="margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;border-radius:18px;background:#0f172a;padding:16px 18px;color:#cbd5e1;font-size:12px;line-height:1.55"><span>Future checkout and payment processing will be provided through Sellbase.gg.</span><a href="/legal/tos.html#subscriptions" style="color:#c4b5fd;font-weight:850">Read purchase terms</a></div></div>`;
+      document.body.appendChild(modal);
+      const close = () => { document.removeEventListener("keydown", onKeydown); modal.remove(); };
+      const onKeydown = event => { if (event.key === "Escape") close(); };
+      modal.querySelector("[data-subscription-close]").onclick = close;
+      modal.onclick = event => { if (event.target === modal) close(); };
+      document.addEventListener("keydown", onKeydown);
+    }
+
+    window.StudyBaseSubscriptions = { show: showSubscriptions, products: subscriptionProducts.map(product => ({ ...product })) };
+    window.dispatchEvent(new CustomEvent("studybase:subscriptions-ready"));
+
     function showLoginSuccess(user) {
       document.getElementById("sbx-login-success-modal")?.remove();
       const success = document.createElement("div");
@@ -439,7 +466,7 @@
       success.innerHTML = `<div class="sbx-login-dialog" style="max-width:460px;height:auto;padding:32px;background:#fff;border-radius:24px;text-align:center"><div style="width:56px;height:56px;margin:0 auto 16px;border-radius:18px;background:#dcfce7;color:#15803d;display:grid;place-items:center;font-size:28px;font-weight:900">&#10003;</div><h2 style="font-size:26px;font-weight:900;color:#0f172a">You are signed in</h2><p style="margin-top:10px;color:#64748b">Welcome back, <strong style="color:#0f172a">${escapeHtml(user?.name || "StudyBase user")}</strong>.</p><p style="margin-top:5px;color:#64748b">Logged in as <strong style="color:#6d28d9">@${escapeHtml(user?.username || "user")}</strong></p><button type="button" style="margin-top:24px;width:100%;border:0;border-radius:14px;padding:13px;background:#7c3aed;color:#fff;font-weight:800;cursor:pointer">Continue</button></div>`;
       document.body.appendChild(success);
       const closeSuccess = () => success.remove();
-      success.querySelector("button").onclick = closeSuccess;
+      success.querySelector("button").onclick = () => { closeSuccess(); showSubscriptions(); };
       success.onclick = event => { if (event.target === success) closeSuccess(); };
     }
 
@@ -459,6 +486,7 @@
       if (event.data?.type === "studybase:login-success") {
         ensureAccountModal().closeAccountModal?.();
         updateAuthState();
+        window.dispatchEvent(new CustomEvent("studybase:account-session-updated"));
         showLoginSuccess(event.data.user);
         return;
       }

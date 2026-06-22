@@ -2257,6 +2257,12 @@ body.rgenie-private-resources .rgenie-panel {
                             </a>
                         </div>
                     </div>
+                    <div id="studybase-subscription-banner" class="hidden mb-3 overflow-hidden rounded-2xl border border-purple-200 bg-gradient-to-r from-purple-700 via-violet-700 to-indigo-800 p-4 text-white shadow-lg shadow-purple-900/10">
+                        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                            <div class="flex items-start gap-3"><div class="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-white/15 text-xl font-black ring-1 ring-white/20">+</div><div><div class="flex flex-wrap items-center gap-2"><h2 class="text-sm font-black tracking-tight">Enjoy StudyBase with more features</h2><span class="rounded-full bg-white/15 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-purple-100">Preview</span></div><p class="mt-1 text-sm font-semibold leading-6 text-purple-100">Explore Games, Proxy, Music, Chat, custom domains, and All Access plans. Purchases are not available yet.</p></div></div>
+                            <button type="button" onclick="window.StudyBaseSubscriptions?.show()" class="inline-flex shrink-0 items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-black text-purple-800 shadow-lg transition hover:bg-purple-50 active:scale-[.98]">View plans</button>
+                        </div>
+                    </div>
                     <div class="flex flex-col sm:flex-row gap-3 items-stretch">
                         <div class="flex-1 relative">
                             <i data-lucide="search" class="w-5 h-5 absolute left-5 top-4 text-slate-400 pointer-events-none"></i>
@@ -4221,8 +4227,10 @@ body.rgenie-private-resources .rgenie-panel {
 
   function updateRoutingBookmarkBanner() {
     const banner = document.getElementById("studybase-routing-bookmark-banner");
-    if (!banner) return;
-    banner.classList.toggle("hidden", !isResourceUserLoggedIn());
+    const subscriptionBanner = document.getElementById("studybase-subscription-banner");
+    const hidden = !isResourceUserLoggedIn();
+    banner?.classList.toggle("hidden", hidden);
+    subscriptionBanner?.classList.toggle("hidden", hidden);
   }
 
   function setWeeklyFeedbackView(viewName) {
@@ -4571,6 +4579,7 @@ body.rgenie-private-resources .rgenie-panel {
 
   window.addEventListener("focus", updateRoutingBookmarkBanner);
   window.addEventListener("studybase:account-session-cleared", updateRoutingBookmarkBanner);
+  window.addEventListener("studybase:account-session-updated", updateRoutingBookmarkBanner);
   window.addEventListener("site-config-ready", updateRoutingBookmarkBanner);
 
   setupResourceIdleCover();
