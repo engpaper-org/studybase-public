@@ -421,11 +421,6 @@
       return;
     }
 
-    // If the scheduled "services suspended" banner from timeCheck.js is already visible
-    // (especially on r/ pages during the maintenance window), don't show a duplicate.
-    if (document.getElementById('studybase-maint-banner')) {
-      return;
-    }
 
     banner = document.createElement("div");
     banner.id = BANNER_ID;
@@ -435,8 +430,7 @@
         <div class="sb-maint-icon" aria-hidden="true">🛠️</div>
         <div class="sb-maint-text">
           <strong>StudyBase is currently offline for servicing.</strong>
-          Online services and API requests will not function between 11:02pm and 4:00am.
-          <span class="sb-maint-ban">Reaching out to the site owner by email about maintenance or errors will lead to a PERMANENT ACCOUNT BAN.</span>
+          Online services and API requests are temporarily unavailable.
         </div>
         <button type="button" class="sb-maint-close" aria-label="Dismiss maintenance notice">&times;</button>
       </div>
@@ -504,7 +498,7 @@
     const message =
       payload && typeof payload.message === "string" && payload.message.trim()
         ? payload.message.trim()
-        : "Service is offline between 11:02pm and 4:00am.";
+        : "Service is temporarily unavailable.";
 
     showMaintenanceBanner(message);
   }

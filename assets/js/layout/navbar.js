@@ -195,81 +195,36 @@
   }
 
   function isMaintenanceActive() {
-    if (window.SB_MAINTENANCE_ACTIVE === true) return true;
-    const banner = document.getElementById('studybase-maint-banner');
-    if (banner && banner.style.display !== 'none') return true;
-
-    // Time-based check: 23:02–04:00 UK time (out of service). Robust parsing.
-    try {
-      const now = new Date();
-
-      // Reliable UK time extraction (avoids locale string parsing bugs)
-      const ukFormatter = new Intl.DateTimeFormat('en-GB', {
-        timeZone: 'Europe/London',
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: false
-      });
-      const parts = ukFormatter.formatToParts(now);
-      let hours = 0, minutes = 0;
-      for (const p of parts) {
-        if (p.type === 'hour') hours = parseInt(p.value, 10);
-        if (p.type === 'minute') minutes = parseInt(p.value, 10);
-      }
-      const totalMinutes = hours * 60 + minutes;
-
-      const shutdownStart = 23 * 60 + 2; // 23:02
-      const shutdownEnd = 4 * 60;        // 04:00
-
-      if (totalMinutes >= shutdownStart || totalMinutes < shutdownEnd) {
-        return true;
-      }
-    } catch (e) {
-      // On any error, default to NOT blocking (safer for users)
-      return false;
-    }
-
     return false;
   }
 
-  function showMaintenanceLoginErrorModal() {
-    // Remove any existing
-    const existing = document.getElementById('sbx-maint-login-modal');
-    if (existing) existing.remove();
+  function showMaintenanceLoginErrorModal() {}
 
-    const modal = document.createElement('div');
-    modal.id = 'sbx-maint-login-modal';
-    modal.style.cssText = 'position:fixed;inset:0;z-index:2147483645;background:rgba(15,23,42,0.82);display:flex;align-items:center;justify-content:center;padding:20px;';
-    modal.innerHTML = `
-      <div style="background:#fff;border-radius:20px;max-width:420px;width:100%;padding:28px 26px;box-shadow:0 25px 70px -15px rgba(0,0,0,0.35);border:1px solid #e2e8f0;text-align:center;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;">
-        <div style="margin:0 auto 16px;width:52px;height:52px;border-radius:9999px;background:linear-gradient(145deg,#f8fafc,#e0f2fe);display:flex;align-items:center;justify-content:center;font-size:26px;">🛠️</div>
-        <h2 style="margin:0 0 10px;font-size:22px;font-weight:900;color:#0f172a;letter-spacing:-0.01em;">Login unavailable</h2>
-        <p style="margin:0 0 14px;color:#475569;font-size:15px;line-height:1.55;">Studybase online services are suspended during scheduled maintenance.</p>
-        <p style="margin:0 0 20px;color:#475569;font-size:14px;line-height:1.5;">Please try again after 4:00 AM.</p>
-        <div style="font-size:12.5px;font-weight:700;color:#991b1b;background:#fef2f2;border:1px solid #fecaca;padding:9px 12px;border-radius:10px;margin-bottom:20px;">
-          Reaching out to the site owner by email will lead to a permanent account ban.
-        </div>
-        <button type="button" style="background:#0f172a;color:#fff;border:none;border-radius:12px;padding:11px 22px;font-size:14px;font-weight:800;cursor:pointer;width:100%;">Understood</button>
-      </div>
-    `;
-    document.body.appendChild(modal);
+  function isMobileDevice() {
+    if (navigator.userAgentData?.mobile === true) return true;
+    const userAgent = String(navigator.userAgent || "");
+    if (/Android|iPhone|iPod|IEMobile|Windows Phone|Opera Mini|Mobile/i.test(userAgent)) return true;
+    return /Macintosh/i.test(userAgent) && Number(navigator.maxTouchPoints || 0) > 1;
+  }
 
-    const closeBtn = modal.querySelector('button');
-    const close = () => modal.remove();
-
-    closeBtn.addEventListener('click', close);
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) close();
-    });
-    document.addEventListener('keydown', function esc(e) {
-      if (e.key === 'Escape') {
-        close();
-        document.removeEventListener('keydown', esc);
-      }
-    }, { once: true });
+  function showMobileUnsupported() {
+    if (!isMobileDevice()) return false;
+    if (document.getElementById("sbx-mobile-unsupported")) return true;
+    const overlay = document.createElement("div");
+    overlay.id = "sbx-mobile-unsupported";
+    overlay.setAttribute("role", "alertdialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-labelledby", "sbx-mobile-title");
+    overlay.style.cssText = "position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;padding:22px;background:linear-gradient(145deg,rgba(226,232,240,.94),rgba(241,245,249,.97) 45%,rgba(221,214,254,.94));backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);font-family:Inter,ui-sans-serif,system-ui,sans-serif;color:#0f172a";
+    overlay.innerHTML = `<div aria-hidden="true" style="position:absolute;left:-90px;top:8%;width:270px;height:150px;border-radius:999px;background:rgba(255,255,255,.72);filter:blur(14px);box-shadow:120px 25px 0 rgba(255,255,255,.48)"></div><div aria-hidden="true" style="position:absolute;right:-100px;bottom:7%;width:300px;height:170px;border-radius:999px;background:rgba(255,255,255,.65);filter:blur(18px);box-shadow:-135px -20px 0 rgba(255,255,255,.38)"></div><section style="position:relative;width:min(100%,460px);overflow:hidden;border:1px solid rgba(255,255,255,.85);border-radius:30px;background:rgba(255,255,255,.82);padding:30px;text-align:center;box-shadow:0 35px 100px rgba(51,65,85,.24);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)"><div style="margin:0 auto;width:68px;height:68px;border-radius:22px;background:linear-gradient(135deg,#7c3aed,#4338ca);display:grid;place-items:center;color:#fff;font-size:30px;font-weight:950;box-shadow:0 16px 35px rgba(109,40,217,.3)">!</div><p style="margin:22px 0 0;color:#7c3aed;font-size:11px;font-weight:900;letter-spacing:.2em;text-transform:uppercase">Unsupported device</p><h1 id="sbx-mobile-title" style="margin:8px 0 0;font-size:clamp(30px,9vw,42px);line-height:1.05;font-weight:950;letter-spacing:-.035em">StudyBase is not available on mobile</h1><p style="margin:15px auto 0;max-width:360px;color:#64748b;font-size:15px;font-weight:600;line-height:1.7">This version of StudyBase requires a desktop or laptop browser. Please open the site on a supported computer to continue.</p><div style="margin-top:22px;border-radius:16px;background:#f1f5f9;padding:14px;color:#475569;font-size:13px;font-weight:800">Mobile access is currently blocked.</div></section>`;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    document.body.appendChild(overlay);
+    return true;
   }
 
   function render() {
+    if (showMobileUnsupported()) return;
     if (document.getElementById("sbx-navbar")) return;
 
     const currentPath = normalPath(window.location.pathname);
@@ -349,18 +304,6 @@
       });
     });
 
-    // React to maintenance banner state changes (from timeCheck.js)
-    document.addEventListener('sb-maintenance-banner-shown', () => {
-      // Login buttons will automatically respect isMaintenanceActive() on next click
-    });
-    document.addEventListener('sb-maintenance-banner-hidden', () => {
-      // No action needed
-    });
-
-    // Initial check in case the banner was already visible when navbar rendered
-    if (isMaintenanceActive()) {
-      // State is live-checked on click, nothing extra required here
-    }
 
     function updateAuthState() {
       if (!loginAvailable) {
@@ -379,10 +322,6 @@
       nav.querySelectorAll("[data-sbx-auth]").forEach((container) => {
         container.outerHTML = authMarkup();
       });
-      // Re-apply maintenance login blocking if active (new buttons may have been rendered)
-      if (isMaintenanceActive()) {
-        // No extra work needed — the click handler above already checks isMaintenanceActive live
-      }
     }
 
     function ensureAccountModal() {
@@ -540,11 +479,7 @@
 
       if (login) {
         event.preventDefault();
-        if (isMaintenanceActive()) {
-          showMaintenanceLoginErrorModal();
-        } else {
-          ensureAccountModal().openPage("/myaccount/login.html", "StudyBase login");
-        }
+        ensureAccountModal().openPage("/myaccount/login.html", "StudyBase login");
       }
 
       if (account) {
@@ -662,10 +597,7 @@
           url.searchParams.delete("username");
           window.history.replaceState({}, "", url.pathname + url.search + url.hash);
           setTimeout(() => {
-            if (!isMaintenanceActive()) {
-              const loginUrl = `/myaccount/login.html${username ? `?username=${encodeURIComponent(username)}` : ""}`;
-              ensureAccountModal().openPage(loginUrl, "StudyBase login");
-            }
+            const loginUrl = `/myaccount/login.html${username ? `?username=${encodeURIComponent(username)}` : ""}`; ensureAccountModal().openPage(loginUrl, "StudyBase login");
           }, 80);
           return;
         }
@@ -679,11 +611,7 @@
             return;
           }
           setTimeout(() => {
-            if (!isMaintenanceActive()) {
-              clearAuthSession();
-              updateAuthState();
-              showLoggedOutStatus();
-            }
+            clearAuthSession(); updateAuthState(); showLoggedOutStatus();
           }, 80);
         }
       } catch (_) {

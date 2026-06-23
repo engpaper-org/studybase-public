@@ -53,7 +53,7 @@
 
     "MAINTENANCE_MODE": {
       title: "StudyBase is in maintenance mode",
-      message: "Service is offline between 11:02pm and 4:00am.",
+      message: "Service is temporarily unavailable.",
       icon: "i",
       compact: true
     },
@@ -307,8 +307,8 @@
       buttonUrl: "/support/info/geoblock.html"
     },
     "ENV_403_TIME": {
-      title: "Site is being updated overnight",
-      message: "StudyBase is unavailable between 11pm and 4am while updates and maintenance run. Please try again after 4am.",
+      title: "Site access is unavailable",
+      message: "This access check is no longer used. Please refresh the page and try again.",
       icon: "🔒",
       buttonText: "More information",
       buttonUrl: "/support/info/time.html"
@@ -960,7 +960,7 @@
         <div class="sb-maintenance-icon" aria-hidden="true">i</div>
         <div>
           <p class="sb-maintenance-title">StudyBase is in maintenance mode</p>
-          <p class="sb-maintenance-copy">Overnight updates are running. ${escapeHtml(message || "Service is offline between 11:02pm and 4:00am.")}</p>
+          <p class="sb-maintenance-copy">${escapeHtml(message || "Service is temporarily unavailable.")}</p>
         </div>
         <button class="sb-maintenance-close" type="button" aria-label="Dismiss maintenance notice">&times;</button>
       </div>

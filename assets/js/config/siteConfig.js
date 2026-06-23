@@ -99,7 +99,7 @@
       materialPage: "/r/material.html",
       embeddedMaterialHash: "#client-preflight",
       idleUnload: {
-        enabled: true,
+        enabled: false,
         afterInactiveMs: 120000,
         unloadOnBlur: true,
         unloadOnHidden: true,
@@ -186,14 +186,14 @@
       maintenance: {
         enabled: true,
         warningStart: "23:00",
-        shutdownStart: "23:02",
-        shutdownEnd: "04:00",
+        shutdownStart: "",
+        shutdownEnd: "",
         checkIntervalMs: 5000,
         warningTitle: "Scheduled Daily Maintenance Imminent",
-        warningMessage: "To protect infrastructure stability and proactively reduce overnight server load, StudyBase will initiate its standard automated shutdown at 11:02 PM.",
-        restoreMessage: "Services will automatically restore at 4:00 AM. Please save your current work.",
+        warningMessage: "Scheduled overnight maintenance is disabled.",
+        restoreMessage: "Services remain available unless an administrator manually disables them.",
         shutdownTitle: "StudyBase is currently offline for servicing",
-        shutdownMessage: "StudyBase undergoes scheduled daily maintenance between 11:02 PM and 4:00 AM.",
+        shutdownMessage: "Scheduled overnight maintenance is disabled.",
         actionTitle: "Action Required: Keep this tab open",
         actionMessage: "Your active session is safely preserved. At exactly 4:00 AM, this notice will automatically dismiss."
       },

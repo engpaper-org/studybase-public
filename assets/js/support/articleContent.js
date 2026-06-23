@@ -171,7 +171,7 @@ window.SUPPORT_ARTICLES = {
     category: "Sign in help",
     updated: "April 2026",
     summary:
-      "Most sign-in issues come from the current browser session, saved details, maintenance windows, or device restrictions.",
+      "Most sign-in issues come from the current browser session, saved details, or device restrictions.",
     sections: [
       {
         id: "quick-fixes",
@@ -179,9 +179,7 @@ window.SUPPORT_ARTICLES = {
         orderedList: [
           "Try <a href='/myaccount/login.html'>the login page</a> in a fresh tab.",
           "Check that the right account details are being entered and that old autofill values are not being reused.",
-          "Reload the page once, then try again in a private window or a second browser if the first attempt still fails.",
-          "If the entire site feels unavailable late at night, check the <a href='/support/info/time.html'>maintenance article</a>.",
-          "If the page says your device or account is restricted, switch to the matching support article instead of retrying the same step.",
+          "Reload the page once, then try again in a private window or a second browser if the first attempt still fails.",          "If the page says your device or account is restricted, switch to the matching support article instead of retrying the same step.",
         ],
       },
       {
@@ -298,9 +296,7 @@ window.SUPPORT_ARTICLES = {
         bullets: [
           "The page link is outdated or the file has moved.",
           "A browser extension is blocking something important on the page.",
-          "The resource depends on older content that your browser is handling poorly.",
-          "The site is inside a maintenance window and access is temporarily limited.",
-        ],
+          "The resource depends on older content that your browser is handling poorly.",        ],
       },
     ],
     related: ["getting-started", "faq", "contact"],
