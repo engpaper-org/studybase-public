@@ -3919,6 +3919,14 @@ body.rgenie-private-resources .rgenie-panel {
     "chat-plus": "Chat Plus"
   };
 
+  const subscriptionSlugByResourceName = {
+    music: "music-plus",
+    chat: "chat-plus",
+    proxy: "proxy-plus",
+    leaderboards: "leaderboards-plus",
+    leaderboard: "leaderboards-plus"
+  };
+
   function getSubscriptionSlugFromUrl(value) {
     try {
       const url = new URL(value, window.location.href);
@@ -3999,6 +4007,18 @@ body.rgenie-private-resources .rgenie-panel {
 
   function handleSubscriptionResourceUrl(target) {
     const slug = getSubscriptionSlugFromUrl(target);
+    return Boolean(slug && showSubscriptionResourcePopup(slug));
+  }
+
+  function getSubscriptionSlugFromItem(item) {
+    const directSlug = getSubscriptionSlugFromUrl(item?.url || "");
+    if (directSlug) return directSlug;
+    const display = stripResourceDecorators(item?.name || "").toLowerCase();
+    return subscriptionSlugByResourceName[display] || "";
+  }
+
+  function handleSubscriptionResourceItem(item) {
+    const slug = getSubscriptionSlugFromItem(item);
     return Boolean(slug && showSubscriptionResourcePopup(slug));
   }
 
@@ -4623,6 +4643,8 @@ body.rgenie-private-resources .rgenie-panel {
       return;
     }
 
+    if (handleSubscriptionResourceItem(item)) return;
+
     if (isSchoolHoursLimitedResource(item) && !isWithinSchoolAccessWindow()) {
       showLimitedHoursError();
       return;
@@ -4649,8 +4671,6 @@ body.rgenie-private-resources .rgenie-panel {
 
       const target = (item.url || "").toString().trim();
       if (!target) return;
-
-      if (handleSubscriptionResourceUrl(target)) return;
 
       if (item.openInNewTab) window.open(target, "_blank");
       else window.location.href = target;
