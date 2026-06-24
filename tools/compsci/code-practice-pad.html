@@ -1,37 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Code Practice Pad | StudyBase Tools</title>
-  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting... | StudyBase</title>
+  <script>
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
+
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
+      }
+      window.location.replace(redirectUrl);
+    })();
+  </script>
 </head>
 <body>
-  <div class="sbx-shell" style="max-width:860px;padding:1.5rem 1rem 3rem;">
-    <a href="/tools/compsci/" style="color:#64748b;font-size:0.9rem;">← CS</a>
-    <div style="margin:1rem 0 1.3rem;display:flex;gap:10px;align-items:center;">
-      <i data-lucide="code-2" style="width:28px;height:28px;color:#0ea5e9;"></i>
-      <h1 style="font-size:1.85rem;font-weight:700;margin:0;">Code Practice Pad</h1>
-    </div>
-    <div style="background:white;border:1px solid #e2e8f0;border-radius:14px;padding:1.15rem;">
-      <textarea id="codepad" style="width:100%;height:180px;font-family:monospace;border:1px solid #cbd5e1;border-radius:10px;padding:11px;" placeholder="Write Python or pseudocode here...&#10;def factorial(n):&#10;    if n &lt;= 1: return 1&#10;    return n * factorial(n-1)"></textarea>
-      <div style="display:flex;gap:8px;margin-top:10px;">
-        <button onclick="runCodeSim()" style="padding:9px 18px;background:#0f172a;color:white;border-radius:11px;font-weight:700;">Run (simulated)</button>
-        <button onclick="document.getElementById('codepad').value=''" style="padding:9px 14px;border:1px solid #cbd5e1;border-radius:11px;">Clear</button>
-      </div>
-      <div id="code-out" style="margin-top:10px;padding:9px;background:#f8fafc;border-radius:9px;font-family:monospace;display:none;"></div>
-    </div>
+  <div style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 50px; color: #334155;">
+    <h2>Redirecting you to the remastered StudyBase Tools Workspace...</h2>
+    <p>If you are not automatically redirected, <a id="redirect-link" href="/tools/index.html" style="color: #2563eb; text-decoration: underline;">click here</a>.</p>
   </div>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="/assets/js/layout/navbar.js" defer></script>
-  <script src="/assets/js/layout/footer.js" defer></script>
   <script>
-    lucide.createIcons();
-    function runCodeSim() {
-      const out = document.getElementById('code-out');
-      out.style.display = 'block';
-      out.textContent = '> Output: (simulated) — check logic on paper too.';
-    }
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
+
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
+      }
+      document.getElementById('redirect-link').href = redirectUrl;
+    })();
   </script>
 </body>
 </html>

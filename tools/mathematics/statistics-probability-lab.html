@@ -1,42 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Statistics &amp; Probability Lab | StudyBase Tools</title>
-  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting... | StudyBase</title>
+  <script>
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
+
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
+      }
+      window.location.replace(redirectUrl);
+    })();
+  </script>
 </head>
 <body>
-  <div class="sbx-shell" style="max-width:860px;padding:1.5rem 1rem 3rem;">
-    <a href="/tools/mathematics/" style="color:#64748b;font-size:0.9rem;">← Mathematics</a>
-    <div style="margin:1rem 0 1.3rem;display:flex;gap:10px;align-items:center;">
-      <i data-lucide="bar-chart-2" style="width:28px;height:28px;color:#0ea5e9;"></i>
-      <h1 style="font-size:1.85rem;font-weight:700;margin:0;">Statistics &amp; Probability Lab</h1>
-    </div>
-
-    <div style="background:white;border:1px solid #e2e8f0;border-radius:14px;padding:1.15rem;">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;">
-        <div><label style="font-size:0.78rem;font-weight:700;">Mean (μ)</label><input id="mean" value="50" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:9px;"></div>
-        <div><label style="font-size:0.78rem;font-weight:700;">SD (σ)</label><input id="sd" value="8" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:9px;"></div>
-        <div><label style="font-size:0.78rem;font-weight:700;">x value</label><input id="xval" value="62" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:9px;"></div>
-      </div>
-      <button onclick="normalProb()" style="margin-top:12px;padding:9px 18px;background:#0f172a;color:white;border-radius:11px;font-weight:700;">Normal: P(X &lt; x)</button>
-      <div id="stats-out" style="margin-top:12px;padding:11px;background:#f8fafc;border-radius:10px;min-height:48px;"></div>
-    </div>
+  <div style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 50px; color: #334155;">
+    <h2>Redirecting you to the remastered StudyBase Tools Workspace...</h2>
+    <p>If you are not automatically redirected, <a id="redirect-link" href="/tools/index.html" style="color: #2563eb; text-decoration: underline;">click here</a>.</p>
   </div>
-
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="/assets/js/layout/navbar.js" defer></script>
-  <script src="/assets/js/layout/footer.js" defer></script>
   <script>
-    lucide.createIcons();
-    function normalProb() {
-      const mu = parseFloat(document.getElementById('mean').value);
-      const sigma = parseFloat(document.getElementById('sd').value);
-      const x = parseFloat(document.getElementById('xval').value);
-      const z = (x - mu) / sigma;
-      document.getElementById('stats-out').innerHTML = 'z = ' + z.toFixed(2) + '<br>Use tables or calculator for Φ(z). On paper always show working.';
-    }
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
+
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
+      }
+      document.getElementById('redirect-link').href = redirectUrl;
+    })();
   </script>
 </body>
 </html>

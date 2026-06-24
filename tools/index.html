@@ -234,6 +234,95 @@
         </div>
       </div>
     </section>
+    </section>
+
+    <!-- Questionnaire Section -->
+    <section id="tool-questionnaire" class="tools-wrap my-8 hidden">
+      <div class="bg-white border border-slate-200/80 rounded-[2.2rem] p-8 shadow-xl max-w-2xl mx-auto relative overflow-hidden">
+        <!-- Progress bar -->
+        <div class="w-full h-1.5 bg-slate-100 rounded-full mb-6 overflow-hidden">
+          <div id="quest-progress" class="h-full bg-teal-500 transition-all duration-300" style="width: 33%"></div>
+        </div>
+
+        <!-- Step 1 -->
+        <div id="quest-step-1" class="quest-step space-y-6">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-teal-600">Step 1 of 3</span>
+          <h2 class="text-2xl font-black text-slate-900 tracking-tight">What is your main study objective today?</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button class="quest-opt p-4 border border-slate-200 rounded-2xl text-left hover:border-teal-500 hover:bg-teal-50/20 transition-all" data-step="1" data-val="planning">
+              <strong class="block text-slate-800 text-sm">Session Planning &amp; Time</strong>
+              <span class="text-[11px] text-slate-500 mt-1 block">Organize sessions, timetables, and calendars</span>
+            </button>
+            <button class="quest-opt p-4 border border-slate-200 rounded-2xl text-left hover:border-teal-500 hover:bg-teal-50/20 transition-all" data-step="1" data-val="mathematics">
+              <strong class="block text-slate-800 text-sm">Maths &amp; Calculations</strong>
+              <span class="text-[11px] text-slate-500 mt-1 block">Solvers, graphs, calculus, and stats labs</span>
+            </button>
+            <button class="quest-opt p-4 border border-slate-200 rounded-2xl text-left hover:border-teal-500 hover:bg-teal-50/20 transition-all" data-step="1" data-val="sciences">
+              <strong class="block text-slate-800 text-sm">Sciences &amp; Practical Labs</strong>
+              <span class="text-[11px] text-slate-500 mt-1 block">Physics formulas, pH, bio respiration loops</span>
+            </button>
+            <button class="quest-opt p-4 border border-slate-200 rounded-2xl text-left hover:border-teal-500 hover:bg-teal-50/20 transition-all" data-step="1" data-val="humanities">
+              <strong class="block text-slate-800 text-sm">Essays &amp; Humanities</strong>
+              <span class="text-[11px] text-slate-500 mt-1 block">Essay mapping, history arguments, politics, business</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div id="quest-step-2" class="quest-step space-y-6 hidden">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-teal-600">Step 2 of 3</span>
+          <h2 class="text-2xl font-black text-slate-900 tracking-tight">How much time do you have for study?</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <button class="quest-opt p-4 border border-slate-200 rounded-2xl text-left hover:border-teal-500 hover:bg-teal-50/20 transition-all" data-step="2" data-val="short">
+              <strong class="block text-slate-800 text-sm">Under 30 mins</strong>
+              <span class="text-[10px] text-slate-500 mt-1 block">Quick calculator or process checks</span>
+            </button>
+            <button class="quest-opt p-4 border border-slate-200 rounded-2xl text-left hover:border-teal-500 hover:bg-teal-50/20 transition-all" data-step="2" data-val="medium">
+              <strong class="block text-slate-800 text-sm">30 - 90 mins</strong>
+              <span class="text-[10px] text-slate-500 mt-1 block">Session builders or timed essays</span>
+            </button>
+            <button class="quest-opt p-4 border border-slate-200 rounded-2xl text-left hover:border-teal-500 hover:bg-teal-50/20 transition-all" data-step="2" data-val="long">
+              <strong class="block text-slate-800 text-sm">90+ mins</strong>
+              <span class="text-[10px] text-slate-500 mt-1 block">Full dashboards and timed splitting</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div id="quest-step-3" class="quest-step space-y-6 hidden">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-teal-600">Step 3 of 3</span>
+          <h2 class="text-2xl font-black text-slate-900 tracking-tight">Select your main subject area:</h2>
+          <div class="grid grid-cols-3 gap-2" id="quest-subj-chips">
+            ${["Maths", "Physics", "Chemistry", "Biology", "English", "History", "Geography", "Politics", "EPQ"].map(subj => 
+              `<button class="subj-chip p-2.5 border border-slate-200 rounded-xl hover:border-teal-500 text-[11px] font-bold text-slate-700 bg-slate-50" data-subj="${subj}">${subj}</button>`
+            ).join('')}
+          </div>
+          <button id="quest-finish" class="w-full py-3.5 bg-teal-600 hover:bg-teal-700 text-white rounded-2xl font-bold text-xs transition-all uppercase tracking-wider">Show Recommended Tools</button>
+        </div>
+
+        <!-- Skip button -->
+        <div class="mt-8 pt-4 border-t border-slate-100 flex justify-between items-center">
+          <span class="text-[11px] text-slate-400">Tailored by StudyBase</span>
+          <button id="quest-skip" class="text-xs font-bold text-slate-400 hover:text-slate-600">Skip questionnaire &rarr;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recommended Section -->
+    <section id="recommended-tools-section" class="tools-wrap my-8 hidden">
+      <div class="bg-gradient-to-br from-teal-500/5 to-indigo-500/5 border border-slate-200/80 rounded-[2.2rem] p-6 shadow-sm">
+        <div class="flex justify-between items-center mb-6">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-teal-500 animate-pulse"></span>
+            <h2 class="text-lg font-black text-slate-900 tracking-tight">Recommended for you</h2>
+          </div>
+          <button id="retake-quest-btn" class="text-xs font-bold text-teal-600 hover:text-teal-700 flex items-center gap-1"><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Retake Questionnaire</button>
+        </div>
+        <div id="recommended-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </section>
 
     <nav class="category-nav" aria-label="Tool categories">
       <div class="tools-wrap category-nav-inner">
@@ -309,7 +398,7 @@
         <div class="tool-grid">
           <a class="tool-card" style="--accent:#7c3aed" data-tool-card data-category="languages" href="/tools/languages/epq-planner.html"><span class="tool-icon"><i data-lucide="notebook-pen"></i></span><h3>EPQ Planner</h3><p>Manage your question, research log, deadlines and presentation preparation.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
           <a class="tool-card" style="--accent:#2563eb" data-tool-card data-category="languages" href="/tools/languages/french-oral-prep.html"><span class="tool-icon"><i data-lucide="mic-2"></i></span><h3>French Oral Prep</h3><p>Practise timed cards, opinion phrases and photo-card responses.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
-          <a class="tool-card" style="--accent:#d97706" data-tool-card data-category="languages" href="/tools/languages/german-oral-prep.html"><span class="tool-icon"><i data-lucide="mic-2"></i></span><h3>German Oral Prep</h3><p>Work through speaking cards, tense drills and role-play scenarios.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
+          <a class="tool-card" style="--accent:#d97706" data-tool-card data-category="languages" href="/tools/languages/german-oral-prep.html"><span class="tool-icon"><i data-lucide="mic-2"></i></span><h3>German Oral Prep</h3><p>Work through speaking cards, tenses drills and role-play scenarios.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
           <a class="tool-card" style="--accent:#e11d48" data-tool-card data-category="languages" href="/tools/languages/spanish-oral-prep.html"><span class="tool-icon"><i data-lucide="mic-2"></i></span><h3>Spanish Oral Prep</h3><p>Prepare IR responses, idioms and unpredictable conversation questions.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
           <a class="tool-card" style="--accent:#059669" data-tool-card data-category="languages" href="/tools/languages/university-course-matcher.html"><span class="tool-icon"><i data-lucide="graduation-cap"></i></span><h3>University Course Matcher</h3><p>Compare courses by entry requirements, modules and likely outcomes.</p><span class="tool-open">Open tool <i data-lucide="arrow-up-right"></i></span></a>
         </div>
@@ -322,11 +411,32 @@
         <div class="docs-preview" aria-hidden="true"><div class="docs-preview-bar"><i></i><i></i><i></i></div><div class="docs-paper"><div class="docs-line title"></div><div class="docs-line"></div><div class="docs-line"></div><div class="docs-highlight"></div><div class="docs-line short"></div><div class="docs-line"></div></div></div>
       </aside>
     </div>
+
+    <!-- Workspace Modal -->
+    <div id="tool-workspace-overlay" class="fixed inset-0 z-50 bg-slate-950/40 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+      <div class="bg-slate-50 border border-slate-200 rounded-[2.5rem] w-full max-w-5xl h-[88vh] flex flex-col shadow-2xl overflow-hidden relative">
+        <header class="bg-white border-b border-slate-200/80 px-6 py-4 flex justify-between items-center shrink-0">
+          <div class="flex items-center gap-3">
+            <div id="workspace-icon-box" class="w-10 h-10 rounded-xl flex items-center justify-center border text-slate-700 bg-slate-50">
+              <i id="workspace-icon" data-lucide="help-circle"></i>
+            </div>
+            <div>
+              <h2 id="workspace-title" class="font-black text-slate-900 tracking-tight text-lg">Tool Workspace</h2>
+              <span id="workspace-category" class="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">Workspace</span>
+            </div>
+          </div>
+          <button id="workspace-close-btn" class="w-8 h-8 rounded-lg hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+        </header>
+        <div id="workspace-body" class="flex-grow p-6 overflow-y-auto"></div>
+      </div>
+    </div>
   </main>
 
+  <script src="/assets/js/tools/toolApps.js"></script>
   <script>
     if (window.lucide) window.lucide.createIcons();
 
+    // Elements
     const searchInput = document.getElementById("global-search");
     const cards = Array.from(document.querySelectorAll("[data-tool-card]"));
     const sections = Array.from(document.querySelectorAll("[data-category-section]"));
@@ -335,6 +445,228 @@
     const emptyState = document.querySelector(".tools-empty");
     let activeCategory = "all";
 
+    // Questionnaire Elements
+    const questSection = document.getElementById("tool-questionnaire");
+    const recSection = document.getElementById("recommended-tools-section");
+    const recGrid = document.getElementById("recommended-grid");
+    const progressFill = document.getElementById("quest-progress");
+    const steps = [
+      document.getElementById("quest-step-1"),
+      document.getElementById("quest-step-2"),
+      document.getElementById("quest-step-3")
+    ];
+
+    let questStep = 0;
+    let answers = { category: '', time: '', subjects: [] };
+
+    // Initialize Questionnaire
+    function initQuestionnaire() {
+      const completed = localStorage.getItem('sb_tools_quest_completed') === 'true';
+      const skipped = localStorage.getItem('sb_tools_quest_skipped') === 'true';
+
+      if (!completed && !skipped) {
+        questSection.classList.remove('hidden');
+      } else if (completed) {
+        let savedAnswers = JSON.parse(localStorage.getItem('sb_tools_answers') || '{}');
+        answers = savedAnswers;
+        showRecommendations();
+      }
+    }
+
+    // Step logic
+    document.querySelectorAll('.quest-opt').forEach(opt => {
+      opt.onclick = () => {
+        let step = parseInt(opt.dataset.step);
+        let val = opt.dataset.val;
+
+        if (step === 1) {
+          answers.category = val;
+          goToStep(1);
+        } else if (step === 2) {
+          answers.time = val;
+          goToStep(2);
+        }
+      };
+    });
+
+    // Subject Chips multi-select
+    document.querySelectorAll('.subj-chip').forEach(chip => {
+      chip.onclick = () => {
+        let subj = chip.dataset.subj;
+        chip.classList.toggle('bg-teal-50');
+        chip.classList.toggle('border-teal-500');
+        chip.classList.toggle('text-teal-700');
+
+        if (answers.subjects.includes(subj)) {
+          answers.subjects = answers.subjects.filter(s => s !== subj);
+        } else {
+          answers.subjects.push(subj);
+        }
+      };
+    });
+
+    document.getElementById('quest-finish').onclick = () => {
+      localStorage.setItem('sb_tools_quest_completed', 'true');
+      localStorage.setItem('sb_tools_answers', JSON.stringify(answers));
+      questSection.classList.add('hidden');
+      showRecommendations();
+    };
+
+    document.getElementById('quest-skip').onclick = () => {
+      localStorage.setItem('sb_tools_quest_skipped', 'true');
+      questSection.classList.add('hidden');
+    };
+
+    document.getElementById('retake-quest-btn').onclick = () => {
+      localStorage.removeItem('sb_tools_quest_completed');
+      localStorage.removeItem('sb_tools_answers');
+      recSection.classList.add('hidden');
+      questSection.classList.remove('hidden');
+      goToStep(0);
+      document.querySelectorAll('.subj-chip').forEach(c => {
+        c.className = "subj-chip p-2.5 border border-slate-200 rounded-xl hover:border-teal-500 text-[11px] font-bold text-slate-700 bg-slate-50";
+      });
+      answers = { category: '', time: '', subjects: [] };
+    };
+
+    function goToStep(idx) {
+      steps.forEach((step, sIdx) => {
+        step.classList.toggle('hidden', sIdx !== idx);
+      });
+      questStep = idx;
+      progressFill.style.width = `${((idx + 1) / 3) * 100}%`;
+    }
+
+    function showRecommendations() {
+      recGrid.innerHTML = '';
+      let matches = cards.filter(card => {
+        let cat = card.dataset.category;
+        let text = card.textContent.toLowerCase();
+        
+        let catMatch = !answers.category || answers.category === 'all' || cat === answers.category;
+        let subjMatch = !answers.subjects || answers.subjects.length === 0 || answers.subjects.some(subj => text.includes(subj.toLowerCase()));
+
+        return catMatch && subjMatch;
+      });
+
+      if (matches.length === 0) {
+        matches = cards.slice(0, 3); // Fallback
+      }
+
+      // Render top 3 recommendations
+      matches.slice(0, 3).forEach(card => {
+        let clone = card.cloneNode(true);
+        clone.className = clone.className.replace('is-hidden', '');
+        // Add recommended badge
+        let badge = document.createElement('span');
+        badge.className = "absolute top-2 right-3 py-0.5 px-2 rounded-full bg-teal-50 text-teal-600 font-extrabold text-[9px] uppercase tracking-wider border border-teal-100 z-10";
+        badge.textContent = "Match";
+        clone.appendChild(badge);
+        recGrid.appendChild(clone);
+      });
+
+      // Re-bind click events on cloned recommended cards
+      recGrid.querySelectorAll('[data-tool-card]').forEach(card => {
+        card.onclick = (e) => {
+          e.preventDefault();
+          let key = getToolKeyFromHref(card.getAttribute('href'));
+          openTool(key);
+        };
+      });
+
+      recSection.classList.remove('hidden');
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    // Workspace Logic
+    const overlay = document.getElementById("tool-workspace-overlay");
+    const workspaceTitle = document.getElementById("workspace-title");
+    const workspaceCategory = document.getElementById("workspace-category");
+    const workspaceIcon = document.getElementById("workspace-icon");
+    const workspaceBody = document.getElementById("workspace-body");
+    const closeBtn = document.getElementById("workspace-close-btn");
+
+    function getToolKeyFromHref(href) {
+      let parts = href.split('/');
+      let filename = parts[parts.length - 1];
+      return filename.replace('.html', '');
+    }
+
+    function openTool(key) {
+      const tool = window.TOOL_APPS[key];
+      if (!tool) {
+        alert("This tool could not be loaded locally.");
+        return;
+      }
+
+      workspaceTitle.textContent = tool.title;
+      workspaceCategory.textContent = tool.category.toUpperCase();
+      workspaceIcon.setAttribute('data-lucide', tool.icon || 'help-circle');
+      workspaceBody.innerHTML = '';
+      
+      overlay.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+
+      tool.render(workspaceBody);
+
+      if (window.lucide) window.lucide.createIcons();
+      window.location.hash = `tool-${key}`;
+    }
+
+    function closeTool() {
+      overlay.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+      workspaceBody.innerHTML = '';
+      window.location.hash = '';
+    }
+
+    closeBtn.onclick = closeTool;
+
+    // Bind cards to open dynamic workspace
+    cards.forEach(card => {
+      card.onclick = (e) => {
+        e.preventDefault();
+        let key = getToolKeyFromHref(card.getAttribute('href'));
+        openTool(key);
+      };
+    });
+
+    // Hash routing
+    function handleHashRoute() {
+      let hash = window.location.hash;
+      if (hash.startsWith('#tool-')) {
+        let key = hash.replace('#tool-', '');
+        openTool(key);
+      } else {
+        overlay.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      }
+    }
+
+    window.addEventListener('hashchange', handleHashRoute);
+
+    // Query parameters route
+    const params = new URLSearchParams(window.location.search);
+    const initialCategory = params.get('category');
+    if (initialCategory) {
+      activeCategory = initialCategory;
+      chips.forEach((item) => {
+        const active = item.dataset.filter === activeCategory;
+        item.classList.toggle("active", active);
+        item.setAttribute("aria-pressed", String(active));
+      });
+    }
+
+    const initialTool = params.get('tool');
+    if (initialTool) {
+      openTool(initialTool);
+    } else {
+      handleHashRoute();
+    }
+
+    initQuestionnaire();
+
+    // Standard filter & search logic
     function updateTools() {
       const term = searchInput.value.toLowerCase().trim();
       let visible = 0;

@@ -1274,4 +1274,511 @@ window.SUPPORT_ARTICLES = {
       ],
     },
   },
+  "subscriptions": {
+    path: "/support/subscriptions.html",
+    title: "Subscriptions and billing",
+    eyebrow: "Billing",
+    icon: "fa-credit-card",
+    accent: "purple",
+    description: "Understand optional paid plans, credit packs, Sellbase payments, and UK consumer rights.",
+    intro: "StudyBase offers optional paid plans and credit packs to enhance your study workspace. This article explains how purchases work, how billing is handled, and details your UK statutory rights.",
+    readTime: "5 min read",
+    category: "Billing & Plans",
+    updated: "June 2026",
+    summary: "Plans do not auto-renew. All transactions are handled securely through Sellbase.gg. You have cancellation rights under UK law, subject to service usage.",
+    sections: [
+      {
+        id: "available-plans",
+        title: "Available plans & credit packs",
+        paragraphs: [
+          "StudyBase offers several options to extend your study dashboard features, which can be purchased for one-month or one-year terms. Plans do not renew automatically — once the term ends, access simply reverts to the standard tier unless you make a new purchase."
+        ],
+        cards: [
+          {
+            title: "Monthly Add-ons",
+            body: "Leaderboards Plus, Proxy Plus, Music Plus, and Chat Plus are one-month standalone purchases.",
+            icon: "fa-calendar-days"
+          },
+          {
+            title: "Annual Domains",
+            body: "Custom Domain and All Access + Domain are one-year terms for approved TLD registries.",
+            icon: "fa-globe"
+          },
+          {
+            title: "AI Credit Pack",
+            body: "£4.99 one-off purchase for 200,000 AI credits (consumed per message, separate from All Access).",
+            icon: "fa-sparkles"
+          }
+        ],
+        columns: 3
+      },
+      {
+        id: "payment-and-fulfilment",
+        title: "Payment processing & Sellbase",
+        bullets: [
+          "All transactions and checkouts are handled through <a href='https://sellbase.gg/' target='_blank' rel='noopener noreferrer'>Sellbase.gg</a>.",
+          "If you encounter a billing error, download the receipt and use the Sellbase order route or submit a ticket through our <a href='/support/contact.html'>Contact page</a>.",
+          "Paid features like custom domains are subject to registry availability and proxy access is capped by fair-use limits to ensure service stability."
+        ]
+      },
+      {
+        id: "consumer-rights",
+        title: "UK consumer rights & cancellation",
+        paragraphs: [
+          "Under the Consumer Contracts Regulations 2013, UK consumers have a statutory 14-day cooling-off period to cancel digital purchases and receive a refund without giving a reason.",
+          "<b>Important exception:</b> If you begin accessing the paid service (such as sending messages that consume AI credits, using proxies, or configuring your custom domain) within the 14-day window, you give express consent to begin performance immediately and acknowledge that you lose your cancellation rights."
+        ]
+      }
+    ],
+    related: ["getting-started", "account", "faq"],
+    sidebarCard: {
+      eyebrow: "Statutory rights",
+      title: "Cooling-off window",
+      body: "UK consumers get a 14-day cooling-off period to cancel, but using the service immediately starts digital performance and waives this cancellation window.",
+      href: "/support/contact.html",
+      label: "Ask a billing question"
+    },
+    cta: {
+      title: "Need payment assistance?",
+      body: "If a checkout transaction fails or you need a refund check, get in touch with our billing team.",
+      buttons: [
+        { label: "Contact support", href: "/support/contact.html", primary: true },
+        { label: "Terms of Service", href: "/legal/tos.html" }
+      ]
+    }
+  },
+  "moderation": {
+    path: "/support/moderation.html",
+    title: "Account restrictions and moderation",
+    eyebrow: "Moderation",
+    icon: "fa-shield-halved",
+    accent: "rose",
+    description: "Understand why account safety locks happen, IP restrictions, and how bans are enforced.",
+    intro: "To keep the StudyBase community safe and maintain platform stability, we monitor sessions and enforce acceptable-use rules. This guide explains restrictions, security locks, and how enforcement works.",
+    readTime: "4 min read",
+    category: "Account safety",
+    updated: "June 2026",
+    summary: "IP safety locks are automated filters for security checks. Permanent bans are manual administrator actions and do not have an appeal process.",
+    sections: [
+      {
+        id: "types-of-locks",
+        title: "Security locks vs. Permanent bans",
+        cards: [
+          {
+            title: "Session Expiry",
+            body: "Normal account sessions automatically expire after 7 days for security, requiring a simple re-login.",
+            icon: "fa-clock"
+          },
+          {
+            title: "IP Safety Lock",
+            body: "Broad access across multiple IP addresses or shared credentials triggers a temporary restriction for security review.",
+            icon: "fa-network-wired"
+          },
+          {
+            title: "Permanent Ban",
+            body: "Enforced by administrators for severe or repeated violations of our acceptable-use terms.",
+            icon: "fa-ban"
+          }
+        ],
+        columns: 3
+      },
+      {
+        id: "acceptable-use",
+        title: "Acceptable use rules",
+        bullets: [
+          "Do not share account credentials or browser profiles with other users.",
+          "Do not scrape StudyBase resources at scale, overload, or bypass client-side moderation controls.",
+          "Avoid registering under-13 accounts — the beta program requires all users to be 13 or older."
+        ]
+      },
+      {
+        id: "appealing-restrictions",
+        title: "Appealing restrictions",
+        paragraphs: [
+          "Temporary IP blocks resolve automatically after the security check passes. Normal session resets can be completed by logging in again.",
+          "Permanent bans are administrative actions. There is no public appeal form or appeal endpoint available, as detailed in Section 3 of the Terms of Service. This does not impact your statutory UK GDPR data rights."
+        ]
+      }
+    ],
+    related: ["account", "login", "privacy"],
+    sidebarCard: {
+      eyebrow: "Policy enforcement",
+      title: "No public appeals",
+      body: "Permanent bans represent administrator decisions and do not have an appeal process, but you retain full statutory rights.",
+      href: "/legal/tos.html",
+      label: "Read Terms of Service"
+    },
+    cta: {
+      title: "Need security clarification?",
+      body: "If you think your session was locked by mistake or need more details on access, contact us.",
+      buttons: [
+        { label: "Contact support", href: "/support/contact.html", primary: true },
+        { label: "Acceptable Use Policy", href: "/legal/tos.html#use" }
+      ]
+    }
+  },
+  "examboards": {
+    path: "/support/examboards.html",
+    title: "Exam boards specification guide",
+    eyebrow: "Exam Boards",
+    icon: "fa-graduation-cap",
+    accent: "blue",
+    description: "Understand AQA, Pearson Edexcel, and OCR MEI workflows, assessment styles, and specifications.",
+    intro: "StudyBase supports multiple UK exam boards to help you revise effectively. This guide outlines the key specifications, assessment styles, and structures for AQA, Pearson Edexcel, and OCR MEI, so you can tailor your revision to the exact requirements of your examiner.",
+    readTime: "5 min read",
+    category: "Resource support",
+    updated: "June 2026",
+    summary: "Different exam boards test material in different ways. Select the correct board filter in the Resource Vault to view matching past papers, practice booklets, and video walkthroughs.",
+    sections: [
+      {
+        id: "board-overview",
+        title: "UK exam boards comparison",
+        paragraphs: [
+          "Different exam boards test material in different ways. Understanding your board's structure ensures you don't waste time studying the wrong content or answering questions in an incorrect format."
+        ],
+        cards: [
+          {
+            title: "AQA",
+            body: "AQA focuses on clear, structured questions. Mark schemes are highly keyword-focused, requiring exact vocabulary.",
+            icon: "fa-book-open"
+          },
+          {
+            title: "Pearson Edexcel",
+            body: "Edexcel papers often feature real-world context and longer, multi-step problem solving.",
+            icon: "fa-calculator"
+          },
+          {
+            title: "OCR MEI",
+            body: "OCR and MEI pathways place heavy emphasis on mathematical modeling, deep comprehension, and data analysis.",
+            icon: "fa-chart-line"
+          }
+        ],
+        columns: 3
+      },
+      {
+        id: "assessment-styles",
+        title: "Assessment styles & structures",
+        bullets: [
+          "<b>AQA</b>: Highly structured, step-by-step questions. Look for precise command words like 'describe', 'explain', or 'evaluate'.",
+          "<b>Pearson Edexcel</b>: Context-heavy questions. You will need to extract numerical or qualitative data from lengthy scenarios.",
+          "<b>OCR MEI</b>: Large data sets (LDS) and advanced comprehension sections are standard, testing your ability to apply theory to unfamiliar scenarios."
+        ]
+      },
+      {
+        id: "spec-matching",
+        title: "Matching specifications on StudyBase",
+        paragraphs: [
+          "Our resource vault organizes materials by topic codes and specifications. Make sure you select the correct board filter in the Resource Vault to view matching past papers, practice booklets, and video walkthroughs."
+        ]
+      }
+    ],
+    related: ["getting-started", "resources", "marking-guide"],
+    sidebarCard: {
+      eyebrow: "Specifications",
+      title: "Official specifications",
+      body: "Always cross-reference your revision with the official specifications from your exam board's website.",
+      href: "/support/resources.html",
+      label: "Browse resources"
+    },
+    cta: {
+      title: "Need help finding resources?",
+      body: "If you cannot find past papers or notes for your specific exam board, let us know and we'll help you locate them.",
+      buttons: [
+        { label: "Contact support", href: "/support/contact.html", primary: true },
+        { label: "FAQs", href: "/faq.html" }
+      ]
+    }
+  },
+  "marking-guide": {
+    path: "/support/marking-guide.html",
+    title: "Strict marking method",
+    eyebrow: "Marking Method",
+    icon: "fa-marker",
+    accent: "emerald",
+    description: "Learn how to grade past papers strictly, match examiner keywords, and score your performance accurately.",
+    intro: "To score highly in your exams, you need to think like an examiner. The strict marking method trains you to evaluate your answers honestly, identify key phrases in mark schemes, and avoid giving yourself 'benefit of the doubt' marks.",
+    readTime: "4 min read",
+    category: "Resource support",
+    updated: "June 2026",
+    summary: "When self-grading, keyword matching is mandatory. Avoid giving leniency for calculation errors or ambiguous answers to identify your true weaknesses.",
+    sections: [
+      {
+        id: "marking-philosophy",
+        title: "Why mark strictly?",
+        paragraphs: [
+          "When self-grading, it's easy to be lenient. However, real examiners follow strict criteria. Marking your papers strictly ensures you identify your true weaknesses before the exam day."
+        ],
+        cards: [
+          {
+            title: "Keyword Matching",
+            body: "If the mark scheme underlines a word, it is mandatory. No synonyms will get the mark.",
+            icon: "fa-magnifying-glass"
+          },
+          {
+            title: "Clear Workings",
+            body: "For calculation questions, marks are awarded for intermediate steps. Show your work clearly.",
+            icon: "fa-list-ol"
+          },
+          {
+            title: "Zero Lenience",
+            body: "If your answer is ambiguous, award zero marks. This forces you to write clear, precise responses.",
+            icon: "fa-circle-xmark"
+          }
+        ],
+        columns: 3
+      },
+      {
+        id: "examiner-keywords",
+        title: "Understanding mark schemes",
+        bullets: [
+          "<b>Underlined words</b>: These are essential. If you omit them, you score zero for that point.",
+          "<b>Parentheses ( )</b>: Words in brackets are optional but help provide context.",
+          "<b>Slashes /</b>: Indicates alternative acceptable terms or phrases.",
+          "<b>c.a.o. / e.c.f.</b>: Correct Answer Only (c.a.o.) means no leniency for arithmetic errors. Error Carried Forward (e.c.f.) means you can earn subsequent marks if your method was correct despite an earlier error."
+        ]
+      },
+      {
+        id: "marking-workflow",
+        title: "Your self-marking routine",
+        orderedList: [
+          "Complete the paper under timed conditions without looking at notes.",
+          "Take a 10-minute break to clear your mind before marking.",
+          "Mark your paper in a different color pen, comparing your answer line-by-line to the official mark scheme.",
+          "Log every lost mark in your Mistake Log along with the exact keyword or step you missed."
+        ]
+      }
+    ],
+    related: ["mistake-logging", "examboards", "resources"],
+    sidebarCard: {
+      eyebrow: "Best practices",
+      title: "Examiner mindset",
+      body: "Examiners mark thousands of scripts. They scan for keywords. Make your answers easy to mark by highlighting or underlining key terms and final answers.",
+      href: "/support/getting-started.html",
+      label: "Revision basics"
+    },
+    cta: {
+      title: "Struggling with a mark scheme?",
+      body: "If a mark scheme is confusing or you aren't sure if your alternative answer is correct, consult our support community or ask a teacher.",
+      buttons: [
+        { label: "Contact support", href: "/support/contact.html", primary: true }
+      ]
+    }
+  },
+  "mistake-logging": {
+    path: "/support/mistake-logging.html",
+    title: "Mistake logging & repairs",
+    eyebrow: "Mistake Logging",
+    icon: "fa-clipboard-list",
+    accent: "purple",
+    description: "How to log errors, identify topic codes, and execute micro-sessions to fix academic weaknesses.",
+    intro: "The fastest way to improve your grades is to focus on what you get wrong. By maintaining a structured Mistake Log, you can identify recurring patterns in your errors and run targeted micro-sessions to repair those specific gaps.",
+    readTime: "5 min read",
+    category: "Resource support",
+    updated: "June 2026",
+    summary: "Record lost marks with topic codes, analyze error types, and re-attempt missed questions after 24 hours to ensure true understanding.",
+    sections: [
+      {
+        id: "mistake-types",
+        title: "Categorizing your mistakes",
+        paragraphs: [
+          "Not all mistakes are the same. Before you can repair a weakness, you need to understand why you made the error. Use the following three categories:"
+        ],
+        cards: [
+          {
+            title: "Knowledge Gaps",
+            body: "You did not know the material, formula, or concept required to answer the question.",
+            icon: "fa-book"
+          },
+          {
+            title: "Execution Errors",
+            body: "You knew the concept but made an arithmetic slip, misread the question, or ran out of time.",
+            icon: "fa-bolt-lightning"
+          },
+          {
+            title: "Exam Technique",
+            body: "You knew the material but failed to match the specific keywords required by the mark scheme.",
+            icon: "fa-pen-ruler"
+          }
+        ],
+        columns: 3
+      },
+      {
+        id: "repair-process",
+        title: "The repair loop",
+        orderedList: [
+          "<b>Log it</b>: Record the paper, question number, topic code, and why you lost the mark.",
+          "<b>Understand it</b>: Write out the correct answer and the general rule or formula you missed.",
+          "<b>Re-attempt</b>: Hide the solution and attempt the exact same question again 24 hours later.",
+          "<b>Micro-session</b>: Schedule a 15-minute review session focused entirely on that topic code within the week."
+        ]
+      },
+      {
+        id: "topic-codes",
+        title: "Targeting topic codes",
+        bullets: [
+          "Every question in the StudyBase resource database is tagged with a topic code (e.g., M1 for Mechanics 1, O1 for Organic Chemistry 1).",
+          "When you notice three or more logged mistakes under the same topic code, pause full past paper practice and run targeted topic drills.",
+          "Use our study tools to time your topic drills and keep your sessions focused."
+        ]
+      }
+    ],
+    related: ["marking-guide", "getting-started", "resources"],
+    sidebarCard: {
+      eyebrow: "Methodology",
+      title: "The 24-hour rule",
+      body: "Never log a mistake and assume you understand it just from reading the solution. Re-attempt the question 24 hours later to ensure the knowledge has actually stuck.",
+      href: "/tools/",
+      label: "Open study tools"
+    },
+    cta: {
+      title: "Want to track progress?",
+      body: "Learn how to use our built-in study planner and progress tracker to log your mistakes and coordinate revision sessions.",
+      buttons: [
+        { label: "Contact support", href: "/support/contact.html", primary: true }
+      ]
+    }
+  },
+  "offline-privacy": {
+    path: "/support/offline-privacy.html",
+    title: "Offline & privacy architecture",
+    eyebrow: "Privacy",
+    icon: "fa-lock",
+    accent: "rose",
+    description: "Technical details on browser storage, zero file uploads, local annotators, and database loading.",
+    intro: "Your privacy is our priority. StudyBase is designed with a local-first architecture. This means your files, revision documents, and study data are stored directly inside your browser database and are never uploaded to our servers, keeping your academic work entirely private.",
+    readTime: "4 min read",
+    category: "Privacy and safety",
+    updated: "June 2026",
+    summary: "All study materials are stored client-side in your browser's IndexedDB. Nothing is uploaded to our servers, giving you complete data privacy.",
+    sections: [
+      {
+        id: "local-first",
+        title: "How local storage works",
+        paragraphs: [
+          "Unlike traditional platforms that store your files on cloud servers, StudyBase processes everything on your device. We use advanced browser storage technologies to keep your workspace fast, secure, and available offline."
+        ],
+        cards: [
+          {
+            title: "IndexedDB Storage",
+            body: "Your uploaded PDFs, notes, and study logs are stored in a secure local database (IndexedDB) in your browser.",
+            icon: "fa-database"
+          },
+          {
+            title: "Zero File Uploads",
+            body: "When you import a document into StudyBase, it is parsed locally. Your file contents are never transmitted to our servers.",
+            icon: "fa-upload"
+          },
+          {
+            title: "Local Annotator",
+            body: "Drawing, highlighting, and writing tools run entirely on client-side JavaScript, saving changes instantly to local storage.",
+            icon: "fa-pencil"
+          }
+        ],
+        columns: 3
+      },
+      {
+        id: "offline-capabilities",
+        title: "Working offline",
+        bullets: [
+          "<b>Cached Assets</b>: Core platform files, styles, and tools are cached by your browser, allowing you to load StudyBase without an active internet connection.",
+          "<b>Local Database Access</b>: You can read, edit, and organize all previously imported files while completely offline.",
+          "<b>Syncing & Backups</b>: Because data is stored locally, clearing your browser cache or switching devices will reset your database. We recommend exporting a backup file regularly from your Account settings."
+        ]
+      },
+      {
+        id: "data-privacy-compliance",
+        title: "UK GDPR and data rights",
+        paragraphs: [
+          "Because we do not store your study files on our servers, we cannot access, share, or sell your documents. This privacy-by-design architecture exceeds standard UK GDPR compliance requirements by giving you absolute control over your personal study data."
+        ]
+      }
+    ],
+    related: ["account", "login", "moderation"],
+    sidebarCard: {
+      eyebrow: "Data safety",
+      title: "Browser cache warning",
+      body: "Clear-browsing-data tools or system cleaning utilities can erase your browser's IndexedDB. Always download a backup of your workspace before clearing browser cache.",
+      href: "/support/account.html",
+      label: "Account guide"
+    },
+    cta: {
+      title: "Have privacy concerns?",
+      body: "Read our full Privacy Policy or contact our data protection team if you have questions about how your local database operates.",
+      buttons: [
+        { label: "Terms of Service", href: "/legal/tos.html", primary: true },
+        { label: "Contact support", href: "/support/contact.html" }
+      ]
+    }
+  },
+  "domain-proxy": {
+    path: "/support/domain-proxy.html",
+    title: "Custom domains & proxy configuration",
+    eyebrow: "Custom Domains",
+    icon: "fa-network-wired",
+    accent: "purple",
+    description: "Guide to provisioning custom domains, using proxy tunnels, fair-use limits, and Sellbase registry renewals.",
+    intro: "Students with optional paid subscriptions can host their StudyBase workspace on a custom domain or access resources through secure proxy tunnels. This guide covers how to set up your domain, configure DNS records, and understand subscription renewals.",
+    readTime: "5 min read",
+    category: "Billing & Plans",
+    updated: "June 2026",
+    summary: "Custom domains run on secure routing IPs with Let's Encrypt SSL. Proxies are subject to monthly fair-use bandwidth limits.",
+    sections: [
+      {
+        id: "domain-setup",
+        title: "Provisioning custom domains",
+        paragraphs: [
+          "To connect your custom domain to StudyBase, you must own the domain and configure DNS records to point to our routing network. All custom domains include automated SSL certification."
+        ],
+        cards: [
+          {
+            title: "DNS Configuration",
+            body: "Set up an A record pointing to our routing IP, or a CNAME record pointing to our proxy hostname.",
+            icon: "fa-dns"
+          },
+          {
+            title: "SSL Provisioning",
+            body: "Once DNS propagates, our systems automatically request and renew a free Let's Encrypt SSL certificate.",
+            icon: "fa-shield-halved"
+          },
+          {
+            title: "Sellbase Renewals",
+            body: "Domain bookings are annual. Renewals are handled securely through Sellbase.gg.",
+            icon: "fa-rotate"
+          }
+        ],
+        columns: 3
+      },
+      {
+        id: "proxy-tunnels",
+        title: "Proxy tunnels & fair-use caps",
+        bullets: [
+          "<b>Secure Tunnels</b>: StudyBase provides secure HTTPS proxy tunnels to help bypass local network blocks or restrictions while studying.",
+          "<b>Fair-Use Caps</b>: To maintain high speeds and stability for everyone, proxy traffic is subject to monthly data caps depending on your plan.",
+          "<b>IP Safety Locks</b>: Accessing the proxy from more than three separate geographical locations simultaneously may trigger a temporary session lock for account safety."
+        ]
+      },
+      {
+        id: "billing-integration",
+        title: "Sellbase subscription details",
+        paragraphs: [
+          "All subscriptions are one-time terms and do not auto-renew. You can purchase upgrades or extra AI credits pack (£4.99 for 200,000 credits) at any time. Under UK consumer law, you have a 14-day cooling-off period to cancel your purchase. However, if you configure a custom domain or activate a proxy tunnel, this digital service performance begins immediately, and you waive your right to a refund."
+        ]
+      }
+    ],
+    related: ["subscriptions", "account", "login"],
+    sidebarCard: {
+      eyebrow: "Billing",
+      title: "Annual renewals",
+      body: "Custom domain registrations are valid for exactly 12 months. Sellbase will send a renewal reminder email 14 days before expiration.",
+      href: "/support/subscriptions.html",
+      label: "Billing guide"
+    },
+    cta: {
+      title: "Need configuration help?",
+      body: "DNS settings can be tricky. If your domain is not active after 24 hours, contact our configuration specialists.",
+      buttons: [
+        { label: "Contact support", href: "/support/contact.html", primary: true }
+      ]
+    }
+  }
 };

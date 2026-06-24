@@ -869,6 +869,13 @@
                 linear-gradient(180deg, #f6fbff 0%, #ffffff 42%, #f4f8ff 100%);
         }
 
+        :root.dark body.rgenie-private-resources {
+            background:
+                radial-gradient(circle at 14% 12%, rgba(18, 185, 214, 0.09), transparent 28rem),
+                radial-gradient(circle at 86% 10%, rgba(124, 58, 237, 0.08), transparent 30rem),
+                linear-gradient(180deg, #090e1a 0%, #0d1324 42%, #090e1a 100%);
+        }
+
         body.rgenie-private-resources .rgenie-shell {
             padding-top: 6.4rem;
         }
@@ -880,15 +887,24 @@
         body.rgenie-private-resources #resource-tools-section .rgenie-container {
             width: min(95rem, calc(100% - 3rem));
         }
-body.rgenie-private-resources .rgenie-panel {
+
+        body.rgenie-private-resources .rgenie-panel {
             position: relative;
             overflow: hidden;
-            padding: clamp(1rem, 2vw, 1.35rem);
-            border-radius: 30px;
-            border-color: rgba(148, 163, 184, 0.24);
-            background:
-                linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.93));
-            box-shadow: 0 24px 70px rgba(15,23,42,0.11);
+            padding: clamp(1.25rem, 3vw, 2rem);
+            border-radius: 32px;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 30px 80px rgba(15, 23, 42, 0.08);
+            transition: border-color 0.3s ease;
+        }
+
+        :root.dark body.rgenie-private-resources .rgenie-panel {
+            background: rgba(15, 23, 42, 0.85);
+            border-color: rgba(51, 65, 85, 0.55);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
         }
 
         body.rgenie-private-resources .rgenie-panel::before {
@@ -921,6 +937,10 @@ body.rgenie-private-resources .rgenie-panel {
             font-weight: 950;
         }
 
+        :root.dark .private-vault-intro h2 {
+            color: #f8fafc;
+        }
+
         .private-vault-intro p {
             margin: 0.45rem 0 0;
             max-width: 560px;
@@ -928,6 +948,10 @@ body.rgenie-private-resources .rgenie-panel {
             font-size: 0.94rem;
             font-weight: 720;
             line-height: 1.45;
+        }
+
+        :root.dark .private-vault-intro p {
+            color: #94a3b8;
         }
 
         .resource-warning-card {
@@ -947,24 +971,62 @@ body.rgenie-private-resources .rgenie-panel {
             color: #9f1239 !important;
         }
 
+        :root.dark .resource-warning-danger {
+            background: linear-gradient(135deg, rgba(244, 63, 94, 0.15), rgba(249, 115, 22, 0.1)) !important;
+            border-color: rgba(244, 63, 94, 0.3) !important;
+            color: #fda4af !important;
+        }
+
         .resource-warning-info {
             background: linear-gradient(135deg, #eff6ff, #ecfeff) !important;
             border-color: #bfdbfe !important;
             color: #1e3a8a !important;
         }
 
+        :root.dark .resource-warning-info {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(6, 182, 212, 0.1)) !important;
+            border-color: rgba(59, 130, 246, 0.3) !important;
+            color: #93c5fd !important;
+        }
+
         body.rgenie-private-resources #mainSearchInput {
             min-height: 3.8rem;
             border-radius: 22px;
-            border-color: rgba(148, 163, 184, 0.36);
-            background: rgba(255,255,255,0.96);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 16px 34px rgba(15,23,42,0.07);
-            font-weight: 850;
+            border-color: rgba(148, 163, 184, 0.28);
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+            font-weight: 800;
+            transition: all 0.25s ease;
+        }
+
+        body.rgenie-private-resources #mainSearchInput:hover {
+            border-color: rgba(18,185,214,0.55);
+            background: #ffffff;
+            box-shadow: 0 12px 35px rgba(15,23,42,0.06);
         }
 
         body.rgenie-private-resources #mainSearchInput:focus {
+            border-color: #12b9d6;
+            background: #ffffff;
+            box-shadow: 0 0 0 5px rgba(18,185,214,0.15), 0 18px 45px rgba(15,23,42,0.09);
+        }
+
+        :root.dark body.rgenie-private-resources #mainSearchInput {
+            background: rgba(30, 41, 59, 0.7);
+            border-color: rgba(71, 85, 105, 0.6);
+            color: #f8fafc;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        :root.dark body.rgenie-private-resources #mainSearchInput:hover {
             border-color: rgba(18,185,214,0.7);
-            box-shadow: 0 0 0 5px rgba(18,185,214,0.13), 0 18px 38px rgba(15,23,42,0.10);
+            background: #1e293b;
+        }
+
+        :root.dark body.rgenie-private-resources #mainSearchInput:focus {
+            border-color: #12b9d6;
+            background: #1e293b;
+            box-shadow: 0 0 0 5px rgba(18,185,214,0.2), 0 18px 45px rgba(0, 0, 0, 0.25);
         }
 
         body.rgenie-private-resources #resource-tools-section .max-w-\[95rem\] {
@@ -1161,6 +1223,42 @@ body.rgenie-private-resources .rgenie-panel {
             color: #047857;
             background: rgba(236,253,245,0.9);
             box-shadow: 0 -10px 24px rgba(16,185,129,0.16);
+        }
+
+        /* Colored outlines for popular / site original (labs) resources */
+        .resource-card.resource-card-popular {
+            outline: 2px solid rgba(239, 68, 68, 0.45) !important;
+            outline-offset: -2px;
+        }
+        .resource-card.resource-card-popular:hover {
+            outline-color: rgba(239, 68, 68, 0.75) !important;
+            box-shadow: 0 20px 45px rgba(239, 68, 68, 0.16) !important;
+        }
+
+        .resource-card.resource-card-labs {
+            outline: 2px solid rgba(16, 185, 129, 0.45) !important;
+            outline-offset: -2px;
+        }
+        .resource-card.resource-card-labs:hover {
+            outline-color: rgba(16, 185, 129, 0.75) !important;
+            box-shadow: 0 20px 45px rgba(16, 185, 129, 0.14) !important;
+        }
+
+        /* Hide popular / labs tags by default */
+        .resource-card .resource-tag-popular,
+        .resource-card .resource-tag-labs {
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1), transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        /* Show popular / labs tags on hover */
+        .resource-card:hover .resource-tag-popular,
+        .resource-card:hover .resource-tag-labs {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
         }
 
         .resource-tag-beta {
@@ -2236,10 +2334,17 @@ body.rgenie-private-resources .rgenie-panel {
     <section id="resource-tools-section" class="relative z-20 px-4 mb-8 rgenie-private-only">
         <div class="rgenie-container">
 <div class="rgenie-panel">
-                <div class="private-vault-intro">
+                <div class="private-vault-intro flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full">
                     <div>
                         <h2>Resource vault</h2>
                         <p>Search papers, tools and revision routes from your approved StudyBase workspace.</p>
+                    </div>
+                    <div id="private-resource-counter" class="hidden shrink-0 px-4 py-2 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border border-purple-200/50 text-purple-700 rounded-full text-xs font-black uppercase tracking-wider flex items-center gap-2 shadow-sm dark:from-purple-950/20 dark:to-indigo-950/20 dark:border-purple-900/40 dark:text-purple-300">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+                        </span>
+                        <span id="counter-value">0</span> resources loaded
                     </div>
                 </div>
 
@@ -2408,8 +2513,14 @@ body.rgenie-private-resources .rgenie-panel {
 
             <div id="resource-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 <div class="col-span-full flex flex-col items-center justify-center py-24">
-                    <div class="w-16 h-16 border-4 border-slate-200 border-t-blue-600 rounded-full animate-spin mb-6"></div>
-                    <p class="text-slate-500 font-black uppercase tracking-widest text-xs animate-pulse">Checking StudyBase resources...</p>
+                    <div class="relative w-20 h-20 mb-6 flex items-center justify-center">
+                        <div class="absolute inset-0 border-4 border-slate-200/30 rounded-full"></div>
+                        <div class="absolute inset-0 border-4 border-transparent border-t-purple-600 border-r-purple-600 rounded-full animate-spin" style="animation-duration: 0.8s;"></div>
+                        <div class="absolute inset-2 border-4 border-transparent border-b-teal-500 border-l-teal-500 rounded-full animate-spin" style="animation-duration: 1.2s; animation-direction: reverse;"></div>
+                        <div class="absolute inset-4 border-4 border-transparent border-t-indigo-600 rounded-full animate-spin" style="animation-duration: 1.6s;"></div>
+                    </div>
+                    <p class="text-slate-700 font-black tracking-wide text-sm mb-1 dark:text-slate-200">Checking StudyBase resources...</p>
+                    <p class="text-slate-400 font-bold text-xs animate-pulse">Loading workspace files...</p>
                 </div>
             </div>
 
@@ -3514,16 +3625,28 @@ body.rgenie-private-resources .rgenie-panel {
       updateFarewellCountdownVisibility();
       allAccessOnlyResources = list.slice();
       allResources = list;
+
+      // Update counter badge
+      const counterVal = document.getElementById("counter-value");
+      const counterEl = document.getElementById("private-resource-counter");
+      if (counterVal && counterEl) {
+        counterVal.textContent = allResources.length;
+        counterEl.classList.remove("hidden");
+      }
+
       const grid = document.getElementById("resource-grid");
       if (grid) {
         grid.className = "grid grid-cols-1 gap-6";
         grid.innerHTML = `
-          <div class="col-span-full text-center py-20 bg-white rounded-[2rem] border border-slate-200 shadow-sm">
-            <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center">
-              <i class="fas fa-shield-halved text-xl"></i>
+          <div class="col-span-full text-center py-24 bg-white/70 backdrop-blur-md rounded-[2.5rem] border border-slate-200/80 shadow-xl max-w-xl mx-auto flex flex-col items-center justify-center p-8 dark:bg-slate-900/40 dark:border-slate-800/80">
+            <div class="relative w-20 h-20 mb-6 flex items-center justify-center">
+              <div class="absolute inset-0 border-4 border-slate-200/30 rounded-full"></div>
+              <div class="absolute inset-0 border-4 border-transparent border-t-teal-500 border-r-teal-500 rounded-full animate-spin" style="animation-duration: 0.8s;"></div>
+              <div class="absolute inset-2 border-4 border-transparent border-b-purple-600 border-l-purple-600 rounded-full animate-spin" style="animation-duration: 1.2s; animation-direction: reverse;"></div>
+              <div class="absolute inset-4 border-4 border-transparent border-t-indigo-600 rounded-full animate-spin" style="animation-duration: 1.6s;"></div>
             </div>
-            <p class="text-slate-900 font-black text-xl mb-2">Preparing your workspace</p>
-            <p class="text-slate-500 font-bold">Checking the trusted session before loading saved resources.</p>
+            <p class="text-slate-900 font-black text-lg mb-1 tracking-tight dark:text-slate-100">Preparing your workspace</p>
+            <p class="text-slate-400 font-bold text-xs max-w-xs">Checking the trusted session and decrypting saved resources.</p>
           </div>
         `;
       }
@@ -4262,9 +4385,11 @@ body.rgenie-private-resources .rgenie-panel {
         card.className =
           "resource-card group bg-white/80 backdrop-blur-sm rounded-[1.75rem] p-4 border border-slate-200 cursor-pointer flex flex-col h-full shadow-sm relative";
         if (isPaywallResource) card.classList.add("resource-card-paywall");
+        if (isPopular) card.classList.add("resource-card-popular");
+        if (isOriginal) card.classList.add("resource-card-labs");
         card.style.contentVisibility = "auto";
         card.style.containIntrinsicSize = "1px 300px";
-
+        
         if (imageUrl === "pass") {
           contentHtml = `
             ${tagHtml}
@@ -4299,6 +4424,8 @@ body.rgenie-private-resources .rgenie-panel {
         card.className =
           "resource-card group aspect-square bg-white rounded-2xl border border-slate-200 cursor-pointer shadow-sm relative overflow-hidden flex items-center justify-center";
         if (isPaywallResource) card.classList.add("resource-card-paywall");
+        if (isPopular) card.classList.add("resource-card-popular");
+        if (isOriginal) card.classList.add("resource-card-labs");
 
         if (imageUrl === "pass") {
           contentHtml = `

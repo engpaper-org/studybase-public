@@ -3,249 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A-Level Command Centre | StudyBase Tools</title>
-  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
-  <link rel="stylesheet" href="/assets/css/premium-system.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <title>Redirecting... | StudyBase</title>
   <script>
-    function initTailwind() {
-      if (window.tailwind) {
-        window.tailwind.config = {
-          theme: {
-            extend: {
-              colors: {
-                'sb-dark': '#0f172a',
-                'sb-accent': '#0ea5e9',
-              }
-            }
-          }
-        };
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
+
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
       }
-    }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initTailwind);
-    } else {
-      initTailwind();
-    }
+      window.location.replace(redirectUrl);
+    })();
   </script>
-  <style>
-    .card { 
-      background:white; 
-      border:1px solid #e2e8f0; 
-      border-radius:16px; 
-      padding:1.25rem; 
-      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04);
-    }
-    .stat { font-size:1.65rem; font-weight:800; line-height:1; }
-    input[type="text"], textarea, select { border:1px solid #cbd5e1; border-radius:10px; padding:10px 12px; font-size:0.95rem; width:100%; }
-    button { font-weight:700; border-radius:11px; padding:9px 16px; font-size:0.93rem; cursor:pointer; transition:all 0.15s ease; }
-    .sbx-shell { max-width:1100px; padding: 0.5rem 1rem 3rem; }
-    .back-link {
-      color: #64748b;
-      font-size: 0.92rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-    .back-link:hover { color: #0f172a; }
-    a { color: #0ea5e9; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-  </style>
 </head>
 <body>
-  <script src="/assets/js/layout/navbar.js" defer></script>
-<div class="max-w-[1100px] mx-auto px-6 py-8">
-<a href="/tools/planning/" class="text-slate-500 hover:text-slate-700 text-sm flex items-center gap-1 mb-6">← Back to Planning</a>
-    
-    <div class="flex items-center gap-4 mb-6">
-      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-cyan-400 flex items-center justify-center flex-shrink-0">
-        <i data-lucide="layout-dashboard" class="w-6 h-6 text-white"></i>
-      </div>
-      <div>
-        <h1 class="text-3xl font-bold tracking-tight">A-Level Command Centre</h1>
-        <p class="text-slate-600">Your daily operating system for focused, high-output revision.</p>
-      </div>
-    </div>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:1.1rem;">
-      
-      <!-- Focus Timer -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="clock" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">Focus Timer</span>
-        </div>
-        <div id="cmd-timer-display" class="text-5xl font-black tracking-tighter text-center my-1 tabular-nums">25:00</div>
-        <div class="text-center text-xs font-bold text-slate-500 mb-3 tracking-widest" id="cmd-timer-label">FOCUS SESSION</div>
-        <div class="flex gap-2 justify-center">
-          <button onclick="cmdStartTimer()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold" id="cmd-start">START 25</button>
-          <button onclick="cmdPauseTimer()" class="px-4 py-2 border border-slate-300 hover:bg-slate-50 rounded-xl text-sm font-bold" id="cmd-pause" style="display:none;">PAUSE</button>
-          <button onclick="cmdResetTimer()" class="px-4 py-2 border border-slate-300 hover:bg-slate-50 rounded-xl text-sm font-bold">RESET</button>
-        </div>
-      </div>
-
-      <!-- Exam Countdown -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="calendar" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">Next Exam Countdown</span>
-        </div>
-        <div id="exam-countdown" class="text-2xl font-bold my-1">—</div>
-        <input id="exam-date" type="date" class="w-full border border-slate-200 rounded-xl px-3 py-2 mb-2 text-sm">
-        <input id="exam-name" type="text" placeholder="e.g. AQA Maths Paper 1" class="w-full border border-slate-200 rounded-xl px-3 py-2 mb-3 text-sm">
-        <button onclick="saveExam()" class="w-full py-2 bg-slate-900 hover:bg-black text-white rounded-xl text-sm font-bold">Save Countdown</button>
-      </div>
-
-      <!-- Daily Goals -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="check-circle" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">Today's Goals</span>
-        </div>
-        <div class="flex gap-2 mb-3">
-          <input id="goal-input" type="text" placeholder="Add a goal..." class="flex-1 border border-slate-200 rounded-xl px-3 py-2 text-sm">
-          <button onclick="addGoal()" class="px-4 rounded-xl bg-slate-900 text-white text-sm font-bold">Add</button>
-        </div>
-        <div id="goals-list" class="text-sm space-y-1"></div>
-      </div>
-
-      <!-- Subject Rotation -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="refresh-cw" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">Subject Rotation</span>
-        </div>
-        <div class="grid grid-cols-2 gap-2 mb-3">
-          <button onclick="rotateSubject('Maths')" class="py-2 border border-slate-200 rounded-xl text-sm hover:bg-slate-50 font-medium">Maths</button>
-          <button onclick="rotateSubject('Physics')" class="py-2 border border-slate-200 rounded-xl text-sm hover:bg-slate-50 font-medium">Physics</button>
-          <button onclick="rotateSubject('Biology')" class="py-2 border border-slate-200 rounded-xl text-sm hover:bg-slate-50 font-medium">Biology</button>
-          <button onclick="rotateSubject('History')" class="py-2 border border-slate-200 rounded-xl text-sm hover:bg-slate-50 font-medium">History</button>
-        </div>
-        <div id="rotation-log" class="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl min-h-[42px]"></div>
-      </div>
-
-      <!-- Quick Notes -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-5 col-span-full max-w-2xl">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="sticky-note" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">Quick Notes (auto-saved)</span>
-        </div>
-        <textarea id="quick-notes" oninput="saveNotes()" placeholder="Jot down anything — key definitions, questions to ask, or a quick plan..." class="w-full h-28 border border-slate-200 rounded-xl p-3 text-sm resize-y"></textarea>
-        <div class="text-xs text-slate-500 mt-1">Saved locally on this device.</div>
-      </div>
-    </div>
+  <div style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 50px; color: #334155;">
+    <h2>Redirecting you to the remastered StudyBase Tools Workspace...</h2>
+    <p>If you are not automatically redirected, <a id="redirect-link" href="/tools/index.html" style="color: #2563eb; text-decoration: underline;">click here</a>.</p>
   </div>
-
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="/assets/js/layout/navbar.js" defer></script>
-  <script src="/assets/js/layout/footer.js" defer></script>
   <script>
-    lucide.createIcons();
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
 
-    // Timer
-    let cmdInterval = null, cmdTime = 25*60, cmdRunning = false, cmdIsBreak = false;
-    function cmdDisplay() {
-      const m = Math.floor(cmdTime/60).toString().padStart(2,'0');
-      const s = (cmdTime%60).toString().padStart(2,'0');
-      document.getElementById('cmd-timer-display').textContent = `${m}:${s}`;
-      document.getElementById('cmd-timer-label').textContent = cmdIsBreak ? 'BREAK' : 'FOCUS SESSION';
-    }
-    function cmdStartTimer() {
-      if (cmdRunning) return;
-      cmdRunning = true;
-      document.getElementById('cmd-start').style.display = 'none';
-      document.getElementById('cmd-pause').style.display = 'inline-block';
-      cmdInterval = setInterval(() => {
-        cmdTime--; cmdDisplay();
-        if (cmdTime <= 0) {
-          clearInterval(cmdInterval); cmdRunning = false;
-          const nextBreak = !cmdIsBreak;
-          cmdIsBreak = nextBreak;
-          cmdTime = nextBreak ? 5*60 : 25*60;
-          cmdDisplay();
-          alert(nextBreak ? 'Good work — take a 5 minute break.' : 'Break over. Ready for the next focused block?');
-          document.getElementById('cmd-start').style.display = 'inline-block';
-          document.getElementById('cmd-pause').style.display = 'none';
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
         }
-      }, 1000);
-    }
-    function cmdPauseTimer() {
-      clearInterval(cmdInterval); cmdRunning = false;
-      document.getElementById('cmd-start').style.display = 'inline-block';
-      document.getElementById('cmd-pause').style.display = 'none';
-    }
-    function cmdResetTimer() {
-      clearInterval(cmdInterval); cmdRunning = false; cmdIsBreak = false; cmdTime = 25*60;
-      document.getElementById('cmd-start').style.display = 'inline-block';
-      document.getElementById('cmd-pause').style.display = 'none';
-      cmdDisplay();
-    }
-    cmdDisplay();
-
-    // Exam Countdown
-    function updateCountdown() {
-      const saved = JSON.parse(localStorage.getItem('sb_cmd_exam') || 'null');
-      if (!saved) { document.getElementById('exam-countdown').textContent = 'Set your next paper date'; return; }
-      const target = new Date(saved.date);
-      const diff = Math.max(0, target - new Date());
-      const days = Math.floor(diff / (1000*60*60*24));
-      document.getElementById('exam-countdown').textContent = days + ' days until ' + saved.name;
-    }
-    function saveExam() {
-      const d = document.getElementById('exam-date').value;
-      const n = document.getElementById('exam-name').value || 'Exam';
-      if (!d) return alert('Please pick a date');
-      localStorage.setItem('sb_cmd_exam', JSON.stringify({date:d, name:n}));
-      updateCountdown();
-    }
-    updateCountdown();
-
-    // Goals
-    function loadGoals() {
-      const list = JSON.parse(localStorage.getItem('sb_cmd_goals') || '[]');
-      const el = document.getElementById('goals-list');
-      el.innerHTML = list.length ? '' : '<div style="color:#94a3b8;font-size:0.85rem;">No goals yet today.</div>';
-      list.forEach((g,i) => {
-        const div = document.createElement('div');
-        div.style.cssText = 'display:flex;align-items:center;gap:6px;margin:3px 0;';
-        div.innerHTML = `<input type="checkbox" ${g.done?'checked':''} onchange="toggleGoal(${i})"> <span style="${g.done?'text-decoration:line-through;opacity:0.6':''}">${g.text}</span>`;
-        el.appendChild(div);
-      });
-    }
-    function addGoal() {
-      const val = document.getElementById('goal-input').value.trim();
-      if (!val) return;
-      const list = JSON.parse(localStorage.getItem('sb_cmd_goals') || '[]');
-      list.push({text:val, done:false});
-      localStorage.setItem('sb_cmd_goals', JSON.stringify(list));
-      document.getElementById('goal-input').value = '';
-      loadGoals();
-    }
-    function toggleGoal(i) {
-      const list = JSON.parse(localStorage.getItem('sb_cmd_goals') || '[]');
-      list[i].done = !list[i].done;
-      localStorage.setItem('sb_cmd_goals', JSON.stringify(list));
-      loadGoals();
-    }
-    loadGoals();
-
-    // Rotation
-    function rotateSubject(subj) {
-      const log = document.getElementById('rotation-log');
-      const entry = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) + ' — ' + subj;
-      log.innerHTML = entry + (log.innerHTML ? '<br>' + log.innerHTML : '');
-      localStorage.setItem('sb_cmd_rotation', log.innerHTML);
-    }
-    (function(){ const saved = localStorage.getItem('sb_cmd_rotation'); if(saved) document.getElementById('rotation-log').innerHTML = saved; })();
-
-    // Notes
-    const notesEl = document.getElementById('quick-notes');
-    notesEl.value = localStorage.getItem('sb_cmd_notes') || '';
-    function saveNotes() { localStorage.setItem('sb_cmd_notes', notesEl.value); }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
+      }
+      document.getElementById('redirect-link').href = redirectUrl;
+    })();
   </script>
-  <script src="/assets/js/layout/footer.js" defer></script>
 </body>
 </html>

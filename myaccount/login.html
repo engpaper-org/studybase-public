@@ -7,24 +7,83 @@
   <title>StudyBase | Login</title>
   <link rel="icon" href="/assets/images/site-icons/main.ico">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    .animate-slide-up {
+      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .animate-fade-in {
+      animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .delay-100 { animation-delay: 100ms; }
+    .delay-200 { animation-delay: 200ms; }
+    .delay-300 { animation-delay: 300ms; }
+    .delay-400 { animation-delay: 400ms; }
+    .delay-500 { animation-delay: 500ms; }
+    .delay-600 { animation-delay: 600ms; }
+  </style>
 </head>
 <body class="min-h-screen bg-[radial-gradient(circle_at_top_left,_#ede9fe,_#f8fafc_38%,_#eef2ff)] text-slate-900 antialiased">
-  <main class="mx-auto flex min-h-screen max-w-5xl items-center px-4 py-8 sm:px-7">
-    <section class="grid w-full overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_30px_90px_-35px_rgba(15,23,42,.35)] lg:grid-cols-[.9fr_1.1fr]">
-      <aside class="relative flex min-h-72 flex-col justify-between overflow-hidden bg-gradient-to-br from-purple-700 via-indigo-800 to-slate-950 p-8 text-white sm:p-12"><div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10 blur-2xl"></div>
-        <div class="relative"><div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-xl font-black">S</div><p class="mt-8 text-xs font-black uppercase tracking-[.25em] text-purple-200">Secure account access</p><h1 class="mt-4 text-4xl font-black tracking-tight">StudyBase</h1><p class="mt-4 max-w-sm leading-7 text-purple-100/80">Your revision workspace, protected by weekly sessions and monitored login security.</p></div>
-        <p class="relative mt-12 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm leading-6 text-purple-100/70">Only sign in on a device you trust. Managed networks may monitor traffic and text entry.</p>
+  <main class="flex min-h-screen w-full items-stretch p-0">
+    <section class="grid w-full min-h-screen lg:grid-cols-[1fr_1.15fr] bg-white">
+      <aside class="relative flex min-h-72 flex-col justify-between overflow-hidden bg-gradient-to-br from-purple-700 via-indigo-800 to-slate-950 p-8 text-white sm:p-12">
+        <div class="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10 blur-2xl"></div>
+        <div class="relative">
+          <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-xl font-black animate-slide-up delay-100">S</div>
+          <p class="mt-8 text-xs font-black uppercase tracking-[.25em] text-purple-200 animate-slide-up delay-200">Secure account access</p>
+          <h1 class="mt-4 text-4xl font-black tracking-tight animate-slide-up delay-300">StudyBase</h1>
+          <p class="mt-4 max-w-sm leading-7 text-purple-100/80 animate-slide-up delay-400">Your revision workspace, protected by weekly sessions and monitored login security.</p>
+        </div>
+        <p class="relative mt-12 rounded-2xl border border-white/10 bg-white/5 p-4 text-sm leading-6 text-purple-100/70 animate-slide-up delay-500">Only sign in on a device you trust. Managed networks may monitor traffic and text entry.</p>
       </aside>
-      <div class="p-7 text-slate-900 sm:p-12 lg:p-14">
-        <div><p class="text-xs font-black uppercase tracking-[.2em] text-purple-600">Account login</p><h2 class="mt-3 text-4xl font-black tracking-tight">Welcome back</h2><p class="mt-2 text-sm text-slate-500">Enter your account details to continue.</p></div>
-        <div id="message" class="mt-5 hidden rounded-xl bg-red-50 p-3 text-sm text-red-800" role="alert"></div>
-        <form id="login" class="mt-7 space-y-5">
-          <label class="block text-sm font-bold">Username<input name="username" required minlength="3" maxlength="24" autocomplete="username" class="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 p-4 outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100"></label>
-          <label class="block text-sm font-bold">Password<input name="password" type="password" required minlength="8" maxlength="128" autocomplete="current-password" class="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 p-4 outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100"></label>
-          <button class="w-full rounded-2xl bg-purple-600 p-4 font-black text-white shadow-lg shadow-purple-200 hover:bg-purple-700 disabled:opacity-60">Sign in securely</button>
-        </form>
-        <div class="mt-7 border-t pt-6 text-center"><p class="text-sm text-slate-500">New to StudyBase?</p><a href="https://auth.studybase.site/signup" class="mt-3 inline-flex w-full justify-center rounded-xl border border-purple-200 bg-purple-50 p-3 font-black text-purple-700 hover:bg-purple-100">Sign up for the beta</a></div>
-        <p class="mt-7 text-center text-xs text-slate-500"><a class="underline" href="/legal/privacy.html">Privacy</a> · <a class="underline" href="/legal/tos.html">Terms</a></p>
+      <div class="flex flex-col justify-center bg-white p-7 text-slate-900 sm:p-12 lg:p-16">
+        <div class="mx-auto w-full max-w-md">
+          <div class="animate-slide-up delay-100">
+            <p class="text-xs font-black uppercase tracking-[.2em] text-purple-600">Account login</p>
+            <h2 class="mt-3 text-4xl font-black tracking-tight">Welcome back</h2>
+            <p class="mt-2 text-sm text-slate-500">Enter your account details to continue.</p>
+          </div>
+          <div id="message" class="mt-5 hidden rounded-xl bg-red-50 p-3 text-sm text-red-800" role="alert"></div>
+          <form id="login" class="mt-7 space-y-5">
+            <div class="animate-slide-up delay-200">
+              <label class="block text-sm font-bold">Username
+                <input name="username" required minlength="3" maxlength="24" autocomplete="username" class="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 p-4 outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100 transition-all duration-300">
+              </label>
+            </div>
+            <div class="animate-slide-up delay-300">
+              <label class="block text-sm font-bold">Password
+                <input name="password" type="password" required minlength="8" maxlength="128" autocomplete="current-password" class="mt-2 w-full rounded-2xl border border-slate-300 bg-slate-50 p-4 outline-none focus:border-purple-500 focus:bg-white focus:ring-4 focus:ring-purple-100 transition-all duration-300">
+              </label>
+            </div>
+            <div class="animate-slide-up delay-400">
+              <button class="w-full rounded-2xl bg-purple-600 p-4 font-black text-white shadow-lg shadow-purple-200 hover:bg-purple-700 disabled:opacity-60 transition-all duration-300">Sign in securely</button>
+            </div>
+          </form>
+          <div class="mt-7 border-t pt-6 text-center animate-slide-up delay-500">
+            <p class="text-sm text-slate-500">New to StudyBase?</p>
+            <a href="https://auth.studybase.site/signup" class="mt-3 inline-flex w-full justify-center rounded-xl border border-purple-200 bg-purple-50 p-3 font-black text-purple-700 hover:bg-purple-100 transition-all duration-300">Sign up for the beta</a>
+          </div>
+          <p class="mt-7 text-center text-xs text-slate-500 animate-slide-up delay-600">
+            <a class="underline" href="/legal/privacy.html">Privacy</a> · <a class="underline" href="/legal/tos.html">Terms</a>
+          </p>
+        </div>
       </div>
     </section>
   </main>
@@ -34,6 +93,9 @@
     const message = document.getElementById("message");
     const requestedUsername = new URLSearchParams(location.search).get("username");
     if (requestedUsername) form.elements.username.value = requestedUsername;
+
+    const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
     async function passwordPrehash(password) {
       const bytes = new TextEncoder().encode(String(password).normalize("NFKC"));
       const digest = await crypto.subtle.digest("SHA-256", bytes);
@@ -50,8 +112,15 @@
     }
     form.addEventListener("submit", async event => {
       event.preventDefault(); message.classList.add("hidden");
-      const button = form.querySelector("button"); button.disabled = true; button.textContent = "Signing in...";
+      const button = form.querySelector("button"); button.disabled = true;
       try {
+        button.textContent = "🔒 Initiating secure handshake...";
+        await delay(1000);
+        button.textContent = "🔑 Verifying workspace credentials...";
+        await delay(1000);
+        button.textContent = "🛡️ Decrypting session keys...";
+        await delay(1000);
+
         const credentials = Object.fromEntries(new FormData(form));
         const rawPassword = credentials.password;
         credentials.passwordPrehash = await passwordPrehash(rawPassword);
@@ -78,7 +147,7 @@
           location.replace(`/?login=true&username=${encodeURIComponent(data.user.username)}`);
         }
       } catch (error) { message.textContent = error.message; message.classList.remove("hidden"); }
-      finally { button.disabled = false; button.textContent = "Sign in"; }
+      finally { button.disabled = false; button.textContent = "Sign in securely"; }
     });
   </script>
 </body>

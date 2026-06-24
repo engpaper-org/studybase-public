@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-      <script src="/assets/js/auth/iframeCheck.js"></script>
-
-    
     <meta charset="UTF-8">
-            <meta name="description" content="StudyBase provides educational revision resources, A-Level and GCSE study tools, past papers, subject guides, wellbeing support, and learning materials for students." data-studybase-education-meta="true">
+    <meta name="description" content="StudyBase provides educational revision resources, A-Level and GCSE study tools, past papers, subject guides, wellbeing support, and learning materials for students." data-studybase-education-meta="true">
     <meta name="classification" content="Education" data-studybase-education-meta="true">
     <meta name="category" content="Education" data-studybase-education-meta="true">
     <meta name="subject" content="A-Level and GCSE revision, study resources, educational tools" data-studybase-education-meta="true">
@@ -15,305 +12,78 @@
     <meta property="og:site_name" content="StudyBase" data-studybase-education-meta="true">
     <meta property="og:type" content="website" data-studybase-education-meta="true">
     <meta property="og:locale" content="en_GB" data-studybase-education-meta="true">
-<script src="/assets/js/config/siteConfig.js"></script>    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyBase Safety Loading Screen</title>
+    <script src="/assets/js/config/siteConfig.js"></script>
+    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBase Loading Screen</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        @keyframes rise {
-            0% { transform: translateY(10vh) scale(0.5); opacity: 0; }
-            15% { opacity: 0.7; }
-            100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
-        }
-
-        .bubble {
-            position: absolute;
-            bottom: -100px;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            backdrop-filter: blur(2px);
-            animation: rise infinite ease-in;
-            pointer-events: auto;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-        }
-
-        .bubble:hover {
-            transform: scale(1.4);
-            background: rgba(255, 255, 255, 0.5);
-        }
-
-        .bubble.popped {
-            transform: scale(3);
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .loading-border-container {
-            position: relative;
-            padding: 4px;
-            border-radius: 2.25rem;
-            background: rgba(255, 255, 255, 0.1);
-            overflow: hidden;
-        }
-
-        .loading-border-container::before {
-            content: '';
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            background: conic-gradient(transparent, transparent, transparent, #3b82f6);
-            animation: rotate 2s linear infinite;
-            top: -25%;
-            left: -25%;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .inner-card {
-            position: relative;
-            background: white;
-            border-radius: 2rem;
-            z-index: 1;
-        }
-    </style>
-  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
+    <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
 </head>
-<body class="m-0 p-0 h-screen w-screen overflow-hidden bg-sky-600 flex flex-col items-center justify-center font-sans px-4">
+<body class="m-0 p-0 h-screen w-screen overflow-hidden bg-sky-900 font-sans relative">
 
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-400 via-sky-600 to-blue-700 z-0"></div>
-    <div id="bubbles-container" class="absolute inset-0 z-0"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-sky-600 via-sky-800 to-slate-900 z-0"></div>
 
-    <div class="z-10 w-full max-w-xl">
-        <div class="loading-border-container shadow-[0_20px_60px_rgba(0,0,0,0.2)]">
-            <div class="inner-card overflow-hidden">
-                <div class="p-8 md:p-10 text-center flex flex-col items-center">
-                    
-                    <div id="icon-box" class="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center mb-6 text-blue-600 transition-colors duration-500">
-                        <i id="msg-icon" data-lucide="shield-check" class="w-8 h-8"></i>
-                    </div>
+    <img id="loading-image" src="" alt="StudyBase Loading" class="absolute inset-0 w-full h-full object-cover z-10">
 
-                    <span id="badge" class="text-[10px] font-black tracking-[0.2em] uppercase text-blue-500 mb-2">SAFEGUARDING</span>
-                    
-                    <h2 id="msg-title" class="text-2xl md:text-3xl text-slate-900 font-extrabold tracking-tight mb-4"></h2>
-                    <p id="msg-subtitle" class="text-slate-600 text-sm md:text-base leading-relaxed mb-6 max-w-md"></p>
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
 
-                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-md mb-6">
-                        <a id="msg-btn" href="/support/help_center.html" class="hidden px-10 py-3.5 text-sm font-bold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200 active:scale-95 flex items-center gap-2 justify-center w-full sm:w-auto">
-                            <span>Get Help Now</span>
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </a>
-                        <a href="/support/help_center.html" data-support-link class="px-6 py-3.5 text-sm font-bold text-slate-700 bg-slate-100 rounded-xl hover:bg-slate-200 transition-all active:scale-95 flex items-center gap-2 justify-center w-full sm:w-auto">
-                            <span>Open Help Centre</span>
-                            <i data-lucide="life-buoy" class="w-4 h-4"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex flex-col items-center mt-8">
-            <h1 class="text-lg font-black tracking-[0.5em] text-white uppercase drop-shadow-md">Loading</h1>
-            <div class="flex gap-1 mt-2">
-                <div class="w-2 h-2 bg-white rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                <div class="w-2 h-2 bg-white rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                <div class="w-2 h-2 bg-white rounded-full animate-bounce"></div>
-            </div>
+    <div class="absolute bottom-12 left-0 right-0 z-30 flex flex-col items-center">
+        <h1 class="text-lg font-black tracking-[0.5em] text-white uppercase drop-shadow-md">Loading</h1>
+        <div class="flex gap-1 mt-2">
+            <div class="w-2 h-2 bg-white rounded-full animate-bounce [animation-delay:-0.3s] shadow-lg"></div>
+            <div class="w-2 h-2 bg-white rounded-full animate-bounce [animation-delay:-0.15s] shadow-lg"></div>
+            <div class="w-2 h-2 bg-white rounded-full animate-bounce shadow-lg"></div>
         </div>
     </div>
 
-    <div class="absolute bottom-8 z-10 flex items-center gap-2 opacity-60">
-        <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
-        <span class="text-[10px] text-white tracking-widest uppercase font-bold">StudyBase Safety</span>
+    <div class="absolute bottom-6 left-6 z-30 flex items-center gap-2 opacity-80 drop-shadow-md">
+        <i data-lucide="book-open" class="w-4 h-4 text-white"></i>
+        <span class="text-[10px] text-white tracking-widest uppercase font-bold">StudyBase</span>
     </div>
 
     <script>
-        const announcements = [
-            {
-                id: 1,
-                category: "Friends",
-                icon: "messages-square",
-                color: "bg-blue-50 text-blue-600",
-                title: "Have you checked in with your friends lately?",
-                subtitle: "A simple message can matter more than you think, especially if someone has been stressed, quieter than usual, or pulling away.",
-                btnText: "Open Check-In Guide",
-                btnUrl: "/support/check-in-on-friends.html"
-            },
-            {
-                id: 2,
-                category: "Friends",
-                icon: "user-round-search",
-                color: "bg-indigo-50 text-indigo-600",
-                title: "Noticed something change in your friends?",
-                subtitle: "Going very quiet, pulling away, seeming flat, snapping more easily, or acting suddenly different can all be signs something is wrong.",
-                btnText: "Open Friend Support",
-                btnUrl: "/support/friend-acting-different.html"
-            },
-            {
-                id: 3,
-                category: "Safeguarding",
-                icon: "triangle-alert",
-                color: "bg-amber-50 text-amber-600",
-                title: "If something online feels wrong, trust that feeling",
-                subtitle: "Pressure, secrecy, threats, guilt, or someone trying to move a chat somewhere private are all reasons to step back.",
-                btnText: "Open Warning Signs",
-                btnUrl: "/support/online-warning-signs.html"
-            },
-            {
-                id: 4,
-                category: "Safeguarding",
-                icon: "shield-alert",
-                color: "bg-orange-50 text-orange-600",
-                title: "If someone tells you to keep something secret, pause",
-                subtitle: "Unsafe people often try to isolate you, rush you, or make you feel guilty for telling someone else.",
-                btnText: "Open Secret Pressure Page",
-                btnUrl: "/support/keep-it-secret.html"
-            },
-            {
-                id: 5,
-                category: "Safety",
-                icon: "key-round",
-                color: "bg-emerald-50 text-emerald-600",
-                title: "Keep personal details private",
-                subtitle: "Do not share your full name, address, school, phone number, passwords, or private photos with people online.",
-                btnText: "Open Details Safety",
-                btnUrl: "/support/personal-details-safety.html"
-            },
-            {
-                id: 6,
-                category: "Safety",
-                icon: "message-circle-warning",
-                color: "bg-cyan-50 text-cyan-700",
-                title: "If someone is pushing you into a private chat, slow it down",
-                subtitle: "Moving things off-platform quickly, asking for secrecy, or making things feel urgent are warning signs, not proof that you should trust them.",
-                btnText: "Open Private Chat Page",
-                btnUrl: "/support/private-chat-pressure.html"
-            },
-            {
-                id: 7,
-                category: "Support",
-                icon: "mail",
-                color: "bg-indigo-50 text-indigo-600",
-                title: "Not sure where to start if you are worried?",
-                subtitle: "You do not need to work out the perfect next step before asking for help.",
-                btnText: "Open Support Routes",
-                btnUrl: "/support/contact.html"
-            },
-            {
-                id: 8,
-                category: "Friends",
-                icon: "heart",
-                color: "bg-rose-50 text-rose-600",
-                title: "If a friend says something worrying, take it seriously",
-                subtitle: "Even if they laugh it off after, it still matters if something they said made you stop and think.",
-                btnText: "Open Friend Concern Page",
-                btnUrl: "/support/friend-said-something-worrying.html"
-            },
-            {
-                id: 9,
-                category: "Safety",
-                icon: "octagon-alert",
-                color: "bg-slate-100 text-slate-700",
-                title: "Threats and blackmail are not something you should handle alone",
-                subtitle: "If someone is threatening to share something, expose you, or punish you unless you do what they want, get help straight away.",
-                btnText: "Open Threats Page",
-                btnUrl: "/support/threats-and-blackmail.html"
-            }
-        ];
+        // Set this to the total number of loading screen images you have in the folder
+        const MAX_SCREENS = 5; 
 
-        function getSeenMessages() {
-            try { return JSON.parse(localStorage.getItem('safeguard_rotation') || '[]'); } 
+        function getSeenImages() {
+            try { return JSON.parse(localStorage.getItem('loading_image_rotation') || '[]'); } 
             catch (e) { return []; }
         }
 
-        function saveSeenMessages(arr) {
-            try { localStorage.setItem('safeguard_rotation', JSON.stringify(arr)); } 
+        function saveSeenImages(arr) {
+            try { localStorage.setItem('loading_image_rotation', JSON.stringify(arr)); } 
             catch (e) { }
         }
 
-        function openSupportPage(url) {
-            if (!url) return;
-
-            try {
-                if (window.top && window.top !== window) {
-                    window.top.location.href = url;
-                    return;
-                }
-            } catch (e) {}
-
-            window.location.href = url;
-        }
-
-        function displayRandomAnnouncement() {
-            let seen = getSeenMessages();
-            if (seen.length >= announcements.length) seen = [];
-
-            const available = announcements.filter(a => !seen.includes(a.id));
-            const picked = available[Math.floor(Math.random() * available.length)];
-
-            seen.push(picked.id);
-            saveSeenMessages(seen);
-
-            const iconBox = document.getElementById('icon-box');
-            const msgIcon = document.getElementById('msg-icon');
+        function displayRandomImage() {
+            let seen = getSeenImages();
             
-            iconBox.className = `w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-colors duration-500 ${picked.color}`;
-            msgIcon.setAttribute('data-lucide', picked.icon);
-            
-            document.getElementById('badge').textContent = picked.category;
-            document.getElementById('msg-title').textContent = picked.title;
-            document.getElementById('msg-subtitle').textContent = picked.subtitle;
-
-            const btn = document.getElementById('msg-btn');
-            if (picked.btnText && picked.btnUrl) {
-                btn.querySelector('span').textContent = picked.btnText;
-                btn.href = picked.btnUrl;
-                btn.dataset.supportUrl = picked.btnUrl;
-                btn.classList.remove('hidden');
-            } else {
-                btn.classList.add('hidden');
-                delete btn.dataset.supportUrl;
+            // Reset if all images have been shown
+            if (seen.length >= MAX_SCREENS) {
+                seen = [];
             }
 
-            lucide.createIcons();
+            // Generate an array of all possible image numbers [1, 2, 3, ..., MAX_SCREENS]
+            const allPossible = Array.from({ length: MAX_SCREENS }, (_, i) => i + 1);
+
+            // Filter out the numbers we have already seen
+            const available = allPossible.filter(num => !seen.includes(num));
+
+            // Pick a random number from the remaining available ones
+            const pickedNumber = available[Math.floor(Math.random() * available.length)];
+
+            // Save the newly picked number to history
+            seen.push(pickedNumber);
+            saveSeenImages(seen);
+
+            // Apply to DOM directly using the generated path
+            const imgElement = document.getElementById('loading-image');
+            imgElement.src = `/assets/images/loading-screens/${pickedNumber}.png`;
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            displayRandomAnnouncement();
-
-            document.body.addEventListener('click', function(event) {
-                const link = event.target.closest('[data-support-link], #msg-btn');
-                if (!link) return;
-
-                event.preventDefault();
-                const targetUrl = link.dataset.supportUrl || link.getAttribute('href');
-                openSupportPage(targetUrl);
-            });
-
-            const container = document.getElementById('bubbles-container');
-            for (let i = 0; i < 40; i++) {
-                const bubble = document.createElement('div');
-                bubble.classList.add('bubble');
-                const size = Math.random() * 50 + 15;
-                bubble.style.width = `${size}px`;
-                bubble.style.height = `${size}px`;
-                bubble.style.left = `${Math.random() * 100}vw`;
-                bubble.style.animationDuration = `${Math.random() * 10 + 5}s`;
-                bubble.style.animationDelay = `-${Math.random() * 15}s`;
-                
-                bubble.addEventListener('click', function() {
-                    this.classList.add('popped');
-                    setTimeout(() => this.remove(), 400);
-                });
-                
-                container.appendChild(bubble);
-            }
-            
+            displayRandomImage();
             lucide.createIcons();
         });
     </script>

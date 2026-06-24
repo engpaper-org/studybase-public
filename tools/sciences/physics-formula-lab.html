@@ -1,32 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Physics Formula Lab | StudyBase Tools</title>
-  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting... | StudyBase</title>
+  <script>
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
+
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
+      }
+      window.location.replace(redirectUrl);
+    })();
+  </script>
 </head>
 <body>
-  <div class="sbx-shell" style="max-width:860px;padding:1.5rem 1rem 3rem;">
-    <a href="/tools/sciences/" style="color:#64748b;font-size:0.9rem;">← Sciences</a>
-    <div style="margin:1rem 0 1.3rem;display:flex;gap:10px;align-items:center;">
-      <i data-lucide="atom" style="width:28px;height:28px;color:#0ea5e9;"></i>
-      <h1 style="font-size:1.85rem;font-weight:700;margin:0;">Physics Formula Lab</h1>
-    </div>
-    <div style="background:white;border:1px solid #e2e8f0;border-radius:14px;padding:1.15rem;">
-      <div style="margin-bottom:8px;font-weight:700;">Quick reference + calculators</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;">
-        <div style="background:#f8fafc;padding:10px;border-radius:10px;">v = u + at<br><span style="font-size:0.75rem;color:#64748b;">SUVAT</span></div>
-        <div style="background:#f8fafc;padding:10px;border-radius:10px;">F = ma<br><span style="font-size:0.75rem;color:#64748b;">Newton 2</span></div>
-        <div style="background:#f8fafc;padding:10px;border-radius:10px;">P = V I<br><span style="font-size:0.75rem;color:#64748b;">Electricity</span></div>
-        <div style="background:#f8fafc;padding:10px;border-radius:10px;">λ = h / p<br><span style="font-size:0.75rem;color:#64748b;">de Broglie</span></div>
-      </div>
-      <div style="margin-top:10px;font-size:0.82rem;color:#64748b;">Add your own formula sheets. All calculations are local.</div>
-    </div>
+  <div style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 50px; color: #334155;">
+    <h2>Redirecting you to the remastered StudyBase Tools Workspace...</h2>
+    <p>If you are not automatically redirected, <a id="redirect-link" href="/tools/index.html" style="color: #2563eb; text-decoration: underline;">click here</a>.</p>
   </div>
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="/assets/js/layout/navbar.js" defer></script>
-  <script src="/assets/js/layout/footer.js" defer></script>
-  <script>lucide.createIcons();</script>
+  <script>
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
+
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
+      }
+      document.getElementById('redirect-link').href = redirectUrl;
+    })();
+  </script>
 </body>
 </html>

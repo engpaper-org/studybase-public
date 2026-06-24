@@ -3,145 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planning &amp; Command Centre | StudyBase Tools</title>
-  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
-  <link rel="stylesheet" href="/assets/css/premium-system.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <title>Redirecting... | StudyBase</title>
   <script>
-    function initTailwind() {
-      if (window.tailwind) {
-        window.tailwind.config = {
-          theme: {
-            extend: {
-              colors: {
-                'sb-dark': '#0f172a',
-                'sb-accent': '#0ea5e9',
-              }
-            }
-          }
-        };
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
+
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
       }
-    }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initTailwind);
-    } else {
-      initTailwind();
-    }
+      window.location.replace(redirectUrl);
+    })();
   </script>
-  <style>
-    .tool-card { 
-      transition: all .2s cubic-bezier(.4,0,.2,1); 
-      border-radius: 16px;
-      padding: 1.3rem;
-      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
-    }
-    .tool-card:hover { 
-      transform: translateY(-4px); 
-      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); 
-      border-color: #cbd5e1;
-    }
-    .sbx-shell { max-width: 1100px; padding: 1rem 1rem 4rem; }
-    .back-link {
-      color: #64748b;
-      font-size: 0.92rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-    .back-link:hover {
-      color: #0f172a;
-    }
-    a {
-      color: #0ea5e9;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    button {
-      font-weight: 700;
-      border-radius: 11px;
-      padding: 9px 16px;
-      font-size: 0.93rem;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-  </style>
 </head>
 <body>
-  <script src="/assets/js/layout/navbar.js" defer></script>
-<div class="max-w-[1100px] mx-auto px-6 py-8">
-<a href="/tools/" class="text-slate-500 hover:text-slate-700 text-sm flex items-center gap-1 mb-6">← Back to all tools</a>
+  <div style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 50px; color: #334155;">
+    <h2>Redirecting you to the remastered StudyBase Tools Workspace...</h2>
+    <p>If you are not automatically redirected, <a id="redirect-link" href="/tools/index.html" style="color: #2563eb; text-decoration: underline;">click here</a>.</p>
+  </div>
+  <script>
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
 
-    <div class="flex items-center gap-4 mb-6">
-      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-cyan-400 flex items-center justify-center">
-        <i data-lucide="layout-dashboard" class="w-6 h-6 text-white"></i>
-      </div>
-      <div>
-        <h1 class="text-3xl font-bold tracking-tight">Planning &amp; Command Centre</h1>
-        <p class="text-slate-600">The complete operating system for high-performance A-Level students.</p>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <a href="command-centre.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="layout-dashboard" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">A-Level Command Centre</span>
-        </div>
-        <p class="text-sm text-slate-600">One dashboard for timers, subject rotation, exam countdowns, daily goals and quick notes.</p>
-      </a>
-
-      <a href="exam-paper-time-splitter.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="clock" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">Exam Paper Time Splitter</span>
-        </div>
-        <p class="text-sm text-slate-600">Split any paper into realistic timed sections with checkpoint alerts and protected review time.</p>
-      </a>
-
-      <a href="revision-session-generator.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="calendar" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">Revision Session Generator</span>
-        </div>
-        <p class="text-sm text-slate-600">Tell it how long you have and which topics feel weak. It builds a focused, varied session.</p>
-      </a>
-
-      <a href="timed-essay-mode.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="edit-3" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">Timed Essay Mode</span>
-        </div>
-        <p class="text-sm text-slate-600">Plan fast, then write under real timed pressure with paragraph tracker and self-mark rubric.</p>
-      </a>
-
-      <a href="synoptic-link-generator.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="link-2" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">Synoptic Link Generator</span>
-        </div>
-        <p class="text-sm text-slate-600">Build connections between topics across the specification for deeper, exam-ready understanding.</p>
-      </a>
-
-      <a href="personal-statement-builder.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="file-text" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">Personal Statement Builder</span>
-        </div>
-        <p class="text-sm text-slate-600">Structure supercurriculars, wider reading, skills and a powerful opening. Export ready for UCAS.</p>
-      </a>
-    </div>
-
-    <div class="mt-8 p-4 bg-slate-50 rounded-2xl text-sm text-slate-600">
-      All planning tools save automatically in your browser. Nothing is sent to any server. Use them every day.
-    </div>
-</div>
-
-  <script src="/assets/js/layout/footer.js" defer></script>
-  <script>lucide.createIcons();</script>
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
+      }
+      document.getElementById('redirect-link').href = redirectUrl;
+    })();
+  </script>
 </body>
 </html>

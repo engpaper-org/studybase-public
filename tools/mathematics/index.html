@@ -3,104 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mathematics Tools | StudyBase Tools</title>
-  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
-  <link rel="stylesheet" href="/assets/css/premium-system.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <title>Redirecting... | StudyBase</title>
   <script>
-    function initTailwind() {
-      if (window.tailwind) {
-        window.tailwind.config = {
-          theme: {
-            extend: {
-              colors: {
-                'sb-dark': '#0f172a',
-                'sb-accent': '#0ea5e9',
-              }
-            }
-          }
-        };
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
+
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
       }
-    }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initTailwind);
-    } else {
-      initTailwind();
-    }
+      window.location.replace(redirectUrl);
+    })();
   </script>
-  <style>
-    .sbx-shell{max-width:1100px;padding:0.75rem 1rem 4rem}
-    .back-link {
-      color: #64748b;
-      font-size: 0.92rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-    .back-link:hover { color: #0f172a; }
-    a { color: #0ea5e9; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    button { font-weight: 700; border-radius: 11px; padding: 9px 16px; font-size: 0.93rem; cursor: pointer; transition: all 0.15s ease; }
-  </style>
 </head>
 <body>
-  <script src="/assets/js/layout/navbar.js" defer></script>
-<div class="max-w-[1100px] mx-auto px-6 py-8">
-<a href="/tools/" class="text-slate-500 hover:text-slate-700 text-sm flex items-center gap-1 mb-6">← All tools</a>
+  <div style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 50px; color: #334155;">
+    <h2>Redirecting you to the remastered StudyBase Tools Workspace...</h2>
+    <p>If you are not automatically redirected, <a id="redirect-link" href="/tools/index.html" style="color: #2563eb; text-decoration: underline;">click here</a>.</p>
+  </div>
+  <script>
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
 
-    <div class="flex items-center gap-4 mb-6">
-      <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-sky-400 to-cyan-400 flex items-center justify-center">
-        <i data-lucide="calculator" class="w-6 h-6 text-white"></i>
-      </div>
-      <div>
-        <h1 class="text-3xl font-bold tracking-tight">Mathematics</h1>
-        <p class="text-slate-600">Five core A-Level Maths tools built for students who want every possible edge on paper.</p>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <a href="advanced-scientific-calculator.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="calculator" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">Advanced Scientific Calculator</span>
-        </div>
-        <p class="text-sm text-slate-600">Trig, logs, matrices, vectors, calculus and full scientific mode.</p>
-      </a>
-      <a href="graph-plotter.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="trending-up" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">A-Level Graph Plotter</span>
-        </div>
-        <p class="text-sm text-slate-600">Plot polynomials, trig, parametric and transformed functions live.</p>
-      </a>
-      <a href="calculus-toolkit.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="function-square" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">Calculus Toolkit</span>
-        </div>
-        <p class="text-sm text-slate-600">Differentiation, integration, stationary points and areas.</p>
-      </a>
-      <a href="mechanics-solver.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="compass" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">Mechanics Solver</span>
-        </div>
-        <p class="text-sm text-slate-600">SUVAT, projectiles, forces, moments and friction with steps.</p>
-      </a>
-      <a href="statistics-probability-lab.html" class="group block p-5 bg-white border border-slate-200 rounded-2xl hover:border-sky-200 hover:shadow-md transition-all">
-        <div class="flex items-center gap-2 mb-2">
-          <i data-lucide="bar-chart-2" class="w-5 h-5 text-sky-600"></i>
-          <span class="font-semibold">Statistics &amp; Probability Lab</span>
-        </div>
-        <p class="text-sm text-slate-600">Normal, binomial, hypothesis testing, correlation and regression.</p>
-      </a>
-    </div>
-</div>
-
-  <script src="/assets/js/layout/footer.js" defer></script>
-  <script>lucide.createIcons();</script>
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
+      }
+      document.getElementById('redirect-link').href = redirectUrl;
+    })();
+  </script>
 </body>
 </html>

@@ -1,80 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A-Level Graph Plotter | StudyBase Tools</title>
-  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
-  <link rel="stylesheet" href="/assets/css/premium-system.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    .back-link {
-      color: #64748b;
-      font-size: 0.92rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-    .back-link:hover { color: #0f172a; }
-    a { color: #0ea5e9; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    button { font-weight: 700; border-radius: 11px; padding: 9px 16px; font-size: 0.93rem; cursor: pointer; transition: all 0.15s ease; }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting... | StudyBase</title>
+  <script>
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
+
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
+      }
+      window.location.replace(redirectUrl);
+    })();
+  </script>
 </head>
 <body>
-  <div class="sbx-shell" style="max-width:980px;padding:1.25rem 1rem 3rem;">
-    <a href="/tools/mathematics/" class="back-link">← Mathematics</a>
-    
-    <div style="margin:1.3rem 0 1.8rem;">
-      <div style="display:flex; align-items:center; gap:13px;">
-        <div style="width:44px;height:44px;border-radius:11px;background:linear-gradient(135deg,#0ea5e9,#67e8f9);display:flex;align-items:center;justify-content:center;">
-          <i data-lucide="trending-up" style="width:24px;height:24px;color:white;"></i>
-        </div>
-        <div>
-          <h1 style="font-size:1.95rem;font-weight:900;margin:0;">A-Level Graph Plotter</h1>
-          <p style="color:#475569;margin:1px 0 0;font-size:0.98rem;">Plot functions live with full A-Level support.</p>
-        </div>
-      </div>
-    </div>
-
-    <div style="background:white;border:1px solid #e2e8f0;border-radius:16px;padding:1.25rem;max-width:700px;box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.04);">
-      <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
-        <input id="func" value="x^2 - 3*x + 2" style="flex:1;padding:10px 13px;border:1px solid #cbd5e1;border-radius:10px;font-size:0.95rem;">
-        <button onclick="plotGraph()" style="padding:10px 20px;background:#0f172a;color:white;border-radius:11px;font-weight:700;font-size:0.95rem;">Plot Function</button>
-      </div>
-      <canvas id="graph" width="640" height="390" style="border:1px solid #e2e8f0;border-radius:10px;width:100%;max-width:640px;"></canvas>
-      <div style="font-size:0.78rem;color:#64748b;margin-top:8px;">Enter expressions using x (supports ^ for power). Real-time A-Level graphing.</div>
-    </div>
+  <div style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 50px; color: #334155;">
+    <h2>Redirecting you to the remastered StudyBase Tools Workspace...</h2>
+    <p>If you are not automatically redirected, <a id="redirect-link" href="/tools/index.html" style="color: #2563eb; text-decoration: underline;">click here</a>.</p>
   </div>
-
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="/assets/js/layout/navbar.js" defer></script>
-  <script src="/assets/js/layout/footer.js" defer></script>
   <script>
-    lucide.createIcons();
-    function plotGraph() {
-      const c = document.getElementById('graph');
-      const ctx = c.getContext('2d');
-      ctx.clearRect(0,0,c.width,c.height);
-      const expr = document.getElementById('func').value;
-      // Axes
-      ctx.strokeStyle = '#cbd5e1'; ctx.lineWidth=1;
-      ctx.beginPath(); ctx.moveTo(40,190); ctx.lineTo(580,190); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(310,30); ctx.lineTo(310,350); ctx.stroke();
-      // Simple plot
-      ctx.strokeStyle = '#0ea5e9'; ctx.lineWidth=2.5; ctx.beginPath();
-      let first = true;
-      for (let px=50; px<570; px+=2) {
-        const x = (px-310)/40;
-        let y;
-        try { y = eval(expr.replace(/\^/g,'**').replace(/x/g,'('+x+')')); } catch(e){ y=0; }
-        const py = 190 - y*22;
-        if (first) { ctx.moveTo(px,py); first=false; } else ctx.lineTo(px,py);
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
+
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
       }
-      ctx.stroke();
-    }
-    setTimeout(plotGraph, 180);
+      document.getElementById('redirect-link').href = redirectUrl;
+    })();
   </script>
 </body>
 </html>

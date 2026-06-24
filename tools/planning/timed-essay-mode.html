@@ -1,100 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Timed Essay Mode | StudyBase Tools</title>
-  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
-  <link rel="stylesheet" href="/assets/css/premium-system.css">
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    .back-link {
-      color: #64748b;
-      font-size: 0.92rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-    .back-link:hover { color: #0f172a; }
-    a { color: #0ea5e9; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    button { font-weight: 700; border-radius: 11px; padding: 9px 16px; font-size: 0.93rem; cursor: pointer; transition: all 0.15s ease; }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redirecting... | StudyBase</title>
+  <script>
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
+
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
+      }
+      window.location.replace(redirectUrl);
+    })();
+  </script>
 </head>
 <body>
-  <div class="sbx-shell" style="max-width:980px;padding:1.6rem 1rem 3rem;">
-    <a href="/tools/planning/" class="back-link">← Planning tools</a>
-    <div style="margin:1rem 0 1.4rem;display:flex;gap:11px;align-items:center;">
-      <i data-lucide="edit-3" style="width:28px;height:28px;color:#0ea5e9;"></i>
-      <h1 style="font-size:1.9rem;font-weight:700;margin:0;">Timed Essay Mode</h1>
-    </div>
-
-    <div style="display:grid;grid-template-columns:340px 1fr;gap:1rem;max-width:980px;">
-      <div class="card" style="background:white;border:1px solid #e2e8f0;border-radius:14px;padding:1.1rem;height:fit-content;">
-        <strong>Plan Phase (8 min)</strong>
-        <div id="plan-timer" style="font-size:2rem;font-weight:800;margin:6px 0;">08:00</div>
-        <button onclick="startPlanTimer()" class="w-full py-2 bg-slate-900 text-white rounded-xl mb-2 text-sm">Start Planning Timer</button>
-        
-        <div style="margin-top:1rem;">
-          <div style="font-size:0.8rem;font-weight:700;margin-bottom:4px;">Thesis / Line of argument</div>
-          <textarea id="thesis" style="width:100%;height:58px;border:1px solid #cbd5e1;border-radius:10px;padding:8px;"></textarea>
-        </div>
-        <div style="margin-top:10px;">
-          <div style="font-size:0.8rem;font-weight:700;margin-bottom:4px;">Key paragraphs (add 3–5)</div>
-          <div style="display:flex;gap:6px;"><input id="para-input" style="flex:1;border:1px solid #cbd5e1;border-radius:10px;padding:7px;" placeholder="Point..."><button onclick="addPara()" class="px-3 rounded-xl bg-emerald-600 text-white text-xs">ADD</button></div>
-          <div id="para-list" style="margin-top:6px;font-size:0.9rem;"></div>
-        </div>
-      </div>
-
-      <div class="card" style="background:white;border:1px solid #e2e8f0;border-radius:14px;padding:1.1rem;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <strong>Writing Phase (25–45 min)</strong>
-          <div id="write-timer" style="font-size:1.35rem;font-weight:800;color:#0ea5e9;">25:00</div>
-        </div>
-        <button onclick="startWriteTimer()" class="px-4 py-1.5 bg-emerald-600 text-white rounded-xl text-sm mb-3">Start Writing Timer</button>
-        <textarea id="essay-body" style="width:100%;height:260px;border:1px solid #cbd5e1;border-radius:12px;padding:12px;font-family:inherit;" placeholder="Write your full essay here..."></textarea>
-        
-        <div style="margin-top:10px;display:flex;gap:8px;">
-          <button onclick="selfMark()" class="flex-1 py-2 border rounded-xl text-sm">Self-mark against rubric</button>
-          <button onclick="saveEssayDraft()" class="flex-1 py-2 bg-slate-900 text-white rounded-xl text-sm">Save Draft</button>
-        </div>
-      </div>
-    </div>
+  <div style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 50px; color: #334155;">
+    <h2>Redirecting you to the remastered StudyBase Tools Workspace...</h2>
+    <p>If you are not automatically redirected, <a id="redirect-link" href="/tools/index.html" style="color: #2563eb; text-decoration: underline;">click here</a>.</p>
   </div>
-
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="/assets/js/layout/navbar.js" defer></script>
-  <script src="/assets/js/layout/footer.js" defer></script>
   <script>
-    lucide.createIcons();
-    let planInt = null, writeInt = null;
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
 
-    function startPlanTimer() {
-      let t = 8*60;
-      const el = document.getElementById('plan-timer');
-      clearInterval(planInt);
-      planInt = setInterval(()=>{ t--; el.textContent = Math.floor(t/60).toString().padStart(2,'0')+':'+(t%60).toString().padStart(2,'0'); if(t<=0){clearInterval(planInt);alert('Planning time up — start writing.');}},1000);
-    }
-    function startWriteTimer() {
-      let t = 25*60;
-      const el = document.getElementById('write-timer');
-      clearInterval(writeInt);
-      writeInt = setInterval(()=>{ t--; el.textContent = Math.floor(t/60).toString().padStart(2,'0')+':'+(t%60).toString().padStart(2,'0'); if(t<=0){clearInterval(writeInt);alert('Time up! Stop writing and mark what you produced.');}},1000);
-    }
-    function addPara() {
-      const val = document.getElementById('para-input').value.trim(); if(!val) return;
-      const div = document.createElement('div'); div.style.cssText='padding:3px 0;'; div.textContent = '• ' + val;
-      document.getElementById('para-list').appendChild(div);
-      document.getElementById('para-input').value='';
-    }
-    function selfMark() {
-      alert('Self-mark checklist:\n• Clear thesis? (3)\n• Evidence + explanation? (8)\n• Link back to question? (4)\n• AO3 evaluation? (6)\n\nTotal: /21 — be honest.');
-    }
-    function saveEssayDraft() {
-      localStorage.setItem('sb_essay_draft', document.getElementById('essay-body').value);
-      alert('Draft saved locally.');
-    }
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
+      }
+      document.getElementById('redirect-link').href = redirectUrl;
+    })();
   </script>
 </body>
 </html>

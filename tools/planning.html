@@ -3,33 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planning & Command Centre | StudyBase Tools</title>
-  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css">
+  <title>Redirecting... | StudyBase</title>
+  <script>
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
+
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
+      }
+      window.location.replace(redirectUrl);
+    })();
+  </script>
 </head>
 <body>
-  <div class="sbx-shell" style="max-width: 1100px; padding: 2rem 1rem;">
-    <h1 style="font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem;">Planning &amp; Command Centre</h1>
-    <p style="color: #64748b; max-width: 620px;">Tools to help you organise your revision, stay on track, and make every session count.</p>
-
-    <div style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem;">
-      <!-- All planning tools listed here -->
-      <a href="command-centre.html" class="tool-card" style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:1.1rem;text-decoration:none;color:inherit;display:block;">
-        <strong>A-Level Command Centre</strong>
-      </a>
-      <a href="exam-paper-time-splitter.html" class="tool-card" style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:1.1rem;text-decoration:none;color:inherit;display:block;">
-        <strong>Exam Paper Time Splitter</strong>
-      </a>
-      <a href="revision-session-generator.html" class="tool-card" style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:1.1rem;text-decoration:none;color:inherit;display:block;">
-        <strong>Revision Session Generator</strong>
-      </a>
-      <a href="timed-essay-mode.html" class="tool-card" style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:1.1rem;text-decoration:none;color:inherit;display:block;">
-        <strong>Timed Essay Mode</strong>
-      </a>
-      <a href="synoptic-link-generator.html" class="tool-card" style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:1.1rem;text-decoration:none;color:inherit;display:block;">
-        <strong>Synoptic Link Generator</strong>
-      </a>
-      <!-- Add more as needed -->
-    </div>
+  <div style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 50px; color: #334155;">
+    <h2>Redirecting you to the remastered StudyBase Tools Workspace...</h2>
+    <p>If you are not automatically redirected, <a id="redirect-link" href="/tools/index.html" style="color: #2563eb; text-decoration: underline;">click here</a>.</p>
   </div>
+  <script>
+    (function() {
+      var parts = window.location.pathname.split('/');
+      var filename = parts.pop() || '';
+      var toolName = filename.replace('.html', '');
+      var redirectUrl = '/tools/index.html';
+      
+      var categoryMap = {
+        'planning': true,
+        'mathematics': true,
+        'sciences': true,
+        'humanities': true,
+        'compsci': true,
+        'languages': true
+      };
+
+      if (toolName === 'index') {
+        var category = parts.pop() || '';
+        if (category && category !== 'tools') {
+          redirectUrl += '?category=' + category;
+        }
+      } else if (categoryMap[toolName]) {
+        redirectUrl += '?category=' + toolName;
+      } else {
+        redirectUrl += '?tool=' + toolName;
+      }
+      document.getElementById('redirect-link').href = redirectUrl;
+    })();
+  </script>
 </body>
 </html>
