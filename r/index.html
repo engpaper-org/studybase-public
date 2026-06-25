@@ -1192,6 +1192,19 @@
             box-shadow: 0 0 0 5px rgba(18,185,214,0.2), 0 18px 45px rgba(0, 0, 0, 0.25);
         }
 
+        body.rgenie-private-resources #mainSearchInput,
+        :root.dark body.rgenie-private-resources #mainSearchInput,
+        :root.dark body.rgenie-private-resources #mainSearchInput:hover,
+        :root.dark body.rgenie-private-resources #mainSearchInput:focus {
+            background: #ffffff !important;
+            color: #0f172a !important;
+        }
+
+        body.rgenie-private-resources #mainSearchInput::placeholder,
+        :root.dark body.rgenie-private-resources #mainSearchInput::placeholder {
+            color: #64748b !important;
+        }
+
         body.rgenie-private-resources #resource-tools-section .max-w-\[95rem\] {
             max-width: none;
             padding-left: 0;
@@ -2531,20 +2544,6 @@
                             </div>
                         </div>
 
-                        <!-- Embedded search bar -->
-                        <div class="vault-search-wrap">
-                            <svg class="vault-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z"/>
-                            </svg>
-                            <input
-                                type="text"
-                                id="mainSearchInput"
-                                onkeyup="syncMainSearch()"
-                                placeholder="Search resources, papers, topics..."
-                                autocomplete="off"
-                            >
-                        </div>
-
                         <!-- Warning notices (inside the dark card) -->
                         <div style="margin-top:1rem;display:flex;flex-direction:column;gap:0.65rem;position:relative;z-index:1;">
                             <!-- Account safety warning -->
@@ -2580,26 +2579,23 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Routing / subscription banners (below header, still inside private-vault-intro) -->
-                    <div id="studybase-routing-bookmark-banner" class="hidden mb-3 rounded-2xl border border-blue-200 bg-gradient-to-r from-blue-50 via-sky-50 to-cyan-50 p-4 shadow-sm dark:border-blue-800/50 dark:from-blue-950/40 dark:via-sky-950/30 dark:to-cyan-950/30">
-                        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-                            <div class="flex gap-3">
-                                <div class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-lg shadow-blue-600/20">
-                                    <i data-lucide="route" class="h-5 w-5"></i>
-                                </div>
-                                <div>
-                                    <h2 class="text-sm font-black tracking-tight text-slate-950 dark:text-white">Never lose access to StudyBase again</h2>
-                                    <p class="mt-1 text-sm font-semibold leading-6 text-slate-600 dark:text-slate-300">We have deployed more domains to help StudyBase stay reachable if one gets blocked. Bookmark our routing website to always find the newest working version.</p>
-                                </div>
-                            </div>
-                            <a href="https://takemetoaworkingstudybase.site?action=bookmark" target="_blank" rel="noopener noreferrer" class="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-slate-950 px-5 py-3 text-sm font-black text-white shadow-lg shadow-slate-950/20 transition hover:bg-slate-800 active:scale-[0.98] dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100">
-                                <span>Add bookmark</span>
-                                <i data-lucide="bookmark-plus" class="h-4 w-4"></i>
-                            </a>
+                        <!-- Embedded search bar, closest to the material cards -->
+                        <div class="vault-search-wrap" style="margin-top:1rem;">
+                            <svg class="vault-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z"/>
+                            </svg>
+                            <input
+                                type="text"
+                                id="mainSearchInput"
+                                onkeyup="syncMainSearch()"
+                                placeholder="Search resources, papers, topics..."
+                                autocomplete="off"
+                            >
                         </div>
                     </div>
+
+                    <!-- Subscription banner (below header, still inside private-vault-intro) -->
                     <div id="studybase-subscription-banner" class="hidden mb-3 overflow-hidden rounded-2xl border border-purple-200 bg-gradient-to-r from-purple-700 via-violet-700 to-indigo-800 p-4 text-white shadow-lg shadow-purple-900/10">
                         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <div class="flex items-start gap-3"><div class="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-white/15 text-xl font-black ring-1 ring-white/20">+</div><div><div class="flex flex-wrap items-center gap-2"><h2 class="text-sm font-black tracking-tight">Enjoy StudyBase with more features</h2><span class="rounded-full bg-white/15 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-purple-100">Preview</span></div><p class="mt-1 text-sm font-semibold leading-6 text-purple-100">Explore Leaderboards, Proxy, Music, Chat, custom domains, All Access, and one-off AI credits. Purchases are not available yet.</p></div></div>
@@ -3760,8 +3756,17 @@
   let _vaultStatusIdx = 0;
   let _vaultStatusInterval = null;
 
+  function isVaultUserLoggedInQuick() {
+    try {
+      const expiry = Date.parse(localStorage.getItem("studybase_session_expiry") || "");
+      return localStorage.getItem("studybase_session_active") === "1" && Number.isFinite(expiry) && expiry > Date.now();
+    } catch (e) {
+      return false;
+    }
+  }
+
   function showVaultOverlay() {
-    if (!vaultOverlay) return;
+    if (!vaultOverlay || !isVaultUserLoggedInQuick()) return false;
     _vaultStatusIdx = 0;
     if (vaultStatusText) vaultStatusText.textContent = VAULT_STATUSES[0];
     vaultOverlay.classList.add("active");
@@ -3774,11 +3779,13 @@
         vaultStatusText.textContent = VAULT_STATUSES[_vaultStatusIdx];
       }
     }, 1200);
+    return true;
   }
 
   function hideVaultOverlay() {
     if (!vaultOverlay) return;
     clearInterval(_vaultStatusInterval);
+    if (!vaultOverlay.classList.contains("active")) return;
     vaultOverlay.style.transition = "opacity 0.5s ease";
     vaultOverlay.style.opacity = "0";
     setTimeout(() => {
@@ -3792,8 +3799,8 @@
     await resourcePageConfigReady;
 
     // Show full-screen overlay; enforce minimum 3-second display
-    showVaultOverlay();
-    const overlayMinEnd = Date.now() + 3000;
+    const overlayShown = showVaultOverlay();
+    const overlayMinEnd = overlayShown ? Date.now() + 3000 : Date.now();
 
     try {
       const res = await fetch(RESOURCE_LIST_ENDPOINT, {
@@ -4787,10 +4794,8 @@
   }
 
   function updateRoutingBookmarkBanner() {
-    const banner = document.getElementById("studybase-routing-bookmark-banner");
     const subscriptionBanner = document.getElementById("studybase-subscription-banner");
     const hidden = !isResourceUserLoggedIn();
-    banner?.classList.toggle("hidden", hidden);
     subscriptionBanner?.classList.toggle("hidden", hidden);
   }
 
