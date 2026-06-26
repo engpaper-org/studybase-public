@@ -3684,6 +3684,7 @@
       await loadPrivatePreflight();
       loadResourceAccessSummary(res.account || null);
       refreshCommandFilters();
+      refreshResourceVaultChrome();
       filterResources();
 
       // Wait for images in the grid to load (or timeout after 4s) THEN hide overlay
@@ -3707,6 +3708,7 @@
         new Promise(r => setTimeout(r, Math.max(0, overlayMinEnd - Date.now())))
       ]);
       hideVaultOverlay();
+      refreshResourceVaultChrome();
 
     } catch (error) {
       console.error(error);
@@ -4126,11 +4128,11 @@
   }
 
   const subscriptionUpgradeFallbackProducts = [
-    { name: "Leaderboards Plus", price: "Â£1.99/month", note: "Leaderboard submissions, verified scores, badges, and stats.", tone: "#7c3aed", image: "/assets/images/subscriptions/leaderboards-plus.jpg" },
-    { name: "Proxy Plus", price: "Â£3.99/month", note: "Private proxy access with fair-use limits.", tone: "#2563eb", image: "/assets/images/subscriptions/proxy-plus.jpg" },
-    { name: "Music Plus", price: "Â£1.99/month", note: "Music player, playlists, favourites, and a saved library.", tone: "#db2777", image: "/assets/images/subscriptions/music-plus.jpg" },
-    { name: "Chat Plus", price: "Â£1.49/month", note: "Chat with other users, profile badges, and private rooms.", tone: "#059669", image: "/assets/images/subscriptions/chat-plus.jpg" },
-    { name: "All Access", price: "Â£6.99/month", note: "Proxy, music, leaderboards, and chat in one plan.", tone: "#6d28d9", image: "/assets/images/subscriptions/all-access.jpg", featured: true }
+    { name: "Leaderboards Plus", price: "Â£1.99/month", note: "Leaderboard submissions, verified scores, badges, and stats.", tone: "#ff5b6b", priceTone: "#7c3aed", image: "/assets/images/subscriptions/leaderboards-plus.jpg" },
+    { name: "Proxy Plus", price: "Â£3.99/month", note: "Private proxy access with fair-use limits.", tone: "#2563eb", priceTone: "#2563eb", image: "/assets/images/subscriptions/proxy-plus.jpg" },
+    { name: "Music Plus", price: "Â£1.99/month", note: "Music player, playlists, favourites, and a saved library.", tone: "#db2777", priceTone: "#db2777", image: "/assets/images/subscriptions/music-plus.jpg" },
+    { name: "Chat Plus", price: "Â£1.49/month", note: "Chat with other users, profile badges, and private rooms.", tone: "#059669", priceTone: "#059669", image: "/assets/images/subscriptions/chat-plus.jpg" },
+    { name: "All Access", price: "Â£6.99/month", note: "Proxy, music, leaderboards, and chat in one plan.", tone: "#7c3aed", priceTone: "#7c3aed", image: "/assets/images/subscriptions/all-access.jpg", featured: true }
   ];
 
   const subscriptionPlanBySlug = {
@@ -4173,6 +4175,7 @@
   }
 
   function subscriptionProductCard(product, badge) {
+    const priceTone = product.priceTone || product.tone;
     return `
       <article style="position:relative;display:flex;min-height:370px;overflow:hidden;flex-direction:column;border:${product.featured || badge ? "2px solid #8b5cf6" : "1px solid #e2e8f0"};border-radius:22px;background:#fff;box-shadow:0 12px 35px rgba(15,23,42,.07)">
         ${badge ? `<span style="position:absolute;right:14px;top:14px;z-index:2;border-radius:999px;background:#7c3aed;padding:5px 9px;color:white;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em">${escapeHtml(badge)}</span>` : ""}
@@ -4181,12 +4184,43 @@
         </div>
         <div style="display:flex;flex:1;flex-direction:column;padding:19px">
           <h3 style="margin:0;color:#0f172a;font-size:20px;font-weight:950">${escapeHtml(product.name)}</h3>
-          <p style="margin:7px 0 0;color:${product.tone};font-size:18px;font-weight:950">${escapeHtml(normaliseSubscriptionPrice(product.price))}</p>
+          <p style="margin:7px 0 0;color:${priceTone};font-size:18px;font-weight:950">${escapeHtml(normaliseSubscriptionPrice(product.price))}</p>
           <p style="margin:11px 0 18px;color:#64748b;font-size:13px;line-height:1.55">${escapeHtml(product.note)}</p>
-          <button type="button" disabled style="margin-top:auto;width:100%;border:0;border-radius:12px;padding:11px;background:#e2e8f0;color:#64748b;font-weight:850;cursor:not-allowed">Not available yet</button>
+          <button type="button" data-resource-purchase-terms="${escapeHtml(product.name)}" style="margin-top:auto;margin-bottom:10px;width:100%;border:0;background:transparent;color:${priceTone};font-size:12px;font-weight:950;cursor:pointer">Purchase Terms</button>
+          <button type="button" disabled style="width:100%;border:0;border-radius:12px;padding:11px;background:#e2e8f0;color:#64748b;font-weight:850;cursor:not-allowed">Not available yet</button>
         </div>
       </article>
     `;
+  }
+
+  function showResourcePurchaseTerms(productName) {
+    if (window.StudyBaseSubscriptions?.showTerms) {
+      window.StudyBaseSubscriptions.showTerms(productName);
+      return;
+    }
+    const product = getSubscriptionProducts().find(item => item.name === productName) || { name: productName || "Subscription", price: "", tone: "#7c3aed", priceTone: "#7c3aed", terms: [] };
+    const terms = Array.isArray(product.terms) && product.terms.length ? product.terms : [
+      "Purchases are not available yet.",
+      "Future checkout and payment processing will be provided through Sellbase.gg.",
+      "Nothing renews automatically unless stated otherwise."
+    ];
+    const priceTone = product.priceTone || product.tone || "#7c3aed";
+    document.getElementById("resource-purchase-terms-modal")?.remove();
+    const modal = document.createElement("div");
+    modal.id = "resource-purchase-terms-modal";
+    modal.className = "sbx-login-modal is-open";
+    modal.innerHTML = `
+      <div role="dialog" aria-modal="true" aria-labelledby="resource-purchase-terms-title" style="width:min(620px,calc(100vw - 28px));background:#fff;border-radius:26px;padding:clamp(22px,4vw,34px);box-shadow:0 30px 90px rgba(15,23,42,.35);color:#0f172a">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px"><div><span style="display:inline-flex;padding:7px 11px;border-radius:999px;background:#ede9fe;color:#6d28d9;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase">Purchase terms</span><h2 id="resource-purchase-terms-title" style="margin:13px 0 0;font-size:clamp(25px,4vw,34px);line-height:1.08;font-weight:950">${escapeHtml(product.name)}</h2><p style="margin:8px 0 0;color:${priceTone};font-size:18px;font-weight:950">${escapeHtml(normaliseSubscriptionPrice(product.price))}</p></div><button type="button" data-resource-terms-close aria-label="Close purchase terms" style="flex:0 0 auto;width:42px;height:42px;border:1px solid #e2e8f0;border-radius:14px;background:#fff;color:#475569;font-size:24px;cursor:pointer">&times;</button></div>
+        <div style="margin-top:20px;display:grid;gap:10px">${terms.map(term => `<div style="display:flex;gap:10px;border-radius:16px;background:#f8fafc;border:1px solid #e2e8f0;padding:13px;color:#475569;font-size:13px;line-height:1.55"><span style="margin-top:2px;display:grid;width:18px;height:18px;place-items:center;border-radius:999px;background:${priceTone};color:#fff;font-size:11px;font-weight:900;flex:0 0 auto">✓</span><span>${escapeHtml(term)}</span></div>`).join("")}</div>
+        <div style="margin-top:18px;border-radius:18px;background:#0f172a;padding:15px;color:#cbd5e1;font-size:12px;line-height:1.55">Future checkout and payment processing will be provided through Sellbase.gg. Purchases are not available yet.</div>
+      </div>`;
+    document.body.appendChild(modal);
+    const close = () => { document.removeEventListener("keydown", onKeydown); modal.remove(); };
+    const onKeydown = event => { if (event.key === "Escape") close(); };
+    modal.querySelector("[data-resource-terms-close]").onclick = close;
+    modal.onclick = event => { if (event.target === modal) close(); };
+    document.addEventListener("keydown", onKeydown);
   }
 
   function showSubscriptionResourcePopup(slug) {
@@ -4223,6 +4257,12 @@
     const close = () => { document.removeEventListener("keydown", onKeydown); modal.remove(); };
     const onKeydown = event => { if (event.key === "Escape") close(); };
     modal.querySelector("[data-resource-subscription-close]").onclick = close;
+    modal.querySelectorAll("[data-resource-purchase-terms]").forEach(button => {
+      button.onclick = event => {
+        event.stopPropagation();
+        showResourcePurchaseTerms(button.dataset.resourcePurchaseTerms || "");
+      };
+    });
     modal.onclick = event => { if (event.target === modal) close(); };
     document.addEventListener("keydown", onKeydown);
     return true;
@@ -4930,11 +4970,53 @@
   window.addEventListener("studybase:account-session-updated", updateRoutingBookmarkBanner);
   window.addEventListener("site-config-ready", updateRoutingBookmarkBanner);
 
+  function refreshResourceVaultChrome(attempt = 0) {
+    const header = document.querySelector(".private-vault-header");
+    if (!header) return;
+
+    header.querySelectorAll(".resource-warning-card").forEach(card => {
+      card.style.borderStyle = "solid";
+      card.style.borderWidth = "1px";
+      card.style.boxShadow = "0 12px 28px rgba(15,23,42,0.05)";
+    });
+
+    const danger = header.querySelector(".resource-warning-danger");
+    if (danger) {
+      danger.style.background = "rgba(239,68,68,0.12)";
+      danger.style.borderColor = "rgba(239,68,68,0.3)";
+      danger.style.color = "#fca5a5";
+    }
+
+    const info = header.querySelector(".resource-warning-info");
+    if (info) {
+      info.style.background = "rgba(59,130,246,0.12)";
+      info.style.borderColor = "rgba(59,130,246,0.3)";
+      info.style.color = "#93c5fd";
+    }
+
+    const search = document.getElementById("mainSearchInput");
+    if (search) {
+      search.style.color = "#0f172a";
+      search.style.background = "#ffffff";
+      search.style.caretColor = "#2563eb";
+    }
+
+    if (window.lucide && typeof window.lucide.createIcons === "function") {
+      window.lucide.createIcons();
+      return;
+    }
+
+    if (attempt < 6) {
+      setTimeout(() => refreshResourceVaultChrome(attempt + 1), 150);
+    }
+  }
+
   setupResourceIdleCover();
   updateRoutingBookmarkBanner();
   setupWeeklyFeedbackPrompt();
   setupCommandCenterControls();
   refreshCommandFilters();
+  refreshResourceVaultChrome();
   loadResources();
 </script>
 <!-- Report Modal -->
