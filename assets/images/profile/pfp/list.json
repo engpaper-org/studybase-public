@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "sbo",
+      "title": "StudyBase Original",
+      "items": [
+        { "id": "1", "title": "Classic Male" },
+        { "id": "2", "title": "Classic Female" }
+      ]
+    },
+    {
+      "id": "dcd",
+      "title": "Discord Default",
+      "items": [
+        { "id": "1", "title": "Default 1" },
+        { "id": "2", "title": "Default 2" },
+        { "id": "3", "title": "Default 3" },
+        { "id": "4", "title": "Default 4" },
+        { "id": "5", "title": "Default 5" },
+        { "id": "6", "title": "Default 6" },
+        { "id": "7", "title": "Default 7" },
+        { "id": "8", "title": "Default 8" }
+      ]
+    },
+    {
+      "id": "an",
+      "title": "Anime",
+      "items": [
+        { "id": "1", "title": "Anime 1" },
+        { "id": "2", "title": "Anime 2" },
+        { "id": "3", "title": "Anime 3" },
+        { "id": "4", "title": "Anime 4" },
+        { "id": "5", "title": "Anime 5" },
+        { "id": "6", "title": "Anime 6" },
+        { "id": "7", "title": "Anime 7" },
+        { "id": "8", "title": "Anime 8" }
+      ]
+    },
+    {
+      "id": "colours",
+      "title": "Plain Colours",
+      "items": [
+        { "id": "1", "title": "Red" },
+        { "id": "2", "title": "Blue" },
+        { "id": "3", "title": "Green" },
+        { "id": "4", "title": "Yellow" },
+        { "id": "5", "title": "Black" },
+        { "id": "6", "title": "Pink" },
+        { "id": "7", "title": "Yellow" },
+        { "id": "8", "title": "Orange" }
+      ]
+    }
+  ]
+}

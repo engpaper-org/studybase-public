@@ -172,10 +172,33 @@
     window.dispatchEvent(new CustomEvent("studybase:account-session-cleared"));
   }
 
+  function getStoredUser() {
+    try { return JSON.parse(localStorage.getItem("studybase_user") || "null"); }
+    catch (_) { return null; }
+  }
+
+  function profileInitial(user) {
+    const value = String(user?.name || user?.username || "s").trim().toLowerCase();
+    const match = value.match(/[a-z]/);
+    return match ? match[0] : "s";
+  }
+
+  function profilePictureUrl(user) {
+    const value = String(user?.profilePicture || "sbo/1.jpg").trim().toLowerCase();
+    const safe = /^[a-z0-9-]{1,32}\/[a-z0-9-]{1,32}\.jpg$/.test(value) ? value : "sbo/1.jpg";
+    return `/assets/images/profile/pfp/${safe}`;
+  }
+
   function authMarkup() {
     if (isLoggedIn()) {
+      const user = getStoredUser();
+      const initial = profileInitial(user);
       return `
         <div class="sbx-nav-auth" data-sbx-auth>
+          <a class="sbx-nav-pfp" href="/myaccount/account.html" data-sbx-account aria-label="Open my account">
+            <img src="${profilePictureUrl(user)}" alt="" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='/assets/images/profile/pfp/sbo/1.jpg'}else{this.hidden=true;this.nextElementSibling.hidden=false}">
+            <span hidden>${initial.toUpperCase()}</span>
+          </a>
           <a class="sbx-nav-access sbx-nav-account" href="/myaccount/account.html" data-sbx-account>My account</a>
           <button class="sbx-nav-access sbx-nav-signout" type="button" data-sbx-signout>Sign out</button>
         </div>
@@ -447,7 +470,8 @@
     }
 
     window.addEventListener("message", event => {
-      if (event.origin !== window.location.origin) return;
+      const trustedAuthOrigins = new Set([window.location.origin, "https://auth.studybase.site"]);
+      if (!trustedAuthOrigins.has(event.origin)) return;
       if (event.data?.type === "studybase:session-ended" && event.data.reason === "authentication-required") {
         ensureAccountModal().closeAccountModal?.();
         updateAuthState();
@@ -465,6 +489,7 @@
         ensureAccountModal().closeAccountModal?.();
         if (["deleted", "signedout", "passwordChanged", "ban"].includes(event.data.status)) clearAuthSession();
         updateAuthState();
+        if (event.data.status === "loggedin") showAccountStatus({ title: "Account created", message: "Your StudyBase account is ready. Log in to start using it.", buttonLabel: "Log in", onButton: () => ensureAccountModal().openPage(`/myaccount/login.html${event.data.username ? `?username=${encodeURIComponent(event.data.username)}` : ""}`, "StudyBase login") });
         if (event.data.status === "deleted") showAccountStatus({ title: "Account deleted", message: "Your account and related account data have been deleted." });
         if (event.data.status === "signedout") showAccountStatus({ title: "Signed out", message: "You have been securely signed out of StudyBase." });
         if (event.data.status === "passwordChanged") showAccountStatus({ title: "Password changed", message: "Your password was changed and existing sessions were signed out.", buttonLabel: "Log in", onButton: () => ensureAccountModal().openPage(`/myaccount/login.html${event.data.username ? `?username=${encodeURIComponent(event.data.username)}` : ""}`, "StudyBase login") });

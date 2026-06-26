@@ -23,6 +23,25 @@
           <label class="block text-sm font-bold">Username<input id="username" name="username" minlength="3" maxlength="24" pattern="[a-z][a-z0-9._-]{2,23}" required autocomplete="username" class="mt-2 w-full rounded-xl border border-slate-300 p-4 disabled:bg-slate-100 disabled:text-slate-500"><span id="usernameHelp" class="mt-2 block text-xs font-normal text-slate-500">Do not include personal information. Can be changed every 30 days.</span></label>
         </div>
       </section>
+      <section class="rounded-3xl border border-purple-100 bg-gradient-to-br from-purple-50 to-white p-5 sm:p-6">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div><h2 class="text-xl font-black">Profile picture</h2><p id="pfpHelp" class="mt-1 text-sm text-slate-500">Choose an avatar. This can be changed every 30 days.</p></div>
+          <div class="grid h-20 w-20 overflow-hidden rounded-full bg-white shadow-lg ring-4 ring-purple-100"><img id="pfpPreview" alt="" class="h-full w-full object-cover"><span id="pfpFallback" hidden class="grid h-full w-full place-items-center text-xl font-black text-purple-700">S</span></div>
+        </div>
+        <div class="mt-5 rounded-3xl border border-indigo-200 bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-5 shadow-sm">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <p class="text-xs font-black uppercase tracking-[.18em] text-indigo-600">Optional upgrade</p>
+              <h3 class="mt-1 text-lg font-black text-slate-950">Custom PFP upload</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-600">Upload your own profile picture for a one-time charge of <strong>£1.49</strong>. This is not available yet.</p>
+            </div>
+            <span class="rounded-full bg-slate-900 px-4 py-2 text-xs font-black uppercase tracking-wider text-white">Unavailable</span>
+          </div>
+          <button type="button" disabled class="mt-4 w-full rounded-2xl bg-slate-200 p-3 font-black text-slate-500">Custom upload unavailable</button>
+        </div>
+        <input id="profilePicture" name="profilePicture" type="hidden" required>
+        <div id="pfpPicker" class="mt-5 max-h-96 space-y-5 overflow-y-auto rounded-2xl border border-purple-100 bg-white/80 p-4"></div>
+      </section>
       <section class="rounded-3xl border border-slate-200 bg-slate-50 p-5 sm:p-6">
         <div class="flex gap-4"><div class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-slate-900 font-black text-white">L</div><div><h2 class="text-lg font-black">Locked account details</h2><p class="mt-1 text-sm leading-6 text-slate-500">Date of birth and gender cannot be edited here. Contact the StudyBase site team if either detail is incorrect.</p></div></div>
         <div class="mt-5 grid gap-3 sm:grid-cols-2">
@@ -42,9 +61,14 @@
     const message = document.getElementById("message");
     const firstName = document.getElementById("firstName");
     const username = document.getElementById("username");
+    const profilePicture = document.getElementById("profilePicture");
+    const pfpPicker = document.getElementById("pfpPicker");
+    const pfpPreview = document.getElementById("pfpPreview");
+    const pfpFallback = document.getElementById("pfpFallback");
     const contentWarnings = document.getElementById("contentWarnings");
     const save = document.getElementById("save");
     let loadedUser = null;
+    let pfpLocked = false;
     function show(text, bad = false) {
       message.textContent = text;
       message.className = `mt-6 rounded-xl p-4 text-sm ${bad ? "bg-red-50 text-red-800" : "bg-emerald-50 text-emerald-800"}`;
@@ -55,6 +79,55 @@
       if (!Number.isFinite(changed) || Date.now() >= next) return;
       input.disabled = true;
       help.textContent = `${label} can next be changed on ${new Date(next).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}.`;
+    }
+    function safeProfilePicture(value) {
+      const text = String(value || "").trim().toLowerCase();
+      return /^[a-z0-9-]{1,32}\/[a-z0-9-]{1,32}\.jpg$/.test(text) ? text : "sbo/1.jpg";
+    }
+    function setProfilePicture(value) {
+      const safe = safeProfilePicture(value);
+      profilePicture.value = safe;
+      pfpPreview.src = `/assets/images/profile/pfp/${safe}`;
+      pfpPreview.hidden = false;
+      pfpFallback.hidden = true;
+      pfpPreview.onerror = () => {
+        if (!pfpPreview.dataset.fallback) {
+          pfpPreview.dataset.fallback = "1";
+          pfpPreview.src = "/assets/images/profile/pfp/sbo/1.jpg";
+          return;
+        }
+        pfpPreview.hidden = true;
+        pfpFallback.hidden = false;
+      };
+      pfpPicker.querySelectorAll("[data-pfp-value]").forEach(button => {
+        const active = button.dataset.pfpValue === safe;
+        button.classList.toggle("ring-4", active);
+        button.classList.toggle("ring-purple-500", active);
+        button.classList.toggle("bg-purple-50", active);
+      });
+    }
+    async function loadProfilePictureList() {
+      let data;
+      try {
+        const response = await fetch("/assets/images/profile/pfp/list.json", { cache: "no-store" });
+        data = response.ok ? await response.json() : null;
+      } catch (_) {}
+      const categories = Array.isArray(data?.categories) ? data.categories : [{ id: "sbo", title: "StudyBase Original", items: [{ id: "1", title: "Default" }] }];
+      pfpPicker.innerHTML = categories.map(category => {
+        const categoryId = String(category.id || "").toLowerCase().replace(/[^a-z0-9-]/g, "");
+        const title = String(category.title || categoryId || "Profile pictures").replace(/[<>&"]/g, "");
+        const items = Array.isArray(category.items) ? category.items : [];
+        return `<section><h3 class="text-sm font-black uppercase tracking-[.16em] text-purple-600">${title}</h3><div class="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">${items.map(item => {
+          const imageId = String(item.id || "").toLowerCase().replace(/[^a-z0-9-]/g, "");
+          const itemTitle = String(item.title || imageId || "Avatar").replace(/[<>&"]/g, "");
+          const value = `${categoryId}/${imageId}.jpg`;
+          return `<button type="button" data-pfp-value="${value}" ${pfpLocked ? "disabled" : ""} class="group rounded-2xl border border-slate-200 bg-white p-2 text-center transition hover:-translate-y-1 hover:border-purple-300 disabled:cursor-not-allowed disabled:opacity-50"><span class="mx-auto block h-16 w-16 overflow-hidden rounded-full bg-slate-100 shadow-sm"><img src="/assets/images/profile/pfp/${value}" alt="" class="h-full w-full object-cover" onerror="this.style.display='none'"></span><span class="mt-2 block truncate text-xs font-bold text-slate-600">${itemTitle}</span></button>`;
+        }).join("")}</div></section>`;
+      }).join("");
+      pfpPicker.querySelectorAll("[data-pfp-value]").forEach(button => {
+        button.onclick = () => { if (!pfpLocked) setProfilePicture(button.dataset.pfpValue); };
+      });
+      setProfilePicture(loadedUser?.profilePicture || "sbo/1.jpg");
     }
     async function load() {
       const result = await StudyBaseServices.request("/me");
@@ -68,6 +141,13 @@
       contentWarnings.checked = loadedUser.settings?.contentWarnings !== false;
       cooldown(firstName, document.getElementById("nameHelp"), loadedUser.nameChangedAt, 7, "First name");
       cooldown(username, document.getElementById("usernameHelp"), loadedUser.usernameChangedAt, 30, "Username");
+      const pfpChanged = loadedUser.profilePicture ? Date.parse(loadedUser.profilePictureChangedAt || loadedUser.createdAt || "") : NaN;
+      const pfpNext = pfpChanged + 30 * 86400000;
+      if (Number.isFinite(pfpChanged) && Date.now() < pfpNext) {
+        pfpLocked = true;
+        document.getElementById("pfpHelp").textContent = `Profile picture can next be changed on ${new Date(pfpNext).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}.`;
+      }
+      await loadProfilePictureList();
       document.getElementById("delete").href = `https://auth.studybase.site/delete?username=${encodeURIComponent(loadedUser.username)}`;
       document.getElementById("password").href = `https://auth.studybase.site/change-password?username=${encodeURIComponent(loadedUser.username)}`;
       localStorage.setItem("studybase_user", JSON.stringify(loadedUser));
@@ -78,7 +158,7 @@
       event.preventDefault();
       if (!form.reportValidity()) return;
       save.disabled = true; save.textContent = "Saving...";
-      const profile = await StudyBaseServices.request("/profile", { method: "POST", body: JSON.stringify({ firstName: firstName.disabled ? loadedUser.name : firstName.value, username: username.disabled ? loadedUser.username : username.value }) });
+      const profile = await StudyBaseServices.request("/profile", { method: "POST", body: JSON.stringify({ firstName: firstName.disabled ? loadedUser.name : firstName.value, username: username.disabled ? loadedUser.username : username.value, profilePicture: pfpLocked ? loadedUser.profilePicture : profilePicture.value }) });
       if (!profile.ok) {
         const detail = profile.nextChangeAt ? `${profile.error}. Try again after ${new Date(profile.nextChangeAt).toLocaleString("en-GB")}.` : profile.error;
         show(detail || "Could not save profile", true); save.disabled = false; save.textContent = "Save changes"; return;
