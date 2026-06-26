@@ -315,8 +315,7 @@
       modal.querySelector("[data-beta-code]").textContent = serverResponseCode || "Use the beta code shown by the server";
       modal.querySelector("[data-close]").onclick = () => modal.remove();
       modal.querySelector("[data-signup]").onclick = () => {
-        try { window.top.location.href = "https://auth.studybase.site/signup"; }
-        catch (_) { location.href = "https://auth.studybase.site/signup"; }
+        location.href = "https://auth.studybase.site/signup";
       };
       document.body.appendChild(modal);
     }
