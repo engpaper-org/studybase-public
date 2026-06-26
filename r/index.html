@@ -156,24 +156,6 @@
             background: linear-gradient(to top, rgba(15,23,42,0.82), rgba(15,23,42,0.18));
         }
 
-        .favourites-shell {
-            background: rgba(255,255,255,0.84);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255,255,255,0.72);
-            box-shadow: 0 18px 45px rgba(15,23,42,0.08);
-        }
-
-        .favourite-mini-card {
-            transition: all 0.22s ease;
-        }
-
-        .favourite-mini-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 14px 30px rgba(147, 51, 234, 0.12);
-            border-color: #d8b4fe;
-        }
-
         .top-cards-shell {
             background: rgba(255,255,255,0.84);
             backdrop-filter: blur(16px);
@@ -857,8 +839,7 @@
         body.rgenie-private-resources .rgenie-proof-strip,
         body.rgenie-private-resources .rgenie-board-strip,
         body.rgenie-private-resources .rgenie-command-grid,
-        body.rgenie-private-resources #farewell-countdown-section,
-        body.rgenie-private-resources #favourites-section {
+        body.rgenie-private-resources #farewell-countdown-section {
             display: none !important;
         }
 
@@ -1483,8 +1464,7 @@
         }
 
         /* ── Paywall cards: sharp square corners vs rounded regular cards ── */
-        .resource-card.resource-card-paywall,
-        .favourite-mini-card.resource-card-paywall {
+        .resource-card.resource-card-paywall {
             border: 2.5px solid transparent !important;
             border-radius: 10px !important; /* intentionally sharper corners */
             background:
@@ -1611,7 +1591,6 @@
         :root.dark .rgenie-command-card,
         :root.dark .rgenie-panel,
         :root.dark .rgenie-paper-finder,
-        :root.dark .favourite-mini-card,
         :root.dark .resource-card {
             background: #0f172a;
             border-color: #334155;
@@ -2467,24 +2446,6 @@
             </div>
         </div>
 
-    </section>
-
-    <section id="favourites-section" class="relative z-20 px-6 mb-8 hidden rgenie-private-only">
-        <div class="max-w-[95rem] mx-auto">
-            <div class="favourites-shell rounded-[2rem] p-5 md:p-6">
-                <div class="flex items-center gap-3 mb-5">
-                    <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-2xl font-black text-slate-900 tracking-tight">Favourites</h2>
-                        <p class="text-sm text-slate-500 font-medium">Your saved resources, shown first.</p>
-                    </div>
-                </div>
-
-                <div id="favourites-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4"></div>
-            </div>
-        </div>
     </section>
 
     <section id="paper-finder-section" class="rgenie-paper-finder rgenie-container rgenie-private-only" aria-labelledby="paperFinderTitle">
@@ -3352,161 +3313,6 @@
     return backItem.concat(foldersHere, resourcesHere);
   }
 
-  function readFavouriteIds() {
-    try {
-      const raw = localStorage.getItem("sb_fav");
-      const parsed = JSON.parse(raw || "[]");
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  }
-
-  function getEncodedMaterialIdFromName(name) {
-    try {
-      return btoa(name);
-    } catch {
-      return "";
-    }
-  }
-
-  function getFavouriteResources() {
-    if (openMode !== "access_only") return [];
-
-    const favouriteIds = readFavouriteIds();
-    if (!favouriteIds.length) return [];
-
-    const favouriteSet = new Set(favouriteIds);
-
-    return (allAccessOnlyResources || []).filter(item => {
-      const encoded = getEncodedMaterialIdFromName(item.name || "");
-      return encoded && favouriteSet.has(encoded);
-    });
-  }
-
-  function renderFavourites() {
-    const section = document.getElementById("favourites-section");
-    const grid = document.getElementById("favourites-grid");
-
-    if (!section || !grid) return;
-
-    if (resourceIdleState.active) {
-      section.classList.add("hidden");
-      grid.innerHTML = "";
-      return;
-    }
-
-    if (openMode !== "access_only") {
-      section.classList.add("hidden");
-      grid.innerHTML = "";
-      return;
-    }
-
-    const favourites = getFavouriteResources();
-
-    if (!favourites.length) {
-      section.classList.add("hidden");
-      grid.innerHTML = "";
-      return;
-    }
-
-    section.classList.remove("hidden");
-    grid.innerHTML = "";
-
-    const fragment = document.createDocumentFragment();
-
-    favourites.forEach((item, index) => {
-      const {
-        displayName,
-        verifiedHtml,
-        isPopular,
-        isRising,
-        isBeta,
-        isOriginal,
-        isComingSoon
-      } = getResourceDisplayMeta(item.name);
-
-      let imageUrl = item.iconurl;
-      const isPaywallResource = Boolean(getSubscriptionSlugFromItem(item));
-      let tagHtml = `
-        <div class="resource-tag" style="border-color:rgba(245,158,11,0.9);color:#b45309;background:rgba(255,251,235,0.94);">
-          <i class="fas fa-star"></i> Favourite
-        </div>`;
-
-      if (isComingSoon) {
-        tagHtml = `
-        <div class="resource-tag resource-tag-soon">
-          <i class="fas fa-clock"></i> Coming soon
-        </div>`;
-      }
-
-      if (isBeta) {
-        if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
-      } else if (isPopular) {
-        if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
-      } else if (isOriginal) {
-        if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
-      } else if (isRising) {
-        if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/rising.jpg";
-      }
-
-      const card = document.createElement("div");
-      card.className =
-        "favourite-mini-card group aspect-square bg-white rounded-2xl border border-slate-200 cursor-pointer shadow-sm relative overflow-hidden flex items-center justify-center";
-      if (isPaywallResource) card.classList.add("resource-card-paywall");
-      card.style.contentVisibility = "auto";
-      card.style.containIntrinsicSize = "1px 220px";
-
-      let contentHtml = "";
-
-      if (imageUrl === "pass") {
-        contentHtml = `
-          ${tagHtml}
-          <div class="p-3 w-full h-full flex items-center justify-center image-fallback resource-visual-glow">
-            <h3 class="font-bold text-sm text-slate-700 text-center leading-snug group-hover:text-blue-600 transition-colors">
-              ${displayName}${verifiedHtml}
-            </h3>
-          </div>
-        `;
-      } else {
-        const hoverVerifiedHtml = verifiedHtml
-          ? ` <i class="fas fa-check-circle text-blue-400 ml-1" title="Verified Resource"></i>`
-          : "";
-
-        const fallbackHtml = `
-          <div class="image-fallback resource-visual-glow w-full h-full flex items-center justify-center p-4">
-            <h3 class="font-bold text-sm text-slate-700 text-center leading-snug">
-              ${displayName}${verifiedHtml}
-            </h3>
-          </div>
-        `;
-
-        contentHtml = `
-          ${tagHtml}
-          <div data-resource-visual data-fallback='${fallbackHtml.replace(/'/g, "&apos;")}' class="absolute inset-0 resource-visual-glow">
-            <img src="${imageUrl}" onerror="handleImageError(this)" class="absolute inset-0 w-full h-full object-cover z-10 group-hover:scale-110 transition-transform duration-500" loading="lazy">
-            <div class="absolute inset-0 private-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex items-center justify-center p-3 backdrop-blur-[1px]">
-              <h3 class="font-bold text-sm text-white text-center leading-snug transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                ${displayName}${hoverVerifiedHtml}
-              </h3>
-            </div>
-          </div>
-        `;
-      }
-
-      if (index < 12) {
-        card.classList.add("animate-enter");
-        card.style.animationDelay = `${index * 35}ms`;
-      }
-
-      card.onclick = () => handleClick(item);
-      card.innerHTML = contentHtml;
-      fragment.appendChild(card);
-    });
-
-    grid.appendChild(fragment);
-  }
-
   function normaliseTopCardList(cards) {
     if (!Array.isArray(cards)) return [];
 
@@ -3691,8 +3497,6 @@
     updateFarewellCountdownVisibility();
     allAccessOnlyResources = [];
     allResources = [];
-    renderFavourites();
-    document.getElementById("favourites-section")?.classList.add("hidden");
     document.getElementById("top-cards-section")?.classList.add("hidden");
 
     const grid = document.getElementById("resource-grid");
@@ -3848,7 +3652,6 @@
         await loadPublicResourceData();
         allAccessOnlyResources = [];
         allResources = getAllPublicCommandItems();
-        renderFavourites();
         filterResources();
         await new Promise(r => setTimeout(r, Math.max(0, overlayMinEnd - Date.now())));
         hideVaultOverlay();
@@ -3881,7 +3684,6 @@
       await loadPrivatePreflight();
       loadResourceAccessSummary(res.account || null);
       refreshCommandFilters();
-      renderFavourites();
       filterResources();
 
       // Wait for images in the grid to load (or timeout after 4s) THEN hide overlay
@@ -3915,7 +3717,6 @@
       setBannerResourceMode("public");
       renderResourceAccessSummary(null);
       updateFarewellCountdownVisibility();
-      document.getElementById("favourites-section").classList.add("hidden");
 
       if (resourceIdleState.active) {
         latestRenderedResourceItems = [];
@@ -4151,8 +3952,6 @@
       return;
     }
 
-    renderFavourites();
-
     const searchInput = document.getElementById("searchInput");
     if (searchInput && searchInput.value.trim()) {
       filterResources();
@@ -4262,7 +4061,6 @@
 
   function clearResourceListingDom() {
     const grid = document.getElementById("resource-grid");
-    const favouritesGrid = document.getElementById("favourites-grid");
     const topCardsGrid = document.getElementById("top-cards-grid");
 
     if (grid) {
@@ -4270,14 +4068,12 @@
       grid.className = "hidden";
     }
 
-    if (favouritesGrid) favouritesGrid.replaceChildren();
     if (topCardsGrid) topCardsGrid.replaceChildren();
   }
 
   function setResourceListingHidden(hidden) {
     const ids = [
       "farewell-countdown-section",
-      "favourites-section",
       "top-cards-section",
       "paper-finder-section",
       "resource-tools-section",
@@ -4290,11 +4086,6 @@
 
       if (id === "farewell-countdown-section") {
         updateFarewellCountdownVisibility(hidden);
-        return;
-      }
-
-      if (id === "favourites-section") {
-        el.classList.toggle("hidden", hidden || !getFavouriteResources().length);
         return;
       }
 
@@ -4473,7 +4264,6 @@
     embeddedMaterialState.open = false;
     document.body.classList.remove("overflow-hidden", "embedded-material-active");
     setResourceListingHidden(false);
-    renderFavourites();
     renderGrid(embeddedMaterialState.restoreItems || allResources);
     window.scrollTo({ top: embeddedMaterialState.restoreScrollY || 0, behavior: "auto" });
   }
@@ -5048,7 +4838,6 @@
       if (!query && !hasStructuredFilter) {
         allResources = baseItems;
         renderGrid(allResources);
-        renderFavourites();
         return;
       }
 
@@ -5058,7 +4847,6 @@
       });
 
       renderGrid(filtered);
-      renderFavourites();
       return;
     }
 
@@ -5072,7 +4860,6 @@
       return itemMatchesFilters(enriched, filters);
     });
     renderGrid(filtered);
-    renderFavourites();
   }
 
   function handleClick(item) {
@@ -5094,7 +4881,6 @@
         currentFolderId = prev ?? ROOT_FOLDER;
         allResources = getVisiblePublicItems(currentFolderId);
         renderGrid(allResources);
-        renderFavourites();
         return;
       }
 
@@ -5103,7 +4889,6 @@
         currentFolderId = String(item.folderId);
         allResources = getVisiblePublicItems(currentFolderId);
         renderGrid(allResources);
-        renderFavourites();
         return;
       }
 
@@ -5129,10 +4914,6 @@
 
 
   window.addEventListener("storage", (event) => {
-    if (event.key === "sb_fav") {
-      renderFavourites();
-    }
-
     if (
       [
         "studybase_session_active",

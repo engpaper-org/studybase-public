@@ -148,11 +148,6 @@
         }
 
         .glass-btn.danger:hover { color: #ef4444; }
-        .glass-btn.favourite-active {
-            color: #d97706;
-            background: #fff7ed;
-            border-color: rgba(251, 191, 36, 0.35);
-        }
 
         .loader { border-radius: 9999px; border-top-color: rgb(37 99 235); }
 
@@ -482,11 +477,6 @@
     <button onclick="goBack()" class="glass-btn group relative" aria-label="Return">
         <i class="fas fa-arrow-left"></i>
         <span class="absolute left-full ml-3 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Return</span>
-    </button>
-
-    <button id="favouriteBtn" onclick="toggleFavourite()" class="glass-btn group relative" aria-label="Favourite">
-        <i class="fas fa-star"></i>
-        <span class="absolute left-full ml-3 px-2 py-1 bg-slate-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Favourite</span>
     </button>
 
     <button onclick="openMenu()" class="glass-btn group relative" aria-label="Menu">
@@ -1016,57 +1006,6 @@ function createSecurityBubbles() {
     }
 }
 
-function getFavourites() {
-    try {
-        const raw = localStorage.getItem("sb_fav");
-        const parsed = JSON.parse(raw || "[]");
-        return Array.isArray(parsed) ? parsed : [];
-    } catch (e) {
-        return [];
-    }
-}
-
-function saveFavourites(list) {
-    localStorage.setItem("sb_fav", JSON.stringify(list));
-}
-
-function isCurrentFavourite() {
-    const encoded = getEncodedMaterialId();
-    if (!encoded) return false;
-    return getFavourites().includes(encoded);
-}
-
-function updateFavouriteButton() {
-    const btn = document.getElementById("favouriteBtn");
-    if (!btn) return;
-
-    const active = isCurrentFavourite();
-    btn.classList.toggle("favourite-active", active);
-
-    const icon = btn.querySelector("i");
-    const label = btn.querySelector("span");
-
-    if (icon) icon.className = active ? "fas fa-star" : "far fa-star";
-    if (label) label.textContent = active ? "Unfavourite" : "Favourite";
-}
-
-function toggleFavourite() {
-    const encoded = getEncodedMaterialId();
-    if (!encoded) return;
-
-    const list = getFavourites();
-    const index = list.indexOf(encoded);
-
-    if (index >= 0) {
-        list.splice(index, 1);
-    } else {
-        list.push(encoded);
-    }
-
-    saveFavourites(list);
-    updateFavouriteButton();
-}
-
 function generateShareLink(name, resourceName, resourceUrl, timeCreated) {
     const payload = {
         name: name || "Someone",
@@ -1426,7 +1365,6 @@ function runTurnstileCheck() {
 async function boot() {
     //forcePrimaryAccessHash();
     await materialPageConfigReady;
-    updateFavouriteButton();
 
     try {
         if (typeof window.hashtagProto === "function") {
@@ -1771,7 +1709,6 @@ function proceedToLoad(subjectTitle) {
         try { loadingAdFrame.src = "about:blank"; } catch (e) {}
 
         overlayButtons.classList.remove("hidden");
-        updateFavouriteButton();
         startStatePolling();
     };
 
