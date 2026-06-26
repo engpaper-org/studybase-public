@@ -597,7 +597,15 @@
           url.searchParams.delete("username");
           window.history.replaceState({}, "", url.pathname + url.search + url.hash);
           setTimeout(() => {
-            const loginUrl = `/myaccount/login.html${username ? `?username=${encodeURIComponent(username)}` : ""}`; ensureAccountModal().openPage(loginUrl, "StudyBase login");
+            showAccountStatus({
+              title: "Account created",
+              message: "Your StudyBase account is ready. Log in to start using it.",
+              buttonLabel: "Log in",
+              onButton: () => {
+                const loginUrl = `/myaccount/login.html${username ? `?username=${encodeURIComponent(username)}` : ""}`;
+                ensureAccountModal().openPage(loginUrl, "StudyBase login");
+              }
+            });
           }, 80);
           return;
         }
