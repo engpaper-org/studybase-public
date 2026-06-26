@@ -235,7 +235,7 @@
       </form>
 
       <!-- Divider + signup -->
-      <div class="mt-7 pt-6 border-t border-slate-100 text-center animate-slide-up delay-500">
+      <div id="signup-block" class="mt-7 pt-6 border-t border-slate-100 text-center animate-slide-up delay-500">
         <p class="text-sm text-slate-500 font-semibold mb-3">New to StudyBase?</p>
         <a
           href="https://auth.studybase.site/signup"
@@ -261,6 +261,8 @@
     const messageText = document.getElementById("message-text");
     const loadingOverlay = document.getElementById("login-loading-overlay");
     const loadingStatusText = document.getElementById("loading-status-text");
+    const signupBlock = document.getElementById("signup-block");
+    let serviceShutdown = false;
 
     const requestedUsername = new URLSearchParams(location.search).get("username");
     if (requestedUsername) form.elements.username.value = requestedUsername;
@@ -273,6 +275,21 @@
     }
     function hideMessage() {
       messageEl.classList.add("hidden");
+    }
+
+    async function checkServiceState() {
+      try {
+        const response = await fetch("https://api.studybase.site/state", { cache: "no-store", credentials: "omit" });
+        const state = await response.json();
+        serviceShutdown = Boolean(state?.ok && state.shutdown === true);
+        if (!serviceShutdown) return;
+        const reason = String(state.reason || "StudyBase account services are currently shut down.").trim();
+        form.querySelectorAll("input, button").forEach(element => { element.disabled = true; });
+        signupBlock?.classList.add("hidden");
+        showMessage(`Account services are currently shut down. ${reason}`);
+      } catch (_) {
+        serviceShutdown = false;
+      }
     }
 
     function setLoadingStatus(text, activeDot) {
@@ -337,6 +354,10 @@
 
     form.addEventListener("submit", async event => {
       event.preventDefault();
+      if (serviceShutdown) {
+        showMessage("Account services are currently shut down. Please try again after StudyBase has restarted.");
+        return;
+      }
       hideMessage();
 
       const button = document.getElementById("login-submit");
@@ -414,6 +435,7 @@
         button.disabled = false;
       }
     });
+    checkServiceState();
   </script>
 </body>
 </html>

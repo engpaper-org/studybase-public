@@ -130,6 +130,7 @@
   }
 
   let loginAvailable = false;
+  let serviceShutdown = false;
 
   async function checkLoginAvailability() {
     const stateUrl =
@@ -143,6 +144,13 @@
       });
       if (!response.ok) return false;
       const data = await response.json();
+      serviceShutdown = Boolean(data && data.ok === true && data.shutdown === true);
+      if (serviceShutdown) {
+        ["studybase_session_active", "studybase_session_expiry", "studybase_user"].forEach((key) => {
+          try { localStorage.removeItem(key); } catch (_) {}
+        });
+        return false;
+      }
       return Boolean(
         data &&
         data.ok === true &&
@@ -190,6 +198,10 @@
   }
 
   function authMarkup() {
+    if (serviceShutdown) {
+      return `<div class="sbx-nav-auth" data-sbx-auth></div>`;
+    }
+
     if (isLoggedIn()) {
       const user = getStoredUser();
       const initial = profileInitial(user);
