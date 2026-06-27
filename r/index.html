@@ -1023,17 +1023,8 @@
         }
 
         /* ── Full-screen vault loading overlay ─────────────────── */
-        @keyframes vaultSpinA { to { transform: rotate(360deg); } }
-        @keyframes vaultSpinB { to { transform: rotate(-360deg); } }
+        @keyframes vaultSpin { to { transform: rotate(360deg); } }
         @keyframes vaultOverlayIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes vaultStatusSlide {
-            from { opacity: 0; transform: translateY(8px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes vaultDotPulse {
-            0%, 80%, 100% { transform: scale(0.6); opacity: 0.3; }
-            40% { transform: scale(1); opacity: 1; }
-        }
 
         #vault-loading-overlay {
             display: none;
@@ -1044,59 +1035,19 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             animation: vaultOverlayIn 0.4s ease both;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 2.5rem;
         }
         #vault-loading-overlay.active { display: flex; }
 
         .vault-spinner {
-            position: relative;
-            width: 100px;
-            height: 100px;
-        }
-        .vault-spinner-track {
-            position: absolute;
-            inset: 0;
-            border: 5px solid rgba(255,255,255,0.06);
+            width: 56px;
+            height: 56px;
+            border: 4px solid rgba(255, 255, 255, 0.22);
+            border-top-color: #fff;
             border-radius: 50%;
+            animation: vaultSpin 0.7s linear infinite;
         }
-        .vault-ring-1 {
-            position: absolute;
-            inset: 0;
-            border: 5px solid transparent;
-            border-top-color: #22d3ee;
-            border-right-color: #22d3ee;
-            border-radius: 50%;
-            animation: vaultSpinA 0.9s linear infinite;
-        }
-        .vault-ring-2 {
-            position: absolute;
-            inset: 12px;
-            border: 5px solid transparent;
-            border-bottom-color: #a78bfa;
-            border-left-color: #a78bfa;
-            border-radius: 50%;
-            animation: vaultSpinB 1.3s linear infinite;
-        }
-        .vault-ring-3 {
-            position: absolute;
-            inset: 24px;
-            border: 5px solid transparent;
-            border-top-color: #34d399;
-            border-radius: 50%;
-            animation: vaultSpinA 1.7s linear infinite;
-        }
-        .vault-loading-dot {
-            display: inline-block;
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            animation: vaultDotPulse 1.4s ease-in-out infinite;
-        }
-        .vault-loading-dot:nth-child(2) { animation-delay: 0.2s; }
-        .vault-loading-dot:nth-child(3) { animation-delay: 0.4s; }
-        #vault-status-text { animation: vaultStatusSlide 0.35s ease both; }
 
         .resource-warning-card {
             position: relative;
@@ -2628,16 +2579,6 @@
             <div id="global-banner-marker"></div>
 
             <div id="resource-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                <div class="col-span-full flex flex-col items-center justify-center py-24">
-                    <div class="relative w-20 h-20 mb-6 flex items-center justify-center">
-                        <div class="absolute inset-0 border-4 border-slate-200/30 rounded-full"></div>
-                        <div class="absolute inset-0 border-4 border-transparent border-t-purple-600 border-r-purple-600 rounded-full animate-spin" style="animation-duration: 0.8s;"></div>
-                        <div class="absolute inset-2 border-4 border-transparent border-b-teal-500 border-l-teal-500 rounded-full animate-spin" style="animation-duration: 1.2s; animation-direction: reverse;"></div>
-                        <div class="absolute inset-4 border-4 border-transparent border-t-indigo-600 rounded-full animate-spin" style="animation-duration: 1.6s;"></div>
-                    </div>
-                    <p class="text-slate-700 font-black tracking-wide text-sm mb-1 dark:text-slate-200">Checking StudyBase resources...</p>
-                    <p class="text-slate-400 font-bold text-xs animate-pulse">Loading workspace files...</p>
-                </div>
             </div>
 
         </div>
@@ -2646,25 +2587,7 @@
 
     <!-- ── Full-screen vault loading overlay ──────────────────────── -->
     <div id="vault-loading-overlay" role="status" aria-live="polite" aria-label="Loading resource vault">
-        <div class="vault-spinner" aria-hidden="true">
-            <div class="vault-spinner-track"></div>
-            <div class="vault-ring-1"></div>
-            <div class="vault-ring-2"></div>
-            <div class="vault-ring-3"></div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem;text-align:center;max-width:320px;">
-            <p id="vault-status-text" style="color:#f8fafc;font-weight:900;font-size:1.15rem;letter-spacing:-0.01em;margin:0;">
-                Loading your workspace…
-            </p>
-            <p style="color:rgba(248,250,252,0.4);font-size:0.82rem;font-weight:600;margin:0;">
-                Checking your session and loading resources
-            </p>
-        </div>
-        <div style="display:flex;gap:6px;margin-top:0.5rem;" aria-hidden="true">
-            <span class="vault-loading-dot" style="background:#22d3ee;"></span>
-            <span class="vault-loading-dot" style="background:#a78bfa;"></span>
-            <span class="vault-loading-dot" style="background:#34d399;"></span>
-        </div>
+        <div class="vault-spinner" aria-hidden="true"></div>
     </div>
 
     <div id="weekly-feedback-modal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-md z-[100002] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="weeklyFeedbackTitle">
@@ -3549,15 +3472,6 @@
 
   /* ── Vault full-screen overlay helpers ─────────────────────── */
   const vaultOverlay = document.getElementById("vault-loading-overlay");
-  const vaultStatusText = document.getElementById("vault-status-text");
-  const VAULT_STATUSES = [
-    "Loading your workspace…",
-    "Fetching your resources…",
-    "Preparing your study vault…",
-    "Almost there…"
-  ];
-  let _vaultStatusIdx = 0;
-  let _vaultStatusInterval = null;
 
   function isVaultUserLoggedInQuick() {
     try {
@@ -3570,40 +3484,21 @@
 
   function showVaultOverlay() {
     if (!vaultOverlay || !isVaultUserLoggedInQuick()) return false;
-    _vaultStatusIdx = 0;
-    if (vaultStatusText) vaultStatusText.textContent = VAULT_STATUSES[0];
     vaultOverlay.classList.add("active");
-    _vaultStatusInterval = setInterval(() => {
-      _vaultStatusIdx = (_vaultStatusIdx + 1) % VAULT_STATUSES.length;
-      if (vaultStatusText) {
-        vaultStatusText.style.animation = "none";
-        void vaultStatusText.offsetWidth;
-        vaultStatusText.style.animation = "";
-        vaultStatusText.textContent = VAULT_STATUSES[_vaultStatusIdx];
-      }
-    }, 1200);
     return true;
   }
 
   function hideVaultOverlay() {
     if (!vaultOverlay) return;
-    clearInterval(_vaultStatusInterval);
-    if (!vaultOverlay.classList.contains("active")) return;
-    vaultOverlay.style.transition = "opacity 0.5s ease";
-    vaultOverlay.style.opacity = "0";
-    setTimeout(() => {
-      vaultOverlay.classList.remove("active");
-      vaultOverlay.style.opacity = "";
-      vaultOverlay.style.transition = "";
-    }, 500);
+    vaultOverlay.classList.remove("active");
   }
 
   async function loadResources() {
     await resourcePageConfigReady;
 
-    // Show full-screen overlay; enforce minimum 3-second display
+    // Keep the private resource overlay visible for at least one second.
     const overlayShown = showVaultOverlay();
-    const overlayMinEnd = overlayShown ? Date.now() + 3000 : Date.now();
+    const overlayMinEnd = overlayShown ? Date.now() + 1000 : Date.now();
 
     try {
       const res = await fetch(RESOURCE_LIST_ENDPOINT, {
@@ -3687,26 +3582,7 @@
       refreshResourceVaultChrome();
       filterResources();
 
-      // Wait for images in the grid to load (or timeout after 4s) THEN hide overlay
-      const waitForImages = () => new Promise(resolve => {
-        const imgs = Array.from(document.querySelectorAll("#resource-grid img"));
-        if (!imgs.length) { resolve(); return; }
-        let loaded = 0;
-        const done = () => { if (++loaded >= imgs.length) resolve(); };
-        const timeout = setTimeout(resolve, 4000);
-        imgs.forEach(img => {
-          if (img.complete) { done(); }
-          else {
-            img.addEventListener("load", done, { once: true });
-            img.addEventListener("error", done, { once: true });
-          }
-        });
-      });
-
-      await Promise.all([
-        waitForImages(),
-        new Promise(r => setTimeout(r, Math.max(0, overlayMinEnd - Date.now())))
-      ]);
+      await new Promise(r => setTimeout(r, Math.max(0, overlayMinEnd - Date.now())));
       hideVaultOverlay();
       refreshResourceVaultChrome();
 
