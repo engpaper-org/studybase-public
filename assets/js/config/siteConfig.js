@@ -71,15 +71,15 @@
       }
     },
     endpoints: {
-      apiBase: "https://api.studybase.site",
-      loginState: "https://api.studybase.site/state",
+      apiBase: "https://api.platformbase.online",
+      loginState: "https://api.platformbase.online/state",
       apgList: "https://alert-api.studybase.site/apg/list",
       reportProblem: "https://report-problem.studybase.site",
-      resourceList: "https://api.studybase.site/resources/list",
-      approvedEmailAccess: "https://api.studybase.site/resources/access/check",
-      resourceGet: "https://api.studybase.site/resource/get",
-      resourceState: "https://api.studybase.site/state",
-      resourceTopCards: "https://api.studybase.site/resources/top-cards",
+      resourceList: "https://api.platformbase.online/resources/list",
+      approvedEmailAccess: "https://api.platformbase.online/resources/access/check",
+      resourceGet: "https://api.platformbase.online/resource/get",
+      resourceState: "https://api.platformbase.online/state",
+      resourceTopCards: "https://api.platformbase.online/resources/top-cards",
       consentLog: "https://script.google.com/macros/s/AKfycbyW-AQ4JeYOMujbXToocpkXPH_GMYxhJTqViDOkoPyXYrpcaMvFuxnVjtWQx-ot6T3L/exec",
       materialAnalytics: "https://script.google.com/macros/s/AKfycbz6WAa5VWe19UTQhKJ32eTF0gQnV2ZqQMyKlBflyzz9lpQrczB4RKeECsb5oKz7RLK9/exec",
       update: "https://update.studybase.site"

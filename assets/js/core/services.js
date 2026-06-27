@@ -1,5 +1,5 @@
 (function () {
-  const API_BASE = "https://api.studybase.site/api";
+  const API_BASE = "https://api.platformbase.online/api";
   const TOKEN_KEY = "studybase_session_active";
   const EXPIRY_KEY = "studybase_session_expiry";
   let authenticationRequiredNotified = false;

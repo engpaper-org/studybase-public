@@ -4,8 +4,8 @@
     { label: "Settings", href: "/myaccount/settings.html", sub: "Profile and preferences" },
     { label: "Leaderboard", action: "coming", sub: "Ranking preferences" },
     { label: "Friends & Social", href: "/myaccount/friends.html", sub: "Connections and privacy" },
-    { label: "Password", href: "https://auth.studybase.site/change-password", action: "security", sub: "Security credentials" },
-    { label: "Delete", href: "https://auth.studybase.site/delete", action: "security", sub: "Permanent removal" }
+    { label: "Password", href: "https://auth.platformbase.online/change-password", action: "security", sub: "Security credentials" },
+    { label: "Delete", href: "https://auth.platformbase.online/delete", action: "security", sub: "Permanent removal" }
   ];
 
   function openPanel({ title, url, comingSoon = false }) {
@@ -22,7 +22,7 @@
 
   document.addEventListener("click", event => {
     if (event.defaultPrevented) return;
-    const anchor = event.target.closest?.('a[href^="https://auth.studybase.site/"]');
+    const anchor = event.target.closest?.('a[href^="https://auth.platformbase.online/"]');
     if (!anchor) return;
     event.preventDefault();
     const deleting = new URL(anchor.href).pathname === "/delete";
@@ -30,7 +30,7 @@
   });
 
   window.addEventListener("message", event => {
-    if (event.origin !== window.location.origin || event.data?.type !== "studybase:account-status") return;
+    if (event.origin !== "https://auth.platformbase.online" || event.data?.type !== "studybase:account-status") return;
     document.getElementById("sb-account-panel")?.remove();
     window.parent.postMessage(event.data, window.location.origin);
   });
@@ -53,7 +53,7 @@
     const aside = document.createElement("aside");
     aside.id = "sb-account-sidebar";
     aside.className = "z-40 border-r border-slate-200 bg-white p-4 text-slate-900";
-    aside.innerHTML = `<div class="sb-brand mb-5 rounded-2xl bg-gradient-to-br from-purple-700 to-indigo-950 p-4 text-white"><div class="flex items-center gap-3"><div class="grid h-12 w-12 shrink-0 overflow-hidden rounded-2xl bg-white/15 ring-1 ring-white/20"><img src="${pfpUrl}" alt="" class="h-full w-full object-cover" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='/assets/images/profile/pfp/sbo/1.jpg'}else{this.hidden=true;this.nextElementSibling.hidden=false}"><span hidden class="grid h-full w-full place-items-center text-lg font-black">${initial.toUpperCase()}</span></div><div><strong class="block text-lg">StudyBase</strong><small class="mt-1 block text-purple-200">@${username}</small></div></div></div><nav class="space-y-2">${links.map((link, index) => { const target = link.href?.startsWith("https://auth.studybase.site") ? `${link.href}?username=${encodeURIComponent(username)}` : link.href || "#"; const active = link.href && new URL(target, location.href).pathname.replace(/\/+$/, "") === current; return `<a href="${target}" data-index="${index}" class="block rounded-xl px-4 py-3 ${active ? "bg-purple-50 text-purple-800" : "text-slate-600 hover:bg-slate-50"}"><strong class="block text-sm">${link.label}</strong><small class="text-xs text-slate-400">${link.sub}</small></a>`; }).join("")}</nav>`;
+    aside.innerHTML = `<div class="sb-brand mb-5 rounded-2xl bg-gradient-to-br from-purple-700 to-indigo-950 p-4 text-white"><div class="flex items-center gap-3"><div class="grid h-12 w-12 shrink-0 overflow-hidden rounded-2xl bg-white/15 ring-1 ring-white/20"><img src="${pfpUrl}" alt="" class="h-full w-full object-cover" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='/assets/images/profile/pfp/sbo/1.jpg'}else{this.hidden=true;this.nextElementSibling.hidden=false}"><span hidden class="grid h-full w-full place-items-center text-lg font-black">${initial.toUpperCase()}</span></div><div><strong class="block text-lg">StudyBase</strong><small class="mt-1 block text-purple-200">@${username}</small></div></div></div><nav class="space-y-2">${links.map((link, index) => { const target = link.href?.startsWith("https://auth.platformbase.online") ? `${link.href}?username=${encodeURIComponent(username)}&site=${encodeURIComponent(location.hostname)}` : link.href || "#"; const active = link.href && new URL(target, location.href).pathname.replace(/\/+$/, "") === current; return `<a href="${target}" data-index="${index}" class="block rounded-xl px-4 py-3 ${active ? "bg-purple-50 text-purple-800" : "text-slate-600 hover:bg-slate-50"}"><strong class="block text-sm">${link.label}</strong><small class="text-xs text-slate-400">${link.sub}</small></a>`; }).join("")}</nav>`;
     document.body.prepend(aside);
     aside.querySelectorAll("[data-index]").forEach(anchor => {
       const link = links[Number(anchor.dataset.index)];

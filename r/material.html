@@ -1112,7 +1112,7 @@ function showMaterialSecurityError(message) {
 
 async function logoutUser() {
     try {
-        await fetch("https://api.studybase.site/api/logout", { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: "{}" });
+        await fetch("https://api.platformbase.online/api/logout", { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: "{}" });
     } catch (_) {}
     ["studybase_session_active", "studybase_session_expiry", "studybase_user"].forEach((key) => localStorage.removeItem(key));
     window.location.href = "/r/index.html#client-preflight";

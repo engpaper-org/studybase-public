@@ -53,7 +53,7 @@
       <label class="flex gap-4 rounded-2xl bg-slate-50 p-5"><input id="contentWarnings" name="contentWarnings" type="checkbox" class="mt-1 h-5 w-5 accent-purple-600"><span><strong class="block">Content warnings</strong><span class="mt-1 block text-sm text-slate-500">Show safety notices before potentially sensitive content.</span></span></label>
       <button id="save" class="w-full rounded-xl bg-purple-600 p-4 font-black text-white transition hover:bg-purple-700 disabled:cursor-wait disabled:opacity-60">Save changes</button>
     </form>
-    <div class="mt-6 grid gap-4 sm:grid-cols-2"><a id="password" href="https://auth.studybase.site/change-password" class="block rounded-2xl border bg-white p-5"><strong>Change password</strong><span class="mt-1 block text-sm text-slate-500">Set a new password and sign out other sessions.</span></a><a id="delete" href="https://auth.studybase.site/delete" class="block rounded-2xl border border-amber-200 bg-amber-50 p-5"><strong class="text-amber-950">Delete account</strong><span class="mt-1 block text-sm text-amber-800">Confirm your password and permanently remove the account.</span></a></div>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2"><a id="password" href="https://auth.platformbase.online/change-password" class="block rounded-2xl border bg-white p-5"><strong>Change password</strong><span class="mt-1 block text-sm text-slate-500">Set a new password and sign out other sessions.</span></a><a id="delete" href="https://auth.platformbase.online/delete" class="block rounded-2xl border border-amber-200 bg-amber-50 p-5"><strong class="text-amber-950">Delete account</strong><span class="mt-1 block text-sm text-amber-800">Confirm your password and permanently remove the account.</span></a></div>
     </div>
   </main>
   <script>
@@ -148,8 +148,8 @@
         document.getElementById("pfpHelp").textContent = `Profile picture can next be changed on ${new Date(pfpNext).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}.`;
       }
       await loadProfilePictureList();
-      document.getElementById("delete").href = `https://auth.studybase.site/delete?username=${encodeURIComponent(loadedUser.username)}`;
-      document.getElementById("password").href = `https://auth.studybase.site/change-password?username=${encodeURIComponent(loadedUser.username)}`;
+      document.getElementById("delete").href = `https://auth.platformbase.online/delete?username=${encodeURIComponent(loadedUser.username)}&site=${encodeURIComponent(location.hostname)}`;
+      document.getElementById("password").href = `https://auth.platformbase.online/change-password?username=${encodeURIComponent(loadedUser.username)}&site=${encodeURIComponent(location.hostname)}`;
       localStorage.setItem("studybase_user", JSON.stringify(loadedUser));
       document.getElementById("loading").classList.add("hidden");
       document.getElementById("settings-content").classList.remove("hidden");

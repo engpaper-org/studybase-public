@@ -513,7 +513,7 @@
     }
 
     window.addEventListener("message", event => {
-      const trustedAuthOrigins = new Set([window.location.origin, "https://auth.studybase.site"]);
+      const trustedAuthOrigins = new Set([window.location.origin, "https://auth.platformbase.online"]);
       if (!trustedAuthOrigins.has(event.origin)) return;
       if (event.data?.type === "studybase:session-ended" && event.data.reason === "authentication-required") {
         ensureAccountModal().closeAccountModal?.();
@@ -559,7 +559,7 @@
         event.preventDefault();
         const finish = () => { clearAuthSession(); window.location.href = "/?signedout=true"; };
         if (window.StudyBaseServices?.logout) window.StudyBaseServices.logout().finally(finish);
-        else fetch("https://api.studybase.site/api/logout", { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: "{}" }).finally(finish);
+        else fetch("https://api.platformbase.online/api/logout", { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: "{}" }).finally(finish);
       }
     });
 

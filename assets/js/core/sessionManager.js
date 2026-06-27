@@ -24,7 +24,7 @@
     if (checking || localStorage.getItem(TOKEN_KEY) !== "1") return;
     checking = true;
     try {
-      const response = await fetch("https://api.studybase.site/api/session", {
+      const response = await fetch("https://api.platformbase.online/api/session", {
         method: "GET",
         credentials: "include",
         headers: { "Accept": "application/json" },
