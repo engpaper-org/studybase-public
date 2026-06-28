@@ -3,7 +3,6 @@
     { label: "Overview", href: "/myaccount/account.html", sub: "Account summary" },
     { label: "Settings", href: "/myaccount/settings.html", sub: "Profile and preferences" },
     { label: "Leaderboard", action: "coming", sub: "Ranking preferences" },
-    { label: "Friends & Social", href: "/myaccount/friends.html", sub: "Connections and privacy" },
     { label: "Password", href: "https://auth.platformbase.online/change-password", action: "security", sub: "Security credentials" },
     { label: "Delete", href: "https://auth.platformbase.online/delete", action: "security", sub: "Permanent removal" }
   ];

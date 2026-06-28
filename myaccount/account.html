@@ -31,9 +31,8 @@
         <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-xs font-black uppercase tracking-wider text-slate-400">User ID</p><p id="user-id" class="mt-2 break-all font-mono text-xs"></p></article>
       </div>
       <div class="rounded-2xl border border-slate-200 bg-white px-5 py-4 text-sm text-slate-600 shadow-sm"><strong class="text-slate-900">Need to correct a locked detail?</strong> Date of birth and gender can only be updated by the StudyBase site team. <a href="/support/contact.html" class="font-black text-purple-700 hover:underline">Contact the team</a>.</div>
-      <div><div class="mb-4"><p class="text-xs font-black uppercase tracking-[.18em] text-purple-600">Manage</p><h2 class="mt-1 text-2xl font-black">Account controls</h2></div><div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div><div class="mb-4"><p class="text-xs font-black uppercase tracking-[.18em] text-purple-600">Manage</p><h2 class="mt-1 text-2xl font-black">Account controls</h2></div><div class="grid gap-4 md:grid-cols-3">
         <a href="/myaccount/settings.html" class="group rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-purple-300 hover:shadow-xl"><div class="grid h-11 w-11 place-items-center rounded-2xl bg-purple-100 font-black text-purple-700">P</div><h3 class="mt-5 text-xl font-black">Profile settings</h3><p class="mt-2 text-sm leading-6 text-slate-500">Update your name, username, and preferences.</p></a>
-        <a href="/myaccount/friends.html" class="group rounded-3xl border border-indigo-200 bg-gradient-to-br from-indigo-50 to-purple-50 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"><div class="flex items-start justify-between gap-3"><div class="grid h-11 w-11 place-items-center rounded-2xl bg-indigo-600 font-black text-white">F</div><span id="friend-card-badge" class="rounded-full bg-white px-3 py-1 text-[10px] font-black uppercase text-indigo-600 shadow-sm">Friends</span></div><h3 class="mt-5 text-xl font-black">Friends & Social</h3><p class="mt-2 text-sm leading-6 text-slate-600">Manage friends, accept requests, and find people by username.</p></a>
         <a id="password-link" href="https://auth.platformbase.online/change-password" class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-purple-300 hover:shadow-xl"><div class="grid h-11 w-11 place-items-center rounded-2xl bg-slate-900 font-black text-white">S</div><h3 class="mt-5 text-xl font-black">Password</h3><p class="mt-2 text-sm leading-6 text-slate-500">Change your password and revoke existing sessions.</p></a>
         <a id="delete-link" href="https://auth.platformbase.online/delete" class="rounded-3xl border border-amber-200 bg-amber-50 p-6 shadow-sm transition hover:-translate-y-1 hover:border-amber-400 hover:shadow-xl"><div class="grid h-11 w-11 place-items-center rounded-2xl bg-amber-200 font-black text-amber-900">D</div><h3 class="mt-5 text-xl font-black text-amber-950">Delete account</h3><p class="mt-2 text-sm leading-6 text-amber-800">Permanently remove your account and sessions.</p></a>
       </div></div>
@@ -41,14 +40,6 @@
   </main>
   <script>
     const message = document.getElementById("message");
-    async function loadFriendSummary() {
-      const result = await StudyBaseServices.request("/friends");
-      if (!result.ok) return;
-      const pending = Number(result.counts?.incoming || 0);
-      const friends = Number(result.counts?.friends || 0);
-      const badge = document.getElementById("friend-card-badge");
-      if (badge) badge.textContent = pending > 0 ? `${pending} request${pending === 1 ? "" : "s"}` : `${friends} friend${friends === 1 ? "" : "s"}`;
-    }
     async function loadAccount() {
       const result = await StudyBaseServices.request("/me");
       if (!result.ok || !result.user) { if (window.parent === window) location.replace("/?sessionExpired=true"); return; }
@@ -86,7 +77,6 @@
       document.getElementById("delete-link").href = `https://auth.platformbase.online/delete?username=${encodeURIComponent(user.username)}&site=${encodeURIComponent(location.hostname)}`;
       document.getElementById("password-link").href = `https://auth.platformbase.online/change-password?username=${encodeURIComponent(user.username)}&site=${encodeURIComponent(location.hostname)}`;
       message.classList.add("hidden"); document.getElementById("content").classList.remove("hidden");
-      loadFriendSummary().catch(() => {});
     }
     document.getElementById("logout").onclick = async () => { await StudyBaseServices.logout(); location.replace("/?signedout=true"); };
     loadAccount().catch(() => { message.className = "mt-7 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-800"; message.textContent = "Your account could not be loaded. Refresh the page to try again."; });
