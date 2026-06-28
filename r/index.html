@@ -3140,6 +3140,12 @@
     const section = document.getElementById("friends-workspace-section");
     const frame = document.getElementById("friends-workspace-frame");
     if (!section || !frame) return;
+    if (section.parentElement !== document.body) document.body.appendChild(section);
+    Object.assign(section.style, {
+      position: "fixed",
+      inset: "0",
+      zIndex: "2147483647"
+    });
     frame.src = "/internal/apps/friends.html?embedded=1";
     section.classList.remove("hidden");
     document.body.classList.add("overflow-hidden");
