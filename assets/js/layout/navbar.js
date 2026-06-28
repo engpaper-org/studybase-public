@@ -381,6 +381,7 @@
       const close = () => {
         modal.classList.remove("is-open");
         document.body.classList.remove("sbx-modal-lock");
+        frame.setAttribute("src", "about:blank");
         setTimeout(updateAuthState, 120);
       };
 
