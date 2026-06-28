@@ -25,6 +25,8 @@
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
     <script src="/assets/js/auth/iframeCheck.js"></script>
     <script src="/assets/js/resources/hashtagProto.js"></script>
+    <link rel="prefetch" href="/internal/iframes/normal-intro.html" as="document">
+    <link rel="prefetch" href="/internal/iframes/labs-intro.html" as="document">
 
     <link rel="icon" href="/assets/images/site-icons/main.ico">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -147,28 +149,7 @@
 
         .glass-btn.danger:hover { color: #ef4444; }
 
-        @keyframes material-loading-spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .material-loading-screen {
-            background: rgba(8, 8, 20, 0.96);
-        }
-
-        .material-loading-screen:not(.hidden) {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .material-loading-spinner {
-            width: 56px;
-            height: 56px;
-            border: 4px solid rgba(255, 255, 255, 0.22);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: material-loading-spin 0.7s linear infinite;
-        }
+        .loader { border-radius: 9999px; border-top-color: rgb(37 99 235); }
 
         @keyframes update-pop {
             0% { opacity: 0; transform: translateY(12px) scale(0.95); }
@@ -182,6 +163,13 @@
 
         @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
         .animate-fade-in { animation: fade-in 0.2s ease-out forwards; }
+
+        #loadingAdFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
 
         .board-btn-disabled {
             opacity: 0.6;
@@ -313,8 +301,9 @@
     </div>
 </div>
 
-<div id="bootScreen" class="material-loading-screen w-full h-screen flex items-center justify-center" role="status" aria-label="Loading">
-    <div class="material-loading-spinner" aria-hidden="true"></div>
+<div id="bootScreen" class="w-full h-screen flex flex-col items-center justify-center">
+    <div class="loader border-8 border-slate-300 border-t-blue-600 rounded-full w-20 h-20 animate-spin"></div>
+    <p id="bootText" class="mt-4 text-slate-600 text-lg font-medium">Preparing…</p>
 </div>
 
 <div id="subjectPicker" class="hidden fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-[80] flex items-center justify-center p-4">
@@ -474,8 +463,14 @@
     </div>
 </div>
 
-<div id="loadingScreen" class="material-loading-screen hidden fixed inset-0 z-[70] items-center justify-center" role="status" aria-label="Loading material">
-    <div class="material-loading-spinner" aria-hidden="true"></div>
+<div id="loadingScreen" class="hidden fixed inset-0 bg-white z-[70]">
+    <iframe
+        id="loadingAdFrame"
+        src=""
+        title="Loading Screen"
+        loading="eager"
+        referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
 </div>
 
 <div id="overlayButtons" class="hidden fixed top-6 left-6 flex flex-col gap-3 z-40">
@@ -985,6 +980,13 @@ function getDecodedMaterialName() {
     return decodeBase64Unicode(encoded) || "Untitled resource";
 }
 
+function getIntroFrameUrl() {
+    const decodedMaterialId = getDecodedMaterialName();
+    return decodedMaterialId.includes("-o-")
+        ? "/internal/iframes/labs-intro.html"
+        : "/internal/iframes/normal-intro.html";
+}
+
 function createSecurityBubbles() {
     const container = document.getElementById("securityBubbles");
     if (!container || container.dataset.ready === "true") return;
@@ -1066,7 +1068,7 @@ function cancelMaterialLoad() {
         }
     } catch (_) {}
 
-    ["materialFrame", "protoFrame", "reportFrame"].forEach((id) => {
+    ["materialFrame", "loadingAdFrame", "protoFrame", "reportFrame"].forEach((id) => {
         const frame = document.getElementById(id);
         if (frame) {
             try { frame.src = "about:blank"; } catch (_) {}
@@ -1415,6 +1417,8 @@ async function fetchMaterialUrl() {
         return "verification_failed";
     }
 
+    document.getElementById("bootText").textContent = "Checking access…";
+
     try {
         materialFetchController = new AbortController();
         const res = await fetch(RESOURCE_GET_ENDPOINT, {
@@ -1674,12 +1678,17 @@ function proceedToLoad(subjectTitle) {
     if (bootCancelled) return;
 
     const loading = document.getElementById("loadingScreen");
+    const loadingAdFrame = document.getElementById("loadingAdFrame");
     const frame = document.getElementById("materialFrame");
     const overlayButtons = document.getElementById("overlayButtons");
-    const loadingMinEnd = Date.now() + 1000;
+    let materialFinished = false;
+    let revealTimer = null;
 
     overlayButtons.classList.add("hidden");
     frame.classList.add("hidden");
+
+    try { frame.src = "about:blank"; } catch (e) {}
+    try { loadingAdFrame.src = "/internal/iframes/safety-loading.html"; } catch (e) {}
 
     loading.classList.remove("hidden");
 
@@ -1687,20 +1696,48 @@ function proceedToLoad(subjectTitle) {
 
     const revealResource = () => {
         if (bootCancelled) return;
+        if (!materialFinished) return;
+
+        if (revealTimer) {
+            clearTimeout(revealTimer);
+            revealTimer = null;
+        }
+
+        window.removeEventListener("message", onIntroMessage);
         loading.classList.add("hidden");
-        frame.classList.remove("hidden");
+
+        try { loadingAdFrame.src = "about:blank"; } catch (e) {}
+
         overlayButtons.classList.remove("hidden");
         startStatePolling();
     };
 
-    const onLoad = () => {
+    const onIntroMessage = (event) => {
         if (bootCancelled) return;
-        frame.removeEventListener("load", onLoad);
-        setTimeout(revealResource, Math.max(0, loadingMinEnd - Date.now()));
+        if (event.source !== loadingAdFrame.contentWindow) return;
+        if (!event.data || !["STUDYBASE_INTRO_COMPLETE", "REVISIONBASE_INTRO_COMPLETE"].includes(event.data.type)) return;
+
+        revealResource();
     };
 
-    frame.addEventListener("load", onLoad, { once: true });
-    frame.src = finalUrl;
+    const startIframeLoad = () => {
+        const onLoad = () => {
+            if (bootCancelled) return;
+            frame.removeEventListener("load", onLoad);
+
+            frame.classList.remove("hidden");
+            materialFinished = true;
+
+            window.addEventListener("message", onIntroMessage);
+            try { loadingAdFrame.src = getIntroFrameUrl(); } catch (e) {}
+            revealTimer = setTimeout(revealResource, 4300);
+        };
+
+        frame.addEventListener("load", onLoad, { once: true });
+        frame.src = finalUrl;
+    };
+
+    startIframeLoad();
 }
 
 function startStatePolling() {
@@ -1735,8 +1772,10 @@ function showProto(reason) {
     clearInterval(stateInterval);
 
     const frame = document.getElementById("materialFrame");
+    const loadingAdFrame = document.getElementById("loadingAdFrame");
 
     try { frame.src = "about:blank"; } catch(e) {}
+    try { loadingAdFrame.src = "about:blank"; } catch(e) {}
 
     frame.classList.add("hidden");
     document.getElementById("overlayButtons").classList.add("hidden");

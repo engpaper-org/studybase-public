@@ -888,12 +888,27 @@
             box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
         }
 
+        body.rgenie-private-resources .rgenie-panel,
+        :root.dark body.rgenie-private-resources .rgenie-panel {
+            overflow: visible;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            box-shadow: none;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+
         body.rgenie-private-resources .rgenie-panel::before {
             content: "";
             position: absolute;
             inset: 0 0 auto;
             height: 4px;
             background: linear-gradient(90deg, #12b9d6, #7c3aed, #10b981);
+        }
+
+        body.rgenie-private-resources .rgenie-panel::before {
+            display: none;
         }
 
         .private-vault-intro {
@@ -906,120 +921,102 @@
             margin-bottom: 0;
         }
 
-        /* Redesigned private vault header card */
+        /* Private vault overview */
         .private-vault-header {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
-            border-radius: 28px;
-            padding: 2rem 2.25rem 1.75rem;
-            margin-bottom: 0;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 24px 64px rgba(15,23,42,0.32), 0 0 0 1px rgba(255,255,255,0.06);
+            padding: clamp(1.1rem, 2.4vw, 1.8rem);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 26px;
+            background:
+                radial-gradient(circle at 92% 0%, rgba(124, 58, 237, 0.12), transparent 30%),
+                linear-gradient(145deg, rgba(255,255,255,0.98), rgba(248,250,252,0.92));
+            box-shadow: 0 22px 60px rgba(15, 23, 42, 0.08);
         }
+
         .private-vault-header::before {
             content: "";
             position: absolute;
-            top: -60px; right: -60px;
-            width: 220px; height: 220px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(139,92,246,0.35), transparent 70%);
+            inset: 0 0 auto;
+            height: 4px;
+            background: linear-gradient(90deg, #06b6d4, #7c3aed 52%, #ec4899);
             pointer-events: none;
         }
-        .private-vault-header::after {
-            content: "";
-            position: absolute;
-            bottom: -40px; left: -30px;
-            width: 160px; height: 160px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(34,211,238,0.2), transparent 70%);
-            pointer-events: none;
+
+        :root.dark .private-vault-header {
+            border-color: rgba(71, 85, 105, 0.55);
+            background:
+                radial-gradient(circle at 92% 0%, rgba(124, 58, 237, 0.2), transparent 32%),
+                linear-gradient(145deg, rgba(15,23,42,0.98), rgba(17,24,39,0.95));
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.28);
         }
+
         .private-vault-header-top {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: space-between;
-            gap: 1rem;
+            gap: 1.25rem;
             flex-wrap: wrap;
-            margin-bottom: 1.5rem;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 1.15rem;
         }
+
+        .private-vault-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-width: 0;
+        }
+
+        .private-vault-title-icon {
+            display: grid;
+            width: 3.35rem;
+            height: 3.35rem;
+            flex: 0 0 auto;
+            place-items: center;
+            border-radius: 18px;
+            color: #fff;
+            background: linear-gradient(135deg, #0891b2, #7c3aed);
+            box-shadow: 0 14px 30px rgba(124, 58, 237, 0.22);
+        }
+
+        .private-vault-title-icon svg {
+            width: 1.35rem;
+            height: 1.35rem;
+        }
+
+        .private-vault-eyebrow {
+            display: block;
+            margin-bottom: 0.25rem;
+            color: #7c3aed;
+            font-size: 0.67rem;
+            font-weight: 950;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
         .private-vault-header h2 {
             margin: 0;
-            color: #f8fafc;
-            font-size: clamp(1.45rem, 2.8vw, 2.1rem);
+            color: #0f172a;
+            font-size: clamp(1.4rem, 2.8vw, 2rem);
             line-height: 1.05;
             letter-spacing: -0.035em;
             font-weight: 950;
         }
+
         .private-vault-header p {
-            margin: 0.4rem 0 0;
-            color: rgba(248,250,252,0.55);
-            font-size: 0.88rem;
-            font-weight: 650;
+            margin: 0.35rem 0 0;
+            color: #64748b;
+            font-size: 0.82rem;
+            font-weight: 700;
             line-height: 1.5;
         }
-        /* Search bar inside dark header */
-        .vault-search-wrap {
-            position: relative;
-            z-index: 1;
-        }
-        .vault-search-wrap .vault-search-icon {
-            position: absolute;
-            left: 1.1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(148,163,184,0.75);
-            pointer-events: none;
-            width: 18px; height: 18px;
-        }
-        #mainSearchInput {
-            width: 100%;
-            background: rgba(255,255,255,0.07);
-            border: 1.5px solid rgba(255,255,255,0.12);
-            border-radius: 18px;
+
+        :root.dark .private-vault-header h2 {
             color: #f8fafc;
-            font-size: 0.95rem;
-            font-weight: 650;
-            padding: 0.85rem 1.1rem 0.85rem 3rem;
-            outline: none;
-            transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
         }
-        #mainSearchInput::placeholder { color: rgba(148,163,184,0.55); }
-        #mainSearchInput:hover {
-            border-color: rgba(255,255,255,0.22);
-            background: rgba(255,255,255,0.10);
-        }
-        #mainSearchInput:focus {
-            border-color: rgba(139,92,246,0.7);
-            background: rgba(255,255,255,0.10);
-            box-shadow: 0 0 0 4px rgba(139,92,246,0.18), 0 0 20px rgba(139,92,246,0.15);
-        }
-        /* Override private mode search styles (already handled above) */
-        body.rgenie-private-resources #mainSearchInput { all: unset; }
-        body.rgenie-private-resources #mainSearchInput {
-            display: block;
-            width: 100%;
-            background: rgba(255,255,255,0.07);
-            border: 1.5px solid rgba(255,255,255,0.12);
-            border-radius: 18px;
-            color: #f8fafc;
-            font-size: 0.95rem;
-            font-weight: 650;
-            padding: 0.85rem 1.1rem 0.85rem 3rem;
-            outline: none;
-            transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-            box-sizing: border-box;
-        }
-        body.rgenie-private-resources #mainSearchInput::placeholder { color: rgba(148,163,184,0.55); }
-        body.rgenie-private-resources #mainSearchInput:hover {
-            border-color: rgba(255,255,255,0.22);
-            background: rgba(255,255,255,0.10);
-        }
-        body.rgenie-private-resources #mainSearchInput:focus {
-            border-color: rgba(139,92,246,0.7);
-            background: rgba(255,255,255,0.10);
-            box-shadow: 0 0 0 4px rgba(139,92,246,0.18), 0 0 20px rgba(139,92,246,0.15);
+
+        :root.dark .private-vault-header p {
+            color: #94a3b8;
         }
 
         /* ── Full-screen vault loading overlay ─────────────────── */
@@ -1049,92 +1046,261 @@
             animation: vaultSpin 0.7s linear infinite;
         }
 
-        .resource-warning-card {
-            position: relative;
-            border-radius: 20px !important;
-            padding: 1rem !important;
-            box-shadow: 0 12px 28px rgba(15,23,42,0.05);
+        .private-vault-notice-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.8rem;
         }
 
-        .resource-warning-card i {
-            margin-top: 0.15rem;
+        .resource-warning-card {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr);
+            align-content: start;
+            gap: 0.8rem;
+            min-height: 12rem;
+            padding: 1rem;
+            border: 1px solid;
+            border-radius: 20px;
+        }
+
+        .resource-warning-card.hidden {
+            display: none;
+        }
+
+        .resource-warning-card h3 {
+            margin: 0.22rem 0 0;
+            color: #0f172a;
+            font-size: 0.94rem;
+            font-weight: 950;
+            line-height: 1.3;
+        }
+
+        .resource-warning-card p,
+        .private-vault-header .resource-warning-card p {
+            margin: 0.42rem 0 0;
+            color: #64748b;
+            font-size: 0.75rem;
+            font-weight: 700;
+            line-height: 1.55;
+        }
+
+        .private-vault-notice-icon {
+            display: grid;
+            width: 2.45rem;
+            height: 2.45rem;
+            place-items: center;
+            border-radius: 13px;
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 8px 20px rgba(15,23,42,0.08);
+        }
+
+        .private-vault-notice-icon svg {
+            width: 1.05rem;
+            height: 1.05rem;
+        }
+
+        .private-vault-notice-label {
+            color: currentColor;
+            font-size: 0.61rem;
+            font-weight: 950;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
         }
 
         .resource-warning-danger {
-            background: linear-gradient(135deg, #fff1f2, #fff7ed) !important;
-            border-color: #fecdd3 !important;
-            color: #9f1239 !important;
-        }
-
-        :root.dark .resource-warning-danger {
-            background: linear-gradient(135deg, rgba(244, 63, 94, 0.15), rgba(249, 115, 22, 0.1)) !important;
-            border-color: rgba(244, 63, 94, 0.3) !important;
-            color: #fda4af !important;
+            color: #be123c;
+            border-color: #fecdd3;
+            background: linear-gradient(145deg, #fff1f2, #fff7ed);
         }
 
         .resource-warning-info {
-            background: linear-gradient(135deg, #eff6ff, #ecfeff) !important;
-            border-color: #bfdbfe !important;
-            color: #1e3a8a !important;
+            color: #0369a1;
+            border-color: #bae6fd;
+            background: linear-gradient(145deg, #f0f9ff, #ecfeff);
+        }
+
+        .private-vault-features {
+            color: #7c3aed;
+            border-color: #ddd6fe;
+            background: linear-gradient(145deg, #f5f3ff, #fdf4ff);
+        }
+
+        .private-vault-notice-action {
+            grid-column: 2;
+            align-self: end;
+            display: inline-flex;
+            width: max-content;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 0.25rem;
+            padding: 0;
+            border: 0;
+            color: currentColor;
+            background: transparent;
+            font-size: 0.72rem;
+            font-weight: 950;
+            cursor: pointer;
+        }
+
+        .private-vault-notice-action svg {
+            width: 0.85rem;
+            height: 0.85rem;
+            transition: transform 0.18s ease;
+        }
+
+        .private-vault-notice-action:hover svg {
+            transform: translateX(3px);
+        }
+
+        :root.dark .resource-warning-card h3 {
+            color: #f8fafc;
+        }
+
+        :root.dark .resource-warning-card p,
+        :root.dark .private-vault-header .resource-warning-card p {
+            color: #cbd5e1;
+        }
+
+        :root.dark .private-vault-notice-icon {
+            background: rgba(15,23,42,0.6);
+        }
+
+        :root.dark .resource-warning-danger {
+            border-color: rgba(244, 63, 94, 0.3);
+            background: linear-gradient(145deg, rgba(136,19,55,0.28), rgba(124,45,18,0.16));
         }
 
         :root.dark .resource-warning-info {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(6, 182, 212, 0.1)) !important;
-            border-color: rgba(59, 130, 246, 0.3) !important;
-            color: #93c5fd !important;
+            border-color: rgba(14, 165, 233, 0.3);
+            background: linear-gradient(145deg, rgba(7,89,133,0.25), rgba(8,145,178,0.14));
+        }
+
+        :root.dark .private-vault-features {
+            border-color: rgba(139, 92, 246, 0.35);
+            background: linear-gradient(145deg, rgba(91,33,182,0.24), rgba(134,25,143,0.14));
+        }
+
+        #resource-listing-section {
+            padding-top: 0.4rem;
+        }
+
+        .private-vault-search-stage {
+            width: 100%;
+            margin-bottom: 1.3rem;
+        }
+
+        .vault-search-wrap {
+            position: relative;
+            width: 100%;
+        }
+
+        .vault-search-icon {
+            position: absolute;
+            z-index: 1;
+            left: 1.25rem;
+            top: 50%;
+            width: 1.2rem;
+            height: 1.2rem;
+            color: #64748b;
+            pointer-events: none;
+            transform: translateY(-50%);
         }
 
         body.rgenie-private-resources #mainSearchInput {
-            min-height: 3.8rem;
+            all: unset;
+            display: block;
+            width: 100%;
+            min-height: 4.15rem;
+            box-sizing: border-box;
+            padding: 0 1.4rem 0 3.45rem;
+            border: 1.5px solid rgba(148,163,184,0.34);
             border-radius: 22px;
-            border-color: rgba(148, 163, 184, 0.28);
-            background: rgba(255,255,255,0.9);
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+            color: #0f172a;
+            background: #fff;
+            box-shadow: 0 16px 42px rgba(15,23,42,0.08);
+            font-size: 1rem;
             font-weight: 800;
-            transition: all 0.25s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+        }
+
+        body.rgenie-private-resources #mainSearchInput::placeholder {
+            color: #94a3b8;
         }
 
         body.rgenie-private-resources #mainSearchInput:hover {
-            border-color: rgba(18,185,214,0.55);
-            background: #ffffff;
-            box-shadow: 0 12px 35px rgba(15,23,42,0.06);
+            border-color: rgba(124,58,237,0.4);
+            box-shadow: 0 18px 48px rgba(15,23,42,0.1);
         }
 
         body.rgenie-private-resources #mainSearchInput:focus {
-            border-color: #12b9d6;
-            background: #ffffff;
-            box-shadow: 0 0 0 5px rgba(18,185,214,0.15), 0 18px 45px rgba(15,23,42,0.09);
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 5px rgba(124,58,237,0.13), 0 20px 52px rgba(15,23,42,0.12);
         }
 
-        :root.dark body.rgenie-private-resources #mainSearchInput {
-            background: rgba(30, 41, 59, 0.7);
-            border-color: rgba(71, 85, 105, 0.6);
-            color: #f8fafc;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        .private-resource-counter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.85rem;
+            margin: 0.95rem auto 0;
+            color: #64748b;
+            font-size: 0.68rem;
+            font-weight: 900;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
         }
 
-        :root.dark body.rgenie-private-resources #mainSearchInput:hover {
-            border-color: rgba(18,185,214,0.7);
-            background: #1e293b;
+        .private-resource-counter.hidden {
+            display: none;
         }
 
-        :root.dark body.rgenie-private-resources #mainSearchInput:focus {
-            border-color: #12b9d6;
-            background: #1e293b;
-            box-shadow: 0 0 0 5px rgba(18,185,214,0.2), 0 18px 45px rgba(0, 0, 0, 0.25);
+        .private-resource-counter strong {
+            color: #7c3aed;
+            font-weight: 950;
         }
 
-        body.rgenie-private-resources #mainSearchInput,
-        :root.dark body.rgenie-private-resources #mainSearchInput,
-        :root.dark body.rgenie-private-resources #mainSearchInput:hover,
-        :root.dark body.rgenie-private-resources #mainSearchInput:focus {
-            background: #ffffff !important;
-            color: #0f172a !important;
+        .private-resource-counter-line {
+            width: min(8vw, 5rem);
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #cbd5e1);
         }
 
-        body.rgenie-private-resources #mainSearchInput::placeholder,
-        :root.dark body.rgenie-private-resources #mainSearchInput::placeholder {
-            color: #64748b !important;
+        .private-resource-counter-line:last-child {
+            background: linear-gradient(90deg, #cbd5e1, transparent);
+        }
+
+        @media (max-width: 950px) {
+            .private-vault-notice-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .resource-warning-card {
+                min-height: 0;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .private-vault-header-top,
+            .private-vault-title-wrap {
+                align-items: flex-start;
+            }
+
+            .resource-action-icons {
+                width: 100%;
+            }
+
+            .resource-action-icon.contact {
+                flex: 1;
+            }
+
+            .private-vault-title-icon {
+                display: none;
+            }
+
+            .private-resource-counter {
+                gap: 0.55rem;
+                letter-spacing: 0.08em;
+            }
         }
 
         body.rgenie-private-resources #resource-tools-section .max-w-\[95rem\] {
@@ -1198,7 +1364,7 @@
         }
 
         body.rgenie-private-resources .rgenie-filter-grid {
-            grid-template-columns: 1fr;
+            display: none !important;
         }
 
         .rgenie-paper-finder h2 {
@@ -1414,10 +1580,10 @@
             50% { opacity: 0.92; filter: blur(24px); }
         }
 
-        /* ── Paywall cards: sharp square corners vs rounded regular cards ── */
+        /* ── Paywall cards: animated outline with the standard card radius ── */
         .resource-card.resource-card-paywall {
             border: 2.5px solid transparent !important;
-            border-radius: 10px !important; /* intentionally sharper corners */
+            border-radius: 28px !important;
             background:
                 linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)) padding-box,
                 conic-gradient(from 0deg, #22d3ee, #8b5cf6, #ec4899, #facc15, #34d399, #22d3ee) border-box !important;
@@ -1434,7 +1600,7 @@
             position: absolute;
             inset: -4px;
             z-index: -2;
-            border-radius: 12px;
+            border-radius: 32px;
             background: conic-gradient(from 0deg, #22d3ee, #8b5cf6, #ec4899, #facc15, #34d399, #22d3ee);
             animation: paywallRainbowSpin 3.2s linear infinite;
         }
@@ -1444,14 +1610,13 @@
             position: absolute;
             inset: -12px;
             z-index: -3;
-            border-radius: 14px;
+            border-radius: 40px;
             background: conic-gradient(from 90deg, rgba(34,211,238,0.65), rgba(139,92,246,0.62), rgba(236,72,153,0.65), rgba(250,204,21,0.5), rgba(52,211,153,0.55), rgba(34,211,238,0.65));
             animation: paywallRainbowSpin 4.1s linear infinite reverse, paywallAuraPulse 1.65s ease-in-out infinite;
             filter: blur(2px);
         }
 
         .resource-card-paywall .resource-visual-glow {
-            border-radius: 8px !important;
             outline-color: rgba(255,255,255,0.7);
             box-shadow:
                 0 18px 40px rgba(15,23,42,0.18),
@@ -2438,53 +2603,18 @@
         <div class="rgenie-container">
 <div class="rgenie-panel">
                 <div class="private-vault-intro">
-                    <!-- Subscription banner above header -->
-                    <div id="studybase-subscription-banner" class="hidden mb-3 overflow-hidden rounded-2xl border border-purple-200 bg-gradient-to-r from-purple-700 via-violet-700 to-indigo-800 p-4 text-white shadow-lg shadow-purple-900/10">
-                        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                            <div class="flex items-start gap-3"><div class="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-white/15 text-xl font-black ring-1 ring-white/20">+</div><div><div class="flex flex-wrap items-center gap-2"><h2 class="text-sm font-black tracking-tight">Enjoy StudyBase with more features</h2><span class="rounded-full bg-white/15 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-purple-100">Preview</span></div><p class="mt-1 text-sm font-semibold leading-6 text-purple-100">Explore Leaderboards, Proxy, Music, Chat, custom domains, All Access, and one-off AI credits. Purchases are not available yet.</p></div></div>
-                            <button type="button" onclick="window.StudyBaseSubscriptions?.show()" class="inline-flex shrink-0 items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-black text-purple-800 shadow-lg transition hover:bg-purple-50 active:scale-[.98]">View plans</button>
-                        </div>
-                    </div>
-                    <!-- Dark gradient header card with embedded search -->
                     <div class="private-vault-header">
                         <div class="private-vault-header-top">
-                            <!-- Title + counter -->
-                            <div>
-                                <h2>Resource vault</h2>
-                                <p>Search papers, tools and revision routes from your approved workspace.</p>
-                            </div>
-                            <!-- Resource counter badge -->
-                            <div id="private-resource-counter" class="hidden shrink-0 flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider" style="background:rgba(139,92,246,0.18);border:1px solid rgba(139,92,246,0.35);color:#c4b5fd;">
-                                <span class="relative flex h-2 w-2">
-                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style="background:#a78bfa;"></span>
-                                    <span class="relative inline-flex rounded-full h-2 w-2" style="background:#a78bfa;"></span>
-                                </span>
-                                <span id="counter-value">0</span> resources loaded
-                            </div>
-                        </div>
-
-                        <!-- Warning notices (inside the dark card) -->
-                        <div style="margin-top:1rem;display:flex;flex-direction:column;gap:0.65rem;position:relative;z-index:1;">
-                            <!-- Account safety warning -->
-                            <div class="resource-warning-card resource-warning-danger p-3 rounded-2xl text-sm flex gap-2 items-start" style="background:rgba(239,68,68,0.12)!important;border-color:rgba(239,68,68,0.3)!important;color:#fca5a5!important;">
-                                <i data-lucide="alert-triangle" class="w-4 h-4 mt-0.5 shrink-0"></i>
-                                <div><strong>Account Safety Warning:</strong> Sending direct emails to site owners or staff will result in a permanent ban. Use the in-site reporting tools for any issues.</div>
-                            </div>
-                            <!-- Search warning -->
-                            <div class="resource-warning-card resource-warning-info p-3 rounded-2xl text-sm flex flex-col sm:flex-row sm:items-start gap-3" style="background:rgba(59,130,246,0.12)!important;border-color:rgba(59,130,246,0.3)!important;color:#93c5fd!important;">
-                                <div class="flex gap-2 items-start flex-1">
-                                    <i data-lucide="shield-alert" class="w-4 h-4 mt-0.5 shrink-0"></i>
-                                    <div><strong>Search Warning:</strong> Smoothwall may monitor text typed into input boxes. Do not type anything unsafe, abusive, threatening, personal, or anything that could trigger a school safety alert.</div>
+                            <div class="private-vault-title-wrap">
+                                <div class="private-vault-title-icon" aria-hidden="true">
+                                    <i data-lucide="library-big"></i>
                                 </div>
-                                <button type="button" onclick="openInputSafetyModal()" class="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-bold text-xs transition" style="background:rgba(59,130,246,0.25);color:#93c5fd;border:1px solid rgba(59,130,246,0.3);">
-                                    <span>More info</span>
-                                    <i data-lucide="info" class="w-3.5 h-3.5"></i>
-                                </button>
+                                <div>
+                                    <span class="private-vault-eyebrow">Your study workspace</span>
+                                    <h2>Resource vault</h2>
+                                    <p>Find papers, tools and revision routes across your approved collection.</p>
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Action buttons row -->
-                        <div style="margin-top:1rem;display:flex;gap:0.6rem;justify-content:flex-end;position:relative;z-index:1;">
                             <div class="resource-action-icons" aria-label="Resource actions">
                                 <button type="button" onclick="openReportModalWithType('bug')" class="resource-action-icon danger" title="Report a bug" aria-label="Report a bug">
                                     <i class="fas fa-bug"></i>
@@ -2499,18 +2629,39 @@
                             </div>
                         </div>
 
-                        <!-- Embedded search bar, closest to the material cards -->
-                        <div class="vault-search-wrap" style="margin-top:1rem;">
-                            <svg class="vault-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z"/>
-                            </svg>
-                            <input
-                                type="text"
-                                id="mainSearchInput"
-                                onkeyup="syncMainSearch()"
-                                placeholder="Search resources, papers, topics..."
-                                autocomplete="off"
-                            >
+                        <div class="private-vault-notice-grid">
+                            <article class="resource-warning-card resource-warning-danger">
+                                <div class="private-vault-notice-icon"><i data-lucide="shield-alert"></i></div>
+                                <div>
+                                    <span class="private-vault-notice-label">Account safety</span>
+                                    <h3>Keep support inside StudyBase</h3>
+                                    <p>Sending direct emails to site owners or staff will result in a permanent ban. Use the in-site reporting tools for any issues.</p>
+                                </div>
+                            </article>
+
+                            <article class="resource-warning-card resource-warning-info">
+                                <div class="private-vault-notice-icon"><i data-lucide="keyboard"></i></div>
+                                <div>
+                                    <span class="private-vault-notice-label">Search warning</span>
+                                    <h3>Think before you type</h3>
+                                    <p>Smoothwall may monitor input boxes. Never enter unsafe, abusive, threatening or personal content.</p>
+                                </div>
+                                <button type="button" onclick="openInputSafetyModal()" class="private-vault-notice-action">
+                                    More info <i data-lucide="arrow-up-right"></i>
+                                </button>
+                            </article>
+
+                            <article id="studybase-subscription-banner" class="resource-warning-card private-vault-features hidden">
+                                <div class="private-vault-notice-icon"><i data-lucide="sparkles"></i></div>
+                                <div>
+                                    <span class="private-vault-notice-label">StudyBase Plus preview</span>
+                                    <h3>Enjoy more features</h3>
+                                    <p>Explore Leaderboards, Proxy, Music, Chat, custom domains, All Access and AI credits.</p>
+                                </div>
+                                <button type="button" onclick="window.StudyBaseSubscriptions?.show()" class="private-vault-notice-action">
+                                    View plans <i data-lucide="arrow-right"></i>
+                                </button>
+                            </article>
                         </div>
                     </div>
                 </div>
@@ -2573,10 +2724,30 @@
         </div>
     </section>
 
-    <div class="flex-grow py-10 relative z-10 rgenie-private-only">
+    <div id="resource-listing-section" class="flex-grow py-10 relative z-10 rgenie-private-only">
         <div class="max-w-[95rem] mx-auto px-6">
 
             <div id="global-banner-marker"></div>
+
+            <div class="private-vault-search-stage">
+                <div class="vault-search-wrap">
+                    <svg class="vault-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z"/>
+                    </svg>
+                    <input
+                        type="text"
+                        id="mainSearchInput"
+                        onkeyup="syncMainSearch()"
+                        placeholder="Search resources, papers, topics..."
+                        autocomplete="off"
+                    >
+                </div>
+                <div id="private-resource-counter" class="private-resource-counter hidden" aria-live="polite">
+                    <span class="private-resource-counter-line" aria-hidden="true"></span>
+                    <span><strong id="counter-value">0</strong> Resources Loaded</span>
+                    <span class="private-resource-counter-line" aria-hidden="true"></span>
+                </div>
+            </div>
 
             <div id="resource-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             </div>
@@ -4849,33 +5020,6 @@
   function refreshResourceVaultChrome(attempt = 0) {
     const header = document.querySelector(".private-vault-header");
     if (!header) return;
-
-    header.querySelectorAll(".resource-warning-card").forEach(card => {
-      card.style.borderStyle = "solid";
-      card.style.borderWidth = "1px";
-      card.style.boxShadow = "0 12px 28px rgba(15,23,42,0.05)";
-    });
-
-    const danger = header.querySelector(".resource-warning-danger");
-    if (danger) {
-      danger.style.background = "rgba(239,68,68,0.12)";
-      danger.style.borderColor = "rgba(239,68,68,0.3)";
-      danger.style.color = "#fca5a5";
-    }
-
-    const info = header.querySelector(".resource-warning-info");
-    if (info) {
-      info.style.background = "rgba(59,130,246,0.12)";
-      info.style.borderColor = "rgba(59,130,246,0.3)";
-      info.style.color = "#93c5fd";
-    }
-
-    const search = document.getElementById("mainSearchInput");
-    if (search) {
-      search.style.color = "#0f172a";
-      search.style.background = "#ffffff";
-      search.style.caretColor = "#2563eb";
-    }
 
     if (window.lucide && typeof window.lucide.createIcons === "function") {
       window.lucide.createIcons();
