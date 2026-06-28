@@ -512,6 +512,21 @@
       document.addEventListener("keydown", onKeydown);
     }
 
+    function showSignupRestrictedStatus(reason) {
+      document.getElementById("sbx-signup-restricted-modal")?.remove();
+      const modal = document.createElement("div");
+      modal.id = "sbx-signup-restricted-modal";
+      modal.className = "sbx-login-modal is-open";
+      const safeReason = escapeHtml(String(reason || "This email address is not permitted to create a StudyBase account.").slice(0, 500));
+      modal.innerHTML = `<div role="dialog" aria-modal="true" aria-labelledby="sbx-signup-restricted-title" style="width:min(540px,calc(100vw - 28px));overflow:hidden;border:1px solid #bae6fd;border-radius:28px;background:#fff;box-shadow:0 35px 100px rgba(12,74,110,.34)"><div style="position:relative;overflow:hidden;background:linear-gradient(135deg,#0c4a6e,#0369a1 58%,#2563eb);padding:32px;color:#fff"><div style="position:absolute;right:-45px;top:-55px;width:170px;height:170px;border-radius:999px;background:rgba(255,255,255,.1)"></div><div style="position:relative;width:62px;height:62px;border:1px solid rgba(255,255,255,.24);border-radius:20px;background:rgba(255,255,255,.13);display:grid;place-items:center;font-size:30px;font-weight:950">!</div><p style="position:relative;margin:22px 0 0;color:#bae6fd;font-size:11px;font-weight:900;letter-spacing:.18em;text-transform:uppercase">StudyBase signup access</p><h2 id="sbx-signup-restricted-title" style="position:relative;margin:7px 0 0;font-size:34px;line-height:1.05;font-weight:950">Signup restricted</h2><p style="position:relative;margin:10px 0 0;color:#e0f2fe;line-height:1.6">This email cannot be used to create a StudyBase account.</p></div><div style="padding:27px"><p style="margin:0;color:#64748b;font-size:12px;font-weight:900;letter-spacing:.12em;text-transform:uppercase">Reason</p><div style="margin-top:10px;border:1px solid #bae6fd;border-radius:16px;background:#f0f9ff;padding:17px;color:#0c4a6e;font-weight:800;line-height:1.6;overflow-wrap:anywhere">${safeReason}</div><button type="button" style="margin-top:22px;width:100%;border:0;border-radius:14px;background:#0f172a;padding:13px;color:#fff;font-weight:900;cursor:pointer">Close</button></div></div>`;
+      document.body.appendChild(modal);
+      const close = () => { document.removeEventListener("keydown", onKeydown); modal.remove(); };
+      const onKeydown = event => { if (event.key === "Escape") close(); };
+      modal.querySelector("button").onclick = close;
+      modal.onclick = event => { if (event.target === modal) close(); };
+      document.addEventListener("keydown", onKeydown);
+    }
+
     window.addEventListener("message", event => {
       const trustedAuthOrigins = new Set([window.location.origin, "https://auth.platformbase.online"]);
       if (!trustedAuthOrigins.has(event.origin)) return;
@@ -537,6 +552,7 @@
         if (event.data.status === "signedout") showAccountStatus({ title: "Signed out", message: "You have been securely signed out of StudyBase." });
         if (event.data.status === "passwordChanged") showAccountStatus({ title: "Password changed", message: "Your password was changed and existing sessions were signed out.", buttonLabel: "Log in", onButton: () => ensureAccountModal().openPage(`/myaccount/login.html${event.data.username ? `?username=${encodeURIComponent(event.data.username)}` : ""}`, "StudyBase login") });
         if (event.data.status === "ban") showBanStatus(event.data.reason);
+        if (event.data.status === "signupRestricted") showSignupRestrictedStatus(event.data.reason);
       }
     });
 
@@ -630,12 +646,13 @@
           "sessionExpired";
 
         const params = new URLSearchParams(window.location.search);
-        const statusParam = ["loggedin", "deleted", "signedout", "passwordChanged", "ban"].find(name => params.get(name) === "true");
+        const statusParam = ["loggedin", "deleted", "signedout", "passwordChanged", "ban", "signupRestricted"].find(name => params.get(name) === "true");
         if (statusParam) {
           const username = (params.get("username") || "").trim();
-          const reason = (params.get("reason") || "This account has been banned.").slice(0, 500);
+          const reasonFallback = statusParam === "signupRestricted" ? "This email address is not permitted to create a StudyBase account." : "This account has been banned.";
+          const reason = (params.get("reason") || reasonFallback).slice(0, 500);
           const url = new URL(window.location.href);
-          ["loggedin", "deleted", "signedout", "passwordChanged", "ban", "username", "reason"].forEach(name => url.searchParams.delete(name));
+          ["loggedin", "deleted", "signedout", "passwordChanged", "ban", "signupRestricted", "username", "reason"].forEach(name => url.searchParams.delete(name));
           window.history.replaceState({}, "", url.pathname + url.search + url.hash);
           if (window.parent !== window) {
             window.parent.postMessage({ type: "studybase:account-status", status: statusParam, username, reason }, window.location.origin);
@@ -652,6 +669,8 @@
               clearAuthSession();
               updateAuthState();
               showBanStatus(reason);
+            } else if (statusParam === "signupRestricted") {
+              showSignupRestrictedStatus(reason);
             } else {
               showAccountStatus({ title: "Password changed", message: "Your password was changed. Log in again with the new password.", buttonLabel: "Log in", onButton: () => ensureAccountModal().openPage(`/myaccount/login.html${username ? `?username=${encodeURIComponent(username)}` : ""}`, "StudyBase login") });
             }

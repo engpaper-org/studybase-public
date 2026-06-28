@@ -308,7 +308,6 @@
     if (typeof text !== 'string' || !text) return text;
     const y = window.SB_YEARS;
     return text
-      .replace(/\b2026\b/g, y.next)           // most common future reference
       .replace(/\b2025 cohort\b/gi, `${y.prev} cohort`)
       .replace(/\bthe students getting top grades in \d{4}/gi, (m) => m.replace(/\d{4}/, y.next))
       .replace(/Stop revising like it’s \d{4}/gi, `Stop revising like it’s ${y.prev}`)
