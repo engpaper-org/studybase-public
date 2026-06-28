@@ -1152,6 +1152,102 @@
             transform: translateX(3px);
         }
 
+        .private-friends-banner {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.85rem;
+            padding: 1rem 1.1rem;
+            overflow: hidden;
+            border: 1px solid rgba(99,102,241,0.22);
+            border-radius: 22px;
+            background:
+                radial-gradient(circle at 85% 20%, rgba(168,85,247,0.2), transparent 28%),
+                linear-gradient(135deg, #eef2ff, #faf5ff);
+        }
+
+        .private-friends-banner-icon {
+            display: grid;
+            width: 3rem;
+            height: 3rem;
+            place-items: center;
+            border-radius: 16px;
+            color: #fff;
+            background: linear-gradient(135deg, #4f46e5, #9333ea);
+            box-shadow: 0 12px 26px rgba(79,70,229,0.24);
+        }
+
+        .private-friends-banner-icon svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .private-friends-banner h3 {
+            margin: 0;
+            color: #1e1b4b;
+            font-size: 1rem;
+            font-weight: 950;
+        }
+
+        .private-friends-banner p {
+            margin: 0.25rem 0 0;
+            color: #64748b;
+            font-size: 0.76rem;
+            font-weight: 700;
+        }
+
+        .private-friends-preview {
+            display: flex;
+            align-items: center;
+            margin-top: 0.55rem;
+        }
+
+        .private-friends-preview img,
+        .private-friends-preview-placeholder {
+            width: 1.7rem;
+            height: 1.7rem;
+            margin-left: -0.38rem;
+            border: 2px solid #fff;
+            border-radius: 999px;
+            object-fit: cover;
+            background: #e2e8f0;
+        }
+
+        .private-friends-preview > :first-child {
+            margin-left: 0;
+        }
+
+        .private-friends-banner-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.75rem 1rem;
+            border-radius: 14px;
+            color: #fff;
+            background: #312e81;
+            font-size: 0.76rem;
+            font-weight: 950;
+            box-shadow: 0 12px 24px rgba(49,46,129,0.2);
+        }
+
+        .private-friends-notification {
+            display: inline-grid;
+            min-width: 1.5rem;
+            height: 1.5rem;
+            place-items: center;
+            padding: 0 0.35rem;
+            border-radius: 999px;
+            color: #fff;
+            background: #ec4899;
+            font-size: 0.65rem;
+            font-weight: 950;
+        }
+
+        .private-friends-notification.hidden {
+            display: none;
+        }
+
         :root.dark .resource-warning-card h3 {
             color: #f8fafc;
         }
@@ -1178,6 +1274,19 @@
         :root.dark .private-vault-features {
             border-color: rgba(139, 92, 246, 0.35);
             background: linear-gradient(145deg, rgba(91,33,182,0.24), rgba(134,25,143,0.14));
+        }
+
+        :root.dark .private-friends-banner {
+            border-color: rgba(129,140,248,0.28);
+            background: linear-gradient(135deg, rgba(49,46,129,0.28), rgba(88,28,135,0.2));
+        }
+
+        :root.dark .private-friends-banner h3 {
+            color: #f8fafc;
+        }
+
+        :root.dark .private-friends-banner p {
+            color: #cbd5e1;
         }
 
         #resource-listing-section {
@@ -1300,6 +1409,15 @@
             .private-resource-counter {
                 gap: 0.55rem;
                 letter-spacing: 0.08em;
+            }
+
+            .private-friends-banner {
+                grid-template-columns: auto minmax(0, 1fr);
+            }
+
+            .private-friends-banner-action {
+                grid-column: 1 / -1;
+                justify-content: center;
             }
         }
 
@@ -2663,6 +2781,21 @@
                                 </button>
                             </article>
                         </div>
+
+                        <section id="private-friends-banner" class="private-friends-banner" aria-busy="true">
+                            <div class="private-friends-banner-icon" aria-hidden="true"><i data-lucide="users"></i></div>
+                            <div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <h3>Friends &amp; Social</h3>
+                                    <span id="private-friends-notification" class="private-friends-notification hidden">0</span>
+                                </div>
+                                <p id="private-friends-summary">Loading your friends and pending requests...</p>
+                                <div id="private-friends-preview" class="private-friends-preview" aria-hidden="true"></div>
+                            </div>
+                            <button type="button" class="private-friends-banner-action" onclick="openFriendsWorkspace()">
+                                Open friends <i data-lucide="arrow-right"></i>
+                            </button>
+                        </section>
                     </div>
                 </div>
 
@@ -2722,6 +2855,15 @@
                 allowfullscreen
             ></iframe>
         </div>
+    </section>
+
+    <section id="friends-workspace-section" class="hidden fixed inset-0 z-[100003] bg-slate-100 rgenie-private-only">
+        <iframe
+            id="friends-workspace-frame"
+            class="h-full w-full border-0 bg-slate-100"
+            src=""
+            title="Friends and Social"
+        ></iframe>
     </section>
 
     <div id="resource-listing-section" class="flex-grow py-10 relative z-10 rgenie-private-only">
@@ -2866,6 +3008,7 @@
   let openMode = "public";
   let allResources = [];
   let allAccessOnlyResources = [];
+  let friendsSummaryState = { friends: [], incoming: [], outgoing: [], loaded: false };
   let embeddedMaterialState = {
     open: false,
     src: "",
@@ -2902,6 +3045,88 @@
   }
 
   async function loadResourceAccessSummary() {}
+
+  function safeFriendProfilePicture(value) {
+    const path = String(value || "").trim().toLowerCase();
+    return /^[a-z0-9-]{1,32}\/[a-z0-9-]{1,32}\.jpg$/.test(path) ? path : "sbo/1.jpg";
+  }
+
+  function renderFriendsSummary() {
+    const banner = document.getElementById("private-friends-banner");
+    const summary = document.getElementById("private-friends-summary");
+    const notification = document.getElementById("private-friends-notification");
+    const preview = document.getElementById("private-friends-preview");
+    if (!banner || !summary || !notification || !preview) return;
+
+    const friendCount = friendsSummaryState.friends.length;
+    const requestCount = friendsSummaryState.incoming.length;
+    summary.textContent = !friendsSummaryState.loaded
+      ? "Open Friends & Social to manage your connections."
+      : requestCount > 0
+        ? `${requestCount} pending request${requestCount === 1 ? "" : "s"} and ${friendCount} friend${friendCount === 1 ? "" : "s"}.`
+        : `${friendCount} friend${friendCount === 1 ? "" : "s"}. Search usernames, send requests and manage your connections.`;
+    notification.textContent = String(requestCount);
+    notification.classList.toggle("hidden", requestCount === 0);
+    preview.replaceChildren();
+
+    friendsSummaryState.friends.slice(0, 5).forEach(friend => {
+      const image = document.createElement("img");
+      image.src = `/assets/images/profile/pfp/${safeFriendProfilePicture(friend.profilePicture)}`;
+      image.alt = "";
+      image.onerror = () => {
+        if (image.dataset.fallback) { image.remove(); return; }
+        image.dataset.fallback = "1";
+        image.src = "/assets/images/profile/pfp/sbo/1.jpg";
+      };
+      preview.appendChild(image);
+    });
+
+    if (!friendCount) {
+      const placeholder = document.createElement("span");
+      placeholder.className = "private-friends-preview-placeholder";
+      preview.appendChild(placeholder);
+    }
+    banner.setAttribute("aria-busy", "false");
+  }
+
+  async function loadFriendsSummary() {
+    try {
+      const result = window.StudyBaseServices
+        ? await window.StudyBaseServices.request("/friends")
+        : await fetch(`${WORKER}/api/friends`, { credentials: "include", headers: { Accept: "application/json" } }).then(response => response.json());
+      if (!result?.ok) throw new Error(result?.error || "Friends unavailable");
+      friendsSummaryState = {
+        friends: Array.isArray(result.friends) ? result.friends : [],
+        incoming: Array.isArray(result.incoming) ? result.incoming : [],
+        outgoing: Array.isArray(result.outgoing) ? result.outgoing : [],
+        loaded: true
+      };
+    } catch (_) {
+      friendsSummaryState = { friends: [], incoming: [], outgoing: [], loaded: false };
+    }
+    renderFriendsSummary();
+  }
+
+  function openFriendsWorkspace() {
+    const section = document.getElementById("friends-workspace-section");
+    const frame = document.getElementById("friends-workspace-frame");
+    if (!section || !frame) return;
+    frame.src = "/internal/apps/friends.html?embedded=1";
+    section.classList.remove("hidden");
+    document.body.classList.add("overflow-hidden");
+  }
+
+  function closeFriendsWorkspace() {
+    const section = document.getElementById("friends-workspace-section");
+    const frame = document.getElementById("friends-workspace-frame");
+    if (frame) frame.src = "about:blank";
+    if (section) section.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden");
+    loadFriendsSummary();
+  }
+
+  window.openFriendsWorkspace = openFriendsWorkspace;
+  window.closeFriendsWorkspace = closeFriendsWorkspace;
 
   function openAccountPageModal(pageUrl, titleText = "My Account", fallbackId = "sb-account-page-modal") {
     if (typeof window.openStudyBaseAccountModal === "function") {
@@ -3732,13 +3957,7 @@
       allAccessOnlyResources = list.slice();
       allResources = list;
 
-      // Update counter badge
-      const counterVal = document.getElementById("counter-value");
-      const counterEl = document.getElementById("private-resource-counter");
-      if (counterVal && counterEl) {
-        counterVal.textContent = allResources.length;
-        counterEl.classList.remove("hidden");
-      }
+      updatePrivateResourceCounter(allResources.length);
 
       // Reset grid (no inline spinner needed — overlay handles it)
       const grid = document.getElementById("resource-grid");
@@ -3748,6 +3967,7 @@
       }
 
       await loadPrivatePreflight();
+      loadFriendsSummary();
       loadResourceAccessSummary(res.account || null);
       refreshCommandFilters();
       refreshResourceVaultChrome();
@@ -4372,6 +4592,9 @@
     if (event.data && event.data.type === "sb-material-close") {
       closeEmbeddedMaterial();
     }
+    if (event.data && event.data.type === "studybase:friends-close") {
+      closeFriendsWorkspace();
+    }
   });
 
   function renderGrid(items) {
@@ -4606,7 +4829,8 @@
       "announcement-modal",
       "reportModal",
       "weekly-feedback-modal",
-      "sb-account-page-modal"
+      "sb-account-page-modal",
+      "friends-workspace-section"
     ];
   }
 
@@ -4909,6 +5133,14 @@
     window.alert("Coming soon. This resource is not available yet.");
   }
 
+  function updatePrivateResourceCounter(count) {
+    const value = document.getElementById("counter-value");
+    const counter = document.getElementById("private-resource-counter");
+    if (!value || !counter) return;
+    value.textContent = String(Math.max(0, Number(count) || 0));
+    counter.classList.toggle("hidden", openMode !== "access_only");
+  }
+
   function filterResources() {
     const raw = (document.getElementById("searchInput").value || "").trim();
     const query = raw.toLowerCase();
@@ -4925,6 +5157,7 @@
       if (!query && !hasStructuredFilter) {
         allResources = baseItems;
         renderGrid(allResources);
+        updatePrivateResourceCounter(0);
         return;
       }
 
@@ -4934,6 +5167,7 @@
       });
 
       renderGrid(filtered);
+      updatePrivateResourceCounter(0);
       return;
     }
 
@@ -4947,6 +5181,7 @@
       return itemMatchesFilters(enriched, filters);
     });
     renderGrid(filtered);
+    updatePrivateResourceCounter(filtered.length);
   }
 
   function handleClick(item) {

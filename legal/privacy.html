@@ -42,8 +42,8 @@
           </div>
           <div class="legal-version">
             <span>Version</span>
-            <strong>PRIVACY-2026.06.20</strong>
-            <p class="legal-copy" style="margin-top:10px;font-size:13px;line-height:1.55;">Last updated: 22 June 2026 — Sellbase checkout and purchase fulfilment information added</p>
+            <strong>PRIVACY-2026.06.28</strong>
+            <p class="legal-copy" style="margin-top:10px;font-size:13px;line-height:1.55;">Last updated: 28 June 2026 - Friends and Social information added</p>
           </div>
         </div>
       </div>
@@ -118,6 +118,16 @@
           <p>
             If you submit support forms, reports, contact messages, APG requests, or similar inputs, StudyBase may process the information
             you choose to send, plus page context and technical metadata needed to review or operate the request.
+          </p>
+          <p>
+            If you use Friends &amp; Social, another signed-in user who enters your exact username may see your first name, username,
+            and profile picture before sending a request. Pending requests and accepted friendships are stored against account UUIDs,
+            rather than mutable usernames, together with the time a request was created. Friends do not receive your date of birth,
+            gender, eligibility-address hash, email address, password information, login history, or IP information through the friends API.
+          </p>
+          <p>
+            StudyBase also records a short-lived daily friend-request count to enforce the limit of 10 newly sent requests per day.
+            The browser keeps a matching local daily count to provide immediate feedback, but the server-side limit remains authoritative.
           </p>
         </article>
 
@@ -209,7 +219,8 @@
             <li>Local browser data: until you clear it or the browser removes it.</li>
             <li>Pending signup records: up to 48 hours, unless used sooner.</li>
             <li>Sessions: up to seven days, unless revoked or the account is deleted sooner.</li>
-            <li>Account profile: while the account is active. Password-confirmed self-service deletion revokes sessions and removes the account record, username index, keyed eligibility record, and related pending signup data.</li>
+            <li>Account profile: while the account is active. Password-confirmed self-service deletion revokes sessions and removes the account record, username index, keyed eligibility record, related pending signup data, friendships, pending friend requests, and friend-request rate records.</li>
+            <li>Friendships and pending requests: until a user removes, declines, or cancels them, or until either related account is deleted. Daily request-limit records expire shortly after the relevant day.</li>
             <li>Account security login events: up to 30 days.</li>
             <li>Support and report records: retained as long as needed to resolve the matter and for a reasonable period thereafter for audit and safety reasons.</li>
             <li>Purchase and fulfilment records: for the access period and as long as reasonably required for support, disputes, fraud prevention, accounting, tax, and other legal obligations.</li>
