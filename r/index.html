@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
     <meta charset="UTF-8">
+    <title>StudyBase | Resource Vault</title>
+    <meta property="og:title" content="StudyBase | Resource Vault">
             <meta name="description" content="StudyBase provides educational revision resources, A-Level and GCSE study tools, past papers, subject guides, wellbeing support, and learning materials for students." data-studybase-education-meta="true">
     <meta name="classification" content="Education" data-studybase-education-meta="true">
     <meta name="category" content="Education" data-studybase-education-meta="true">
@@ -15,7 +16,25 @@
     <meta property="og:locale" content="en_GB" data-studybase-education-meta="true">
 <script src="/assets/js/config/siteConfig.js"></script>
     <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
-    <title>StudyBase | Resource Database</title>
+    <script>
+      (() => {
+        const applyResourcePageTitle = event => {
+          const configuredBrand = event?.detail?.brand?.shortName || window.SB_CONFIG?.brand?.shortName || "StudyBase";
+          const brand = String(configuredBrand).trim() || "StudyBase";
+          const title = `${brand} | Resource Vault`;
+          document.title = title;
+          const titleElement = document.querySelector("head > title");
+          const socialTitle = document.querySelector('meta[property="og:title"]');
+          if (titleElement) titleElement.textContent = title;
+          if (socialTitle) socialTitle.content = title;
+        };
+        applyResourcePageTitle();
+        window.addEventListener("site-config-ready", applyResourcePageTitle);
+        document.addEventListener("DOMContentLoaded", applyResourcePageTitle, { once: true });
+        window.addEventListener("load", applyResourcePageTitle, { once: true });
+        window.addEventListener("pageshow", applyResourcePageTitle);
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/assets/images/site-icons/main.ico">
     <script src="/assets/js/ui/userReplace.js"></script>
@@ -4055,6 +4074,7 @@
     let isBeta = false;
     let isOriginal = false;
     let isComingSoon = false;
+    let isPaywall = false;
 
     if (displayName.includes("-v-")) {
       displayName = displayName.replace("-v-", "");
@@ -4063,7 +4083,7 @@
 
     if (displayName.includes("-p-")) {
       displayName = displayName.replace("-p-", "");
-      isPopular = true;
+      isPaywall = true;
     }
 
     if (displayName.includes("-r-")) {
@@ -4098,7 +4118,8 @@
       isRising,
       isBeta,
       isOriginal,
-      isComingSoon
+      isComingSoon,
+      isPaywall
     };
   }
 
@@ -4576,8 +4597,7 @@
   }
 
   function getSubscriptionSlugFromItem(item) {
-    const directSlug = getSubscriptionSlugFromUrl(item?.url || "");
-    if (directSlug) return directSlug;
+    if (!String(item?.name || "").includes("-p-")) return "";
     const display = stripResourceDecorators(item?.name || "").toLowerCase();
     return subscriptionSlugByResourceName[display] || "";
   }
@@ -4704,11 +4724,12 @@
         isRising,
         isBeta,
         isOriginal,
-        isComingSoon
+        isComingSoon,
+        isPaywall
       } = getResourceDisplayMeta(item.name);
 
       let imageUrl = item.iconurl;
-      const isPaywallResource = Boolean(getSubscriptionSlugFromItem(item));
+      const isPaywallResource = isPaywall && Boolean(getSubscriptionSlugFromItem(item));
       let tagHtml = "";
 
       if (openMode === "public" && item.__type === "folder") {
