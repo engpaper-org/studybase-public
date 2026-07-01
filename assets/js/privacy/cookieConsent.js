@@ -1,152 +1,190 @@
 (function () {
-if (window.StudyBaseConsent) {
+  "use strict";
+
+  if (window.StudyBaseConsent) {
     window.StudyBaseConsent.init();
     return;
-}
+  }
 
-let LOG_URL = 'https://script.google.com/macros/s/AKfycbyW-AQ4JeYOMujbXToocpkXPH_GMYxhJTqViDOkoPyXYrpcaMvFuxnVjtWQx-ot6T3L/exec';
-let PRIVACY_URL = '/legal/privacy.html';
-let TERMS_URL = '/legal/tos.html';
-let GOOGLE_TAG_ID = 'G-N7LHC0S1T1';
+  const CHOICE_KEY = "studybase_consent_choice";
+  const LEGACY_KEY = "site_consent_granted";
+  const ANALYTICS_KEY = "site_consent_analytics";
+  const PENDING_LOG_KEY = "studybase_consent_log_pending";
+  const CONSENT_VERSION = "STUDYBASE_CONSENT_2026_07";
+  const PRIVACY_URL = "/legal/privacy.html?consentReview=1";
+  const TERMS_URL = "/legal/tos.html?consentReview=1";
 
-if (window.SiteConfig && window.SiteConfig.ready) {
-    window.SiteConfig.ready.then((config) => {
-        LOG_URL = config?.endpoints?.consentLog || LOG_URL;
-        PRIVACY_URL = config?.urls?.privacy || PRIVACY_URL;
-        TERMS_URL = config?.urls?.terms || TERMS_URL;
-        GOOGLE_TAG_ID = config?.analytics?.googleTagId || GOOGLE_TAG_ID;
-    });
-}
-
-function removeConsentModal() {
-    const modal = document.getElementById('sb-consent-modal');
-    if (modal) modal.remove();
-    document.documentElement.classList.remove('sb-consent-pending');
-    document.body.classList.remove('overflow-hidden');
-}
-
-async function acceptAll() {
-    const btn = document.getElementById('accept-btn');
-    const btnText = document.getElementById('btn-text');
-    const loader = document.getElementById('btn-loader');
-
-    if (!btn || btn.disabled) return;
-
-    btn.disabled = true;
-    if (btnText) btnText.classList.add('opacity-0');
-    if (loader) loader.classList.remove('hidden');
-
-    const uid = localStorage.getItem('consent_uid') || ('uid_' + Math.random().toString(36).slice(2, 11));
-    localStorage.setItem('consent_uid', uid);
-    localStorage.setItem('site_consent_granted', 'true');
-
-    if (typeof gtag === 'function') {
-        gtag('consent', 'update', {
-            ad_storage: 'granted',
-            ad_user_data: 'granted',
-            ad_personalization: 'granted',
-            analytics_storage: 'granted'
-        });
-
-        gtag('config', GOOGLE_TAG_ID, { update: true });
-    }
-
+  function readChoice() {
     try {
-        await fetch(LOG_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify({
-                userId: uid,
-                consent: 'STUDYBASE_CONSENT_2026',
-                page: window.location.href,
-                userAgent: navigator.userAgent
-            })
-        });
-    } catch (err) {}
+      const value = JSON.parse(localStorage.getItem(CHOICE_KEY) || "null");
+      return value?.version === CONSENT_VERSION && ["accepted", "declined"].includes(value.service) ? value : null;
+    } catch (_) {
+      return null;
+    }
+  }
 
-    removeConsentModal();
-}
+  function removeModal() {
+    document.getElementById("sb-consent-modal")?.remove();
+    document.documentElement.classList.remove("sb-consent-pending");
+  }
 
-function buildConsentModal() {
-    if (document.getElementById('sb-consent-modal')) return;
-
-    const modal = document.createElement('div');
-    modal.id = 'sb-consent-modal';
-    modal.className = 'fixed inset-0 z-[100000] flex items-center justify-center px-4 py-6';
-    modal.innerHTML = `
-        <div class="absolute inset-0 bg-slate-950/72 backdrop-blur-md"></div>
-        <div class="relative w-full max-w-xl rounded-[2rem] border border-white/10 bg-slate-950 text-white shadow-[0_40px_120px_rgba(0,0,0,0.45)] overflow-hidden">
-            <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-300"></div>
-            <div class="p-8 md:p-10">
-                <div class="w-16 h-16 rounded-3xl bg-blue-500/10 border border-blue-400/20 flex items-center justify-center mb-6">
-                    <svg class="w-8 h-8 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
-                </div>
-
-                <p class="text-[11px] uppercase tracking-[0.24em] text-blue-200 font-bold mb-4">Consent required</p>
-                <h2 class="text-3xl md:text-4xl font-black tracking-tight leading-tight mb-4">Agree to continue to StudyBase.</h2>
-                <p class="text-slate-300 text-sm md:text-base leading-relaxed">
-                    StudyBase uses local storage for essential site behaviour and may send consent, analytics, account,
-                    resource-access and security-verification data as described in the legal centre.
-                </p>
-                <p class="mt-4 text-slate-400 text-sm leading-relaxed">
-                    Continuing means you accept the <a href="${PRIVACY_URL}" class="text-white font-semibold underline decoration-blue-400/70 underline-offset-4">Privacy Policy</a>
-                    and <a href="${TERMS_URL}" class="text-white font-semibold underline decoration-blue-400/70 underline-offset-4">Terms &amp; Conditions</a>.
-                </p>
-
-                <button
-                    id="accept-btn"
-                    type="button"
-                    onclick="acceptAll()"
-                    class="relative mt-8 inline-flex w-full items-center justify-center rounded-2xl bg-blue-500 px-6 py-4 text-base font-black text-white transition hover:bg-blue-400 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                    <span id="btn-text">Agree</span>
-                    <span id="btn-loader" class="hidden absolute inset-0 flex items-center justify-center">
-                        <svg class="h-5 w-5 animate-spin text-white" viewBox="0 0 24 24" aria-hidden="true">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                        </svg>
-                    </span>
-                </button>
-            </div>
-        </div>
+  function styleMarkup() {
+    if (document.getElementById("sb-consent-ui-style")) return;
+    const style = document.createElement("style");
+    style.id = "sb-consent-ui-style";
+    style.textContent = `
+      #sb-consent-modal, #sb-limited-consent-banner { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; box-sizing: border-box; }
+      #sb-consent-modal *, #sb-limited-consent-banner * { box-sizing: border-box; }
+      #sb-consent-modal { position: fixed; inset: 0; z-index: 2147483646; display: grid; place-items: center; padding: 18px; }
+      .sb-consent-backdrop { position: absolute; inset: 0; background: rgba(2, 6, 23, .82); backdrop-filter: blur(16px); }
+      .sb-consent-card { position: relative; width: min(680px, 100%); max-height: calc(100vh - 36px); overflow-y: auto; border: 1px solid #dbeafe; border-radius: 28px; background: #fff; color: #0f172a; box-shadow: 0 40px 120px rgba(2, 6, 23, .48); }
+      .sb-consent-head { padding: 28px 30px 24px; background: linear-gradient(135deg, #eff6ff, #fff 54%, #f5f3ff); }
+      .sb-consent-kicker { margin: 0; color: #2563eb; font-size: 11px; font-weight: 900; letter-spacing: .2em; text-transform: uppercase; }
+      .sb-consent-title { margin: 10px 0 0; font-size: clamp(28px, 5vw, 42px); line-height: 1.04; font-weight: 950; letter-spacing: -.04em; }
+      .sb-consent-copy { margin: 14px 0 0; color: #475569; font-size: 14px; line-height: 1.7; }
+      .sb-consent-body { padding: 24px 30px 30px; }
+      .sb-consent-choice { display: flex; gap: 12px; padding: 15px; border: 1px solid #dbeafe; border-radius: 17px; background: #f8fafc; color: #334155; font-size: 13px; line-height: 1.55; }
+      .sb-consent-choice input { width: 19px; height: 19px; margin: 1px 0 0; accent-color: #2563eb; }
+      .sb-consent-links { margin: 16px 0 0; color: #64748b; font-size: 12px; line-height: 1.6; }
+      .sb-consent-links a { color: #1d4ed8; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+      .sb-consent-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }
+      .sb-consent-button { min-height: 48px; border-radius: 14px; padding: 12px 15px; font-size: 13px; font-weight: 900; cursor: pointer; }
+      .sb-consent-accept { border: 0; background: #2563eb; color: #fff; }
+      .sb-consent-decline { border: 1px solid #cbd5e1; background: #fff; color: #334155; }
+      #sb-limited-consent-banner { position: fixed; z-index: 2147483645; right: 0; bottom: 0; left: 0; display: flex; align-items: center; justify-content: center; gap: 18px; border-top: 1px solid #fbbf24; background: #fffbeb; padding: 14px 20px; color: #78350f; box-shadow: 0 -12px 40px rgba(120, 53, 15, .16); }
+      #sb-limited-consent-banner p { max-width: 820px; margin: 0; font-size: 13px; font-weight: 700; line-height: 1.5; }
+      #sb-limited-consent-banner button { flex: none; border: 0; border-radius: 12px; background: #92400e; padding: 10px 15px; color: #fff; font-size: 12px; font-weight: 900; cursor: pointer; }
+      @media (max-width: 620px) { .sb-consent-head, .sb-consent-body { padding: 22px; } .sb-consent-actions { grid-template-columns: 1fr; } #sb-limited-consent-banner { align-items: stretch; flex-direction: column; gap: 8px; } }
     `;
+    document.head.appendChild(style);
+  }
 
+  function showLimitedBanner() {
+    styleMarkup();
+    if (document.getElementById("sb-limited-consent-banner")) return;
+    const banner = document.createElement("aside");
+    banner.id = "sb-limited-consent-banner";
+    banner.setAttribute("aria-label", "Limited functionality notice");
+    banner.innerHTML = `<p><strong>Limited functionality:</strong> consent has not been given. Account login, protected resources, social features, reports, external embeds and analytics remain disabled.</p><button type="button">Review choice</button>`;
+    banner.querySelector("button").addEventListener("click", () => buildModal(true));
+    document.body.appendChild(banner);
+  }
+
+  function acceptConsent() {
+    const analytics = document.getElementById("sb-consent-analytics")?.checked === true;
+    const decidedAt = new Date().toISOString();
+    const choice = { version: CONSENT_VERSION, service: "accepted", analytics, decidedAt };
+    const uid = localStorage.getItem("consent_uid") || `uid_${Math.random().toString(36).slice(2, 11)}`;
+    localStorage.setItem("consent_uid", uid);
+    localStorage.setItem(CHOICE_KEY, JSON.stringify(choice));
+    localStorage.setItem(LEGACY_KEY, "true");
+    localStorage.setItem(ANALYTICS_KEY, String(analytics));
+    localStorage.setItem(PENDING_LOG_KEY, JSON.stringify({
+      userId: uid,
+      consent: CONSENT_VERSION,
+      service: "accepted",
+      analytics,
+      decidedAt,
+      page: window.location.href,
+      userAgent: navigator.userAgent
+    }));
+    removeModal();
+    document.getElementById("sb-limited-consent-banner")?.remove();
+    window.dispatchEvent(new CustomEvent("studybase:consent-accepted", { detail: choice }));
+  }
+
+  function declineConsent() {
+    const choice = { version: CONSENT_VERSION, service: "declined", analytics: false, decidedAt: new Date().toISOString() };
+    localStorage.setItem(CHOICE_KEY, JSON.stringify(choice));
+    localStorage.setItem(LEGACY_KEY, "false");
+    localStorage.setItem(ANALYTICS_KEY, "false");
+    ["studybase_session_active", "studybase_session_expiry", "studybase_user", "get_help_data"].forEach(key => localStorage.removeItem(key));
+    removeModal();
+    document.documentElement.classList.add("sb-consent-limited");
+    showLimitedBanner();
+    window.setTimeout(() => window.location.reload(), 50);
+  }
+
+  function buildModal(force = false) {
+    styleMarkup();
+    if (document.getElementById("sb-consent-modal")) return;
+    const existing = readChoice();
+    if (!force && existing?.service === "accepted") return;
+    const modal = document.createElement("div");
+    modal.id = "sb-consent-modal";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+    modal.setAttribute("aria-labelledby", "sb-consent-title");
+    modal.innerHTML = `
+      <div class="sb-consent-backdrop"></div>
+      <section class="sb-consent-card">
+        <div class="sb-consent-head">
+          <p class="sb-consent-kicker">Privacy and service choice</p>
+          <h2 id="sb-consent-title" class="sb-consent-title">Choose your StudyBase experience</h2>
+          <p class="sb-consent-copy">You have a genuine choice. Enabling StudyBase lets this page contact account and security services for login, protected resources, friends and reports. Limited mode keeps public static pages available where possible and blocks those connections, external embeds and analytics.</p>
+        </div>
+        <div class="sb-consent-body">
+          <label class="sb-consent-choice"><input id="sb-consent-analytics" type="checkbox"><span><strong>Allow optional Google Analytics</strong><br>Share page-view and browser interaction statistics with Google to help improve StudyBase. This is optional and is off unless you select it.</span></label>
+          <p class="sb-consent-links">By enabling StudyBase you agree to the <a href="${TERMS_URL}" target="_blank" rel="noopener">Terms and Conditions</a> and acknowledge the <a href="${PRIVACY_URL}" target="_blank" rel="noopener">Privacy Notice</a>. You can choose limited mode instead, or change this decision later from the Privacy Centre or permanent limited-mode banner.</p>
+          <div class="sb-consent-actions">
+            <button id="sb-consent-decline" class="sb-consent-button sb-consent-decline" type="button">Use limited version</button>
+            <button id="sb-consent-accept" class="sb-consent-button sb-consent-accept" type="button">Accept and enable StudyBase</button>
+          </div>
+        </div>
+      </section>`;
     document.body.appendChild(modal);
-    document.documentElement.classList.add('sb-consent-pending');
-    document.body.classList.add('overflow-hidden');
-}
+    document.documentElement.classList.add("sb-consent-pending");
+    document.getElementById("sb-consent-analytics").checked = existing?.analytics === true;
+    document.getElementById("sb-consent-decline").addEventListener("click", declineConsent);
+    document.getElementById("sb-consent-accept").addEventListener("click", acceptConsent);
+  }
 
-function initConsent() {
+  function guardLimitedInteractions() {
+    document.addEventListener("submit", event => {
+      if (!window.StudyBaseConsentState?.serviceAllowed && !event.target.closest("#sb-consent-modal")) {
+        event.preventDefault();
+        buildModal(true);
+      }
+    }, true);
+    document.addEventListener("click", event => {
+      if (window.StudyBaseConsentState?.serviceAllowed) return;
+      const link = event.target.closest?.("a[href]");
+      if (!link) return;
+      let target;
+      try { target = new URL(link.href, location.href); } catch (_) { return; }
+      const protectedTarget = target.pathname.startsWith("/myaccount/") || target.pathname.startsWith("/r/material.html") || target.hostname.endsWith("platformbase.online") || target.hostname.startsWith("subscription.");
+      if (!protectedTarget) return;
+      event.preventDefault();
+      buildModal(true);
+    }, true);
+  }
+
+  function initConsent() {
     if (!document.body) {
-        document.addEventListener('DOMContentLoaded', initConsent, { once: true });
-        return;
+      document.addEventListener("DOMContentLoaded", initConsent, { once: true });
+      return;
     }
-
-    if (typeof SHOW_CONSENT_BANNER !== 'undefined' && SHOW_CONSENT_BANNER === false) {
-        removeConsentModal();
-        return;
+    styleMarkup();
+    guardLimitedInteractions();
+    const choice = readChoice();
+    if (choice?.service === "accepted") {
+      removeModal();
+      document.getElementById("sb-limited-consent-banner")?.remove();
+      return;
     }
+    showLimitedBanner();
+    const policyReview = location.pathname.startsWith("/legal/") && new URLSearchParams(location.search).get("consentReview") === "1";
+    if (!choice && !policyReview) buildModal();
+  }
 
-    if (localStorage.getItem('site_consent_granted') === 'true') {
-        removeConsentModal();
-        return;
-    }
-
-    buildConsentModal();
-}
-
-window.StudyBaseConsent = {
+  window.StudyBaseConsent = Object.freeze({
     init: initConsent,
-    acceptAll,
-    remove: removeConsentModal
-};
-window.acceptAll = acceptAll;
+    open: () => buildModal(true),
+    accept: acceptConsent,
+    decline: declineConsent,
+    choice: readChoice
+  });
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initConsent, { once: true });
-} else {
-    initConsent();
-}
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initConsent, { once: true });
+  else initConsent();
 })();

@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", async function() {
+    if (window.StudyBaseConsentState?.analyticsAllowed !== true) return;
     
     // --- CONFIGURATION ---
     let GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6WAa5VWe19UTQhKJ32eTF0gQnV2ZqQMyKlBflyzz9lpQrczB4RKeECsb5oKz7RLK9/exec";

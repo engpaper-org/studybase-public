@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="/assets/js/privacy/checkCookieConsent.js"></script>
     <meta charset="UTF-8">
     <title>StudyBase | Resource Vault</title>
     <meta property="og:title" content="StudyBase | Resource Vault">
@@ -55,30 +56,7 @@
     <script src="/assets/js/resources/checkForLoggedInHash.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
-
-    <script src="/assets/js/privacy/checkCookieConsent.js"></script>
-
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-
-        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
-
-        gtag('consent', 'default', {
-            'ad_storage': hasConsented ? 'granted' : 'denied',
-            'ad_user_data': hasConsented ? 'granted' : 'denied',
-            'ad_personalization': hasConsented ? 'granted' : 'denied',
-            'analytics_storage': hasConsented ? 'granted' : 'denied'
-        });
-
-        gtag('js', new Date());
-        gtag('config', 'G-N7LHC0S1T1');
-    </script>
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
-    <script src="/assets/js/privacy/cookieConsent.js"></script>
-
-    <style>
+<style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background:

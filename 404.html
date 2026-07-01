@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="/assets/js/privacy/checkCookieConsent.js"></script>
     
     <meta charset="UTF-8">
 
@@ -48,25 +49,7 @@
     <script>const PAGE_ID = "404";</script>
 
     <!-- Cookie consent banner and Google Analytics -->
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-
-        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
-
-        gtag('consent', 'default', {
-            'ad_storage': hasConsented ? 'granted' : 'denied',
-            'ad_user_data': hasConsented ? 'granted' : 'denied',
-            'ad_personalization': hasConsented ? 'granted' : 'denied',
-            'analytics_storage': hasConsented ? 'granted' : 'denied'
-        });
-
-        gtag('js', new Date());
-        gtag('config', 'G-N7LHC0S1T1');
-    </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
-    <script src="/assets/js/privacy/cookieConsent.js"></script>
-    <!-- End of consent and analytics -->
+<!-- End of consent and analytics -->
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');

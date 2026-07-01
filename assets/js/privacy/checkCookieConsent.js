@@ -1,50 +1,163 @@
 (function () {
-    function releaseScrollLock() {
-        document.documentElement.classList.remove('sb-consent-pending');
-        document.body?.classList.remove('overflow-hidden');
+  "use strict";
+
+  if (window.__SB_CONSENT_BOOTSTRAPPED__) return;
+  window.__SB_CONSENT_BOOTSTRAPPED__ = true;
+
+  const CHOICE_KEY = "studybase_consent_choice";
+  const LEGACY_KEY = "site_consent_granted";
+  const ANALYTICS_KEY = "site_consent_analytics";
+  const PENDING_LOG_KEY = "studybase_consent_log_pending";
+  const CONSENT_VERSION = "STUDYBASE_CONSENT_2026_07";
+  const GOOGLE_TAG_ID = "G-N7LHC0S1T1";
+  const LOG_URL = "https://script.google.com/macros/s/AKfycbyW-AQ4JeYOMujbXToocpkXPH_GMYxhJTqViDOkoPyXYrpcaMvFuxnVjtWQx-ot6T3L/exec";
+
+  function readChoice() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(CHOICE_KEY) || "null");
+      if (parsed?.version === CONSENT_VERSION && ["accepted", "declined"].includes(parsed.service)) return parsed;
+    } catch (_) {}
+    return null;
+  }
+
+  const choice = readChoice();
+  const serviceAllowed = choice?.service === "accepted";
+  const analyticsAllowed = serviceAllowed && choice?.analytics === true;
+  window.StudyBaseConsentState = Object.freeze({
+    choice: choice?.service || "pending",
+    serviceAllowed,
+    analyticsAllowed,
+    version: choice?.version || CONSENT_VERSION
+  });
+
+  function queueAgreementLog() {
+    if (!serviceAllowed || window.__SB_CONSENT_LOG_SENDING__) return;
+    let payload = null;
+    try { payload = JSON.parse(localStorage.getItem(PENDING_LOG_KEY) || "null"); } catch (_) {}
+    if (!payload) return;
+    window.__SB_CONSENT_LOG_SENDING__ = true;
+    try {
+      fetch(LOG_URL, {
+        method: "POST",
+        mode: "no-cors",
+        keepalive: true,
+        headers: { "Content-Type": "text/plain;charset=UTF-8" },
+        body: JSON.stringify(payload)
+      }).then(() => {
+        try { localStorage.removeItem(PENDING_LOG_KEY); } catch (_) {}
+      }).catch(() => {
+        window.__SB_CONSENT_LOG_SENDING__ = false;
+      });
+    } catch (_) {
+      window.__SB_CONSENT_LOG_SENDING__ = false;
     }
+  }
 
-    if (localStorage.getItem('site_consent_granted') === 'true') {
-        releaseScrollLock();
-        return;
+  function loadAnalytics() {
+    if (!analyticsAllowed || document.querySelector('script[data-sb-google-analytics="true"]')) return;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+    window.gtag("consent", "default", {
+      ad_storage: "denied",
+      ad_user_data: "denied",
+      ad_personalization: "denied",
+      analytics_storage: "granted"
+    });
+    window.gtag("js", new Date());
+    window.gtag("config", GOOGLE_TAG_ID, { anonymize_ip: true });
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GOOGLE_TAG_ID)}`;
+    script.dataset.sbGoogleAnalytics = "true";
+    document.head.appendChild(script);
+  }
+
+  function addLimitedCsp() {
+    if (document.querySelector('meta[data-sb-limited-csp="true"]')) return;
+    const meta = document.createElement("meta");
+    meta.httpEquiv = "Content-Security-Policy";
+    meta.dataset.sbLimitedCsp = "true";
+    meta.content = "default-src 'self' data: blob:; connect-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; frame-src 'none'; media-src 'self' blob:; object-src 'none'; form-action 'none'; base-uri 'self'";
+    document.head.prepend(meta);
+  }
+
+  function blockNetwork() {
+    if (window.__SB_CONSENT_NATIVE__) return;
+    const native = {
+      fetch: window.fetch?.bind(window),
+      xhrOpen: window.XMLHttpRequest?.prototype.open,
+      xhrSend: window.XMLHttpRequest?.prototype.send,
+      sendBeacon: navigator.sendBeacon?.bind(navigator),
+      WebSocket: window.WebSocket,
+      EventSource: window.EventSource
+    };
+    window.__SB_CONSENT_NATIVE__ = native;
+    const denied = () => new DOMException("Full StudyBase consent is required for network features.", "NotAllowedError");
+    if (native.fetch) window.fetch = () => Promise.reject(denied());
+    if (window.XMLHttpRequest && native.xhrOpen && native.xhrSend) {
+      window.XMLHttpRequest.prototype.open = function (...args) { this.__sbConsentRequest = args; return native.xhrOpen.apply(this, args); };
+      window.XMLHttpRequest.prototype.send = function () { throw denied(); };
     }
+    try { navigator.sendBeacon = () => false; } catch (_) {}
+    if (native.WebSocket) window.WebSocket = function () { throw denied(); };
+    if (native.EventSource) window.EventSource = function () { throw denied(); };
+  }
 
-    document.documentElement.classList.add('sb-consent-pending');
+  function clearAccountDisplayState() {
+    [
+      "studybase_session_active",
+      "studybase_session_expiry",
+      "studybase_user",
+      "get_help_data"
+    ].forEach(key => {
+      try { localStorage.removeItem(key); } catch (_) {}
+    });
+  }
 
-    if (!document.getElementById('sb-consent-pending-style')) {
-        const style = document.createElement('style');
-        style.id = 'sb-consent-pending-style';
-        style.textContent = `
-            html.sb-consent-pending,
-            html.sb-consent-pending body {
-                overflow: hidden !important;
-            }
-        `;
-        document.head.appendChild(style);
+  function installLimitedStyles() {
+    document.documentElement.classList.add("sb-consent-limited");
+    const style = document.createElement("style");
+    style.id = "sb-consent-limited-style";
+    style.textContent = `
+      html.sb-consent-pending, html.sb-consent-pending body { overflow: hidden !important; }
+      html.sb-consent-limited [data-sbx-login],
+      html.sb-consent-limited [data-sbx-account],
+      html.sb-consent-limited [data-sbx-signout],
+      html.sb-consent-limited .sbx-nav-auth,
+      html.sb-consent-limited #login,
+      html.sb-consent-limited #login-submit { display: none !important; }
+      body { padding-bottom: 92px; }
+    `;
+    document.head.appendChild(style);
+  }
+
+  if (serviceAllowed) {
+    queueAgreementLog();
+    loadAnalytics();
+  } else {
+    document.documentElement.classList.add("sb-consent-pending");
+    addLimitedCsp();
+    blockNetwork();
+    clearAccountDisplayState();
+    installLimitedStyles();
+  }
+
+  function initialiseConsent() {
+    if (window.StudyBaseConsent?.init) {
+      window.StudyBaseConsent.init();
+      return true;
     }
+    return false;
+  }
 
-    function initialiseConsent() {
-        if (window.StudyBaseConsent?.init) {
-            window.StudyBaseConsent.init();
-            return true;
-        }
-        return false;
-    }
-
-    if (initialiseConsent()) return;
-
-    const loader = document.createElement('script');
-    loader.src = '/assets/js/privacy/cookieConsent.js';
+  if (!initialiseConsent()) {
+    const loader = document.createElement("script");
+    loader.src = "/assets/js/privacy/cookieConsent.js";
     loader.defer = true;
-    loader.dataset.sbConsentLoader = 'true';
-    loader.addEventListener('load', () => {
-        if (!initialiseConsent()) releaseScrollLock();
-    }, { once: true });
-    loader.addEventListener('error', releaseScrollLock, { once: true });
+    loader.dataset.sbConsentLoader = "true";
+    loader.addEventListener("load", initialiseConsent, { once: true });
     document.head.appendChild(loader);
+  }
 
-    // Consent must never leave the site unusable if the dialog script fails.
-    window.setTimeout(() => {
-        if (!document.getElementById('sb-consent-modal')) releaseScrollLock();
-    }, 5000);
+  window.addEventListener("studybase:consent-accepted", () => window.location.reload());
 })();

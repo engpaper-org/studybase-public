@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="/assets/js/privacy/checkCookieConsent.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="StudyBase provides educational revision resources, A-Level and GCSE study tools, past papers, subject guides, wellbeing support, and learning materials for students." data-studybase-education-meta="true">
@@ -21,23 +22,7 @@
   <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="/assets/js/privacy/checkCookieConsent.js"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    const hasConsented = localStorage.getItem("site_consent_granted") === "true";
-    gtag("consent", "default", {
-      ad_storage: hasConsented ? "granted" : "denied",
-      ad_user_data: hasConsented ? "granted" : "denied",
-      ad_personalization: hasConsented ? "granted" : "denied",
-      analytics_storage: hasConsented ? "granted" : "denied"
-    });
-    gtag("js", new Date());
-    gtag("config", "G-N7LHC0S1T1");
-  </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
-  <script src="/assets/js/privacy/cookieConsent.js"></script>
-  <style>
+<style>
     :root {
       --sb-bg: #eef6f8;
       --sb-ink: #10212b;

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="/assets/js/privacy/checkCookieConsent.js"></script>
     
   <meta charset="UTF-8" />
             <meta name="description" content="StudyBase provides educational revision resources, A-Level and GCSE study tools, past papers, subject guides, wellbeing support, and learning materials for students." data-studybase-education-meta="true">
@@ -19,28 +20,7 @@
   <link rel="icon" href="/assets/images/site-icons/main.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-
-    const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
-
-    gtag('consent', 'default', {
-      'ad_storage': hasConsented ? 'granted' : 'denied',
-      'ad_user_data': hasConsented ? 'granted' : 'denied',
-      'ad_personalization': hasConsented ? 'granted' : 'denied',
-      'analytics_storage': hasConsented ? 'granted' : 'denied'
-    });
-
-    gtag('js', new Date());
-    gtag('config', 'G-N7LHC0S1T1');
-  </script>
-
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
-
-  <script src="/assets/js/privacy/cookieConsent.js"></script>
-  <script src="/assets/js/layout/navbar.js" defer></script>
+<script src="/assets/js/layout/navbar.js" defer></script>
   <script src="/assets/js/layout/footer.js" defer></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">

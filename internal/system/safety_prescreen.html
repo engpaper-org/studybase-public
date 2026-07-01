@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="/assets/js/privacy/checkCookieConsent.js"></script>
     
     <meta charset="UTF-8">
     <script src="/assets/js/auth/iframeCheck.js"></script>
@@ -20,31 +21,7 @@
     <title>Content Notice | RevisionBase</title>
 
     <!--Cookie consent banner and google analytics-->
-    <script src="/assets/js/privacy/checkCookieConsent.js"></script>
-
-    <script>
-        window.dataLayer = window.dataLayer || [];
-     function gtag(){dataLayer.push(arguments);}
-
-        // 1. Determine current state
-        const hasConsented = localStorage.getItem('site_consent_granted') === 'true';
-
-        // 2. Set default based on that state
-        gtag('consent', 'default', {
-            'ad_storage': hasConsented ? 'granted' : 'denied',
-            'ad_user_data': hasConsented ? 'granted' : 'denied',
-            'ad_personalization': hasConsented ? 'granted' : 'denied',
-            'analytics_storage': hasConsented ? 'granted' : 'denied'
-        });
-
-        gtag('js', new Date());
-        gtag('config', 'G-N7LHC0S1T1');
-    </script>
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7LHC0S1T1"></script>
-
-    <script src="/assets/js/privacy/cookieConsent.js"></script>
-    <!-- End of consent and analytics -->
+<!-- End of consent and analytics -->
 
     
     <script src="https://cdn.tailwindcss.com"></script>
