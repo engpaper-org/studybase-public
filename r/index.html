@@ -1221,14 +1221,16 @@
 
         .card-pack-shop-card { display: grid; grid-template-columns: minmax(15rem, 0.75fr) minmax(18rem, 1.25fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; overflow: hidden; padding: clamp(1.25rem, 3vw, 2.25rem); border: 1px solid rgba(56,189,248,0.22); border-radius: 30px; background: radial-gradient(circle at 15% 30%, rgba(56,189,248,0.16), transparent 30%), radial-gradient(circle at 85% 20%, rgba(168,85,247,0.16), transparent 30%), linear-gradient(145deg,#07101f,#111827); color: #fff; box-shadow: 0 24px 60px rgba(15,23,42,0.18); }
         .card-pack-shop-art { display: grid; place-items: center; min-height: 27rem; }
-        .card-pack-shop-art img { width: min(100%, 19rem); max-height: 30rem; object-fit: contain; filter: drop-shadow(0 25px 34px rgba(0,0,0,0.48)); transition: transform 0.25s ease; }
+        .card-pack-shop-art img { width: min(100%, 19rem); max-height: 30rem; border-radius: 1.75rem; object-fit: contain; filter: drop-shadow(0 25px 34px rgba(0,0,0,0.48)); transition: transform 0.25s ease; }
         .card-pack-shop-card:hover .card-pack-shop-art img { transform: translateY(-5px) rotate(-1deg); }
         .card-pack-kicker { color: #67e8f9; font-size: 0.65rem; font-weight: 950; letter-spacing: 0.16em; text-transform: uppercase; }
         .card-pack-shop-card h3 { margin: 0.55rem 0 0; font-size: clamp(1.8rem, 4vw, 3.2rem); font-weight: 950; letter-spacing: -0.045em; }
         .card-pack-shop-card p { margin: 0.7rem 0 0; color: #cbd5e1; font-size: 0.82rem; font-weight: 700; line-height: 1.65; }
         .card-pack-odds { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.15rem; }
         .card-pack-odds span { padding: 0.42rem 0.65rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; color: var(--rarity-color); background: rgba(255,255,255,0.06); font-size: 0.63rem; font-weight: 950; }
-        .card-pack-buy { display: flex; width: 100%; align-items: center; justify-content: center; gap: 0.65rem; margin-top: 1.25rem; padding: 0.95rem 1rem; border-radius: 16px; color: #052e2b; background: linear-gradient(135deg,#5eead4,#67e8f9); font-size: 0.82rem; font-weight: 950; box-shadow: 0 14px 30px rgba(34,211,238,0.18); }
+        .card-pack-buy-row { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0.65rem; margin-top: 1.25rem; }
+        .card-pack-buy { display: flex; width: 100%; align-items: center; justify-content: center; gap: 0.55rem; padding: 0.95rem 0.75rem; border-radius: 16px; color: #052e2b; background: linear-gradient(135deg,#5eead4,#67e8f9); font-size: 0.76rem; font-weight: 950; box-shadow: 0 14px 30px rgba(34,211,238,0.18); }
+        .card-pack-buy.three { color: #fff; background: linear-gradient(135deg,#7c3aed,#db2777); box-shadow: 0 14px 30px rgba(168,85,247,0.22); }
         .card-pack-buy:disabled { cursor: not-allowed; color: #94a3b8; background: #334155; box-shadow: none; }
         .card-pack-buy img { width: 1.7rem; height: 1.7rem; object-fit: contain; }
         .future-card-packs { margin-top: 1rem; padding: 1.2rem; border: 1px dashed #cbd5e1; border-radius: 22px; color: #64748b; background: #fff; text-align: center; font-size: 0.8rem; font-weight: 850; }
@@ -1243,11 +1245,14 @@
         .card-rarity-heading { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.8rem; }
         .card-rarity-heading::before { width: 0.7rem; height: 0.7rem; border-radius: 999px; background: var(--rarity-color); box-shadow: 0 0 14px var(--rarity-color); content: ""; }
         .card-rarity-heading h4 { margin: 0; color: #0f172a; font-size: 0.86rem; font-weight: 950; text-transform: uppercase; letter-spacing: 0.1em; }
+        .card-rarity-heading h4 em { color: var(--rarity-color); font-style: normal; }
         .card-rarity-heading span { color: #94a3b8; font-size: 0.68rem; font-weight: 850; }
         .card-collection-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(9rem,1fr)); gap: 0.9rem; }
         .collection-card { position: relative; aspect-ratio: 2 / 3; overflow: hidden; border: 2px solid color-mix(in srgb, var(--rarity-color) 70%, #fff); border-radius: 15px; background: #050912; box-shadow: 0 12px 28px rgba(15,23,42,0.12); }
         .collection-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s ease; }
         .collection-card.owned:hover img { transform: scale(1.035); }
+        .collection-card.owned { cursor: zoom-in; }
+        .collection-card.owned:focus-visible { outline: 4px solid color-mix(in srgb,var(--rarity-color) 45%,transparent); outline-offset: 3px; }
         .collection-card.locked { display: grid; place-items: center; border-color: #273244; background: radial-gradient(circle at 50% 35%, #1e293b, #030712 65%); }
         .collection-card.locked::after { position: absolute; inset: 0; background: repeating-linear-gradient(135deg,rgba(255,255,255,0.02) 0 8px,transparent 8px 16px); content: ""; }
         .collection-card-lock { position: relative; z-index: 1; display: grid; width: 3rem; height: 3rem; place-items: center; border: 1px solid #334155; border-radius: 16px; color: #64748b; background: #0f172a; }
@@ -1259,16 +1264,32 @@
         .card-pack-reveal.hidden { display: none; }
         .card-pack-reveal::before { position: absolute; inset: -30%; background: conic-gradient(from 0deg,transparent,rgba(56,189,248,0.1),transparent,rgba(244,63,94,0.1),transparent); animation: cardRevealSpin 9s linear infinite; content: ""; }
         .card-pack-reveal-stage { position: relative; z-index: 1; display: grid; width: min(92vw,34rem); justify-items: center; text-align: center; }
-        .card-pack-reveal-pack { width: min(68vw,19rem); max-height: 70vh; object-fit: contain; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.55)); animation: packHover 1.7s ease-in-out infinite; }
+        .card-pack-reveal.multiple .card-pack-reveal-stage { width: min(96vw,68rem); }
+        .card-pack-reveal-pack { width: min(68vw,19rem); max-height: 70vh; border-radius: 1.75rem; object-fit: contain; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.55)); animation: packHover 1.7s ease-in-out infinite; }
         .card-pack-reveal.opening .card-pack-reveal-pack { animation: packOpen 0.9s ease-in-out both; }
         .card-pack-reveal-card { display: none; width: min(68vw,20rem); max-height: 72vh; border-radius: 18px; object-fit: contain; box-shadow: 0 0 70px color-mix(in srgb,var(--reveal-color,#38bdf8) 65%,transparent); }
         .card-pack-reveal.revealed .card-pack-reveal-pack { display: none; }
         .card-pack-reveal.revealed .card-pack-reveal-card { display: block; animation: cardRevealIn 0.8s cubic-bezier(.18,.82,.22,1.18) both; }
+        .card-pack-reveal-grid { display: none; width: 100%; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(0.6rem,2vw,1.25rem); align-items: start; }
+        .card-pack-reveal.revealed.multiple .card-pack-reveal-card { display: none; }
+        .card-pack-reveal.revealed.multiple .card-pack-reveal-grid { display: grid; }
+        .card-pack-reveal-result { min-width: 0; animation: cardRevealIn 0.8s cubic-bezier(.18,.82,.22,1.18) both; animation-delay: calc(var(--reveal-index,0) * 0.13s); }
+        .card-pack-reveal-result img { width: 100%; max-height: 62vh; border-radius: 16px; object-fit: contain; box-shadow: 0 0 44px color-mix(in srgb,var(--rarity-color) 50%,transparent); }
+        .card-pack-reveal-result h4 { margin: 0.65rem 0 0; font-size: 0.9rem; font-weight: 950; }
+        .card-pack-reveal-result p { margin: 0.2rem 0 0; color: var(--rarity-color); font-size: 0.68rem; font-weight: 900; }
         .card-pack-reveal-copy { min-height: 5rem; margin-top: 1rem; }
         .card-pack-reveal-copy h3 { margin: 0; font-size: 1.7rem; font-weight: 950; }
         .card-pack-reveal-copy p { margin: 0.35rem 0 0; color: #cbd5e1; font-size: 0.78rem; font-weight: 800; }
         .card-pack-reveal-close { margin-top: 1rem; padding: 0.85rem 2rem; border-radius: 14px; color: #0f172a; background: #fff; font-size: 0.78rem; font-weight: 950; }
         .card-pack-reveal-close.hidden { display: none; }
+        .card-viewer { position: fixed; inset: 0; z-index: 2147483647; display: grid; place-items: center; overflow-y: auto; padding: 1.25rem; color: #fff; background: rgba(2,6,23,0.94); backdrop-filter: blur(18px); }
+        .card-viewer.hidden { display: none; }
+        .card-viewer-dialog { position: relative; display: grid; width: min(94vw,64rem); grid-template-columns: minmax(16rem,28rem) minmax(15rem,1fr); gap: clamp(1.25rem,4vw,3rem); align-items: center; padding: clamp(1rem,3vw,2rem); border: 1px solid rgba(255,255,255,0.12); border-radius: 30px; background: radial-gradient(circle at 20% 20%,color-mix(in srgb,var(--rarity-color) 22%,transparent),transparent 35%),#0f172a; box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
+        .card-viewer-image { width: 100%; max-height: 82vh; border-radius: 20px; object-fit: contain; box-shadow: 0 0 55px color-mix(in srgb,var(--rarity-color) 42%,transparent); }
+        .card-viewer-close { position: absolute; top: 1rem; right: 1rem; display: grid; width: 2.7rem; height: 2.7rem; place-items: center; border: 1px solid rgba(255,255,255,0.16); border-radius: 14px; color: #fff; background: rgba(255,255,255,0.08); font-size: 1.4rem; font-weight: 900; }
+        .card-viewer-copy h3 { margin: 0.5rem 0 0; font-size: clamp(1.8rem,4vw,3.4rem); font-weight: 950; letter-spacing: -0.04em; }
+        .card-viewer-copy p { margin: 0.65rem 0 0; color: #cbd5e1; font-size: 0.85rem; font-weight: 750; line-height: 1.6; }
+        .card-viewer-chance { display: inline-flex; margin-top: 1.2rem; padding: 0.55rem 0.8rem; border: 1px solid color-mix(in srgb,var(--rarity-color) 55%,transparent); border-radius: 999px; color: var(--rarity-color); background: color-mix(in srgb,var(--rarity-color) 10%,transparent); font-size: 0.72rem; font-weight: 950; }
         @keyframes packHover { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-12px) rotate(1deg); } }
         @keyframes packOpen { 0% { transform: scale(1); filter: brightness(1); } 25% { transform: translateX(-12px) rotate(-4deg) scale(1.04); } 50% { transform: translateX(12px) rotate(4deg) scale(1.08); } 75% { transform: scale(1.14); filter: brightness(2); } 100% { transform: scale(0.2); opacity: 0; filter: brightness(4); } }
         @keyframes cardRevealIn { from { opacity: 0; transform: perspective(900px) rotateY(90deg) scale(0.55); } to { opacity: 1; transform: perspective(900px) rotateY(0) scale(1); } }
@@ -1278,7 +1299,12 @@
             .card-pack-shop-card { grid-template-columns: 1fr; }
             .card-pack-shop-art { min-height: 19rem; }
             .card-pack-shop-art img { max-height: 22rem; }
+            .card-pack-buy-row { grid-template-columns: 1fr; }
             .card-collection-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 0.55rem; }
+            .card-pack-reveal-result h4 { font-size: 0.72rem; }
+            .card-pack-reveal-result p { font-size: 0.58rem; }
+            .card-viewer-dialog { grid-template-columns: 1fr; text-align: center; }
+            .card-viewer-image { max-height: 64vh; }
         }
 
         .private-friends-banner {
@@ -3212,12 +3238,26 @@
         <div class="card-pack-reveal-stage">
             <img id="card-pack-reveal-pack" class="card-pack-reveal-pack" src="/assets/images/studybucks/cards/packs/original.jpg" alt="ORIGINAL Series card pack">
             <img id="card-pack-reveal-card" class="card-pack-reveal-card" src="" alt="">
+            <div id="card-pack-reveal-grid" class="card-pack-reveal-grid"></div>
             <div class="card-pack-reveal-copy">
                 <p id="card-pack-reveal-status" class="card-pack-kicker">Opening ORIGINAL Series</p>
                 <h3 id="card-pack-reveal-title">Opening pack...</h3>
                 <p id="card-pack-reveal-detail">Your card is being selected securely.</p>
             </div>
             <button id="card-pack-reveal-close" type="button" class="card-pack-reveal-close hidden" onclick="closeCardPackReveal()">Add to Locker</button>
+        </div>
+    </section>
+
+    <section id="card-viewer" class="card-viewer hidden" role="dialog" aria-modal="true" aria-labelledby="card-viewer-title">
+        <div class="card-viewer-dialog">
+            <button type="button" class="card-viewer-close" onclick="closeCardViewer()" aria-label="Close card preview">&times;</button>
+            <img id="card-viewer-image" class="card-viewer-image" src="" alt="">
+            <div class="card-viewer-copy">
+                <p id="card-viewer-rarity" class="card-pack-kicker"></p>
+                <h3 id="card-viewer-title"></h3>
+                <span id="card-viewer-chance" class="card-viewer-chance"></span>
+                <p id="card-viewer-detail"></p>
+            </div>
         </div>
     </section>
 
@@ -3359,17 +3399,15 @@
     if (!host || !originalCardManifest || !studyShopState) return;
     const price = Number(originalCardManifest.packPrice) || 250;
     const balance = Number(studyShopState.balance) || 0;
-    const canAfford = balance >= price && !cardPackOpening;
-    const buttonLabel = cardPackOpening
-      ? "Opening pack..."
-      : balance >= price
-        ? `Open pack - ${formatStudyBucks(price)}`
-        : `Need ${formatStudyBucks(price)} StudyBucks`;
+    const canOpenOne = balance >= price && !cardPackOpening;
+    const canOpenThree = balance >= price * 3 && !cardPackOpening;
+    const oneLabel = cardPackOpening ? "Opening..." : balance >= price ? `Open 1 - ${formatStudyBucks(price)}` : `Need ${formatStudyBucks(price)}`;
+    const threeLabel = cardPackOpening ? "Opening..." : balance >= price * 3 ? `Open 3 - ${formatStudyBucks(price * 3)}` : `Need ${formatStudyBucks(price * 3)}`;
     host.innerHTML = `<article class="card-pack-shop-card">
       <div class="card-pack-shop-art"><img src="${escapeHtml(originalCardManifest.packImage)}" alt="ORIGINAL Series sealed card pack"></div>
       <div><p class="card-pack-kicker">First edition collection</p><h3>${escapeHtml(originalCardManifest.title)}</h3><p>Open one pack to receive one random mascot card. Every pull is selected securely on the server from Common through Glitched rarity.</p>
       <div class="card-pack-odds">${originalCardManifest.rarities.map(rarity => `<span style="--rarity-color:${cardRarityColor(rarity.color)}">${escapeHtml(rarity.title)} ${Number(rarity.chance)}%</span>`).join("")}</div>
-      <button type="button" class="card-pack-buy" onclick="openOriginalCardPack()" ${canAfford ? "" : "disabled"}><img src="/assets/images/studybucks/currency/dollar.png" alt=""><span>${buttonLabel}</span></button></div>
+      <div class="card-pack-buy-row"><button type="button" class="card-pack-buy" onclick="openOriginalCardPack(1)" ${canOpenOne ? "" : "disabled"}><img src="/assets/images/studybucks/currency/dollar.png" alt=""><span>${oneLabel}</span></button><button type="button" class="card-pack-buy three" onclick="openOriginalCardPack(3)" ${canOpenThree ? "" : "disabled"}><img src="/assets/images/studybucks/currency/dollar.png" alt=""><span>${threeLabel}</span></button></div></div>
     </article>`;
   }
 
@@ -3382,15 +3420,42 @@
     const groups = originalCardManifest.rarities.map(rarity => {
       const cards = originalCardManifest.cards.filter(card => card.rarity === rarity.id);
       const ownedInRarity = cards.filter(card => Number(inventory[card.id]) > 0).length;
-      return `<section class="card-rarity-group" style="--rarity-color:${cardRarityColor(rarity.color)}"><div class="card-rarity-heading"><h4>${escapeHtml(rarity.title)}</h4><span>${ownedInRarity} / ${cards.length}</span></div><div class="card-collection-grid">${cards.map(card => {
+      return `<section class="card-rarity-group" style="--rarity-color:${cardRarityColor(rarity.color)}"><div class="card-rarity-heading"><h4>${escapeHtml(rarity.title)} <em>(${Number(rarity.chance)}%)</em></h4><span>${ownedInRarity} / ${cards.length}</span></div><div class="card-collection-grid">${cards.map(card => {
         const count = Math.max(0, Math.min(100, Number(inventory[card.id]) || 0));
         if (!count) return `<article class="collection-card locked" title="Undiscovered card"><span class="collection-card-lock"><i data-lucide="lock-keyhole"></i></span><span class="collection-card-number">#${String(card.number).padStart(3, "0")}</span></article>`;
         const badge = count > 1 ? `<span class="collection-card-count">${count >= 100 ? "99+" : count}</span>` : "";
-        return `<article class="collection-card owned" title="${escapeHtml(card.name)}"><img src="${escapeHtml(card.image)}" alt="${escapeHtml(card.name)}">${badge}</article>`;
+        return `<button type="button" class="collection-card owned" title="View ${escapeHtml(card.name)}" aria-label="View ${escapeHtml(card.name)} larger" onclick="openCardViewer('${card.id}')"><img src="${escapeHtml(card.image)}" alt="${escapeHtml(card.name)}">${badge}</button>`;
       }).join("")}</div></section>`;
     }).join("");
     host.innerHTML = `<div class="card-locker-toolbar"><div><h3>${escapeHtml(originalCardManifest.title)}</h3><p>Undiscovered cards remain concealed until you pull them.</p></div><div class="card-locker-summary"><span><strong>${unique} / ${originalCardManifest.cards.length}</strong>Discovered</span><span><strong>${copies}</strong>Total cards</span></div></div>${groups}`;
     refreshResourceVaultChrome();
+  }
+
+  function openCardViewer(cardId) {
+    const card = originalCardManifest?.cards?.find(item => item.id === cardId);
+    const count = Math.max(0, Math.min(100, Number(studyShopState?.cards?.series?.original?.[cardId]) || 0));
+    if (!card || !count) return;
+    const rarity = originalCardManifest.rarities.find(item => item.id === card.rarity);
+    const viewer = document.getElementById("card-viewer");
+    const image = document.getElementById("card-viewer-image");
+    viewer.style.setProperty("--rarity-color", cardRarityColor(rarity?.color));
+    image.src = card.image;
+    image.alt = `${card.name}, ${rarity?.title || card.rarity} ORIGINAL Series card`;
+    document.getElementById("card-viewer-rarity").textContent = `${rarity?.title || card.rarity} · ORIGINAL Series`;
+    document.getElementById("card-viewer-title").textContent = card.name;
+    document.getElementById("card-viewer-chance").textContent = `${Number(rarity?.chance || 0)}% rarity chance per pack`;
+    document.getElementById("card-viewer-detail").textContent = `Card #${String(card.number).padStart(3, "0")} · You own ${count >= 100 ? "99+" : count}`;
+    viewer.classList.remove("hidden");
+    updateBodyScrollLock();
+  }
+
+  function closeCardViewer() {
+    const viewer = document.getElementById("card-viewer");
+    viewer.classList.add("hidden");
+    const image = document.getElementById("card-viewer-image");
+    image.removeAttribute("src");
+    image.alt = "";
+    updateBodyScrollLock();
   }
 
   function renderStudyShop() {
@@ -3564,26 +3629,29 @@
     const reveal = document.getElementById("card-pack-reveal");
     const pack = document.getElementById("card-pack-reveal-pack");
     const card = document.getElementById("card-pack-reveal-card");
+    const grid = document.getElementById("card-pack-reveal-grid");
     const status = document.getElementById("card-pack-reveal-status");
     const title = document.getElementById("card-pack-reveal-title");
     const detail = document.getElementById("card-pack-reveal-detail");
     const close = document.getElementById("card-pack-reveal-close");
-    if (!reveal || !pack || !card || !status || !title || !detail || !close) return null;
-    reveal.classList.remove("opening", "revealed");
+    if (!reveal || !pack || !card || !grid || !status || !title || !detail || !close) return null;
+    reveal.classList.remove("opening", "revealed", "multiple");
     reveal.style.setProperty("--reveal-color", "#38bdf8");
     pack.src = originalCardManifest?.packImage || "/assets/images/studybucks/cards/packs/original.jpg";
     card.removeAttribute("src");
     card.alt = "";
+    grid.innerHTML = "";
     status.textContent = "Opening ORIGINAL Series";
     title.textContent = "Opening pack...";
     detail.textContent = "Your card is being selected securely.";
     close.textContent = "Add to Locker";
     close.classList.add("hidden");
-    return { reveal, card, status, title, detail, close };
+    return { reveal, card, grid, status, title, detail, close };
   }
 
-  async function openOriginalCardPack() {
+  async function openOriginalCardPack(quantity = 1) {
     if (cardPackOpening) return;
+    quantity = Number(quantity) === 3 ? 3 : 1;
     cardPackOpening = true;
     const elements = resetCardPackReveal();
     if (!elements) {
@@ -3600,16 +3668,20 @@
       const [result] = await Promise.all([
         studyShopRequest("/studyshop/cards/open", {
           method: "POST",
-          body: JSON.stringify({ series: "original" })
+          body: JSON.stringify({ series: "original", quantity })
         }),
         new Promise(resolve => setTimeout(resolve, 950))
       ]);
       if (!result?.ok) throw new Error(result?.error || "This pack could not be opened");
 
-      const pulledCard = originalCardManifest.cards.find(card => card.id === result.card?.id);
-      if (!pulledCard || pulledCard.rarity !== result.card?.rarity) throw new Error("The card response did not match the catalogue");
-      const rarity = originalCardManifest.rarities.find(item => item.id === pulledCard.rarity);
-      const safeCount = Math.max(1, Math.min(100, Number(result.count) || 1));
+      const resultPulls = Array.isArray(result.cards) ? result.cards : [{ card: result.card, isNew: result.isNew, duplicate: result.duplicate, count: result.count }];
+      if (resultPulls.length !== quantity) throw new Error("The card response did not contain the expected number of cards");
+      const pulls = resultPulls.map(pull => {
+        const card = originalCardManifest.cards.find(item => item.id === pull.card?.id);
+        if (!card || card.rarity !== pull.card?.rarity) throw new Error("The card response did not match the catalogue");
+        const rarity = originalCardManifest.rarities.find(item => item.id === card.rarity);
+        return { ...pull, card, rarity, count: Math.max(1, Math.min(100, Number(pull.count) || 1)) };
+      });
       studyShopState = {
         ...studyShopState,
         balance: Math.max(0, Number(result.balance) || 0),
@@ -3619,14 +3691,25 @@
         }
       };
 
-      elements.reveal.style.setProperty("--reveal-color", cardRarityColor(rarity?.color));
-      elements.card.src = pulledCard.image;
-      elements.card.alt = `${pulledCard.name}, ${rarity?.title || pulledCard.rarity} ORIGINAL Series card`;
-      elements.status.textContent = result.isNew ? `New ${rarity?.title || pulledCard.rarity} card` : `${rarity?.title || pulledCard.rarity} duplicate`;
-      elements.title.textContent = pulledCard.name;
-      elements.detail.textContent = result.isNew
-        ? `Card #${String(pulledCard.number).padStart(3, "0")} has been added to your ORIGINAL Series collection.`
-        : `You now own ${safeCount >= 100 ? "99+" : safeCount} copies of card #${String(pulledCard.number).padStart(3, "0")}.`;
+      const featuredPull = [...pulls].sort((a, b) => Number(a.rarity?.chance || 100) - Number(b.rarity?.chance || 100))[0];
+      elements.reveal.style.setProperty("--reveal-color", cardRarityColor(featuredPull.rarity?.color));
+      if (quantity === 1) {
+        const pull = pulls[0];
+        elements.card.src = pull.card.image;
+        elements.card.alt = `${pull.card.name}, ${pull.rarity?.title || pull.card.rarity} ORIGINAL Series card`;
+        elements.status.textContent = pull.isNew ? `New ${pull.rarity?.title || pull.card.rarity} card` : `${pull.rarity?.title || pull.card.rarity} duplicate`;
+        elements.title.textContent = pull.card.name;
+        const ownership = pull.isNew ? "Added to your collection" : `You now own ${pull.count >= 100 ? "99+" : pull.count}`;
+        elements.detail.textContent = `${Number(pull.rarity?.chance || pull.card.chance || 0)}% rarity chance per pack · Card #${String(pull.card.number).padStart(3, "0")} · ${ownership}.`;
+      } else {
+        elements.reveal.classList.add("multiple");
+        elements.grid.innerHTML = pulls.map((pull, index) => `<article class="card-pack-reveal-result" style="--reveal-index:${index};--rarity-color:${cardRarityColor(pull.rarity?.color)}"><img src="${escapeHtml(pull.card.image)}" alt="${escapeHtml(pull.card.name)}"><h4>${escapeHtml(pull.card.name)}</h4><p>${escapeHtml(pull.rarity?.title || pull.card.rarity)} · ${Number(pull.rarity?.chance || pull.card.chance || 0)}% chance</p><p>${pull.isNew ? "New card" : `Owned: ${pull.count >= 100 ? "99+" : pull.count}`}</p></article>`).join("");
+        const newCount = pulls.filter(pull => pull.isNew).length;
+        elements.status.textContent = "Three ORIGINAL Series cards opened";
+        elements.title.textContent = `${newCount} new card${newCount === 1 ? "" : "s"}`;
+        elements.detail.textContent = "The chance shown under each card is its rarity chance for each pack.";
+        elements.close.textContent = "Add all to Locker";
+      }
       elements.reveal.classList.remove("opening");
       elements.reveal.classList.add("revealed");
       elements.close.classList.remove("hidden");
@@ -3656,6 +3739,9 @@
   window.claimStudyShopQuest = claimStudyShopQuest;
   window.openOriginalCardPack = openOriginalCardPack;
   window.closeCardPackReveal = closeCardPackReveal;
+  window.openCardViewer = openCardViewer;
+  window.closeCardViewer = closeCardViewer;
+  document.getElementById("card-viewer")?.addEventListener("click", event => { if (event.target.id === "card-viewer") closeCardViewer(); });
 
   function setBannerResourceMode(mode) {
     window.SB_RESOURCE_OPEN_MODE = mode;
@@ -5480,6 +5566,7 @@
       "studyshop-shop-workspace",
       "studyshop-locker-workspace",
       "card-pack-reveal",
+      "card-viewer",
       "sb-account-page-modal",
       "embedded-material-section",
       "friends-workspace-section"
@@ -5899,6 +5986,11 @@
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
+      const cardViewer = document.getElementById("card-viewer");
+      if (cardViewer && !cardViewer.classList.contains("hidden")) {
+        closeCardViewer();
+        return;
+      }
       const cardReveal = document.getElementById("card-pack-reveal");
       if (cardReveal && !cardReveal.classList.contains("hidden")) {
         const closeButton = document.getElementById("card-pack-reveal-close");

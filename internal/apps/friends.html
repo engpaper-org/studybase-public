@@ -19,8 +19,16 @@
         linear-gradient(180deg, #eef2ff 0%, #f8fafc 42%, #fff 100%);
     }
     .app-panel { border: 1px solid rgba(203,213,225,.8); background: rgba(255,255,255,.88); box-shadow: 0 22px 60px rgba(30,41,59,.08); backdrop-filter: blur(18px); }
-    .friend-card { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+    .friend-card { width: 100%; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
     .friend-card:hover { transform: translateY(-2px); border-color: #a5b4fc; box-shadow: 0 16px 36px rgba(79,70,229,.1); }
+    .friend-card-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .5rem; margin-left: auto; }
+    .friend-card-actions button { white-space: nowrap; }
+    .transfer-countdown-track { height: .45rem; overflow: hidden; border-radius: 999px; background: #e2e8f0; }
+    .transfer-countdown-fill { height: 100%; width: 0; border-radius: inherit; background: linear-gradient(90deg,#0d9488,#06b6d4); transition: width .1s linear; }
+    @media (max-width: 640px) {
+      .friend-card-actions { width: 100%; margin-left: 0; }
+      .friend-card-actions button { flex: 1 1 9rem; }
+    }
     .metric { min-width: 78px; border: 1px solid #e2e8f0; background: #f8fafc; }
     .social-rail { background: radial-gradient(circle at 100% 0%, rgba(139,92,246,.35), transparent 36%), linear-gradient(180deg,#111827,#1e1b4b 64%,#312e81); }
     .social-nav-button { display:flex;align-items:center;justify-content:space-between;width:100%;padding:.9rem 1rem;border-radius:14px;color:#cbd5e1;font-size:.82rem;font-weight:900;text-align:left;transition:.18s ease; }
@@ -77,17 +85,17 @@
       <div class="app-panel rounded-[1.7rem] p-5 sm:p-7">
         <section class="social-view active" data-social-panel="friends">
           <div class="flex flex-wrap items-end justify-between gap-3 border-b border-slate-100 pb-5"><div><h2 class="text-3xl font-black tracking-tight">All friends</h2></div><p class="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-500"><span id="friend-limit-count">0</span> of 100</p></div>
-          <div id="friends-list" class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3"></div>
+          <div id="friends-list" class="mt-5 grid grid-cols-1 gap-3"></div>
         </section>
 
         <section id="incoming-panel" class="social-view" data-social-panel="incoming">
           <div class="flex flex-wrap items-end justify-between gap-3 border-b border-slate-100 pb-5"><div><h2 class="text-3xl font-black tracking-tight">Friend requests</h2></div><span id="incoming-pill" class="rounded-full bg-indigo-600 px-3 py-1 text-xs font-black text-white shadow-lg shadow-indigo-600/20">0 new</span></div>
-          <div id="incoming-list" class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3"></div>
+          <div id="incoming-list" class="mt-5 grid grid-cols-1 gap-3"></div>
         </section>
 
         <section class="social-view" data-social-panel="outgoing">
           <div class="flex flex-wrap items-end justify-between gap-3 border-b border-slate-100 pb-5"><div><h2 class="text-3xl font-black tracking-tight">Requests sent</h2></div><span id="outgoing-count" class="rounded-full bg-amber-50 px-3 py-1 text-xs font-black text-amber-700">0</span></div>
-          <div id="outgoing-list" class="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3"></div>
+          <div id="outgoing-list" class="mt-5 grid grid-cols-1 gap-3"></div>
         </section>
       </div>
     </section>
@@ -147,7 +155,11 @@
             <h3 class="mt-4 text-2xl font-black text-slate-950">This cannot be reversed</h3>
             <p id="studybucks-transfer-warning-copy" class="mt-3 text-sm font-semibold leading-6 text-slate-600"></p>
             <div class="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-left text-sm font-bold text-amber-900">Check the username and amount carefully. StudyBucks transfers are final and cannot be recovered if you choose the wrong friend.</div>
-            <button id="confirm-studybucks-transfer" type="button" disabled class="mt-5 w-full rounded-2xl bg-teal-700 px-5 py-4 text-sm font-black text-white disabled:cursor-not-allowed disabled:bg-slate-300"><span id="studybucks-transfer-countdown">Read this warning for 5 seconds</span></button>
+            <div class="mt-5 text-left" aria-live="polite">
+              <div class="mb-2 flex items-center justify-between gap-3 text-xs font-black text-slate-600"><span>Review time</span><span id="studybucks-transfer-timer">5 seconds remaining</span></div>
+              <div class="transfer-countdown-track" role="progressbar" aria-label="Transfer warning review time" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0"><div id="studybucks-transfer-progress" class="transfer-countdown-fill"></div></div>
+            </div>
+            <button id="confirm-studybucks-transfer" type="button" disabled class="mt-4 w-full rounded-2xl bg-teal-700 px-5 py-4 text-sm font-black text-white disabled:cursor-not-allowed disabled:bg-slate-300"><span id="studybucks-transfer-countdown">Continue in 5 seconds</span></button>
           </div>
         </div>
       </div>
@@ -339,6 +351,37 @@
       document.getElementById("studybucks-transfer-modal").classList.add("hidden");
     }
 
+    function startTransferWarningCountdown(durationMs = 5000) {
+      clearInterval(transferCountdownTimer);
+      const safeDuration = Math.max(250, Math.ceil(Number(durationMs) || 5000));
+      const startedAt = performance.now();
+      const confirmButton = document.getElementById("confirm-studybucks-transfer");
+      const buttonCopy = document.getElementById("studybucks-transfer-countdown");
+      const timerCopy = document.getElementById("studybucks-transfer-timer");
+      const progress = document.getElementById("studybucks-transfer-progress");
+      const progressbar = progress.parentElement;
+      confirmButton.disabled = true;
+
+      const update = () => {
+        const elapsed = Math.min(safeDuration, performance.now() - startedAt);
+        const remainingMs = Math.max(0, safeDuration - elapsed);
+        const seconds = Math.ceil(remainingMs / 1000);
+        const reviewedSeconds = Math.min(5, Math.floor((elapsed / safeDuration) * 5));
+        const percent = Math.min(100, (elapsed / safeDuration) * 100);
+        progress.style.width = `${percent}%`;
+        progressbar.setAttribute("aria-valuenow", String(reviewedSeconds));
+        timerCopy.textContent = seconds > 0 ? `${seconds} second${seconds === 1 ? "" : "s"} remaining` : "Review complete";
+        buttonCopy.textContent = seconds > 0 ? `Continue in ${seconds} second${seconds === 1 ? "" : "s"}` : `Send ${formatStudyBucks(transferState?.amount)} StudyBucks`;
+        confirmButton.disabled = remainingMs > 0;
+        if (!remainingMs) {
+          clearInterval(transferCountdownTimer);
+          transferCountdownTimer = null;
+        }
+      };
+      update();
+      transferCountdownTimer = setInterval(update, 100);
+    }
+
     async function prepareStudyBucksTransfer() {
       const amount = Number(document.getElementById("studybucks-transfer-amount").value);
       const maximum = Math.max(1, Number(state.economy?.transferMaximum || 1000));
@@ -355,16 +398,7 @@
         document.getElementById("studybucks-transfer-form-view").classList.add("hidden");
         document.getElementById("studybucks-transfer-warning-view").classList.remove("hidden");
         document.getElementById("studybucks-transfer-warning-copy").textContent = `You are about to send ${formatStudyBucks(result.amount)} StudyBucks to @${result.recipient.username}.`;
-        const confirmButton = document.getElementById("confirm-studybucks-transfer");
-        const countdown = document.getElementById("studybucks-transfer-countdown");
-        const update = () => {
-          const seconds = Math.max(0, Math.ceil((Date.parse(result.notBefore) - Date.now()) / 1000));
-          confirmButton.disabled = seconds > 0;
-          countdown.textContent = seconds > 0 ? `Read this warning for ${seconds} second${seconds === 1 ? "" : "s"}` : `Send ${formatStudyBucks(result.amount)} StudyBucks`;
-          if (!seconds) { clearInterval(transferCountdownTimer); transferCountdownTimer = null; }
-        };
-        update();
-        transferCountdownTimer = setInterval(update, 200);
+        startTransferWarningCountdown(result.warningDurationMs || 5000);
       } catch (_) {
         showTransferError("The transfer could not be prepared. Try again.");
       } finally {
@@ -379,8 +413,12 @@
       try {
         const result = await StudyBaseServices.request("/studyshop/transfer/confirm", { method: "POST", body: JSON.stringify({ transferId: transferState.transferId }) });
         if (!result.ok) {
-          button.disabled = false;
-          document.getElementById("studybucks-transfer-countdown").textContent = result.error || "Transfer failed";
+          if (result.code === "TRANSFER_WARNING_ACTIVE") {
+            startTransferWarningCountdown((Number(result.retryAfterMs) || 750) + 250);
+          } else {
+            button.disabled = false;
+            document.getElementById("studybucks-transfer-countdown").textContent = result.error || "Transfer failed";
+          }
           return;
         }
         state.economy.studyBucks = result.balance;
@@ -404,7 +442,7 @@
     }
 
     function compactUserCard(user, actions = "") {
-      return `<div class="friend-card flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3">${avatar(user)}<div class="min-w-0 flex-1"><p class="truncate font-black text-slate-900">${escapeHtml(user.name || "StudyBase user")}</p><p class="truncate text-xs font-bold text-slate-500">@${escapeHtml(user.username)}</p></div>${actions}</div>`;
+      return `<div class="friend-card flex flex-wrap items-center gap-3 rounded-2xl border border-slate-200 bg-white p-3 sm:p-4">${avatar(user)}<div class="min-w-0 flex-1"><p class="truncate font-black text-slate-900">${escapeHtml(user.name || "StudyBase user")}</p><p class="truncate text-xs font-bold text-slate-500">@${escapeHtml(user.username)}</p></div>${actions ? `<div class="friend-card-actions">${actions}</div>` : ""}</div>`;
     }
 
     function render() {
@@ -424,7 +462,7 @@
       document.getElementById("friend-request-setting-copy").textContent = requestSetting.checked ? "Other users can send requests." : "New requests are currently blocked.";
 
       document.getElementById("incoming-list").innerHTML = state.incoming.length
-        ? state.incoming.map(user => compactUserCard(user, `<div class="flex gap-1"><button data-action="accept" data-user-id="${user.id}" class="rounded-xl bg-indigo-600 px-3 py-2 text-xs font-black text-white">Accept</button><button data-action="decline" data-user-id="${user.id}" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-600">Decline</button></div>`)).join("")
+        ? state.incoming.map(user => compactUserCard(user, `<button data-action="accept" data-user-id="${user.id}" class="rounded-xl bg-indigo-600 px-3 py-2 text-xs font-black text-white">Accept</button><button data-action="decline" data-user-id="${user.id}" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-600">Decline</button>`)).join("")
         : emptyState("No incoming requests");
 
       document.getElementById("outgoing-list").innerHTML = state.outgoing.length
@@ -432,7 +470,7 @@
         : emptyState("No requests waiting");
 
       document.getElementById("friends-list").innerHTML = state.friends.length
-        ? state.friends.map(user => compactUserCard(user, `<div class="flex gap-1"><button data-action="send-studybucks" data-user-id="${user.id}" class="rounded-xl border border-teal-200 bg-teal-50 px-3 py-2 text-xs font-black text-teal-700">Send StudyBucks</button><button data-action="remove" data-user-id="${user.id}" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-500 hover:border-red-200 hover:text-red-700">Remove</button></div>`)).join("")
+        ? state.friends.map(user => compactUserCard(user, `<button data-action="send-studybucks" data-user-id="${user.id}" class="rounded-xl border border-teal-200 bg-teal-50 px-3 py-2 text-xs font-black text-teal-700">Send StudyBucks</button><button data-action="remove" data-user-id="${user.id}" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-500 hover:border-red-200 hover:text-red-700">Remove</button>`)).join("")
         : emptyState("Your accepted friends will appear here");
 
       renderSearchResult();
