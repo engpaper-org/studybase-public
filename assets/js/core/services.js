@@ -51,6 +51,9 @@
     if (result.user) rememberUser(result.user);
     return result;
   }
-  window.StudyBaseServices = { API_BASE, token, isLoggedIn, clearAccountSession, accountMe, logout, deleteAccount, updateProfile, request, rotateDeviceIfNeeded: async () => ({ ok: true }) };
+  async function exportAccountData() {
+    return request("/account/export", { method: "GET", cache: "no-store" });
+  }
+  window.StudyBaseServices = { API_BASE, token, isLoggedIn, clearAccountSession, accountMe, logout, deleteAccount, updateProfile, exportAccountData, request, rotateDeviceIfNeeded: async () => ({ ok: true }) };
   window.addEventListener("studybase:account-session-updated", () => { authenticationRequiredNotified = false; });
 })();

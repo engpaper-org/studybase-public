@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>StudyBase | Privacy Centre</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/assets/js/core/services.js"></script>
+  <script src="/assets/js/account/sidebar.js" defer></script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-sky-50 text-slate-900 antialiased">
+  <main class="mx-auto max-w-7xl px-5 py-9 sm:px-7">
+    <header class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-sky-700 via-blue-800 to-indigo-950 p-7 text-white shadow-xl sm:p-9">
+      <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10"></div>
+      <div class="relative flex flex-wrap items-end justify-between gap-6">
+        <div><p class="text-xs font-black uppercase tracking-[.22em] text-sky-200">My account</p><h1 class="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Privacy Centre</h1><p class="mt-3 max-w-3xl text-sm font-semibold leading-6 text-sky-100/80">See what this browser stores separately from information held by StudyBase account services. Exports use readable JSON so you can keep your own copy.</p></div>
+        <button id="export-all" disabled class="rounded-2xl bg-white px-5 py-3 text-sm font-black text-blue-900 shadow-lg disabled:cursor-not-allowed disabled:opacity-50">Export everything</button>
+      </div>
+    </header>
+
+    <section class="mt-6 grid gap-4 sm:grid-cols-3">
+      <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Local storage entries</p><p id="local-count" class="mt-2 text-3xl font-black">0</p></article>
+      <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Server sections</p><p id="server-count" class="mt-2 text-3xl font-black">-</p></article>
+      <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><p class="text-xs font-black uppercase tracking-wider text-slate-400">Export status</p><p id="export-status" class="mt-2 text-lg font-black text-amber-700">Loading securely</p></article>
+    </section>
+
+    <section class="mt-6 rounded-[2rem] border border-sky-200 bg-sky-50 p-6 text-sm leading-6 text-sky-950">
+      <strong class="block text-base">Two different places, shown separately</strong>
+      <p class="mt-2">Local data exists only in this browser and includes account cache, preferences, session markers, and local wellbeing interactions. Server data is fetched through your authenticated session. HttpOnly cookies, password verifiers, session tokens, service secrets, and other users' identifying information are never exposed here.</p>
+    </section>
+
+    <section class="mt-7">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div><p class="text-xs font-black uppercase tracking-[.18em] text-purple-600">This device</p><h2 class="mt-1 text-3xl font-black">Local browser data</h2><p class="mt-2 text-sm text-slate-500">Collected directly from this site's local and session storage. No server request is needed.</p></div>
+        <button id="export-local" class="rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-black shadow-sm hover:border-purple-300">Export local data</button>
+      </div>
+      <div id="local-data" class="mt-5 grid gap-4"></div>
+    </section>
+
+    <section class="mt-10 border-t border-slate-200 pt-9">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div><p class="text-xs font-black uppercase tracking-[.18em] text-sky-600">StudyBase services</p><h2 class="mt-1 text-3xl font-black">Server-stored account data</h2><p class="mt-2 text-sm text-slate-500">Returned only after the API verifies your current account session.</p></div>
+        <button id="export-server" disabled class="rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-black shadow-sm hover:border-sky-300 disabled:cursor-not-allowed disabled:opacity-50">Export server data</button>
+      </div>
+      <div id="server-loading" class="mt-5 flex min-h-48 items-center justify-center rounded-[2rem] border border-slate-200 bg-white p-8 shadow-sm"><div class="text-center"><div class="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-sky-600"></div><p class="mt-4 font-black">Fetching your server data</p></div></div>
+      <div id="server-error" class="mt-5 hidden rounded-2xl border border-red-200 bg-red-50 p-5 text-red-800"></div>
+      <div id="server-data" class="mt-5 hidden grid gap-4"></div>
+    </section>
+
+    <section class="mt-8 rounded-2xl border border-slate-200 bg-white p-6 text-sm leading-6 text-slate-600 shadow-sm">
+      <strong class="text-slate-900">Your formal access rights remain available.</strong>
+      This self-service view does not prevent you from requesting access, correction, or deletion through the routes described in the <a href="/legal/privacy.html" target="_blank" class="font-black text-purple-700 underline">Privacy Notice</a>.
+    </section>
+  </main>
+
+  <script>
+    const localContainer = document.getElementById("local-data");
+    const serverContainer = document.getElementById("server-data");
+    const localCount = document.getElementById("local-count");
+    const serverCount = document.getElementById("server-count");
+    const exportStatus = document.getElementById("export-status");
+    const exportLocalButton = document.getElementById("export-local");
+    const exportServerButton = document.getElementById("export-server");
+    const exportAllButton = document.getElementById("export-all");
+    let localExport = null;
+    let serverExport = null;
+
+    const labels = {
+      userId: "User ID", firstName: "First name", username: "Username", dateOfBirth: "Date of birth",
+      gender: "Gender", profilePicture: "Profile picture", profilePictureChangedAt: "Profile picture changed",
+      createdAt: "Created", updatedAt: "Last updated", deletedAt: "Deleted", nameChangedAt: "Name changed",
+      usernameChangedAt: "Username changed", contentWarnings: "Content warnings enabled", acceptFriendRequests: "Accept friend requests",
+      termsVersion: "Terms version", monitoringAcknowledgedAt: "Login monitoring acknowledged",
+      passwordSharingAcknowledgedAt: "Password-sharing warning acknowledged", inputMode: "Password input format",
+      algorithm: "Storage algorithm", iterations: "Hashing iterations", storedVerifierPresent: "Stored verifier present",
+      loginEvents: "Login event history", activeSessions: "Active sessions", currentSession: "Current session",
+      occurredAt: "Occurred", succeeded: "Succeeded", reason: "Reason", usernameFingerprint: "Username fingerprint",
+      ipFingerprint: "IP fingerprint", userAgentFingerprint: "Browser fingerprint", expiresAt: "Expires",
+      emailFingerprint: "Eligibility email fingerprint", linkedToCurrentAccount: "Linked to this account",
+      friendCount: "Friends", incomingRequestCount: "Incoming requests", outgoingRequestCount: "Outgoing requests",
+      incomingRequestTimes: "Incoming request times", outgoingRequestTimes: "Outgoing request times",
+      friendRequestsUsedToday: "Requests sent today", friendRequestsRemainingToday: "Requests remaining today",
+      friendRequestLimitResetsAt: "Request limit resets", schemaVersion: "Export format version", generatedAt: "Generated"
+    };
+
+    const localDescriptions = {
+      studybase_user: "Cached signed-in profile used to display account information without another request.",
+      studybase_session_active: "Non-secret marker indicating that this browser expects an active session.",
+      studybase_session_expiry: "Expected expiry time for the current session.",
+      get_help_data: "Local wellbeing message history, feedback, hidden topics, and display schedule. This is not uploaded.",
+      site_consent_granted: "Stores whether site consent has been recorded in this browser.",
+      consent_uid: "Local identifier associated with the browser consent record."
+    };
+
+    function friendlyLabel(key) {
+      if (labels[key]) return labels[key];
+      return String(key || "Value").replace(/[_-]+/g, " ").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/^./, value => value.toUpperCase());
+    }
+
+    function maybeDate(value) {
+      if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}(?:T|$)/.test(value)) return null;
+      const parsed = new Date(value.length === 10 ? `${value}T00:00:00` : value);
+      return Number.isNaN(parsed.getTime()) ? null : parsed.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: value.length === 10 ? undefined : "medium" });
+    }
+
+    function formatPrimitive(value) {
+      if (value === null || value === undefined || value === "") return "Not recorded";
+      if (typeof value === "boolean") return value ? "Yes" : "No";
+      const date = maybeDate(value);
+      if (date) return date;
+      return String(value);
+    }
+
+    function makeValueNode(value, depth = 0) {
+      if (value === null || typeof value !== "object") {
+        const text = document.createElement("span");
+        text.className = "break-words text-sm font-semibold text-slate-700";
+        text.textContent = formatPrimitive(value);
+        return text;
+      }
+
+      const entries = Array.isArray(value) ? value.map((item, index) => [String(index + 1), item]) : Object.entries(value);
+      const wrap = document.createElement("div");
+      wrap.className = depth ? "mt-2 space-y-2 border-l border-slate-200 pl-3" : "space-y-2";
+      if (!entries.length) {
+        const empty = document.createElement("p");
+        empty.className = "text-sm font-semibold text-slate-400";
+        empty.textContent = "None recorded";
+        wrap.appendChild(empty);
+        return wrap;
+      }
+
+      entries.forEach(([key, item]) => {
+        const row = document.createElement("div");
+        row.className = "rounded-xl bg-slate-50 p-3";
+        const title = document.createElement("p");
+        title.className = "text-[11px] font-black uppercase tracking-wider text-slate-400";
+        title.textContent = Array.isArray(value) ? `Entry ${key}` : friendlyLabel(key);
+        row.append(title, makeValueNode(item, depth + 1));
+        wrap.appendChild(row);
+      });
+      return wrap;
+    }
+
+    function parseStoredValue(value) {
+      try { return JSON.parse(value); } catch (_) { return value; }
+    }
+
+    function readStorage(storage) {
+      const output = {};
+      for (let index = 0; index < storage.length; index += 1) {
+        const key = storage.key(index);
+        if (key !== null) output[key] = parseStoredValue(storage.getItem(key));
+      }
+      return output;
+    }
+
+    function collectLocalData() {
+      return {
+        schemaVersion: 1,
+        generatedAt: new Date().toISOString(),
+        origin: location.origin,
+        localStorage: readStorage(localStorage),
+        sessionStorage: readStorage(sessionStorage)
+      };
+    }
+
+    function renderLocal() {
+      localExport = collectLocalData();
+      const groups = [["Persistent local storage", localExport.localStorage], ["Current-tab session storage", localExport.sessionStorage]];
+      const total = Object.keys(localExport.localStorage).length + Object.keys(localExport.sessionStorage).length;
+      localCount.textContent = String(total);
+      localContainer.replaceChildren();
+
+      groups.forEach(([title, data]) => {
+        const section = document.createElement("section");
+        section.className = "rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm sm:p-6";
+        const heading = document.createElement("h3");
+        heading.className = "text-xl font-black";
+        heading.textContent = title;
+        section.appendChild(heading);
+        const entries = Object.entries(data);
+        if (!entries.length) {
+          const empty = document.createElement("p");
+          empty.className = "mt-3 text-sm font-semibold text-slate-400";
+          empty.textContent = "No entries stored here.";
+          section.appendChild(empty);
+        }
+        entries.forEach(([key, value]) => {
+          const card = document.createElement("article");
+          card.className = "mt-4 rounded-2xl border border-slate-200 p-4";
+          const name = document.createElement("h4");
+          name.className = "break-all font-black text-slate-900";
+          name.textContent = friendlyLabel(key);
+          const technical = document.createElement("p");
+          technical.className = "mt-1 break-all font-mono text-[11px] text-slate-400";
+          technical.textContent = key;
+          const description = document.createElement("p");
+          description.className = "mt-2 text-xs leading-5 text-slate-500";
+          description.textContent = localDescriptions[key] || "Site data stored by this browser for functionality or preferences.";
+          card.append(name, technical, description, makeValueNode(value));
+          section.appendChild(card);
+        });
+        localContainer.appendChild(section);
+      });
+    }
+
+    function renderServer(data) {
+      serverContainer.replaceChildren();
+      const sections = Object.entries(data.server || {});
+      serverCount.textContent = String(sections.length);
+      sections.forEach(([key, value]) => {
+        const card = document.createElement("section");
+        card.className = "rounded-[2rem] border border-slate-200 bg-white p-5 shadow-sm sm:p-6";
+        const heading = document.createElement("h3");
+        heading.className = "text-xl font-black";
+        heading.textContent = friendlyLabel(key);
+        card.append(heading, makeValueNode(value));
+        serverContainer.appendChild(card);
+      });
+
+      const withheld = document.createElement("section");
+      withheld.className = "rounded-[2rem] border border-amber-200 bg-amber-50 p-5 text-amber-950 sm:p-6";
+      const title = document.createElement("h3");
+      title.className = "text-xl font-black";
+      title.textContent = "Security information not exposed";
+      const explanation = document.createElement("p");
+      explanation.className = "mt-2 text-sm leading-6";
+      explanation.textContent = "These values are excluded to protect your account and other people. Their existence and purpose are still disclosed.";
+      withheld.append(title, explanation, makeValueNode(data.withheld || []));
+      serverContainer.appendChild(withheld);
+    }
+
+    function downloadJson(filename, value) {
+      const blob = new Blob([JSON.stringify(value, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = filename;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+
+    function exportName(scope) {
+      return `studybase-${scope}-data-${new Date().toISOString().slice(0, 10)}.json`;
+    }
+
+    exportLocalButton.onclick = () => { renderLocal(); downloadJson(exportName("local"), localExport); };
+    exportServerButton.onclick = () => serverExport && downloadJson(exportName("server"), serverExport);
+    exportAllButton.onclick = () => {
+      renderLocal();
+      if (!serverExport) return;
+      downloadJson(exportName("complete"), { schemaVersion: 1, generatedAt: new Date().toISOString(), local: localExport, server: serverExport });
+    };
+
+    async function loadServerData() {
+      renderLocal();
+      const result = await StudyBaseServices.exportAccountData();
+      if (!result.ok || !result.export) throw new Error(result.error || "Server data could not be loaded");
+      serverExport = result.export;
+      renderServer(serverExport);
+      document.getElementById("server-loading").classList.add("hidden");
+      serverContainer.classList.remove("hidden");
+      exportServerButton.disabled = false;
+      exportAllButton.disabled = false;
+      exportStatus.textContent = "Ready to export";
+      exportStatus.className = "mt-2 text-lg font-black text-emerald-700";
+    }
+
+    loadServerData().catch(error => {
+      document.getElementById("server-loading").classList.add("hidden");
+      const errorBox = document.getElementById("server-error");
+      errorBox.textContent = error.message || "Server data could not be loaded.";
+      errorBox.classList.remove("hidden");
+      exportStatus.textContent = "Server export unavailable";
+      exportStatus.className = "mt-2 text-lg font-black text-red-700";
+    });
+  </script>
+</body>
+</html>

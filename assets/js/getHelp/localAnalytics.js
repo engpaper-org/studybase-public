@@ -76,11 +76,15 @@
 
     const helpOpens = interactions.filter(item => Number.isFinite(Number(item.helpOpenedAtMs))).length;
     const explanationOpens = interactions.filter(item => Number.isFinite(Number(item.explanationOpenedAtMs))).length;
+    const helpful = interactions.filter(item => item.feedback === "helpful").length;
+    const notForMe = interactions.filter(item => item.feedback === "not-for-me").length;
     const durations = interactions.map(interactionDuration).filter(Number.isFinite);
     const immediateContinues = durations.filter(duration => duration <= 10000).length;
 
     if (helpOpens >= 2 || helpOpens / interactions.length >= 0.34) return 3;
+    if (helpful >= 2 || helpful / interactions.length >= 0.4) return 4;
     if (explanationOpens >= 2 || explanationOpens / interactions.length >= 0.4) return 4;
+    if (notForMe >= 2 || notForMe / interactions.length >= 0.5) return 7;
     if (durations.length >= 3 && helpOpens === 0 && immediateContinues / durations.length >= 0.75) return 7;
     return DEFAULT_INTERVAL;
   }
@@ -94,6 +98,8 @@
       if (item.categoryId !== categoryId) return;
       if (Number.isFinite(Number(item.helpOpenedAtMs))) score += 3;
       if (Number.isFinite(Number(item.explanationOpenedAtMs))) score += 1;
+      if (item.feedback === "helpful") score += 3;
+      if (item.feedback === "not-for-me") score -= 2;
       const duration = interactionDuration(item);
       if (Number.isFinite(duration) && duration >= 16000) score += 0.75;
       if (Number.isFinite(duration) && duration <= 10000 && !Number.isFinite(Number(item.helpOpenedAtMs))) score -= 0.25;
@@ -125,17 +131,27 @@
     const experience = savedExperience && typeof savedExperience === "object" && !Array.isArray(savedExperience)
       ? savedExperience
       : {};
-    const validIds = new Set(safeEntries.map(entry => entry.id));
+    const allCategoryIds = [...new Set(safeEntries.map(entry => String(entry.categoryId || "")).filter(Boolean))];
+    const hiddenCategoryIds = Array.isArray(experience.hiddenCategoryIds)
+      ? [...new Set(experience.hiddenCategoryIds.filter(id => allCategoryIds.includes(id)))]
+      : [];
+    const eligibleEntries = safeEntries.filter(entry => !hiddenCategoryIds.includes(String(entry.categoryId || "")));
+    if (!eligibleEntries.length) {
+      data.experiences[safeExperienceId] = { ...experience, hiddenCategoryIds, allCategoryIds, disabled: true };
+      writeData(data);
+      return { entry: null, interactionId: null };
+    }
+    const validIds = new Set(eligibleEntries.map(entry => entry.id));
     let seenIds = Array.isArray(experience.seenIds)
       ? [...new Set(experience.seenIds.filter(id => validIds.has(id)))]
       : [];
-    let available = safeEntries.filter(entry => !seenIds.includes(entry.id));
+    let available = eligibleEntries.filter(entry => !seenIds.includes(entry.id));
 
     if (!available.length) {
       const lastShownId = validIds.has(experience.lastShownId) ? experience.lastShownId : null;
       seenIds = [];
-      available = safeEntries.filter(entry => entry.id !== lastShownId);
-      if (!available.length) available = safeEntries.slice();
+      available = eligibleEntries.filter(entry => entry.id !== lastShownId);
+      if (!available.length) available = eligibleEntries.slice();
     }
 
     const entry = weightedChoice(
@@ -155,9 +171,13 @@
     });
 
     data.experiences[safeExperienceId] = {
+      ...experience,
       seenIds: [...seenIds, entry.id],
       lastShownId: entry.id,
-      lastCategoryId: String(entry.categoryId || "")
+      lastCategoryId: String(entry.categoryId || ""),
+      hiddenCategoryIds,
+      allCategoryIds,
+      disabled: false
     };
     data.interactions[safeExperienceId] = interactions.slice(-MAX_INTERACTIONS);
     writeData(data);
@@ -188,11 +208,46 @@
     return writeData(data);
   }
 
+  function recordFeedback(experienceId, interactionId, feedback) {
+    const safeExperienceId = String(experienceId || "").trim().toLowerCase();
+    const safeInteractionId = String(interactionId || "").trim();
+    const safeFeedback = String(feedback || "").trim().toLowerCase();
+    if (!safeExperienceId || !safeInteractionId || !["helpful", "not-for-me", "hide-topic"].includes(safeFeedback)) {
+      return { ok: false };
+    }
+
+    const data = readData();
+    const interactions = validInteractions(data, safeExperienceId);
+    const item = interactions.find(entry => entry.id === safeInteractionId);
+    if (!item) return { ok: false };
+    const now = Date.now();
+    item.feedback = safeFeedback;
+    item.feedbackAt = new Date(now).toISOString();
+    item.feedbackAtMs = now;
+    data.interactions[safeExperienceId] = interactions;
+
+    const experience = data.experiences[safeExperienceId] && typeof data.experiences[safeExperienceId] === "object"
+      ? data.experiences[safeExperienceId]
+      : {};
+    let hiddenTopic = false;
+    if (safeFeedback === "hide-topic" && item.categoryId) {
+      experience.hiddenCategoryIds = [...new Set([...(Array.isArray(experience.hiddenCategoryIds) ? experience.hiddenCategoryIds : []), item.categoryId])];
+      const allCategoryIds = Array.isArray(experience.allCategoryIds) ? experience.allCategoryIds : [];
+      experience.disabled = Boolean(allCategoryIds.length && allCategoryIds.every(id => experience.hiddenCategoryIds.includes(id)));
+      hiddenTopic = true;
+    }
+    data.experiences[safeExperienceId] = experience;
+    return { ok: writeData(data), hiddenTopic, disabled: experience.disabled === true };
+  }
+
   function shouldShowForMaterial(profile) {
     const experienceId = experienceForGender(profile);
     if (!experienceId) return { show: false, experienceId: null, url: null, interval: DEFAULT_INTERVAL };
 
     const data = readData();
+    if (data.experiences[experienceId]?.disabled === true) {
+      return { show: false, experienceId, url: null, interval: DEFAULT_INTERVAL, disabled: true };
+    }
     const interval = learnedInterval(data, experienceId);
     const schedule = data.materialSchedule;
     let show = false;
@@ -233,6 +288,7 @@
     storageKey: STORAGE_KEY,
     selectMessage,
     recordInteraction,
+    recordFeedback,
     shouldShowForMaterial
   });
 })();

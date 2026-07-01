@@ -127,6 +127,13 @@
       gap: 18px;
     }
 
+    .feedback-panel { margin: 0 auto 16px; color: rgba(255, 241, 242, .72); font-size: .72rem; font-weight: 800; }
+    .feedback-options { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; }
+    .feedback-button { border: 1px solid rgba(255, 255, 255, .15); border-radius: 999px; padding: 7px 12px; background: rgba(255, 255, 255, .045); color: rgba(255, 241, 242, .82); transition: .2s ease; }
+    .feedback-button:hover, .feedback-button.is-selected { border-color: var(--accent); color: #fff; box-shadow: 0 0 18px var(--accent-glow); }
+    .feedback-button:disabled { cursor: default; opacity: .6; }
+    .feedback-status { min-height: 1rem; margin-top: 7px; color: #fecdd3; }
+
     .elegant-button {
       position: relative;
       display: inline-flex;
@@ -216,6 +223,7 @@
       .stage { padding-top: 12px; padding-bottom: 12px; }
       .headline { font-size: clamp(2.2rem, 6.4vw, 5.2rem); }
       .description { margin-top: 16px; margin-bottom: 20px; line-height: 1.55; }
+      .feedback-panel { margin-bottom: 10px; }
       .support-note { margin-top: 12px; }
       .elegant-button { min-height: 46px; padding: 11px 20px; }
     }
@@ -234,6 +242,15 @@
     <p id="description" class="description"></p>
 
     <div class="final-reveal">
+      <div class="feedback-panel">
+        <p>Was this message useful?</p>
+        <div class="feedback-options" role="group" aria-label="Message feedback">
+          <button class="feedback-button" type="button" data-feedback="helpful">Helpful</button>
+          <button class="feedback-button" type="button" data-feedback="not-for-me">Not for me</button>
+          <button class="feedback-button" type="button" data-feedback="hide-topic">Hide this topic</button>
+        </div>
+        <p id="feedback-status" class="feedback-status" aria-live="polite"></p>
+      </div>
       <div class="actions">
         <a id="help-link" class="elegant-button help-button" href="https://www.childline.org.uk/get-support/1-2-1-counsellor-chat/" target="_blank" rel="noopener noreferrer">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7-4.35-9.33-8.36C.5 8.91 2.4 4.5 6.5 4.5A5.4 5.4 0 0 1 12 8a5.4 5.4 0 0 1 5.5-3.5c4.1 0 6 4.41 3.83 8.14C19 16.65 12 21 12 21Z"/></svg>
@@ -465,6 +482,7 @@
       const entry = selection.entry || entries[Math.floor(Math.random() * entries.length)];
       const interactionId = selection.interactionId || null;
       const recordInteraction = action => window.StudyBaseGetHelp?.recordInteraction(experienceId, interactionId, action);
+      const recordFeedback = feedback => window.StudyBaseGetHelp?.recordFeedback(experienceId, interactionId, feedback);
       const root = document.documentElement;
       root.style.setProperty("--accent", entry.accent);
       root.style.setProperty("--accent-dark", entry.accentDark);
@@ -483,6 +501,8 @@
       const continueIcon = document.getElementById("continue-icon");
       const stage = document.getElementById("stage");
       const finalReveal = document.querySelector(".final-reveal");
+      const feedbackButtons = [...document.querySelectorAll("[data-feedback]")];
+      const feedbackStatus = document.getElementById("feedback-status");
       const whyButton = document.getElementById("why-button");
       const whyModal = document.getElementById("why-modal");
       const whyClose = document.getElementById("why-close");
@@ -505,6 +525,24 @@
       });
       document.addEventListener("keydown", event => {
         if (event.key === "Escape" && whyModal.classList.contains("open")) closeWhyModal();
+      });
+
+      feedbackButtons.forEach(button => {
+        button.addEventListener("click", () => {
+          const feedback = button.dataset.feedback;
+          const result = recordFeedback(feedback);
+          if (!result?.ok) {
+            feedbackStatus.textContent = "Feedback could not be saved on this device.";
+            return;
+          }
+          feedbackButtons.forEach(item => item.classList.toggle("is-selected", item === button));
+          if (feedback === "helpful") feedbackStatus.textContent = "Thanks. Your browser will use that feedback locally.";
+          if (feedback === "not-for-me") feedbackStatus.textContent = "Thanks. Similar messages will be shown less often.";
+          if (feedback === "hide-topic") {
+            feedbackStatus.textContent = result.disabled ? "All wellbeing topics are now hidden on this device." : "This topic will not be shown again on this device.";
+            feedbackButtons.forEach(item => { item.disabled = true; });
+          }
+        });
       });
 
       const startCountdown = () => {

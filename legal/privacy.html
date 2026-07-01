@@ -42,8 +42,8 @@
           </div>
           <div class="legal-version">
             <span>Version</span>
-            <strong>PRIVACY-2026.06.28</strong>
-            <p class="legal-copy" style="margin-top:10px;font-size:13px;line-height:1.55;">Last updated: 28 June 2026 - Friends and Social information added</p>
+            <strong>PRIVACY-2026.07.01</strong>
+            <p class="legal-copy" style="margin-top:10px;font-size:13px;line-height:1.55;">Last updated: 1 July 2026 - local wellbeing personalisation and signup information updated</p>
           </div>
         </div>
       </div>
@@ -93,13 +93,13 @@
           <h2>2. Browser storage</h2>
           <p>
             StudyBase uses local storage and session storage so pages can remember consent, account state, session expiry, device codes,
-            display names, server-synchronised settings, favourites, safety toggles, active time,
+            display names, server-synchronised settings, safety toggles, active time,
             break reminders, resource state, and similar site behaviour.
           </p>
           <ul>
             <li>Consent records may include <strong>site_consent_granted</strong> and <strong>consent_uid</strong>.</li>
             <li>Account storage contains a non-secret session marker, session expiry, and a cached copy of the signed-in user's account profile, including username, first name, date of birth, gender, status, and settings. Passwords and eligibility email addresses are not stored in browser storage.</li>
-            <li>Usage records may include local recent items, favourites, search preferences, wellbeing timing, and tool choices.</li>
+            <li>Usage records may include local recent items, search preferences, tool choices, and the <strong>get_help_data</strong> record used to avoid repeating wellbeing messages and to adjust their local frequency. That record may include whether a message was marked helpful or not useful, topics hidden by the user, support-link opens, explanation opens, and time before continuing. Wellbeing interaction records remain in the browser, are not uploaded to StudyBase, and are cleared when the account is signed out.</li>
           </ul>
           <p>
             Clearing browser storage may remove local preferences and may sign you out, but it does not automatically delete server-side
@@ -114,6 +114,11 @@
             login timestamps, IP address, user-agent information, and resource access state. A readable eligibility email is used transiently
             for the check but is not retained: the Worker stores a keyed cryptographic hash so it can detect previous use. Passwords are
             salted and hashed on the server; readable passwords are not stored.
+          </p>
+          <p>
+            New account signup currently accepts a male or female gender selection. StudyBase keeps that selection private from public
+            profiles and uses the cached value on the device to choose the matching local wellbeing check-in experience. Interaction with
+            those check-ins is processed in browser storage and is not sent to StudyBase servers.
           </p>
           <p>
             If you submit support forms, reports, contact messages, APG requests, or similar inputs, StudyBase may process the information
