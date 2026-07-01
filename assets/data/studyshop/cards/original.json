@@ -1,0 +1,54 @@
+{
+  "id": "original",
+  "title": "ORIGINAL Series",
+  "collection": "ORIGINAL",
+  "cardAspectRatio": "2:3",
+  "packPrice": 250,
+  "packImage": "/assets/images/studybucks/cards/packs/original.jpg",
+  "rarities": [
+    { "id": "common", "title": "Common", "chance": 52, "color": "#94a3b8" },
+    { "id": "rare", "title": "Rare", "chance": 27, "color": "#38bdf8" },
+    { "id": "epic", "title": "Epic", "chance": 13, "color": "#a855f7" },
+    { "id": "legendary", "title": "Legendary", "chance": 5.5, "color": "#f59e0b" },
+    { "id": "mythic", "title": "Mythic", "chance": 2, "color": "#f43f5e" },
+    { "id": "glitched", "title": "Glitched", "chance": 0.5, "color": "#22d3ee" }
+  ],
+  "cards": [
+    { "id": "original-001", "number": 1, "name": "The Original", "rarity": "common", "image": "/assets/images/studybucks/cards/original/common/original-001.jpg", "art": "the base mascot standing confidently in his familiar black headband" },
+    { "id": "original-002", "number": 2, "name": "Study Buddy", "rarity": "common", "image": "/assets/images/studybucks/cards/original/common/original-002.jpg", "art": "the mascot carrying a stack of colourful study books" },
+    { "id": "original-003", "number": 3, "name": "Early Bird", "rarity": "common", "image": "/assets/images/studybucks/cards/original/common/original-003.jpg", "art": "the mascot ready for school at sunrise with a small backpack" },
+    { "id": "original-004", "number": 4, "name": "Night Owl", "rarity": "common", "image": "/assets/images/studybucks/cards/original/common/original-004.jpg", "art": "the mascot studying beside a warm desk lamp under a starry window" },
+    { "id": "original-005", "number": 5, "name": "Note Taker", "rarity": "common", "image": "/assets/images/studybucks/cards/original/common/original-005.jpg", "art": "the mascot holding a notebook and pencil with neat floating note pages" },
+    { "id": "original-006", "number": 6, "name": "Snack Break", "rarity": "common", "image": "/assets/images/studybucks/cards/original/common/original-006.jpg", "art": "the mascot enjoying a juice carton and simple snack during a break" },
+    { "id": "original-007", "number": 7, "name": "Rainy Day", "rarity": "common", "image": "/assets/images/studybucks/cards/original/common/original-007.jpg", "art": "the mascot in a bright raincoat holding an umbrella in gentle rain" },
+    { "id": "original-008", "number": 8, "name": "Sports Day", "rarity": "common", "image": "/assets/images/studybucks/cards/original/common/original-008.jpg", "art": "the mascot wearing a school sports bib and holding a small medal" },
+    { "id": "original-009", "number": 9, "name": "Music Break", "rarity": "common", "image": "/assets/images/studybucks/cards/original/common/original-009.jpg", "art": "the mascot wearing oversized headphones with soft music waves" },
+    { "id": "original-010", "number": 10, "name": "Cosy Hoodie", "rarity": "common", "image": "/assets/images/studybucks/cards/original/common/original-010.jpg", "art": "the mascot relaxing in a comfortable oversized hoodie" },
+
+    { "id": "original-011", "number": 11, "name": "Lab Partner", "rarity": "rare", "image": "/assets/images/studybucks/cards/original/rare/original-011.jpg", "art": "the mascot as a cheerful scientist with goggles and a glowing flask" },
+    { "id": "original-012", "number": 12, "name": "Arcade Ace", "rarity": "rare", "image": "/assets/images/studybucks/cards/original/rare/original-012.jpg", "art": "the mascot holding a game controller in a neon arcade" },
+    { "id": "original-013", "number": 13, "name": "Space Cadet", "rarity": "rare", "image": "/assets/images/studybucks/cards/original/rare/original-013.jpg", "art": "the mascot in a rounded astronaut suit floating above a tiny planet" },
+    { "id": "original-014", "number": 14, "name": "Deep Sea", "rarity": "rare", "image": "/assets/images/studybucks/cards/original/rare/original-014.jpg", "art": "the mascot in a compact diving suit surrounded by blue bubbles and coral" },
+    { "id": "original-015", "number": 15, "name": "Code Crafter", "rarity": "rare", "image": "/assets/images/studybucks/cards/original/rare/original-015.jpg", "art": "the mascot working at a holographic coding console" },
+    { "id": "original-016", "number": 16, "name": "Goal Keeper", "rarity": "rare", "image": "/assets/images/studybucks/cards/original/rare/original-016.jpg", "art": "the mascot in goalkeeper gloves making a dramatic save" },
+    { "id": "original-017", "number": 17, "name": "Book Wizard", "rarity": "rare", "image": "/assets/images/studybucks/cards/original/rare/original-017.jpg", "art": "the mascot in a small wizard robe making books float with blue magic" },
+    { "id": "original-018", "number": 18, "name": "Neon Skater", "rarity": "rare", "image": "/assets/images/studybucks/cards/original/rare/original-018.jpg", "art": "the mascot riding a glowing skateboard through a neon tunnel" },
+
+    { "id": "original-019", "number": 19, "name": "Cyber Scout", "rarity": "epic", "image": "/assets/images/studybucks/cards/original/epic/original-019.jpg", "art": "the mascot in sleek cyber armour scanning a violet digital horizon" },
+    { "id": "original-020", "number": 20, "name": "Storm Rider", "rarity": "epic", "image": "/assets/images/studybucks/cards/original/epic/original-020.jpg", "art": "the mascot surfing a curling cloud through a purple lightning storm" },
+    { "id": "original-021", "number": 21, "name": "Crystal Guard", "rarity": "epic", "image": "/assets/images/studybucks/cards/original/epic/original-021.jpg", "art": "the mascot wearing faceted crystal armour in a glowing cavern" },
+    { "id": "original-022", "number": 22, "name": "Dragon Tamer", "rarity": "epic", "image": "/assets/images/studybucks/cards/original/epic/original-022.jpg", "art": "the mascot in fantasy explorer gear beside a tiny friendly blue dragon" },
+    { "id": "original-023", "number": 23, "name": "Time Traveller", "rarity": "epic", "image": "/assets/images/studybucks/cards/original/epic/original-023.jpg", "art": "the mascot stepping through a luminous clockwork time portal" },
+    { "id": "original-024", "number": 24, "name": "Shadow Ninja", "rarity": "epic", "image": "/assets/images/studybucks/cards/original/epic/original-024.jpg", "art": "the mascot as a playful masked ninja surrounded by violet smoke" },
+
+    { "id": "original-025", "number": 25, "name": "Solar Champion", "rarity": "legendary", "image": "/assets/images/studybucks/cards/original/legendary/original-025.jpg", "art": "the mascot in radiant sun-forged armour holding a golden shield" },
+    { "id": "original-026", "number": 26, "name": "Lunar Knight", "rarity": "legendary", "image": "/assets/images/studybucks/cards/original/legendary/original-026.jpg", "art": "the mascot as a moonlit knight with silver-blue armour and crescent blade" },
+    { "id": "original-027", "number": 27, "name": "Crowned Hero", "rarity": "legendary", "image": "/assets/images/studybucks/cards/original/legendary/original-027.jpg", "art": "the mascot wearing a small royal crown and ceremonial blue cape" },
+    { "id": "original-028", "number": 28, "name": "Galaxy Captain", "rarity": "legendary", "image": "/assets/images/studybucks/cards/original/legendary/original-028.jpg", "art": "the mascot commanding a starship bridge with a galaxy behind him" },
+
+    { "id": "original-029", "number": 29, "name": "Creation Spark", "rarity": "mythic", "image": "/assets/images/studybucks/cards/original/mythic/original-029.jpg", "art": "the mascot forming a miniature universe between his hands in a cosmic void" },
+    { "id": "original-030", "number": 30, "name": "Eternal Guard", "rarity": "mythic", "image": "/assets/images/studybucks/cards/original/mythic/original-030.jpg", "art": "the mascot as an ancient celestial guardian with blazing rose-gold energy wings" },
+
+    { "id": "original-031", "number": 31, "name": "Glitched Original", "rarity": "glitched", "image": "/assets/images/studybucks/cards/original/glitched/original-031.jpg", "art": "the mascot fragmenting into cyan and magenta digital glitches inside a broken simulation" }
+  ]
+}

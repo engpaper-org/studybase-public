@@ -1219,6 +1219,68 @@
         .studyshop-empty-state h3 { margin: 1rem 0 0; font-size: 1.25rem; font-weight: 950; }
         .studyshop-empty-state p { max-width: 32rem; margin: 0.45rem auto 0; color: #64748b; font-size: 0.8rem; font-weight: 700; line-height: 1.6; }
 
+        .card-pack-shop-card { display: grid; grid-template-columns: minmax(15rem, 0.75fr) minmax(18rem, 1.25fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; overflow: hidden; padding: clamp(1.25rem, 3vw, 2.25rem); border: 1px solid rgba(56,189,248,0.22); border-radius: 30px; background: radial-gradient(circle at 15% 30%, rgba(56,189,248,0.16), transparent 30%), radial-gradient(circle at 85% 20%, rgba(168,85,247,0.16), transparent 30%), linear-gradient(145deg,#07101f,#111827); color: #fff; box-shadow: 0 24px 60px rgba(15,23,42,0.18); }
+        .card-pack-shop-art { display: grid; place-items: center; min-height: 27rem; }
+        .card-pack-shop-art img { width: min(100%, 19rem); max-height: 30rem; object-fit: contain; filter: drop-shadow(0 25px 34px rgba(0,0,0,0.48)); transition: transform 0.25s ease; }
+        .card-pack-shop-card:hover .card-pack-shop-art img { transform: translateY(-5px) rotate(-1deg); }
+        .card-pack-kicker { color: #67e8f9; font-size: 0.65rem; font-weight: 950; letter-spacing: 0.16em; text-transform: uppercase; }
+        .card-pack-shop-card h3 { margin: 0.55rem 0 0; font-size: clamp(1.8rem, 4vw, 3.2rem); font-weight: 950; letter-spacing: -0.045em; }
+        .card-pack-shop-card p { margin: 0.7rem 0 0; color: #cbd5e1; font-size: 0.82rem; font-weight: 700; line-height: 1.65; }
+        .card-pack-odds { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.15rem; }
+        .card-pack-odds span { padding: 0.42rem 0.65rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; color: var(--rarity-color); background: rgba(255,255,255,0.06); font-size: 0.63rem; font-weight: 950; }
+        .card-pack-buy { display: flex; width: 100%; align-items: center; justify-content: center; gap: 0.65rem; margin-top: 1.25rem; padding: 0.95rem 1rem; border-radius: 16px; color: #052e2b; background: linear-gradient(135deg,#5eead4,#67e8f9); font-size: 0.82rem; font-weight: 950; box-shadow: 0 14px 30px rgba(34,211,238,0.18); }
+        .card-pack-buy:disabled { cursor: not-allowed; color: #94a3b8; background: #334155; box-shadow: none; }
+        .card-pack-buy img { width: 1.7rem; height: 1.7rem; object-fit: contain; }
+        .future-card-packs { margin-top: 1rem; padding: 1.2rem; border: 1px dashed #cbd5e1; border-radius: 22px; color: #64748b; background: #fff; text-align: center; font-size: 0.8rem; font-weight: 850; }
+
+        .card-locker-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; padding: 1rem 1.1rem; border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; }
+        .card-locker-toolbar h3 { margin: 0; font-size: 1.15rem; font-weight: 950; }
+        .card-locker-toolbar p { margin: 0.2rem 0 0; color: #64748b; font-size: 0.72rem; font-weight: 700; }
+        .card-locker-summary { display: flex; gap: 0.55rem; }
+        .card-locker-summary span { min-width: 5.6rem; padding: 0.58rem 0.7rem; border-radius: 14px; color: #334155; background: #f1f5f9; text-align: center; font-size: 0.68rem; font-weight: 900; }
+        .card-locker-summary strong { display: block; color: #0f172a; font-size: 1rem; font-weight: 950; }
+        .card-rarity-group + .card-rarity-group { margin-top: 1.8rem; }
+        .card-rarity-heading { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.8rem; }
+        .card-rarity-heading::before { width: 0.7rem; height: 0.7rem; border-radius: 999px; background: var(--rarity-color); box-shadow: 0 0 14px var(--rarity-color); content: ""; }
+        .card-rarity-heading h4 { margin: 0; color: #0f172a; font-size: 0.86rem; font-weight: 950; text-transform: uppercase; letter-spacing: 0.1em; }
+        .card-rarity-heading span { color: #94a3b8; font-size: 0.68rem; font-weight: 850; }
+        .card-collection-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(9rem,1fr)); gap: 0.9rem; }
+        .collection-card { position: relative; aspect-ratio: 2 / 3; overflow: hidden; border: 2px solid color-mix(in srgb, var(--rarity-color) 70%, #fff); border-radius: 15px; background: #050912; box-shadow: 0 12px 28px rgba(15,23,42,0.12); }
+        .collection-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.2s ease; }
+        .collection-card.owned:hover img { transform: scale(1.035); }
+        .collection-card.locked { display: grid; place-items: center; border-color: #273244; background: radial-gradient(circle at 50% 35%, #1e293b, #030712 65%); }
+        .collection-card.locked::after { position: absolute; inset: 0; background: repeating-linear-gradient(135deg,rgba(255,255,255,0.02) 0 8px,transparent 8px 16px); content: ""; }
+        .collection-card-lock { position: relative; z-index: 1; display: grid; width: 3rem; height: 3rem; place-items: center; border: 1px solid #334155; border-radius: 16px; color: #64748b; background: #0f172a; }
+        .collection-card-lock svg { width: 1.2rem; height: 1.2rem; }
+        .collection-card-number { position: absolute; z-index: 2; right: 0.5rem; bottom: 0.5rem; color: #94a3b8; font-size: 0.58rem; font-weight: 950; }
+        .collection-card-count { position: absolute; z-index: 3; top: 0.45rem; right: 0.45rem; display: grid; min-width: 2rem; height: 2rem; place-items: center; padding: 0 0.48rem; border: 2px solid #fff; border-radius: 999px; color: #fff; background: #0f172a; font-size: 0.7rem; font-weight: 950; box-shadow: 0 7px 18px rgba(0,0,0,0.35); }
+
+        .card-pack-reveal { position: fixed; inset: 0; z-index: 2147483647; display: grid; place-items: center; overflow: hidden; padding: 1rem; color: #fff; background: radial-gradient(circle at 50% 45%,rgba(124,58,237,0.38),transparent 30%),rgba(2,6,23,0.97); }
+        .card-pack-reveal.hidden { display: none; }
+        .card-pack-reveal::before { position: absolute; inset: -30%; background: conic-gradient(from 0deg,transparent,rgba(56,189,248,0.1),transparent,rgba(244,63,94,0.1),transparent); animation: cardRevealSpin 9s linear infinite; content: ""; }
+        .card-pack-reveal-stage { position: relative; z-index: 1; display: grid; width: min(92vw,34rem); justify-items: center; text-align: center; }
+        .card-pack-reveal-pack { width: min(68vw,19rem); max-height: 70vh; object-fit: contain; filter: drop-shadow(0 30px 40px rgba(0,0,0,0.55)); animation: packHover 1.7s ease-in-out infinite; }
+        .card-pack-reveal.opening .card-pack-reveal-pack { animation: packOpen 0.9s ease-in-out both; }
+        .card-pack-reveal-card { display: none; width: min(68vw,20rem); max-height: 72vh; border-radius: 18px; object-fit: contain; box-shadow: 0 0 70px color-mix(in srgb,var(--reveal-color,#38bdf8) 65%,transparent); }
+        .card-pack-reveal.revealed .card-pack-reveal-pack { display: none; }
+        .card-pack-reveal.revealed .card-pack-reveal-card { display: block; animation: cardRevealIn 0.8s cubic-bezier(.18,.82,.22,1.18) both; }
+        .card-pack-reveal-copy { min-height: 5rem; margin-top: 1rem; }
+        .card-pack-reveal-copy h3 { margin: 0; font-size: 1.7rem; font-weight: 950; }
+        .card-pack-reveal-copy p { margin: 0.35rem 0 0; color: #cbd5e1; font-size: 0.78rem; font-weight: 800; }
+        .card-pack-reveal-close { margin-top: 1rem; padding: 0.85rem 2rem; border-radius: 14px; color: #0f172a; background: #fff; font-size: 0.78rem; font-weight: 950; }
+        .card-pack-reveal-close.hidden { display: none; }
+        @keyframes packHover { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-12px) rotate(1deg); } }
+        @keyframes packOpen { 0% { transform: scale(1); filter: brightness(1); } 25% { transform: translateX(-12px) rotate(-4deg) scale(1.04); } 50% { transform: translateX(12px) rotate(4deg) scale(1.08); } 75% { transform: scale(1.14); filter: brightness(2); } 100% { transform: scale(0.2); opacity: 0; filter: brightness(4); } }
+        @keyframes cardRevealIn { from { opacity: 0; transform: perspective(900px) rotateY(90deg) scale(0.55); } to { opacity: 1; transform: perspective(900px) rotateY(0) scale(1); } }
+        @keyframes cardRevealSpin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 760px) {
+            .card-pack-shop-card { grid-template-columns: 1fr; }
+            .card-pack-shop-art { min-height: 19rem; }
+            .card-pack-shop-art img { max-height: 22rem; }
+            .card-collection-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 0.55rem; }
+        }
+
         .private-friends-banner {
             display: grid;
             grid-template-columns: minmax(0, 1.3fr) auto auto;
@@ -3122,7 +3184,7 @@
         <div class="studyshop-workspace-main">
             <header class="studyshop-workspace-header"><div><h2 id="studyshop-shop-title">Shop</h2><p>Spend StudyBucks on rewards when items become available.</p></div><button type="button" class="studyshop-workspace-close" onclick="closeStudyShop('shop')" aria-label="Close shop"><i data-lucide="x"></i></button></header>
             <div class="studyshop-workspace-content">
-                <section class="studyshop-section-panel" data-studyshop-panel="featured"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>The shelves are being prepared</h3><p>No items are available to buy yet. Keep completing quests and your balance will be waiting when the first rewards arrive.</p></div></div></section>
+                <section class="studyshop-section-panel" data-studyshop-panel="featured"><div id="studyshop-card-pack-list"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>Loading card packs</h3></div></div></div><div class="future-card-packs"><strong>More card packs are coming in the future.</strong><br>New series will appear here without replacing the ORIGINAL collection.</div></section>
                 <section class="studyshop-section-panel hidden" data-studyshop-panel="boosts"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>No boosts available</h3><p>Temporary account and activity boosts will appear here later.</p></div></div></section>
                 <section class="studyshop-section-panel hidden" data-studyshop-panel="collectibles"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>No collectibles available</h3><p>Collectible StudyBase rewards will appear here later.</p></div></div></section>
             </div>
@@ -3133,19 +3195,29 @@
         <aside class="studyshop-workspace-sidebar">
             <div class="studyshop-workspace-brand"><img src="/assets/images/studybucks/currency/dollar.png" alt=""><div><strong>Locker</strong><span>Your collection</span></div></div>
             <nav class="studyshop-workspace-nav" aria-label="Locker sections">
-                <button type="button" class="active" data-studyshop-tab="all" onclick="selectStudyShopSection('locker','all')"><i data-lucide="layout-grid"></i><span>All items</span></button>
-                <button type="button" data-studyshop-tab="active" onclick="selectStudyShopSection('locker','active')"><i data-lucide="badge-check"></i><span>Equipped</span></button>
-                <button type="button" data-studyshop-tab="history" onclick="selectStudyShopSection('locker','history')"><i data-lucide="history"></i><span>History</span></button>
+                <button type="button" class="active" data-studyshop-tab="original" onclick="selectStudyShopSection('locker','original')"><i data-lucide="layers-3"></i><span>ORIGINAL Series</span></button>
+                <button type="button" disabled><i data-lucide="lock-keyhole"></i><span>More series soon</span></button>
             </nav>
             <div class="studyshop-workspace-balance"><img src="/assets/images/studybucks/currency/dollar.png" alt=""><div><strong data-studyshop-balance>0</strong><span>StudyBucks</span></div></div>
         </aside>
         <div class="studyshop-workspace-main">
             <header class="studyshop-workspace-header"><div><h2 id="studyshop-locker-title">Locker</h2><p>View and manage rewards attached to your account.</p></div><button type="button" class="studyshop-workspace-close" onclick="closeStudyShop('locker')" aria-label="Close locker"><i data-lucide="x"></i></button></header>
             <div class="studyshop-workspace-content">
-                <section class="studyshop-section-panel" data-studyshop-panel="all"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>Your locker is empty</h3><p>Items you obtain from StudyShop will appear here.</p></div></div></section>
-                <section class="studyshop-section-panel hidden" data-studyshop-panel="active"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>Nothing equipped</h3><p>Equipped rewards and account customisations will appear here.</p></div></div></section>
-                <section class="studyshop-section-panel hidden" data-studyshop-panel="history"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>No locker history</h3><p>Your reward activity will appear here after shop items become available.</p></div></div></section>
+                <section class="studyshop-section-panel" data-studyshop-panel="original"><div id="studyshop-card-collection"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>Loading your card collection</h3></div></div></div></section>
             </div>
+        </div>
+    </section>
+
+    <section id="card-pack-reveal" class="card-pack-reveal hidden" role="dialog" aria-modal="true" aria-labelledby="card-pack-reveal-title">
+        <div class="card-pack-reveal-stage">
+            <img id="card-pack-reveal-pack" class="card-pack-reveal-pack" src="/assets/images/studybucks/cards/packs/original.jpg" alt="ORIGINAL Series card pack">
+            <img id="card-pack-reveal-card" class="card-pack-reveal-card" src="" alt="">
+            <div class="card-pack-reveal-copy">
+                <p id="card-pack-reveal-status" class="card-pack-kicker">Opening ORIGINAL Series</p>
+                <h3 id="card-pack-reveal-title">Opening pack...</h3>
+                <p id="card-pack-reveal-detail">Your card is being selected securely.</p>
+            </div>
+            <button id="card-pack-reveal-close" type="button" class="card-pack-reveal-close hidden" onclick="closeCardPackReveal()">Add to Locker</button>
         </div>
     </section>
 
@@ -3209,6 +3281,9 @@
   let studyShopState = null;
   let studyShopCountdownTimer = null;
   let studyShopClaimPending = false;
+  let originalCardManifest = null;
+  let originalCardManifestPromise = null;
+  let cardPackOpening = false;
   let embeddedMaterialState = {
     open: false,
     src: "",
@@ -3251,6 +3326,71 @@
       return `${thousands}k`;
     }
     return amount.toLocaleString("en-GB");
+  }
+
+  function loadOriginalCardManifest() {
+    if (originalCardManifest) return Promise.resolve(originalCardManifest);
+    if (!originalCardManifestPromise) {
+      originalCardManifestPromise = fetch("/assets/data/studyshop/cards/original.json", { cache: "force-cache" })
+        .then(response => {
+          if (!response.ok) throw new Error("Card catalogue unavailable");
+          return response.json();
+        })
+        .then(data => {
+          if (!data || data.id !== "original" || !Array.isArray(data.cards) || data.cards.length !== 31) throw new Error("Invalid card catalogue");
+          originalCardManifest = data;
+          return data;
+        })
+        .catch(error => {
+          originalCardManifestPromise = null;
+          throw error;
+        });
+    }
+    return originalCardManifestPromise;
+  }
+
+  function cardRarityColor(value) {
+    const color = String(value || "");
+    return /^#[0-9a-f]{6}$/i.test(color) ? color : "#94a3b8";
+  }
+
+  function renderCardShop() {
+    const host = document.getElementById("studyshop-card-pack-list");
+    if (!host || !originalCardManifest || !studyShopState) return;
+    const price = Number(originalCardManifest.packPrice) || 250;
+    const balance = Number(studyShopState.balance) || 0;
+    const canAfford = balance >= price && !cardPackOpening;
+    const buttonLabel = cardPackOpening
+      ? "Opening pack..."
+      : balance >= price
+        ? `Open pack - ${formatStudyBucks(price)}`
+        : `Need ${formatStudyBucks(price)} StudyBucks`;
+    host.innerHTML = `<article class="card-pack-shop-card">
+      <div class="card-pack-shop-art"><img src="${escapeHtml(originalCardManifest.packImage)}" alt="ORIGINAL Series sealed card pack"></div>
+      <div><p class="card-pack-kicker">First edition collection</p><h3>${escapeHtml(originalCardManifest.title)}</h3><p>Open one pack to receive one random mascot card. Every pull is selected securely on the server from Common through Glitched rarity.</p>
+      <div class="card-pack-odds">${originalCardManifest.rarities.map(rarity => `<span style="--rarity-color:${cardRarityColor(rarity.color)}">${escapeHtml(rarity.title)} ${Number(rarity.chance)}%</span>`).join("")}</div>
+      <button type="button" class="card-pack-buy" onclick="openOriginalCardPack()" ${canAfford ? "" : "disabled"}><img src="/assets/images/studybucks/currency/dollar.png" alt=""><span>${buttonLabel}</span></button></div>
+    </article>`;
+  }
+
+  function renderCardLocker() {
+    const host = document.getElementById("studyshop-card-collection");
+    if (!host || !originalCardManifest || !studyShopState) return;
+    const inventory = studyShopState.cards?.series?.original || {};
+    const unique = originalCardManifest.cards.filter(card => Number(inventory[card.id]) > 0).length;
+    const copies = Object.values(inventory).reduce((total, count) => total + Math.max(0, Number(count) || 0), 0);
+    const groups = originalCardManifest.rarities.map(rarity => {
+      const cards = originalCardManifest.cards.filter(card => card.rarity === rarity.id);
+      const ownedInRarity = cards.filter(card => Number(inventory[card.id]) > 0).length;
+      return `<section class="card-rarity-group" style="--rarity-color:${cardRarityColor(rarity.color)}"><div class="card-rarity-heading"><h4>${escapeHtml(rarity.title)}</h4><span>${ownedInRarity} / ${cards.length}</span></div><div class="card-collection-grid">${cards.map(card => {
+        const count = Math.max(0, Math.min(100, Number(inventory[card.id]) || 0));
+        if (!count) return `<article class="collection-card locked" title="Undiscovered card"><span class="collection-card-lock"><i data-lucide="lock-keyhole"></i></span><span class="collection-card-number">#${String(card.number).padStart(3, "0")}</span></article>`;
+        const badge = count > 1 ? `<span class="collection-card-count">${count >= 100 ? "99+" : count}</span>` : "";
+        return `<article class="collection-card owned" title="${escapeHtml(card.name)}"><img src="${escapeHtml(card.image)}" alt="${escapeHtml(card.name)}">${badge}</article>`;
+      }).join("")}</div></section>`;
+    }).join("");
+    host.innerHTML = `<div class="card-locker-toolbar"><div><h3>${escapeHtml(originalCardManifest.title)}</h3><p>Undiscovered cards remain concealed until you pull them.</p></div><div class="card-locker-summary"><span><strong>${unique} / ${originalCardManifest.cards.length}</strong>Discovered</span><span><strong>${copies}</strong>Total cards</span></div></div>${groups}`;
+    refreshResourceVaultChrome();
   }
 
   function renderStudyShop() {
@@ -3308,6 +3448,8 @@
     updateCountdown();
     clearInterval(studyShopCountdownTimer);
     studyShopCountdownTimer = setInterval(updateCountdown, 1000);
+    renderCardShop();
+    renderCardLocker();
     refreshResourceVaultChrome();
   }
 
@@ -3350,8 +3492,19 @@
 
   async function loadStudyShop() {
     if (!isResourceUserLoggedIn()) return null;
-    const result = await studyShopRequest("/studyshop", { method: "GET", cache: "no-store" });
+    const [manifestResult, result] = await Promise.all([
+      loadOriginalCardManifest().then(() => ({ ok: true })).catch(error => ({ ok: false, error })),
+      studyShopRequest("/studyshop", { method: "GET", cache: "no-store" })
+    ]);
     if (result?.ok) applyStudyShopState(result);
+    if (!manifestResult.ok) {
+      const message = escapeHtml(manifestResult.error?.message || "Card catalogue unavailable");
+      ["studyshop-card-pack-list", "studyshop-card-collection"].forEach(id => {
+        const host = document.getElementById(id);
+        if (host) host.innerHTML = `<div class="studyshop-empty-state"><div><i data-lucide="triangle-alert"></i><h3>Cards could not be loaded</h3><p>${message}. Please close this screen and try again.</p></div></div>`;
+      });
+      refreshResourceVaultChrome();
+    }
     return result;
   }
 
@@ -3380,6 +3533,7 @@
         if (list) list.innerHTML = `<div class="col-span-full rounded-2xl bg-red-50 p-6 text-center text-sm font-bold text-red-700">${escapeHtml(result?.error || "StudyShop could not be loaded")}</div>`;
       }
     } else {
+      try { await loadOriginalCardManifest(); } catch (_) {}
       renderStudyShop();
     }
   }
@@ -3406,10 +3560,102 @@
     }
   }
 
+  function resetCardPackReveal() {
+    const reveal = document.getElementById("card-pack-reveal");
+    const pack = document.getElementById("card-pack-reveal-pack");
+    const card = document.getElementById("card-pack-reveal-card");
+    const status = document.getElementById("card-pack-reveal-status");
+    const title = document.getElementById("card-pack-reveal-title");
+    const detail = document.getElementById("card-pack-reveal-detail");
+    const close = document.getElementById("card-pack-reveal-close");
+    if (!reveal || !pack || !card || !status || !title || !detail || !close) return null;
+    reveal.classList.remove("opening", "revealed");
+    reveal.style.setProperty("--reveal-color", "#38bdf8");
+    pack.src = originalCardManifest?.packImage || "/assets/images/studybucks/cards/packs/original.jpg";
+    card.removeAttribute("src");
+    card.alt = "";
+    status.textContent = "Opening ORIGINAL Series";
+    title.textContent = "Opening pack...";
+    detail.textContent = "Your card is being selected securely.";
+    close.textContent = "Add to Locker";
+    close.classList.add("hidden");
+    return { reveal, card, status, title, detail, close };
+  }
+
+  async function openOriginalCardPack() {
+    if (cardPackOpening) return;
+    cardPackOpening = true;
+    const elements = resetCardPackReveal();
+    if (!elements) {
+      cardPackOpening = false;
+      return;
+    }
+    elements.reveal.classList.remove("hidden");
+    updateBodyScrollLock();
+    renderCardShop();
+    requestAnimationFrame(() => elements.reveal.classList.add("opening"));
+
+    try {
+      await loadOriginalCardManifest();
+      const [result] = await Promise.all([
+        studyShopRequest("/studyshop/cards/open", {
+          method: "POST",
+          body: JSON.stringify({ series: "original" })
+        }),
+        new Promise(resolve => setTimeout(resolve, 950))
+      ]);
+      if (!result?.ok) throw new Error(result?.error || "This pack could not be opened");
+
+      const pulledCard = originalCardManifest.cards.find(card => card.id === result.card?.id);
+      if (!pulledCard || pulledCard.rarity !== result.card?.rarity) throw new Error("The card response did not match the catalogue");
+      const rarity = originalCardManifest.rarities.find(item => item.id === pulledCard.rarity);
+      const safeCount = Math.max(1, Math.min(100, Number(result.count) || 1));
+      studyShopState = {
+        ...studyShopState,
+        balance: Math.max(0, Number(result.balance) || 0),
+        cards: {
+          ...(studyShopState.cards || {}),
+          ...(result.inventory || {})
+        }
+      };
+
+      elements.reveal.style.setProperty("--reveal-color", cardRarityColor(rarity?.color));
+      elements.card.src = pulledCard.image;
+      elements.card.alt = `${pulledCard.name}, ${rarity?.title || pulledCard.rarity} ORIGINAL Series card`;
+      elements.status.textContent = result.isNew ? `New ${rarity?.title || pulledCard.rarity} card` : `${rarity?.title || pulledCard.rarity} duplicate`;
+      elements.title.textContent = pulledCard.name;
+      elements.detail.textContent = result.isNew
+        ? `Card #${String(pulledCard.number).padStart(3, "0")} has been added to your ORIGINAL Series collection.`
+        : `You now own ${safeCount >= 100 ? "99+" : safeCount} copies of card #${String(pulledCard.number).padStart(3, "0")}.`;
+      elements.reveal.classList.remove("opening");
+      elements.reveal.classList.add("revealed");
+      elements.close.classList.remove("hidden");
+      renderStudyShop();
+    } catch (error) {
+      elements.reveal.classList.remove("opening", "revealed");
+      elements.status.textContent = "Pack not opened";
+      elements.title.textContent = "Could not open this pack";
+      elements.detail.textContent = error?.message || "Please try again.";
+      elements.close.textContent = "Back to shop";
+      elements.close.classList.remove("hidden");
+    }
+  }
+
+  function closeCardPackReveal() {
+    const elements = resetCardPackReveal();
+    if (!elements) return;
+    elements.reveal.classList.add("hidden");
+    cardPackOpening = false;
+    renderStudyShop();
+    updateBodyScrollLock();
+  }
+
   window.openStudyShop = openStudyShop;
   window.closeStudyShop = closeStudyShop;
   window.selectStudyShopSection = selectStudyShopSection;
   window.claimStudyShopQuest = claimStudyShopQuest;
+  window.openOriginalCardPack = openOriginalCardPack;
+  window.closeCardPackReveal = closeCardPackReveal;
 
   function setBannerResourceMode(mode) {
     window.SB_RESOURCE_OPEN_MODE = mode;
@@ -5233,6 +5479,7 @@
       "studyshop-quests-workspace",
       "studyshop-shop-workspace",
       "studyshop-locker-workspace",
+      "card-pack-reveal",
       "sb-account-page-modal",
       "embedded-material-section",
       "friends-workspace-section"
@@ -5652,6 +5899,12 @@
 
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
+      const cardReveal = document.getElementById("card-pack-reveal");
+      if (cardReveal && !cardReveal.classList.contains("hidden")) {
+        const closeButton = document.getElementById("card-pack-reveal-close");
+        if (closeButton && !closeButton.classList.contains("hidden")) closeCardPackReveal();
+        return;
+      }
       closeAnnouncementModal();
       closeReportModal();
       closeStudyShop();

@@ -5,15 +5,15 @@
   // When a feature materially changes personal-data use, follow
   // docs/PRIVACY_RELEASE_CHECKLIST.md and replace noticeVersion with a new value.
   window.StudyBasePrivacyConfig = Object.freeze({
-    noticeVersion: "STUDYBASE_PRIVACY_2026_07_01_V3",
-    policyUpdatedAt: "2026-07-01",
+    noticeVersion: "STUDYBASE_PRIVACY_2026_07_02_V4",
+    policyUpdatedAt: "2026-07-02",
     showUpdateNotice: true,
     updateTitle: "We've updated our Privacy Notice",
-    updateMessage: "StudyBase now provides clearer service choices, a separate analytics decision, and a limited mode that blocks account and third-party connections.",
+    updateMessage: "StudyBase now includes randomized StudyShop card packs and an account-linked card collection.",
     updateChanges: Object.freeze([
-      "Clear Accept all, Essential only, and Deny choices",
-      "Optional analytics remains separate from essential account services",
-      "Consent choices can be reviewed later in the Privacy Centre"
+      "Card pack outcomes are selected securely using the published rarity chances",
+      "Card identifiers and duplicate counts are stored with your account",
+      "Card collection data is included in the Privacy Centre export"
     ]),
     privacyUrl: "/legal/privacy.html?consentReview=1",
     termsUrl: "/legal/tos.html?consentReview=1",

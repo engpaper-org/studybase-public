@@ -44,8 +44,8 @@
           </div>
           <div class="legal-version">
             <span>Version</span>
-            <strong>PRIVACY-2026.07.01</strong>
-            <p class="legal-copy" style="margin-top:10px;font-size:13px;line-height:1.55;">Last updated: 1 July 2026 - service choice, limited mode, and analytics controls updated</p>
+            <strong>PRIVACY-2026.07.02</strong>
+            <p class="legal-copy" style="margin-top:10px;font-size:13px;line-height:1.55;">Last updated: 2 July 2026 - StudyShop card collections and pack openings added</p>
           </div>
         </div>
       </div>
@@ -149,6 +149,12 @@
             daily transfer usage, and updated balances. Counterparty profile details are not included in the self-service privacy export.
             Transfers require a five-second confirmation warning and are irreversible after confirmation.
           </p>
+          <p>
+            When a user opens a StudyShop card pack, the API checks the account balance, selects a card using the published rarity
+            weighting, deducts the pack price, and stores the card identifier and number of copies against the account. The service also
+            keeps aggregate counts of packs and cards opened. A card count is stored only up to 100 copies and is displayed as
+            <strong>99+</strong> at that limit. Unowned card artwork is not requested by the Locker collection view.
+          </p>
         </article>
 
         <article id="workers" class="doc-section">
@@ -242,7 +248,7 @@
             <li>Sessions: up to seven days, unless revoked or the account is deleted sooner.</li>
             <li>Account profile: while the account is active. Password-confirmed self-service deletion revokes sessions and removes the account record, username index, keyed eligibility record, related pending signup data, friendships, pending friend requests, and friend-request rate records.</li>
             <li>Friendships and pending requests: until a user removes, declines, or cancels them, or until either related account is deleted. Daily request-limit records expire shortly after the relevant day.</li>
-            <li>StudyShop balances, milestone claims, lifetime statistics, and recent transfer history: while the account remains active. Daily quest records expire within approximately three days, weekly records within approximately 15 days, and transfer-completion safeguards within approximately 30 days. Account deletion clears the balance and associated StudyShop records.</li>
+            <li>StudyShop balances, card collection identifiers and copy counts, milestone claims, lifetime statistics, and recent transfer history: while the account remains active. Daily quest records expire within approximately three days, weekly records within approximately 15 days, and transfer-completion safeguards within approximately 30 days. Account deletion clears the balance, card collection, and associated StudyShop records.</li>
             <li>Account security login events: up to 30 days.</li>
             <li>Support and report records: retained as long as needed to resolve the matter and for a reasonable period thereafter for audit and safety reasons.</li>
             <li>Purchase and fulfilment records: for the access period and as long as reasonably required for support, disputes, fraud prevention, accounting, tax, and other legal obligations.</li>
