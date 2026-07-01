@@ -93,6 +93,7 @@
       enabled: true,
       googleTagId: "G-N7LHC0S1T1"
     },
+    privacy: window.StudyBasePrivacyConfig || null,
     resources: {
       dataBase: "/assets/data/resources/alevel",
       rootFolder: "000",

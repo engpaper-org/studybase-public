@@ -8,30 +8,34 @@
   const LEGACY_KEY = "site_consent_granted";
   const ANALYTICS_KEY = "site_consent_analytics";
   const PENDING_LOG_KEY = "studybase_consent_log_pending";
-  const CONSENT_VERSION = "STUDYBASE_CONSENT_2026_07";
-  const GOOGLE_TAG_ID = "G-N7LHC0S1T1";
-  const LOG_URL = "https://script.google.com/macros/s/AKfycbyW-AQ4JeYOMujbXToocpkXPH_GMYxhJTqViDOkoPyXYrpcaMvFuxnVjtWQx-ot6T3L/exec";
+  const PRIVACY_CONFIG = window.StudyBasePrivacyConfig || {};
+  const CONSENT_VERSION = PRIVACY_CONFIG.noticeVersion || "STUDYBASE_PRIVACY_FALLBACK";
+  const GOOGLE_TAG_ID = PRIVACY_CONFIG.googleTagId || "G-N7LHC0S1T1";
+  const LOG_URL = PRIVACY_CONFIG.consentLogUrl || "";
 
-  function readChoice() {
+  function readStoredChoice() {
     try {
       const parsed = JSON.parse(localStorage.getItem(CHOICE_KEY) || "null");
-      if (parsed?.version === CONSENT_VERSION && ["accepted", "declined"].includes(parsed.service)) return parsed;
+      if (parsed && ["accepted", "declined"].includes(parsed.service)) return parsed;
     } catch (_) {}
     return null;
   }
 
-  const choice = readChoice();
+  const storedChoice = readStoredChoice();
+  const choice = storedChoice?.version === CONSENT_VERSION ? storedChoice : null;
   const serviceAllowed = choice?.service === "accepted";
   const analyticsAllowed = serviceAllowed && choice?.analytics === true;
   window.StudyBaseConsentState = Object.freeze({
     choice: choice?.service || "pending",
     serviceAllowed,
     analyticsAllowed,
-    version: choice?.version || CONSENT_VERSION
+    version: choice?.version || CONSENT_VERSION,
+    previousVersion: storedChoice?.version || null,
+    requiresReview: Boolean(storedChoice && !choice)
   });
 
   function queueAgreementLog() {
-    if (!serviceAllowed || window.__SB_CONSENT_LOG_SENDING__) return;
+    if (!serviceAllowed || !LOG_URL || window.__SB_CONSENT_LOG_SENDING__) return;
     let payload = null;
     try { payload = JSON.parse(localStorage.getItem(PENDING_LOG_KEY) || "null"); } catch (_) {}
     if (!payload) return;

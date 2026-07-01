@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
+  <script src="/assets/js/config/privacyConfig.js"></script>
   <script src="/assets/js/privacy/checkCookieConsent.js"></script>
   <meta charset="UTF-8">
   <meta name="description" content="StudyBase privacy policy covering browser storage, account data, analytics, consent logging, reports, and API-backed services." data-studybase-education-meta="true">
@@ -158,7 +159,7 @@
             StudyBase offers a limited mode when service terms and network-backed features are declined. In limited mode, public static content remains available where possible, while account login, protected resources, social features, reports, external embeds, analytics, and client requests to application endpoints are disabled. A permanent banner explains the limitation and lets the user review their choice.
           </p>
           <p>
-            When full service features are accepted, an agreement record containing a generated consent identifier, notice version, service choice, separate analytics choice, decision time, page URL, and user-agent information is sent to a configured Google Apps Script logging endpoint. The interface closes without waiting for that endpoint to respond. Google Analytics and material-view analytics load only when the separate optional analytics box is selected; it is off by default and can be changed later in the Privacy Centre.
+            When a service choice is made, an agreement record containing a generated consent identifier, notice version, service choice, separate analytics choice, decision time, page URL, and user-agent information is sent to a configured Google Apps Script logging endpoint after service access is enabled. The interface closes without waiting for that endpoint to respond. <strong>Accept all</strong> enables essential services and optional analytics, <strong>Essential only</strong> enables required account and security services without optional analytics, and <strong>Deny</strong> keeps the limited version. Choices can be changed later in the Privacy Centre.
           </p>
           <p>
             Full service features may use Google Apps Script, Cloudflare Turnstile, local safety filters, time checks, error checks, update checks, endpoint status notices, and abuse-prevention logic where required to provide or protect the requested feature.
