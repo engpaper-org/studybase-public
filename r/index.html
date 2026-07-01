@@ -3099,9 +3099,12 @@
                     </div>
                     <div id="studyshop-quest-list" class="mt-5 grid gap-4 md:grid-cols-2" aria-live="polite"><div class="col-span-full rounded-2xl bg-white p-8 text-center text-sm font-bold text-slate-500">Loading daily quests...</div></div>
                 </section>
-                <section class="studyshop-section-panel hidden" data-studyshop-panel="weekly"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>Weekly quests are coming soon</h3><p>Larger challenges and larger StudyBucks rewards will appear here.</p></div></div></section>
-                <section class="studyshop-section-panel hidden" data-studyshop-panel="milestones"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>Milestones are coming soon</h3><p>Long-term achievements will track the bigger things you do around StudyBase.</p></div></div></section>
-                <section class="studyshop-section-panel hidden" data-studyshop-panel="completed"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>No completed quest history yet</h3><p>Completed quest history will appear here when that feature is enabled.</p></div></div></section>
+                <section class="studyshop-section-panel hidden" data-studyshop-panel="weekly">
+                    <div class="flex flex-wrap items-center justify-between gap-4 rounded-[1.5rem] bg-slate-950 px-5 py-4 text-white"><div><p class="text-[0.62rem] font-black uppercase tracking-[0.14em] text-cyan-300">Weekly quests</p><h3 class="mt-1 text-xl font-black">Bigger goals, bigger rewards</h3></div><div class="text-right"><p class="text-[0.62rem] font-black uppercase tracking-[0.14em] text-slate-400">Reset in</p><p id="studyshop-weekly-reset-countdown" class="mt-1 font-mono text-base font-black">--:--:--</p></div></div>
+                    <div id="studyshop-weekly-quest-list" class="mt-5 grid gap-4 md:grid-cols-2" aria-live="polite"></div>
+                </section>
+                <section class="studyshop-section-panel hidden" data-studyshop-panel="milestones"><div class="mb-5"><p class="text-[0.62rem] font-black uppercase tracking-[0.14em] text-violet-600">Permanent progress</p><h3 class="mt-1 text-2xl font-black">Milestones</h3><p class="mt-2 text-sm font-semibold text-slate-500">Long-term achievements never reset.</p></div><div id="studyshop-milestone-list" class="grid gap-4 md:grid-cols-2" aria-live="polite"></div></section>
+                <section class="studyshop-section-panel hidden" data-studyshop-panel="completed"><div class="mb-5"><p class="text-[0.62rem] font-black uppercase tracking-[0.14em] text-emerald-600">Reward history</p><h3 class="mt-1 text-2xl font-black">Claimed quests</h3></div><div id="studyshop-completed-list" class="grid gap-4 md:grid-cols-2" aria-live="polite"></div></section>
             </div>
         </div>
     </section>
@@ -3240,38 +3243,67 @@
     return [hours, minutes, seconds].map(value => String(value).padStart(2, "0")).join(":");
   }
 
+  function formatStudyBucks(value) {
+    const amount = Math.max(0, Math.min(999999999, Math.floor(Number(value) || 0)));
+    if (amount >= 1000000) return `${Math.floor(amount / 100000) / 10}m`;
+    if (amount >= 100000) {
+      const thousands = Math.floor(amount / 10) / 100;
+      return `${thousands}k`;
+    }
+    return amount.toLocaleString("en-GB");
+  }
+
   function renderStudyShop() {
     if (!studyShopState) return;
     const balance = Math.max(0, Math.floor(Number(studyShopState.balance) || 0));
     const bannerBalance = document.getElementById("studyshop-balance");
-    if (bannerBalance) bannerBalance.textContent = balance.toLocaleString("en-GB");
+    if (bannerBalance) bannerBalance.textContent = formatStudyBucks(balance);
     document.querySelectorAll("[data-studyshop-balance]").forEach(element => {
-      element.textContent = balance.toLocaleString("en-GB");
+      element.textContent = formatStudyBucks(balance);
     });
 
-    const questList = document.getElementById("studyshop-quest-list");
-    if (questList) {
-      questList.innerHTML = (studyShopState.quests || []).map(quest => {
+    const renderQuestCards = (quests, questType, claimedOnly = false) => {
+      const filtered = (Array.isArray(quests) ? quests : []).filter(quest => !claimedOnly || quest.claimed);
+      if (!filtered.length) return `<div class="col-span-full studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>Nothing here yet</h3><p>${claimedOnly ? "Claimed quest rewards will appear here." : "Quest data is not available right now."}</p></div></div>`;
+      const typeLabel = questType === "weekly" ? "Weekly quest" : questType === "milestone" ? "Milestone" : "Daily quest";
+      return filtered.map(quest => {
         const goal = Math.max(1, Number(quest.goal) || 1);
         const progress = Math.max(0, Math.min(goal, Number(quest.progress) || 0));
         const percent = Math.round((progress / goal) * 100);
         const button = quest.claimed
           ? `<button type="button" disabled class="mt-4 w-full rounded-xl bg-emerald-50 px-4 py-3 text-xs font-black text-emerald-700">Reward claimed</button>`
           : quest.claimable
-            ? `<button type="button" onclick="claimStudyShopQuest('${quest.id}')" class="mt-4 w-full rounded-xl bg-slate-950 px-4 py-3 text-xs font-black text-white hover:bg-violet-800">Claim ${Number(quest.reward) || 0} StudyBucks</button>`
+            ? `<button type="button" onclick="claimStudyShopQuest('${questType}','${quest.id}')" class="mt-4 w-full rounded-xl bg-slate-950 px-4 py-3 text-xs font-black text-white hover:bg-violet-800">Claim ${formatStudyBucks(quest.reward)} StudyBucks</button>`
             : `<button type="button" disabled class="mt-4 w-full rounded-xl bg-slate-100 px-4 py-3 text-xs font-black text-slate-400">Keep going</button>`;
         return `<article class="studyshop-quest-card rounded-2xl p-5">
-          <div class="flex items-start justify-between gap-4"><div><p class="text-[0.6rem] font-black uppercase tracking-[0.14em] text-violet-600">Daily quest</p><h3 class="mt-1 text-lg font-black text-slate-950">${escapeHtml(quest.title)}</h3></div><span class="inline-flex items-center gap-1.5 rounded-full bg-teal-50 px-3 py-1.5 text-xs font-black text-teal-700"><img class="studybucks-inline-icon" src="/assets/images/studybucks/currency/dollar.png" alt="">+${Number(quest.reward) || 0}</span></div>
+          <div class="flex items-start justify-between gap-4"><div><p class="text-[0.6rem] font-black uppercase tracking-[0.14em] text-violet-600">${typeLabel}</p><h3 class="mt-1 text-lg font-black text-slate-950">${escapeHtml(quest.title)}</h3></div><span class="inline-flex items-center gap-1.5 rounded-full bg-teal-50 px-3 py-1.5 text-xs font-black text-teal-700"><img class="studybucks-inline-icon" src="/assets/images/studybucks/currency/dollar.png" alt="">+${formatStudyBucks(quest.reward)}</span></div>
           <p class="mt-2 min-h-10 text-xs font-semibold leading-5 text-slate-500">${escapeHtml(quest.description)}</p>
           <div class="mt-4 flex items-center justify-between text-[0.68rem] font-black text-slate-500"><span>Progress</span><span>${progress} / ${goal}</span></div>
           <div class="studyshop-progress-track mt-2" role="progressbar" aria-valuemin="0" aria-valuemax="${goal}" aria-valuenow="${progress}"><div class="studyshop-progress-fill" style="width:${percent}%"></div></div>
           ${button}
         </article>`;
       }).join("");
-    }
+    };
+    const dailyQuests = studyShopState.dailyQuests || studyShopState.quests || [];
+    const weeklyQuests = studyShopState.weeklyQuests || [];
+    const milestones = studyShopState.milestones || [];
+    const dailyList = document.getElementById("studyshop-quest-list");
+    const weeklyList = document.getElementById("studyshop-weekly-quest-list");
+    const milestoneList = document.getElementById("studyshop-milestone-list");
+    const completedList = document.getElementById("studyshop-completed-list");
+    if (dailyList) dailyList.innerHTML = renderQuestCards(dailyQuests, "daily");
+    if (weeklyList) weeklyList.innerHTML = renderQuestCards(weeklyQuests, "weekly");
+    if (milestoneList) milestoneList.innerHTML = renderQuestCards(milestones, "milestone");
+    if (completedList) completedList.innerHTML = [
+      renderQuestCards(dailyQuests, "daily", true),
+      renderQuestCards(weeklyQuests, "weekly", true),
+      renderQuestCards(milestones, "milestone", true)
+    ].filter(markup => !markup.includes("Nothing here yet")).join("") || renderQuestCards([], "daily", true);
     const updateCountdown = () => {
       const target = document.getElementById("studyshop-reset-countdown");
+      const weeklyTarget = document.getElementById("studyshop-weekly-reset-countdown");
       if (target) target.textContent = formatStudyShopCountdown(studyShopState?.resetsAt);
+      if (weeklyTarget) weeklyTarget.textContent = formatStudyShopCountdown(studyShopState?.weeklyResetsAt);
     };
     updateCountdown();
     clearInterval(studyShopCountdownTimer);
@@ -3358,14 +3390,15 @@
     updateBodyScrollLock();
   }
 
-  async function claimStudyShopQuest(questId) {
+  async function claimStudyShopQuest(questType, questId) {
+    if (!questId) { questId = questType; questType = "daily"; }
     if (studyShopClaimPending) return;
     studyShopClaimPending = true;
     try {
-      const result = await studyShopRequest("/studyshop/claim", { method: "POST", body: JSON.stringify({ questId }) });
+      const result = await studyShopRequest("/studyshop/claim", { method: "POST", body: JSON.stringify({ questType, questId }) });
       if (!result?.ok) return showStudyShopToast("Reward not claimed", result?.error || "Please try again");
       applyStudyShopState(result);
-      showStudyShopToast("Reward claimed", `+${result.awarded} StudyBucks added to your balance`);
+      showStudyShopToast("Reward claimed", `+${formatStudyBucks(result.awarded)} StudyBucks added to your balance`);
     } catch (_) {
       showStudyShopToast("Reward not claimed", "StudyShop could not be reached. Please try again.");
     } finally {

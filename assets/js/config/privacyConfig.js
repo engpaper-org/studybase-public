@@ -5,7 +5,7 @@
   // When a feature materially changes personal-data use, follow
   // docs/PRIVACY_RELEASE_CHECKLIST.md and replace noticeVersion with a new value.
   window.StudyBasePrivacyConfig = Object.freeze({
-    noticeVersion: "STUDYBASE_PRIVACY_2026_07_01_V2",
+    noticeVersion: "STUDYBASE_PRIVACY_2026_07_01_V3",
     policyUpdatedAt: "2026-07-01",
     showUpdateNotice: true,
     updateTitle: "We've updated our Privacy Notice",

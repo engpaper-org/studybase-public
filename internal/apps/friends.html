@@ -32,6 +32,7 @@
     @keyframes view-in { from { opacity:0;transform:translateY(5px); } to { opacity:1;transform:none; } }
     #add-friend-modal.hidden { display:none; }
     #friend-confirm-modal.hidden { display:none; }
+    #studybucks-transfer-modal.hidden { display:none; }
     #friends-loading.hidden { display: none; }
   </style>
 </head>
@@ -126,6 +127,32 @@
       </div>
     </div>
 
+    <div id="studybucks-transfer-modal" class="hidden fixed inset-0 z-[80] grid place-items-center bg-slate-950/75 p-4 backdrop-blur-md" role="dialog" aria-modal="true" aria-labelledby="studybucks-transfer-title">
+      <div class="w-full max-w-lg overflow-hidden rounded-[2rem] bg-white shadow-2xl">
+        <div class="flex items-start justify-between gap-4 bg-gradient-to-br from-teal-600 to-cyan-700 p-6 text-white">
+          <div class="flex items-center gap-3"><img src="/assets/images/studybucks/currency/dollar.png" alt="" class="h-12 w-12 object-contain"><div><p class="text-[10px] font-black uppercase tracking-[.16em] text-cyan-100">Friend transfer</p><h2 id="studybucks-transfer-title" class="mt-1 text-2xl font-black">Send StudyBucks</h2></div></div>
+          <button id="close-studybucks-transfer" type="button" class="grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-2xl font-black hover:bg-white/20" aria-label="Close transfer">&times;</button>
+        </div>
+        <div class="p-6">
+          <div id="studybucks-transfer-form-view">
+            <div class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4"> <div id="studybucks-transfer-avatar"></div><div class="min-w-0 flex-1"><p id="studybucks-transfer-name" class="truncate font-black text-slate-950"></p><p id="studybucks-transfer-username" class="truncate text-xs font-bold text-slate-500"></p></div></div>
+            <label class="mt-5 block text-xs font-black uppercase tracking-wider text-slate-500" for="studybucks-transfer-amount">Amount</label>
+            <div class="mt-2 flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 focus-within:border-teal-500 focus-within:ring-4 focus-within:ring-teal-100"><img src="/assets/images/studybucks/currency/dollar.png" alt="" class="h-8 w-8 object-contain"><input id="studybucks-transfer-amount" type="number" min="1" max="1000" step="1" inputmode="numeric" class="min-w-0 flex-1 border-0 py-4 text-xl font-black outline-none" placeholder="0"></div>
+            <div class="mt-3 flex justify-between text-xs font-bold text-slate-500"><span>Your balance: <strong id="studybucks-transfer-balance">0</strong></span><span>Maximum 1,000</span></div>
+            <p id="studybucks-transfer-error" class="mt-4 hidden rounded-xl bg-red-50 px-4 py-3 text-sm font-bold text-red-700"></p>
+            <button id="prepare-studybucks-transfer" type="button" class="mt-5 w-full rounded-2xl bg-slate-950 px-5 py-4 text-sm font-black text-white hover:bg-teal-700">Review transfer</button>
+          </div>
+          <div id="studybucks-transfer-warning-view" class="hidden text-center">
+            <div class="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-amber-50 text-amber-600"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 9v4m0 4h.01M10.3 3.7 2.8 17a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3L13.7 3.7a2 2 0 0 0-3.4 0Z"/></svg></div>
+            <h3 class="mt-4 text-2xl font-black text-slate-950">This cannot be reversed</h3>
+            <p id="studybucks-transfer-warning-copy" class="mt-3 text-sm font-semibold leading-6 text-slate-600"></p>
+            <div class="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-left text-sm font-bold text-amber-900">Check the username and amount carefully. StudyBucks transfers are final and cannot be recovered if you choose the wrong friend.</div>
+            <button id="confirm-studybucks-transfer" type="button" disabled class="mt-5 w-full rounded-2xl bg-teal-700 px-5 py-4 text-sm font-black text-white disabled:cursor-not-allowed disabled:bg-slate-300"><span id="studybucks-transfer-countdown">Read this warning for 5 seconds</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="friends-loading" class="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 backdrop-blur-md" role="status" aria-label="Loading friends">
       <div class="h-14 w-14 animate-spin rounded-full border-4 border-white/20 border-t-white"></div>
     </div>
@@ -135,13 +162,25 @@
     const DEFAULT_PFP = "sbo/1.jpg";
     const CLIENT_DAILY_LIMIT = 10;
     const FRIEND_TURNSTILE_SITE_KEY = "0x4AAAAAADscZ-M6m9qhiQmp";
-    const state = { friends: [], incoming: [], outgoing: [], limits: null, settings: { acceptFriendRequests: true }, search: null };
+    const state = { friends: [], incoming: [], outgoing: [], limits: null, settings: { acceptFriendRequests: true }, economy: { studyBucks: 0, transferMaximum: 1000 }, search: null };
     let friendSearchVerificationToken = "";
     let friendTurnstileWidgetId = null;
     let confirmationResolver = null;
+    let transferState = null;
+    let transferCountdownTimer = null;
 
     function escapeHtml(value) {
       return String(value ?? "").replace(/[&<>'"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]);
+    }
+
+    function formatStudyBucks(value) {
+      const amount = Math.max(0, Math.min(999999999, Math.floor(Number(value) || 0)));
+      if (amount >= 1000000) return `${Math.floor(amount / 100000) / 10}m`;
+      if (amount >= 100000) {
+        const thousands = Math.floor(amount / 10) / 100;
+        return `${thousands}k`;
+      }
+      return amount.toLocaleString("en-GB");
     }
 
     function safePfp(value) {
@@ -267,8 +306,92 @@
     }
 
     function actionUser(action, userId) {
-      const source = action === "remove" ? state.friends : action === "decline" ? state.incoming : state.outgoing;
+      const source = ["remove", "send-studybucks"].includes(action) ? state.friends : action === "decline" ? state.incoming : state.outgoing;
       return source.find(user => user.id === userId) || null;
+    }
+
+    function showTransferError(message) {
+      const element = document.getElementById("studybucks-transfer-error");
+      element.textContent = message;
+      element.classList.toggle("hidden", !message);
+    }
+
+    function openStudyBucksTransfer(user) {
+      if (!user) return;
+      clearInterval(transferCountdownTimer);
+      transferState = { user };
+      document.getElementById("studybucks-transfer-form-view").classList.remove("hidden");
+      document.getElementById("studybucks-transfer-warning-view").classList.add("hidden");
+      document.getElementById("studybucks-transfer-avatar").innerHTML = avatar(user, "h-12 w-12");
+      document.getElementById("studybucks-transfer-name").textContent = user.name || "StudyBase user";
+      document.getElementById("studybucks-transfer-username").textContent = `@${user.username}`;
+      document.getElementById("studybucks-transfer-balance").textContent = formatStudyBucks(state.economy?.studyBucks);
+      document.getElementById("studybucks-transfer-amount").value = "";
+      showTransferError("");
+      document.getElementById("studybucks-transfer-modal").classList.remove("hidden");
+      setTimeout(() => document.getElementById("studybucks-transfer-amount").focus(), 0);
+    }
+
+    function closeStudyBucksTransfer() {
+      clearInterval(transferCountdownTimer);
+      transferCountdownTimer = null;
+      transferState = null;
+      document.getElementById("studybucks-transfer-modal").classList.add("hidden");
+    }
+
+    async function prepareStudyBucksTransfer() {
+      const amount = Number(document.getElementById("studybucks-transfer-amount").value);
+      const maximum = Math.max(1, Number(state.economy?.transferMaximum || 1000));
+      if (!transferState?.user) return;
+      if (!Number.isInteger(amount) || amount < 1 || amount > maximum) return showTransferError(`Enter a whole number from 1 to ${maximum.toLocaleString("en-GB")}.`);
+      if (amount > Number(state.economy?.studyBucks || 0)) return showTransferError("You do not have enough StudyBucks.");
+      const button = document.getElementById("prepare-studybucks-transfer");
+      button.disabled = true;
+      showTransferError("");
+      try {
+        const result = await StudyBaseServices.request("/studyshop/transfer/prepare", { method: "POST", body: JSON.stringify({ friendId: transferState.user.id, amount }) });
+        if (!result.ok) return showTransferError(result.error || "The transfer could not be prepared.");
+        transferState = { ...transferState, transferId: result.transferId, amount: result.amount, notBefore: result.notBefore };
+        document.getElementById("studybucks-transfer-form-view").classList.add("hidden");
+        document.getElementById("studybucks-transfer-warning-view").classList.remove("hidden");
+        document.getElementById("studybucks-transfer-warning-copy").textContent = `You are about to send ${formatStudyBucks(result.amount)} StudyBucks to @${result.recipient.username}.`;
+        const confirmButton = document.getElementById("confirm-studybucks-transfer");
+        const countdown = document.getElementById("studybucks-transfer-countdown");
+        const update = () => {
+          const seconds = Math.max(0, Math.ceil((Date.parse(result.notBefore) - Date.now()) / 1000));
+          confirmButton.disabled = seconds > 0;
+          countdown.textContent = seconds > 0 ? `Read this warning for ${seconds} second${seconds === 1 ? "" : "s"}` : `Send ${formatStudyBucks(result.amount)} StudyBucks`;
+          if (!seconds) { clearInterval(transferCountdownTimer); transferCountdownTimer = null; }
+        };
+        update();
+        transferCountdownTimer = setInterval(update, 200);
+      } catch (_) {
+        showTransferError("The transfer could not be prepared. Try again.");
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    async function confirmStudyBucksTransfer() {
+      if (!transferState?.transferId) return;
+      const button = document.getElementById("confirm-studybucks-transfer");
+      button.disabled = true;
+      try {
+        const result = await StudyBaseServices.request("/studyshop/transfer/confirm", { method: "POST", body: JSON.stringify({ transferId: transferState.transferId }) });
+        if (!result.ok) {
+          button.disabled = false;
+          document.getElementById("studybucks-transfer-countdown").textContent = result.error || "Transfer failed";
+          return;
+        }
+        state.economy.studyBucks = result.balance;
+        const username = result.recipient?.username || transferState.user.username;
+        closeStudyBucksTransfer();
+        showMessage(`${formatStudyBucks(result.transferred)} StudyBucks sent to @${username}. This transfer is final.`);
+        await loadFriends(false);
+      } catch (_) {
+        button.disabled = false;
+        document.getElementById("studybucks-transfer-countdown").textContent = "Transfer failed. Try again.";
+      }
     }
 
     function showSocialView(viewName) {
@@ -309,7 +432,7 @@
         : emptyState("No requests waiting");
 
       document.getElementById("friends-list").innerHTML = state.friends.length
-        ? state.friends.map(user => compactUserCard(user, `<button data-action="remove" data-user-id="${user.id}" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-500 hover:border-red-200 hover:text-red-700">Remove</button>`)).join("")
+        ? state.friends.map(user => compactUserCard(user, `<div class="flex gap-1"><button data-action="send-studybucks" data-user-id="${user.id}" class="rounded-xl border border-teal-200 bg-teal-50 px-3 py-2 text-xs font-black text-teal-700">Send StudyBucks</button><button data-action="remove" data-user-id="${user.id}" class="rounded-xl border border-slate-200 px-3 py-2 text-xs font-black text-slate-500 hover:border-red-200 hover:text-red-700">Remove</button></div>`)).join("")
         : emptyState("Your accepted friends will appear here");
 
       renderSearchResult();
@@ -336,6 +459,7 @@
       state.outgoing = Array.isArray(result.outgoing) ? result.outgoing : [];
       state.limits = result.limits || null;
       state.settings = result.settings || { acceptFriendRequests: true };
+      state.economy = result.economy || { studyBucks: 0, transferMaximum: 1000 };
       render();
       document.getElementById("friends-loading").classList.add("hidden");
     }
@@ -365,6 +489,7 @@
       const button = event.target.closest?.("[data-action]");
       if (!button || button.disabled) return;
       const action = button.dataset.action;
+      if (action === "send-studybucks") { openStudyBucksTransfer(actionUser(action, button.dataset.userId)); return; }
       if (action === "request" && effectiveRemaining() <= 0) { showSearchFeedback("You have reached today's limit of 10 friend requests."); return; }
       if (["remove", "decline", "cancel"].includes(action)) {
         const user = actionUser(action, button.dataset.userId);
@@ -401,6 +526,10 @@
     document.getElementById("friend-confirm-cancel").addEventListener("click", () => closeFriendConfirmation(false));
     document.getElementById("friend-confirm-continue").addEventListener("click", () => closeFriendConfirmation(true));
     document.getElementById("friend-confirm-modal").addEventListener("click", event => { if (event.target.id === "friend-confirm-modal") closeFriendConfirmation(false); });
+    document.getElementById("close-studybucks-transfer").addEventListener("click", closeStudyBucksTransfer);
+    document.getElementById("studybucks-transfer-modal").addEventListener("click", event => { if (event.target.id === "studybucks-transfer-modal") closeStudyBucksTransfer(); });
+    document.getElementById("prepare-studybucks-transfer").addEventListener("click", prepareStudyBucksTransfer);
+    document.getElementById("confirm-studybucks-transfer").addEventListener("click", confirmStudyBucksTransfer);
     document.querySelectorAll("[data-social-view]").forEach(button => button.addEventListener("click", () => showSocialView(button.dataset.socialView)));
 
     document.getElementById("accept-friend-requests").addEventListener("change", async event => {
@@ -421,7 +550,8 @@
 
     document.addEventListener("keydown", event => {
       if (event.key !== "Escape") return;
-      if (!document.getElementById("friend-confirm-modal").classList.contains("hidden")) closeFriendConfirmation(false);
+      if (!document.getElementById("studybucks-transfer-modal").classList.contains("hidden")) closeStudyBucksTransfer();
+      else if (!document.getElementById("friend-confirm-modal").classList.contains("hidden")) closeFriendConfirmation(false);
       else if (!document.getElementById("add-friend-modal").classList.contains("hidden")) closeAddFriendModal();
     });
 

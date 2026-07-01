@@ -259,9 +259,9 @@
           <span id="help-label">Get support</span>
         </a>
 
-        <button id="continue-button" class="elegant-button continue-button" type="button" disabled>
-          <svg id="continue-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9h14v-9a2 2 0 0 0-2-2Zm-7-2a2 2 0 1 1 4 0v2h-4V6Z"/></svg>
-          <span id="continue-label">Wait <span id="countdown">5</span>s</span>
+        <button id="continue-button" class="elegant-button continue-button" type="button">
+          <svg id="continue-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7L8 5Z"/></svg>
+          <span id="continue-label">Access resource</span>
         </button>
       </div>
       <p class="support-note">Need some support? Speak to someone you trust, such as a parent, teacher, school support worker or health professional. If there is an immediate emergency, call 999.<br><strong>No data about your interaction with this page is sent to StudyBase or stored on StudyBase servers.</strong></p>
@@ -499,17 +499,12 @@
       document.getElementById("help-label").textContent = entry.helpLabel;
 
       const continueButton = document.getElementById("continue-button");
-      const continueLabel = document.getElementById("continue-label");
-      const continueIcon = document.getElementById("continue-icon");
       const stage = document.getElementById("stage");
-      const finalReveal = document.querySelector(".final-reveal");
       const feedbackButtons = [...document.querySelectorAll("[data-feedback]")];
       const feedbackStatus = document.getElementById("feedback-status");
       const whyButton = document.getElementById("why-button");
       const whyModal = document.getElementById("why-modal");
       const whyClose = document.getElementById("why-close");
-      let remaining = 5;
-      let timerStarted = false;
 
       const closeWhyModal = () => {
         whyModal.classList.remove("open");
@@ -547,32 +542,7 @@
         });
       });
 
-      const startCountdown = () => {
-        if (timerStarted) return;
-        timerStarted = true;
-
-        const timer = window.setInterval(() => {
-          remaining -= 1;
-          const countdown = document.getElementById("countdown");
-          if (remaining > 0 && countdown) {
-            countdown.textContent = String(remaining);
-            return;
-          }
-
-          window.clearInterval(timer);
-          continueButton.disabled = false;
-          continueLabel.textContent = "Access resource";
-          continueIcon.innerHTML = '<path d="M8 5v14l11-7L8 5Z"/>';
-        }, 1000);
-      };
-
-      finalReveal.addEventListener("animationend", event => {
-        if (event.target === finalReveal && event.animationName === "reveal-up") startCountdown();
-      });
-      window.setTimeout(startCountdown, 2300);
-
       continueButton.addEventListener("click", () => {
-        if (continueButton.disabled) return;
         recordInteraction("continued");
         stage.classList.add("exit");
         window.setTimeout(() => {

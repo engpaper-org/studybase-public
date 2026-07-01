@@ -139,10 +139,15 @@
             The browser keeps a matching local daily count to provide immediate feedback, but the server-side limit remains authoritative.
           </p>
           <p>
-            StudyShop stores each account's StudyBucks balance and short-lived daily quest data. Daily quest data includes which quest
-            rewards were claimed and up to five resource identifiers opened that day so the resource-launch quest can be validated.
-            It does not store the protected resource URLs in the quest record. Quest progress and rewards are checked by the API rather
-            than relying only on browser data.
+            StudyShop stores each account's StudyBucks balance, daily and weekly quest progress, claimed rewards, milestone claims,
+            and lifetime economy statistics. Quest progress may include visit dates, up to ten daily and fifty weekly resource identifiers,
+            daily-quest claims, friend requests, and newly accepted friendships. It does not store protected resource URLs in quest records.
+            Quest progress and rewards are checked by the API rather than relying only on browser data.
+          </p>
+          <p>
+            A user may send StudyBucks to an accepted friend. The service records the amount, direction, time, a transfer reference,
+            daily transfer usage, and updated balances. Counterparty profile details are not included in the self-service privacy export.
+            Transfers require a five-second confirmation warning and are irreversible after confirmation.
           </p>
         </article>
 
@@ -237,7 +242,7 @@
             <li>Sessions: up to seven days, unless revoked or the account is deleted sooner.</li>
             <li>Account profile: while the account is active. Password-confirmed self-service deletion revokes sessions and removes the account record, username index, keyed eligibility record, related pending signup data, friendships, pending friend requests, and friend-request rate records.</li>
             <li>Friendships and pending requests: until a user removes, declines, or cancels them, or until either related account is deleted. Daily request-limit records expire shortly after the relevant day.</li>
-            <li>StudyShop balances: while the account remains active. Daily quest progress and claim records expire within approximately three days. Account deletion clears the balance and associated daily quest records.</li>
+            <li>StudyShop balances, milestone claims, lifetime statistics, and recent transfer history: while the account remains active. Daily quest records expire within approximately three days, weekly records within approximately 15 days, and transfer-completion safeguards within approximately 30 days. Account deletion clears the balance and associated StudyShop records.</li>
             <li>Account security login events: up to 30 days.</li>
             <li>Support and report records: retained as long as needed to resolve the matter and for a reasonable period thereafter for audit and safety reasons.</li>
             <li>Purchase and fulfilment records: for the access period and as long as reasonably required for support, disputes, fraud prevention, accounting, tax, and other legal obligations.</li>
