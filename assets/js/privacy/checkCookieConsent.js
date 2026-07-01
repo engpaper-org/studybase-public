@@ -129,7 +129,8 @@
       html.sb-consent-limited [data-sbx-signout],
       html.sb-consent-limited .sbx-nav-auth,
       html.sb-consent-limited #login,
-      html.sb-consent-limited #login-submit { display: none !important; }
+      html.sb-consent-limited #login-submit,
+      html.sb-consent-limited #sb-endpoint-error-popup { display: none !important; }
       body { padding-bottom: 92px; }
     `;
     document.head.appendChild(style);

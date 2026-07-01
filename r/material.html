@@ -482,13 +482,13 @@
     </div>
 
     <div class="p-3 space-y-2">
-        <button onclick="shareCurrentPage()" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-slate-50 transition text-left">
-            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                <i class="fas fa-share-nodes"></i>
+        <button onclick="openStudyShopFromMenu()" class="w-full flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-slate-50 transition text-left">
+            <div class="w-10 h-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center">
+                <i class="fas fa-store"></i>
             </div>
             <div>
-                <p class="font-bold text-slate-900">Share page</p>
-                <p class="text-xs text-slate-500">Create a ready-to-share link</p>
+                <p class="font-bold text-slate-900">View quests</p>
+                <p class="text-xs text-slate-500">Check progress and StudyBucks</p>
             </div>
         </button>
 
@@ -531,38 +531,6 @@
             </button>
         </div>
         <iframe id="reportFrame" class="flex-grow w-full border-none bg-slate-50" src=""></iframe>
-    </div>
-</div>
-
-<div id="shareModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[110] flex items-center justify-center p-4 animate-fade-in">
-    <div class="bg-white w-full max-w-xl rounded-[2rem] shadow-2xl relative overflow-hidden update-modal-card">
-        <div class="flex items-center justify-between p-6 border-b border-slate-100 bg-white">
-            <div>
-                <p class="text-xs font-bold tracking-[0.18em] text-blue-600 uppercase">Share page</p>
-                <h3 class="font-extrabold text-slate-900 text-xl mt-1">Link ready to share</h3>
-            </div>
-            <button onclick="closeShareModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-
-        <div class="p-6">
-            <div class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                <label class="block text-sm font-bold text-slate-700 mb-2">Generated link</label>
-                <textarea id="shareLinkOutput" readonly class="w-full h-32 resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 focus:outline-none"></textarea>
-            </div>
-
-            <div class="mt-4 flex flex-col sm:flex-row gap-3">
-                <button onclick="copyShareLink()" class="flex-1 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold transition-colors">
-                    Copy link
-                </button>
-                <button onclick="nativeShareLink()" class="flex-1 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold transition-colors">
-                    Share
-                </button>
-            </div>
-
-            <p id="shareStatus" class="mt-3 text-sm text-slate-500"></p>
-        </div>
     </div>
 </div>
 
@@ -986,26 +954,6 @@ function createSecurityBubbles() {
     }
 }
 
-function generateShareLink(name, resourceName, resourceUrl, timeCreated) {
-    const payload = {
-        name: name || "Someone",
-        resourceName: resourceName || "Untitled resource",
-        resourceUrl: resourceUrl || "",
-        timeCreated: timeCreated || new Date().toISOString()
-    };
-
-    const json = JSON.stringify(payload);
-    const encoded = btoa(unescape(encodeURIComponent(json)));
-
-    return `${window.location.origin}/share/link?data=${encodeURIComponent(encoded)}`;
-}
-
-function getMainPageUrlForShare() {
-    const url = new URL(forcePrimaryAccessHash());
-    url.hash = "client-preflight";
-    return url.toString();
-}
-
 function goBack() {
     if (isEmbeddedMaterialView()) {
         window.parent.postMessage({ type: "sb-material-close" }, window.location.origin);
@@ -1119,6 +1067,15 @@ function openReportFromMenu() {
     openReportModal();
 }
 
+function openStudyShopFromMenu() {
+    closeMenu();
+    if (window.parent !== window) {
+        window.parent.postMessage({ type: "studybase:open-quests" }, window.location.origin);
+        return;
+    }
+    window.location.href = "/r/index.html?quests=true";
+}
+
 function closeReportModal() {
     const modal = document.getElementById('reportModal');
     const iframe = document.getElementById('reportFrame');
@@ -1126,63 +1083,6 @@ function closeReportModal() {
     setTimeout(() => { iframe.src = ""; }, 300);
 }
 window.closeReportModal = closeReportModal;
-
-function openShareModal(link) {
-    document.getElementById("shareLinkOutput").value = link;
-    document.getElementById("shareStatus").textContent = "";
-    document.getElementById("shareModal").classList.remove("hidden");
-}
-
-function closeShareModal() {
-    document.getElementById("shareModal").classList.add("hidden");
-}
-
-async function copyShareLink() {
-    const output = document.getElementById("shareLinkOutput");
-    const status = document.getElementById("shareStatus");
-
-    try {
-        await navigator.clipboard.writeText(output.value);
-        status.textContent = "Link copied.";
-    } catch (e) {
-        output.select();
-        document.execCommand("copy");
-        status.textContent = "Link copied.";
-    }
-}
-
-async function nativeShareLink() {
-    const link = document.getElementById("shareLinkOutput").value;
-    const status = document.getElementById("shareStatus");
-
-    if (navigator.share) {
-        try {
-            await navigator.share({
-                title: "Shared StudyBase page",
-                text: "Here is a shared page.",
-                url: link
-            });
-            status.textContent = "Share sheet opened.";
-        } catch (e) {
-            status.textContent = "";
-        }
-    } else {
-        status.textContent = "Native sharing is not available on this device.";
-    }
-}
-
-function shareCurrentPage() {
-    closeMenu();
-
-    let firstName = "Someone";
-    try { firstName = JSON.parse(localStorage.getItem("studybase_user") || "null")?.name || firstName; } catch (_) {}
-    const resourceName = getDecodedMaterialName();
-    const resourceUrl = getMainPageUrlForShare();
-    const timeCreated = new Date().toISOString();
-
-    const link = generateShareLink(firstName, resourceName, resourceUrl, timeCreated);
-    openShareModal(link);
-}
 
 function confirmReloadResource() {
     closeMenu();
@@ -1447,6 +1347,9 @@ async function fetchMaterialUrl() {
 
                 if (typeof json.url === "string") {
                     finalValue = json.url.trim();
+                }
+                if (json.studyshop && window.parent !== window) {
+                    window.parent.postMessage({ type: "studybase:studyshop-update", state: json.studyshop, progressed: json.studyshopProgressed === true }, window.location.origin);
                 }
             } catch (_) {
                 return false;
@@ -1866,7 +1769,6 @@ document.addEventListener("click", (event) => {
 window.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
         closeMenu();
-        closeShareModal();
         closeReloadConfirm();
         closeReportModal();
     }

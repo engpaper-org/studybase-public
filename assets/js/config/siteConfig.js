@@ -517,7 +517,10 @@
     }
   };
 
-  if (!document.querySelector('script[data-studybase-endpoint-popup="true"]')) {
+  if (
+    window.StudyBaseConsentState?.serviceAllowed !== false &&
+    !document.querySelector('script[data-studybase-endpoint-popup="true"]')
+  ) {
     const endpointPopupScript = document.createElement("script");
     endpointPopupScript.src = "/assets/js/monitoring/endpointPopup.js?v=20260512-fullscreen-report";
     endpointPopupScript.async = false;

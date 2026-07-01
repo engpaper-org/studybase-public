@@ -1,5 +1,6 @@
 (function () {
   if (window.StudybaseEndpointPopup) return;
+  if (window.StudyBaseConsentState?.serviceAllowed === false) return;
 
   const POPUP_ID = "sb-endpoint-error-popup";
   const STYLE_ID = "sb-endpoint-error-popup-style";
@@ -39,6 +40,11 @@
   };
 
   if (!originalFetch) return;
+
+  function isLimitedMode() {
+    return window.StudyBaseConsentState?.serviceAllowed === false ||
+      document.documentElement.classList.contains("sb-consent-limited");
+  }
 
   function ensureStyles() {
     if (document.getElementById(STYLE_ID)) return;
@@ -470,6 +476,7 @@
   }
 
   function openPopup(payload) {
+    if (isLimitedMode()) return;
     const signature = [payload.code, payload.endpoint, payload.details].join("|");
     if (window.StudybaseEndpointPopup && window.StudybaseEndpointPopup.activeSignature === signature) {
       return;
@@ -495,6 +502,7 @@
   }
 
   function openMaintenanceToast(payload, endpoint) {
+    if (isLimitedMode()) return;
     const message =
       payload && typeof payload.message === "string" && payload.message.trim()
         ? payload.message.trim()
@@ -504,6 +512,7 @@
   }
 
   function openCustomErrorPopup(endpoint, payload, rule, triggeredCode) {
+    if (isLimitedMode()) return;
     rule = rule || {};
     const code = triggeredCode || (rule.responses && rule.responses.length ? String(rule.responses[0]) : "CUSTOM_ERROR");
     const signature = [rule.id || "custom-error", code, endpoint].join("|");
