@@ -10,7 +10,7 @@
   }
   function clear(reason = "") {
     window.StudyBaseServices?.clearAccountSession?.({ reason });
-    if (!window.StudyBaseServices) [TOKEN_KEY, EXPIRY_KEY, "studybase_user"].forEach(k => localStorage.removeItem(k));
+    if (!window.StudyBaseServices) [TOKEN_KEY, EXPIRY_KEY, "studybase_user", "get_help_data"].forEach(k => localStorage.removeItem(k));
   }
   function check() {
     if (!expired() || shown) return;

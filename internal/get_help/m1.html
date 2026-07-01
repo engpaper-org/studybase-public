@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/assets/js/auth/iframeCheck.js"></script>
+  <script src="/assets/js/getHelp/localAnalytics.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyBase | Check In</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --accent: #ef4444;
+      --accent-glow: rgba(239, 68, 68, 0.42);
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: #050505;
+      color: #fff;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 15% 18%, rgba(37, 99, 235, 0.16), transparent 28rem),
+        radial-gradient(circle at 88% 80%, var(--accent-glow), transparent 25rem),
+        #050505;
+    }
+
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      opacity: 0.45;
+      background: linear-gradient(to bottom, transparent, transparent 50%, rgba(0, 0, 0, 0.22) 50%, rgba(0, 0, 0, 0.22));
+      background-size: 100% 4px;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.13;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+    }
+
+    @keyframes slam-in {
+      0% { transform: scale(3.8); opacity: 0; filter: blur(8px); }
+      42% { transform: scale(0.96); opacity: 1; filter: blur(0); text-shadow: -10px 0 18px rgba(239, 68, 68, .65), 10px 0 18px rgba(37, 99, 235, .65); }
+      58% { transform: scale(1.025); }
+      100% { transform: scale(1); text-shadow: none; }
+    }
+
+    @keyframes shake {
+      0%, 38%, 52%, 100% { transform: translate(0); }
+      40% { transform: translate(-10px, 8px) rotate(-0.5deg); }
+      43% { transform: translate(10px, -7px) rotate(0.5deg); }
+      46% { transform: translate(-6px, -4px); }
+      49% { transform: translate(5px, 4px); }
+    }
+
+    @keyframes reveal-up {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes crt-off {
+      0% { transform: scale(1); opacity: 1; }
+      45% { transform: scale(1, 0.008); opacity: 1; }
+      75% { transform: scale(0, 0.008); opacity: 1; }
+      100% { transform: scale(0); opacity: 0; }
+    }
+
+    .stage {
+      width: min(1100px, 100%);
+      max-height: 100vh;
+      padding: clamp(18px, 4vw, 48px);
+      text-align: center;
+      animation: shake 1.35s ease-out both;
+    }
+
+    .headline {
+      width: 100%;
+      max-width: 1050px;
+      margin: 0 auto;
+      font-size: clamp(2.5rem, 7vw, 6.6rem);
+      font-weight: 950;
+      letter-spacing: -0.055em;
+      line-height: 0.92;
+      text-transform: uppercase;
+      text-wrap: balance;
+      animation: slam-in 1.35s cubic-bezier(.1, .9, .2, 1) both;
+    }
+
+    .accent { color: var(--accent); }
+    .reveal { opacity: 0; animation: reveal-up .7s ease-out .9s forwards; }
+    .reveal-late { opacity: 0; animation: reveal-up .7s ease-out 1.08s forwards; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .cyber-button {
+      position: relative;
+      display: inline-flex;
+      min-width: min(280px, 100%);
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 2px solid #fff;
+      border-radius: 4px;
+      padding: 15px 22px;
+      background: rgba(5, 5, 5, .72);
+      color: #fff;
+      font-size: .82rem;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transform: skewX(-8deg);
+      transition: .18s ease;
+    }
+
+    .cyber-button > * { transform: skewX(8deg); }
+    .cyber-button.help { border-color: var(--accent); color: var(--accent); }
+    .cyber-button:not(:disabled):hover { background: #fff; color: #050505; box-shadow: 0 0 24px rgba(255,255,255,.25); }
+    .cyber-button.help:hover { background: var(--accent); color: #fff; box-shadow: 0 0 28px var(--accent-glow); }
+    .cyber-button:disabled { cursor: not-allowed; border-color: #3f3f46; color: #71717a; background: repeating-linear-gradient(45deg, #111, #111 10px, #18181b 10px, #18181b 20px); }
+    .exit { animation: crt-off .5s cubic-bezier(.23, 1, .32, 1) forwards; pointer-events: none; }
+
+    .urgent {
+      margin: 18px auto 0;
+      max-width: 760px;
+      color: #a1a1aa;
+      font-size: .72rem;
+      font-weight: 700;
+      line-height: 1.55;
+    }
+
+    .why-button {
+      position: fixed;
+      right: 18px;
+      bottom: 16px;
+      z-index: 30;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255, 255, 255, .16);
+      border-radius: 999px;
+      padding: 9px 13px;
+      background: rgba(9, 9, 11, .82);
+      color: #a1a1aa;
+      font-size: .68rem;
+      font-weight: 800;
+      backdrop-filter: blur(12px);
+      transition: .18s ease;
+    }
+
+    .why-button:hover,
+    .why-button:focus-visible { border-color: #71717a; color: #fff; outline: none; }
+    .why-icon { display: grid; width: 20px; height: 20px; place-items: center; border: 1px solid currentColor; border-radius: 999px; font-size: .72rem; }
+
+    .why-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: none;
+      place-items: center;
+      padding: 18px;
+      background: rgba(0, 0, 0, .8);
+      backdrop-filter: blur(10px);
+    }
+
+    .why-modal.open { display: grid; }
+    .why-dialog { width: min(560px, 100%); overflow: hidden; border: 1px solid #27272a; border-radius: 24px; background: #0c0c0f; text-align: left; box-shadow: 0 30px 90px rgba(0, 0, 0, .65); }
+    .why-dialog-header { padding: 24px 26px; background: linear-gradient(135deg, #18181b, #111827); }
+    .why-dialog-body { padding: 24px 26px 26px; }
+    .why-close { width: 100%; border: 1px solid #3f3f46; border-radius: 14px; padding: 12px; background: #18181b; color: #fff; font-size: .8rem; font-weight: 900; }
+    .why-close:hover { background: #27272a; }
+
+    @media (max-height: 700px) {
+      .stage { padding-top: 12px; padding-bottom: 12px; }
+      .headline { font-size: clamp(2.6rem, 7.5vw, 5.7rem); }
+      .description { margin-top: 18px !important; margin-bottom: 22px !important; }
+      .cyber-button { padding: 12px 18px; }
+      .urgent { margin-top: 12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <main id="stage" class="stage relative z-10">
+    <h1 id="headline" class="headline">You are not alone.</h1>
+    <p id="description" class="description reveal mx-auto mb-10 mt-8 max-w-3xl text-sm font-semibold leading-7 text-zinc-300 md:text-lg"></p>
+
+    <div class="reveal-late">
+      <div class="actions">
+        <a id="help-link" class="cyber-button help" href="https://www.nhs.uk/every-mind-matters/urgent-support/" target="_blank" rel="noopener noreferrer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7-4.35-9.33-8.36C.5 8.91 2.4 4.5 6.5 4.5A5.4 5.4 0 0 1 12 8a5.4 5.4 0 0 1 5.5-3.5c4.1 0 6 4.41 3.83 8.14C19 16.65 12 21 12 21Z"/></svg>
+          <span id="help-label">Get support</span>
+        </a>
+
+        <button id="continue-button" class="cyber-button" type="button" disabled>
+          <svg id="continue-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9h14v-9a2 2 0 0 0-2-2Zm-7-2a2 2 0 1 1 4 0v2h-4V6Z"/></svg>
+          <span id="continue-label">Wait <span id="countdown">5</span>s</span>
+        </button>
+      </div>
+      <p class="urgent">Need some support? Speak to someone you trust, such as a parent, teacher, school support worker or health professional. If there is an immediate emergency, call 999.<br><strong>No data about your interaction with this page is sent to StudyBase or stored on StudyBase servers.</strong></p>
+    </div>
+  </main>
+
+  <button id="why-button" class="why-button" type="button" aria-haspopup="dialog" aria-controls="why-modal">
+    <span class="why-icon" aria-hidden="true">?</span>
+    <span>Why am I seeing this?</span>
+  </button>
+
+  <div id="why-modal" class="why-modal" role="dialog" aria-modal="true" aria-labelledby="why-title">
+    <div class="why-dialog">
+      <div class="why-dialog-header">
+        <p class="text-[.65rem] font-black uppercase tracking-[.22em] text-zinc-500">About this check-in</p>
+        <h2 id="why-title" class="mt-2 text-2xl font-black">Why am I seeing this?</h2>
+      </div>
+      <div class="why-dialog-body">
+        <p class="text-sm font-semibold leading-6 text-zinc-300">StudyBase uses the gender saved on this device to choose this check-in version. Message views, support-link opens, explanation opens and time before continuing help your browser decide which messages may be useful and how often to show them.</p>
+        <p class="mt-4 text-sm font-semibold leading-6 text-zinc-400">This interaction history stays in this browser under <code>get_help_data</code>. It is not sent to StudyBase or stored on StudyBase servers, and it is not used to diagnose a mental-health condition. StudyBase does not receive or read anything you say to an external support provider.</p>
+        <button id="why-close" class="why-close mt-6" type="button">Close explanation</button>
+      </div>
+    </div>
+  </div>
+
+  <script id="check-in-content" type="application/json">
+  [
+    {
+      "id": "behind-the-mask",
+      "title": "What others do not see",
+      "messages": [
+        {
+          "id": "laugh-can-hide",
+          "headline": "A laugh can hide a lot.",
+          "description": "Being funny can be real and still be how you keep difficult feelings out of sight. You are allowed to stop performing for a minute. Pick someone safe and let them see the part of the day that was not funny.",
+          "helpLabel": "Talk to Childline",
+          "helpUrl": "https://www.childline.org.uk/get-support/1-2-1-counsellor-chat/",
+          "accent": "#3b82f6",
+          "accentGlow": "rgba(59, 130, 246, 0.42)"
+        },
+        {
+          "id": "fine-not-whole-story",
+          "headline": "Fine is not the whole story.",
+          "description": "Fine is sometimes easier than explaining what is actually happening. You do not have to tell everyone, but you deserve one place where the answer can be honest. Start with: I have been saying I am fine, but I am not really.",
+          "helpLabel": "Text Shout 85258",
+          "helpUrl": "https://giveusashout.org/get-help/how-shout-works/",
+          "accent": "#22c55e",
+          "accentGlow": "rgba(34, 197, 94, 0.38)"
+        },
+        {
+          "id": "showing-up",
+          "headline": "Showing up is not the same as coping.",
+          "description": "You can attend lessons, finish work and talk normally while carrying more than anybody realises. Looking okay does not cancel out how you feel. Tell somebody what getting through an ordinary day has really been costing you.",
+          "helpLabel": "Contact Samaritans",
+          "helpUrl": "https://www.samaritans.org/how-we-can-help/contact-samaritan/",
+          "accent": "#6366f1",
+          "accentGlow": "rgba(99, 102, 241, 0.42)"
+        }
+      ]
+    },
+    {
+      "id": "school-pressure",
+      "title": "School and the future",
+      "messages": [
+        {
+          "id": "grades-not-worth",
+          "headline": "Your grades are not your worth.",
+          "description": "Results and predicted grades can make your whole future feel decided. It is not. A number measures one piece of work, not your value or every route still open to you. Tell someone when the pressure starts taking over everything else.",
+          "helpLabel": "Text Shout 85258",
+          "helpUrl": "https://giveusashout.org/get-help/how-shout-works/",
+          "accent": "#06b6d4",
+          "accentGlow": "rgba(6, 182, 212, 0.4)"
+        },
+        {
+          "id": "future-not-decided",
+          "headline": "Your future is not decided today.",
+          "description": "One exam, application, mistake or difficult term cannot write the rest of your life. When everything feels permanent, speak to someone who can help you see the choices that pressure is hiding from you.",
+          "helpLabel": "Explore Every Mind Matters",
+          "helpUrl": "https://www.nhs.uk/every-mind-matters/",
+          "accent": "#8b5cf6",
+          "accentGlow": "rgba(139, 92, 246, 0.42)"
+        },
+        {
+          "id": "rest-not-earned",
+          "headline": "Rest is not something you have to earn.",
+          "description": "Working until you feel empty is not proof that you care more. Sleep, food, movement and time away from a screen are part of keeping going, not rewards for finishing everything. Talk to someone if school leaves no room for you.",
+          "helpLabel": "Find NHS support",
+          "helpUrl": "https://www.nhs.uk/nhs-services/mental-health-services/",
+          "accent": "#14b8a6",
+          "accentGlow": "rgba(20, 184, 166, 0.4)"
+        }
+      ]
+    },
+    {
+      "id": "speaking-up",
+      "title": "Letting someone in",
+      "messages": [
+        {
+          "id": "first-words",
+          "headline": "Start with the first words.",
+          "description": "You do not need to explain everything perfectly. Try: I have not felt like myself lately. Can we talk? One honest sentence gives another person the chance to understand and help.",
+          "helpLabel": "Talk to Childline",
+          "helpUrl": "https://www.childline.org.uk/get-support/1-2-1-counsellor-chat/",
+          "accent": "#ef4444",
+          "accentGlow": "rgba(239, 68, 68, 0.46)"
+        },
+        {
+          "id": "strong-needs-support",
+          "headline": "The strong one needs support too.",
+          "description": "Being the person everyone relies on does not make you unaffected. If people come to you, decide who you can go to. Letting somebody see that you are struggling is not weakness. It is how the weight becomes shareable.",
+          "helpLabel": "Contact Samaritans",
+          "helpUrl": "https://www.samaritans.org/how-we-can-help/contact-samaritan/",
+          "accent": "#f59e0b",
+          "accentGlow": "rgba(245, 158, 11, 0.4)"
+        },
+        {
+          "id": "help-before-worse",
+          "headline": "You deserve help before it gets worse.",
+          "description": "You do not need a diagnosis, a dramatic reason or the worst day of your life. If something has been wearing you down, that is enough. Ask for support while you still have words for what is happening.",
+          "helpLabel": "Find NHS support",
+          "helpUrl": "https://www.nhs.uk/nhs-services/mental-health-services/",
+          "accent": "#10b981",
+          "accentGlow": "rgba(16, 185, 129, 0.4)"
+        }
+      ]
+    },
+    {
+      "id": "supporting-mates",
+      "title": "Looking out for a mate",
+      "messages": [
+        {
+          "id": "ask-twice",
+          "headline": "Ask twice.",
+          "description": "The first answer is often automatic. The second question shows you actually meant it. Try: You do not seem yourself lately. Are you sure you are okay? Then listen without rushing to fix it.",
+          "helpLabel": "Learn how to support someone",
+          "helpUrl": "https://www.nhs.uk/mental-health/advice-for-life-situations-and-events/how-to-help-someone-with-depression/",
+          "accent": "#a855f7",
+          "accentGlow": "rgba(168, 85, 247, 0.42)"
+        },
+        {
+          "id": "notice-change",
+          "headline": "Notice what has changed.",
+          "description": "Struggling does not always look sad. It can look like anger, missing lessons, sleeping badly, taking bigger risks or losing interest in everything. A change from what is normal for your mate is worth a quiet conversation.",
+          "helpLabel": "Learn to spot the signs",
+          "helpUrl": "https://www.papyrus-uk.org/about-papyrus/our-work/campaigns/spot-the-signs",
+          "accent": "#f97316",
+          "accentGlow": "rgba(249, 115, 22, 0.42)"
+        },
+        {
+          "id": "mate-not-therapist",
+          "headline": "You are his mate, not his therapist.",
+          "description": "Listen, stay in touch and take him seriously, but do not carry everything alone. If what he tells you feels too big or unsafe, involve a trusted adult or trained service. Getting more help is looking out for him, not betraying him.",
+          "helpLabel": "Get advice from Childline",
+          "helpUrl": "https://www.childline.org.uk/info-advice/friends-relationships-sex/friends/",
+          "accent": "#0ea5e9",
+          "accentGlow": "rgba(14, 165, 233, 0.4)"
+        }
+      ]
+    },
+    {
+      "id": "hope-and-support",
+      "title": "Hope and getting support",
+      "messages": [
+        {
+          "id": "not-forever",
+          "headline": "This feeling is loud. It is not forever.",
+          "description": "A difficult moment can make every problem feel permanent and every option feel closed. Feelings can change, especially when they are shared and supported. Tell someone what today feels like before deciding what tomorrow holds.",
+          "helpLabel": "Text Shout 85258",
+          "helpUrl": "https://giveusashout.org/get-help/how-shout-works/",
+          "accent": "#22c55e",
+          "accentGlow": "rgba(34, 197, 94, 0.4)"
+        },
+        {
+          "id": "thoughts-have-no-look",
+          "headline": "Suicidal thoughts do not have a look.",
+          "description": "There is no single personality, mood or appearance that proves somebody is or is not struggling. If these thoughts are yours, tell someone directly. If you are worried about somebody else, ask and involve trusted support.",
+          "helpLabel": "Contact HOPELINE247",
+          "helpUrl": "https://www.papyrus-uk.org/",
+          "accent": "#e11d48",
+          "accentGlow": "rgba(225, 29, 72, 0.44)"
+        },
+        {
+          "id": "next-hour",
+          "headline": "One conversation can change the next hour.",
+          "description": "You do not have to solve your whole life in one go. Let one person know what is happening and focus on the next useful step together. Support can create options that are difficult to see when you are alone with everything.",
+          "helpLabel": "Contact Samaritans",
+          "helpUrl": "https://www.samaritans.org/how-we-can-help/contact-samaritan/",
+          "accent": "#ec4899",
+          "accentGlow": "rgba(236, 72, 153, 0.42)"
+        }
+      ]
+    }
+  ]
+  </script>
+
+  <script>
+    (() => {
+      const contentElement = document.getElementById("check-in-content");
+      const categories = JSON.parse(contentElement.textContent);
+      const entries = categories.flatMap(category => category.messages.map(message => ({
+        ...message,
+        categoryId: category.id
+      })));
+      const experienceId = "m1";
+      const selection = window.StudyBaseGetHelp?.selectMessage(experienceId, entries) || {};
+      const entry = selection.entry || entries[Math.floor(Math.random() * entries.length)];
+      const interactionId = selection.interactionId || null;
+      const recordInteraction = action => window.StudyBaseGetHelp?.recordInteraction(experienceId, interactionId, action);
+      const root = document.documentElement;
+
+      root.style.setProperty("--accent", entry.accent);
+      root.style.setProperty("--accent-glow", entry.accentGlow);
+      document.getElementById("headline").textContent = entry.headline;
+      document.getElementById("description").textContent = entry.description;
+
+      const helpLink = document.getElementById("help-link");
+      helpLink.href = entry.helpUrl;
+      helpLink.setAttribute("aria-label", `${entry.helpLabel} - opens in a new tab`);
+      helpLink.addEventListener("click", () => recordInteraction("help-opened"));
+      document.getElementById("help-label").textContent = entry.helpLabel;
+
+      const continueButton = document.getElementById("continue-button");
+      const continueLabel = document.getElementById("continue-label");
+      const stage = document.getElementById("stage");
+      const whyButton = document.getElementById("why-button");
+      const whyModal = document.getElementById("why-modal");
+      const whyClose = document.getElementById("why-close");
+      const finalReveal = document.querySelector(".reveal-late");
+      let remaining = 5;
+      let timerStarted = false;
+
+      const closeWhyModal = () => {
+        whyModal.classList.remove("open");
+        whyButton.focus();
+      };
+
+      whyButton.addEventListener("click", () => {
+        recordInteraction("explanation-opened");
+        whyModal.classList.add("open");
+        whyClose.focus();
+      });
+      whyClose.addEventListener("click", closeWhyModal);
+      whyModal.addEventListener("click", event => {
+        if (event.target === whyModal) closeWhyModal();
+      });
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && whyModal.classList.contains("open")) closeWhyModal();
+      });
+
+      const startCountdown = () => {
+        if (timerStarted) return;
+        timerStarted = true;
+
+        const timer = window.setInterval(() => {
+          remaining -= 1;
+          const countdown = document.getElementById("countdown");
+          if (remaining > 0 && countdown) {
+            countdown.textContent = String(remaining);
+            return;
+          }
+
+          window.clearInterval(timer);
+          continueButton.disabled = false;
+          continueLabel.textContent = "Access resource";
+          document.getElementById("continue-icon").innerHTML = '<path d="M8 5v14l11-7L8 5Z"/>';
+        }, 1000);
+      };
+
+      finalReveal.addEventListener("animationend", event => {
+        if (event.target === finalReveal && event.animationName === "reveal-up") startCountdown();
+      });
+      window.setTimeout(startCountdown, 2200);
+
+      continueButton.addEventListener("click", () => {
+        if (continueButton.disabled) return;
+        recordInteraction("continued");
+        stage.classList.add("exit");
+        window.setTimeout(() => {
+          window.parent.postMessage({ type: "SKIP_INTERSTITIAL", source: "get-help", variant: "m1", contentId: entry.id }, window.location.origin);
+        }, 500);
+      });
+    })();
+  </script>
+</body>
+</html>

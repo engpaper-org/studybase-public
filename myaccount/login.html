@@ -337,7 +337,7 @@
         }
         if (!response.ok && data.restricted && data.restriction?.type === "banned") {
           await finishLoadingDelay();
-          ["studybase_session_active", "studybase_session_expiry", "studybase_user"].forEach(k => localStorage.removeItem(k));
+          ["studybase_session_active", "studybase_session_expiry", "studybase_user", "get_help_data"].forEach(k => localStorage.removeItem(k));
           const reason = String(data.restriction.reason || "This account has been banned.").slice(0, 500);
           location.replace(`${location.origin}/?ban=true&reason=${encodeURIComponent(reason)}`);
           return;

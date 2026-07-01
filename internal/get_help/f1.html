@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyBase Check-in</title>
+  <script src="/assets/js/auth/iframeCheck.js"></script>
+  <script src="/assets/js/getHelp/localAnalytics.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #e11d48;
+      --accent-dark: #9f1239;
+      --accent-glow: rgba(225, 29, 72, .34);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { width: 100%; min-height: 100%; margin: 0; }
+
+    body {
+      min-height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(145deg, #1a0b12, #0f0609 72%);
+      color: #fff;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .ambient-glow {
+      position: fixed;
+      inset: -50%;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 50% 45%, var(--accent-glow), transparent 34%),
+        radial-gradient(circle at 18% 80%, rgba(192, 132, 252, .09), transparent 28%);
+      pointer-events: none;
+    }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      opacity: .12;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+    }
+
+    @keyframes slam-in {
+      0% { opacity: 0; transform: scale(3.6); text-shadow: 0 0 0 transparent; }
+      42% { opacity: 1; transform: scale(1); text-shadow: -8px 0 18px var(--accent-glow), 8px 0 18px rgba(192, 132, 252, .45); }
+      55% { transform: scale(1.035); }
+      100% { transform: scale(1); text-shadow: 0 0 0 transparent; }
+    }
+
+    @keyframes screen-shake {
+      0%, 39% { transform: translate(0); }
+      41% { transform: translate(-7px, 6px) rotate(-.4deg); }
+      44% { transform: translate(7px, -6px) rotate(.4deg); }
+      47% { transform: translate(-4px, -3px); }
+      50%, 100% { transform: translate(0); }
+    }
+
+    @keyframes reveal-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes graceful-exit {
+      0% { opacity: 1; transform: scale(1); filter: blur(0); }
+      40% { opacity: .75; transform: scale(1.035); }
+      100% { opacity: 0; transform: scale(.92); filter: blur(10px); }
+    }
+
+    .stage {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      width: min(1050px, 100%);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: clamp(22px, 4vw, 48px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      animation: screen-shake 1.5s ease-out both;
+    }
+
+    .headline {
+      width: 100%;
+      max-width: 960px;
+      margin: 0;
+      color: #fff1f2;
+      font-family: "Playfair Display", Georgia, serif;
+      font-size: clamp(2.55rem, 7vw, 6.6rem);
+      font-weight: 900;
+      letter-spacing: -.045em;
+      line-height: .94;
+      text-wrap: balance;
+      animation: slam-in 1.5s cubic-bezier(.1, .9, .2, 1) both;
+    }
+
+    .description {
+      max-width: 760px;
+      margin: clamp(20px, 3.6vh, 34px) auto clamp(22px, 4vh, 42px);
+      color: rgba(255, 241, 242, .76);
+      font-size: clamp(.92rem, 1.6vw, 1.1rem);
+      font-weight: 500;
+      line-height: 1.75;
+      opacity: 0;
+      animation: reveal-up .8s ease-out 1s forwards;
+    }
+
+    .final-reveal {
+      width: 100%;
+      opacity: 0;
+      animation: reveal-up .8s ease-out 1.2s forwards;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .elegant-button {
+      position: relative;
+      display: inline-flex;
+      width: min(270px, 100%);
+      min-height: 54px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 999px;
+      padding: 14px 24px;
+      color: #fff;
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .055em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+
+    .help-button {
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      box-shadow: 0 7px 26px var(--accent-glow);
+    }
+
+    .help-button:hover { transform: translateY(-2px); box-shadow: 0 10px 34px var(--accent-glow); }
+    .continue-button { background: rgba(255, 255, 255, .035); }
+    .continue-button:not(:disabled):hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, .35); background: rgba(255, 255, 255, .08); }
+    .continue-button:disabled { color: rgba(255, 255, 255, .38); cursor: not-allowed; }
+
+    .support-note {
+      max-width: 720px;
+      margin: clamp(16px, 3vh, 28px) auto 0;
+      color: rgba(255, 241, 242, .48);
+      font-size: .72rem;
+      font-weight: 600;
+      line-height: 1.55;
+    }
+
+    .why-button {
+      position: fixed;
+      right: 18px;
+      bottom: 16px;
+      z-index: 5;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255, 255, 255, .13);
+      border-radius: 999px;
+      padding: 9px 13px;
+      background: rgba(15, 6, 9, .76);
+      color: rgba(255, 241, 242, .72);
+      font-size: .7rem;
+      font-weight: 700;
+      backdrop-filter: blur(14px);
+    }
+
+    .why-button:hover { border-color: rgba(255, 255, 255, .3); color: #fff; }
+    .why-icon { display: grid; width: 19px; height: 19px; place-items: center; border: 1px solid currentColor; border-radius: 50%; }
+
+    .why-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      place-items: center;
+      padding: 20px;
+      background: rgba(5, 2, 4, .78);
+      backdrop-filter: blur(12px);
+    }
+
+    .why-modal.open { display: grid; }
+    .why-dialog { width: min(560px, 100%); overflow: hidden; border: 1px solid rgba(255, 255, 255, .12); border-radius: 24px; background: #170a10; text-align: left; box-shadow: 0 30px 90px rgba(0, 0, 0, .65); }
+    .why-dialog-header { padding: 24px 26px; background: linear-gradient(135deg, rgba(225, 29, 72, .2), rgba(192, 132, 252, .08)); }
+    .why-dialog-body { padding: 24px 26px 26px; }
+    .why-close { width: 100%; border: 1px solid rgba(255, 255, 255, .13); border-radius: 14px; padding: 12px; background: rgba(255, 255, 255, .05); color: #fff; font-size: .8rem; font-weight: 800; }
+    .exit { animation: graceful-exit .6s cubic-bezier(.4, 0, .2, 1) forwards; pointer-events: none; }
+
+    @media (max-width: 640px) {
+      .stage { padding: 18px; }
+      .actions { flex-direction: column; align-items: center; gap: 12px; }
+      .why-button span:last-child { display: none; }
+    }
+
+    @media (max-height: 700px) {
+      .stage { padding-top: 12px; padding-bottom: 12px; }
+      .headline { font-size: clamp(2.2rem, 6.4vw, 5.2rem); }
+      .description { margin-top: 16px; margin-bottom: 20px; line-height: 1.55; }
+      .support-note { margin-top: 12px; }
+      .elegant-button { min-height: 46px; padding: 11px 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-glow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <main id="stage" class="stage">
+    <h1 id="headline" class="headline">You are not alone.</h1>
+    <p id="description" class="description"></p>
+
+    <div class="final-reveal">
+      <div class="actions">
+        <a id="help-link" class="elegant-button help-button" href="https://www.childline.org.uk/get-support/1-2-1-counsellor-chat/" target="_blank" rel="noopener noreferrer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7-4.35-9.33-8.36C.5 8.91 2.4 4.5 6.5 4.5A5.4 5.4 0 0 1 12 8a5.4 5.4 0 0 1 5.5-3.5c4.1 0 6 4.41 3.83 8.14C19 16.65 12 21 12 21Z"/></svg>
+          <span id="help-label">Get support</span>
+        </a>
+
+        <button id="continue-button" class="elegant-button continue-button" type="button" disabled>
+          <svg id="continue-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v9h14v-9a2 2 0 0 0-2-2Zm-7-2a2 2 0 1 1 4 0v2h-4V6Z"/></svg>
+          <span id="continue-label">Wait <span id="countdown">5</span>s</span>
+        </button>
+      </div>
+      <p class="support-note">Need some support? Speak to someone you trust, such as a parent, teacher, school support worker or health professional. If there is an immediate emergency, call 999.<br><strong>No data about your interaction with this page is sent to StudyBase or stored on StudyBase servers.</strong></p>
+    </div>
+  </main>
+
+  <button id="why-button" class="why-button" type="button" aria-haspopup="dialog" aria-controls="why-modal">
+    <span class="why-icon" aria-hidden="true">?</span>
+    <span>Why am I seeing this?</span>
+  </button>
+
+  <div id="why-modal" class="why-modal" role="dialog" aria-modal="true" aria-labelledby="why-title">
+    <div class="why-dialog">
+      <div class="why-dialog-header">
+        <p class="text-xs font-extrabold uppercase tracking-[.2em] text-rose-300">About this check-in</p>
+        <h2 id="why-title" class="mt-2 text-2xl font-extrabold text-white">Why am I seeing this?</h2>
+      </div>
+      <div class="why-dialog-body">
+        <p class="text-sm font-semibold leading-6 text-rose-50/80">StudyBase uses the gender saved on this device to choose this check-in version. Message views, support-link opens, explanation opens and time before continuing help your browser decide which messages may be useful and how often to show them.</p>
+        <p class="mt-4 text-sm font-semibold leading-6 text-rose-100/55">This interaction history stays in this browser under <code>get_help_data</code>. It is not sent to StudyBase or stored on StudyBase servers, and it is not used to diagnose a mental-health condition. StudyBase does not receive or read anything you say to an external support provider.</p>
+        <button id="why-close" class="why-close mt-6" type="button">Close explanation</button>
+      </div>
+    </div>
+  </div>
+
+  <script id="check-in-content" type="application/json">
+  [
+    {
+      "id": "hidden-pressure",
+      "title": "What others do not see",
+      "messages": [
+        {
+          "id": "holding-everything",
+          "headline": "You do not have to hold everything together.",
+          "description": "Being organised, helpful and calm can become a role that leaves nowhere for your own feelings to go. You are allowed to disappoint the version of you that never needs anything. Tell one safe person what has actually been difficult.",
+          "helpLabel": "Talk to Childline",
+          "helpUrl": "https://www.childline.org.uk/get-support/1-2-1-counsellor-chat/",
+          "accent": "#e11d48",
+          "accentDark": "#9f1239",
+          "accentGlow": "rgba(225, 29, 72, .34)"
+        },
+        {
+          "id": "easy-to-be-around",
+          "headline": "Being easy to be around can be exhausting.",
+          "description": "Always smoothing things over, staying pleasant or making sure everyone else is comfortable can hide how drained you feel. You do not need to make your feelings convenient before they deserve to be heard.",
+          "helpLabel": "Contact Samaritans",
+          "helpUrl": "https://www.samaritans.org/how-we-can-help/contact-samaritan/",
+          "accent": "#db2777",
+          "accentDark": "#9d174d",
+          "accentGlow": "rgba(219, 39, 119, .34)"
+        },
+        {
+          "id": "fine-full-story",
+          "headline": "Fine can hide a full story.",
+          "description": "Fine may be the quickest way to get through a conversation when you do not know where to begin. You do not have to explain everything at once. Try: I keep saying I am fine, but I could really use someone to listen.",
+          "helpLabel": "Text Shout 85258",
+          "helpUrl": "https://giveusashout.org/get-help/how-shout-works/",
+          "accent": "#f43f5e",
+          "accentDark": "#be123c",
+          "accentGlow": "rgba(244, 63, 94, .34)"
+        }
+      ]
+    },
+    {
+      "id": "school-and-future",
+      "title": "School and the future",
+      "messages": [
+        {
+          "id": "grades-not-identity",
+          "headline": "Your grades are not your identity.",
+          "description": "A result can affect a plan, but it cannot measure your intelligence, effort or value. When school makes every outcome feel final, speak to someone who can help you see the routes that pressure is hiding.",
+          "helpLabel": "Explore Every Mind Matters",
+          "helpUrl": "https://www.nhs.uk/every-mind-matters/",
+          "accent": "#c084fc",
+          "accentDark": "#7e22ce",
+          "accentGlow": "rgba(192, 132, 252, .34)"
+        },
+        {
+          "id": "future-not-race",
+          "headline": "Your future is not a race.",
+          "description": "Other people may seem certain, successful or far ahead. You are seeing their outside while living every doubt on your inside. Your route is allowed to take a different shape and a different amount of time.",
+          "helpLabel": "Talk to Childline",
+          "helpUrl": "https://www.childline.org.uk/get-support/1-2-1-counsellor-chat/",
+          "accent": "#a855f7",
+          "accentDark": "#6b21a8",
+          "accentGlow": "rgba(168, 85, 247, .34)"
+        },
+        {
+          "id": "rest-not-failure",
+          "headline": "Rest is not falling behind.",
+          "description": "Working until you feel empty is not proof that you care more. Sleep, food, movement and time away from a screen are part of keeping going. If school has stopped leaving room for you, tell someone before burnout chooses the break for you.",
+          "helpLabel": "Find NHS support",
+          "helpUrl": "https://www.nhs.uk/nhs-services/mental-health-services/",
+          "accent": "#8b5cf6",
+          "accentDark": "#5b21b6",
+          "accentGlow": "rgba(139, 92, 246, .34)"
+        }
+      ]
+    },
+    {
+      "id": "comparison-and-worth",
+      "title": "Comparison and self-worth",
+      "messages": [
+        {
+          "id": "reflection-not-report",
+          "headline": "Your reflection is not a report card.",
+          "description": "Your body is not a test you can pass by criticising it harder. If thoughts about appearance, food or being good enough are taking over your day, you deserve to talk about them without being dismissed as vain or dramatic.",
+          "helpLabel": "Talk to Childline",
+          "helpUrl": "https://www.childline.org.uk/get-support/1-2-1-counsellor-chat/",
+          "accent": "#fb7185",
+          "accentDark": "#be123c",
+          "accentGlow": "rgba(251, 113, 133, .34)"
+        },
+        {
+          "id": "unfair-comparison",
+          "headline": "A filtered feed is not a fair comparison.",
+          "description": "You are comparing your unedited life with moments other people selected, posed and sometimes changed. Notice who you follow, how you feel afterwards and whether your feed deserves as much access to your self-worth as it currently has.",
+          "helpLabel": "Explore Every Mind Matters",
+          "helpUrl": "https://www.nhs.uk/every-mind-matters/",
+          "accent": "#ec4899",
+          "accentDark": "#9d174d",
+          "accentGlow": "rgba(236, 72, 153, .34)"
+        },
+        {
+          "id": "more-than-seen",
+          "headline": "You are more than how you are seen.",
+          "description": "Being liked, wanted or praised can feel important without being the thing that decides your worth. You still matter on the days when nobody notices, compliments or chooses you. Your value is not an audience vote.",
+          "helpLabel": "Text Shout 85258",
+          "helpUrl": "https://giveusashout.org/get-help/how-shout-works/",
+          "accent": "#f472b6",
+          "accentDark": "#be185d",
+          "accentGlow": "rgba(244, 114, 182, .34)"
+        }
+      ]
+    },
+    {
+      "id": "speaking-up",
+      "title": "Letting someone in",
+      "messages": [
+        {
+          "id": "first-words",
+          "headline": "Start with the first words.",
+          "description": "You do not need a perfect explanation. Try: I have not felt like myself lately. Can we talk? One honest sentence gives somebody the chance to understand what silence has been asking you to carry alone.",
+          "helpLabel": "Talk to Childline",
+          "helpUrl": "https://www.childline.org.uk/get-support/1-2-1-counsellor-chat/",
+          "accent": "#e11d48",
+          "accentDark": "#9f1239",
+          "accentGlow": "rgba(225, 29, 72, .34)"
+        },
+        {
+          "id": "helper-needs-help",
+          "headline": "The helper needs help too.",
+          "description": "Being the person who remembers, listens and checks on everyone else does not make you unaffected. Decide who you can go to when you are the one who needs patience, honesty and care.",
+          "helpLabel": "Contact Samaritans",
+          "helpUrl": "https://www.samaritans.org/how-we-can-help/contact-samaritan/",
+          "accent": "#d946ef",
+          "accentDark": "#86198f",
+          "accentGlow": "rgba(217, 70, 239, .32)"
+        },
+        {
+          "id": "help-before-worse",
+          "headline": "You deserve help before it gets worse.",
+          "description": "You do not need a diagnosis, a dramatic reason or the worst day of your life. If something has been wearing you down, that is enough. Ask for support before you become too exhausted to keep explaining it away.",
+          "helpLabel": "Find NHS support",
+          "helpUrl": "https://www.nhs.uk/nhs-services/mental-health-services/",
+          "accent": "#be185d",
+          "accentDark": "#831843",
+          "accentGlow": "rgba(190, 24, 93, .34)"
+        }
+      ]
+    },
+    {
+      "id": "hope-and-connection",
+      "title": "Hope and connection",
+      "messages": [
+        {
+          "id": "not-forever",
+          "headline": "This feeling is loud. It is not forever.",
+          "description": "A difficult moment can make every problem feel permanent and every option feel closed. Feelings can change, especially when they are shared and supported. Tell someone what today feels like before deciding what tomorrow holds.",
+          "helpLabel": "Text Shout 85258",
+          "helpUrl": "https://giveusashout.org/get-help/how-shout-works/",
+          "accent": "#f43f5e",
+          "accentDark": "#9f1239",
+          "accentGlow": "rgba(244, 63, 94, .34)"
+        },
+        {
+          "id": "thoughts-have-no-look",
+          "headline": "Suicidal thoughts do not have a look.",
+          "description": "There is no single personality, mood or appearance that proves somebody is or is not struggling. If these thoughts are yours, tell someone directly. If you are worried about somebody else, ask and involve trusted support.",
+          "helpLabel": "Contact HOPELINE247",
+          "helpUrl": "https://www.papyrus-uk.org/",
+          "accent": "#e11d48",
+          "accentDark": "#881337",
+          "accentGlow": "rgba(225, 29, 72, .38)"
+        },
+        {
+          "id": "next-hour",
+          "headline": "One conversation can change the next hour.",
+          "description": "You do not have to solve your whole life in one go. Let one person know what is happening and focus on the next useful step together. Support can create options that are difficult to see when you are alone with everything.",
+          "helpLabel": "Contact Samaritans",
+          "helpUrl": "https://www.samaritans.org/how-we-can-help/contact-samaritan/",
+          "accent": "#c026d3",
+          "accentDark": "#701a75",
+          "accentGlow": "rgba(192, 38, 211, .34)"
+        }
+      ]
+    }
+  ]
+  </script>
+
+  <script>
+    (() => {
+      const categories = JSON.parse(document.getElementById("check-in-content").textContent);
+      const entries = categories.flatMap(category => category.messages.map(message => ({
+        ...message,
+        categoryId: category.id
+      })));
+      const experienceId = "f1";
+      const selection = window.StudyBaseGetHelp?.selectMessage(experienceId, entries) || {};
+      const entry = selection.entry || entries[Math.floor(Math.random() * entries.length)];
+      const interactionId = selection.interactionId || null;
+      const recordInteraction = action => window.StudyBaseGetHelp?.recordInteraction(experienceId, interactionId, action);
+      const root = document.documentElement;
+      root.style.setProperty("--accent", entry.accent);
+      root.style.setProperty("--accent-dark", entry.accentDark);
+      root.style.setProperty("--accent-glow", entry.accentGlow);
+      document.getElementById("headline").textContent = entry.headline;
+      document.getElementById("description").textContent = entry.description;
+
+      const helpLink = document.getElementById("help-link");
+      helpLink.href = entry.helpUrl;
+      helpLink.setAttribute("aria-label", `${entry.helpLabel} - opens in a new tab`);
+      helpLink.addEventListener("click", () => recordInteraction("help-opened"));
+      document.getElementById("help-label").textContent = entry.helpLabel;
+
+      const continueButton = document.getElementById("continue-button");
+      const continueLabel = document.getElementById("continue-label");
+      const continueIcon = document.getElementById("continue-icon");
+      const stage = document.getElementById("stage");
+      const finalReveal = document.querySelector(".final-reveal");
+      const whyButton = document.getElementById("why-button");
+      const whyModal = document.getElementById("why-modal");
+      const whyClose = document.getElementById("why-close");
+      let remaining = 5;
+      let timerStarted = false;
+
+      const closeWhyModal = () => {
+        whyModal.classList.remove("open");
+        whyButton.focus();
+      };
+
+      whyButton.addEventListener("click", () => {
+        recordInteraction("explanation-opened");
+        whyModal.classList.add("open");
+        whyClose.focus();
+      });
+      whyClose.addEventListener("click", closeWhyModal);
+      whyModal.addEventListener("click", event => {
+        if (event.target === whyModal) closeWhyModal();
+      });
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape" && whyModal.classList.contains("open")) closeWhyModal();
+      });
+
+      const startCountdown = () => {
+        if (timerStarted) return;
+        timerStarted = true;
+
+        const timer = window.setInterval(() => {
+          remaining -= 1;
+          const countdown = document.getElementById("countdown");
+          if (remaining > 0 && countdown) {
+            countdown.textContent = String(remaining);
+            return;
+          }
+
+          window.clearInterval(timer);
+          continueButton.disabled = false;
+          continueLabel.textContent = "Access resource";
+          continueIcon.innerHTML = '<path d="M8 5v14l11-7L8 5Z"/>';
+        }, 1000);
+      };
+
+      finalReveal.addEventListener("animationend", event => {
+        if (event.target === finalReveal && event.animationName === "reveal-up") startCountdown();
+      });
+      window.setTimeout(startCountdown, 2300);
+
+      continueButton.addEventListener("click", () => {
+        if (continueButton.disabled) return;
+        recordInteraction("continued");
+        stage.classList.add("exit");
+        window.setTimeout(() => {
+          window.parent.postMessage({ type: "SKIP_INTERSTITIAL", source: "get-help", variant: "f1", contentId: entry.id }, window.location.origin);
+        }, 600);
+      });
+    })();
+  </script>
+</body>
+</html>

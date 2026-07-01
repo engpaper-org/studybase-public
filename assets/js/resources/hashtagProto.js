@@ -108,7 +108,8 @@
       [
         "studybase_session_active",
         "studybase_session_expiry",
-        "studybase_user"
+        "studybase_user",
+        "get_help_data"
       ].forEach(function (key) {
         localStorage.removeItem(key);
       });

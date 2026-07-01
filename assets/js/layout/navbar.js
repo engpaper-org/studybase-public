@@ -146,7 +146,7 @@
       const data = await response.json();
       serviceShutdown = Boolean(data && data.ok === true && data.shutdown === true);
       if (serviceShutdown) {
-        ["studybase_session_active", "studybase_session_expiry", "studybase_user"].forEach((key) => {
+        ["studybase_session_active", "studybase_session_expiry", "studybase_user", "get_help_data"].forEach((key) => {
           try { localStorage.removeItem(key); } catch (_) {}
         });
         return false;
@@ -172,7 +172,8 @@
     [
       "studybase_session_active",
       "studybase_session_expiry",
-      "studybase_user"
+      "studybase_user",
+      "get_help_data"
     ].forEach((key) => {
       try { localStorage.removeItem(key); } catch (_) {}
     });

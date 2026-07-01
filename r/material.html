@@ -24,6 +24,7 @@
     <title>Revision Base | Alevel Revision Resources</title>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
     <script src="/assets/js/auth/iframeCheck.js"></script>
+    <script src="/assets/js/getHelp/localAnalytics.js"></script>
     <script src="/assets/js/resources/hashtagProto.js"></script>
     <link rel="prefetch" href="/internal/iframes/normal-intro.html" as="document">
     <link rel="prefetch" href="/internal/iframes/labs-intro.html" as="document">
@@ -1114,7 +1115,7 @@ async function logoutUser() {
     try {
         await fetch("https://api.platformbase.online/api/logout", { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: "{}" });
     } catch (_) {}
-    ["studybase_session_active", "studybase_session_expiry", "studybase_user"].forEach((key) => localStorage.removeItem(key));
+    ["studybase_session_active", "studybase_session_expiry", "studybase_user", "get_help_data"].forEach((key) => localStorage.removeItem(key));
     window.location.href = "/r/index.html#client-preflight";
 }
 
@@ -1688,11 +1689,9 @@ function proceedToLoad(subjectTitle) {
     frame.classList.add("hidden");
 
     try { frame.src = "about:blank"; } catch (e) {}
-    try { loadingAdFrame.src = "/internal/iframes/safety-loading.html"; } catch (e) {}
-
-    loading.classList.remove("hidden");
 
     const finalUrl = getIframeUrlWithMainParams(materialFinalUrl);
+    let loadingSequenceStarted = false;
 
     const revealResource = () => {
         if (bootCancelled) return;
@@ -1737,7 +1736,47 @@ function proceedToLoad(subjectTitle) {
         frame.src = finalUrl;
     };
 
-    startIframeLoad();
+    const startLoadingSequence = () => {
+        if (loadingSequenceStarted || bootCancelled) return;
+        loadingSequenceStarted = true;
+        loadingAdFrame.title = "Loading resource";
+        try { loadingAdFrame.src = "/internal/iframes/safety-loading.html"; } catch (e) {}
+        loading.classList.remove("hidden");
+        startIframeLoad();
+    };
+
+    const cachedUser = (() => {
+        try {
+            const value = JSON.parse(localStorage.getItem("studybase_user") || "null");
+            return value && typeof value === "object" && !Array.isArray(value) ? value : null;
+        } catch (_) {
+            return null;
+        }
+    })();
+    const checkIn = window.StudyBaseGetHelp?.shouldShowForMaterial(cachedUser) || { show: false };
+
+    if (!checkIn.show || !checkIn.url) {
+        startLoadingSequence();
+        return;
+    }
+
+    const finishCheckIn = () => {
+        window.removeEventListener("message", onCheckInMessage);
+        loadingAdFrame.removeEventListener("error", finishCheckIn);
+        startLoadingSequence();
+    };
+    const onCheckInMessage = event => {
+        if (event.origin !== window.location.origin || event.source !== loadingAdFrame.contentWindow) return;
+        if (event.data?.type !== "SKIP_INTERSTITIAL" || event.data?.source !== "get-help") return;
+        if (event.data?.variant !== checkIn.experienceId) return;
+        finishCheckIn();
+    };
+
+    window.addEventListener("message", onCheckInMessage);
+    loadingAdFrame.addEventListener("error", finishCheckIn, { once: true });
+    loadingAdFrame.title = "Wellbeing check-in";
+    try { loadingAdFrame.src = checkIn.url; } catch (e) { finishCheckIn(); return; }
+    loading.classList.remove("hidden");
 }
 
 function startStatePolling() {
