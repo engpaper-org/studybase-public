@@ -856,12 +856,16 @@
         }
 
         body.rgenie-private-resources .rgenie-shell {
-            padding-top: 6.4rem;
+            padding-top: 4.75rem;
         }
 
         body.rgenie-private-resources #resource-tools-section {
             margin-bottom: 1.25rem;
         }
+
+        body.rgenie-private-resources .private-hide-spacer { display: none !important; }
+        .studyshop-banner-section { margin-bottom: 0.75rem; }
+        body.rgenie-private-resources .studyshop-banner-section .rgenie-container { width: min(95rem, calc(100% - 3rem)); }
 
         body.rgenie-private-resources #resource-tools-section .rgenie-container {
             width: min(95rem, calc(100% - 3rem));
@@ -1150,80 +1154,70 @@
             transform: translateX(3px);
         }
 
-        .studyshop-strip {
+        .studyshop-quest-card { border: 1px solid #e2e8f0; background: #fff; }
+        .studyshop-progress-track { height: 0.55rem; overflow: hidden; border-radius: 999px; background: #e2e8f0; }
+        .studyshop-progress-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7c3aed, #2563eb, #06b6d4); transition: width 0.45s ease; }
+        .studyshop-quest-card .studybucks-inline-icon { width: 1.1rem; height: 1.1rem; }
+        .studyshop-toast-region { position: fixed; z-index: 2147483647; top: 1rem; right: 1rem; display: grid; width: min(22rem, calc(100vw - 2rem)); gap: 0.65rem; pointer-events: none; }
+        .studyshop-toast { padding: 0.9rem 1rem; border: 1px solid rgba(255,255,255,0.18); border-radius: 18px; color: #fff; background: linear-gradient(135deg, #111827, #312e81); box-shadow: 0 18px 45px rgba(15,23,42,0.3); animation: studyshopToastIn 0.25s ease both; }
+        .studyshop-progress-toast-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+        .studyshop-progress-toast-label { color: #c4b5fd; font-size: 0.58rem; font-weight: 950; letter-spacing: 0.13em; text-transform: uppercase; }
+        .studyshop-progress-toast-count { color: #fff; font-size: 0.8rem; font-weight: 950; }
+        .studyshop-progress-toast-track { height: 0.48rem; margin-top: 0.75rem; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,0.16); }
+        .studyshop-progress-toast-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #22d3ee, #a78bfa, #f0abfc); box-shadow: 0 0 16px rgba(167,139,250,0.65); }
+        @keyframes studyshopToastIn { from { opacity: 0; transform: translateY(-10px) translateX(12px); } to { opacity: 1; transform: none; } }
+
+        .studyshop-banner {
             display: grid;
             grid-template-columns: minmax(0, 1fr) auto auto;
             align-items: center;
             gap: 1rem;
-            margin-bottom: 1rem;
-            padding: 0.85rem 1rem;
-            border: 1px solid rgba(124, 58, 237, 0.2);
-            border-radius: 20px;
-            background: linear-gradient(110deg, #f5f3ff, #eef2ff 55%, #ecfeff);
+            padding: 1rem 1.15rem;
+            border: 1px solid rgba(124,58,237,0.2);
+            border-radius: 24px;
+            background:
+                radial-gradient(circle at 82% 0%, rgba(34,211,238,0.2), transparent 26%),
+                linear-gradient(115deg, #f5f3ff, #eef2ff 58%, #ecfeff);
+            box-shadow: 0 16px 44px rgba(76,29,149,0.1);
         }
+        .studyshop-banner-main { display: flex; align-items: center; gap: 0.9rem; min-width: 0; }
+        .studyshop-currency-hero { width: 3.1rem; height: 3.1rem; flex: 0 0 auto; border-radius: 16px; object-fit: contain; filter: drop-shadow(0 10px 15px rgba(13,148,136,0.2)); }
+        .studyshop-banner h2 { margin: 0; color: #111827; font-size: 1.05rem; font-weight: 950; }
+        .studyshop-banner p { margin: 0.22rem 0 0; color: #64748b; font-size: 0.75rem; font-weight: 700; }
+        .studyshop-banner-balance { display: flex; align-items: center; gap: 0.55rem; min-width: 8.6rem; padding: 0.65rem 0.8rem; border: 1px solid rgba(13,148,136,0.2); border-radius: 16px; color: #115e59; background: rgba(240,253,250,0.92); }
+        .studyshop-banner-balance img, .studybucks-inline-icon { width: 1.65rem; height: 1.65rem; object-fit: contain; }
+        .studyshop-banner-balance strong { display: block; font-size: 1rem; font-weight: 950; line-height: 1; }
+        .studyshop-banner-balance span { display: block; margin-top: 0.15rem; font-size: 0.52rem; font-weight: 950; letter-spacing: 0.1em; text-transform: uppercase; }
+        .studyshop-banner-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.55rem; }
+        .studyshop-banner-action { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: 2.75rem; padding: 0 0.85rem; border: 1px solid rgba(148,163,184,0.3); border-radius: 14px; color: #334155; background: rgba(255,255,255,0.86); font-size: 0.69rem; font-weight: 950; transition: transform 0.18s ease, border-color 0.18s ease, color 0.18s ease; }
+        .studyshop-banner-action:hover { transform: translateY(-2px); border-color: #7c3aed; color: #6d28d9; }
+        .studyshop-banner-action.primary { border-color: #111827; color: #fff; background: #111827; }
 
-        .studyshop-strip-copy {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            min-width: 0;
-        }
-
-        .studyshop-strip-icon {
-            display: grid;
-            width: 2.65rem;
-            height: 2.65rem;
-            flex: 0 0 auto;
-            place-items: center;
-            border-radius: 14px;
-            color: #fff;
-            background: linear-gradient(135deg, #7c3aed, #2563eb);
-            box-shadow: 0 10px 24px rgba(124,58,237,0.25);
-        }
-
-        .studyshop-strip h3 { margin: 0; color: #111827; font-size: 0.95rem; font-weight: 950; }
-        .studyshop-strip p { margin: 0.15rem 0 0; color: #64748b; font-size: 0.72rem; font-weight: 700; }
-        .studyshop-balance {
-            min-width: 7.2rem;
-            padding: 0.58rem 0.75rem;
-            border: 1px solid rgba(245,158,11,0.24);
-            border-radius: 14px;
-            color: #92400e;
-            background: rgba(255,251,235,0.92);
-            text-align: center;
-        }
-        .studyshop-balance strong { display: block; font-size: 1rem; font-weight: 950; }
-        .studyshop-balance span { display: block; font-size: 0.54rem; font-weight: 950; letter-spacing: 0.1em; text-transform: uppercase; }
-        .studyshop-open-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.45rem;
-            padding: 0.7rem 0.9rem;
-            border-radius: 14px;
-            color: #fff;
-            background: #111827;
-            font-size: 0.72rem;
-            font-weight: 950;
-            transition: transform 0.18s ease, background 0.18s ease;
-        }
-        .studyshop-open-button:hover { background: #312e81; transform: translateY(-1px); }
-
-        .studyshop-modal-card {
-            max-height: min(88vh, 48rem);
-            overflow-y: auto;
-            background: linear-gradient(155deg, #ffffff, #f8fafc);
-        }
-        .studyshop-quest-card { border: 1px solid #e2e8f0; background: #fff; }
-        .studyshop-progress-track { height: 0.55rem; overflow: hidden; border-radius: 999px; background: #e2e8f0; }
-        .studyshop-progress-fill { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #7c3aed, #2563eb, #06b6d4); transition: width 0.45s ease; }
-        .studyshop-toast-region { position: fixed; z-index: 2147483647; top: 1rem; right: 1rem; display: grid; width: min(22rem, calc(100vw - 2rem)); gap: 0.65rem; pointer-events: none; }
-        .studyshop-toast { padding: 0.9rem 1rem; border: 1px solid rgba(255,255,255,0.18); border-radius: 18px; color: #fff; background: linear-gradient(135deg, #111827, #312e81); box-shadow: 0 18px 45px rgba(15,23,42,0.3); animation: studyshopToastIn 0.25s ease both; }
-        @keyframes studyshopToastIn { from { opacity: 0; transform: translateY(-10px) translateX(12px); } to { opacity: 1; transform: none; } }
-
-        :root.dark .studyshop-strip { border-color: rgba(139,92,246,0.35); background: linear-gradient(110deg, rgba(76,29,149,0.25), rgba(30,41,59,0.9), rgba(8,145,178,0.14)); }
-        :root.dark .studyshop-strip h3 { color: #f8fafc; }
-        :root.dark .studyshop-strip p { color: #cbd5e1; }
+        .studyshop-workspace { position: fixed; inset: 0; z-index: 2147483647; display: grid; grid-template-columns: 16.5rem minmax(0, 1fr); color: #0f172a; background: #f4f7fb; }
+        .studyshop-workspace.hidden { display: none; }
+        .studyshop-workspace-sidebar { display: flex; min-height: 0; flex-direction: column; padding: 1.25rem; color: #e2e8f0; background: linear-gradient(180deg, #0f172a, #111827 58%, #1e1b4b); }
+        .studyshop-workspace-brand { display: flex; align-items: center; gap: 0.75rem; padding: 0.35rem; }
+        .studyshop-workspace-brand img { width: 2.6rem; height: 2.6rem; object-fit: contain; }
+        .studyshop-workspace-brand strong { display: block; color: #fff; font-size: 1rem; font-weight: 950; }
+        .studyshop-workspace-brand span { display: block; margin-top: 0.12rem; color: #94a3b8; font-size: 0.62rem; font-weight: 800; }
+        .studyshop-workspace-nav { display: grid; gap: 0.45rem; margin-top: 1.5rem; }
+        .studyshop-workspace-nav button { display: flex; align-items: center; gap: 0.7rem; width: 100%; padding: 0.78rem 0.85rem; border-radius: 14px; color: #94a3b8; background: transparent; text-align: left; font-size: 0.76rem; font-weight: 900; }
+        .studyshop-workspace-nav button.active { color: #fff; background: rgba(139,92,246,0.22); box-shadow: inset 0 0 0 1px rgba(196,181,253,0.18); }
+        .studyshop-workspace-balance { display: flex; align-items: center; gap: 0.65rem; margin-top: auto; padding: 0.85rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; background: rgba(255,255,255,0.07); }
+        .studyshop-workspace-balance img { width: 2rem; height: 2rem; object-fit: contain; }
+        .studyshop-workspace-balance strong { display: block; color: #fff; font-size: 1rem; font-weight: 950; }
+        .studyshop-workspace-balance span { display: block; color: #94a3b8; font-size: 0.58rem; font-weight: 900; text-transform: uppercase; }
+        .studyshop-workspace-main { min-width: 0; min-height: 0; overflow-y: auto; }
+        .studyshop-workspace-header { position: sticky; z-index: 2; top: 0; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem 1.5rem; border-bottom: 1px solid #e2e8f0; background: rgba(255,255,255,0.9); backdrop-filter: blur(18px); }
+        .studyshop-workspace-header h2 { margin: 0; font-size: 1.5rem; font-weight: 950; letter-spacing: -0.03em; }
+        .studyshop-workspace-header p { margin: 0.2rem 0 0; color: #64748b; font-size: 0.72rem; font-weight: 700; }
+        .studyshop-workspace-close { display: grid; width: 2.75rem; height: 2.75rem; place-items: center; border: 1px solid #e2e8f0; border-radius: 14px; color: #475569; background: #fff; }
+        .studyshop-workspace-content { width: min(76rem, 100%); margin: 0 auto; padding: 1.5rem; }
+        .studyshop-section-panel.hidden { display: none; }
+        .studyshop-empty-state { display: grid; min-height: 24rem; place-items: center; padding: 2rem; border: 1px dashed #cbd5e1; border-radius: 28px; background: #fff; text-align: center; }
+        .studyshop-empty-state img { width: 5rem; height: 5rem; margin: 0 auto; object-fit: contain; opacity: 0.8; }
+        .studyshop-empty-state h3 { margin: 1rem 0 0; font-size: 1.25rem; font-weight: 950; }
+        .studyshop-empty-state p { max-width: 32rem; margin: 0.45rem auto 0; color: #64748b; font-size: 0.8rem; font-weight: 700; line-height: 1.6; }
 
         .private-friends-banner {
             display: grid;
@@ -1515,8 +1509,14 @@
                 justify-content: space-between;
             }
 
-            .studyshop-strip { grid-template-columns: minmax(0, 1fr) auto; }
-            .studyshop-open-button { grid-column: 1 / -1; }
+            .studyshop-banner { grid-template-columns: 1fr; }
+            .studyshop-banner-actions { justify-content: stretch; }
+            .studyshop-banner-action { flex: 1; }
+            .studyshop-workspace { grid-template-columns: 5.25rem minmax(0, 1fr); }
+            .studyshop-workspace-sidebar { padding: 0.8rem; }
+            .studyshop-workspace-brand div, .studyshop-workspace-nav span, .studyshop-workspace-balance div { display: none; }
+            .studyshop-workspace-brand, .studyshop-workspace-nav button, .studyshop-workspace-balance { justify-content: center; }
+            .studyshop-workspace-content { padding: 1rem; }
         }
 
         body.rgenie-private-resources #resource-tools-section .max-w-\[95rem\] {
@@ -2763,7 +2763,7 @@
         </div>
 
         <!-- Spacer so public view feels complete -->
-        <div class="h-12"></div>
+        <div class="h-12 private-hide-spacer"></div>
 
     <section id="farewell-countdown-section" class="relative z-20 px-4 mb-8 rgenie-private-only">
         <div class="rgenie-container">
@@ -2815,28 +2815,34 @@
         <div style="font-size: 0.7rem; color: #94a3b8; padding-left: 4px;">Click any result card below to open it in the workspace.</div>
     </section>
 
+    <section id="studyshop-banner-section" class="studyshop-banner-section relative z-20 px-4 rgenie-private-only" aria-label="StudyShop">
+        <div class="rgenie-container">
+            <div class="studyshop-banner">
+                <div class="studyshop-banner-main">
+                    <img class="studyshop-currency-hero" src="/assets/images/studybucks/currency/dollar.png" alt="">
+                    <div>
+                        <h2>StudyShop</h2>
+                        <p>Complete quests, spend StudyBucks and manage everything you collect.</p>
+                    </div>
+                </div>
+                <div class="studyshop-banner-balance" aria-live="polite">
+                    <img src="/assets/images/studybucks/currency/dollar.png" alt="">
+                    <div><strong id="studyshop-balance">0</strong><span>StudyBucks</span></div>
+                </div>
+                <div class="studyshop-banner-actions">
+                    <button type="button" class="studyshop-banner-action primary" onclick="openStudyShop('quests')"><i data-lucide="list-checks"></i> View quests</button>
+                    <button type="button" class="studyshop-banner-action" onclick="openStudyShop('shop')"><i data-lucide="shopping-bag"></i> Open shop</button>
+                    <button type="button" class="studyshop-banner-action" onclick="openStudyShop('locker')"><i data-lucide="package-open"></i> Open locker</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="resource-tools-section" class="relative z-20 px-4 mb-4 rgenie-private-only">
         <div class="rgenie-container">
 <div class="rgenie-panel">
                 <div class="private-vault-intro">
                     <div class="private-vault-header">
-                        <section class="studyshop-strip" aria-label="StudyShop">
-                            <div class="studyshop-strip-copy">
-                                <span class="studyshop-strip-icon" aria-hidden="true"><i data-lucide="store"></i></span>
-                                <div>
-                                    <h3>StudyShop</h3>
-                                    <p>Complete daily quests, collect StudyBucks and watch the shop grow.</p>
-                                </div>
-                            </div>
-                            <div class="studyshop-balance" aria-live="polite">
-                                <strong id="studyshop-balance">0</strong>
-                                <span>StudyBucks</span>
-                            </div>
-                            <button type="button" class="studyshop-open-button" onclick="openStudyShop()">
-                                View quests <i data-lucide="arrow-up-right"></i>
-                            </button>
-                        </section>
-
                         <div class="private-vault-header-top">
                             <div class="private-vault-title-wrap">
                                 <div class="private-vault-title-icon" aria-hidden="true">
@@ -3072,31 +3078,73 @@
         </div>
     </div>
 
-    <div id="studyshop-modal" class="hidden fixed inset-0 bg-slate-950/75 backdrop-blur-md z-[100004] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="studyshop-title">
-        <div class="studyshop-modal-card w-full max-w-3xl rounded-[2rem] shadow-2xl border border-white/70 overflow-hidden">
-            <header class="flex items-start justify-between gap-5 px-6 py-5 md:px-8 md:py-6 border-b border-slate-200">
-                <div>
-                    <span class="inline-flex items-center gap-2 text-[0.65rem] font-black uppercase tracking-[0.16em] text-violet-600"><i data-lucide="store"></i> StudyShop</span>
-                    <h2 id="studyshop-title" class="mt-2 text-2xl md:text-3xl font-black tracking-tight text-slate-950">Daily quests</h2>
-                    <p class="mt-2 text-sm font-semibold text-slate-500">Finish quests, claim StudyBucks and come back after the daily reset.</p>
-                </div>
-                <button type="button" onclick="closeStudyShop()" class="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-slate-200 bg-white text-slate-500 hover:bg-slate-100" aria-label="Close StudyShop"><i data-lucide="x"></i></button>
-            </header>
-            <div class="px-6 py-5 md:px-8 md:py-6">
-                <div class="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-slate-950 px-5 py-4 text-white">
-                    <div><p class="text-[0.62rem] font-black uppercase tracking-[0.14em] text-violet-300">Your balance</p><p class="mt-1 text-2xl font-black"><span id="studyshop-modal-balance">0</span> StudyBucks</p></div>
-                    <div class="text-right"><p class="text-[0.62rem] font-black uppercase tracking-[0.14em] text-slate-400">Quests reset in</p><p id="studyshop-reset-countdown" class="mt-1 font-mono text-base font-black">--:--:--</p></div>
-                </div>
-                <div id="studyshop-quest-list" class="mt-5 grid gap-4 md:grid-cols-2" aria-live="polite">
-                    <div class="col-span-full rounded-2xl bg-slate-100 p-6 text-center text-sm font-bold text-slate-500">Loading daily quests...</div>
-                </div>
-                <div class="mt-5 flex items-center gap-3 rounded-2xl border border-dashed border-violet-200 bg-violet-50 px-5 py-4">
-                    <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white text-violet-600"><i data-lucide="package-open"></i></span>
-                    <div><p class="font-black text-slate-900">Shop items are coming soon</p><p class="mt-1 text-xs font-semibold text-slate-500">Your StudyBucks balance will be ready when the first rewards arrive.</p></div>
-                </div>
+    <section id="studyshop-quests-workspace" class="studyshop-workspace hidden rgenie-private-only" role="dialog" aria-modal="true" aria-labelledby="studyshop-quests-title">
+        <aside class="studyshop-workspace-sidebar">
+            <div class="studyshop-workspace-brand"><img src="/assets/images/studybucks/currency/dollar.png" alt=""><div><strong>StudyShop</strong><span>Quest centre</span></div></div>
+            <nav class="studyshop-workspace-nav" aria-label="Quest sections">
+                <button type="button" class="active" data-studyshop-tab="daily" onclick="selectStudyShopSection('quests','daily')"><i data-lucide="sun"></i><span>Daily quests</span></button>
+                <button type="button" data-studyshop-tab="weekly" onclick="selectStudyShopSection('quests','weekly')"><i data-lucide="calendar-days"></i><span>Weekly quests</span></button>
+                <button type="button" data-studyshop-tab="milestones" onclick="selectStudyShopSection('quests','milestones')"><i data-lucide="trophy"></i><span>Milestones</span></button>
+                <button type="button" data-studyshop-tab="completed" onclick="selectStudyShopSection('quests','completed')"><i data-lucide="circle-check-big"></i><span>Completed</span></button>
+            </nav>
+            <div class="studyshop-workspace-balance"><img src="/assets/images/studybucks/currency/dollar.png" alt=""><div><strong data-studyshop-balance>0</strong><span>StudyBucks</span></div></div>
+        </aside>
+        <div class="studyshop-workspace-main">
+            <header class="studyshop-workspace-header"><div><h2 id="studyshop-quests-title">Quests</h2><p>Complete challenges and claim StudyBucks.</p></div><button type="button" class="studyshop-workspace-close" onclick="closeStudyShop('quests')" aria-label="Close quests"><i data-lucide="x"></i></button></header>
+            <div class="studyshop-workspace-content">
+                <section class="studyshop-section-panel" data-studyshop-panel="daily">
+                    <div class="flex flex-wrap items-center justify-between gap-4 rounded-[1.5rem] bg-slate-950 px-5 py-4 text-white">
+                        <div><p class="text-[0.62rem] font-black uppercase tracking-[0.14em] text-violet-300">Daily quests</p><h3 class="mt-1 text-xl font-black">Fresh challenges every day</h3></div>
+                        <div class="text-right"><p class="text-[0.62rem] font-black uppercase tracking-[0.14em] text-slate-400">Reset in</p><p id="studyshop-reset-countdown" class="mt-1 font-mono text-base font-black">--:--:--</p></div>
+                    </div>
+                    <div id="studyshop-quest-list" class="mt-5 grid gap-4 md:grid-cols-2" aria-live="polite"><div class="col-span-full rounded-2xl bg-white p-8 text-center text-sm font-bold text-slate-500">Loading daily quests...</div></div>
+                </section>
+                <section class="studyshop-section-panel hidden" data-studyshop-panel="weekly"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>Weekly quests are coming soon</h3><p>Larger challenges and larger StudyBucks rewards will appear here.</p></div></div></section>
+                <section class="studyshop-section-panel hidden" data-studyshop-panel="milestones"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>Milestones are coming soon</h3><p>Long-term achievements will track the bigger things you do around StudyBase.</p></div></div></section>
+                <section class="studyshop-section-panel hidden" data-studyshop-panel="completed"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>No completed quest history yet</h3><p>Completed quest history will appear here when that feature is enabled.</p></div></div></section>
             </div>
         </div>
-    </div>
+    </section>
+
+    <section id="studyshop-shop-workspace" class="studyshop-workspace hidden rgenie-private-only" role="dialog" aria-modal="true" aria-labelledby="studyshop-shop-title">
+        <aside class="studyshop-workspace-sidebar">
+            <div class="studyshop-workspace-brand"><img src="/assets/images/studybucks/currency/dollar.png" alt=""><div><strong>StudyShop</strong><span>Rewards store</span></div></div>
+            <nav class="studyshop-workspace-nav" aria-label="Shop sections">
+                <button type="button" class="active" data-studyshop-tab="featured" onclick="selectStudyShopSection('shop','featured')"><i data-lucide="sparkles"></i><span>Featured</span></button>
+                <button type="button" data-studyshop-tab="boosts" onclick="selectStudyShopSection('shop','boosts')"><i data-lucide="zap"></i><span>Boosts</span></button>
+                <button type="button" data-studyshop-tab="collectibles" onclick="selectStudyShopSection('shop','collectibles')"><i data-lucide="gem"></i><span>Collectibles</span></button>
+            </nav>
+            <div class="studyshop-workspace-balance"><img src="/assets/images/studybucks/currency/dollar.png" alt=""><div><strong data-studyshop-balance>0</strong><span>StudyBucks</span></div></div>
+        </aside>
+        <div class="studyshop-workspace-main">
+            <header class="studyshop-workspace-header"><div><h2 id="studyshop-shop-title">Shop</h2><p>Spend StudyBucks on rewards when items become available.</p></div><button type="button" class="studyshop-workspace-close" onclick="closeStudyShop('shop')" aria-label="Close shop"><i data-lucide="x"></i></button></header>
+            <div class="studyshop-workspace-content">
+                <section class="studyshop-section-panel" data-studyshop-panel="featured"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>The shelves are being prepared</h3><p>No items are available to buy yet. Keep completing quests and your balance will be waiting when the first rewards arrive.</p></div></div></section>
+                <section class="studyshop-section-panel hidden" data-studyshop-panel="boosts"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>No boosts available</h3><p>Temporary account and activity boosts will appear here later.</p></div></div></section>
+                <section class="studyshop-section-panel hidden" data-studyshop-panel="collectibles"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>No collectibles available</h3><p>Collectible StudyBase rewards will appear here later.</p></div></div></section>
+            </div>
+        </div>
+    </section>
+
+    <section id="studyshop-locker-workspace" class="studyshop-workspace hidden rgenie-private-only" role="dialog" aria-modal="true" aria-labelledby="studyshop-locker-title">
+        <aside class="studyshop-workspace-sidebar">
+            <div class="studyshop-workspace-brand"><img src="/assets/images/studybucks/currency/dollar.png" alt=""><div><strong>Locker</strong><span>Your collection</span></div></div>
+            <nav class="studyshop-workspace-nav" aria-label="Locker sections">
+                <button type="button" class="active" data-studyshop-tab="all" onclick="selectStudyShopSection('locker','all')"><i data-lucide="layout-grid"></i><span>All items</span></button>
+                <button type="button" data-studyshop-tab="active" onclick="selectStudyShopSection('locker','active')"><i data-lucide="badge-check"></i><span>Equipped</span></button>
+                <button type="button" data-studyshop-tab="history" onclick="selectStudyShopSection('locker','history')"><i data-lucide="history"></i><span>History</span></button>
+            </nav>
+            <div class="studyshop-workspace-balance"><img src="/assets/images/studybucks/currency/dollar.png" alt=""><div><strong data-studyshop-balance>0</strong><span>StudyBucks</span></div></div>
+        </aside>
+        <div class="studyshop-workspace-main">
+            <header class="studyshop-workspace-header"><div><h2 id="studyshop-locker-title">Locker</h2><p>View and manage rewards attached to your account.</p></div><button type="button" class="studyshop-workspace-close" onclick="closeStudyShop('locker')" aria-label="Close locker"><i data-lucide="x"></i></button></header>
+            <div class="studyshop-workspace-content">
+                <section class="studyshop-section-panel" data-studyshop-panel="all"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>Your locker is empty</h3><p>Items you obtain from StudyShop will appear here.</p></div></div></section>
+                <section class="studyshop-section-panel hidden" data-studyshop-panel="active"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>Nothing equipped</h3><p>Equipped rewards and account customisations will appear here.</p></div></div></section>
+                <section class="studyshop-section-panel hidden" data-studyshop-panel="history"><div class="studyshop-empty-state"><div><img src="/assets/images/studybucks/currency/dollar.png" alt=""><h3>No locker history</h3><p>Your reward activity will appear here after shop items become available.</p></div></div></section>
+            </div>
+        </div>
+    </section>
 
     <div id="studyshop-toast-region" class="studyshop-toast-region" aria-live="polite" aria-atomic="false"></div>
 
@@ -3196,9 +3244,10 @@
     if (!studyShopState) return;
     const balance = Math.max(0, Math.floor(Number(studyShopState.balance) || 0));
     const bannerBalance = document.getElementById("studyshop-balance");
-    const modalBalance = document.getElementById("studyshop-modal-balance");
     if (bannerBalance) bannerBalance.textContent = balance.toLocaleString("en-GB");
-    if (modalBalance) modalBalance.textContent = balance.toLocaleString("en-GB");
+    document.querySelectorAll("[data-studyshop-balance]").forEach(element => {
+      element.textContent = balance.toLocaleString("en-GB");
+    });
 
     const questList = document.getElementById("studyshop-quest-list");
     if (questList) {
@@ -3212,7 +3261,7 @@
             ? `<button type="button" onclick="claimStudyShopQuest('${quest.id}')" class="mt-4 w-full rounded-xl bg-slate-950 px-4 py-3 text-xs font-black text-white hover:bg-violet-800">Claim ${Number(quest.reward) || 0} StudyBucks</button>`
             : `<button type="button" disabled class="mt-4 w-full rounded-xl bg-slate-100 px-4 py-3 text-xs font-black text-slate-400">Keep going</button>`;
         return `<article class="studyshop-quest-card rounded-2xl p-5">
-          <div class="flex items-start justify-between gap-4"><div><p class="text-[0.6rem] font-black uppercase tracking-[0.14em] text-violet-600">Daily quest</p><h3 class="mt-1 text-lg font-black text-slate-950">${escapeHtml(quest.title)}</h3></div><span class="rounded-full bg-amber-50 px-3 py-1.5 text-xs font-black text-amber-700">+${Number(quest.reward) || 0}</span></div>
+          <div class="flex items-start justify-between gap-4"><div><p class="text-[0.6rem] font-black uppercase tracking-[0.14em] text-violet-600">Daily quest</p><h3 class="mt-1 text-lg font-black text-slate-950">${escapeHtml(quest.title)}</h3></div><span class="inline-flex items-center gap-1.5 rounded-full bg-teal-50 px-3 py-1.5 text-xs font-black text-teal-700"><img class="studybucks-inline-icon" src="/assets/images/studybucks/currency/dollar.png" alt="">+${Number(quest.reward) || 0}</span></div>
           <p class="mt-2 min-h-10 text-xs font-semibold leading-5 text-slate-500">${escapeHtml(quest.description)}</p>
           <div class="mt-4 flex items-center justify-between text-[0.68rem] font-black text-slate-500"><span>Progress</span><span>${progress} / ${goal}</span></div>
           <div class="studyshop-progress-track mt-2" role="progressbar" aria-valuemin="0" aria-valuemax="${goal}" aria-valuenow="${progress}"><div class="studyshop-progress-fill" style="width:${percent}%"></div></div>
@@ -3235,10 +3284,23 @@
     if (!region) return;
     const toast = document.createElement("div");
     toast.className = "studyshop-toast";
-    toast.innerHTML = `<div class="flex items-start gap-3"><span class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/10"><i data-lucide="sparkles"></i></span><div><p class="text-sm font-black">${escapeHtml(title)}</p><p class="mt-1 text-xs font-semibold text-violet-100">${escapeHtml(message)}</p></div></div>`;
+    toast.innerHTML = `<div class="flex items-start gap-3"><img class="h-9 w-9 shrink-0 object-contain" src="/assets/images/studybucks/currency/dollar.png" alt=""><div><p class="text-sm font-black">${escapeHtml(title)}</p><p class="mt-1 text-xs font-semibold text-violet-100">${escapeHtml(message)}</p></div></div>`;
     region.appendChild(toast);
     refreshResourceVaultChrome();
     setTimeout(() => toast.remove(), 4200);
+  }
+
+  function showStudyShopProgressToast(quest) {
+    const region = document.getElementById("studyshop-toast-region");
+    if (!region || !quest) return;
+    const goal = Math.max(1, Number(quest.goal) || 5);
+    const progress = Math.max(0, Math.min(goal, Number(quest.progress) || 0));
+    const percent = Math.round((progress / goal) * 100);
+    const toast = document.createElement("div");
+    toast.className = "studyshop-toast";
+    toast.innerHTML = `<div class="studyshop-progress-toast-head"><div><p class="studyshop-progress-toast-label">Daily quest</p><p class="mt-1 text-sm font-black">Open 5 resources</p></div><span class="studyshop-progress-toast-count">${progress} / ${goal}</span></div><div class="studyshop-progress-toast-track" role="progressbar" aria-label="Open 5 resources" aria-valuemin="0" aria-valuemax="${goal}" aria-valuenow="${progress}"><div class="studyshop-progress-toast-fill" style="width:${percent}%"></div></div><p class="mt-2 text-[0.68rem] font-bold text-violet-100">${progress >= goal ? "Quest complete. Open Quests to claim your reward." : `${goal - progress} more to complete this quest.`}</p>`;
+    region.appendChild(toast);
+    setTimeout(() => toast.remove(), 5000);
   }
 
   function applyStudyShopState(nextState, options = {}) {
@@ -3249,7 +3311,7 @@
     if (options.resourceLaunch) {
       const quest = nextState.quests.find(item => item.id === "launch-five");
       if (quest && Number(quest.progress) > Number(previousQuest?.progress || 0)) {
-        showStudyShopToast("Quest progress", `${quest.title}: ${quest.progress} / ${quest.goal}`);
+        showStudyShopProgressToast(quest);
       }
     }
   }
@@ -3261,14 +3323,27 @@
     return result;
   }
 
-  async function openStudyShop() {
-    const modal = document.getElementById("studyshop-modal");
-    if (!modal) return;
-    modal.classList.remove("hidden");
+  function studyShopWorkspace(mode) {
+    const safeMode = ["quests", "shop", "locker"].includes(mode) ? mode : "quests";
+    return document.getElementById(`studyshop-${safeMode}-workspace`);
+  }
+
+  function selectStudyShopSection(mode, sectionName) {
+    const workspace = studyShopWorkspace(mode);
+    if (!workspace) return;
+    workspace.querySelectorAll("[data-studyshop-tab]").forEach(button => button.classList.toggle("active", button.dataset.studyshopTab === sectionName));
+    workspace.querySelectorAll("[data-studyshop-panel]").forEach(panel => panel.classList.toggle("hidden", panel.dataset.studyshopPanel !== sectionName));
+  }
+
+  async function openStudyShop(mode = "quests") {
+    const workspace = studyShopWorkspace(mode);
+    if (!workspace) return;
+    if (workspace.parentElement !== document.body) document.body.appendChild(workspace);
+    workspace.classList.remove("hidden");
     updateBodyScrollLock();
     if (!studyShopState) {
       const result = await loadStudyShop();
-      if (!result?.ok) {
+      if (!result?.ok && mode === "quests") {
         const list = document.getElementById("studyshop-quest-list");
         if (list) list.innerHTML = `<div class="col-span-full rounded-2xl bg-red-50 p-6 text-center text-sm font-bold text-red-700">${escapeHtml(result?.error || "StudyShop could not be loaded")}</div>`;
       }
@@ -3277,8 +3352,9 @@
     }
   }
 
-  function closeStudyShop() {
-    document.getElementById("studyshop-modal")?.classList.add("hidden");
+  function closeStudyShop(mode) {
+    if (mode) studyShopWorkspace(mode)?.classList.add("hidden");
+    else ["quests", "shop", "locker"].forEach(item => studyShopWorkspace(item)?.classList.add("hidden"));
     updateBodyScrollLock();
   }
 
@@ -3299,6 +3375,7 @@
 
   window.openStudyShop = openStudyShop;
   window.closeStudyShop = closeStudyShop;
+  window.selectStudyShopSection = selectStudyShopSection;
   window.claimStudyShopQuest = claimStudyShopQuest;
 
   function setBannerResourceMode(mode) {
@@ -5120,7 +5197,9 @@
       "announcement-modal",
       "reportModal",
       "weekly-feedback-modal",
-      "studyshop-modal",
+      "studyshop-quests-workspace",
+      "studyshop-shop-workspace",
+      "studyshop-locker-workspace",
       "sb-account-page-modal",
       "embedded-material-section",
       "friends-workspace-section"
@@ -5544,10 +5623,6 @@
       closeReportModal();
       closeStudyShop();
     }
-  });
-
-  document.getElementById("studyshop-modal")?.addEventListener("click", event => {
-    if (event.target === event.currentTarget) closeStudyShop();
   });
 
 
