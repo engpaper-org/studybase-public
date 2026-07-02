@@ -131,6 +131,27 @@
 
         .loader { border-radius: 9999px; border-top-color: rgb(37 99 235); }
 
+        .material-report-check-ring {
+            stroke-dasharray: 190;
+            stroke-dashoffset: 190;
+            animation: material-report-ring 0.65s ease-out forwards;
+        }
+
+        .material-report-check-mark {
+            stroke-dasharray: 54;
+            stroke-dashoffset: 54;
+            animation: material-report-check 0.42s 0.38s ease-out forwards;
+        }
+
+        .material-report-success-pop { animation: material-report-pop 0.42s cubic-bezier(.2,.8,.2,1.15) both; }
+
+        @keyframes material-report-ring { to { stroke-dashoffset: 0; } }
+        @keyframes material-report-check { to { stroke-dashoffset: 0; } }
+        @keyframes material-report-pop {
+            from { opacity: 0; transform: translateY(8px) scale(.94); }
+            to { opacity: 1; transform: none; }
+        }
+
         @keyframes update-pop {
             0% { opacity: 0; transform: translateY(12px) scale(0.95); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
@@ -507,8 +528,8 @@
                 <i class="fas fa-triangle-exclamation"></i>
             </div>
             <div>
-                <p class="font-bold text-slate-900">Report a problem</p>
-                <p class="text-xs text-slate-500">Open the issue report form</p>
+                <p class="font-bold text-slate-900">Report Problem</p>
+                <p class="text-xs text-slate-500">Tell us when this resource is broken</p>
             </div>
         </button>
     </div>
@@ -520,17 +541,38 @@
     <iframe id="protoFrame" class="w-full h-full border-none" src=""></iframe>
 </div>
 
-<div id="reportModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-fade-in">
-    <div class="bg-white w-full max-w-2xl h-[90vh] rounded-[2rem] shadow-2xl relative overflow-hidden flex flex-col update-modal-card">
-        <div class="flex items-center justify-between p-6 border-b border-slate-100 bg-white z-10">
-            <h3 class="font-bold text-slate-800 text-lg flex items-center gap-2">
-                <i class="fas fa-triangle-exclamation text-amber-500"></i> Report Issue
-            </h3>
-            <button onclick="closeReportModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors">
+<div id="reportModal" class="hidden fixed inset-0 bg-slate-950/70 backdrop-blur-md z-[100] flex items-center justify-center p-4 animate-fade-in" role="dialog" aria-modal="true" aria-labelledby="materialReportTitle">
+    <div class="bg-white w-full max-w-lg rounded-[2rem] shadow-2xl relative overflow-hidden update-modal-card">
+        <div class="flex items-start justify-between gap-4 p-6 border-b border-slate-100 bg-gradient-to-br from-orange-50 via-white to-amber-50">
+            <div>
+                <p class="text-[10px] font-extrabold tracking-[0.18em] text-orange-600 uppercase">Resource feedback</p>
+                <h3 id="materialReportTitle" class="font-extrabold text-slate-950 text-2xl mt-1">Report a problem</h3>
+                <p class="text-sm font-medium leading-6 text-slate-500 mt-2">Choose what went wrong with this resource.</p>
+            </div>
+            <button onclick="closeReportModal()" class="w-10 h-10 shrink-0 flex items-center justify-center rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-slate-900 transition-colors" aria-label="Close report">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <iframe id="reportFrame" class="flex-grow w-full border-none bg-slate-50" src=""></iframe>
+
+        <div id="materialReportOptions" class="p-6">
+            <button id="resourceNotWorkingButton" onclick="submitMaterialReport('resource_not_working')" class="group w-full flex items-center gap-4 p-5 rounded-2xl border border-red-100 bg-red-50/70 hover:border-red-300 hover:bg-red-50 transition text-left">
+                <span class="w-13 h-13 shrink-0 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-xl" style="width:3.25rem;height:3.25rem"><i class="fas fa-link-slash"></i></span>
+                <span class="min-w-0 flex-1"><strong class="block text-base font-extrabold text-slate-950">Resource Not Working</strong><small class="block mt-1 text-xs font-semibold leading-5 text-slate-500">The resource will not load, is unavailable, or does not work correctly.</small></span>
+                <i class="fas fa-chevron-right text-slate-300 group-hover:text-red-500 transition-colors"></i>
+            </button>
+            <p id="materialReportError" class="hidden mt-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold text-red-700" role="alert"></p>
+            <p class="mt-4 text-center text-[11px] font-semibold leading-5 text-slate-400">Reports contain the resource name, its internal identifier, this page address and the site domain.</p>
+        </div>
+
+        <div id="materialReportSuccess" class="hidden p-8 text-center material-report-success-pop" aria-live="polite">
+            <svg class="mx-auto h-24 w-24" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+                <circle class="material-report-check-ring" cx="40" cy="40" r="31" stroke="#10b981" stroke-width="5"/>
+                <path class="material-report-check-mark" d="M24 41.5 35 52l22-25" stroke="#10b981" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3 class="mt-4 text-2xl font-extrabold text-slate-950">Report sent</h3>
+            <p class="mt-2 text-sm font-semibold leading-6 text-slate-500">Thanks. This resource has been marked for checking.</p>
+            <button onclick="closeReportModal()" class="mt-6 w-full rounded-2xl bg-slate-950 px-5 py-3.5 text-sm font-extrabold text-white hover:bg-slate-800">Done</button>
+        </div>
     </div>
 </div>
 
@@ -568,6 +610,7 @@
 let WORKER = window.SB_CONFIG?.endpoints?.apiBase || window.SiteConfig?.defaults?.endpoints?.apiBase || "";
 let RESOURCE_GET_ENDPOINT = `${WORKER}/resource/get`;
 let RESOURCE_STATE_ENDPOINT = `${WORKER}/state`;
+let MATERIAL_REPORT_URL = window.SB_CONFIG?.endpoints?.materialReport || window.SiteConfig?.defaults?.endpoints?.materialReport || "";
 let TURNSTILE_SITE_KEY = window.SB_CONFIG?.security?.turnstileSiteKeys?.resource || "0x4AAAAAACxsClLBNoaHGiZm";
 let SERVICE_ALIAS = "";
 //const TURNSTILE_SITE_KEY = "1x00000000000000000000AA";
@@ -584,6 +627,7 @@ function applyMaterialPageConfig(config) {
     WORKER = endpoints.apiBase || WORKER;
     RESOURCE_GET_ENDPOINT = endpoints.resourceGet || `${WORKER}/resource/get`;
     RESOURCE_STATE_ENDPOINT = endpoints.resourceState || endpoints.loginState || `${WORKER}/state`;
+    MATERIAL_REPORT_URL = endpoints.materialReport || MATERIAL_REPORT_URL;
     TURNSTILE_SITE_KEY = security.turnstileSiteKeys?.resource || TURNSTILE_SITE_KEY;
     SERVICE_ALIAS = String(configuredServiceAlias || "").trim();
 
@@ -996,7 +1040,7 @@ function cancelMaterialLoad() {
         }
     } catch (_) {}
 
-    ["materialFrame", "loadingAdFrame", "protoFrame", "reportFrame"].forEach((id) => {
+    ["materialFrame", "loadingAdFrame", "protoFrame"].forEach((id) => {
         const frame = document.getElementById(id);
         if (frame) {
             try { frame.src = "about:blank"; } catch (_) {}
@@ -1055,11 +1099,15 @@ function closeMenu() {
 }
 
 function openReportModal() {
-    const modal = document.getElementById('reportModal');
-    const iframe = document.getElementById('reportFrame');
-    const currentUrl = encodeURIComponent(window.location.href);
-    iframe.src = `/report.html?pageUrl=${currentUrl}`;
-    modal.classList.remove('hidden');
+    document.getElementById("materialReportOptions").classList.remove("hidden");
+    document.getElementById("materialReportSuccess").classList.add("hidden");
+    const error = document.getElementById("materialReportError");
+    error.textContent = "";
+    error.classList.add("hidden");
+    const button = document.getElementById("resourceNotWorkingButton");
+    button.disabled = false;
+    button.classList.remove("opacity-60", "cursor-not-allowed");
+    document.getElementById("reportModal").classList.remove("hidden");
 }
 
 function openReportFromMenu() {
@@ -1077,12 +1125,54 @@ function openStudyShopFromMenu() {
 }
 
 function closeReportModal() {
-    const modal = document.getElementById('reportModal');
-    const iframe = document.getElementById('reportFrame');
-    modal.classList.add('hidden');
-    setTimeout(() => { iframe.src = ""; }, 300);
+    document.getElementById("reportModal").classList.add("hidden");
 }
 window.closeReportModal = closeReportModal;
+
+function validMaterialReportUrl(value) {
+    return /^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec(?:\?.*)?$/.test(String(value || "").trim());
+}
+
+function submitMaterialReport(reportType) {
+    if (reportType !== "resource_not_working") return;
+    const error = document.getElementById("materialReportError");
+    if (!validMaterialReportUrl(MATERIAL_REPORT_URL)) {
+        error.textContent = "Resource reporting has not been configured yet.";
+        error.classList.remove("hidden");
+        return;
+    }
+
+    const button = document.getElementById("resourceNotWorkingButton");
+    if (button.disabled) return;
+    button.disabled = true;
+    button.classList.add("opacity-60", "cursor-not-allowed");
+    error.classList.add("hidden");
+
+    const payload = {
+        version: 1,
+        reportId: typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `report-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
+        reportType,
+        resourceName: getDecodedMaterialName().slice(0, 200),
+        materialId: getEncodedMaterialId().slice(0, 500),
+        site: window.location.hostname.slice(0, 100),
+        pageUrl: window.location.href.slice(0, 1000),
+        reportedAt: new Date().toISOString()
+    };
+
+    try {
+        void fetch(MATERIAL_REPORT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            keepalive: true,
+            headers: { "Content-Type": "text/plain;charset=UTF-8" },
+            body: JSON.stringify(payload)
+        }).catch(() => {});
+    } catch (_) {}
+
+    document.getElementById("materialReportOptions").classList.add("hidden");
+    document.getElementById("materialReportSuccess").classList.remove("hidden");
+}
+window.submitMaterialReport = submitMaterialReport;
 
 function confirmReloadResource() {
     closeMenu();
