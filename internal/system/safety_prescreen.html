@@ -1,161 +1,279 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <script src="/assets/js/config/privacyConfig.js"></script>
   <script src="/assets/js/privacy/checkCookieConsent.js"></script>
-    
-    <meta charset="UTF-8">
-    <script src="/assets/js/auth/iframeCheck.js"></script>
-            <meta name="description" content="StudyBase provides educational revision resources, A-Level and GCSE study tools, past papers, subject guides, wellbeing support, and learning materials for students." data-studybase-education-meta="true">
-    <meta name="classification" content="Education" data-studybase-education-meta="true">
-    <meta name="category" content="Education" data-studybase-education-meta="true">
-    <meta name="subject" content="A-Level and GCSE revision, study resources, educational tools" data-studybase-education-meta="true">
-    <meta name="audience" content="Students, teachers, and learners" data-studybase-education-meta="true">
-    <meta name="educational-use" content="Revision, exam preparation, independent study" data-studybase-education-meta="true">
-    <meta name="learning-resource-type" content="Revision resource" data-studybase-education-meta="true">
-    <meta property="og:site_name" content="StudyBase" data-studybase-education-meta="true">
-    <meta property="og:type" content="website" data-studybase-education-meta="true">
-    <meta property="og:locale" content="en_GB" data-studybase-education-meta="true">
-<script src="/assets/js/config/siteConfig.js"></script>
-    <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Content Notice | RevisionBase</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Review important content information before opening this StudyBase resource.">
+  <script src="/assets/js/auth/iframeCheck.js"></script>
+  <script src="/assets/js/config/siteConfig.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" href="/assets/images/site-icons/main.ico">
+  <title>Content notice | StudyBase</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; min-height: 100%; margin: 0; overflow: hidden; }
+    body { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .hidden { display: none !important; }
 
-    <!--Cookie consent banner and google analytics-->
-<!-- End of consent and analytics -->
+    .page-background {
+      background:
+        radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.12), transparent 27%),
+        radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.1), transparent 29%),
+        #f8fafc;
+    }
 
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" href="/assets/images/site-icons/main.ico">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        #page2 { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 100; }
-        @keyframes fade-in-up { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
-        .animate-enter { animation: fade-in-up 0.6s ease-out forwards; }
-    </style>
-  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
+    .notice-card {
+      display: flex;
+      max-height: calc(100vh - 48px);
+      min-height: 0;
+      flex-direction: column;
+      overflow: hidden;
+      animation: card-in 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .warning-list {
+      min-height: 70px;
+      max-height: min(330px, 42vh);
+      flex: 1 1 auto;
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 transparent;
+    }
+
+    .notice-header,
+    .resource-summary,
+    .notice-footer { flex: 0 0 auto; }
+
+    .warning-item {
+      animation: item-in 0.32s ease both;
+    }
+
+    .warning-icon {
+      width: 36px;
+      height: 36px;
+      flex: 0 0 36px;
+    }
+
+    .review-progress {
+      width: 0;
+      transition: width 0.08s linear;
+    }
+
+    #resourcePage {
+      position: fixed;
+      z-index: 100;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #0f172a;
+    }
+
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(14px) scale(0.99); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes item-in {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-height: 680px) {
+      .notice-shell { padding-top: 12px; padding-bottom: 12px; }
+      .notice-card { padding: 20px; }
+      .notice-header { margin-bottom: 14px; }
+      .notice-icon { width: 48px; height: 48px; margin-bottom: 10px; }
+      .warning-list { max-height: 245px; }
+    }
+
+    @media (max-width: 639px) {
+      .notice-card { max-height: calc(100vh - 32px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .notice-card, .warning-item { animation: none; }
+    }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
-
-    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-blue-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-center h-16 items-center">
-                <div class="text-xl md:text-2xl font-extrabold text-blue-600 tracking-tight">
-                    RevisionBase<span class="text-slate-400">.site</span>
-                    <span class="text-slate-800 font-semibold ml-2">Safety Portal</span>
-                </div>
-            </div>
+<body class="page-background text-slate-800 antialiased">
+  <section id="noticePage" class="flex h-screen min-h-0 flex-col overflow-hidden">
+    <main class="notice-shell flex min-h-0 flex-1 items-center justify-center p-4 sm:p-6">
+      <section class="notice-card w-full max-w-xl rounded-3xl border border-slate-200/80 bg-white p-6 shadow-2xl shadow-slate-300/35 sm:p-8" aria-labelledby="noticeTitle">
+        <div class="notice-header mb-5 text-center">
+          <div id="mainIcon" class="notice-icon mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl border border-blue-100 bg-blue-50 text-blue-600 shadow-sm">
+            <i class="fa-solid fa-shield-halved text-xl" aria-hidden="true"></i>
+          </div>
+          <p class="mb-2 text-[9px] font-black uppercase tracking-[0.18em] text-violet-600">Before you continue</p>
+          <h1 id="noticeTitle" class="text-2xl font-black tracking-tight text-slate-950 sm:text-3xl">A quick content notice</h1>
+          <p class="mt-2 text-sm font-medium leading-6 text-slate-500">Please review the information below before opening this resource.</p>
         </div>
-    </nav>
 
-    <div id="page1" class="flex-grow flex items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-2xl shadow-xl border border-slate-100 max-w-lg w-full text-left animate-enter">
-
-            <div id="iconContainer" class="w-16 h-16 bg-blue-50 border border-blue-200 text-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm">
-                <i id="mainIcon" class="fas fa-shield-alt text-2xl"></i>
-            </div>
-
-            <h1 class="text-3xl font-bold text-slate-900 mb-2 text-center">Content Notice</h1>
-            <p class="text-slate-500 text-center mb-6">Review the following safety information.</p>
-
-            <div class="bg-slate-50 rounded-xl p-5 mb-6 border border-slate-100">
-                <p class="text-slate-700 font-semibold mb-3">Important for <span id="serviceDisplay" class="text-blue-600">this content</span>:</p>
-                <ul id="warningList" class="space-y-4 text-slate-600 text-sm"></ul>
-            </div>
-
-            <button id="continueButton" disabled
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-200 transition-all duration-300 transform active:scale-95
-                       disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none disabled:cursor-not-allowed disabled:transform-none">
-                Please wait (3s)
-            </button>
-
-            <p class="text-slate-400 text-[10px] text-center mt-4 uppercase tracking-widest font-semibold">Revision Base Safety Protocol</p>
+        <div class="resource-summary mb-4 flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs text-blue-500" aria-hidden="true"></i>
+          <div class="min-w-0">
+            <p class="text-[9px] font-black uppercase tracking-[0.12em] text-slate-400">Opening</p>
+            <p id="serviceDisplay" class="truncate text-sm font-extrabold text-slate-800">This resource</p>
+          </div>
+          <span id="warningCount" class="ml-auto shrink-0 rounded-lg bg-violet-100 px-2.5 py-1.5 text-[9px] font-black uppercase tracking-wide text-violet-700">Loading</span>
         </div>
-    </div>
 
-    <div id="page2" class="hidden bg-slate-900">
-        <iframe id="serviceFrame" src="about:blank" class="w-full h-full border-0" allowfullscreen></iframe>
-    </div>
+        <div id="warningList" class="warning-list space-y-2 overflow-y-auto pr-1" aria-live="polite"></div>
 
-    <script>
-        const warningData = {
-            '01': { icon: 'fa-users', title: 'Online Interaction', desc: 'Interact with others safely. Never share personal details.' },
-            '02': { icon: 'fa-external-link-alt', title: 'External Service', desc: 'Not owned by revision base. Their specific terms and policies apply.' },
-            '03': { icon: 'fa-microchip', title: 'High Resource Usage', desc: 'Requires significant power; may lag on older devices.' },
-            '04': { icon: 'fa-bolt', title: 'Photosensitivity', desc: 'Warning: Contains flashing lights or patterns.' },
-            '05': { icon: 'fa-ghost', title: 'Disturbing Content', desc: 'May contain horror elements or jumpscares.' },
-            '06': { icon: 'fa-exclamation-circle', title: 'Mature Language', desc: 'Contains strong language or adult themes.' },
-            '07': { icon: 'fa-user-edit', title: 'User Content', desc: 'Content is user-created and not actively moderated.' },
-            '08': { icon: 'fa-fire', title: 'Overheating Risk', desc: 'May cause device to run hot or drain battery quickly.' }
-        };
+        <div class="notice-footer mt-5 border-t border-slate-100 pt-5">
+          <div class="mb-2 flex items-center justify-between text-[9px] font-black uppercase tracking-[0.1em] text-slate-400">
+            <span>Review period</span>
+            <span id="reviewStatus" class="text-violet-600">3 seconds</span>
+          </div>
+          <div class="mb-4 h-1 overflow-hidden rounded-full bg-slate-200" aria-hidden="true">
+            <div id="reviewProgress" class="review-progress h-full rounded-full bg-gradient-to-r from-sky-500 via-blue-600 to-violet-600"></div>
+          </div>
+          <button id="continueButton" type="button" disabled
+            class="w-full rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-5 py-3.5 text-sm font-black text-white shadow-lg shadow-blue-200 transition hover:-translate-y-0.5 hover:shadow-xl disabled:translate-y-0 disabled:cursor-wait disabled:bg-none disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none">
+            Review the notice (3)
+          </button>
+        </div>
+      </section>
+    </main>
+  </section>
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const types = urlParams.get('types') ? urlParams.get('types').split(',') : [];
-        const serviceUrl = urlParams.get('url');
-        const provider = urlParams.get('provider');
-        const name = urlParams.get('name') || 'External Content';
+  <section id="resourcePage" class="hidden">
+    <iframe id="serviceFrame" src="about:blank" class="h-full w-full border-0" title="StudyBase resource" allow="fullscreen; autoplay; gamepad; pointer-lock" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </section>
 
-        const warningList = document.getElementById('warningList');
-        const serviceDisplay = document.getElementById('serviceDisplay');
-        const continueButton = document.getElementById('continueButton');
-        const page1 = document.getElementById('page1');
-        const page2 = document.getElementById('page2');
-        const serviceFrame = document.getElementById('serviceFrame');
-        const mainIcon = document.getElementById('mainIcon');
+  <script>
+    "use strict";
 
-        // --- Check content warning setting ---
-// --- Check content warning setting ---
-const showWarningsSetting = (localStorage.getItem("sb_showContentWarnings") || "").toLowerCase().trim();
-// Default = enabled if not set
-const showWarnings = showWarningsSetting !== "false";
+    const warningData = {
+      "01": { icon: "fa-users", title: "Online interaction", description: "This resource lets you interact with other people. Never share personal information.", color: "blue" },
+      "02": { icon: "fa-arrow-up-right-from-square", title: "External service", description: "This resource is operated by another provider. Their own terms and privacy rules may apply.", color: "violet" },
+      "03": { icon: "fa-microchip", title: "High resource usage", description: "This resource may use significant processing power or memory and could lag on older devices.", color: "cyan" },
+      "04": { icon: "fa-bolt", title: "Photosensitivity", description: "This resource may contain flashing lights or rapidly changing, high-contrast patterns.", color: "amber" },
+      "05": { icon: "fa-triangle-exclamation", title: "Disturbing content", description: "This resource may include horror, jumpscares, frightening imagery, or upsetting themes.", color: "rose" },
+      "06": { icon: "fa-comment-dots", title: "Mature language", description: "This resource may contain strong language or adult themes.", color: "fuchsia" },
+      "07": { icon: "fa-layer-group", title: "User-created content", description: "This resource can display user content that StudyBase does not actively moderate.", color: "indigo" },
+      "08": { icon: "fa-temperature-half", title: "Device heat and battery", description: "Extended use may make your device warm or drain its battery more quickly.", color: "orange" }
+    };
 
-if (!showWarnings && serviceUrl) {
-    // Skip warning screen completely
-    page1.classList.add("hidden");
-    page2.classList.remove("hidden");
-    serviceFrame.src = serviceUrl;
+    const colorClasses = {
+      blue: { item: "border-blue-100 bg-blue-50/70", icon: "bg-white text-blue-600" },
+      violet: { item: "border-violet-100 bg-violet-50/70", icon: "bg-white text-violet-600" },
+      cyan: { item: "border-cyan-100 bg-cyan-50/70", icon: "bg-white text-cyan-600" },
+      amber: { item: "border-amber-100 bg-amber-50/70", icon: "bg-white text-amber-600" },
+      rose: { item: "border-rose-100 bg-rose-50/70", icon: "bg-white text-rose-600" },
+      fuchsia: { item: "border-fuchsia-100 bg-fuchsia-50/70", icon: "bg-white text-fuchsia-600" },
+      indigo: { item: "border-indigo-100 bg-indigo-50/70", icon: "bg-white text-indigo-600" },
+      orange: { item: "border-orange-100 bg-orange-50/70", icon: "bg-white text-orange-600" },
+      slate: { item: "border-slate-200 bg-slate-50", icon: "bg-white text-slate-600" }
+    };
 
-    // IMPORTANT: don't run the rest of the warning-page logic
-} else {
-    // normal behaviour continues below
+    const params = new URLSearchParams(window.location.search);
+    const requestedTypes = (params.get("types") || "").split(",").map(type => type.trim()).filter(Boolean);
+    const types = [...new Set(requestedTypes)].filter(type => warningData[type]);
+    const name = (params.get("name") || "External resource").trim().slice(0, 120) || "External resource";
+    const provider = (params.get("provider") || "").trim().slice(0, 120);
 
-        serviceDisplay.textContent = provider || name;
+    const noticePage = document.getElementById("noticePage");
+    const resourcePage = document.getElementById("resourcePage");
+    const serviceFrame = document.getElementById("serviceFrame");
+    const warningList = document.getElementById("warningList");
+    const warningCount = document.getElementById("warningCount");
+    const continueButton = document.getElementById("continueButton");
+    const reviewStatus = document.getElementById("reviewStatus");
+    const reviewProgress = document.getElementById("reviewProgress");
 
-        if (types.length > 0) {
-            mainIcon.className = `fas ${warningData[types[0].trim()]?.icon || 'fa-info-circle'} text-2xl`;
-            types.forEach(type => {
-                const data = warningData[type.trim()];
-                if (data) {
-                    const li = document.createElement('li');
-                    li.className = 'flex gap-3 animate-enter';
-                    li.innerHTML = `<i class="fas ${data.icon} text-blue-500 mt-1 w-5 text-center"></i><span><strong>${data.title}:</strong> ${data.desc}</span>`;
-                    warningList.appendChild(li);
-                }
-            });
+    function destinationUrl(rawUrl) {
+      if (!rawUrl) return null;
+      try {
+        const parsed = new URL(rawUrl, window.location.origin);
+        const localDevelopment = parsed.protocol === "http:" && ["localhost", "127.0.0.1"].includes(parsed.hostname);
+        if (parsed.protocol !== "https:" && !localDevelopment) return null;
+        return parsed.href;
+      } catch (_) {
+        return null;
+      }
+    }
+
+    const serviceUrl = destinationUrl(params.get("url"));
+    document.getElementById("serviceDisplay").textContent = provider || name;
+
+    function addWarning(data, index) {
+      const colors = colorClasses[data.color] || colorClasses.slate;
+      const item = document.createElement("article");
+      item.className = `warning-item flex items-start gap-3 rounded-xl border p-3 ${colors.item}`;
+      item.style.animationDelay = `${Math.min(index * 45, 225)}ms`;
+
+      const icon = document.createElement("span");
+      icon.className = `warning-icon grid place-items-center rounded-xl shadow-sm ${colors.icon}`;
+      const iconElement = document.createElement("i");
+      iconElement.className = `fa-solid ${data.icon} text-sm`;
+      iconElement.setAttribute("aria-hidden", "true");
+      icon.appendChild(iconElement);
+
+      const copy = document.createElement("div");
+      copy.className = "min-w-0 pt-0.5";
+      const title = document.createElement("h2");
+      title.className = "text-xs font-black text-slate-800";
+      title.textContent = data.title;
+      const description = document.createElement("p");
+      description.className = "mt-1 text-[11px] font-medium leading-[1.45] text-slate-500";
+      description.textContent = data.description;
+      copy.append(title, description);
+      item.append(icon, copy);
+      warningList.appendChild(item);
+    }
+
+    let displayedWarnings = types.length
+      ? types.map(type => warningData[type])
+      : [{ icon: "fa-circle-info", title: "General content notice", description: "Continue only if you are comfortable opening this resource.", color: "blue" }];
+
+    if (!serviceUrl) {
+      displayedWarnings = [{ icon: "fa-triangle-exclamation", title: "Resource unavailable", description: "The destination for this resource is missing or invalid.", color: "rose" }];
+    }
+
+    displayedWarnings.forEach(addWarning);
+    warningCount.textContent = `${displayedWarnings.length} ${displayedWarnings.length === 1 ? "notice" : "notices"}`;
+
+    function openResource() {
+      if (!serviceUrl) return;
+      noticePage.classList.add("hidden");
+      resourcePage.classList.remove("hidden");
+      serviceFrame.src = serviceUrl;
+    }
+
+    const showWarnings = (localStorage.getItem("sb_showContentWarnings") || "").toLowerCase().trim() !== "false";
+    if (!showWarnings && serviceUrl) {
+      openResource();
+    } else if (serviceUrl) {
+      const reviewDuration = 3000;
+      const startedAt = performance.now();
+
+      function updateReview(now) {
+        const elapsed = Math.min(reviewDuration, now - startedAt);
+        const remaining = Math.max(0, reviewDuration - elapsed);
+        const seconds = Math.max(1, Math.ceil(remaining / 1000));
+        reviewProgress.style.width = `${elapsed / reviewDuration * 100}%`;
+
+        if (remaining > 0) {
+          continueButton.textContent = `Review the notice (${seconds})`;
+          reviewStatus.textContent = `${seconds} ${seconds === 1 ? "second" : "seconds"}`;
+          requestAnimationFrame(updateReview);
+          return;
         }
 
-        let countdown = 3;
-        const timer = setInterval(() => {
-            countdown--;
-            if (countdown > 0) {
-                continueButton.textContent = `Please wait (${countdown}s)`;
-            } else {
-                clearInterval(timer);
-                continueButton.disabled = false;
-                continueButton.textContent = `Continue to ${name}`;
-            }
-        }, 1000);
+        continueButton.disabled = false;
+        continueButton.textContent = `Continue to ${name}`;
+        reviewStatus.textContent = "Ready";
+      }
 
-        continueButton.addEventListener('click', () => {
-            page1.classList.add('hidden');
-            page2.classList.remove('hidden');
-            serviceFrame.src = serviceUrl;
-        });
+      requestAnimationFrame(updateReview);
+      continueButton.addEventListener("click", openResource);
+    } else {
+      continueButton.textContent = "Resource unavailable";
+      reviewStatus.textContent = "Unable to continue";
+      reviewProgress.style.width = "100%";
     }
-    </script>
+  </script>
 </body>
 </html>
-
-
