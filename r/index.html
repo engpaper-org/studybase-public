@@ -4616,6 +4616,7 @@
 
   async function loadResources() {
     await resourcePageConfigReady;
+    const useAuthenticatedSession = isVaultUserLoggedInQuick();
 
     // Keep the private resource overlay visible for at least one second.
     const overlayShown = showVaultOverlay();
@@ -4624,7 +4625,7 @@
     try {
       const res = await fetch(RESOURCE_LIST_ENDPOINT, {
         method: "POST",
-        credentials: "include",
+        credentials: useAuthenticatedSession ? "include" : "omit",
         headers: { "Content-Type": "application/json" },
         body: "{}",
       }).then(r => r.json());

@@ -14,6 +14,16 @@
   const CONSENT_VERSION = PRIVACY_CONFIG.noticeVersion || "STUDYBASE_PRIVACY_FALLBACK";
   const PRIVACY_URL = PRIVACY_CONFIG.privacyUrl || "/legal/privacy.html?consentReview=1";
   const TERMS_URL = PRIVACY_CONFIG.termsUrl || "/legal/tos.html?consentReview=1";
+  const ACCOUNT_LOCAL_KEYS = Object.freeze([
+    "studybase_session_active",
+    "studybase_session_expiry",
+    "studybase_user",
+    "get_help_data",
+    "studybase_friend_request_usage",
+    "studybase_weekly_feedback",
+    "sb_showContentWarnings"
+  ]);
+  let declineInProgress = false;
 
   function readStoredChoice() {
     try {
@@ -96,6 +106,40 @@
     document.body.appendChild(banner);
   }
 
+  function clearLocalAccountData() {
+    if (typeof window.StudyBaseClearLocalAccountData === "function") {
+      window.StudyBaseClearLocalAccountData();
+      return;
+    }
+    try {
+      Object.keys(localStorage)
+        .filter(key => ACCOUNT_LOCAL_KEYS.includes(key) || key.startsWith("sb_weekly_feedback_completed_"))
+        .forEach(key => localStorage.removeItem(key));
+    } catch (_) {
+      ACCOUNT_LOCAL_KEYS.forEach(key => {
+        try { localStorage.removeItem(key); } catch (_) {}
+      });
+    }
+    ACCOUNT_LOCAL_KEYS.forEach(key => {
+      try { sessionStorage.removeItem(key); } catch (_) {}
+    });
+  }
+
+  function revokeServerSession() {
+    const apiBase = window.StudyBaseServices?.API_BASE || "https://api.platformbase.online/api";
+    try {
+      return fetch(`${apiBase}/logout`, {
+        method: "POST",
+        credentials: "include",
+        keepalive: true,
+        headers: { "Content-Type": "application/json" },
+        body: "{}"
+      }).catch(() => null);
+    } catch (_) {
+      return Promise.resolve(null);
+    }
+  }
+
   function acceptConsent(analytics) {
     const allowAnalytics = analytics === true;
     const decidedAt = new Date().toISOString();
@@ -121,15 +165,21 @@
   }
 
   function declineConsent() {
+    if (declineInProgress) return;
+    declineInProgress = true;
     const choice = { version: CONSENT_VERSION, service: "declined", analytics: false, selection: "deny", decidedAt: new Date().toISOString() };
     localStorage.setItem(CHOICE_KEY, JSON.stringify(choice));
     localStorage.setItem(LEGACY_KEY, "false");
     localStorage.setItem(ANALYTICS_KEY, "false");
-    ["studybase_session_active", "studybase_session_expiry", "studybase_user", "get_help_data"].forEach(key => localStorage.removeItem(key));
+    clearLocalAccountData();
+    window.dispatchEvent(new CustomEvent("studybase:account-session-cleared", { detail: { reason: "consent-declined" } }));
     removeModal();
     document.documentElement.classList.add("sb-consent-limited");
     showLimitedBanner();
-    window.setTimeout(() => window.location.reload(), 50);
+    Promise.race([
+      revokeServerSession(),
+      new Promise(resolve => window.setTimeout(resolve, 1500))
+    ]).finally(() => window.location.reload());
   }
 
   function buildModal(force = false) {
@@ -161,14 +211,14 @@
         <div class="sb-consent-body">
           ${updateMarkup}
           <div class="sb-consent-modes" aria-hidden="true">
-            <div class="sb-consent-mode"><strong>Limited mode</strong><span>Public static pages only. Login, protected resources and external services stay blocked.</span></div>
+            <div class="sb-consent-mode"><strong>Limited mode</strong><span>Public static pages only. Choosing this signs you out and clears local account data from this browser.</span></div>
             <div class="sb-consent-mode sb-consent-mode-full"><strong>StudyBase enabled</strong><span>Accounts, protected resources, friends, reports and required security services become available.</span></div>
           </div>
-          <p class="sb-consent-links">Accept all enables essential services and optional analytics. Essential only enables account and security services without analytics. Deny keeps limited mode. Enabling StudyBase means you agree to the <a href="${TERMS_URL}" target="_blank" rel="noopener">Terms and Conditions</a> and acknowledge the <a href="${PRIVACY_URL}" target="_blank" rel="noopener">Privacy Notice</a>.</p>
+          <p class="sb-consent-links">Accept all enables essential services and optional analytics. Essential only enables account and security services without analytics. Deny signs you out, clears account-related local data, and keeps limited mode. Enabling StudyBase means you agree to the <a href="${TERMS_URL}" target="_blank" rel="noopener">Terms and Conditions</a> and acknowledge the <a href="${PRIVACY_URL}" target="_blank" rel="noopener">Privacy Notice</a>.</p>
           <div class="sb-consent-actions">
             <button id="sb-consent-accept-all" class="sb-consent-button sb-consent-accept" type="button"><span class="sb-consent-preferred">Preferred</span><span>Accept all</span><small>Essential services and analytics</small></button>
             <button id="sb-consent-essential" class="sb-consent-button sb-consent-essential" type="button"><span>Essential only</span><small>No optional analytics</small></button>
-            <button id="sb-consent-decline" class="sb-consent-button sb-consent-decline" type="button"><span>Deny</span><small>Continue in limited mode</small></button>
+            <button id="sb-consent-decline" class="sb-consent-button sb-consent-decline" type="button"><span>Deny</span><small>Sign out, clear account data and use limited mode</small></button>
           </div>
         </div>
       </section>`;

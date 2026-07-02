@@ -143,7 +143,7 @@
       contentWarnings.checked = loadedUser.settings?.contentWarnings !== false;
       cooldown(firstName, document.getElementById("nameHelp"), loadedUser.nameChangedAt, 7, "First name");
       cooldown(username, document.getElementById("usernameHelp"), loadedUser.usernameChangedAt, 30, "Username");
-      const pfpChanged = loadedUser.profilePicture ? Date.parse(loadedUser.profilePictureChangedAt || loadedUser.createdAt || "") : NaN;
+      const pfpChanged = Date.parse(loadedUser.profilePictureChangedAt || "");
       const pfpNext = pfpChanged + 30 * 86400000;
       if (Number.isFinite(pfpChanged) && Date.now() < pfpNext) {
         pfpLocked = true;

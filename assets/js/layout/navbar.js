@@ -146,7 +146,8 @@
       const data = await response.json();
       serviceShutdown = Boolean(data && data.ok === true && data.shutdown === true);
       if (serviceShutdown) {
-        ["studybase_session_active", "studybase_session_expiry", "studybase_user", "get_help_data"].forEach((key) => {
+        if (typeof window.StudyBaseClearLocalAccountData === "function") window.StudyBaseClearLocalAccountData();
+        else ["studybase_session_active", "studybase_session_expiry", "studybase_user", "get_help_data", "studybase_friend_request_usage", "studybase_weekly_feedback", "sb_showContentWarnings"].forEach((key) => {
           try { localStorage.removeItem(key); } catch (_) {}
         });
         return false;
@@ -169,12 +170,8 @@
       }
     } catch (_) {}
 
-    [
-      "studybase_session_active",
-      "studybase_session_expiry",
-      "studybase_user",
-      "get_help_data"
-    ].forEach((key) => {
+    if (typeof window.StudyBaseClearLocalAccountData === "function") window.StudyBaseClearLocalAccountData();
+    else ["studybase_session_active", "studybase_session_expiry", "studybase_user", "get_help_data", "studybase_friend_request_usage", "studybase_weekly_feedback", "sb_showContentWarnings"].forEach((key) => {
       try { localStorage.removeItem(key); } catch (_) {}
     });
 

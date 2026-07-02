@@ -10,7 +10,11 @@
     return Boolean(localStorage.getItem(TOKEN_KEY) === "1" && Number.isFinite(expiry) && expiry > Date.now());
   }
   function clearAccountSession(detail = {}) {
-    [TOKEN_KEY, EXPIRY_KEY, "studybase_user", "get_help_data"].forEach(k => localStorage.removeItem(k));
+    if (typeof window.StudyBaseClearLocalAccountData === "function") {
+      window.StudyBaseClearLocalAccountData();
+    } else {
+      [TOKEN_KEY, EXPIRY_KEY, "studybase_user", "get_help_data", "studybase_friend_request_usage", "studybase_weekly_feedback", "sb_showContentWarnings"].forEach(k => localStorage.removeItem(k));
+    }
     const reason = String(detail?.reason || "");
     if (reason === "authentication-required" && authenticationRequiredNotified) return;
     if (reason === "authentication-required") authenticationRequiredNotified = true;

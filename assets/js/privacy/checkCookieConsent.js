@@ -12,6 +12,15 @@
   const CONSENT_VERSION = PRIVACY_CONFIG.noticeVersion || "STUDYBASE_PRIVACY_FALLBACK";
   const GOOGLE_TAG_ID = PRIVACY_CONFIG.googleTagId || "G-N7LHC0S1T1";
   const LOG_URL = PRIVACY_CONFIG.consentLogUrl || "";
+  const ACCOUNT_LOCAL_KEYS = Object.freeze([
+    "studybase_session_active",
+    "studybase_session_expiry",
+    "studybase_user",
+    "get_help_data",
+    "studybase_friend_request_usage",
+    "studybase_weekly_feedback",
+    "sb_showContentWarnings"
+  ]);
 
   function readStoredChoice() {
     try {
@@ -108,15 +117,20 @@
   }
 
   function clearAccountDisplayState() {
-    [
-      "studybase_session_active",
-      "studybase_session_expiry",
-      "studybase_user",
-      "get_help_data"
-    ].forEach(key => {
-      try { localStorage.removeItem(key); } catch (_) {}
+    try {
+      Object.keys(localStorage)
+        .filter(key => ACCOUNT_LOCAL_KEYS.includes(key) || key.startsWith("sb_weekly_feedback_completed_"))
+        .forEach(key => localStorage.removeItem(key));
+    } catch (_) {
+      ACCOUNT_LOCAL_KEYS.forEach(key => {
+        try { localStorage.removeItem(key); } catch (_) {}
+      });
+    }
+    ACCOUNT_LOCAL_KEYS.forEach(key => {
+      try { sessionStorage.removeItem(key); } catch (_) {}
     });
   }
+  window.StudyBaseClearLocalAccountData = clearAccountDisplayState;
 
   function installLimitedStyles() {
     document.documentElement.classList.add("sb-consent-limited");
