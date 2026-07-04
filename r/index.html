@@ -1803,6 +1803,13 @@
             box-shadow: 0 -10px 24px rgba(16,185,129,0.16);
         }
 
+        .resource-tag-online {
+            border-top-color: rgba(37,99,235,0.9);
+            color: #1d4ed8;
+            background: rgba(239,246,255,0.92);
+            box-shadow: 0 -10px 24px rgba(37,99,235,0.16);
+        }
+
         /* ── Thick glowing outlines for popular / labs resources ── */
         .resource-card.resource-card-popular {
             outline: 3px solid rgba(239, 68, 68, 0.7) !important;
@@ -1836,16 +1843,34 @@
                 0 0 32px rgba(16, 185, 129, 0.38) !important;
         }
 
+        .resource-card.resource-card-online {
+            outline: 3px solid rgba(37, 99, 235, 0.7) !important;
+            outline-offset: 0px;
+            box-shadow:
+                0 18px 44px rgba(18,24,38,0.08),
+                0 0 0 4px rgba(37, 99, 235, 0.12),
+                0 0 18px rgba(37, 99, 235, 0.22) !important;
+        }
+        .resource-card.resource-card-online:hover {
+            outline-color: rgba(37, 99, 235, 0.92) !important;
+            box-shadow:
+                0 22px 52px rgba(37, 99, 235, 0.18),
+                0 0 0 5px rgba(37, 99, 235, 0.18),
+                0 0 32px rgba(37, 99, 235, 0.38) !important;
+        }
+
         /* Hide popular / labs tags by default, show on hover */
         .resource-card .resource-tag-popular,
-        .resource-card .resource-tag-labs {
+        .resource-card .resource-tag-labs,
+        .resource-card .resource-tag-online {
             opacity: 0;
             transform: translateY(8px);
             transition: opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1), transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
         }
         .resource-card:hover .resource-tag-popular,
-        .resource-card:hover .resource-tag-labs {
+        .resource-card:hover .resource-tag-labs,
+        .resource-card:hover .resource-tag-online {
             opacity: 1;
             transform: translateY(0);
             pointer-events: auto;
@@ -4745,6 +4770,7 @@
     let isRising = false;
     let isBeta = false;
     let isOriginal = false;
+    let isStudyBaseOnline = false;
     let isComingSoon = false;
     let isPaywall = false;
 
@@ -4755,7 +4781,17 @@
 
     if (displayName.includes("-p-")) {
       displayName = displayName.replace("-p-", "");
+      isPopular = true;
+    }
+
+    if (displayName.includes("-s-")) {
+      displayName = displayName.replace("-s-", "");
       isPaywall = true;
+    }
+
+    if (displayName.includes("-m-")) {
+      displayName = displayName.replace("-m-", "");
+      isStudyBaseOnline = true;
     }
 
     if (displayName.includes("-r-")) {
@@ -4790,6 +4826,7 @@
       isRising,
       isBeta,
       isOriginal,
+      isStudyBaseOnline,
       isComingSoon,
       isPaywall
     };
@@ -5269,7 +5306,7 @@
   }
 
   function getSubscriptionSlugFromItem(item) {
-    if (!String(item?.name || "").includes("-p-")) return "";
+    if (!String(item?.name || "").includes("-s-")) return "";
     const display = stripResourceDecorators(item?.name || "").toLowerCase();
     return subscriptionSlugByResourceName[display] || "";
   }
@@ -5402,6 +5439,7 @@
         isRising,
         isBeta,
         isOriginal,
+        isStudyBaseOnline,
         isComingSoon,
         isPaywall
       } = getResourceDisplayMeta(item.name);
@@ -5440,6 +5478,14 @@
             </div>`;
         }
 
+        else if (isStudyBaseOnline) {
+          if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
+          tagHtml = `
+            <div class="resource-tag resource-tag-online">
+              <i class="fas fa-globe"></i> StudyBase Online
+            </div>`;
+        }
+
         else if (isPopular) {
           if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
           tagHtml = `
@@ -5475,6 +5521,7 @@
         if (isPaywallResource) card.classList.add("resource-card-paywall");
         if (isPopular) card.classList.add("resource-card-popular");
         if (isOriginal) card.classList.add("resource-card-labs");
+        if (isStudyBaseOnline) card.classList.add("resource-card-online");
         card.style.contentVisibility = "auto";
         card.style.containIntrinsicSize = "1px 300px";
         
@@ -5514,6 +5561,7 @@
         if (isPaywallResource) card.classList.add("resource-card-paywall");
         if (isPopular) card.classList.add("resource-card-popular");
         if (isOriginal) card.classList.add("resource-card-labs");
+        if (isStudyBaseOnline) card.classList.add("resource-card-online");
 
         if (imageUrl === "pass") {
           contentHtml = `
