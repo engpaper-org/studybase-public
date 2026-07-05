@@ -3094,15 +3094,15 @@
                             </article>
 
                             <article class="resource-warning-card resource-warning-info">
-                                <div class="private-vault-notice-icon"><i data-lucide="keyboard"></i></div>
+                                <div class="private-vault-notice-icon"><i data-lucide="bookmark-plus"></i></div>
                                 <div>
-                                    <span class="private-vault-notice-label">Search warning</span>
-                                    <h3>Think before you type</h3>
-                                    <p>Smoothwall may monitor input boxes. Never enter unsafe, abusive, threatening or personal content.</p>
+                                    <span class="private-vault-notice-label">Stay connected</span>
+                                    <h3>Never lose access</h3>
+                                    <p>Bookmark our permanent redirect so you can always find the newest available StudyBase site.</p>
                                 </div>
-                                <button type="button" onclick="openInputSafetyModal()" class="private-vault-notice-action">
-                                    More info <i data-lucide="arrow-up-right"></i>
-                                </button>
+                                <a href="https://takemetoaworkingstudybase.site/?bookmark=true" target="_blank" rel="noopener noreferrer" class="private-vault-notice-action" style="text-decoration:none">
+                                    Bookmark StudyBase <i data-lucide="arrow-up-right"></i>
+                                </a>
                             </article>
 
                             <article id="studybase-subscription-banner" class="resource-warning-card private-vault-features hidden">
@@ -5712,6 +5712,7 @@
     return [
       "announcement-modal",
       "reportModal",
+      "input-safety-modal",
       "weekly-feedback-modal",
       "studyshop-quests-workspace",
       "studyshop-shop-workspace",
@@ -5908,6 +5909,8 @@
       skip.textContent = previousSkipText;
     }
 
+    if (notes.length <= 20) return;
+
     void (async () => {
       try {
         const response = await fetch(await getWeeklyFeedbackReportEndpoint(), {
@@ -5943,6 +5946,44 @@
 
     window.addEventListener("studybase:account-session-cleared", hideWeeklyFeedbackModal);
     setTimeout(showWeeklyFeedbackModal, 900);
+  }
+
+  const SEARCH_MONITORING_NOTICE_KEY = "studybase_search_monitoring_notice";
+  let searchMonitoringPromptShown = false;
+
+  function getLondonCalendarDay() {
+    const parts = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Europe/London",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    }).formatToParts(new Date());
+    const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+    return `${values.year}-${values.month}-${values.day}`;
+  }
+
+  function showDailySearchMonitoringNotice() {
+    if (searchMonitoringPromptShown) return;
+    const today = getLondonCalendarDay();
+    try {
+      if (localStorage.getItem(SEARCH_MONITORING_NOTICE_KEY) === today) return;
+      localStorage.setItem(SEARCH_MONITORING_NOTICE_KEY, today);
+    } catch (_) {}
+    searchMonitoringPromptShown = true;
+    openInputSafetyModal();
+  }
+
+  function setupDailySearchMonitoringNotice() {
+    const search = document.getElementById("mainSearchInput");
+    if (!search) return;
+    search.addEventListener("beforeinput", event => {
+      if (!String(event.inputType || "").startsWith("insert")) return;
+      showDailySearchMonitoringNotice();
+    });
+    search.addEventListener("keydown", event => {
+      if (event.key.length !== 1 || event.ctrlKey || event.metaKey || event.altKey) return;
+      showDailySearchMonitoringNotice();
+    });
   }
 
   function stripResourceDecorators(name) {
@@ -6231,6 +6272,7 @@
   setupResourceIdleCover();
   updateRoutingBookmarkBanner();
   setupWeeklyFeedbackPrompt();
+  setupDailySearchMonitoringNotice();
   setupCommandCenterControls();
   refreshCommandFilters();
   refreshResourceVaultChrome();
@@ -6266,8 +6308,8 @@
           <i data-lucide="shield-alert" class="w-5 h-5"></i>
         </div>
         <div>
-          <h3 class="font-black text-slate-900 dark:text-slate-100 text-lg">Input Safety Notice</h3>
-          <p class="text-xs font-bold text-slate-500 dark:text-slate-400">Please use StudyBase responsibly</p>
+          <h3 class="font-black text-slate-900 dark:text-slate-100 text-lg">Search activity is monitored</h3>
+          <p class="text-xs font-bold text-slate-500 dark:text-slate-400">Think carefully before entering text</p>
         </div>
       </div>
 
@@ -6283,7 +6325,7 @@
 
     <div class="p-6 space-y-4 text-sm text-slate-600 dark:text-slate-300 leading-6">
       <p>
-        Some school networks and filtering systems, including Smoothwall, may review or flag text entered into online forms, search boxes, feedback boxes, report tools, and similar input areas.
+        Text entered into StudyBase input fields is monitored for safety and abuse prevention. School networks and filtering systems, including Smoothwall, may also review or flag text entered into search boxes, forms, feedback tools, and reports.
       </p>
 
       <div class="rounded-2xl bg-blue-50 border border-blue-100 dark:bg-blue-950/30 dark:border-blue-800/50 p-4">
@@ -6320,6 +6362,7 @@
 
     modal.classList.remove("hidden");
     modal.setAttribute("aria-hidden", "false");
+    if (typeof updateBodyScrollLock === "function") updateBodyScrollLock();
 
     if (window.lucide && typeof window.lucide.createIcons === "function") {
       window.lucide.createIcons();
@@ -6332,6 +6375,7 @@
 
     modal.classList.add("hidden");
     modal.setAttribute("aria-hidden", "true");
+    if (typeof updateBodyScrollLock === "function") updateBodyScrollLock();
   }
 
   document.addEventListener("keydown", function(event) {
