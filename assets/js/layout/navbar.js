@@ -487,6 +487,47 @@
       status.onclick = event => { if (event.target === status) status.remove(); };
     }
 
+    function showRedirectServiceStatus() {
+      document.getElementById("sbx-redirect-service-modal")?.remove();
+      const modal = document.createElement("div");
+      modal.id = "sbx-redirect-service-modal";
+      modal.className = "sbx-login-modal is-open";
+      modal.innerHTML = `
+        <div role="dialog" aria-modal="true" aria-labelledby="sbx-redirect-service-title" style="position:relative;width:min(590px,calc(100vw - 28px));overflow:hidden;border:1px solid #c7d2fe;border-radius:30px;background:#fff;box-shadow:0 35px 100px rgba(30,41,59,.38);color:#0f172a">
+          <div style="position:relative;overflow:hidden;padding:34px;background:radial-gradient(circle at 90% 0%,rgba(34,211,238,.3),transparent 38%),linear-gradient(135deg,#111827,#312e81 60%,#5b21b6);color:#fff">
+            <div style="position:absolute;right:-50px;bottom:-80px;width:210px;height:210px;border:1px solid rgba(255,255,255,.12);border-radius:999px;box-shadow:0 0 0 40px rgba(255,255,255,.035)"></div>
+            <button type="button" data-redirect-close aria-label="Close message" style="position:absolute;right:18px;top:18px;width:42px;height:42px;border:1px solid rgba(255,255,255,.18);border-radius:14px;background:rgba(255,255,255,.1);color:#fff;font-size:24px;cursor:pointer">&times;</button>
+            <div style="position:relative;width:62px;height:62px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.18);border-radius:20px;background:rgba(255,255,255,.12);font-size:28px">&#8594;</div>
+            <p style="position:relative;margin:22px 0 0;color:#a5f3fc;font-size:10px;font-weight:900;letter-spacing:.18em;text-transform:uppercase">You have reached an available StudyBase site</p>
+            <h2 id="sbx-redirect-service-title" style="position:relative;margin:8px 0 0;max-width:470px;font-size:clamp(28px,5vw,38px);line-height:1.08;font-weight:950;letter-spacing:-.035em">We apologise for the inconvenience.</h2>
+          </div>
+          <div style="padding:clamp(24px,5vw,32px)">
+            <p style="margin:0;color:#475569;font-size:14px;font-weight:650;line-height:1.7">StudyBase redirected you to a site that is currently available.</p>
+            <div style="margin-top:18px;display:grid;gap:11px">
+              <div style="display:flex;gap:11px;padding:14px;border:1px solid #e2e8f0;border-radius:16px;background:#f8fafc"><span style="flex:0 0 auto;display:grid;width:24px;height:24px;place-items:center;border-radius:999px;background:#dcfce7;color:#15803d;font-size:13px;font-weight:950">&#10003;</span><span style="color:#475569;font-size:13px;font-weight:650;line-height:1.55"><strong style="color:#0f172a">Your account settings are stored securely on our servers.</strong> Sign in with the same username and password you already use.</span></div>
+              <div style="display:flex;gap:11px;padding:14px;border:1px solid #e2e8f0;border-radius:16px;background:#f8fafc"><span style="flex:0 0 auto;display:grid;width:24px;height:24px;place-items:center;border-radius:999px;background:#e0f2fe;color:#0369a1;font-size:13px;font-weight:950">&#10003;</span><span style="color:#475569;font-size:13px;font-weight:650;line-height:1.55"><strong style="color:#0f172a">Individual resources manage their progress separately.</strong> Your existing progress should still be available where that resource supports saved progress.</span></div>
+            </div>
+            <p style="margin:18px 0 0;color:#64748b;font-size:13px;line-height:1.6">With apologies,<br><strong style="color:#0f172a">The StudyBase Team</strong></p>
+            <button type="button" data-redirect-login style="margin-top:22px;width:100%;border:0;border-radius:15px;padding:14px;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;font-weight:900;box-shadow:0 14px 28px -16px rgba(79,70,229,.8);cursor:pointer">Log in</button>
+          </div>
+        </div>`;
+      document.body.appendChild(modal);
+
+      const close = () => {
+        document.removeEventListener("keydown", onKeydown);
+        modal.remove();
+      };
+      const onKeydown = event => { if (event.key === "Escape") close(); };
+      modal.querySelector("[data-redirect-close]").onclick = close;
+      modal.querySelector("[data-redirect-login]").onclick = () => {
+        close();
+        ensureAccountModal().openPage("/myaccount/login.html", "StudyBase login");
+      };
+      modal.onclick = event => { if (event.target === modal) close(); };
+      document.addEventListener("keydown", onKeydown);
+      modal.querySelector("[data-redirect-login]").focus();
+    }
+
     function showLoggedOutStatus() {
       showAccountStatus({
         title: "Account logged out",
@@ -645,6 +686,14 @@
           "sessionExpired";
 
         const params = new URLSearchParams(window.location.search);
+        const arrivedFromRedirectService = params.get("from") === "redirectService" && (window.location.pathname === "/" || window.location.pathname.endsWith("/index.html"));
+        if (arrivedFromRedirectService) {
+          const url = new URL(window.location.href);
+          url.searchParams.delete("from");
+          window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+          setTimeout(showRedirectServiceStatus, 80);
+          return;
+        }
         const statusParam = ["loggedin", "deleted", "signedout", "passwordChanged", "ban", "signupRestricted"].find(name => params.get(name) === "true");
         if (statusParam) {
           const username = (params.get("username") || "").trim();
