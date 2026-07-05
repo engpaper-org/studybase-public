@@ -5,686 +5,496 @@
   <script src="/assets/js/privacy/checkCookieConsent.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="StudyBase provides educational revision resources, A-Level and GCSE study tools, past papers, subject guides, wellbeing support, and learning materials for students." data-studybase-education-meta="true">
-  <meta name="classification" content="Education" data-studybase-education-meta="true">
-  <meta name="category" content="Education" data-studybase-education-meta="true">
-  <meta name="subject" content="A-Level and GCSE revision, study resources, educational tools" data-studybase-education-meta="true">
-  <meta name="audience" content="Students, teachers, and learners" data-studybase-education-meta="true">
-  <meta name="educational-use" content="Revision, exam preparation, independent study" data-studybase-education-meta="true">
-  <meta name="learning-resource-type" content="Revision resource" data-studybase-education-meta="true">
-  <meta property="og:site_name" content="StudyBase" data-studybase-education-meta="true">
-  <meta property="og:type" content="website" data-studybase-education-meta="true">
-  <meta property="og:locale" content="en_GB" data-studybase-education-meta="true">
+  <meta name="description" content="Contact StudyBase support from your signed-in account.">
   <title>Contact StudyBase</title>
   <script src="/assets/js/config/siteConfig.js"></script>
   <script src="/assets/js/auth/iframeCheck.js" defer></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
-  <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
     :root {
-      --sb-bg: #eef6f8;
-      --sb-ink: #10212b;
-      --sb-muted: #60717d;
-      --sb-border: #d7e6ea;
-      --sb-card: rgba(255, 255, 255, 0.92);
-      --sb-blue: #2563eb;
-      --sb-teal: #0f766e;
-      --sb-green: #15803d;
-      --sb-red: #dc2626;
-      --sb-amber: #b45309;
+      color-scheme: light;
+      --ink: #101827;
+      --muted: #64748b;
+      --line: #dbe5ef;
+      --violet: #7c3aed;
+      --blue: #2563eb;
+      --teal: #0f766e;
+      --red: #dc2626;
+      --amber: #d97706;
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
     }
 
     * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
     body {
-      min-height: 100vh;
       margin: 0;
-      font-family: "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--sb-ink);
+      color: var(--ink);
       background:
-        radial-gradient(circle at 12% 10%, rgba(37, 99, 235, 0.16), transparent 28rem),
-        radial-gradient(circle at 88% 2%, rgba(20, 184, 166, 0.16), transparent 26rem),
-        linear-gradient(135deg, #f7fbfc 0%, var(--sb-bg) 48%, #f9fbff 100%);
+        radial-gradient(circle at 10% 0%, rgba(34, 211, 238, 0.16), transparent 28rem),
+        radial-gradient(circle at 95% 100%, rgba(124, 58, 237, 0.15), transparent 30rem),
+        #f3f7fb;
     }
+    button, textarea { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
 
-    button, input, select, textarea { font: inherit; }
-
-    .page {
-      width: min(100%, 64rem);
-      min-height: 100vh;
-      margin: 0 auto;
-      padding: 1.4rem;
+    .app {
+      min-height: 100dvh;
+      padding: clamp(0.75rem, 2vw, 1.25rem);
       display: grid;
-      align-items: center;
+      place-items: center;
     }
-
     .shell {
+      width: min(100%, 68rem);
+      min-height: min(42rem, calc(100dvh - 2rem));
       display: grid;
-      grid-template-columns: minmax(0, 0.88fr) minmax(22rem, 1.12fr);
-      gap: 1rem;
-      align-items: stretch;
+      grid-template-columns: minmax(16rem, 0.78fr) minmax(0, 1.35fr);
+      overflow: hidden;
+      border: 1px solid rgba(203, 213, 225, 0.78);
+      border-radius: 1.75rem;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 30px 90px -38px rgba(15, 23, 42, 0.45);
     }
 
-    .intro,
-    .panel {
-      border: 1px solid rgba(215, 230, 234, 0.9);
-      background: var(--sb-card);
-      box-shadow: 0 28px 90px -42px rgba(15, 23, 42, 0.38);
-      backdrop-filter: blur(18px);
-    }
-
-    .intro {
-      border-radius: 1.5rem;
-      padding: 1.35rem;
+    .aside {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(1.5rem, 4vw, 2.35rem);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      overflow: hidden;
-      position: relative;
+      color: #fff;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(34, 211, 238, 0.3), transparent 17rem),
+        radial-gradient(circle at 100% 95%, rgba(217, 70, 239, 0.28), transparent 20rem),
+        linear-gradient(150deg, #111827, #312e81 58%, #5b21b6);
     }
-
-    .intro::after {
+    .aside::after {
       content: "";
       position: absolute;
-      inset: auto -4rem -5rem auto;
-      width: 13rem;
-      height: 13rem;
+      right: -4rem;
+      bottom: -5rem;
+      width: 14rem;
+      height: 14rem;
+      border: 1px solid rgba(255,255,255,0.18);
       border-radius: 999px;
-      background: rgba(15, 118, 110, 0.12);
+      box-shadow: 0 0 0 2.5rem rgba(255,255,255,0.035), 0 0 0 5rem rgba(255,255,255,0.025);
       pointer-events: none;
     }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-weight: 900;
-      letter-spacing: -0.02em;
-    }
-
+    .brand { display: flex; align-items: center; gap: 0.75rem; font-weight: 900; }
     .brand-mark {
-      width: 2.65rem;
-      height: 2.65rem;
+      width: 2.8rem;
+      height: 2.8rem;
       display: grid;
       place-items: center;
-      border-radius: 0.95rem;
-      background: #10212b;
-      color: white;
-      box-shadow: 0 16px 36px -20px rgba(16, 33, 43, 0.8);
-    }
-
-    .intro h1 {
-      margin: 3rem 0 0;
-      max-width: 18rem;
-      font-size: clamp(2rem, 6vw, 3.35rem);
-      line-height: 0.96;
-      font-weight: 900;
-      letter-spacing: -0.045em;
-    }
-
-    .intro p {
-      max-width: 23rem;
-      margin: 1rem 0 0;
-      color: var(--sb-muted);
-      line-height: 1.65;
-      font-weight: 650;
-      font-size: 0.94rem;
-    }
-
-    .guard {
-      margin-top: 2.5rem;
-      padding: 0.9rem;
+      border: 1px solid rgba(255,255,255,0.18);
       border-radius: 1rem;
-      border: 1px solid rgba(220, 38, 38, 0.18);
-      background: rgba(254, 242, 242, 0.82);
-      color: #991b1b;
-      font-size: 0.78rem;
-      line-height: 1.55;
-      font-weight: 750;
+      background: rgba(255,255,255,0.13);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.18);
     }
-
-    .panel {
-      border-radius: 1.65rem;
-      padding: clamp(1.15rem, 3vw, 1.75rem);
-      min-height: 36rem;
-    }
-
-    .panel-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .panel-title {
-      margin: 0;
-      font-size: 1.55rem;
-      line-height: 1.08;
-      font-weight: 900;
-      letter-spacing: -0.035em;
-    }
-
-    .panel-copy {
-      margin: 0.38rem 0 0;
-      color: var(--sb-muted);
-      font-size: 0.9rem;
-      line-height: 1.55;
-      font-weight: 650;
-    }
-
-    .back-button {
-      width: 2.45rem;
-      height: 2.45rem;
-      border: 1px solid var(--sb-border);
-      border-radius: 0.9rem;
-      background: #fff;
-      color: #334155;
-      display: inline-grid;
-      place-items: center;
-      cursor: pointer;
-      transition: transform 0.14s ease, border-color 0.14s ease, color 0.14s ease;
-    }
-
-    .back-button:hover {
-      transform: translateY(-1px);
-      border-color: #9fb7bf;
-      color: #0f172a;
-    }
-
-    .option-grid {
-      display: grid;
-      gap: 0.75rem;
-    }
-
-    .option {
-      width: 100%;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
+    .brand-mark svg { width: 1.25rem; height: 1.25rem; }
+    .aside-copy { position: relative; z-index: 1; margin: auto 0; padding: 2rem 0; }
+    .eyebrow {
+      display: inline-flex;
       align-items: center;
-      gap: 0.85rem;
-      padding: 0.95rem;
-      border-radius: 1.05rem;
-      border: 1px solid var(--sb-border);
-      background: #fff;
-      color: inherit;
-      text-align: left;
-      cursor: pointer;
-      transition: transform 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease, background 0.14s ease;
-    }
-
-    .option:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 18px 34px -28px rgba(15, 23, 42, 0.7);
-    }
-
-    .option-icon {
-      width: 2.7rem;
-      height: 2.7rem;
-      border-radius: 0.9rem;
-      display: grid;
-      place-items: center;
-      font-size: 1.05rem;
-    }
-
-    .option-title {
-      display: block;
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      line-height: 1.15;
-    }
-
-    .option-desc {
-      display: block;
-      margin-top: 0.18rem;
-      color: var(--sb-muted);
-      font-size: 0.78rem;
-      font-weight: 650;
-      line-height: 1.4;
-    }
-
-    .option-arrow {
-      color: #94a3b8;
-    }
-
-    .tone-bug:hover { border-color: rgba(220, 38, 38, 0.42); background: #fffafa; }
-    .tone-bug .option-icon { color: var(--sb-red); background: #fef2f2; }
-    .tone-suggestion:hover { border-color: rgba(21, 128, 61, 0.42); background: #fbfffc; }
-    .tone-suggestion .option-icon { color: var(--sb-green); background: #f0fdf4; }
-    .tone-contact:hover { border-color: rgba(37, 99, 235, 0.42); background: #fbfdff; }
-    .tone-contact .option-icon { color: var(--sb-blue); background: #eff6ff; }
-    .tone-legal:hover { border-color: rgba(180, 83, 9, 0.42); background: #fffdf7; }
-    .tone-legal .option-icon { color: var(--sb-amber); background: #fffbeb; }
-
-    .form {
-      display: grid;
-      gap: 0.95rem;
-    }
-
-    .field {
-      display: grid;
-      gap: 0.42rem;
-    }
-
-    .field label {
-      color: #475569;
+      gap: 0.45rem;
+      margin-bottom: 1rem;
+      color: #c4b5fd;
       font-size: 0.68rem;
       font-weight: 900;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
     }
-
-    .control {
-      width: 100%;
-      border: 1px solid #cbdde3;
+    .eyebrow::before { content: ""; width: 1.6rem; height: 2px; border-radius: 99px; background: #67e8f9; }
+    .aside h1 {
+      max-width: 20rem;
+      margin: 0;
+      font-size: clamp(2rem, 4.5vw, 3.45rem);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      font-weight: 900;
+    }
+    .aside p { max-width: 23rem; margin: 1rem 0 0; color: #cbd5e1; font-size: 0.9rem; line-height: 1.65; font-weight: 600; }
+    .identity-note {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+      padding: 0.9rem;
+      border: 1px solid rgba(255,255,255,0.14);
       border-radius: 1rem;
-      background: rgba(255, 255, 255, 0.95);
-      color: #10212b;
-      padding: 0.88rem 0.95rem;
-      outline: none;
-      font-size: 0.92rem;
+      background: rgba(15,23,42,0.28);
+      color: #e2e8f0;
+      font-size: 0.74rem;
       font-weight: 650;
-      transition: border-color 0.14s ease, box-shadow 0.14s ease;
+      line-height: 1.5;
     }
+    .identity-note svg { flex: 0 0 auto; width: 1rem; margin-top: 0.1rem; }
 
-    .control:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    .workspace { position: relative; padding: clamp(1.35rem, 3.2vw, 2.4rem); }
+    .close {
+      position: absolute;
+      top: 1.15rem;
+      right: 1.15rem;
+      width: 2.7rem;
+      height: 2.7rem;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 0.95rem;
+      color: #475569;
+      background: #fff;
+      cursor: pointer;
+      transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
     }
+    .close:hover { transform: translateY(-2px); border-color: #a78bfa; box-shadow: 0 12px 24px -16px #7c3aed; }
+    .close svg { width: 1.1rem; }
 
-    textarea.control {
-      min-height: 7.5rem;
+    .screen { min-height: 100%; display: flex; flex-direction: column; }
+    .screen-head { padding-right: 3.5rem; margin-bottom: 1.3rem; }
+    .screen-kicker { color: var(--violet); font-size: 0.67rem; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; }
+    .screen h2 { margin: 0.35rem 0 0; font-size: clamp(1.55rem, 3vw, 2.2rem); line-height: 1.08; letter-spacing: -0.04em; font-weight: 900; }
+    .screen-copy { margin: 0.55rem 0 0; color: var(--muted); font-size: 0.88rem; font-weight: 600; line-height: 1.55; }
+
+    .category-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; }
+    .category {
+      min-height: 7.9rem;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-content: start;
+      gap: 0.75rem;
+      padding: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 1.15rem;
+      color: inherit;
+      background: #fff;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+    .category:hover { transform: translateY(-2px); border-color: var(--tone); box-shadow: 0 18px 34px -28px var(--tone); }
+    .category-icon { width: 2.65rem; height: 2.65rem; display: grid; place-items: center; border-radius: 0.9rem; color: var(--tone); background: var(--wash); }
+    .category-icon svg { width: 1.12rem; }
+    .category strong { display: block; margin-top: 0.15rem; font-size: 0.9rem; font-weight: 900; }
+    .category span:last-child { display: block; grid-column: 2; margin-top: -1.1rem; color: var(--muted); font-size: 0.73rem; line-height: 1.45; font-weight: 600; }
+    .bug { --tone: #dc2626; --wash: #fef2f2; }
+    .suggestion { --tone: #16a34a; --wash: #f0fdf4; }
+    .contact { --tone: #2563eb; --wash: #eff6ff; }
+    .legal { --tone: #d97706; --wash: #fffbeb; }
+
+    .form { display: grid; gap: 1rem; }
+    .selected-category { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem 0.85rem; border: 1px solid #ddd6fe; border-radius: 1rem; background: #f5f3ff; }
+    .selected-category span { color: #5b21b6; font-size: 0.78rem; font-weight: 850; }
+    .change { border: 0; color: #6d28d9; background: transparent; font-size: 0.72rem; font-weight: 900; cursor: pointer; }
+    .field { display: grid; gap: 0.45rem; }
+    .field-head { display: flex; justify-content: space-between; gap: 1rem; }
+    .field label { color: #334155; font-size: 0.72rem; font-weight: 900; }
+    .counter { color: #94a3b8; font-size: 0.68rem; font-weight: 750; }
+    textarea {
+      width: 100%;
+      min-height: 12.5rem;
       resize: vertical;
-      line-height: 1.55;
+      padding: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 1.1rem;
+      color: var(--ink);
+      background: #fff;
+      outline: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      line-height: 1.6;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
     }
+    textarea:focus { border-color: #8b5cf6; box-shadow: 0 0 0 4px rgba(139,92,246,0.12); }
+    textarea::placeholder { color: #94a3b8; }
+    .source { display: flex; align-items: center; gap: 0.55rem; min-width: 0; padding: 0.75rem 0.85rem; border-radius: 0.9rem; color: #475569; background: #f8fafc; font-size: 0.7rem; font-weight: 700; }
+    .source svg { flex: 0 0 auto; width: 0.95rem; }
+    .source span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
     .submit {
-      width: 100%;
-      border: none;
-      border-radius: 1.05rem;
-      background: #10212b;
-      color: #fff;
-      padding: 1rem 1.15rem;
-      font-size: 0.94rem;
-      font-weight: 900;
-      cursor: pointer;
+      min-height: 3.25rem;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.55rem;
-      box-shadow: 0 18px 40px -26px rgba(15, 23, 42, 0.9);
-      transition: transform 0.14s ease, background 0.14s ease;
+      border: 0;
+      border-radius: 1rem;
+      color: #fff;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5 56%, #0891b2);
+      box-shadow: 0 16px 34px -18px rgba(79,70,229,0.8);
+      cursor: pointer;
+      font-size: 0.86rem;
+      font-weight: 900;
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
     }
+    .submit:hover { transform: translateY(-2px); box-shadow: 0 20px 38px -18px rgba(79,70,229,0.9); }
+    .submit:disabled { cursor: wait; opacity: 0.68; transform: none; }
+    .submit svg { width: 1rem; }
+    .spinner { width: 1rem; height: 1rem; border: 2px solid rgba(255,255,255,0.35); border-top-color: #fff; border-radius: 50%; animation: spin 0.65s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    .submit:hover { transform: translateY(-1px); background: #071118; }
-    .submit:disabled { cursor: wait; opacity: 0.7; transform: none; }
-
-    .success,
-    .error {
-      border-radius: 1.1rem;
-      padding: 1rem;
-      font-size: 0.9rem;
-      font-weight: 750;
-      line-height: 1.55;
-    }
-
-    .success {
-      display: grid;
-      gap: 0.9rem;
-      text-align: center;
-      place-items: center;
-      padding: 2.2rem 1rem;
-    }
-
-    .success-icon {
-      width: 4.4rem;
-      height: 4.4rem;
-      border-radius: 1.35rem;
-      display: grid;
-      place-items: center;
-      background: #ecfdf5;
-      color: #059669;
-      font-size: 2rem;
-    }
-
-    .error {
-      border: 1px solid rgba(220, 38, 38, 0.2);
-      background: #fef2f2;
-      color: #991b1b;
-    }
-
+    .error { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.8rem 0.9rem; border: 1px solid #fecaca; border-radius: 0.9rem; color: #991b1b; background: #fef2f2; font-size: 0.75rem; font-weight: 750; line-height: 1.45; }
+    .error svg { flex: 0 0 auto; width: 1rem; margin-top: 0.1rem; }
+    .success { min-height: 100%; display: grid; place-content: center; justify-items: center; text-align: center; }
+    .success-mark { position: relative; width: 5.4rem; height: 5.4rem; display: grid; place-items: center; border-radius: 1.7rem; color: #047857; background: #ecfdf5; box-shadow: 0 22px 50px -28px rgba(5,150,105,0.8); animation: pop 0.42s cubic-bezier(.2,.85,.25,1.25) both; }
+    .success-mark::after { content: ""; position: absolute; inset: -0.55rem; border: 1px solid #a7f3d0; border-radius: 2rem; }
+    .success-mark svg { width: 2.3rem; }
+    @keyframes pop { from { opacity: 0; transform: scale(0.72) rotate(-7deg); } to { opacity: 1; transform: none; } }
+    .success h2 { margin-top: 1.6rem; }
+    .reference { margin: 1rem 0 1.3rem; padding: 0.7rem 0.9rem; border-radius: 0.8rem; color: #475569; background: #f1f5f9; font: 700 0.72rem ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .success .submit { min-width: 11rem; }
     .hidden { display: none !important; }
 
-    @media (max-width: 820px) {
-      .page { padding: 0.85rem; align-items: start; }
-      .shell { grid-template-columns: 1fr; }
-      .intro h1 { margin-top: 1.5rem; }
-      .guard { margin-top: 1.2rem; }
-      .panel { min-height: auto; }
+    @media (max-width: 760px) {
+      .app { padding: 0; place-items: stretch; }
+      .shell { min-height: 100dvh; grid-template-columns: 1fr; border: 0; border-radius: 0; }
+      .aside { min-height: auto; padding: 1.1rem 1.25rem; }
+      .aside-copy { margin: 1.3rem 0 0; padding: 0; }
+      .aside h1 { max-width: none; font-size: 1.75rem; }
+      .aside p { margin-top: 0.6rem; }
+      .identity-note { display: none; }
+      .workspace { padding: 1.25rem; }
+      .category-grid { grid-template-columns: 1fr; }
+      .category { min-height: auto; }
+      textarea { min-height: 10rem; }
+    }
+
+    @media (max-height: 680px) and (min-width: 761px) {
+      .shell { min-height: calc(100dvh - 1rem); }
+      .app { padding: 0.5rem; }
+      .aside-copy { padding: 1rem 0; }
+      .aside h1 { font-size: 2.3rem; }
+      .category { min-height: 6.7rem; padding: 0.8rem; }
+      textarea { min-height: 8rem; }
     }
   </style>
 </head>
 <body>
-  <main class="page">
+  <main class="app">
     <div class="shell">
-      <aside class="intro" aria-label="StudyBase contact guidance">
-        <div>
-          <div class="brand">
-            <div class="brand-mark" aria-hidden="true"><i class="fas fa-paper-plane"></i></div>
-            <span>StudyBase</span>
-          </div>
-          <h1>Send the right thing to the right place.</h1>
-          <p>Use this page for bugs, ideas, contact messages, safety concerns, or legal requests. The form changes based on what you choose.</p>
+      <aside class="aside">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          </span>
+          <span>StudyBase</span>
         </div>
-        <div class="guard">
-          Misuse of this system, including false reports, spam, harassment, or unsafe content, can result in an immediate permanent ban.
+        <div class="aside-copy">
+          <span class="eyebrow">Contact centre</span>
+          <h1>Tell us what needs attention.</h1>
+          <p>Choose the closest category and give us the details. A clear report helps us understand the problem properly.</p>
+        </div>
+        <div class="identity-note">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-8 8.8C7.5 20.5 4 18 4 13V5l8-3 8 3Z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>Your signed-in account is verified by the server. We attach your name, username and account ID without asking you to enter them again.</span>
         </div>
       </aside>
 
-      <section class="panel" aria-live="polite">
-        <div id="typeSelection">
-          <div class="panel-head">
-            <div>
-              <h2 class="panel-title">Contact StudyBase</h2>
-              <p class="panel-copy">Choose what you need so the form asks for the useful details.</p>
-            </div>
-          </div>
-          <div id="typeOptions" class="option-grid"></div>
+      <section class="workspace" aria-live="polite">
+        <button type="button" class="close" onclick="closeContact()" aria-label="Close contact form">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m18 6-12 12M6 6l12 12"/></svg>
+        </button>
+
+        <div id="categoryScreen" class="screen">
+          <header class="screen-head">
+            <span class="screen-kicker">Start here</span>
+            <h2>What can we help with?</h2>
+            <p class="screen-copy">Pick the option that best matches your message.</p>
+          </header>
+          <div id="categoryGrid" class="category-grid"></div>
         </div>
 
-        <div id="formScreen" class="hidden">
-          <div class="panel-head">
-            <div>
-              <h2 id="formTitle" class="panel-title">Report</h2>
-              <p id="formSummary" class="panel-copy">Add the details below.</p>
+        <div id="formScreen" class="screen hidden">
+          <header class="screen-head">
+            <span class="screen-kicker">Your message</span>
+            <h2 id="formTitle">Contact StudyBase</h2>
+            <p id="formCopy" class="screen-copy">Include enough detail for us to understand what happened.</p>
+          </header>
+          <form id="contactForm" class="form">
+            <div class="selected-category">
+              <span id="selectedCategory">General contact</span>
+              <button type="button" class="change" onclick="showCategories()">Change category</button>
             </div>
-            <button id="backButton" type="button" class="back-button" onclick="goBackToSelection()" aria-label="Back to contact options">
-              <i class="fas fa-arrow-left"></i>
-            </button>
-          </div>
-
-          <form id="reportForm" class="form" onsubmit="submitReport(event)">
             <div class="field">
-              <label for="urlInput">Relevant URL</label>
-              <input type="text" id="urlInput" required class="control" placeholder="https://studybase.site/r/">
+              <div class="field-head">
+                <label for="description">Description</label>
+                <span id="characterCount" class="counter">0 / 3000</span>
+              </div>
+              <textarea id="description" minlength="20" maxlength="3000" required placeholder="Describe what happened, what you expected, and anything that may help us investigate."></textarea>
             </div>
-
-            <div id="dynamicFields" class="form"></div>
-
-            <div class="field">
-              <label for="explanation">Details</label>
-              <textarea id="explanation" required class="control" placeholder="Write the details we need to understand this properly."></textarea>
+            <div class="source" title="Relevant StudyBase page">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              <span id="sourcePage">StudyBase page</span>
             </div>
-
-            <button type="submit" id="submitBtn" class="submit">
-              <i class="fas fa-paper-plane"></i>
-              Submit
+            <div id="errorMessage" class="error hidden" role="alert">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+              <span id="errorText">The message could not be sent.</span>
+            </div>
+            <button id="submitButton" type="submit" class="submit">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+              <span>Send securely</span>
             </button>
           </form>
+        </div>
 
-          <div id="successMessage" class="success hidden">
-            <div class="success-icon" aria-hidden="true"><i class="fas fa-check"></i></div>
-            <div>
-              <h3 class="panel-title">Sent</h3>
-              <p class="panel-copy">Thanks. The StudyBase team will review this through the normal support queue.</p>
-            </div>
-            <button type="button" onclick="parent.closeReportModal ? parent.closeReportModal() : window.close()" class="submit">Close</button>
+        <div id="successScreen" class="screen success hidden">
+          <div class="success-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m5 12 4 4L19 6"/></svg>
           </div>
-
-          <div id="errorMessage" class="error hidden">Something went wrong. Please try again.</div>
+          <h2>Message sent</h2>
+          <p class="screen-copy">Your message reached the StudyBase contact queue.</p>
+          <div id="referenceId" class="reference"></div>
+          <button type="button" class="submit" onclick="closeContact()">Done</button>
         </div>
       </section>
     </div>
   </main>
 
   <script>
-    let currentType = null;
-    let forcedType = null;
-    let WORKER_URL = window.SB_CONFIG?.endpoints?.reportProblem || window.SiteConfig?.defaults?.endpoints?.reportProblem || "";
-
-    const REPORT_TYPES = {
+    const CONTACT_TYPES = {
       bug: {
-        icon: "fa-bug",
-        title: "Report a bug",
-        summary: "Something is broken, glitching, missing, or blocking a workflow.",
-        tone: "bug",
-        submit: "Send bug report"
+        label: "Bug report",
+        title: "Report something broken",
+        copy: "Tell us what you did, what happened, and what you expected instead.",
+        description: "A page, button or StudyBase feature is not working correctly.",
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 2 1.9 1.9M16 2l-1.9 1.9M9 7.5V6a3 3 0 0 1 6 0v1.5M5 11h14M6 8h12v8a6 6 0 0 1-12 0ZM3 13h3m12 0h3M4 19l3-2m10 0 3 2"/></svg>'
       },
       suggestion: {
-        icon: "fa-lightbulb",
-        title: "Make a suggestion",
-        summary: "Share an idea that would make StudyBase easier or more useful.",
-        tone: "suggestion",
-        submit: "Send suggestion"
+        label: "Suggestion",
+        title: "Share an idea",
+        copy: "Explain your idea and how it could make StudyBase more useful.",
+        description: "Suggest a feature, resource or improvement for StudyBase.",
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M8.5 14.5A7 7 0 1 1 15.5 14.5c-.9.7-1.5 1.5-1.5 2.5h-4c0-1-.6-1.8-1.5-2.5Z"/></svg>'
       },
       contact: {
-        icon: "fa-envelope",
-        title: "Contact us",
-        summary: "Ask a general question or send a message that is not a bug or feature idea.",
-        tone: "contact",
-        submit: "Send message"
+        label: "General contact",
+        title: "Send us a message",
+        copy: "Use this for account, access, resource, or general questions.",
+        description: "Ask a question that does not fit another category.",
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-10 6L2 7"/></svg>'
       },
       legal: {
-        icon: "fa-scale-balanced",
-        title: "Legal or safety request",
-        summary: "Copyright, privacy, harmful content, or another formal safety concern.",
-        tone: "legal",
-        submit: "Send request"
+        label: "Legal or safety",
+        title: "Report a formal concern",
+        copy: "Use this for privacy, copyright, harmful content, or another safety concern.",
+        description: "Raise a privacy, copyright, harmful content, or safety concern.",
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8a5 5 0 0 1-6 0ZM2 16l3-8 3 8a5 5 0 0 1-6 0ZM7 21h10M12 3v18M3 7h18"/></svg>'
       }
     };
 
-    async function getReportEndpoint() {
-      if (window.SiteConfig && window.SiteConfig.ready) {
-        const config = await window.SiteConfig.ready;
-        WORKER_URL = config?.endpoints?.reportProblem || WORKER_URL;
-      } else if (window.SB_CONFIG?.endpoints?.reportProblem) {
-        WORKER_URL = window.SB_CONFIG.endpoints.reportProblem;
+    let selectedType = "";
+    let endpoint = "https://api.platformbase.online/contact";
+    const query = new URLSearchParams(location.search);
+    const sourcePage = query.get("pageUrl") || "";
+
+    function closeContact() {
+      if (window.parent && window.parent !== window && typeof window.parent.closeReportModal === "function") {
+        window.parent.closeReportModal();
+      } else {
+        window.close();
       }
-      return WORKER_URL;
     }
 
-    function escapeHtml(value) {
-      return String(value || "").replace(/[&<>"']/g, (char) => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      })[char]);
+    function renderCategories() {
+      const grid = document.getElementById("categoryGrid");
+      grid.innerHTML = Object.entries(CONTACT_TYPES).map(([key, item]) => `
+        <button type="button" class="category ${key}" data-category="${key}">
+          <span class="category-icon" aria-hidden="true">${item.icon}</span>
+          <strong>${item.label}</strong>
+          <span>${item.description}</span>
+        </button>
+      `).join("");
+      grid.querySelectorAll("[data-category]").forEach(button => {
+        button.addEventListener("click", () => selectCategory(button.dataset.category));
+      });
     }
 
-    function renderTypeOptions() {
-      const container = document.getElementById("typeOptions");
-      if (!container) return;
-
-      container.innerHTML = Object.keys(REPORT_TYPES).map((type) => {
-        const data = REPORT_TYPES[type];
-        return `
-          <button type="button" class="option tone-${data.tone}" onclick="selectReportType('${type}')">
-            <span class="option-icon" aria-hidden="true"><i class="fas ${data.icon}"></i></span>
-            <span>
-              <span class="option-title">${escapeHtml(data.title)}</span>
-              <span class="option-desc">${escapeHtml(data.summary)}</span>
-            </span>
-            <span class="option-arrow" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>
-          </button>
-        `;
-      }).join("");
-    }
-
-    function dynamicFieldsFor(type) {
-      if (type === "bug") {
-        return `
-          <div class="field">
-            <label for="severity">Severity</label>
-            <select id="severity" required class="control">
-              <option value="minor">Minor or cosmetic</option>
-              <option value="annoying">Annoying but usable</option>
-              <option value="major" selected>Major issue</option>
-              <option value="critical">Critical or blocking</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="steps">Steps to reproduce</label>
-            <textarea id="steps" required class="control" placeholder="1. Go to...\n2. Click...\n3. What went wrong..."></textarea>
-          </div>
-        `;
-      }
-
-      if (type === "suggestion") {
-        return `
-          <div class="field">
-            <label for="suggestionTitle">Suggestion title</label>
-            <input type="text" id="suggestionTitle" required class="control" placeholder="Short name for the idea">
-          </div>
-          <div class="field">
-            <label for="whyUseful">Why would this help?</label>
-            <textarea id="whyUseful" required class="control" placeholder="Explain who this helps and what it improves."></textarea>
-          </div>
-        `;
-      }
-
-      if (type === "contact") {
-        return `
-          <div class="field">
-            <label for="contactReason">Reason</label>
-            <select id="contactReason" required class="control">
-              <option value="account">Account or access question</option>
-              <option value="resource">Resource question</option>
-              <option value="docs">Document tools question</option>
-              <option value="other">Something else</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="replyEmail">Reply email optional</label>
-            <input type="email" id="replyEmail" class="control" placeholder="Only add this if you want a reply">
-          </div>
-        `;
-      }
-
-      return `
-        <div class="field">
-          <label for="legalType">Request type</label>
-          <select id="legalType" required class="control">
-            <option value="dmca">DMCA or copyright takedown</option>
-            <option value="privacy">Privacy or data request</option>
-            <option value="safety">Safety or harmful content</option>
-            <option value="other">Other legal matter</option>
-          </select>
-        </div>
-      `;
-    }
-
-    function selectReportType(type) {
-      const data = REPORT_TYPES[type];
-      if (!data) return;
-
-      currentType = type;
-      document.getElementById("typeSelection").classList.add("hidden");
+    function selectCategory(type) {
+      const item = CONTACT_TYPES[type];
+      if (!item) return;
+      selectedType = type;
+      document.getElementById("formTitle").textContent = item.title;
+      document.getElementById("formCopy").textContent = item.copy;
+      document.getElementById("selectedCategory").textContent = item.label;
+      document.getElementById("categoryScreen").classList.add("hidden");
+      document.getElementById("successScreen").classList.add("hidden");
       document.getElementById("formScreen").classList.remove("hidden");
-      document.getElementById("successMessage").classList.add("hidden");
-      document.getElementById("errorMessage").classList.add("hidden");
-      document.getElementById("reportForm").style.display = "";
-      document.getElementById("reportForm").style.opacity = "1";
-
-      document.getElementById("formTitle").textContent = data.title;
-      document.getElementById("formSummary").textContent = data.summary;
-      document.getElementById("dynamicFields").innerHTML = dynamicFieldsFor(type);
-      document.getElementById("submitBtn").innerHTML = `<i class="fas fa-paper-plane"></i>${escapeHtml(data.submit)}`;
-      document.getElementById("backButton").classList.toggle("hidden", forcedType === type);
-
-      const params = new URLSearchParams(window.location.search);
-      const pageUrl = params.get("pageUrl");
-      const urlInput = document.getElementById("urlInput");
-      if (pageUrl && pageUrl !== "undefined") {
-        urlInput.value = pageUrl;
-      } else if (!urlInput.value) {
-        urlInput.value = window.location.origin + "/";
-      }
+      document.getElementById("description").focus();
     }
 
-    function goBackToSelection() {
-      if (forcedType) return;
-      currentType = null;
+    function showCategories() {
       document.getElementById("formScreen").classList.add("hidden");
-      document.getElementById("typeSelection").classList.remove("hidden");
-      document.getElementById("successMessage").classList.add("hidden");
+      document.getElementById("categoryScreen").classList.remove("hidden");
       document.getElementById("errorMessage").classList.add("hidden");
-      document.getElementById("reportForm").style.display = "";
-      document.getElementById("reportForm").style.opacity = "1";
     }
 
-    function getFormData() {
-      const base = {
-        url: document.getElementById("urlInput").value,
-        type: currentType,
-        notes: document.getElementById("explanation").value,
-        timestamp: new Date().toISOString()
-      };
+    function displayError(message) {
+      document.getElementById("errorText").textContent = message;
+      document.getElementById("errorMessage").classList.remove("hidden");
+    }
 
-      if (currentType === "bug") {
-        base.severity = document.getElementById("severity")?.value || "";
-        base.steps = document.getElementById("steps")?.value || "";
-      } else if (currentType === "suggestion") {
-        base.title = document.getElementById("suggestionTitle")?.value || "";
-        base.whyUseful = document.getElementById("whyUseful")?.value || "";
-      } else if (currentType === "contact") {
-        base.contactReason = document.getElementById("contactReason")?.value || "";
-        base.replyEmail = document.getElementById("replyEmail")?.value || "";
-      } else if (currentType === "legal") {
-        base.legalType = document.getElementById("legalType")?.value || "";
+    async function resolveEndpoint() {
+      try {
+        const config = await window.SiteConfig?.ready;
+        endpoint = config?.endpoints?.reportProblem || endpoint;
+      } catch (_) {}
+      return endpoint;
+    }
+
+    document.getElementById("description").addEventListener("input", event => {
+      document.getElementById("characterCount").textContent = `${event.target.value.length} / 3000`;
+    });
+
+    document.getElementById("contactForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      const description = document.getElementById("description").value.trim();
+      if (!selectedType || description.length < 20) {
+        displayError("Please add at least 20 characters so we can understand the message.");
+        return;
       }
 
-      return base;
-    }
-
-    async function submitReport(event) {
-      event.preventDefault();
-
-      const btn = document.getElementById("submitBtn");
-      const form = document.getElementById("reportForm");
-      const success = document.getElementById("successMessage");
-      const errorMsg = document.getElementById("errorMessage");
-      const previousHtml = btn.innerHTML;
-
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>Sending';
-      errorMsg.classList.add("hidden");
+      const button = document.getElementById("submitButton");
+      const buttonContent = button.innerHTML;
+      button.disabled = true;
+      button.innerHTML = '<span class="spinner" aria-hidden="true"></span><span>Sending message</span>';
+      document.getElementById("errorMessage").classList.add("hidden");
 
       try {
-        const response = await fetch(await getReportEndpoint(), {
+        const response = await fetch(await resolveEndpoint(), {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(getFormData())
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "X-StudyBase-Site": location.hostname
+          },
+          body: JSON.stringify({
+            category: selectedType,
+            description,
+            pageUrl: sourcePage
+          })
         });
-
-        if (!response.ok) throw new Error("Report worker returned an error");
-
-        form.style.transition = "opacity 0.18s ease";
-        form.style.opacity = "0";
-        window.setTimeout(() => {
-          form.style.display = "none";
-          success.classList.remove("hidden");
-        }, 160);
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok) {
+          if (response.status === 401) throw new Error("Your session has expired. Close this form and sign in again.");
+          throw new Error(result.error || "Your message could not be delivered. Please try again.");
+        }
+        document.getElementById("formScreen").classList.add("hidden");
+        document.getElementById("referenceId").textContent = `Reference: ${result.referenceId}`;
+        document.getElementById("successScreen").classList.remove("hidden");
       } catch (error) {
-        console.error(error);
-        btn.disabled = false;
-        btn.innerHTML = previousHtml;
-        errorMsg.classList.remove("hidden");
+        displayError(error.message || "Your message could not be delivered. Please try again.");
+        button.disabled = false;
+        button.innerHTML = buttonContent;
       }
-    }
+    });
 
     document.addEventListener("DOMContentLoaded", () => {
-      const params = new URLSearchParams(window.location.search);
-      const typeParam = params.get("type");
-      renderTypeOptions();
-
-      if (REPORT_TYPES[typeParam]) {
-        forcedType = typeParam;
-        selectReportType(typeParam);
-      }
+      renderCategories();
+      document.getElementById("sourcePage").textContent = sourcePage || "Current StudyBase page";
+      const requestedType = query.get("type");
+      if (CONTACT_TYPES[requestedType]) selectCategory(requestedType);
     });
   </script>
 </body>

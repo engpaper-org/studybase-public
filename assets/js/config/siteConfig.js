@@ -74,7 +74,7 @@
       apiBase: "https://api.platformbase.online",
       loginState: "https://api.platformbase.online/state",
       apgList: "https://alert-api.studybase.site/apg/list",
-      reportProblem: "https://report-problem.studybase.site",
+      reportProblem: "https://api.platformbase.online/contact",
       materialReport: "https://script.google.com/macros/s/AKfycbxzlnosLNIHU_FmrjIIbwL7Dc5LLA4ZRy8XxTy3skrcomjGdohw775OAvpjIqsow7-r0A/exec",
       resourceList: "https://api.platformbase.online/resources/list",
       approvedEmailAccess: "https://api.platformbase.online/resources/access/check",
