@@ -900,6 +900,7 @@
             : "";
 
       const parsed = new URL(requestUrl, window.location.origin);
+      if (parsed.hostname.split(".")[0] === "online") return true;
       if (parsed.pathname === "/auth/check") return true;
       return false;
     } catch (error) {
