@@ -24,7 +24,11 @@
     if (checking || localStorage.getItem(TOKEN_KEY) !== "1") return;
     checking = true;
     try {
-      const response = await fetch("https://api.platformbase.online/api/session", {
+      const sessionUrl = new URL("https://api.platformbase.online/api/session");
+      if (/(^|\.)studybase\.(online|site|space|website)$/i.test(location.hostname)) {
+        sessionUrl.searchParams.set("distributionId", "studybase-main");
+      }
+      const response = await fetch(sessionUrl, {
         method: "GET",
         credentials: "include",
         headers: { "Accept": "application/json" },
@@ -40,6 +44,8 @@
       }
       if (response.ok) {
         if (result?.expiresAt) localStorage.setItem(EXPIRY_KEY, result.expiresAt);
+        window.StudyBaseSessionPayload = result;
+        window.dispatchEvent(new CustomEvent("studybase:session-payload", { detail: result }));
       }
     } catch (_) {
       // Network failure is not proof that the session is invalid.

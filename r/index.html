@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="/assets/js/config/privacyConfig.js?v=20260712"></script>
+  <script src="/assets/js/config/privacyConfig.js?v=20260714"></script>
   <script src="/assets/js/privacy/checkCookieConsent.js?v=20260712"></script>
     <meta charset="UTF-8">
     <title>StudyBase | Resource Vault</title>
@@ -47,7 +47,7 @@
     <script src="/assets/js/monitoring/endpointPopup.js?v=20260512-fullscreen-report"></script>
     <script src="/assets/js/layout/footer.js" defer></script>
     <script>const PAGE_ID = "alevel_resources";</script>
-    <script src="/assets/js/core/sessionManager.js" defer></script>
+    <script src="/assets/js/core/sessionManager.js?v=20260714-community" defer></script>
     <script src="/assets/js/resources/resourceErrorPopup.js" defer></script>
     <script src="/assets/js/safety/mainInput.js" defer></script>
     <script src="/assets/js/monitoring/deviceCheck.js" defer></script>
@@ -1609,6 +1609,83 @@
             background: linear-gradient(90deg, #cbd5e1, transparent);
         }
 
+        .private-hub-grid {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1.45fr) minmax(19rem, 0.75fr);
+            gap: 0.85rem;
+            margin-top: 0.95rem;
+        }
+
+        .community-card,
+        .private-hub-side,
+        .private-hub-utility {
+            border: 1px solid rgba(148,163,184,0.2);
+            border-radius: 22px;
+            background: rgba(255,255,255,0.86);
+            box-shadow: 0 16px 34px rgba(15,23,42,0.07);
+            backdrop-filter: blur(16px);
+        }
+
+        .community-card { padding: 1rem; }
+        .community-card-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+        .community-card-kicker { display: inline-flex; align-items: center; gap: 0.4rem; color: #6d28d9; font-size: 0.6rem; font-weight: 950; letter-spacing: 0.12em; text-transform: uppercase; }
+        .community-card-kicker svg { width: 0.9rem; height: 0.9rem; }
+        .community-poll-status { flex: 0 0 auto; padding: 0.3rem 0.55rem; border-radius: 999px; color: #0369a1; background: #e0f2fe; font-size: 0.55rem; font-weight: 950; letter-spacing: 0.08em; text-transform: uppercase; }
+        .community-question { margin: 0.6rem 0 0; color: #0f172a; font-size: 1rem; font-weight: 950; line-height: 1.3; }
+        .community-poll-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
+        .community-option { display: flex; align-items: center; gap: 0.55rem; min-height: 2.65rem; padding: 0.55rem 0.7rem; border: 1px solid #e2e8f0; border-radius: 14px; color: #334155; background: #fff; text-align: left; font-size: 0.72rem; font-weight: 850; transition: border-color 0.16s ease, transform 0.16s ease, background 0.16s ease; }
+        .community-option:hover { transform: translateY(-1px); border-color: #8b5cf6; }
+        .community-option.selected { border-color: #7c3aed; color: #5b21b6; background: #f5f3ff; box-shadow: inset 0 0 0 1px #7c3aed; }
+        .community-option:disabled { cursor: default; opacity: 0.72; transform: none; }
+        .community-option-marker { display: grid; width: 1.4rem; height: 1.4rem; flex: 0 0 auto; place-items: center; border: 1px solid #cbd5e1; border-radius: 50%; color: transparent; background: #f8fafc; }
+        .community-option.selected .community-option-marker { border-color: #7c3aed; color: #fff; background: #7c3aed; }
+        .community-option-marker svg { width: 0.8rem; height: 0.8rem; }
+        .community-poll-footer { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-top: 0.7rem; }
+        .community-poll-note { color: #64748b; font-size: 0.62rem; font-weight: 750; }
+        .community-submit { min-height: 2.35rem; padding: 0 0.85rem; border-radius: 12px; color: #fff; background: #111827; font-size: 0.66rem; font-weight: 950; }
+        .community-submit:disabled { cursor: default; opacity: 0.45; }
+        .community-empty { display: grid; min-height: 8.2rem; place-items: center; color: #64748b; text-align: center; font-size: 0.72rem; font-weight: 800; }
+
+        .private-hub-side { display: grid; align-content: start; gap: 0.6rem; padding: 0.8rem; }
+        .community-update { padding: 0.75rem; border-radius: 15px; color: #1e3a8a; background: #eff6ff; }
+        .community-update[hidden], .community-alert[hidden] { display: none; }
+        .community-update-label { color: #2563eb; font-size: 0.55rem; font-weight: 950; letter-spacing: 0.1em; text-transform: uppercase; }
+        .community-update h3, .community-alert h3 { margin: 0.25rem 0 0; color: inherit; font-size: 0.78rem; font-weight: 950; }
+        .community-update p, .community-alert p { margin: 0.22rem 0 0; color: inherit; font-size: 0.65rem; font-weight: 700; line-height: 1.45; }
+        .community-alert { position: relative; padding: 0.72rem 2.25rem 0.72rem 0.75rem; border: 1px solid #bae6fd; border-radius: 15px; color: #075985; background: #f0f9ff; }
+        .community-alert.warning { border-color: #fde68a; color: #92400e; background: #fffbeb; }
+        .community-alert.critical { border-color: #fecdd3; color: #9f1239; background: #fff1f2; }
+        .community-alert-close { position: absolute; top: 0.5rem; right: 0.5rem; display: grid; width: 1.45rem; height: 1.45rem; place-items: center; border-radius: 8px; color: currentColor; background: rgba(255,255,255,0.55); }
+        .community-alert-close svg { width: 0.85rem; height: 0.85rem; }
+
+        .private-hub-utilities { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 0.75rem; margin-top: 0.75rem; }
+        .private-hub-utility { display: flex; min-width: 0; align-items: center; gap: 0.7rem; padding: 0.75rem; }
+        .private-hub-utility-icon { display: grid; width: 2.15rem; height: 2.15rem; flex: 0 0 auto; place-items: center; border-radius: 12px; color: #6d28d9; background: #ede9fe; }
+        .private-hub-utility-icon svg { width: 1rem; height: 1rem; }
+        .private-hub-utility strong { display: block; overflow: hidden; color: #1e293b; font-size: 0.7rem; font-weight: 950; text-overflow: ellipsis; white-space: nowrap; }
+        .private-hub-utility span, .private-hub-utility p { display: block; margin: 0.12rem 0 0; overflow: hidden; color: #64748b; font-size: 0.58rem; font-weight: 750; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+        .private-hub-utility-action { margin-left: auto; padding: 0.45rem 0.6rem; border-radius: 10px; color: #fff; background: #111827; font-size: 0.58rem; font-weight: 950; white-space: nowrap; }
+        .private-friends-compact { grid-template-columns: auto minmax(0,1fr) auto !important; margin: 0 !important; }
+        .private-friends-compact .private-friends-banner-copy h3 { margin: 0; color: #1e293b; font-size: 0.7rem; }
+        .private-friends-compact .private-friends-banner-copy h3 span { display: inline; margin: 0; overflow: visible; color: inherit !important; font: inherit; white-space: normal; }
+        .private-friends-compact .private-friends-banner-copy p { max-width: 12rem; margin-top: 0.12rem; font-size: 0.58rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .private-friends-compact .private-friends-banner-kicker, .private-friends-compact .private-friends-preview, .private-friends-compact .private-friends-banner-social { display: none; }
+        .private-friends-compact .private-friends-banner-action { min-height: 2.15rem; padding: 0 0.65rem; font-size: 0.58rem; }
+
+        :root.dark .community-card, :root.dark .private-hub-side, :root.dark .private-hub-utility { border-color: rgba(148,163,184,0.18); background: rgba(15,23,42,0.72); }
+        :root.dark .community-question, :root.dark .private-hub-utility strong { color: #f8fafc; }
+        :root.dark .private-friends-compact .private-friends-banner-copy h3 { color: #f8fafc; }
+        :root.dark .community-option { border-color: #334155; color: #cbd5e1; background: #0f172a; }
+        :root.dark .community-option.selected { border-color: #a78bfa; color: #ddd6fe; background: #2e1065; }
+
+        @media (max-width: 1050px) {
+            .private-hub-grid { grid-template-columns: 1fr; }
+            .private-hub-side { grid-template-columns: repeat(2, minmax(0,1fr)); }
+            .private-hub-utilities { grid-template-columns: 1fr 1fr; }
+        }
+
         @media (max-width: 950px) {
             .private-vault-notice-grid {
                 grid-template-columns: 1fr;
@@ -1653,6 +1730,8 @@
             .private-friends-banner-social {
                 justify-content: space-between;
             }
+
+            .community-poll-options, .private-hub-side, .private-hub-utilities { grid-template-columns: 1fr; }
 
             .studyshop-banner { grid-template-columns: 1fr; }
             .studyshop-banner-actions { justify-content: stretch; }
@@ -3132,29 +3211,6 @@
         <div style="font-size: 0.7rem; color: #94a3b8; padding-left: 4px;">Click any result card below to open it in the workspace.</div>
     </section>
 
-    <section id="studyshop-banner-section" class="studyshop-banner-section relative z-20 px-4 rgenie-private-only" aria-label="StudyShop">
-        <div class="rgenie-container">
-            <div class="studyshop-banner">
-                <div class="studyshop-banner-main">
-                    <img class="studyshop-currency-hero" src="/assets/images/studybucks/currency/dollar.png" alt="">
-                    <div>
-                        <h2>StudyShop</h2>
-                        <p>Complete quests, spend StudyBucks and manage everything you collect.</p>
-                    </div>
-                </div>
-                <div class="studyshop-banner-balance" aria-live="polite">
-                    <img src="/assets/images/studybucks/currency/dollar.png" alt="">
-                    <div><strong id="studyshop-balance">0</strong><span>StudyBucks</span></div>
-                </div>
-                <div class="studyshop-banner-actions">
-                    <button type="button" class="studyshop-banner-action primary" onclick="openStudyShop('quests')"><i data-lucide="list-checks"></i> View quests</button>
-                    <button type="button" class="studyshop-banner-action" onclick="openStudyShop('shop')"><i data-lucide="shopping-bag"></i> Open shop</button>
-                    <button type="button" class="studyshop-banner-action" onclick="openStudyShop('locker')"><i data-lucide="package-open"></i> Open locker</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section id="resource-tools-section" class="relative z-20 px-4 mb-4 rgenie-private-only">
         <div class="rgenie-container">
 <div class="rgenie-panel">
@@ -3185,58 +3241,60 @@
                             </div>
                         </div>
 
-                        <div class="private-vault-notice-grid">
-                            <article class="resource-warning-card resource-warning-danger">
-                                <div class="private-vault-notice-icon"><i data-lucide="shield-alert"></i></div>
-                                <div>
-                                    <span class="private-vault-notice-label">Account safety</span>
-                                    <h3>Keep support inside StudyBase</h3>
-                                    <p>Sending direct emails to site owners or staff will result in a permanent ban. Use the in-site reporting tools for any issues.</p>
+                        <div class="private-hub-grid">
+                            <section id="studybase-community" class="community-card" aria-labelledby="community-heading" aria-busy="true">
+                                <div class="community-card-head">
+                                    <span class="community-card-kicker"><i data-lucide="messages-square"></i> StudyBase community</span>
+                                    <span id="community-poll-status" class="community-poll-status">Loading</span>
                                 </div>
+                                <div id="community-poll-content" class="community-empty">
+                                    <p>Checking for a community question...</p>
+                                </div>
+                            </section>
+
+                            <aside class="private-hub-side" aria-label="Community updates">
+                                <article id="community-announcement" class="community-update" hidden>
+                                    <span class="community-update-label">Announcement</span>
+                                    <h3 id="community-announcement-title"></h3>
+                                    <p id="community-announcement-message"></p>
+                                </article>
+                                <div id="community-alerts" aria-live="polite"></div>
+                                <div id="community-no-updates" class="community-empty">
+                                    <div><i data-lucide="inbox"></i><p>No new updates right now.</p></div>
+                                </div>
+                            </aside>
+                        </div>
+
+                        <div class="private-hub-utilities">
+                            <article class="private-hub-utility">
+                                <span class="private-hub-utility-icon"><i data-lucide="shield-check"></i></span>
+                                <div><strong>Account support</strong><span>Use the built-in contact tools.</span></div>
+                                <button type="button" onclick="openReportModal()" class="private-hub-utility-action">Contact</button>
                             </article>
 
-                            <article class="resource-warning-card resource-warning-info">
-                                <div class="private-vault-notice-icon"><i data-lucide="bookmark-plus"></i></div>
-                                <div>
-                                    <span class="private-vault-notice-label">Stay connected</span>
-                                    <h3>Never lose access</h3>
-                                    <p>Bookmark our permanent redirect so you can always find the newest available StudyBase site.</p>
-                                </div>
-                                <a href="https://takemetoaworkingstudybase.site/?bookmark=true" target="_blank" rel="noopener noreferrer" class="private-vault-notice-action" style="text-decoration:none">
-                                    Bookmark StudyBase <i data-lucide="arrow-up-right"></i>
-                                </a>
+                            <article class="private-hub-utility">
+                                <span class="private-hub-utility-icon"><i data-lucide="bookmark-plus"></i></span>
+                                <div><strong>Keep access handy</strong><span>Save the permanent redirect.</span></div>
+                                <a href="https://takemetoaworkingstudybase.site/?bookmark=true" target="_blank" rel="noopener noreferrer" class="private-hub-utility-action" style="text-decoration:none">Bookmark</a>
                             </article>
+
+                            <section id="private-friends-banner" class="private-hub-utility private-friends-banner private-friends-compact" aria-busy="true">
+                                <span class="private-hub-utility-icon"><i data-lucide="users-round"></i></span>
+                                <div class="private-friends-banner-copy">
+                                    <span class="private-friends-banner-kicker">Friends</span>
+                                    <h3><span id="private-friends-count">0</span> in your circle · <span id="private-friends-notification" class="private-friends-notification">0</span> pending</h3>
+                                    <p id="private-friends-summary">Loading your connections...</p>
+                                </div>
+                                <div class="private-friends-banner-social"><div id="private-friends-preview" class="private-friends-preview" aria-hidden="true"></div></div>
+                                <button type="button" class="private-friends-banner-action" onclick="openFriendsWorkspace()">Open <i data-lucide="arrow-up-right"></i></button>
+                            </section>
 
                             <article id="studybase-subscription-banner" class="resource-warning-card private-vault-features hidden">
                                 <div class="private-vault-notice-icon"><i data-lucide="sparkles"></i></div>
-                                <div>
-                                    <span class="private-vault-notice-label">StudyBase Plus preview</span>
-                                    <h3>Enjoy more features</h3>
-                                    <p>Explore Leaderboards, Proxy, Music, Chat, custom domains, All Access and AI credits.</p>
-                                </div>
-                                <button type="button" onclick="window.StudyBaseSubscriptions?.show()" class="private-vault-notice-action">
-                                    View plans <i data-lucide="arrow-right"></i>
-                                </button>
+                                <div><span class="private-vault-notice-label">StudyBase Plus preview</span><h3>Enjoy more features</h3><p>Explore additional StudyBase tools.</p></div>
+                                <button type="button" onclick="window.StudyBaseSubscriptions?.show()" class="private-vault-notice-action">View plans <i data-lucide="arrow-right"></i></button>
                             </article>
                         </div>
-
-                        <section id="private-friends-banner" class="private-friends-banner" aria-busy="true">
-                            <div class="private-friends-banner-copy">
-                                <span class="private-friends-banner-kicker"><i data-lucide="users-round"></i> Friends &amp; Social</span>
-                                <h3>Your StudyBase circle</h3>
-                                <p id="private-friends-summary">Loading your friends and pending requests...</p>
-                            </div>
-                            <div class="private-friends-banner-social">
-                                <div id="private-friends-preview" class="private-friends-preview" aria-hidden="true"></div>
-                                <div class="flex gap-2">
-                                    <div class="private-friends-stat"><strong id="private-friends-count">0</strong><span>Friends</span></div>
-                                    <div class="private-friends-stat"><strong id="private-friends-notification" class="private-friends-notification">0</strong><span>Requests</span></div>
-                                </div>
-                            </div>
-                            <button type="button" class="private-friends-banner-action" onclick="openFriendsWorkspace()">
-                                Manage friends <i data-lucide="arrow-up-right"></i>
-                            </button>
-                        </section>
                     </div>
                 </div>
 
@@ -3547,6 +3605,9 @@
   let allResources = [];
   let allAccessOnlyResources = [];
   let friendsSummaryState = { friends: [], incoming: [], outgoing: [], acceptRequests: true, loaded: false };
+  let communityState = null;
+  let communitySelectedOptionId = "";
+  let communityVotePending = false;
   let studyShopState = null;
   let studyShopCountdownTimer = null;
   let studyShopClaimPending = false;
@@ -3560,6 +3621,143 @@
     restoreItems: null,
     restoreScrollY: 0
   };
+
+  function communityExpiryLabel(expiresAt) {
+    const timestamp = Date.parse(expiresAt || "");
+    if (!Number.isFinite(timestamp)) return "Choose one answer. Your response cannot be changed.";
+    return `Open until ${new Date(timestamp).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}.`;
+  }
+
+  function dismissedCommunityAlerts() {
+    try { return new Set(JSON.parse(sessionStorage.getItem("studybase_dismissed_community_alerts") || "[]")); }
+    catch (_) { return new Set(); }
+  }
+
+  function dismissCommunityAlert(alertId) {
+    const dismissed = dismissedCommunityAlerts();
+    dismissed.add(String(alertId || ""));
+    sessionStorage.setItem("studybase_dismissed_community_alerts", JSON.stringify([...dismissed].slice(-20)));
+    renderCommunityHub();
+  }
+
+  function renderCommunityHub(message = "") {
+    const root = document.getElementById("studybase-community");
+    const content = document.getElementById("community-poll-content");
+    const status = document.getElementById("community-poll-status");
+    if (!root || !content || !status) return;
+    root.setAttribute("aria-busy", "false");
+    content.replaceChildren();
+    const poll = communityState?.poll;
+    if (!poll || !Array.isArray(poll.options) || poll.options.length < 2) {
+      status.textContent = "No poll";
+      content.className = "community-empty";
+      const empty = document.createElement("p");
+      empty.textContent = "There is no community question right now.";
+      content.append(empty);
+    } else {
+      communitySelectedOptionId = communitySelectedOptionId || String(poll.selectedOptionId || "");
+      const answered = Boolean(poll.selectedOptionId);
+      status.textContent = answered ? "Answered" : "Open poll";
+      content.className = "";
+      const question = document.createElement("h3");
+      question.id = "community-heading";
+      question.className = "community-question";
+      question.textContent = poll.question;
+      const options = document.createElement("div");
+      options.className = "community-poll-options";
+      options.setAttribute("role", "radiogroup");
+      options.setAttribute("aria-labelledby", question.id);
+      poll.options.forEach(option => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `community-option${communitySelectedOptionId === option.id ? " selected" : ""}`;
+        button.setAttribute("role", "radio");
+        button.setAttribute("aria-checked", communitySelectedOptionId === option.id ? "true" : "false");
+        button.disabled = answered || communityVotePending;
+        const marker = document.createElement("span");
+        marker.className = "community-option-marker";
+        marker.innerHTML = '<i data-lucide="check"></i>';
+        const label = document.createElement("span");
+        label.textContent = option.label;
+        button.append(marker, label);
+        button.addEventListener("click", () => { communitySelectedOptionId = option.id; renderCommunityHub(); });
+        options.append(button);
+      });
+      const footer = document.createElement("div");
+      footer.className = "community-poll-footer";
+      const note = document.createElement("p");
+      note.className = "community-poll-note";
+      note.textContent = message || (answered ? "Your response has been recorded." : communityExpiryLabel(poll.expiresAt));
+      const submit = document.createElement("button");
+      submit.type = "button";
+      submit.className = "community-submit";
+      submit.textContent = communityVotePending ? "Sending..." : answered ? "Submitted" : "Submit answer";
+      submit.disabled = answered || communityVotePending || !communitySelectedOptionId;
+      submit.addEventListener("click", submitCommunityVote);
+      footer.append(note, submit);
+      content.append(question, options, footer);
+    }
+
+    const announcement = communityState?.announcement;
+    const announcementCard = document.getElementById("community-announcement");
+    if (announcementCard) {
+      announcementCard.hidden = !announcement;
+      document.getElementById("community-announcement-title").textContent = announcement?.title || "";
+      document.getElementById("community-announcement-message").textContent = announcement?.message || "";
+    }
+    const alertsHost = document.getElementById("community-alerts");
+    const dismissed = dismissedCommunityAlerts();
+    const alerts = (Array.isArray(communityState?.alerts) ? communityState.alerts : []).filter(alert => !dismissed.has(alert.id));
+    alertsHost?.replaceChildren(...alerts.map(alert => {
+      const card = document.createElement("article");
+      card.className = `community-alert ${["warning", "critical"].includes(alert.severity) ? alert.severity : ""}`.trim();
+      const title = document.createElement("h3");
+      title.textContent = alert.title;
+      const copy = document.createElement("p");
+      copy.textContent = alert.message;
+      const close = document.createElement("button");
+      close.type = "button";
+      close.className = "community-alert-close";
+      close.setAttribute("aria-label", `Dismiss ${alert.title}`);
+      close.innerHTML = '<i data-lucide="x"></i>';
+      close.addEventListener("click", () => dismissCommunityAlert(alert.id));
+      card.append(title, copy, close);
+      return card;
+    }));
+    const noUpdates = document.getElementById("community-no-updates");
+    if (noUpdates) noUpdates.hidden = Boolean(announcement || alerts.length);
+    if (window.lucide?.createIcons) window.lucide.createIcons();
+  }
+
+  async function submitCommunityVote() {
+    const poll = communityState?.poll;
+    if (!poll || !communitySelectedOptionId || communityVotePending || poll.selectedOptionId) return;
+    communityVotePending = true;
+    renderCommunityHub();
+    let resultMessage = "";
+    try {
+      const result = window.StudyBaseServices
+        ? await window.StudyBaseServices.request("/community/vote", { method: "POST", body: JSON.stringify({ distributionId: "studybase-main", pollId: poll.id, optionId: communitySelectedOptionId }) })
+        : await fetch(`${WORKER}/api/community/vote`, { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ distributionId: "studybase-main", pollId: poll.id, optionId: communitySelectedOptionId }) }).then(response => response.json());
+      if (!result?.ok) throw new Error(result?.error || "Your response could not be saved");
+      poll.selectedOptionId = result.selectedOptionId;
+      resultMessage = "Your response has been recorded.";
+    } catch (error) {
+      resultMessage = error.message || "Your response could not be saved.";
+    } finally {
+      communityVotePending = false;
+      renderCommunityHub(resultMessage);
+    }
+  }
+
+  function acceptCommunitySessionPayload(payload) {
+    if (!payload?.community || payload.community.distributionId !== "studybase-main") return;
+    communityState = payload.community;
+    communitySelectedOptionId = String(communityState.poll?.selectedOptionId || "");
+    renderCommunityHub();
+  }
+
+  window.addEventListener("studybase:session-payload", event => acceptCommunitySessionPayload(event.detail));
   let topCards = [];
   let resourceIdleTimer = null;
   let latestRenderedResourceItems = [];
@@ -6392,13 +6590,7 @@
   setupCommandCenterControls();
   refreshCommandFilters();
   refreshResourceVaultChrome();
-  loadStudyShop().catch(() => {});
-  if (new URLSearchParams(window.location.search).get("quests") === "true") {
-    openStudyShop();
-    const cleanUrl = new URL(window.location.href);
-    cleanUrl.searchParams.delete("quests");
-    history.replaceState(null, "", `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`);
-  }
+  if (window.StudyBaseSessionPayload) acceptCommunitySessionPayload(window.StudyBaseSessionPayload);
   loadResources();
 </script>
 <!-- Report Modal -->

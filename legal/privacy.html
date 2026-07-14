@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <script src="/assets/js/config/privacyConfig.js?v=20260712"></script>
+  <script src="/assets/js/config/privacyConfig.js?v=20260714"></script>
   <script src="/assets/js/privacy/checkCookieConsent.js?v=20260712"></script>
   <meta charset="UTF-8">
   <meta name="description" content="StudyBase privacy notice covering browser storage, account data, cookie choices, analytics, reports, and API-backed services." data-studybase-education-meta="true">
@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="/assets/js/layout/navbar.js" defer></script>
   <script src="/assets/js/layout/footer.js" defer></script>
-  <script src="/assets/js/core/sessionManager.js" defer></script>
+  <script src="/assets/js/core/sessionManager.js?v=20260714-community" defer></script>
   <link rel="stylesheet" href="/assets/css/main/studybase-remastered.css?v=20260526-remaster">
 </head>
 <body class="legal-body">
@@ -44,8 +44,8 @@
           </div>
           <div class="legal-version">
             <span>Version</span>
-            <strong>PRIVACY-2026.07.12</strong>
-            <p class="legal-copy" style="margin-top:10px;font-size:13px;line-height:1.55;">Last updated: 12 July 2026 - weekly session retention and security monitoring updated</p>
+            <strong>PRIVACY-2026.07.14</strong>
+            <p class="legal-copy" style="margin-top:10px;font-size:13px;line-height:1.55;">Last updated: 14 July 2026 - community polls, alerts, and announcements added</p>
           </div>
         </div>
       </div>
@@ -164,6 +164,13 @@
             for you to manage until you remove, accept, decline, or cancel them.
           </p>
           <p>
+            The signed-in resource page may display a StudyBase community poll, announcement, and priority alerts. If you answer a poll,
+            StudyBase stores the selected option against your account UUID and that poll's identifier so one account cannot ordinarily
+            answer more than once. The administration dashboard shows aggregate totals for each option and does not show voter identities.
+            Announcements and alerts do not record whether an individual user has read or dismissed them; alert dismissal lasts only in
+            that browser tab's session storage.
+          </p>
+          <p>
             StudyBase also records a short-lived daily friend-request count to enforce the limit of 10 newly sent requests per day.
             The browser keeps a matching local daily count to provide immediate feedback, but the server-side limit remains authoritative.
           </p>
@@ -276,6 +283,7 @@
             <li>Sessions: until the next Monday at 00:01 Europe/London, unless revoked or the account is deleted sooner.</li>
             <li>Account profile: while the account is active. Password-confirmed self-service deletion revokes sessions and removes the account record, username index, keyed eligibility record, related pending signup data, friendships, pending friend requests, and friend-request rate records.</li>
             <li>Friendships and pending requests: until a user removes, declines, or cancels them, or until either related account is deleted. Daily request-limit records expire shortly after the relevant day.</li>
+            <li>Community poll responses: until 30 days after a poll expires, up to 90 days for a poll without an expiry, or until the account is deleted or all user data is purged, whichever happens first. Poll, alert, and announcement publishing records remain until expired, removed, or replaced.</li>
             <li>StudyShop balances, card collection identifiers and copy counts, milestone claims, lifetime statistics, and recent transfer history: while the account remains active. Daily quest records expire within approximately three days, weekly records within approximately 15 days, and transfer-completion safeguards within approximately 30 days. Account deletion clears the balance, card collection, and associated StudyShop records.</li>
             <li>Account security login events: up to 30 days.</li>
             <li>Deduplicated off-site request security events: up to two days. An enforcement record linked to an account is retained while the restriction remains and as reasonably needed to review it.</li>

@@ -1,10 +1,10 @@
 # UK legal release checklist
 
-Last reviewed: 12 July 2026
+Last reviewed: 14 July 2026
 
-Implementation review updated: 12 July 2026
+Implementation review updated: 14 July 2026
 
-## Implemented in the 12 July 2026 review
+## Implemented in the 14 July 2026 review
 
 - Optional analytics remains off until a positive choice; accept, reject, and
   manage actions are presented together and the choice can be reopened.
@@ -14,6 +14,9 @@ Implementation review updated: 12 July 2026
 - The account-ban page now provides an existing support route for human review.
 - Mobile-phone blocking is layered in the shared navigation code while ChromeOS
   and touch-enabled Chromebooks remain supported.
+- The privacy notice now explains account-linked community poll responses,
+  aggregate dashboard results, browser-session alert dismissal, and poll-response
+  retention. Account deletion and the full user-data purge remove vote records.
 
 These code changes do not complete the operator, governance, processor-contract,
 risk-assessment, or professional-review actions below.
