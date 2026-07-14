@@ -1637,7 +1637,7 @@
         .community-submit:disabled { cursor: default; opacity: 0.45; }
         .community-empty { display: grid; min-height: 8.2rem; flex: 1; place-items: center; padding: 0; color: #64748b; text-align: center; }
         .community-empty[hidden] { display: none; }
-        .community-empty-state { display: grid; width: 100%; min-height: 6.6rem; place-items: center; align-content: center; gap: 0.55rem; border: 1px dashed #d8dee9; border-radius: 17px; background: linear-gradient(145deg, #f8fafc, #fff); }
+        .community-empty-state { display: grid; width: 100%; height: 100%; min-height: 6.6rem; place-items: center; align-content: center; gap: 0.55rem; border: 1px dashed #d8dee9; border-radius: 17px; background: linear-gradient(145deg, #f8fafc, #fff); }
         .community-empty-icon { display: grid; width: 2.5rem; height: 2.5rem; place-items: center; border-radius: 14px; color: #6d28d9; background: #ede9fe; box-shadow: 0 8px 20px rgba(109,40,217,0.12); }
         .community-empty-icon svg { width: 1.15rem; height: 1.15rem; }
         .community-empty strong { display: block; color: #334155; font-size: 0.8rem; font-weight: 800; }
@@ -1649,6 +1649,7 @@
         .private-hub-side-head strong svg { width: 0.9rem; height: 0.9rem; color: #6d28d9; }
         .private-hub-side-head span { padding: 0.28rem 0.5rem; border-radius: 999px; color: #64748b; background: #f1f5f9; font-size: 0.56rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
         .community-update { padding: 0.75rem; border-radius: 15px; color: #1e3a8a; background: #eff6ff; }
+        #community-alerts { display: grid; gap: 0.6rem; }
         #community-alerts:empty { display: none; }
         .community-update[hidden], .community-alert[hidden] { display: none; }
         .community-update-label { color: #2563eb; font-size: 0.59rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
@@ -3243,8 +3244,9 @@
                                 <button type="button" onclick="openReportModalWithType('suggestion')" class="resource-action-icon" title="Make a suggestion" aria-label="Make a suggestion">
                                     <i class="fas fa-lightbulb"></i>
                                 </button>
-                                <button type="button" onclick="openReportModalWithType('contact')" class="resource-action-icon" title="Contact us" aria-label="Contact us">
+                                <button type="button" onclick="openReportModal()" class="resource-action-icon contact" title="Contact us" aria-label="Contact us">
                                     <i class="fas fa-envelope"></i>
+                                    <span>Contact us</span>
                                 </button>
                             </div>
                         </div>
