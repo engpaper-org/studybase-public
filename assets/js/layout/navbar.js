@@ -571,6 +571,14 @@
     window.addEventListener("message", event => {
       const trustedAuthOrigins = new Set([window.location.origin, "https://auth.platformbase.online"]);
       if (!trustedAuthOrigins.has(event.origin)) return;
+      if (event.data?.type === "studybase:navigate-top") {
+        try {
+          const target = new URL(String(event.data.url || ""));
+          if (event.origin !== "https://auth.platformbase.online" || target.origin !== window.location.origin) return;
+          window.top.location.replace(target.href);
+        } catch (_) {}
+        return;
+      }
       if (event.data?.type === "studybase:session-ended" && event.data.reason === "authentication-required") {
         ensureAccountModal().closeAccountModal?.();
         updateAuthState();

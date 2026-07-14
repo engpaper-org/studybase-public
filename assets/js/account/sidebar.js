@@ -30,7 +30,16 @@
   });
 
   window.addEventListener("message", event => {
-    if (event.origin !== "https://auth.platformbase.online" || event.data?.type !== "studybase:account-status") return;
+    if (event.origin !== "https://auth.platformbase.online") return;
+    if (event.data?.type === "studybase:navigate-top") {
+      try {
+        const target = new URL(String(event.data.url || ""));
+        if (target.origin !== window.location.origin) return;
+        window.top.location.replace(target.href);
+      } catch (_) {}
+      return;
+    }
+    if (event.data?.type !== "studybase:account-status") return;
     document.getElementById("sb-account-panel")?.remove();
     window.parent.postMessage(event.data, window.location.origin);
   });
