@@ -927,21 +927,19 @@
         .private-vault-header {
             position: relative;
             overflow: hidden;
-            padding: clamp(0.75rem, 1.8vw, 1rem);
-            border: 1px solid rgba(148, 163, 184, 0.2);
-            border-radius: 26px;
-            background:
-                radial-gradient(circle at 96% 0%, rgba(124, 58, 237, 0.1), transparent 30%),
-                linear-gradient(145deg, rgba(255,255,255,0.99), rgba(248,250,252,0.94));
-            box-shadow: 0 22px 60px rgba(15, 23, 42, 0.08);
+            padding: clamp(1rem, 1.8vw, 1.3rem);
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            border-radius: 28px;
+            background: rgba(255,255,255,0.96);
+            box-shadow: 0 24px 64px rgba(15, 23, 42, 0.08);
         }
 
         .private-vault-header::before {
             content: "";
             position: absolute;
             inset: 0 0 auto;
-            height: 4px;
-            background: linear-gradient(90deg, #06b6d4, #7c3aed 52%, #ec4899);
+            height: 5px;
+            background: linear-gradient(90deg, #14b8a6, #6366f1 54%, #a855f7);
             pointer-events: none;
         }
 
@@ -961,29 +959,18 @@
             justify-content: space-between;
             gap: 1.25rem;
             flex-wrap: wrap;
-            margin-bottom: 0.85rem;
-            padding: clamp(1rem, 2vw, 1.35rem);
-            border: 1px solid rgba(255,255,255,0.11);
-            border-radius: 21px;
-            color: #fff;
-            background:
-                radial-gradient(circle at 76% -30%, rgba(34,211,238,0.32), transparent 35%),
-                radial-gradient(circle at 100% 110%, rgba(217,70,239,0.28), transparent 38%),
-                linear-gradient(125deg, #111827, #25215c 58%, #4c1d95);
-            box-shadow: 0 18px 38px -26px rgba(30,41,59,0.9);
+            margin-bottom: 0.9rem;
+            padding: 0.25rem 0.25rem 0.95rem;
+            border: 0;
+            border-bottom: 1px solid #e2e8f0;
+            border-radius: 0;
+            color: #0f172a;
+            background: transparent;
+            box-shadow: none;
         }
 
         .private-vault-header-top::after {
-            content: "";
-            position: absolute;
-            right: 17rem;
-            bottom: -5rem;
-            width: 11rem;
-            height: 11rem;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 999px;
-            box-shadow: 0 0 0 2.4rem rgba(255,255,255,0.025);
-            pointer-events: none;
+            display: none;
         }
 
         .private-vault-title-wrap {
@@ -1003,10 +990,9 @@
             place-items: center;
             border-radius: 18px;
             color: #fff;
-            border: 1px solid rgba(255,255,255,0.17);
-            background: rgba(255,255,255,0.11);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 14px 30px rgba(15,23,42,0.2);
-            backdrop-filter: blur(10px);
+            border: 0;
+            background: linear-gradient(145deg, #14b8a6, #6366f1 58%, #8b5cf6);
+            box-shadow: 0 14px 28px rgba(79,70,229,0.22);
         }
 
         .private-vault-title-icon svg {
@@ -1017,7 +1003,7 @@
         .private-vault-eyebrow {
             display: block;
             margin-bottom: 0.25rem;
-            color: #c4b5fd;
+            color: #6366f1;
             font-size: 0.67rem;
             font-weight: 950;
             letter-spacing: 0.16em;
@@ -1034,11 +1020,11 @@
         }
 
         .private-vault-header-top h2 {
-            color: #fff;
+            color: #0f172a;
         }
 
         .private-vault-header .private-vault-header-top p {
-            color: #cbd5e1;
+            color: #64748b;
         }
 
         .private-vault-header p {
@@ -1620,7 +1606,8 @@
 
         .community-card,
         .private-hub-side,
-        .private-hub-utility {
+        .private-hub-utility,
+        .private-circle-card {
             border: 1px solid rgba(148,163,184,0.2);
             border-radius: 22px;
             background: rgba(255,255,255,0.86);
@@ -1646,9 +1633,19 @@
         .community-poll-note { color: #64748b; font-size: 0.62rem; font-weight: 750; }
         .community-submit { min-height: 2.35rem; padding: 0 0.85rem; border-radius: 12px; color: #fff; background: #111827; font-size: 0.66rem; font-weight: 950; }
         .community-submit:disabled { cursor: default; opacity: 0.45; }
-        .community-empty { display: grid; min-height: 8.2rem; place-items: center; color: #64748b; text-align: center; font-size: 0.72rem; font-weight: 800; }
+        .community-empty { display: grid; min-height: 8.2rem; place-items: center; padding: 0.75rem; color: #64748b; text-align: center; }
+        .community-empty[hidden] { display: none; }
+        .community-empty-state { display: grid; width: 100%; min-height: 6.6rem; place-items: center; align-content: center; gap: 0.55rem; border: 1px dashed #d8dee9; border-radius: 17px; background: linear-gradient(145deg, #f8fafc, #fff); }
+        .community-empty-icon { display: grid; width: 2.5rem; height: 2.5rem; place-items: center; border-radius: 14px; color: #6d28d9; background: #ede9fe; box-shadow: 0 8px 20px rgba(109,40,217,0.12); }
+        .community-empty-icon svg { width: 1.15rem; height: 1.15rem; }
+        .community-empty strong { display: block; color: #334155; font-size: 0.76rem; font-weight: 950; }
+        .community-empty p { max-width: 19rem; margin: 0.18rem auto 0; color: #64748b; font-size: 0.62rem; font-weight: 750; line-height: 1.45; }
 
-        .private-hub-side { display: grid; align-content: start; gap: 0.6rem; padding: 0.8rem; }
+        .private-hub-side { display: flex; min-width: 0; flex-direction: column; gap: 0.6rem; padding: 0.8rem; }
+        .private-hub-side-head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0 0.1rem; }
+        .private-hub-side-head strong { display: inline-flex; align-items: center; gap: 0.4rem; color: #334155; font-size: 0.62rem; font-weight: 950; letter-spacing: 0.1em; text-transform: uppercase; }
+        .private-hub-side-head strong svg { width: 0.9rem; height: 0.9rem; color: #6d28d9; }
+        .private-hub-side-head span { padding: 0.28rem 0.5rem; border-radius: 999px; color: #64748b; background: #f1f5f9; font-size: 0.52rem; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; }
         .community-update { padding: 0.75rem; border-radius: 15px; color: #1e3a8a; background: #eff6ff; }
         .community-update[hidden], .community-alert[hidden] { display: none; }
         .community-update-label { color: #2563eb; font-size: 0.55rem; font-weight: 950; letter-spacing: 0.1em; text-transform: uppercase; }
@@ -1660,30 +1657,41 @@
         .community-alert-close { position: absolute; top: 0.5rem; right: 0.5rem; display: grid; width: 1.45rem; height: 1.45rem; place-items: center; border-radius: 8px; color: currentColor; background: rgba(255,255,255,0.55); }
         .community-alert-close svg { width: 0.85rem; height: 0.85rem; }
 
-        .private-hub-utilities { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 0.75rem; margin-top: 0.75rem; }
+        .private-hub-utilities { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.65fr) repeat(2, minmax(0, 0.72fr)); gap: 0.75rem; margin-top: 0.75rem; }
         .private-hub-utility { display: flex; min-width: 0; align-items: center; gap: 0.7rem; padding: 0.75rem; }
         .private-hub-utility-icon { display: grid; width: 2.15rem; height: 2.15rem; flex: 0 0 auto; place-items: center; border-radius: 12px; color: #6d28d9; background: #ede9fe; }
         .private-hub-utility-icon svg { width: 1rem; height: 1rem; }
         .private-hub-utility strong { display: block; overflow: hidden; color: #1e293b; font-size: 0.7rem; font-weight: 950; text-overflow: ellipsis; white-space: nowrap; }
         .private-hub-utility span, .private-hub-utility p { display: block; margin: 0.12rem 0 0; overflow: hidden; color: #64748b; font-size: 0.58rem; font-weight: 750; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
         .private-hub-utility-action { margin-left: auto; padding: 0.45rem 0.6rem; border-radius: 10px; color: #fff; background: #111827; font-size: 0.58rem; font-weight: 950; white-space: nowrap; }
-        .private-friends-compact { grid-template-columns: auto minmax(0,1fr) auto !important; margin: 0 !important; }
-        .private-friends-compact .private-friends-banner-copy h3 { margin: 0; color: #1e293b; font-size: 0.7rem; }
-        .private-friends-compact .private-friends-banner-copy h3 span { display: inline; margin: 0; overflow: visible; color: inherit !important; font: inherit; white-space: normal; }
-        .private-friends-compact .private-friends-banner-copy p { max-width: 12rem; margin-top: 0.12rem; font-size: 0.58rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .private-friends-compact .private-friends-banner-kicker, .private-friends-compact .private-friends-preview, .private-friends-compact .private-friends-banner-social { display: none; }
-        .private-friends-compact .private-friends-banner-action { min-height: 2.15rem; padding: 0 0.65rem; font-size: 0.58rem; }
+        .private-circle-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 1rem; min-width: 0; margin: 0; padding: 0.9rem 1rem; overflow: hidden; background: linear-gradient(135deg, #f5f3ff 0%, #fff 55%, #ecfeff 100%); }
+        .private-circle-main { display: flex; min-width: 0; align-items: center; gap: 0.8rem; }
+        .private-circle-icon { display: grid; width: 2.75rem; height: 2.75rem; flex: 0 0 auto; place-items: center; border-radius: 15px; color: #fff; background: linear-gradient(135deg, #7c3aed, #4f46e5); box-shadow: 0 10px 24px rgba(79,70,229,0.22); }
+        .private-circle-icon svg { width: 1.2rem; height: 1.2rem; }
+        .private-circle-card .private-friends-banner-kicker { color: #6d28d9; font-size: 0.56rem; }
+        .private-circle-card .private-friends-banner-copy h3 { margin: 0.2rem 0 0; color: #1e293b; font-size: 0.86rem; }
+        .private-circle-card .private-friends-banner-copy p { max-width: 24rem; margin-top: 0.18rem; overflow: hidden; color: #64748b; font-size: 0.61rem; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
+        .private-circle-social { display: flex; align-items: center; gap: 0.65rem; }
+        .private-circle-stats { display: flex; gap: 0.4rem; }
+        .private-circle-card .private-friends-stat { min-width: 3.65rem; padding: 0.42rem 0.5rem; border-color: #ddd6fe; background: rgba(255,255,255,0.72); backdrop-filter: none; }
+        .private-circle-card .private-friends-stat strong { color: #312e81; font-size: 0.8rem; }
+        .private-circle-card .private-friends-stat span { margin-top: 0.02rem; color: #7c3aed; font-size: 0.48rem; }
+        .private-circle-card .private-friends-banner-action { min-height: 2.45rem; padding: 0 0.75rem; border-radius: 12px; color: #fff; background: #111827; font-size: 0.59rem; box-shadow: none; white-space: nowrap; }
+        .private-circle-card .private-friends-banner-action:hover { color: #fff; background: #4f46e5; }
 
-        :root.dark .community-card, :root.dark .private-hub-side, :root.dark .private-hub-utility { border-color: rgba(148,163,184,0.18); background: rgba(15,23,42,0.72); }
-        :root.dark .community-question, :root.dark .private-hub-utility strong { color: #f8fafc; }
-        :root.dark .private-friends-compact .private-friends-banner-copy h3 { color: #f8fafc; }
+        :root.dark .community-card, :root.dark .private-hub-side, :root.dark .private-hub-utility, :root.dark .private-circle-card { border-color: rgba(148,163,184,0.18); background: rgba(15,23,42,0.72); }
+        :root.dark .community-question, :root.dark .private-hub-utility strong, :root.dark .private-hub-side-head strong { color: #f8fafc; }
+        :root.dark .private-circle-card .private-friends-banner-copy h3, :root.dark .community-empty strong { color: #f8fafc; }
+        :root.dark .community-empty-state { border-color: #334155; background: rgba(15,23,42,0.45); }
+        :root.dark .private-circle-card .private-friends-stat { border-color: #4338ca; background: rgba(30,41,59,0.72); }
+        :root.dark .private-circle-card .private-friends-stat strong { color: #e0e7ff; }
         :root.dark .community-option { border-color: #334155; color: #cbd5e1; background: #0f172a; }
         :root.dark .community-option.selected { border-color: #a78bfa; color: #ddd6fe; background: #2e1065; }
 
         @media (max-width: 1050px) {
             .private-hub-grid { grid-template-columns: 1fr; }
-            .private-hub-side { grid-template-columns: repeat(2, minmax(0,1fr)); }
             .private-hub-utilities { grid-template-columns: 1fr 1fr; }
+            .private-circle-card { grid-column: 1 / -1; }
         }
 
         @media (max-width: 950px) {
@@ -1731,6 +1739,15 @@
                 justify-content: space-between;
             }
 
+            .private-circle-card {
+                grid-template-columns: 1fr;
+            }
+
+            .private-circle-social {
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+
             .community-poll-options, .private-hub-side, .private-hub-utilities { grid-template-columns: 1fr; }
 
             .studyshop-banner { grid-template-columns: 1fr; }
@@ -1758,32 +1775,31 @@
         }
 
         .resource-action-icon {
-            width: 3.8rem;
-            min-height: 3.8rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.16);
-            background: rgba(255,255,255,0.11);
-            color: #f8fafc;
+            width: 3.15rem;
+            min-height: 3.15rem;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            color: #475569;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 14px 30px rgba(15,23,42,0.16);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 24px rgba(15,23,42,0.07);
             transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, color 0.16s ease, background 0.16s ease;
         }
 
         .resource-action-icon:hover {
             transform: translateY(-2px);
-            border-color: rgba(103,232,249,0.65);
-            color: #fff;
-            background: rgba(8,145,178,0.5);
+            border-color: #a5b4fc;
+            color: #4f46e5;
+            background: #eef2ff;
             box-shadow: 0 18px 36px rgba(14,116,144,0.14);
         }
 
         .resource-action-icon.danger:hover {
-            border-color: rgba(251,113,133,0.7);
-            color: #fff;
-            background: rgba(190,24,93,0.48);
+            border-color: #fda4af;
+            color: #be123c;
+            background: #fff1f2;
         }
 
         .resource-action-icon.contact {
@@ -1792,18 +1808,18 @@
             padding: 0 1.05rem;
             gap: 0.55rem;
             justify-content: center;
-            color: #172554;
-            border-color: rgba(255,255,255,0.4);
-            background: linear-gradient(135deg, #a5f3fc, #fff 48%, #ddd6fe);
-            font-size: 0.86rem;
+            color: #fff;
+            border-color: #111827;
+            background: #111827;
+            font-size: 0.8rem;
             font-weight: 900;
         }
 
         .resource-action-icon.contact:hover {
-            color: #172554;
-            border-color: #fff;
-            background: linear-gradient(135deg, #67e8f9, #fff 48%, #c4b5fd);
-            box-shadow: 0 18px 36px rgba(15,23,42,0.24);
+            color: #fff;
+            border-color: #4f46e5;
+            background: #4f46e5;
+            box-shadow: 0 14px 30px rgba(79,70,229,0.2);
         }
 
         body.rgenie-private-resources .rgenie-filter-grid {
@@ -3222,9 +3238,9 @@
                                     <i data-lucide="library-big"></i>
                                 </div>
                                 <div>
-                                    <span class="private-vault-eyebrow">Your study workspace</span>
-                                    <h2>Resource vault</h2>
-                                    <p>Find papers, tools and revision routes across your approved collection.</p>
+                                    <span class="private-vault-eyebrow">Private workspace</span>
+                                    <h2>Your StudyBase workspace</h2>
+                                    <p>Community updates, your circle and approved resources in one place.</p>
                                 </div>
                             </div>
                             <div class="resource-action-icons" aria-label="Resource actions">
@@ -3242,17 +3258,24 @@
                         </div>
 
                         <div class="private-hub-grid">
-                            <section id="studybase-community" class="community-card" aria-labelledby="community-heading" aria-busy="true">
+                            <section id="studybase-community" class="community-card" aria-labelledby="community-card-title" aria-busy="true">
                                 <div class="community-card-head">
-                                    <span class="community-card-kicker"><i data-lucide="messages-square"></i> StudyBase community</span>
+                                    <span id="community-card-title" class="community-card-kicker"><i data-lucide="messages-square"></i> StudyBase community</span>
                                     <span id="community-poll-status" class="community-poll-status">Loading</span>
                                 </div>
                                 <div id="community-poll-content" class="community-empty">
-                                    <p>Checking for a community question...</p>
+                                    <div class="community-empty-state">
+                                        <span class="community-empty-icon"><i data-lucide="loader-circle"></i></span>
+                                        <div><strong>Checking the community board</strong><p>Questions will appear here when they are available.</p></div>
+                                    </div>
                                 </div>
                             </section>
 
                             <aside class="private-hub-side" aria-label="Community updates">
+                                <div class="private-hub-side-head">
+                                    <strong><i data-lucide="bell"></i> Updates</strong>
+                                    <span>Latest</span>
+                                </div>
                                 <article id="community-announcement" class="community-update" hidden>
                                     <span class="community-update-label">Announcement</span>
                                     <h3 id="community-announcement-title"></h3>
@@ -3260,12 +3283,34 @@
                                 </article>
                                 <div id="community-alerts" aria-live="polite"></div>
                                 <div id="community-no-updates" class="community-empty">
-                                    <div><i data-lucide="inbox"></i><p>No new updates right now.</p></div>
+                                    <div class="community-empty-state">
+                                        <span class="community-empty-icon"><i data-lucide="bell-ring"></i></span>
+                                        <div><strong>You are all caught up</strong><p>Announcements and important notices will appear here.</p></div>
+                                    </div>
                                 </div>
                             </aside>
                         </div>
 
                         <div class="private-hub-utilities">
+                            <section id="private-friends-banner" class="private-circle-card" aria-busy="true">
+                                <div class="private-circle-main">
+                                    <span class="private-circle-icon"><i data-lucide="users-round"></i></span>
+                                    <div class="private-friends-banner-copy">
+                                        <span class="private-friends-banner-kicker">StudyBase circle</span>
+                                        <h3>Your people, in one place</h3>
+                                        <p id="private-friends-summary">Loading your connections...</p>
+                                    </div>
+                                </div>
+                                <div class="private-circle-social">
+                                    <div id="private-friends-preview" class="private-friends-preview" aria-hidden="true"></div>
+                                    <div class="private-circle-stats" aria-label="Circle overview">
+                                        <div class="private-friends-stat"><strong id="private-friends-count">0</strong><span>Friends</span></div>
+                                        <div class="private-friends-stat"><strong id="private-friends-notification" class="private-friends-notification">0</strong><span>Pending</span></div>
+                                    </div>
+                                    <button type="button" class="private-friends-banner-action" onclick="openFriendsWorkspace()">Manage <i data-lucide="arrow-up-right"></i></button>
+                                </div>
+                            </section>
+
                             <article class="private-hub-utility">
                                 <span class="private-hub-utility-icon"><i data-lucide="shield-check"></i></span>
                                 <div><strong>Account support</strong><span>Use the built-in contact tools.</span></div>
@@ -3277,17 +3322,6 @@
                                 <div><strong>Keep access handy</strong><span>Save the permanent redirect.</span></div>
                                 <a href="https://takemetoaworkingstudybase.site/?bookmark=true" target="_blank" rel="noopener noreferrer" class="private-hub-utility-action" style="text-decoration:none">Bookmark</a>
                             </article>
-
-                            <section id="private-friends-banner" class="private-hub-utility private-friends-banner private-friends-compact" aria-busy="true">
-                                <span class="private-hub-utility-icon"><i data-lucide="users-round"></i></span>
-                                <div class="private-friends-banner-copy">
-                                    <span class="private-friends-banner-kicker">Friends</span>
-                                    <h3><span id="private-friends-count">0</span> in your circle · <span id="private-friends-notification" class="private-friends-notification">0</span> pending</h3>
-                                    <p id="private-friends-summary">Loading your connections...</p>
-                                </div>
-                                <div class="private-friends-banner-social"><div id="private-friends-preview" class="private-friends-preview" aria-hidden="true"></div></div>
-                                <button type="button" class="private-friends-banner-action" onclick="openFriendsWorkspace()">Open <i data-lucide="arrow-up-right"></i></button>
-                            </section>
 
                             <article id="studybase-subscription-banner" class="resource-warning-card private-vault-features hidden">
                                 <div class="private-vault-notice-icon"><i data-lucide="sparkles"></i></div>
@@ -3651,8 +3685,18 @@
     if (!poll || !Array.isArray(poll.options) || poll.options.length < 2) {
       status.textContent = "No poll";
       content.className = "community-empty";
-      const empty = document.createElement("p");
-      empty.textContent = "There is no community question right now.";
+      const empty = document.createElement("div");
+      empty.className = "community-empty-state";
+      const icon = document.createElement("span");
+      icon.className = "community-empty-icon";
+      icon.innerHTML = '<i data-lucide="message-circle-question"></i>';
+      const copy = document.createElement("div");
+      const title = document.createElement("strong");
+      title.textContent = "No question right now";
+      const detail = document.createElement("p");
+      detail.textContent = "The next community question will appear here when it is ready.";
+      copy.append(title, detail);
+      empty.append(icon, copy);
       content.append(empty);
     } else {
       communitySelectedOptionId = communitySelectedOptionId || String(poll.selectedOptionId || "");
@@ -3660,7 +3704,7 @@
       status.textContent = answered ? "Answered" : "Open poll";
       content.className = "";
       const question = document.createElement("h3");
-      question.id = "community-heading";
+      question.id = "community-poll-question";
       question.className = "community-question";
       question.textContent = poll.question;
       const options = document.createElement("div");
