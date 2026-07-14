@@ -59,12 +59,12 @@
       const avatarFallback = document.getElementById("avatar-fallback");
       const profilePicture = /^[a-z0-9-]{1,32}\/[a-z0-9-]{1,32}\.jpg$/.test(String(user.profilePicture || "").toLowerCase()) ? String(user.profilePicture).toLowerCase() : "sbo/1.jpg";
       avatarFallback.textContent = initial.toUpperCase();
-      avatarImg.src = `/assets/images/profile/pfp/${profilePicture}`;
+      avatarImg.src = `https://pfp.platformbase.online/pics/${profilePicture}`;
       avatarImg.onload = () => { avatarImg.hidden = false; avatarFallback.hidden = true; };
       avatarImg.onerror = () => {
         if (!avatarImg.dataset.fallback) {
           avatarImg.dataset.fallback = "1";
-          avatarImg.src = "/assets/images/profile/pfp/sbo/1.jpg";
+          avatarImg.src = "https://pfp.platformbase.online/pics/sbo/1.jpg";
           return;
         }
         avatarImg.hidden = true;

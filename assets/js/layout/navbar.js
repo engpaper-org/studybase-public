@@ -192,7 +192,7 @@
   function profilePictureUrl(user) {
     const value = String(user?.profilePicture || "sbo/1.jpg").trim().toLowerCase();
     const safe = /^[a-z0-9-]{1,32}\/[a-z0-9-]{1,32}\.jpg$/.test(value) ? value : "sbo/1.jpg";
-    return `/assets/images/profile/pfp/${safe}`;
+    return `https://pfp.platformbase.online/pics/${safe}`;
   }
 
   function authMarkup() {
@@ -206,7 +206,7 @@
       return `
         <div class="sbx-nav-auth" data-sbx-auth>
           <a class="sbx-nav-pfp" href="/myaccount/account.html" data-sbx-account aria-label="Open my account">
-            <img src="${profilePictureUrl(user)}" alt="" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='/assets/images/profile/pfp/sbo/1.jpg'}else{this.hidden=true;this.nextElementSibling.hidden=false}">
+            <img src="${profilePictureUrl(user)}" alt="" loading="lazy" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://pfp.platformbase.online/pics/sbo/1.jpg'}else{this.hidden=true;this.nextElementSibling.hidden=false}">
             <span hidden>${initial.toUpperCase()}</span>
           </a>
           <a class="sbx-nav-access sbx-nav-account" href="/myaccount/account.html" data-sbx-account>My account</a>

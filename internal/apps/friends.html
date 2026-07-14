@@ -201,7 +201,7 @@
     }
 
     function avatar(user, size = "h-12 w-12") {
-      return `<div class="${size} shrink-0 overflow-hidden rounded-full bg-purple-100 ring-2 ring-white shadow"><img src="/assets/images/profile/pfp/${safePfp(user.profilePicture)}" alt="" class="h-full w-full object-cover" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='/assets/images/profile/pfp/${DEFAULT_PFP}'}else{this.hidden=true}"></div>`;
+      return `<div class="${size} shrink-0 overflow-hidden rounded-full bg-purple-100 ring-2 ring-white shadow"><img src="https://pfp.platformbase.online/pics/${safePfp(user.profilePicture)}" alt="" class="h-full w-full object-cover" onerror="if(!this.dataset.fallback){this.dataset.fallback='1';this.src='https://pfp.platformbase.online/pics/${DEFAULT_PFP}'}else{this.hidden=true}"></div>`;
     }
 
     function clientUsage() {

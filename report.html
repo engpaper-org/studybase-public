@@ -36,7 +36,7 @@
         radial-gradient(circle at 95% 100%, rgba(124, 58, 237, 0.15), transparent 30rem),
         #f3f7fb;
     }
-    button, textarea { font: inherit; }
+    button, textarea, input, select { font: inherit; }
     button { -webkit-tap-highlight-color: transparent; }
 
     .app {
@@ -183,6 +183,7 @@
     .suggestion { --tone: #16a34a; --wash: #f0fdf4; }
     .contact { --tone: #2563eb; --wash: #eff6ff; }
     .legal { --tone: #d97706; --wash: #fffbeb; }
+    .developer { --tone: #7c3aed; --wash: #f5f3ff; }
 
     .form { display: grid; gap: 1rem; }
     .selected-category { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem 0.85rem; border: 1px solid #ddd6fe; border-radius: 1rem; background: #f5f3ff; }
@@ -192,6 +193,11 @@
     .field-head { display: flex; justify-content: space-between; gap: 1rem; }
     .field label { color: #334155; font-size: 0.72rem; font-weight: 900; }
     .counter { color: #94a3b8; font-size: 0.68rem; font-weight: 750; }
+    .developer-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.85rem; padding: 1rem; border: 1px solid #ddd6fe; border-radius: 1.1rem; background: #fafaff; }
+    .developer-fields .wide { grid-column: 1 / -1; }
+    .input-control { width: 100%; min-height: 3rem; padding: 0.75rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 0.9rem; color: var(--ink); background: #fff; outline: none; font-size: 0.8rem; font-weight: 650; }
+    .input-control:focus { border-color: #8b5cf6; box-shadow: 0 0 0 4px rgba(139,92,246,0.12); }
+    .developer-note { grid-column: 1 / -1; margin: 0; color: #64748b; font-size: 0.7rem; font-weight: 650; line-height: 1.5; }
     textarea {
       width: 100%;
       min-height: 12.5rem;
@@ -258,6 +264,8 @@
       .workspace { padding: 1.25rem; }
       .category-grid { grid-template-columns: 1fr; }
       .category { min-height: auto; }
+      .developer-fields { grid-template-columns: 1fr; }
+      .developer-fields .wide { grid-column: auto; }
       textarea { min-height: 10rem; }
     }
 
@@ -316,6 +324,38 @@
             <div class="selected-category">
               <span id="selectedCategory">General contact</span>
               <button type="button" class="change" onclick="showCategories()">Change category</button>
+            </div>
+            <div id="developerFields" class="developer-fields hidden">
+              <div class="field wide">
+                <label for="developerRequestType">What would you like to do?</label>
+                <select id="developerRequestType" class="input-control" required disabled>
+                  <option value="">Choose a developer request</option>
+                  <option value="integration">Integrate an app with StudyBase authentication and accounts</option>
+                  <option value="contributor">Help work on the StudyBase website</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="developerName">Your name or organisation</label>
+                <input id="developerName" class="input-control" type="text" minlength="2" maxlength="100" autocomplete="name" required disabled>
+              </div>
+              <div class="field">
+                <label for="contactMethod">Preferred contact method</label>
+                <select id="contactMethod" class="input-control" required disabled>
+                  <option value="">Choose a contact method</option>
+                  <option value="email">Email</option>
+                  <option value="discord">Discord</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="contactDetails">Contact details</label>
+                <input id="contactDetails" class="input-control" type="text" minlength="3" maxlength="200" autocomplete="off" placeholder="Email address, Discord username, or another method" required disabled>
+              </div>
+              <div class="field">
+                <label for="projectUrl">App, portfolio, or project URL <span class="counter">Optional</span></label>
+                <input id="projectUrl" class="input-control" type="url" maxlength="500" inputmode="url" placeholder="https://example.com" disabled>
+              </div>
+              <p class="developer-note">Do not include passwords, access tokens, or private keys. These details are sent securely to the developer-request queue.</p>
             </div>
             <div class="field">
               <div class="field-head">
@@ -381,6 +421,13 @@
         copy: "Use this for privacy, copyright, harmful content, or another safety concern.",
         description: "Raise a privacy, copyright, harmful content, or safety concern.",
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m16 16 3-8 3 8a5 5 0 0 1-6 0ZM2 16l3-8 3 8a5 5 0 0 1-6 0ZM7 21h10M12 3v18M3 7h18"/></svg>'
+      },
+      developer: {
+        label: "Developer request",
+        title: "Work with StudyBase",
+        copy: "Tell us whether you want to connect an app to StudyBase accounts or help contribute to the website.",
+        description: "Request account integration access or offer to help work on StudyBase.",
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></svg>'
       }
     };
 
@@ -421,13 +468,21 @@
       document.getElementById("categoryScreen").classList.add("hidden");
       document.getElementById("successScreen").classList.add("hidden");
       document.getElementById("formScreen").classList.remove("hidden");
+      toggleDeveloperFields(type === "developer");
       document.getElementById("description").focus();
+    }
+
+    function toggleDeveloperFields(visible) {
+      const fields = document.getElementById("developerFields");
+      fields.classList.toggle("hidden", !visible);
+      fields.querySelectorAll("input, select").forEach(control => { control.disabled = !visible; });
     }
 
     function showCategories() {
       document.getElementById("formScreen").classList.add("hidden");
       document.getElementById("categoryScreen").classList.remove("hidden");
       document.getElementById("errorMessage").classList.add("hidden");
+      toggleDeveloperFields(false);
     }
 
     function displayError(message) {
@@ -455,6 +510,14 @@
         return;
       }
 
+      const developerDetails = selectedType === "developer" ? {
+        developerRequestType: document.getElementById("developerRequestType").value,
+        developerName: document.getElementById("developerName").value.trim(),
+        contactMethod: document.getElementById("contactMethod").value,
+        contactDetails: document.getElementById("contactDetails").value.trim(),
+        projectUrl: document.getElementById("projectUrl").value.trim()
+      } : {};
+
       const button = document.getElementById("submitButton");
       const buttonContent = button.innerHTML;
       button.disabled = true;
@@ -472,7 +535,8 @@
           body: JSON.stringify({
             category: selectedType,
             description,
-            pageUrl: sourcePage
+            pageUrl: sourcePage,
+            ...developerDetails
           })
         });
         const result = await response.json().catch(() => ({}));

@@ -3243,6 +3243,9 @@
                                 <button type="button" onclick="openReportModalWithType('suggestion')" class="resource-action-icon" title="Make a suggestion" aria-label="Make a suggestion">
                                     <i class="fas fa-lightbulb"></i>
                                 </button>
+                                <button type="button" onclick="openReportModalWithType('contact')" class="resource-action-icon" title="Contact us" aria-label="Contact us">
+                                    <i class="fas fa-envelope"></i>
+                                </button>
                             </div>
                         </div>
 
@@ -4244,12 +4247,12 @@
 
     friendsSummaryState.friends.slice(0, 5).forEach(friend => {
       const image = document.createElement("img");
-      image.src = `/assets/images/profile/pfp/${safeFriendProfilePicture(friend.profilePicture)}`;
+      image.src = `https://pfp.platformbase.online/pics/${safeFriendProfilePicture(friend.profilePicture)}`;
       image.alt = "";
       image.onerror = () => {
         if (image.dataset.fallback) { image.remove(); return; }
         image.dataset.fallback = "1";
-        image.src = "/assets/images/profile/pfp/sbo/1.jpg";
+        image.src = "https://pfp.platformbase.online/pics/sbo/1.jpg";
       };
       preview.appendChild(image);
     });
