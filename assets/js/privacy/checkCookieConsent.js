@@ -79,7 +79,7 @@
       return;
     }
     const recoveryLoader = document.createElement("script");
-    recoveryLoader.src = "/assets/js/privacy/cookieConsent.js?v=20260712a";
+    recoveryLoader.src = "/assets/js/privacy/cookieConsent.js?v=20260714b";
     recoveryLoader.async = false;
     recoveryLoader.addEventListener("load", () => window.StudyBaseConsent?.open(), { once: true });
     document.head.appendChild(recoveryLoader);
@@ -87,10 +87,10 @@
 
   if (!initialiseConsent()) {
     if (document.readyState === "loading") {
-      document.write('<script src="/assets/js/privacy/cookieConsent.js?v=20260712a" data-sb-consent-loader="true"><\/script>');
+      document.write('<script src="/assets/js/privacy/cookieConsent.js?v=20260714b" data-sb-consent-loader="true"><\/script>');
     } else {
       const loader = document.createElement("script");
-      loader.src = "/assets/js/privacy/cookieConsent.js?v=20260712a";
+      loader.src = "/assets/js/privacy/cookieConsent.js?v=20260714b";
       loader.async = false;
       loader.dataset.sbConsentLoader = "true";
       loader.addEventListener("load", initialiseConsent, { once: true });
