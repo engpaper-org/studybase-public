@@ -30,7 +30,9 @@
       links: [
         ["/support/help_center.html", "Help Centre"],
         ["/faq.html", "FAQ"],
-        ["/support/contact.html", "Contact support"]
+        ["/support/contact.html", "Contact support"],
+        ["/legal/", "Legal centre"],
+        ["/legal/privacy.html", "Privacy notice"]
       ]
     }
   ];
@@ -60,6 +62,13 @@
       </div>
     `;
     document.body.appendChild(footer);
+    const privacyButton = document.createElement("button");
+    privacyButton.type = "button";
+    privacyButton.className = "sbx-footer-cookie-settings";
+    privacyButton.textContent = "Cookie settings";
+    privacyButton.style.cssText = "display:block;margin:0 auto 22px;border:0;background:transparent;color:inherit;text-decoration:underline;cursor:pointer;font:inherit;font-weight:700";
+    privacyButton.addEventListener("click", () => { window.location.href = "/legal/privacy.html?manageCookies=1#cookies"; });
+    footer.appendChild(privacyButton);
   }
 
   function ensureStyles() {

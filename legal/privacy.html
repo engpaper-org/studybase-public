@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <script src="/assets/js/config/privacyConfig.js"></script>
-  <script src="/assets/js/privacy/checkCookieConsent.js"></script>
+  <script src="/assets/js/config/privacyConfig.js?v=20260712"></script>
+  <script src="/assets/js/privacy/checkCookieConsent.js?v=20260712"></script>
   <meta charset="UTF-8">
-  <meta name="description" content="StudyBase privacy policy covering browser storage, account data, analytics, consent logging, reports, and API-backed services." data-studybase-education-meta="true">
+  <meta name="description" content="StudyBase privacy notice covering browser storage, account data, cookie choices, analytics, reports, and API-backed services." data-studybase-education-meta="true">
   <meta name="classification" content="Education" data-studybase-education-meta="true">
   <meta name="category" content="Education" data-studybase-education-meta="true">
   <meta name="subject" content="A-Level and GCSE revision, study resources, educational tools" data-studybase-education-meta="true">
@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="/assets/css/main/studybase.css?v=20260509-dark3">
   <link rel="stylesheet" href="/legal/legal.css?v=20260529">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StudyBase | Privacy Policy</title>
+  <title>StudyBase | Privacy Notice</title>
   <style>
     :root.dark .legal-body, :root.dark .doc-section, :root.dark .legal-panel { background:#0b1120; color:#e2e8f0; border-color:#334155; }
   </style>
@@ -35,7 +35,7 @@
       <div class="legal-shell">
         <div class="legal-hero-inner">
           <div>
-            <p class="legal-kicker">Privacy Policy</p>
+            <p class="legal-kicker">Privacy Notice</p>
             <h1 class="legal-title">How StudyBase handles data.</h1>
             <p class="legal-copy">
               This policy explains browser storage, account information, consent records, analytics, reports, protected-resource checks,
@@ -44,8 +44,8 @@
           </div>
           <div class="legal-version">
             <span>Version</span>
-            <strong>PRIVACY-2026.07.02</strong>
-            <p class="legal-copy" style="margin-top:10px;font-size:13px;line-height:1.55;">Last updated: 2 July 2026 - StudyShop card collections and pack openings added</p>
+            <strong>PRIVACY-2026.07.12</strong>
+            <p class="legal-copy" style="margin-top:10px;font-size:13px;line-height:1.55;">Last updated: 12 July 2026 - weekly session retention and security monitoring updated</p>
           </div>
         </div>
       </div>
@@ -58,6 +58,7 @@
         <a href="#scope">Scope</a>
         <a href="#controller">Data controller</a>
         <a href="#storage">Browser storage</a>
+        <a href="#cookies">Cookies &amp; analytics</a>
         <a href="#account">Account data</a>
         <a href="#workers">Workers and APIs</a>
         <a href="#analytics">Analytics &amp; consent</a>
@@ -74,38 +75,60 @@
         <article id="scope" class="doc-section">
           <h2>1. Scope</h2>
           <p>
-            This Privacy Policy applies to StudyBase pages, public resources, account pages, protected-resource flows, revision tools,
+            This Privacy Notice applies to StudyBase pages, public resources, account pages, protected-resource flows, revision tools,
             support/report routes, legal pages, embedded viewers, analytics scripts, safety systems, and connected infrastructure.
           </p>
           <p>
-            StudyBase is commonly used by students. Users under 18 should use the service with permission from a parent, guardian,
-            teacher, or other responsible adult where required.
+            StudyBase is commonly used by students and is likely to be accessed by children. We therefore aim to provide high-privacy
+            defaults, collect only data needed for requested features, and keep optional analytics off unless the user actively enables it.
           </p>
         </article>
 
         <article id="controller" class="doc-section">
           <h2>1.1 Data controller</h2>
           <p>
-            For the purposes of UK data protection law (UK GDPR and the Data Protection Act 2018), the data controller is the operator of StudyBase, a service based in the United Kingdom. 
-            You can contact us about privacy matters using the routes in the <a href="/support/contact.html">Support Centre</a> (select privacy or data request).
+            For the purposes of UK data protection law, the controller is <strong>StudyBase</strong>, the UK-based operator of this service.
+            Contact the controller through the <a href="/support/contact.html">Support Centre</a> and select <strong>Privacy / data request</strong>.
+            That route can be used without enabling analytics. We may ask for proportionate information to verify an account-related request.
           </p>
         </article>
 
         <article id="storage" class="doc-section">
           <h2>2. Browser storage</h2>
           <p>
-            StudyBase uses local storage and session storage so pages can remember consent, account state, session expiry, device codes,
+            StudyBase uses cookies, local storage and session storage so pages can remember privacy choices, account state, session expiry, device codes,
             display names, server-synchronised settings, safety toggles, active time,
             break reminders, resource state, and similar site behaviour.
           </p>
           <ul>
-            <li>Choice records may include <strong>studybase_consent_choice</strong>, <strong>site_consent_granted</strong>, <strong>site_consent_analytics</strong>, and <strong>consent_uid</strong>. The service-feature choice and optional analytics choice are recorded separately.</li>
+            <li>Privacy-choice records include <strong>studybase_consent_choice</strong> and compatibility keys. They record the notice version, necessary-storage status, optional analytics choice, decision time and expiry. They do not contain a generated tracking identifier.</li>
             <li>Account storage contains a non-secret session marker, session expiry, and a cached copy of the signed-in user's account profile, including username, first name, date of birth, gender, status, and settings. Passwords and eligibility email addresses are not stored in browser storage.</li>
             <li>Usage records may include local recent items, search preferences, tool choices, and the <strong>get_help_data</strong> record used to avoid repeating wellbeing messages and to adjust their local frequency. That record may include whether a message was marked helpful or not useful, topics hidden by the user, support-link opens, explanation opens, and time before continuing. Wellbeing interaction records remain in the browser, are not uploaded to StudyBase, and are cleared when the account is signed out.</li>
           </ul>
           <p>
             Clearing browser storage may remove local preferences and may sign you out, but it does not automatically delete server-side
             account records, hashed eligibility records, access logs, or support records. Use the account deletion control for server-side deletion.
+          </p>
+        </article>
+
+        <article id="cookies" class="doc-section">
+          <h2>2.1 Cookies and similar technologies</h2>
+          <p>
+            Browser storage is governed by the Privacy and Electronic Communications Regulations (PECR), as amended. Necessary storage
+            is used without consent only where it is essential to provide a feature you request, transmit a communication, remember this
+            privacy choice, or apply proportionate security. Optional analytics is disabled until you actively allow it.
+          </p>
+          <ul>
+            <li><strong>StudyBase privacy choice</strong> (local storage; necessary; up to 6 months): records whether analytics is allowed so we can respect your choice.</li>
+            <li><strong>Account session and security</strong> (first-party cookies and local/session storage; necessary; until the next Monday at 00:01 Europe/London): authenticates a requested account session, prevents misuse, and remembers account state.</li>
+            <li><strong>Requested tools and preferences</strong> (local/session storage; necessary or preference functionality; until cleared or no longer needed): saves work and settings on the device when you use those features.</li>
+            <li><strong>Google Analytics</strong> (<strong>_ga</strong> and <strong>_ga_*</strong>; optional; normally up to 2 years): Google Ireland Limited helps measure visits, pages and aggregate usage. Advertising storage, Google Signals and ad personalisation are disabled. Google may process data outside the UK under its applicable transfer safeguards.</li>
+          </ul>
+          <p>
+            You can accept, reject or customise optional analytics from the first-layer banner. No optional category is pre-selected.
+            Reopen <a href="/legal/privacy.html?manageCookies=1#cookies"><strong>Cookie settings</strong></a>
+            at any time. Withdrawing consent deletes accessible Google Analytics cookies and reloads the page to stop the loaded analytics library.
+            It does not affect processing that lawfully occurred before withdrawal.
           </p>
         </article>
 
@@ -125,6 +148,12 @@
           <p>
             If you submit support forms, reports, contact messages, APG requests, or similar inputs, StudyBase may process the information
             you choose to send, plus page context and technical metadata needed to review or operate the request.
+          </p>
+          <p>
+            New sessions are bound to a keyed browser fingerprint. Requests made with an account cookie from an unapproved origin are
+            refused and a minimal security event may be retained for up to two days. Presenting a valid bearer session token from an
+            unapproved origin triggers an automated account ban and session revocation because it indicates that the secret token has
+            been extracted from its protected cookie context. A user may ask for human review through the published support contact route.
           </p>
           <p>
             If you use Friends &amp; Social, another signed-in user who enters your exact username may see your first name, username,
@@ -171,13 +200,11 @@
         </article>
 
         <article id="analytics" class="doc-section">
-          <h2>5. Consent, analytics, safety, and monitoring</h2>
+          <h2>5. Analytics, safety, and monitoring</h2>
           <p>
-            StudyBase offers a limited mode when service terms and network-backed features are declined. In limited mode, public static content remains available where possible, while account login, protected resources, social features, reports, external embeds, analytics, and client requests to application endpoints are disabled. A permanent banner explains the limitation and lets the user review their choice.
-            Choosing limited mode signs the current account out where the account service can be reached and clears account-related browser records, including the local session marker, cached profile, friend-request usage, weekly feedback marker, wellbeing interaction history, and cached content-warning preference. Restoring consent does not restore that local login state; the user must sign in again.
-          </p>
-          <p>
-            When a service choice is made, an agreement record containing a generated consent identifier, notice version, service choice, separate analytics choice, decision time, page URL, and user-agent information is sent to a configured Google Apps Script logging endpoint after service access is enabled. The interface closes without waiting for that endpoint to respond. <strong>Accept all</strong> enables essential services and optional analytics, <strong>Essential only</strong> enables required account and security services without optional analytics, and <strong>Deny</strong> keeps the limited version. Choices can be changed later in the Privacy Centre.
+            Cookie consent is separate from acceptance of the Terms and from the lawful bases used to provide account features. Rejecting
+            optional analytics does not sign you out, block core pages, or prevent requested account and security services. We store the
+            preference on this device and do not send a consent log containing the page URL or user agent to a third-party logging endpoint.
           </p>
           <p>
             Full service features may use Google Apps Script, Cloudflare Turnstile, local safety filters, time checks, error checks, update checks, endpoint status notices, and abuse-prevention logic where required to provide or protect the requested feature.
@@ -201,7 +228,7 @@
         <article id="third-parties" class="doc-section">
           <h2>6. Third-party services</h2>
           <p>
-            StudyBase may load third-party fonts, scripts, CDNs, analytics, forms, embedded resources, Turnstile challenges, external
+            StudyBase may load third-party fonts, scripts, CDNs, forms, embedded resources, Turnstile challenges, external
             websites, or linked educational materials. Those services may receive ordinary browser request data such as IP-related
             information, user agent, referrer, cookies, and usage events.
           </p>
@@ -234,7 +261,7 @@
           <p>Under UK GDPR we rely on the following lawful bases for the processing activities described:</p>
           <ul>
             <li><strong>Contract</strong> — account creation, login, eligibility checks, protected resource access, optional-plan fulfilment, and core service delivery.</li>
-            <li><strong>Consent</strong> — optional analytics, non-essential cookies / similar technologies, and certain optional safety or feature settings.</li>
+            <li><strong>Consent</strong> — optional analytics and other non-essential cookies or similar technologies. Consent can be withdrawn at any time.</li>
             <li><strong>Legitimate interests</strong> — proportionate abuse prevention, security monitoring, error logging, and maintaining the safety of the community (e.g. time tracking and banned-word filters).</li>
             <li><strong>Legal obligation</strong> — responding to valid legal requests or complying with applicable UK laws.</li>
           </ul>
@@ -246,15 +273,16 @@
           <ul>
             <li>Local browser data: until you clear it or the browser removes it.</li>
             <li>Pending signup records: up to 48 hours, unless used sooner.</li>
-            <li>Sessions: up to seven days, unless revoked or the account is deleted sooner.</li>
+            <li>Sessions: until the next Monday at 00:01 Europe/London, unless revoked or the account is deleted sooner.</li>
             <li>Account profile: while the account is active. Password-confirmed self-service deletion revokes sessions and removes the account record, username index, keyed eligibility record, related pending signup data, friendships, pending friend requests, and friend-request rate records.</li>
             <li>Friendships and pending requests: until a user removes, declines, or cancels them, or until either related account is deleted. Daily request-limit records expire shortly after the relevant day.</li>
             <li>StudyShop balances, card collection identifiers and copy counts, milestone claims, lifetime statistics, and recent transfer history: while the account remains active. Daily quest records expire within approximately three days, weekly records within approximately 15 days, and transfer-completion safeguards within approximately 30 days. Account deletion clears the balance, card collection, and associated StudyShop records.</li>
             <li>Account security login events: up to 30 days.</li>
+            <li>Deduplicated off-site request security events: up to two days. An enforcement record linked to an account is retained while the restriction remains and as reasonably needed to review it.</li>
             <li>Support and report records: retained as long as needed to resolve the matter and for a reasonable period thereafter for audit and safety reasons.</li>
             <li>Purchase and fulfilment records: for the access period and as long as reasonably required for support, disputes, fraud prevention, accounting, tax, and other legal obligations.</li>
             <li>AI credit balances and deduction records: while credits remain usable and for a reasonable period afterwards to resolve balance disputes, prevent abuse, and maintain required transaction records.</li>
-            <li>Consent records: kept for as long as the consent is active plus a short period for audit.</li>
+            <li>Privacy choices on this device: up to six months, then we ask again. Analytics cookies may last up to two years unless deleted or consent is withdrawn sooner.</li>
           </ul>
           <p>We regularly review and delete or anonymise data that is no longer required.</p>
         </article>
@@ -278,7 +306,7 @@
             We will respond within the time limits required by law (usually one month, subject to lawful extensions).
           </p>
           <p>
-            If you do not agree with this Privacy Policy, you should stop using StudyBase.
+            Privacy rights are not conditional on agreeing with this notice. You may use the service with optional analytics disabled.
           </p>
         </article>
 
@@ -297,8 +325,8 @@
         <article id="uk-law" class="doc-section">
           <h2>10. UK privacy law</h2>
           <p>
-            This Privacy Policy is intended to be interpreted under applicable UK privacy and data protection law, including UK GDPR,
-            the Data Protection Act 2018, and PECR where relevant.
+            This Privacy Notice is intended to be interpreted under applicable UK privacy and data protection law, including UK GDPR,
+            the Data Protection Act 2018, PECR, and relevant amendments made by the Data (Use and Access) Act 2025.
           </p>
           <p>
             Where those laws give users rights that cannot be removed by this policy, those rights continue to apply. The UK Information

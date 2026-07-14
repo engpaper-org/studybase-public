@@ -26,7 +26,7 @@
     { "id": "original-010", "number": 10, "name": "Cosy Hoodie", "rarity": "common", "image": "/assets/images/studybucks/cards/original/common/original-010.jpg", "art": "the mascot relaxing in a comfortable oversized hoodie" },
 
     { "id": "original-011", "number": 11, "name": "Lab Partner", "rarity": "rare", "image": "/assets/images/studybucks/cards/original/rare/original-011.jpg", "art": "the mascot as a cheerful scientist with goggles and a glowing flask" },
-    { "id": "original-012", "number": 12, "name": "Arcade Ace", "rarity": "rare", "image": "/assets/images/studybucks/cards/original/rare/original-012.jpg", "art": "the mascot holding a game controller in a neon arcade" },
+    { "id": "original-012", "number": 12, "name": "Neon Navigator", "rarity": "rare", "image": "/assets/images/studybucks/cards/original/rare/original-012.jpg", "art": "the mascot holding a handheld controller in a neon study lab" },
     { "id": "original-013", "number": 13, "name": "Space Cadet", "rarity": "rare", "image": "/assets/images/studybucks/cards/original/rare/original-013.jpg", "art": "the mascot in a rounded astronaut suit floating above a tiny planet" },
     { "id": "original-014", "number": 14, "name": "Deep Sea", "rarity": "rare", "image": "/assets/images/studybucks/cards/original/rare/original-014.jpg", "art": "the mascot in a compact diving suit surrounded by blue bubbles and coral" },
     { "id": "original-015", "number": 15, "name": "Code Crafter", "rarity": "rare", "image": "/assets/images/studybucks/cards/original/rare/original-015.jpg", "art": "the mascot working at a holographic coding console" },

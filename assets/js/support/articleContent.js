@@ -1366,7 +1366,7 @@ window.SUPPORT_ARTICLES = {
         cards: [
           {
             title: "Session Expiry",
-            body: "Normal account sessions automatically expire after 7 days for security, requiring a simple re-login.",
+            body: "Normal account sessions expire every Monday at 00:01 Europe/London for security, requiring a simple re-login.",
             icon: "fa-clock"
           },
           {

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="/assets/js/config/privacyConfig.js"></script>
-  <script src="/assets/js/privacy/checkCookieConsent.js"></script>
+  <script src="/assets/js/config/privacyConfig.js?v=20260712"></script>
+  <script src="/assets/js/privacy/checkCookieConsent.js?v=20260712"></script>
     <meta charset="UTF-8">
     <title>StudyBase | Resource Vault</title>
     <meta property="og:title" content="StudyBase | Resource Vault">
@@ -5374,7 +5374,7 @@
   const subscriptionPlanBySlug = {
     "leaderboards-plus": "Leaderboards Plus",
     "leaderboard-plus": "Leaderboards Plus",
-    "games-plus": "Leaderboards Plus",
+    "activities-plus": "Leaderboards Plus",
     "proxy-plus": "Proxy Plus",
     "music-plus": "Music Plus",
     "chat-plus": "Chat Plus"
@@ -5675,7 +5675,7 @@
         }
 
         else if (isBeta) {
-          if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
+          if (imageUrl === "pass") imageUrl = "/assets/images/resource-icons/popular.jpg";
           tagHtml = `
             <div class="resource-tag resource-tag-beta">
               <i class="fas fa-lock"></i> Beta
@@ -5683,7 +5683,7 @@
         }
 
         else if (isStudyBaseOnline) {
-          if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
+          if (imageUrl === "pass") imageUrl = "/assets/images/resource-icons/popular.jpg";
           tagHtml = `
             <div class="resource-tag resource-tag-online">
               <i class="fas fa-globe"></i> StudyBase Online
@@ -5691,7 +5691,7 @@
         }
 
         else if (isPopular) {
-          if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
+          if (imageUrl === "pass") imageUrl = "/assets/images/resource-icons/popular.jpg";
           tagHtml = `
             <div class="resource-tag resource-tag-popular">
               <i class="fas fa-fire"></i> Popular
@@ -5699,7 +5699,7 @@
         }
 
         else if (isOriginal) {
-          if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/popular.jpg";
+          if (imageUrl === "pass") imageUrl = "/assets/images/resource-icons/popular.jpg";
           tagHtml = `
             <div class="resource-tag resource-tag-labs">
               <i class="fas fa-star"></i> StudyBase Labs
@@ -5707,7 +5707,7 @@
         }
 
         else if (isRising) {
-          if (imageUrl === "pass") imageUrl = "/assets/images/game-icons/rising.jpg";
+          if (imageUrl === "pass") imageUrl = "/assets/images/resource-icons/rising.jpg";
           tagHtml = `
             <div class="resource-tag resource-tag-rising">
               <i class="fas fa-arrow-trend-up"></i> Rising

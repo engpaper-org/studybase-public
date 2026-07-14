@@ -99,7 +99,7 @@ const STOCKS = [
     volatility: 1.3,
     dividend: 0,
     tint: "#ff6f91",
-    blurb: "Moves instant payments for games, creators, and digital tips."
+    blurb: "Moves instant payments for creators, digital services, and tips."
   },
   {
     symbol: "ORB",
@@ -121,7 +121,7 @@ const STOCKS = [
     volatility: 1.6,
     dividend: 0,
     tint: "#b5f36d",
-    blurb: "Owns sports clips, gaming highlights, and chaotic meme channels."
+    blurb: "Owns sports clips, interactive highlights, and fast-moving media channels."
   }
 ];
 

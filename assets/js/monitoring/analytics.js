@@ -55,6 +55,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         });
 
     } else {
-        console.log("No game ID found in URL.");
+        console.log("No resource ID found in URL.");
     }
 });

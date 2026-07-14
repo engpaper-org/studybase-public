@@ -38,7 +38,7 @@
       "id": "6",
       "title": "Educational Purpose & No Academic Guarantee",
       "badge": "EDUCATION",
-      "content": "The Service is designed primarily as a revision, study-support, and educational resource platform. Some features may include entertainment-style interfaces, embedded content, interactive media, or gamified mechanics; however, educational support remains the stated primary purpose of the Service.<br><br>The Provider makes no promise, warranty, or guarantee of grades, exam performance, educational outcomes, admissions, or career results."
+      "content": "The Service is designed as a revision, study-support, and educational resource platform. Some features include interactive interfaces, embedded content, progress indicators, and responsive media.<br><br>The Provider makes no promise, warranty, or guarantee of grades, exam performance, educational outcomes, admissions, or career results."
     },
     {
       "id": "7",
@@ -195,7 +195,7 @@
       "id": "32",
       "title": "Third-Party Content, Embedded Apps & External Resources",
       "badge": "EXTERNAL",
-      "content": "The Service may embed, frame, link to, or provide access to third-party applications, games, resources, media, websites, and software that are owned, hosted, or controlled by other parties.<br><br>The Provider does not guarantee the safety, legality, quality, availability, privacy practices, or technical behaviour of third-party content."
+      "content": "The Service may embed, frame, link to, or provide access to third-party applications, interactive resources, media, websites, and software that are owned, hosted, or controlled by other parties.<br><br>The Provider does not guarantee the safety, legality, quality, availability, privacy practices, or technical behaviour of third-party content."
     },
     {
       "id": "33",
@@ -232,9 +232,9 @@
     },
     {
       "id": "38",
-      "title": "Third-Party Trademarks, Games & DMCA / Takedown Position",
+      "title": "Third-Party Trademarks, Resources & DMCA / Takedown Position",
       "badge": "DMCA",
-      "content": "The Service may act as an index, portal, interface, or access point to third-party resources. The Provider does not claim ownership of third-party trademarks, games, media, titles, or branding that may appear through linked or embedded content.<br><br>If you are a copyright owner, authorised representative, or rights holder and believe a linked or embedded item infringes your rights, you may send a takedown request using the Provider's published contact route. The request should identify the work, the allegedly infringing material, the location of that material, your authority, and your contact information. The Provider may remove or disable access after review."
+      "content": "The Service may act as an index, portal, interface, or access point to third-party resources. The Provider does not claim ownership of third-party trademarks, media, titles, interactive resources, or branding that may appear through linked or embedded content.<br><br>If you are a copyright owner, authorised representative, or rights holder and believe a linked or embedded item infringes your rights, you may send a takedown request using the Provider's published contact route. The request should identify the work, the allegedly infringing material, the location of that material, your authority, and your contact information. The Provider may remove or disable access after review."
     },
     {
       "id": "39",

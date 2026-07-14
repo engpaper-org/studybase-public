@@ -237,7 +237,8 @@
     if (navigator.userAgentData?.mobile === true) return true;
     const userAgent = String(navigator.userAgent || "");
     if (/Android|iPhone|iPod|IEMobile|Windows Phone|Opera Mini|Mobile/i.test(userAgent)) return true;
-    return /Macintosh/i.test(userAgent) && Number(navigator.maxTouchPoints || 0) > 1;
+    if (/Macintosh/i.test(userAgent) && Number(navigator.maxTouchPoints || 0) > 1) return true;
+    return Number(navigator.maxTouchPoints || 0) > 0 && Math.min(Number(screen.width || 0), Number(screen.height || 0)) > 0 && Math.min(Number(screen.width || 0), Number(screen.height || 0)) < 600;
   }
 
   function showMobileUnsupported() {

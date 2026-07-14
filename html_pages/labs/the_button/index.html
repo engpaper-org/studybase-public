@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="/assets/js/config/privacyConfig.js"></script>
-  <script src="/assets/js/privacy/checkCookieConsent.js"></script>
+  <script src="/assets/js/config/privacyConfig.js?v=20260712"></script>
+  <script src="/assets/js/privacy/checkCookieConsent.js?v=20260712"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <script src="/assets/js/auth/iframeCheck.js"></script>
@@ -139,7 +139,7 @@
       padding:0;
     }
 
-    .game{
+    .activity{
       position:relative;
       z-index:2;
       width:100vw;
@@ -616,7 +616,7 @@
       .mode-pill{font-size:11px;height:28px;padding:0 8px}
       .hud-pill{height:34px;min-width:58px;font-size:11px}
       .hud-btn{height:34px;width:34px}
-      .game{padding:66px 14px 18px}
+      .activity{padding:66px 14px 18px}
       .screen{inset:66px 14px 18px}
       .intro{grid-template-columns:1fr;gap:18px}
       .demo-button{display:none}
@@ -658,15 +658,15 @@
     </div>
   </header>
 
-  <main class="game">
+  <main class="activity">
     <section class="screen" id="introScreen">
       <div class="intro">
         <div>
           <div class="eyebrow">StudyBase labs presents</div>
           <h1>The<br>Button</h1>
-          <p class="lead">A fast reaction game where the rule changes every round. Press, wait, hold, type, dodge, drag, or do nothing — but the result only appears when the timer ends.</p>
+          <p class="lead">A fast reaction activity where the rule changes every round. Press, wait, hold, type, dodge, drag, or do nothing — but the result only appears when the timer ends.</p>
           <div class="button-row">
-            <button class="primary" id="startBtn">Start game</button>
+            <button class="primary" id="startBtn">Start activity</button>
             <button class="secondary" id="howBtn">How to play</button>
           </div>
         </div>
@@ -1113,7 +1113,7 @@
     updateHud();
     chord(false);
     shake();
-    showResult(false, "Missed", `${message} ${lives > 0 ? "Next round." : "Game over."}`);
+    showResult(false, "Missed", `${message} ${lives > 0 ? "Next round." : "Activity complete."}`);
   }
 
   function showResult(ok, title, copy){

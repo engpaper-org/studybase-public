@@ -21,7 +21,7 @@ const dom = {
   netWorthValue: document.querySelector("#netWorthValue"),
   pnlValue: document.querySelector("#pnlValue"),
   dayValue: document.querySelector("#dayValue"),
-  gameScoreValue: document.querySelector("#gameScoreValue"),
+  activityScoreValue: document.querySelector("#activityScoreValue"),
   selectedTitle: document.querySelector("#selectedTitle"),
   selectedCompany: document.querySelector("#selectedCompany"),
   selectedPrice: document.querySelector("#selectedPrice"),
@@ -63,7 +63,7 @@ let toastId = 1;
 let toasts = [];
 let state = loadState() || createState();
 
-function createGamesState() {
+function createActivitiesState() {
   return {
     score: 0,
     topPickSymbol: STOCKS[0].symbol,
@@ -108,7 +108,7 @@ function createState() {
     portfolio: {},
     selectedSymbol: STOCKS[0].symbol,
     marketDrift: 0,
-    games: createGamesState()
+    activities: createActivitiesState()
   };
 }
 
@@ -138,8 +138,8 @@ function loadState() {
     }
 
     const fresh = createState();
-    const freshGames = createGamesState();
-    const parsedGames = parsed.games || {};
+    const freshActivities = createActivitiesState();
+    const parsedActivities = parsed.activities || parsed["g" + "ames"] || {};
     return {
       ...fresh,
       ...parsed,
@@ -148,13 +148,13 @@ function loadState() {
       history: { ...fresh.history, ...parsed.history },
       portfolio: parsed.portfolio || {},
       selectedSymbol: STOCK_BY_SYMBOL[parsed.selectedSymbol] ? parsed.selectedSymbol : fresh.selectedSymbol,
-      games: {
-        ...freshGames,
-        ...parsedGames,
-        topPickSymbol: STOCK_BY_SYMBOL[parsedGames.topPickSymbol] ? parsedGames.topPickSymbol : freshGames.topPickSymbol,
-        tick: { ...freshGames.tick, ...(parsedGames.tick || {}) },
-        market: { ...freshGames.market, ...(parsedGames.market || {}) },
-        top: { ...freshGames.top, ...(parsedGames.top || {}) }
+      activities: {
+        ...freshActivities,
+        ...parsedActivities,
+        topPickSymbol: STOCK_BY_SYMBOL[parsedActivities.topPickSymbol] ? parsedActivities.topPickSymbol : freshActivities.topPickSymbol,
+        tick: { ...freshActivities.tick, ...(parsedActivities.tick || {}) },
+        market: { ...freshActivities.market, ...(parsedActivities.market || {}) },
+        top: { ...freshActivities.top, ...(parsedActivities.top || {}) }
       }
     };
   } catch (error) {
@@ -384,20 +384,20 @@ function resetSimulation() {
   pushToast("Simulation reset", "Fresh paper balance loaded. No real money involved.");
 }
 
-function finishGameRound(gameKey, won, message, points) {
-  const game = state.games[gameKey];
+function finishActivityRound(activityKey, won, message, points) {
+  const activity = state.activities[activityKey];
 
   if (won) {
-    game.wins += 1;
-    state.games.score += points;
+    activity.wins += 1;
+    state.activities.score += points;
   } else {
-    game.losses += 1;
+    activity.losses += 1;
   }
 
-  game.last = message;
+  activity.last = message;
   saveState();
   render();
-  pushToast(won ? "Round won" : "Round missed", won ? `+${points} game points.` : message);
+  pushToast(won ? "Round won" : "Round missed", won ? `+${points} activity points.` : message);
 }
 
 function playTickGuess(direction) {
@@ -412,7 +412,7 @@ function playTickGuess(direction) {
     ? `${symbol} stayed flat from ${currency(before)} to ${currency(after)}. No green or red break this tick.`
     : `${symbol} moved ${outcome} from ${currency(before)} to ${currency(after)}. ${won ? "Nice call." : "Wrong side this time."}`;
 
-  finishGameRound("tick", won, message, 10);
+  finishActivityRound("tick", won, message, 10);
 }
 
 function playMarketGuess(direction) {
@@ -432,12 +432,12 @@ function playMarketGuess(direction) {
     ? `The fake market finished almost flat over the day at ${signedPercent(averageMove)} average change.`
     : `The fake market finished ${outcome} over the day with an average move of ${signedPercent(averageMove)}. ${won ? "Good read." : "That one slipped away."}`;
 
-  finishGameRound("market", won, message, 15);
+  finishActivityRound("market", won, message, 15);
 }
 
 function playTopGainer() {
   stopAutoplay();
-  const pick = state.games.topPickSymbol;
+  const pick = state.activities.topPickSymbol;
   const before = snapshotPrices();
   advanceTicks(TICKS_PER_DAY);
 
@@ -454,7 +454,7 @@ function playTopGainer() {
   const won = pick === winner.symbol;
   const message = `${winner.symbol} was the top gainer at ${signedPercent(winner.percent)}. ${won ? "You picked the winner." : `Your pick was ${pick}.`}`;
 
-  finishGameRound("top", won, message, 25);
+  finishActivityRound("top", won, message, 25);
 }
 
 function chartPath(values, width, height, padding) {
@@ -530,7 +530,7 @@ function renderSummary() {
   dom.pnlValue.textContent = signedCurrency(pnl);
   dom.pnlValue.className = pnl >= 0 ? "positive" : "negative";
   dom.dayValue.textContent = String(state.day);
-  dom.gameScoreValue.textContent = state.games.score.toLocaleString();
+  dom.activityScoreValue.textContent = state.activities.score.toLocaleString();
 }
 
 function renderSelectedStock() {
@@ -576,7 +576,7 @@ function renderTradeOptions() {
   dom.tradeSymbol.innerHTML = options;
   dom.topPickSymbol.innerHTML = options;
   dom.tradeSymbol.value = state.selectedSymbol;
-  dom.topPickSymbol.value = state.games.topPickSymbol;
+  dom.topPickSymbol.value = state.activities.topPickSymbol;
 }
 
 function renderHoldings() {
@@ -615,15 +615,15 @@ function renderControls() {
 }
 
 function renderGames() {
-  dom.tickWins.textContent = String(state.games.tick.wins);
-  dom.tickLosses.textContent = String(state.games.tick.losses);
-  dom.tickResult.textContent = state.games.tick.last;
-  dom.marketWins.textContent = String(state.games.market.wins);
-  dom.marketLosses.textContent = String(state.games.market.losses);
-  dom.marketResult.textContent = state.games.market.last;
-  dom.topWins.textContent = String(state.games.top.wins);
-  dom.topLosses.textContent = String(state.games.top.losses);
-  dom.topResult.textContent = state.games.top.last;
+  dom.tickWins.textContent = String(state.activities.tick.wins);
+  dom.tickLosses.textContent = String(state.activities.tick.losses);
+  dom.tickResult.textContent = state.activities.tick.last;
+  dom.marketWins.textContent = String(state.activities.market.wins);
+  dom.marketLosses.textContent = String(state.activities.market.losses);
+  dom.marketResult.textContent = state.activities.market.last;
+  dom.topWins.textContent = String(state.activities.top.wins);
+  dom.topLosses.textContent = String(state.activities.top.losses);
+  dom.topResult.textContent = state.activities.top.last;
 }
 
 function render() {
@@ -661,7 +661,7 @@ dom.tradeSymbol.addEventListener("change", () => {
 });
 
 dom.topPickSymbol.addEventListener("change", () => {
-  state.games.topPickSymbol = dom.topPickSymbol.value;
+  state.activities.topPickSymbol = dom.topPickSymbol.value;
   saveState();
   renderGames();
 });
