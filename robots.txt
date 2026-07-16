@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-# Block private/authenticated areas
+# Block private/authenticated areas 
 Disallow: /myaccount/
 Disallow: /internal/
 
