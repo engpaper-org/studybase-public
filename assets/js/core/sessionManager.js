@@ -28,8 +28,8 @@
     catch (_) { window.location.replace(target); }
   }
   function safeIncidentID(value) {
-    const incidentID = String(value || "").trim();
-    return /^[A-Z0-9]{6,20}$/.test(incidentID) ? incidentID : "Unavailable";
+    const incidentID = String(value ?? "").trim().replace(/[\u0000-\u001F\u007F]/g, "").slice(0, 200);
+    return incidentID ? incidentID.replace(/^INC-/i, "SB_INC-") : "Unavailable";
   }
   function showSecurityCompromise(incidentID) {
     if (securityCompromiseShown) return;

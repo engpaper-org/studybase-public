@@ -389,7 +389,8 @@
     }
 
     function showSecurityCompromise(incidentID) {
-      const safeIncidentID = /^[A-Z0-9]{6,20}$/.test(String(incidentID || "")) ? String(incidentID) : "Unavailable";
+      const cleanedIncidentID = String(incidentID ?? "").trim().replace(/[\u0000-\u001F\u007F]/g, "").slice(0, 200);
+      const safeIncidentID = cleanedIncidentID ? cleanedIncidentID.replace(/^INC-/i, "SB_INC-") : "Unavailable";
       const target = `${location.origin}/index.html?compromised=true&incidentID=${encodeURIComponent(safeIncidentID)}`;
       try {
         (window.top || window).location.replace(target);
