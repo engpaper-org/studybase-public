@@ -68,6 +68,12 @@
     title.setAttribute("tabindex", "-1");
     title.focus();
   }
+  function showSecurityCompromiseFromLocation() {
+    if (location.pathname !== "/" && !location.pathname.endsWith("/index.html")) return;
+    const params = new URLSearchParams(location.search);
+    if (params.get("compromised") !== "true") return;
+    showSecurityCompromise(params.get("incidentID"));
+  }
   async function checkWithApi() {
     if (checking || localStorage.getItem(TOKEN_KEY) !== "1") return;
     checking = true;
@@ -105,6 +111,7 @@
       checking = false;
     }
   }
+  showSecurityCompromiseFromLocation();
   check();
   checkWithApi();
   setInterval(check, 60_000);
