@@ -1660,6 +1660,25 @@
         .community-alert.critical { border-color: #fecdd3; color: #9f1239; background: #fff1f2; }
         .community-alert-close { position: absolute; top: 0.5rem; right: 0.5rem; display: grid; width: 1.45rem; height: 1.45rem; place-items: center; border-radius: 8px; color: currentColor; background: rgba(255,255,255,0.55); }
         .community-alert-close svg { width: 0.85rem; height: 0.85rem; }
+        .community-alert-more { display: inline-flex; min-height: 2rem; align-items: center; gap: 0.38rem; margin-top: 0.55rem; padding: 0.42rem 0.68rem; border: 1px solid currentColor; border-radius: 10px; color: inherit; background: rgba(255,255,255,0.7); font-size: 0.65rem; font-weight: 800; }
+        .community-alert-more:hover { background: #fff; }
+        .community-alert-more:focus-visible, .community-details-close:focus-visible, .community-details-link:focus-visible { outline: 3px solid rgba(245,158,11,0.8); outline-offset: 3px; }
+        .community-alert-more svg { width: 0.78rem; height: 0.78rem; }
+        .community-details-modal { position: fixed; inset: 0; z-index: 100000; display: grid; place-items: center; padding: 1.25rem; }
+        .community-details-backdrop { position: absolute; inset: 0; background: rgba(15,23,42,0.72); backdrop-filter: blur(7px); }
+        .community-details-dialog { position: relative; width: min(36rem, 100%); max-height: min(42rem, calc(100vh - 2.5rem)); overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 24px; color: #0f172a; background: #fff; box-shadow: 0 28px 90px rgba(15,23,42,0.34); }
+        .community-details-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.25rem 1.25rem 0; }
+        .community-details-kicker { color: #6d28d9; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; }
+        .community-details-title { margin: 0.35rem 0 0; color: #0f172a; font-family: 'Plus Jakarta Sans', 'Inter', ui-sans-serif, system-ui, sans-serif; font-size: 1.35rem; font-weight: 800; line-height: 1.3; }
+        .community-details-close { display: grid; width: 2.3rem; height: 2.3rem; flex: 0 0 auto; place-items: center; border: 1px solid #e2e8f0; border-radius: 12px; color: #475569; background: #f8fafc; }
+        .community-details-close:hover { color: #0f172a; background: #f1f5f9; }
+        .community-details-close svg { width: 1rem; height: 1rem; }
+        .community-details-content { padding: 1rem 1.25rem 1.25rem; }
+        .community-details-body { margin: 0; color: #475569; font-size: 0.82rem; font-weight: 600; line-height: 1.7; white-space: pre-wrap; }
+        .community-details-links { display: grid; gap: 0.6rem; margin-top: 1.15rem; }
+        .community-details-link { display: flex; min-height: 2.7rem; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.7rem 0.8rem; border: 1px solid #ddd6fe; border-radius: 13px; color: #5b21b6; background: #f5f3ff; font-size: 0.73rem; font-weight: 800; text-decoration: none; }
+        .community-details-link:hover { border-color: #a78bfa; background: #ede9fe; }
+        .community-details-link svg { width: 0.9rem; height: 0.9rem; flex: 0 0 auto; }
 
         .private-feature-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr)); align-items: stretch; gap: 0.75rem; margin-top: 0.75rem; }
         .private-feature-grid .resource-warning-card { min-height: 9.25rem; }
@@ -1693,6 +1712,11 @@
         :root.dark .community-option { border-color: #334155; color: #cbd5e1; background: #0f172a; }
         :root.dark .community-option.selected { border-color: #a78bfa; color: #ddd6fe; background: #2e1065; }
         :root.dark .private-hub-utility-clickable:hover { border-color: rgba(129,140,248,0.5); background: rgba(30,41,59,0.9); }
+        :root.dark .community-details-dialog { border-color: #334155; color: #f8fafc; background: #0f172a; }
+        :root.dark .community-details-title { color: #f8fafc; }
+        :root.dark .community-details-body { color: #cbd5e1; }
+        :root.dark .community-details-close { border-color: #475569; color: #cbd5e1; background: #1e293b; }
+        :root.dark .community-details-link { border-color: #5b21b6; color: #ddd6fe; background: #2e1065; }
 
         @media (max-width: 1050px) {
             .private-hub-grid { grid-template-columns: 1fr; }
@@ -3663,6 +3687,91 @@
     renderCommunityHub();
   }
 
+  function openCommunityAlertDetails(alert, trigger) {
+    const details = alert?.details;
+    if (!details?.title || !details?.body) return;
+    const modal = document.createElement("div");
+    modal.className = "community-details-modal";
+    const backdrop = document.createElement("div");
+    backdrop.className = "community-details-backdrop";
+    const dialog = document.createElement("section");
+    dialog.className = "community-details-dialog";
+    dialog.setAttribute("role", "dialog");
+    dialog.setAttribute("aria-modal", "true");
+    const titleId = `community-details-title-${String(alert.id || "alert").replace(/[^a-z0-9_-]/gi, "")}`;
+    const bodyId = `${titleId}-body`;
+    dialog.setAttribute("aria-labelledby", titleId);
+    dialog.setAttribute("aria-describedby", bodyId);
+    const head = document.createElement("div");
+    head.className = "community-details-head";
+    const heading = document.createElement("div");
+    const kicker = document.createElement("span");
+    kicker.className = "community-details-kicker";
+    kicker.textContent = "More information";
+    const title = document.createElement("h2");
+    title.id = titleId;
+    title.className = "community-details-title";
+    title.textContent = details.title;
+    heading.append(kicker, title);
+    const closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.className = "community-details-close";
+    closeButton.setAttribute("aria-label", "Close more information");
+    closeButton.innerHTML = '<i data-lucide="x"></i>';
+    head.append(heading, closeButton);
+    const content = document.createElement("div");
+    content.className = "community-details-content";
+    const body = document.createElement("p");
+    body.id = bodyId;
+    body.className = "community-details-body";
+    body.textContent = details.body;
+    content.append(body);
+    const links = document.createElement("div");
+    links.className = "community-details-links";
+    (Array.isArray(details.links) ? details.links : []).slice(0, 5).forEach(item => {
+      let url;
+      try { url = new URL(String(item?.url || "")); } catch (_) { return; }
+      if (!["http:", "https:"].includes(url.protocol) || !String(item?.text || "").trim()) return;
+      const link = document.createElement("a");
+      link.className = "community-details-link";
+      link.href = url.href;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      const label = document.createElement("span");
+      label.textContent = item.text;
+      const icon = document.createElement("span");
+      icon.innerHTML = '<i data-lucide="external-link"></i>';
+      link.append(label, icon);
+      links.append(link);
+    });
+    if (links.childElementCount) content.append(links);
+    dialog.append(head, content);
+    modal.append(backdrop, dialog);
+    const bodyWasLocked = document.body.classList.contains("overflow-hidden");
+    const close = () => {
+      document.removeEventListener("keydown", onKeydown);
+      modal.remove();
+      if (!bodyWasLocked) document.body.classList.remove("overflow-hidden");
+      trigger?.focus();
+    };
+    const onKeydown = event => {
+      if (event.key === "Escape") close();
+      if (event.key !== "Tab") return;
+      const focusable = [...dialog.querySelectorAll('button,a[href]')];
+      if (!focusable.length) return;
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    closeButton.addEventListener("click", close);
+    backdrop.addEventListener("click", close);
+    document.addEventListener("keydown", onKeydown);
+    document.body.classList.add("overflow-hidden");
+    document.body.append(modal);
+    if (window.lucide?.createIcons) window.lucide.createIcons();
+    closeButton.focus();
+  }
+
   function renderCommunityHub(message = "") {
     const root = document.getElementById("studybase-community");
     const content = document.getElementById("community-poll-content");
@@ -3748,13 +3857,23 @@
       title.textContent = alert.title;
       const copy = document.createElement("p");
       copy.textContent = alert.message;
+      let more = null;
+      if (alert.details?.title && alert.details?.body) {
+        more = document.createElement("button");
+        more.type = "button";
+        more.className = "community-alert-more";
+        more.innerHTML = '<span>More information</span><i data-lucide="arrow-up-right"></i>';
+        more.addEventListener("click", () => openCommunityAlertDetails(alert, more));
+      }
       const close = document.createElement("button");
       close.type = "button";
       close.className = "community-alert-close";
       close.setAttribute("aria-label", `Dismiss ${alert.title}`);
       close.innerHTML = '<i data-lucide="x"></i>';
       close.addEventListener("click", () => dismissCommunityAlert(alert.id));
-      card.append(title, copy, close);
+      card.append(title, copy);
+      if (more) card.append(more);
+      card.append(close);
       return card;
     }));
     const noUpdates = document.getElementById("community-no-updates");
