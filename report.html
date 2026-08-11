@@ -368,9 +368,17 @@
               <p class="developer-note">Do not include passwords, access tokens, or private keys. These details are sent securely to the developer-request queue.</p>
             </div>
             <div id="affiliateFields" class="developer-fields affiliate-fields hidden">
-              <div class="field wide">
-                <label for="affiliateUsername">Contact username <span class="counter">Preferably Discord</span></label>
-                <input id="affiliateUsername" class="input-control" type="text" minlength="2" maxlength="100" autocomplete="off" placeholder="Your Discord username" required disabled>
+              <div class="field">
+                <label for="affiliateContactMethod">Contact method</label>
+                <select id="affiliateContactMethod" class="input-control" required disabled>
+                  <option value="discord">Discord</option>
+                  <option value="snapchat">Snapchat</option>
+                  <option value="email">Email</option>
+                </select>
+              </div>
+              <div class="field">
+                <label id="affiliateContactValueLabel" for="affiliateContactValue">Discord username</label>
+                <input id="affiliateContactValue" class="input-control" type="text" minlength="2" maxlength="100" autocomplete="off" placeholder="Your Discord username" required disabled>
               </div>
               <div class="field wide">
                 <label for="affiliateAccountCount">How many accounts do you need to purchase?</label>
@@ -382,7 +390,7 @@
               </div>
               <p class="affiliate-pricing">£5 per account for 1–9 accounts · £4 per account for 10–19 accounts · £3.50 per account for 20 or more accounts.</p>
             </div>
-            <div class="field">
+            <div id="descriptionField" class="field">
               <div class="field-head">
                 <label for="description">Description</label>
                 <span id="characterCount" class="counter">0 / 3000</span>
@@ -502,7 +510,8 @@
       document.getElementById("formScreen").classList.remove("hidden");
       toggleDeveloperFields(type === "developer");
       toggleAffiliateFields(type === "affiliate");
-      (type === "affiliate" ? document.getElementById("affiliateUsername") : document.getElementById("description")).focus();
+      toggleDescriptionField(type !== "affiliate");
+      (type === "affiliate" ? document.getElementById("affiliateContactMethod") : document.getElementById("description")).focus();
     }
 
     function toggleDeveloperFields(visible) {
@@ -514,8 +523,32 @@
     function toggleAffiliateFields(visible) {
       const fields = document.getElementById("affiliateFields");
       fields.classList.toggle("hidden", !visible);
-      fields.querySelectorAll("input").forEach(control => { control.disabled = !visible; });
-      if (visible) updateAffiliateCost();
+      fields.querySelectorAll("input,select").forEach(control => { control.disabled = !visible; });
+      if (visible) { updateAffiliateContactField(); updateAffiliateCost(); }
+    }
+
+    function toggleDescriptionField(visible) {
+      const field = document.getElementById("descriptionField");
+      const description = document.getElementById("description");
+      field.classList.toggle("hidden", !visible);
+      description.disabled = !visible;
+      description.required = visible;
+    }
+
+    function updateAffiliateContactField() {
+      const method = document.getElementById("affiliateContactMethod").value;
+      const input = document.getElementById("affiliateContactValue");
+      const options = {
+        discord: { label: "Discord username", placeholder: "Your Discord username", type: "text", maxlength: 100, autocomplete: "off" },
+        snapchat: { label: "Snapchat username", placeholder: "Your Snapchat username", type: "text", maxlength: 100, autocomplete: "off" },
+        email: { label: "Email address", placeholder: "you@example.com", type: "email", maxlength: 254, autocomplete: "email" }
+      };
+      const selected = options[method] || options.discord;
+      document.getElementById("affiliateContactValueLabel").textContent = selected.label;
+      input.type = selected.type;
+      input.placeholder = selected.placeholder;
+      input.maxLength = selected.maxlength;
+      input.autocomplete = selected.autocomplete;
     }
 
     function affiliatePricePence(accountCount) {
@@ -542,6 +575,7 @@
       document.getElementById("errorMessage").classList.add("hidden");
       toggleDeveloperFields(false);
       toggleAffiliateFields(false);
+      toggleDescriptionField(true);
     }
 
     function displayError(message) {
@@ -561,11 +595,12 @@
       document.getElementById("characterCount").textContent = `${event.target.value.length} / 3000`;
     });
     document.getElementById("affiliateAccountCount").addEventListener("input", updateAffiliateCost);
+    document.getElementById("affiliateContactMethod").addEventListener("change", updateAffiliateContactField);
 
     document.getElementById("contactForm").addEventListener("submit", async event => {
       event.preventDefault();
       const description = document.getElementById("description").value.trim();
-      if (!selectedType || description.length < 20) {
+      if (!selectedType || (selectedType !== "affiliate" && description.length < 20)) {
         displayError("Please add at least 20 characters so we can understand the message.");
         return;
       }
@@ -578,7 +613,8 @@
         projectUrl: document.getElementById("projectUrl").value.trim()
       } : {};
       const affiliateDetails = selectedType === "affiliate" ? {
-        affiliateUsername: document.getElementById("affiliateUsername").value.trim(),
+        affiliateContactMethod: document.getElementById("affiliateContactMethod").value,
+        affiliateContactValue: document.getElementById("affiliateContactValue").value.trim(),
         affiliateAccountCount: Number(document.getElementById("affiliateAccountCount").value)
       } : {};
 
