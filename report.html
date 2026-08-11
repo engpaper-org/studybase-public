@@ -184,6 +184,7 @@
     .contact { --tone: #2563eb; --wash: #eff6ff; }
     .legal { --tone: #d97706; --wash: #fffbeb; }
     .developer { --tone: #7c3aed; --wash: #f5f3ff; }
+    .affiliate { --tone: #0f766e; --wash: #f0fdfa; }
 
     .form { display: grid; gap: 1rem; }
     .selected-category { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem 0.85rem; border: 1px solid #ddd6fe; border-radius: 1rem; background: #f5f3ff; }
@@ -198,6 +199,12 @@
     .input-control { width: 100%; min-height: 3rem; padding: 0.75rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 0.9rem; color: var(--ink); background: #fff; outline: none; font-size: 0.8rem; font-weight: 650; }
     .input-control:focus { border-color: #8b5cf6; box-shadow: 0 0 0 4px rgba(139,92,246,0.12); }
     .developer-note { grid-column: 1 / -1; margin: 0; color: #64748b; font-size: 0.7rem; font-weight: 650; line-height: 1.5; }
+    .affiliate-fields { border-color: #99f6e4; background: #f0fdfa; }
+    .affiliate-cost { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.9rem 1rem; border: 1px solid #99f6e4; border-radius: 1rem; color: #134e4a; background: #fff; }
+    .affiliate-cost span { display: block; color: #0f766e; font-size: 0.67rem; font-weight: 850; letter-spacing: 0.08em; text-transform: uppercase; }
+    .affiliate-cost strong { display: block; margin-top: 0.2rem; font-size: 1.15rem; font-weight: 900; }
+    .affiliate-cost p { margin: 0; color: #475569; font-size: 0.7rem; font-weight: 700; line-height: 1.45; text-align: right; }
+    .affiliate-pricing { grid-column: 1 / -1; margin: 0; color: #64748b; font-size: 0.69rem; font-weight: 650; line-height: 1.55; }
     textarea {
       width: 100%;
       min-height: 12.5rem;
@@ -266,6 +273,9 @@
       .category { min-height: auto; }
       .developer-fields { grid-template-columns: 1fr; }
       .developer-fields .wide { grid-column: auto; }
+      .affiliate-cost { grid-column: auto; align-items: flex-start; flex-direction: column; }
+      .affiliate-cost p { text-align: left; }
+      .affiliate-pricing { grid-column: auto; }
       textarea { min-height: 10rem; }
     }
 
@@ -357,6 +367,21 @@
               </div>
               <p class="developer-note">Do not include passwords, access tokens, or private keys. These details are sent securely to the developer-request queue.</p>
             </div>
+            <div id="affiliateFields" class="developer-fields affiliate-fields hidden">
+              <div class="field wide">
+                <label for="affiliateUsername">Contact username <span class="counter">Preferably Discord</span></label>
+                <input id="affiliateUsername" class="input-control" type="text" minlength="2" maxlength="100" autocomplete="off" placeholder="Your Discord username" required disabled>
+              </div>
+              <div class="field wide">
+                <label for="affiliateAccountCount">How many accounts do you need to purchase?</label>
+                <input id="affiliateAccountCount" class="input-control" type="number" min="1" max="10000" step="1" value="1" inputmode="numeric" required disabled>
+              </div>
+              <div class="affiliate-cost" aria-live="polite">
+                <div><span>Estimated cost</span><strong id="affiliateCostTotal">£5.00 total</strong></div>
+                <p id="affiliateCostBreakdown">1 account × £5.00 each</p>
+              </div>
+              <p class="affiliate-pricing">£5 per account for 1–9 accounts · £4 per account for 10–19 accounts · £3.50 per account for 20 or more accounts.</p>
+            </div>
             <div class="field">
               <div class="field-head">
                 <label for="description">Description</label>
@@ -428,6 +453,13 @@
         copy: "Tell us whether you want to connect an app to StudyBase accounts or help contribute to the website.",
         description: "Request account integration access or offer to help work on StudyBase.",
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/></svg>'
+      },
+      affiliate: {
+        label: "Affiliate accounts",
+        title: "Purchase affiliate accounts",
+        copy: "Tell us how many accounts you need and the username we should use to contact you.",
+        description: "Request a priced batch of StudyBase accounts for your users.",
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6m3-3h-6"/></svg>'
       }
     };
 
@@ -469,7 +501,8 @@
       document.getElementById("successScreen").classList.add("hidden");
       document.getElementById("formScreen").classList.remove("hidden");
       toggleDeveloperFields(type === "developer");
-      document.getElementById("description").focus();
+      toggleAffiliateFields(type === "affiliate");
+      (type === "affiliate" ? document.getElementById("affiliateUsername") : document.getElementById("description")).focus();
     }
 
     function toggleDeveloperFields(visible) {
@@ -478,11 +511,37 @@
       fields.querySelectorAll("input, select").forEach(control => { control.disabled = !visible; });
     }
 
+    function toggleAffiliateFields(visible) {
+      const fields = document.getElementById("affiliateFields");
+      fields.classList.toggle("hidden", !visible);
+      fields.querySelectorAll("input").forEach(control => { control.disabled = !visible; });
+      if (visible) updateAffiliateCost();
+    }
+
+    function affiliatePricePence(accountCount) {
+      if (accountCount >= 20) return 350;
+      if (accountCount >= 10) return 400;
+      return 500;
+    }
+
+    function formatPounds(pence) {
+      return new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(pence / 100);
+    }
+
+    function updateAffiliateCost() {
+      const rawCount = Number(document.getElementById("affiliateAccountCount").value);
+      const accountCount = Number.isInteger(rawCount) && rawCount >= 1 ? Math.min(rawCount, 10000) : 0;
+      const pricePence = affiliatePricePence(accountCount);
+      document.getElementById("affiliateCostTotal").textContent = accountCount ? `${formatPounds(accountCount * pricePence)} total` : "Enter an account quantity";
+      document.getElementById("affiliateCostBreakdown").textContent = accountCount ? `${accountCount} account${accountCount === 1 ? "" : "s"} × ${formatPounds(pricePence)} each` : "Quantity must be a whole number from 1 to 10,000";
+    }
+
     function showCategories() {
       document.getElementById("formScreen").classList.add("hidden");
       document.getElementById("categoryScreen").classList.remove("hidden");
       document.getElementById("errorMessage").classList.add("hidden");
       toggleDeveloperFields(false);
+      toggleAffiliateFields(false);
     }
 
     function displayError(message) {
@@ -501,6 +560,7 @@
     document.getElementById("description").addEventListener("input", event => {
       document.getElementById("characterCount").textContent = `${event.target.value.length} / 3000`;
     });
+    document.getElementById("affiliateAccountCount").addEventListener("input", updateAffiliateCost);
 
     document.getElementById("contactForm").addEventListener("submit", async event => {
       event.preventDefault();
@@ -516,6 +576,10 @@
         contactMethod: document.getElementById("contactMethod").value,
         contactDetails: document.getElementById("contactDetails").value.trim(),
         projectUrl: document.getElementById("projectUrl").value.trim()
+      } : {};
+      const affiliateDetails = selectedType === "affiliate" ? {
+        affiliateUsername: document.getElementById("affiliateUsername").value.trim(),
+        affiliateAccountCount: Number(document.getElementById("affiliateAccountCount").value)
       } : {};
 
       const button = document.getElementById("submitButton");
@@ -536,7 +600,8 @@
             category: selectedType,
             description,
             pageUrl: sourcePage,
-            ...developerDetails
+            ...developerDetails,
+            ...affiliateDetails
           })
         });
         const result = await response.json().catch(() => ({}));
