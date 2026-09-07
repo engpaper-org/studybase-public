@@ -1727,6 +1727,36 @@ function proceedToLoad(subjectTitle) {
         startIframeLoad();
     };
 
+    const startPoweredByIntro = () => {
+        let poweredByFinished = false;
+        let poweredByTimer = null;
+
+        const finishPoweredByIntro = () => {
+            if (poweredByFinished || bootCancelled) return;
+            poweredByFinished = true;
+            if (poweredByTimer) {
+                clearTimeout(poweredByTimer);
+                poweredByTimer = null;
+            }
+            window.removeEventListener("message", onPoweredByMessage);
+            loadingAdFrame.removeEventListener("error", finishPoweredByIntro);
+            startLoadingSequence();
+        };
+
+        const onPoweredByMessage = event => {
+            if (event.origin !== window.location.origin || event.source !== loadingAdFrame.contentWindow) return;
+            if (event.data?.type !== "studybase:continue" || event.data?.source !== "studybase-intro") return;
+            finishPoweredByIntro();
+        };
+
+        window.addEventListener("message", onPoweredByMessage);
+        loadingAdFrame.addEventListener("error", finishPoweredByIntro, { once: true });
+        loadingAdFrame.title = "Powered by mas0ng.com";
+        try { loadingAdFrame.src = "/internal/iframes/powered-by.html"; } catch (e) { finishPoweredByIntro(); return; }
+        loading.classList.remove("hidden");
+        poweredByTimer = setTimeout(finishPoweredByIntro, 3600);
+    };
+
     const cachedUser = (() => {
         try {
             const value = JSON.parse(localStorage.getItem("studybase_user") || "null");
@@ -1738,7 +1768,7 @@ function proceedToLoad(subjectTitle) {
     const checkIn = window.StudyBaseGetHelp?.shouldShowForMaterial(cachedUser) || { show: false };
 
     if (!checkIn.show || !checkIn.url) {
-        startLoadingSequence();
+        startPoweredByIntro();
         return;
     }
 
