@@ -1,6 +1,6 @@
 (function () {
   function isLoggedIn() { return Boolean(window.StudyBaseServices?.isLoggedIn?.()); }
-  function requireAuth(redirectUrl = "/myaccount/login.html?sessionExpired=true") {
+  function requireAuth(redirectUrl = "/index.html?sessionExpired=true") {
     if (isLoggedIn()) return true;
     window.location.replace(redirectUrl);
     return false;
@@ -13,6 +13,6 @@
   }
   window.AccountAuth = { isLoggedIn, requireAuth, logout };
   window.addEventListener("studybase:account-session-cleared", () => {
-    if (!isLoggedIn() && !location.pathname.endsWith("/login.html")) location.replace("/myaccount/login.html?sessionExpired=true");
+    if (!isLoggedIn() && !location.pathname.endsWith("/login.html")) location.replace("/index.html?sessionExpired=true");
   });
 })();

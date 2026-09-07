@@ -23,7 +23,7 @@
     if (!expired() || shown) return;
     shown = true;
     clear();
-    const target = "/myaccount/login.html?sessionExpired=true";
+    const target = "/index.html?sessionExpired=true";
     try { (window.top !== window.self ? window.top : window).location.replace(target); }
     catch (_) { window.location.replace(target); }
   }
@@ -96,7 +96,7 @@
       if (response.status === 401 && result?.ok === false && result?.error === "Authentication required") {
         clear("authentication-required");
         if (location.pathname.startsWith("/myaccount/") && !location.pathname.endsWith("/login.html")) {
-          location.replace("/?sessionExpired=true");
+          location.replace("/index.html?sessionExpired=true");
         }
         return;
       }
