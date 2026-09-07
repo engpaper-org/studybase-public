@@ -1,8 +1,5 @@
 User-agent: *
 Allow: /
 
-# Block private/authenticated areas 
-Disallow: /myaccount/
-Disallow: /internal/
-
-Sitemap: https://studybase.site/sitemap.xml
+# Crawling must remain allowed so search engines can read each page's noindex rule.
+# Indexing is disabled in HTML meta tags and the site-wide X-Robots-Tag header.

@@ -236,6 +236,8 @@ function exportDocument(format = 'html') {
     content = `<!DOCTYPE html>
 <html>
 <head>
+  <meta name="robots" content="noindex">
+  <meta name="googlebot" content="noindex">
   <meta charset="UTF-8">
   <title>${doc.name}</title>
   <style>
