@@ -6479,7 +6479,6 @@
     document.body.appendChild(overlay);
     document.body.classList.add("overflow-hidden");
 
-    const minimumDelay = new Promise(resolve => setTimeout(resolve, 2000));
     let available = false;
 
     const statusHosts = [
@@ -6488,9 +6487,11 @@
       `online.${window.location.hostname}`
     ].filter((host, index, hosts) => host && hosts.indexOf(host) === index);
 
+    const statusControllers = [];
     try {
-      for (const host of statusHosts) {
+      await Promise.any(statusHosts.map(async host => {
         const attemptController = new AbortController();
+        statusControllers.push(attemptController);
         const attemptTimeout = setTimeout(() => attemptController.abort(), 5000);
         try {
           const response = await fetch(`https://${host}/${encodeURIComponent(resourceSlug)}/status`, {
@@ -6503,19 +6504,20 @@
           let state = null;
           try { state = await response.clone().json(); } catch (_) {}
           const declaredStatus = String(state?.status || "").trim().toLowerCase();
-          available = response.ok && state?.ok !== false && state?.online !== false && declaredStatus !== "offline";
-          if (available) break;
-        } catch (_) {
-          available = false;
+          if (!response.ok || !state || typeof state !== "object" || Array.isArray(state) || state.ok === false || state.online === false || declaredStatus === "offline") {
+            throw new Error("Online service unavailable");
+          }
         } finally {
           clearTimeout(attemptTimeout);
         }
-      }
+      }));
+      available = true;
     } catch (_) {
       available = false;
+    } finally {
+      statusControllers.forEach(controller => controller.abort());
     }
 
-    await minimumDelay;
     if (available) {
       closeOnlineServiceOverlay(overlay);
       return true;
